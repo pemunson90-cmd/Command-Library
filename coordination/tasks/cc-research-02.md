@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-02.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | active |
+| Status | filed |
 
 ## Question
 Which card data sources should Command Library use for Full and Lean storage modes, what do they contain, how big are they today, how often do they change, and what do their terms allow?
@@ -55,3 +55,5 @@ GAUNTLET.md 2.A (database, Full and Lean modes, image packs, refresh). R-14 scal
 ## Output
 - `docs/gauntlet/research/R-02-card-data.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex audit cx-research-02 filed 2026-10-11 with blocked current measurements and terms explicitly UNVERIFIED; follow-up probes documented.

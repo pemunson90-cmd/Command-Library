@@ -15,3 +15,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | resume checkpoint | this commit | main ab33a6c verified; latest D-05 applied; six WIP research topics resumed; GitHub connector replaces unavailable shell transport
 
 2026-10-11 | codex | research filed | this commit | cx-research-12 secure key storage audited; native platform stores recommended; runtime checks explicit
+
+2026-10-11 | codex | research filed | this commit | cx-research-02 card sources; preserved prior metadata; blocked probes explicit; Codex protocol edition retained separately
