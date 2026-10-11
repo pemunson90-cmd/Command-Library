@@ -37,3 +37,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | research filed | this commit | cx-research-05 Moxfield parity 67 rows and documented terms; guided export recommended
 
 2026-10-11 | codex | research filed | this commit | cx-research-07 completed with native recommendations and source limits
+
+2026-10-11 | codex | research filed | this commit | cx-research-08 completed with native recommendations and source limits
