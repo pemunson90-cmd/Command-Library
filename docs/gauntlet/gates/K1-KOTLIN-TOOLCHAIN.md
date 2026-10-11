@@ -1,6 +1,6 @@
 # K1 Kotlin readiness
 
-Status: evidence assembled; final independent section review pending. No Android application or Kotlin compatibility result is claimed.
+Status: K1 readiness accepted by [independent Astra-high final review](K1-FINAL-REVIEW.md). The K2 card is accepted for a bounded compatibility attempt and functional foundation build. No Android application or Kotlin compatibility result is claimed.
 
 ## Selected candidate and sources
 
@@ -25,6 +25,10 @@ Latest discovered versions were not automatically selected: Gradle 9.8.1, Kotlin
 Actual output reports Temurin Java/javac 17.0.20.1, checksum-verified Gradle 9.6.0, sdkmanager 12.0, aapt2 2.20-13193326 and adb 37.0.1-15733141. The script checked Android platform36, build-tools36.0.0 and apksigner executable availability. It ran no Kotlin project, Compose/Room/KSP compilation, FTS5 runtime, signing or app/device tests. [Probe design](K1-PROBE-DESIGN.md) records the independent narrow review and permissions.
 
 [Continuity run 38177202244](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38177202244) also succeeded on that commit, including twelve checkpoint/continuity regression tests. Later changes require their own continuity result; this run is not evidence for later commits.
+
+[Continuity run 38178006460](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38178006460) succeeded on evidence checkpoint commit `5f3b752f491ea80c7cf922a4260fffe8cc4298b9`, including all23 checkpoint/architecture regression tests. The final closure checkpoint is verified separately; no continuity run is application evidence.
+
+Closure validation found the lease timestamp check was active-only; releasing the lease exposed that gap. The check now validates active and released UTC timestamps, with an independently Luna-reviewed released-expiry regression. All24 local script tests pass. This narrow continuity fix changes no application or architecture behavior.
 
 Local authoritative checkout is now /workspace/Command-Library-kotlin; the earlier /workspace/Command-Library text snapshot is preserved. Local Java21 runtime has no compiler/Android SDK/Gradle; no local app build was attempted. Hosted tooling supplies the next stage's build transport.
 

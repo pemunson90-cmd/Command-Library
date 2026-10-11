@@ -38,6 +38,11 @@ class ContinuityTests(unittest.TestCase):
     def test_malformed_lease_timestamp(self):
         self.change('coordination/ORCHESTRATOR.json',lambda v:v.update(heartbeat_utc='2099-99-99T99:99:99Z'))
         self.assertTrue(any('invalid lease heartbeat_utc' in e for e in validate(self.root)))
+    def test_malformed_released_lease_expiry(self):
+        def corrupt(v):
+            v.update(status='released',expires_utc='tomorrow')
+        self.change('coordination/ORCHESTRATOR.json',corrupt)
+        self.assertTrue(any('invalid lease expires_utc' in e for e in validate(self.root)))
     def test_wrong_active_lease_task(self):
         self.change('coordination/ORCHESTRATOR.json',lambda v:v.update(task_id='another-task'))
         self.assertTrue(any('lease task differs' in e for e in validate(self.root)))

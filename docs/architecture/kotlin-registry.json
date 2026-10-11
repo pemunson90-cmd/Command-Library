@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "candidate_requires_K1_review",
+  "status": "K1_ownership_design_accepted_implementation_unrun",
   "scope": "Kotlin Android v1; legacy registry retained only as product trace, not executable ownership",
   "components": [
     {

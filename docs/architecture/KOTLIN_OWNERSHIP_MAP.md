@@ -1,6 +1,6 @@
 # Kotlin ownership and replacement map
 
-Status: K1 candidate. It preserves existing product obligations while replacing historical Dart/package ownership. It is not application source and requires independent K1 review before K2.
+Status: accepted K1 ownership design by independent Astra-high final review. It preserves existing product obligations while replacing historical Dart/package ownership. No modules or source-import compliance are claimed; K2 must compile/review real declarations and its consumed subset before consumers.
 
 ## Root and shared ownership
 

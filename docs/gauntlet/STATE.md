@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261011-k1-evidence-08. Updated UTC: 2026-10-11T21:46:52Z.
+Checkpoint: cp-20261011-k1-complete-09. Updated UTC: 2026-10-11T21:52:29Z.
 
-Stage: K1 Kotlin readiness and architecture translation. Status: in_progress. Next: orch-kotlin-toolchain-01 step4.
-Obtain final independent Astra review of Kotlin map/contracts/K2 task and close K1 only if accepted.
+Stage: K1 accepted; K2 functional Kotlin foundation ready. Status: ready_to_resume. Next: orch-kotlin-m0-01 step1.
+Resume K2: verify main and claim lease; draft actual Kotlin contracts/local capability split/schema/import design for targeted independent review before consumer code.
 
-Hosted capability and continuity runs succeeded at210d256a; real tool versions recorded. Kotlin registry/contracts/K2 functional task drafted; 23 guard tests pass. Final K1 review pending; no app compile or release.
+K1 complete and independently Astra-accepted: source-backed tuple, twenty-component Kotlin map/contracts, hosted build-tools capability, 24 local continuity/architecture tests and concrete K2 card. Released-lease timestamp regression fixed and independently reviewed. K2 ready but unimplemented; no app compile/runtime/signing/release claim. Ordinary-chat packets defer standalone research before affected consumers.
 
 Read CURRENT, machine state and task card.

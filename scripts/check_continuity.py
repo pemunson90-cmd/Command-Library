@@ -50,10 +50,10 @@ def validate(root):
     need(lease.get("checkpoint_id")==cp,"lease checkpoint differs")
     need(lease.get("task_id")==task,"lease task differs from active state")
     need(utc(state.get("updated_utc")),"invalid state updated_utc (expected RFC3339 UTC)")
+    need(utc(lease.get("heartbeat_utc")),"invalid lease heartbeat_utc (expected RFC3339 UTC)")
+    need(utc(lease.get("expires_utc")),"invalid lease expires_utc (expected RFC3339 UTC)")
     if lease.get("status")=="active":
         need(bool(lease.get("session_id")) and bool(lease.get("expires_utc")),"active lease requires owner+expiry")
-        need(utc(lease.get("heartbeat_utc")),"invalid lease heartbeat_utc (expected RFC3339 UTC)")
-        need(utc(lease.get("expires_utc")),"invalid lease expires_utc (expected RFC3339 UTC)")
     for name in ["README.md","AGENTS.md","CLAUDE.md"]:
         need("CONTINUE.md" in read(name),name+" missing shared protocol")
     doc_cps=re.findall(r"^Checkpoint: ([^.]*)\.",read("docs/gauntlet/STATE.md"),re.M)

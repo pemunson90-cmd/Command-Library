@@ -1,6 +1,6 @@
 # Task orch-kotlin-toolchain-01
 
-Status: in progress; K0 accepted and execution released under D-21. Official candidate sources, reviewed capability workflow and observed hosted success are recorded. Final Kotlin map/contracts/K2-card review remains before completion.
+Status: completed, independently accepted. K0 accepted and execution released under D-21. Official candidate sources, reviewed capability workflow, observed hosted success and final Astra-high map/contracts/K2-card review are recorded. Application compatibility/compile/runtime/signing remain unrun; K1 permits the bounded K2 attempt.
 
 ## Purpose
 
@@ -15,7 +15,7 @@ Produce a reviewed Kotlin/Android readiness proposal for version 1. This task do
 1. Re-fetch `main`, claim a lease, confirm K0 acceptance and verify the recorded explicit user execution release. Verify actual checkout, GitHub Actions and network capabilities.
 2. From official sources, gather compatible Kotlin, Android Gradle Plugin/Gradle/JDK, Compose, Room/SQLite, possible FTS5 integration, DataStore and Android Keystore requirements. Record candidate values as unverified until targeted compatibility evidence observes them. A tool-version probe cannot prove Compose, Room or FTS5 compatibility.
 3. Design a bounded hosted probe that initializes no product code, reads no secret, and reports tool versions. Run it only after an independent reviewer accepts the proposed probe.
-4. Publish the Kotlin ownership/replacement map, record results, unresolved native constraints and the concrete K2 contract-compilation/foundation task. An independent reviewer may accept a source-backed candidate only for a bounded compatibility attempt; successful targeted compilation/probing is required before any binding is treated as validated. Hosted capability run38177202140 passed at210d256a; final review is next. No application exists yet.
+4. Completed: Kotlin ownership/registry/contracts and concrete K2 card published and independently accepted. Hosted capability run38177202140 passed at210d256a; evidence checkpoint5f3b752 passed hosted continuity run38178006460 with23 tests. Final Astra review resolved catalog capability segregation, preserving the full aggregate contract without a partial implementation. No application exists yet. Successful K2 compile/runtime proof is still required before any binding is treated as validated.
 
 ## Stop rules
 

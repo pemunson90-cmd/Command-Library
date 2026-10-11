@@ -1,6 +1,6 @@
 # Task orch-kotlin-m0-01
 
-Status: planned; eligible after independent K1 acceptance. No implementation in K1. This is a complete functional foundation section, not a finished-app release.
+Status: ready; independently accepted K1/K2 card by Astra-high final review. No implementation yet. Start at step1 after resume/lease claim. This is a complete functional foundation section, not a finished-app release.
 
 ## Preconditions and ownership
 
