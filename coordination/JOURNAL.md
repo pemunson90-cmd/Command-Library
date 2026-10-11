@@ -31,3 +31,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | tooling checkpoint | this commit | CLI 0.159.2 and native researchers verified; connector writes verified; shell transport/worktrees unresolved
 
 2026-10-11 | codex | research filed | this commit | cx-research-04 complete evidence inventory; conditional data/import contracts documented
+
+2026-10-11 | codex | research filed | this commit | cx-research-06 complete evidence inventory; conditional data/import contracts documented

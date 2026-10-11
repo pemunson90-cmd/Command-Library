@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-06.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 What does Archidekt offer a deck builder today, which features should Command Library build, adapt, or skip, and is there a terms-compliant way to import an Archidekt deck by URL?
@@ -52,3 +52,5 @@ A table with one row per feature: feature, how Archidekt does it (with source), 
 ## Output
 - `docs/gauntlet/research/R-06-archidekt.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex cx-research-06 filed 2026-10-11; documented primary evidence and explicit unresolved measurements/terms.
