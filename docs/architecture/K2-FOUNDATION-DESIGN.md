@@ -1,6 +1,6 @@
 # K2 functional foundation design
 
-Status: draft for independent Astra architecture/durability review before consumer implementation. Accepted K1 supplies candidate dependencies and ownership, not compiled APIs or a database. Pure contract draft is isolated on agent/k2-core-contracts; Claude Code QA is isolated on agent/cc-k2-qa-01.
+Status: independently Astra-accepted architecture/declarations; corrected pure core compilation and25 JVM tests observed on2ac4a302. Accepted source is integrated without changes before consumers. Actual Room3/Android/import/settings/UI implementation and runtime acceptance remain unrun. Claude Code QA is isolated on agent/cc-k2-qa-01.
 
 ## Consumed capabilities
 
@@ -24,7 +24,7 @@ Orchestrator owns android-app/database/registry/** and global migration order. R
 
 Version1 creates these tables and indexes through real Room-generated schema plus the reviewed registry. Export actual Room schema for subsequent migration tests. Opening a newer unsupported schema fails with a visible recoverable error; never clear data. Future user tables have a separate lifecycle and are not owned by catalog generation cleanup. Later migrations must preserve records and consent; no schema or dataset version conflation.
 
-The full Database.transaction callback signature is preserved. DbTransaction has explicit irreversible rollback-only state and typed validation abort. Any query/execute non-success records rollback-only; catching the error or returning normally cannot clear it. Explicit abort rejects validation after earlier writes. A callback returning a typed non-success Outcome also rolls back and propagates its status rather than becoming Success(non-success). Cancellation always rolls back/rethrows. Actual adapter tests must write then fail/abort/catch a failure and prove no row commits. For Room3, use its released withWriteTransaction driver API; no Room2 withTransaction assumption.
+The full Database.transaction callback signature is preserved. DbTransaction has explicit irreversible rollback-only state and typed validation abort. Any query/execute non-success records rollback-only; catching the error or returning normally cannot clear it. Explicit abort rejects validation after earlier writes. A callback returning a typed non-success Outcome also rolls back and propagates its status rather than becoming Success(non-success). Cancellation before durable commit rolls back/rethrows; after commit the durable state remains authoritative and cannot be pretended rolled back. Actual adapter tests must write then fail/abort/catch a failure and prove no row commits. For Room3, use its released withWriteTransaction driver API; no Room2 withTransaction assumption.
 
 ## Local-file import protocol
 

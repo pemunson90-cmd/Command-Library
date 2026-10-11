@@ -1,6 +1,6 @@
 # K2 core contracts
 
-Status: assigned draft; no consumer is eligible until actual declarations compile and independent review passes.
+Status: completed and accepted. Worker commits8cf8449 +9681aec were tested on compile revision2ac4a302 with25 JVM tests (13 model/12 common), and independent Astra review closed all four bounded findings. Root integrated exact unchanged core source; component lock released. Android/runtime behavior is not proved by this result.
 
 Owner: scoped Sol-high implementation worker. Branch: agent/k2-core-contracts. Base: 63be52d (full verified SHA recorded in core lock). Exclusive source/test paths: android-app/core/model/src/** and android-app/core/common/src/**. Gradle/CI/coordination files remain orchestrator-owned.
 

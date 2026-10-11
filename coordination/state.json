@@ -3,32 +3,32 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k2-review-12",
-  "verified_base_head": "a6e67e2f275745075a1560ec00a6933a4e9458f2",
-  "stage": "K2 step1 actual contracts, design review and compile",
+  "checkpoint_id": "cp-20261011-k2-core-13",
+  "verified_base_head": "f5fb2767be2270de81c6a8deb80eb6e0d458bbad",
+  "stage": "K2 core contracts accepted; foundation adapters next",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
-  "next_step": 1,
-  "first_action": "Recheck corrected core face/identity/page/rollback contracts with Astra and rerun hosted compile; only then integrate accepted core and permit reviewed foundation consumers. Monitor Claude QA branch.",
+  "next_step": 2,
+  "first_action": "Implement and probe accepted Room3 storage/local importer/settings consumers under exclusive locks; root configures Android compile/UI and verifies fixture provenance; monitor Claude QA branch.",
   "active_tasks": [
     "orch-kotlin-m0-01"
   ],
   "blockers": [],
   "worktree_mode": "git_checkout: /workspace/Command-Library-kotlin; preserved prior snapshot at /workspace/Command-Library",
-  "review_status": "Astra actual-contract/design review requires four bounded corrections; core author fixing. Narrow CI review passed; no consumers yet.",
+  "review_status": "Independent Astra actual-declaration/durability recheck accepted corrected2ac4a302; observed hosted25-test compile satisfies preconsumer gate. Adapter/runtime acceptance remains pending.",
   "verification": {
     "continuity": "24 local checkpoint/architecture regression tests pass; initial compile branch hosted continuity passed. New checkpoint CI pending publication.",
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "hosted_ci": "K1 closure continuity38178163051 passed; K2 initial isolated contract compile38182145326 + branch continuity passed. No Android build workflow yet.",
-    "remote_readback": "Maina6e67e2 checkpoint and coreworker8cf8449 branch published; current compile testedbcb6654. Claude QA branch remains delegated, no result assumed.",
+    "hosted_ci": "Corrected isolated contract compile38182564573 and continuity38182564583 succeeded;24 local coordination tests pass. Android build/runtime workflow not yet implemented.",
+    "remote_readback": "Maina61daf6 checkpoint12 verified; coreworker9681aec and correctedcompile2ac4a302 published. Integrated source pending checkpoint13 publish; no Claude QA result assumed.",
     "toolchain": "Hosted Java/javac17.0.20.1; verified Gradle9.6.0; Android36/build-tools36 available. No application compile.",
     "kotlin_compatibility": "JVM Kotlin2.2.10/coroutines1.10.2/JDK17 compilation observed; AndroidAGP/Compose/Room/KSP/FTS compatibility not_run.",
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
     "k1_source_metadata": "Selected source-backed tuple in candidate lock, K1 Android/FTS5 notes and report; compatibility not_run.",
     "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session",
-    "kotlin_contracts": "Hosted pure-core run38182145326 success atbcb66546749c94c554a3575b76250f78dc6cd3af,15 executed tests (model9/common6); corrected source needs new review/build."
+    "kotlin_contracts": "Corrected hosted run38182564573 succeeded at2ac4a302f6832a9ec33e2739a687b5e3905a6015 with25 executed JVM tests(model13/common12); main integrated exact unchanged core tree."
   },
-  "last_completed": "K2 incomplete checkpoint: real initial pure-core Kotlin build succeeded with15 JVM tests onbcb6654. Astra found four bounded contract/durability corrections; core worker fixing, root design updated. No consumers/app/runtime/signing result yet. Claude Code remains isolated QA writer; ordinary-chat research is with user.",
-  "updated_utc": "2026-10-11T22:57:03Z"
+  "last_completed": "K2 incomplete but core gate complete: corrected actual twenty-component public contracts independently Astra-accepted, hosted25 JVM tests pass at2ac4a302, exact core source integrated and component lock released. Actual Room3/Android/import/settings/UI/runtime/debug artifact remain unrun. Claude Code parallel QA instructions and exclusive lock remain active; user handles regular-chat research.",
+  "updated_utc": "2026-10-11T23:02:41Z"
 }

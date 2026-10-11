@@ -1,8 +1,0 @@
-component: core
-orchestrator: codex
-task: k2-core-contracts
-branch: agent/k2-core-contracts
-base_commit: 63be52d602accd44316b7e510045d6a256215927
-claimed: 2026-10-11
-owned_paths: android-app/core/model/src/**, android-app/core/common/src/**
-step: 1; draft real complete public contracts; no consumers
