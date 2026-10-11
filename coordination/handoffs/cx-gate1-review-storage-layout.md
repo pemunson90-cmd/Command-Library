@@ -1,0 +1,26 @@
+# Independent Gate 1 review: R-08 and R-13
+
+Reviewer: Codex research reviewer. Date: 2026-10-11. Scope: task cards cc-research-08/13, reports R-08/R-13 and the original GAUNTLET 2.C/2.D/2.G/2.J requirements. Read-only review of reports authored by another agent; R-01/R-03/R-12 were not reviewed. Only this handoff was written. No application or runtime testing was performed.
+
+## Disposition
+
+Both reports satisfy the research template, include source/access dates and contain zero em dashes. Scope is preserved through evidence or explicit UNVERIFIED items. Two clarifications should be carried into the Gate 1 synthesis before it presents implementation readiness. Neither calls for an early app spike or code during Gate 1.
+
+## Actionable findings
+
+1. **P1, R-13 line 64, F7: qualify Flutter's Windows UIA route by build configuration.** The cited Flutter engine document says UIA responses depend on the engine being built with `FLUTTER_ENGINE_USE_UIA`. The report accurately identifies UIA/IAccessibleEx implementation and separately says app reader correctness is unverified, but omits this configuration qualification. Add it to the synthesis: source establishes an implementation route, not that the selected stable distribution enables every UIA path. Verify the chosen engine configuration/release evidence, or mark that specific configuration UNVERIFIED and record native Narrator checks as Gate 3 acceptance. Do not infer absence of Narrator support: the same document describes MSAA interaction with Narrator. Primary source re-read: https://raw.githubusercontent.com/flutter/flutter/master/docs/platforms/desktop/windows/Accessibility-on-Windows.md (accessed 2026-10-11).
+
+2. **P2, R-08 line 93, F6: distinguish product identity from quote identity.** `(scryfall_id, finish)` correctly identifies the requested printing/treatment, but is insufficient as the unique persisted quote key when settings allow multiple sources, fiat units, TIX, retail/buylist and dated history. Line 148 already says medium/unit belong in the key. Clarify the intended schema so the shorter tuple is only a product/treatment lookup. Quote records should retain source/provider, medium, quote kind/statistic, native currency/unit and observation date, with conversions retaining original quote plus FX provenance. Exact key design belongs in Gate 2; it must prevent USD/TIX or retail/buylist overwrites. Evidence: R-08 F2/F6/F7/F8 and the upstream multi-dimensional price schema at https://raw.githubusercontent.com/mtgjson/mtgjson/e730ae727a8c610c1660a69067f326e22241623e/docs/prices.md (accessed 2026-10-11).
+
+## Evidence and scope checks that passed
+
+- R-08 clearly separates nullable API type definitions from unobserved live payloads; upstream price-engine provider currencies from actual file coverage; rounded server-listing sizes from failed exact HEAD measurements; and API enrollment from feed redistribution rights. Re-reading the pinned price-engine source confirmed the provider/currency table, including Cardhoarder USD and Cardmarket retail/buylist. It is not a live coverage test. Source above, accessed 2026-10-11.
+- R-08 keeps missing acquisition prices unknown, permits zero only for fully owned compatible demand, separates acquisition and market values, prevents duplicate allocation within one deck, and preserves source/date/FX provenance. It does not convert TIX with ECB rates or substitute buylist for purchase cost. Exact/any-printing policies are labeled product choices, so they do not silently change collection ownership requirements.
+- Cardmarket's public daily-download permission is directly supported even though new API enrollment is closed: https://insight.cardmarket.com/en/Articles/scryfall-x-cardmarket (accessed 2026-10-11). No independent Scryfall redistribution permission is fabricated.
+- R-13 distinguishes Android WindowManager signals from generic desktop sizing, synthetic fixtures from actual sensors, stable framework versions from alpha/RC components, and reported issues from demonstrated defects in a pinned binary. It covers keyboard/mouse/drop/window behavior for all six stacks or explicitly marks a searched capability UNVERIFIED.
+- R-13 preserves tabletop/book/hinge exclusion and state retention requirements. Its size/posture test matrix includes breakpoint boundaries, text scaling and unsaved edits/live counter state; wide screenshots alone are not presented as fold validation.
+- R-13's S1 Narrator uncertainty is correctly explicit. Official documentation names JAWS/NVDA and Java Access Bridge, without establishing Narrator equivalence: https://kotlinlang.org/docs/multiplatform/compose-desktop-accessibility.html (accessed 2026-10-11). The report does not silently substitute NVDA for the named reader.
+
+## Outstanding evidence, not additional defects
+
+Keep R-08 source statistics, Scryfall current terms, exact file bytes and live provider/finish coverage as unresolved research limitations. D-04 remains a proposed USD/Scryfall default, not a confirmed locale or usage ruling. Keep R-13 physical OEM sensors, packaged-reader behavior, system text scaling and plugin compatibility as later implementation acceptance. Neither report establishes measured application performance or successful runtime tests. These boundaries must survive the summary and gate decision.
