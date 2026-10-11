@@ -4,13 +4,13 @@ These numbers are acceptance targets for Pat's Gate 2 ruling, not measurements. 
 
 ## Reference targets and method
 
-Android reference class: ARM64, Android14+, 6GB physical RAM, Snapdragon778G-class CPU/storage, 60Hz display; a real device matching this class or slower must be identified in the result. Windows reference: Windows11 x64, 4-core Intel i5-8250U-class,8GB RAM, SSD,60Hz. ARM64 Windows is optional future support until separately packaged/tested, not implied by x64.
+Android reference class (version 1 profiling target): ARM64, Android14+, 6GB physical RAM, Snapdragon778G-class CPU/storage, 60Hz display; a real device matching this class or slower must be identified in the result. Pat owns a Samsung Galaxy Z Fold7, available for manual physical-foldable evidence (postures, hinge, TalkBack); it is not the mid-range reference. Windows reference (v2, D-19): Windows11 x64, 4-core Intel i5-8250U-class,8GB RAM, SSD,60Hz. ARM64 Windows (v2, D-19) is optional future support until separately packaged/tested, not implied by x64.
 
 Record actual model/OS/CPU/RAM/free disk, thermal/battery/power state, package build SHA, Flutter/engine/SQLite versions/config, corpus checksum/record counts/languages and enabled packs/model. No fabricated machine equivalence. For latency measure at least30 samples, report median/p95/max; startup20 fresh-process samples. Disclose warm versus cold cache and instrumentation. Keep raw CSV/trace in CI artifacts and summarized evidence in milestone report.
 
 Corpus: verified latest full English Oracle/printing/ruling data plus rules and30,000+ searchable canonical entries; duplicate deterministic generated user rows only for10,000-deck/100,000-inventory stress and label synthetic. Never multiply source records and call it real coverage. Document actual larger all-language optional corpus separately. Query suite50 pinned queries incl simple name, Oracle phrase, combined color/mv/legality, owned/in-deck and numeric-price filtering, broad result and rules search; stable fixture expected IDs.
 
-| Budget | Target on reference hardware | Workload and acceptance |
+| Budget | Target on reference hardware (Android; Windows targets v2, D-19) | Workload and acceptance |
 |---|---|---|
 | P01 cold start | p95<=2.5s to useful interactive existing local home; cached shell<=1s on resume | Existing complete corpus, no network/model warmup dependency; first-run download separately measured |
 | P02 search | p95<=150ms DB execution,<=250ms keystroke-to-visible after150ms debounce |50-query full English corpus suite; count/pagination included, no network fallback hidden |

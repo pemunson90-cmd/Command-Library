@@ -28,13 +28,13 @@ Motion: immediate state feedback,100ms hover/press,180ms panel transitions,240ms
 
 ## Themes, identity and mana
 
-Light/dark/system selectable; Windows high-contrast mode substitutes system palette while retaining focus/labels. Color accents W #EEE6B9, U #3C7FB3, B #605266, R #B84336, G #357B4B, colorless #64757D, multicolor neutral surface plus segmented identity markers. These accents are decorative unless paired with text/icon; they are not assumed valid body-text backgrounds. White/colorless names stay distinct by label/symbol. Actual mana symbols need audited attribution/licensing; text fallback such as {W} remains legible. Icons use consistent stroke/size20-24, explicit accessible names, no unlabeled custom glyph font.
+Light/dark/system selectable; Windows high-contrast mode (v2, D-19) substitutes system palette while retaining focus/labels. Color accents W #EEE6B9, U #3C7FB3, B #605266, R #B84336, G #357B4B, colorless #64757D, multicolor neutral surface plus segmented identity markers. These accents are decorative unless paired with text/icon; they are not assumed valid body-text backgrounds. White/colorless names stay distinct by label/symbol. Actual mana symbols need audited attribution/licensing; text fallback such as {W} remains legible. Icons use consistent stroke/size20-24, explicit accessible names, no unlabeled custom glyph font.
 
 ## Component contract and state inventory
 
 | Component | Default and content | Hover/focus/pressed | Disabled/error/loading |
 |---|---|---|---|
-| Button/icon action | Verb plus appropriate icon; target >=48 Android logical pixels, >=44 Windows | Hover tint; focus2 ring; pressed clear immediate response | Disabled explains dependency; busy retains label and cancel where safe; error adjacent, no inert handler |
+| Button/icon action | Verb plus appropriate icon; target >=48 Android logical pixels, >=44 Windows (v2, D-19) | Hover tint; focus2 ring; pressed clear immediate response | Disabled explains dependency; busy retains label and cancel where safe; error adjacent, no inert handler |
 | Text/select/number input | Persistent label, helper/unit, selection preserved | Standard caret/keyboard; focus independent of validation | Error text references field; retain input; loading select permits manual provider model |
 | Card row/grid | Name, cost (n), identity/type, selected printing/finish, ownership | Entire row focusable; secondary menu separate target; hover reveals market quote without hiding n | Text/no-art fallback; unknown price label, not blank zero; chosen state includes check/label |
 | Pane/navigation | Stable route labels, selected marker, context-sensitive back | Tab/focus order matches reading order; visible resize divider | Unbuilt destination absent; empty uses actual next action, not dummy sample |
@@ -62,10 +62,12 @@ Hinge region treated as excluded geometry including safety inset8. Tabletop plac
 
 ## Desktop interaction
 
+Applies in version 1 on Android with external keyboard, mouse, large screens, foldables and resizable windows. Windows window chrome (v2, D-19).
+
 Ctrl+K search, Ctrl+N new deck, Ctrl+S flush/save current edit, Ctrl+Z undo within focused feature, Ctrl+Shift+Z redo where supported, Esc dismiss/cancel current transient UI, F1 help, Alt+Left route back. Do not override editing shortcuts inside inputs. Right-click menus duplicate visible actions. Drag/drop has command equivalents and never commits imported file without preview. Window minimum usable320x360 logical pixels; below that constrain supported resize or scroll, no silent lost controls.
 
 ## Accessibility and audit
 
-Proposed minimum contrast: normal text4.5:1, large text3:1, control/focus boundary3:1; validate every rendered color pairing including art overlays, states and identity accents. Targets >=48x48 Android, >=44x44 desktop; adjacent hit regions do not overlap. Screen-reader labels include card name/quantity/acquisition cost policy, seat/player/counter and exact action. Counters announce grouped adjustments rather than every hold tick; streamed tokens are not read individually. Announce final response or user-requested passage.
+Proposed minimum contrast: normal text4.5:1, large text3:1, control/focus boundary3:1; validate every rendered color pairing including art overlays, states and identity accents. Targets >=48x48 Android, >=44x44 Windows desktop (v2, D-19); adjacent hit regions do not overlap. Screen-reader labels include card name/quantity/acquisition cost policy, seat/player/counter and exact action. Counters announce grouped adjustments rather than every hold tick; streamed tokens are not read individually. Announce final response or user-requested passage.
 
-TalkBack and Narrator must perform search, card detail/face, deck edit, inventory, life adjustments, import preview and key entry on release-like packages. Tab traversal follows visible reading order; modal trap exits and returns focus. Focus survives pane reparenting/fold changes. Golden screenshots alone cannot verify readers/real sensors. ui-auditor records tokens, all states, text200%, compact-height, five widths and tabletop/book for each screen; attach outcomes to milestone reports.
+TalkBack (Narrator: v2, D-19) must perform search, card detail/face, deck edit, inventory, life adjustments, import preview and key entry on release-like packages. Tab traversal follows visible reading order; modal trap exits and returns focus. Focus survives pane reparenting/fold changes. Golden screenshots alone cannot verify readers/real sensors. ui-auditor records tokens, all states, text200%, compact-height, five widths and tabletop/book for each screen; attach outcomes to milestone reports.

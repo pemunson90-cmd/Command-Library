@@ -54,7 +54,7 @@ Apply PERFORMANCE P01-P12 to this component's involved workflows: DBp95<=150ms, 
 
 ## Tests and acceptance criteria
 
-Pinned ABI/compiler/runtime/model license+hash, resumed download/RAM/disk/user warning, malformed file, partial token/cancel/unload, actual Android/Windows small-model performance/quality; unavailable runtime notfake reply.
+Pinned ABI/compiler/runtime/model license+hash, resumed download/RAM/disk/user warning, malformed file, partial token/cancel/unload, actual Android/Windows (Windows v2, D-19) small-model performance/quality; unavailable runtime notfake reply.
 
 Acceptance cases AC-H03 plus mapped parity PX obligations. Authentic fixtures sanitized/attributed/source-versioned; synthetic labeled. Every relevant migration/failure/cancel case required. Reviewer separate from author; UIphysical tests aren't replaced by goldens. No skipped checks claimed passing.
 

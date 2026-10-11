@@ -34,7 +34,7 @@ Every feature uses these25 screens or their named dialogs/sheets. Route/state ow
 
 ## Shared state, input and accessibility acceptance
 
-For every row: loading/empty/partial/offline/stale/error defined using actual source/state, no dummy content. Preserve user selections/scroll/editor draft/active game/conversation across width/posture changes. Primary actions retain48dp Android/44 desktop targets and full keyboard equivalents. Dialog focus returns to invoker; resize must not silently dismiss unsaved form. TalkBack/Narrator semantic names identify action/value/unit and selected state. Text200% reflows to fewer panes/scroll; no semantic exclusion of clipped cards.
+For every row: loading/empty/partial/offline/stale/error defined using actual source/state, no dummy content. Preserve user selections/scroll/editor draft/active game/conversation across width/posture changes. Primary actions retain48dp Android targets (44 Windows targets: v2, D-19) and full keyboard equivalents. Dialog focus returns to invoker; resize must not silently dismiss unsaved form. TalkBack (Narrator v2, D-19) semantic names identify action/value/unit and selected state. Text200% reflows to fewer panes/scroll; no semantic exclusion of clipped cards.
 
 Tabletop/book layouts are safe-region allocations, not mandatory spanning: if one region is too small use focused pane with seat navigation. Hinge8dp safety area never contains actionable control. Compact-height keeps screen-specific primary controls and scrolls bodies; do not scale text/targets down. On wide screens pane width may cap, but all optional pane content remains reachable elsewhere.
 
@@ -42,7 +42,7 @@ Tabletop/book layouts are safe-region allocations, not mandatory spanning: if on
 
 Top-level destinations Cards, Decks, Collection, Rules, Life and AI plus Settings; compact navigation shows primary4 plus More for remaining destinations, medium+ rail. Available destination list includes only implemented complete screens at a given milestone. No empty tab claims shipped feature parity. Context routes S03/S06/S21 retain stable item/game identifiers when navigated away and back. Deep links validate type/ID before resolving; absent local identity provides explicit fetch/resolve choice or raw import identity.
 
-Back/pane close preserves committed state and warns only when draft persistence failed or destructive operation would be lost. New deck/mark-owned/import/restore/end-game confirmations preview real changes. Windows drop triggers S08/S17 preview; touch alternative is file picker. Export/share/copy has real success/failure feedback. Key entry is masked, never autofilled into export/prompt. External templates only open approved schemes; imported Markdown cannot cause arbitrary script navigation.
+Back/pane close preserves committed state and warns only when draft persistence failed or destructive operation would be lost. New deck/mark-owned/import/restore/end-game confirmations preview real changes. Drop (mouse or multi-window drag on Android, v1) triggers S08/S17 preview; Windows file-manager drop (v2, D-19); touch alternative is file picker. Export/share/copy has real success/failure feedback. Key entry is masked, never autofilled into export/prompt. External templates only open approved schemes; imported Markdown cannot cause arbitrary script navigation.
 
 ## Explicit parity-extra surfaces
 

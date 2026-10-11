@@ -4,7 +4,7 @@ Gate3 contract draft under D17. Required before component code; exact toolchain/
 
 ## Purpose
 
-Native encrypted user-key storage; Android Keystore AES-GCM and Windows user-scoped protected storage.
+Native encrypted user-key storage; Android Keystore AES-GCM and Windows user-scoped protected storage (v2, D-19).
 
 ## COVERAGE IDs served
 
@@ -54,7 +54,7 @@ Apply PERFORMANCE P01-P12 to this component's involved workflows: DBp95<=150ms, 
 
 ## Tests and acceptance criteria
 
-Native plugin round trip/corruption/unavailable/key-loss/reinstall/backup scenarios; same-user Windows threat boundary; no plaintext backup/log. Stable plugin source audit required.
+Native plugin round trip/corruption/unavailable/key-loss/reinstall/backup scenarios; same-user Windows threat boundary (v2, D-19); no plaintext backup/log. Stable plugin source audit required.
 
 Acceptance cases AC-H07 plus mapped parity PX obligations. Authentic fixtures sanitized/attributed/source-versioned; synthetic labeled. Every relevant migration/failure/cancel case required. Reviewer separate from author; UIphysical tests aren't replaced by goldens. No skipped checks claimed passing.
 
@@ -62,8 +62,8 @@ Acceptance cases AC-H07 plus mapped parity PX obligations. Authentic fixtures sa
 
 1. Finalize platform bridge/provider-scope contract and native test harness. Write only packages/vault/lib/** and matching packages/vault/test/**/fixtures as applicable; run named AC cases in hosted Actions or appropriate pure-Dart/native harness; update task/handoff and publish bounded checkpoint. Split this step into <=20minute substeps before starting if larger than one run.
 2. Implement Android Keystore encryption/no-backup storage and corruption handling. Write only packages/vault/lib/** and matching packages/vault/test/**/fixtures as applicable; run named AC cases in hosted Actions or appropriate pure-Dart/native harness; update task/handoff and publish bounded checkpoint. Split this step into <=20minute substeps before starting if larger than one run.
-3. Implement Windows current-user native protection and application vault namespace. Write only packages/vault/lib/** and matching packages/vault/test/**/fixtures as applicable; run named AC cases in hosted Actions or appropriate pure-Dart/native harness; update task/handoff and publish bounded checkpoint. Split this step into <=20minute substeps before starting if larger than one run.
-4. Run packaged native checks, independent security review; no plaintext fallback. Write only packages/vault/lib/** and matching packages/vault/test/**/fixtures as applicable; run named AC cases in hosted Actions or appropriate pure-Dart/native harness; update task/handoff and publish bounded checkpoint. Split this step into <=20minute substeps before starting if larger than one run.
+3. Implement Windows current-user native protection and application vault namespace (v2, D-19). Write only packages/vault/lib/** and matching packages/vault/test/**/fixtures as applicable; run named AC cases in hosted Actions or appropriate pure-Dart/native harness; update task/handoff and publish bounded checkpoint. Split this step into <=20minute substeps before starting if larger than one run.
+4. Run packaged native checks (Android in v1; Windows v2, D-19), independent security review; no plaintext fallback. Write only packages/vault/lib/** and matching packages/vault/test/**/fixtures as applicable; run named AC cases in hosted Actions or appropriate pure-Dart/native harness; update task/handoff and publish bounded checkpoint. Split this step into <=20minute substeps before starting if larger than one run.
 
 ## Implementation prerequisite
 
