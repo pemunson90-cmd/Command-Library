@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-07.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 What do LifeElk, Lifetap, and the two other top-rated Magic life counters offer today, and which features should Command Library build, adapt, or skip?
@@ -53,3 +53,5 @@ A table with one row per feature: feature, how each app does it (with source), r
 ## Output
 - `docs/gauntlet/research/R-07-life-counters.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex cx-research-07 filed 2026-10-11. Current evidence and bounded verification gaps documented.
