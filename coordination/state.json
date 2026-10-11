@@ -23,11 +23,11 @@
   "verification": {
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "remote_readback": "pending until this commit is pushed and re-fetched",
+    "remote_readback": "5737180 verified equal to origin/main after push",
     "continuity_checks": "local_pass",
     "regression_tests": "5_pass",
-    "hosted_ci": "documentation workflow runs on push; result not yet read"
+    "hosted_ci": "Continuity integrity: success on branch head ad717aa (run 38163297326) and lease commit e20a554 (run 38163324949); run 38163419355 on 5737180 was in progress at lease release: https://github.com/pemunson90-cmd/Command-Library/actions/runs/38163419355"
   },
   "last_completed": "Merged cc-plangaps-01: gap report, RISKS, IMPOSSIBLE, POST_RELEASE, SPEC/COVERAGE acceptance, D-08 ruled 3, D-18 English UI, D-19 Android first with Windows v2",
-  "updated_utc": "2026-10-11T18:20:34Z"
+  "updated_utc": "2026-10-11T18:21:09Z"
 }
