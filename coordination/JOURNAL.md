@@ -25,3 +25,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | research filed | this commit | cx-research-14 audited and completed; current primary findings and bounded verification gaps
 
 2026-10-11 | codex | research filed | this commit | cx-research-15 audited and completed; current primary findings and bounded verification gaps
+
+2026-10-11 | codex | research filed | this commit | cx-research-03 official rules effective 2026-09-25; distribution permission unresolved; wave 2 active

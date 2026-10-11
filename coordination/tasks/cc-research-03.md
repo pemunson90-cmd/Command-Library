@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-03.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 Where do the official Magic Comprehensive Rules come from, in what formats, how often do they change, may an app store and display them, and how should they be parsed into searchable, cross-linked entries?
@@ -55,3 +55,5 @@ GAUNTLET.md 2.A (rules text, glossary, cross-links, keyword links, rulings attac
 ## Output
 - `docs/gauntlet/research/R-03-comprehensive-rules.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex cx-research-03 filed with public full-rules distribution permission and blocked byte probes explicitly unresolved.

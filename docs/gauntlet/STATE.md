@@ -7,8 +7,8 @@ Files beat conversation memory. Updated 2026-10-11 by Codex.
 | Gate | 1 (Research): in progress |
 | Milestone | none; no app code |
 | Integration branch | main |
-| Last verified repository head | ab33a6cd81bd5dde12c035ebfd417f31e00d2c00 before Codex resume checkpoint |
-| Active tasks | R-02, R-11, R-12, R-13, R-14, R-15 audited and completed by native Codex researchers; original cc task cards retained as acceptance briefs |
+| Last verified repository head | d8177959a1b0af560bcc21f328a73bf4a28df7c8 before this topic checkpoint |
+| Active tasks | R-01, R-04 to R-08; filed R-02, R-03, R-11 to R-15; queued R-09, R-10, R-16, R-17 |
 | Locks held | none; confirmed tree contains only .gitkeep |
 | Handoffs | none existed at resume; research status maintained in task cards |
 | Merged ARCHITECT.md files | none |
@@ -18,7 +18,7 @@ Files beat conversation memory. Updated 2026-10-11 by Codex.
 
 ## Next action
 
-Finish and review the six saved research files against their task acceptance lists. Checkpoint each completed topic to main using GitHub Git-data tools with expected head and fast-forward updates. Preserve all prior commits and files. Then launch remaining queued topics; R-01 depends on R-11 to R-15. Original cc cards remain historical briefs; Codex checkpoint IDs use cx-research-xx. Complete all 17 topics, RESEARCH_SUMMARY.md including parity matrices, decision recommendations and GATE-1.md, then stop for Pat at Gate 1.
+Six saved research files are reviewed and filed. Finish current active topics and launch queued topics as slots free. Checkpoint each completed topic to main using GitHub Git-data tools with expected head and fast-forward updates. Preserve all prior commits and files. Then launch remaining queued topics; R-01 depends on R-11 to R-15. Original cc cards remain historical briefs; Codex checkpoint IDs use cx-research-xx. Complete all 17 topics, RESEARCH_SUMMARY.md including parity matrices, decision recommendations and GATE-1.md, then stop for Pat at Gate 1.
 
 ## Signing
 
