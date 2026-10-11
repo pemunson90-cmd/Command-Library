@@ -24,8 +24,8 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-14 | Full catalog printing/language scope | Ruled; see latest Gate 1 answers |
 | D-15 | Gate 2 specification/design package | Working technical baseline under D-17; no fabricated explicit approval |
 | D-16 | Gate 2 performance targets | Provisional targets under D-17; not measured or relaxed |
-
 | D-17 | Shared continue mandate and delegated technical stage progression | Ruled: latest user instruction below |
+| D-18 | Interface language and localization | Ruled 2026-10-11 |
 
 ## Open
 
@@ -171,3 +171,9 @@ Pat, verbatim:
 > I need you to check the plans and orchestrate the next several stages leaving files here and on the GitHub with instructions so that codex or other GPT models, as well as Claude and Claude code can continuously pick up where the other leaves off. I should not have to explain anything in chat I should simply be able to state continue, and at any point either set of models should be able to look at a readme and the current state, continue intelligently while maintaining proper notes and checkpointing, this way whenever I run out of usage on either account, the other can just continue work a reasonable amount and then stop and nothing is lost.
 
 Applied: model-neutral sequential orchestration and repository-first bounded sessions. This supersedes prior D05 Codex-only restrictions and generic stop-for-chat at every routine technical gate. Check and orchestrate subsequent stages using current independently reviewed SPEC/design and provisional performance targets, without inventing explicit D15/D16 approval words. Independent review and prerequisite evidence still required before technical advance; material product/security/consent changes, budget relaxation, new costs, destructive actions and public release need actual authorization. README/CONTINUE/CURRENT/STATE/QUEUE become shared entry points. An account limit or model switch requires no task explanation from Pat. Usual GitHub/tool permissions still apply. No background account switching mechanism is claimed.
+
+## D-18 Interface language and localization
+- Gap G-15 (`docs/gauntlet/gates/GATE-3-CC-GAPS.md`): PARITY_ACCEPTANCE PX07-071 said "languages Pat rules", and no ledger entry, SPEC row, or acceptance ID existed.
+- Recommendation put to Pat by Claude Code: "English-only interface, built so translations can be added later, with no translations now."
+- Pat, 2026-10-11, verbatim: "Approve all"
+- Applied (branch `agent/cc-plangaps-01`): SPEC J03 and COVERAGE AC-J03 require English as the only shipped interface language, every user-facing string from externalized localization resources with no hardcoded UI strings in widgets (checked by a scan of widget code), no other translation, and no interface-language selector. Card data language stays governed by A02. PX07-071 stays Adapt with the ruling noted.
