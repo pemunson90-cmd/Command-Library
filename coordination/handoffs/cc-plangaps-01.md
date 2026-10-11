@@ -4,10 +4,11 @@
 active
 
 ## Done
-- step 0: task card and handoff opened
+- step 0: task card and handoff opened (commit 6d964e2)
+- step 1: gap report `docs/gauntlet/gates/GATE-3-CC-GAPS.md`
 
 ## Next
-Write the gap report (scope item 1); workers draft items 2, 3, 6 in parallel.
+Steps 2, 3, 6 drafting in parallel (Sonnet workers, files RISKS.md, IMPOSSIBLE.md, SPEC.md + COVERAGE.md + PARITY_ACCEPTANCE.md). Orchestrator does steps 4, 5, 7.
 
 ## Gotchas
 - G-01 to G-05 from the Haiku check are resolved by design at base: data crosses components as core snapshot DTOs composed in shell, and Codex's GATE-3-REVIEW accepted it. G-22 is resolved: scripts/check_continuity.py exists and passes.
