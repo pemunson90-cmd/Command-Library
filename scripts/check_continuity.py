@@ -102,10 +102,15 @@ def main():
     parser.add_argument("--root",default=str(Path(__file__).resolve().parents[1]))
     args=parser.parse_args()
     errors=validate(Path(args.root))
+    # Keep the Kotlin registry checks separate from the historical continuity
+    # validator while running both from the established repository entry point.
+    from check_kotlin_architecture import validate as validate_kotlin_architecture
+    errors.extend(validate_kotlin_architecture(Path(args.root)))
     if errors:
         for e in errors:print("FAIL:",e)
         return 1
     print("PASS: continuation pointers, lease shape,20-node DAG/exclusive roots,64 requirement joins,213 parity rows")
+    print("PASS: Kotlin registry matches legacy components/COVERAGE; 22-module DAG and ownership paths")
     print("This does not verify live GitHub head/lease ownership, code tests, device evidence or dependency pins.")
     return 0
 if __name__=="__main__":sys.exit(main())

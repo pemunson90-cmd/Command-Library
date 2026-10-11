@@ -29,11 +29,11 @@ Future Android version-1 source root: `android-app/`. The future Gradle settings
 | ai | `:feature:ai` | core, search, validation, pricing, recommendations, vault, network, inference, storage | H01, H02, H04, H05, H06, H08, H09 |
 | settings | `:feature:settings` | core, storage, vault | K01, K02 |
 | links | `:feature:links` | core, catalog | F01 |
-| shell | `:app` | core plus all feature modules through public UI contracts | J01-J04, N01, N03 |
+| shell | `:feature:shell` | core plus the historical declared feature dependencies through public UI contracts | J01-J04, N01, N03 |
 
-Exclusive future paths are `android-app/core/model/**`, `android-app/core/common/**`, `android-app/data/network/**`, `android-app/data/vault/**`, `android-app/data/storage/**` and `android-app/feature/<component>/**` for every named feature. The shell's future path is `android-app/app/**`, except the explicitly shared app paths above. `:core:common` may depend on `:core:model`; no other core split or feature edge may be added without updating this map and independent review.
+Exclusive future paths are `android-app/core/model/**`, `android-app/core/common/**`, `android-app/data/network/**`, `android-app/data/vault/**`, `android-app/data/storage/**` and `android-app/feature/<component>/**`, including shell. `:app` and `android-app/app/**` are entirely orchestrator-owned bootstrap/composition, not shell-worker ownership. Bootstrap can wire real accepted data adapters and feature contracts; no component imports bootstrap. This explicitly adds only root assembly edges without changing the20-component DAG. `:core:common` may depend on `:core:model`. Machine-readable ownership/dependency/64-requirement joins and K2 consumed subsets: `kotlin-registry.json`. No other edge is allowed without reviewed map updates.
 
-No module may import another module's implementation package. `:core:model` holds immutable IDs, outcomes, cancellation and clock abstractions; `:core:common` holds no Android UI or persistence implementation. `:app` owns Compose navigation and adaptive presentation only. Module naming does not authorize implementation; K2's card will select a small accepted subset.
+No component imports another component's implementation package. `:core:model` holds immutable DTOs/IDs; `:core:common` holds pure clocks/cancel/decimal utilities, no Android/persistence types. Feature business logic lives behind public API ports; Compose/platform adapters are internal boundary code and domain tests remain JVM-only. Shell owns adaptive presentation; `:app` owns Android entry/composition/navigation registry. Bootstrap may instantiate internal adapter factories exported for assembly but never embed domain logic. Module names are a map, not instructions to create unused modules: K2 instantiates only the accepted working subset.
 
 ## Technology replacements still requiring proof
 

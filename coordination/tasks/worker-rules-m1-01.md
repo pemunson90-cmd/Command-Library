@@ -1,6 +1,6 @@
 # Task worker-rules-m1-01
 
-Status: planned, not eligible until listed prerequisites accepted. Role: implementer, component rules. One assigned lock-holder; branch agent/worker-rules-m1-01; base SHA verified and recorded at claim. Architect: docs/architecture/rules/ARCHITECT.md.
+Status: historical and ineligible for Android v1 under D-20. Dart paths/commands below are retained for audit only; preserve coverage through the Kotlin ownership map and active Kotlin task cards.
 
 ## Exact next step
 

@@ -1,6 +1,6 @@
 # DATA MODEL: Gate 2 logical contract
 
-Logical entities and transaction rules, not a physical schema or ORM pin. SQLite/FTS5 via Flutter-compatible access is selected in principle; Gate3 storage ARCHITECT defines migrations/indexes/queries and orchestrator-owned schema registry. User tables are never discarded when source data refreshes.
+Logical entities and transaction rules, not a physical schema or ORM pin. Kotlin Android v1 uses a Room 3/bundled SQLite candidate, pending K1 compile/runtime proof; FTS5 binding and packaged behavior require explicit verification. Kotlin storage contracts and the orchestrator-owned migration registry define migrations/indexes/queries. User tables are never discarded when source data refreshes.
 
 ## Identity, provenance and relationships
 
@@ -62,4 +62,4 @@ One-file native archive contains manifest, user tables, recoverable game/convers
 
 ## Future interfaces
 
-Repositories expose immutable snapshots/results and typed errors; adapters own SQL/network/vault. Rule/validation/recommendation/life reducers operate on domain entities, no Flutter/native objects. Public signatures and path ownership are Gate3 deliverables, not invented implementation here.
+Repositories expose immutable snapshots/results and typed errors; adapters own SQL/network/vault. Rule/validation/recommendation/life reducers operate on domain entities, no Android/platform objects in core. Kotlin public signatures and path ownership are defined by KOTLIN_CONTRACTS and KOTLIN_OWNERSHIP_MAP.

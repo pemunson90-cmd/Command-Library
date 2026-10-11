@@ -34,7 +34,11 @@ No essential instruction belongs only in a private agent memory, lost chat, tool
 
 ## Models and unavailable tools
 
-Use actual installed capabilities, not a provider name in old role definitions. Strongest available architect/reviewer, lower-cost implementer/research/mechanical helpers when suitable; record actual model or unknown. Never spawn recursive untracked workers. Agent definitions are adapters to tool-neutral role briefs. Read-only models can review/write downloadable patches; publisher-capable successor applies/commits with evidence. If GitHub write denied, preserve local recovery bundle and mark unpublished; do not claim durable GitHub completion.
+Use actual installed capabilities, not a provider name in old role definitions. User's current cost policy: choose the weakest capable model for each task. Luna handles narrow mechanical validation/docs; Sol medium handles isolated routine code; Sol high handles complex implementation. Use Astra only for justified architectural/security/durability judgments and the independently required reviews, with bounded scope. Record actual model or unknown. Standalone API/terms/source-format research and design alternatives go to ordinary chat through coordination/chat-handoffs/README.md; cloud retains integration, builds/tests and exact bytes/material-claim verification. Do not duplicate completed research. Never spawn recursive untracked workers. Read-only models can prepare public patches; publishers apply/verify them. If GitHub write is denied, preserve a local recovery bundle and mark unpublished.
+
+## Functional checkpoint command
+
+After updating the task card, queue rows and actual verification fields, run `python3 scripts/checkpoint.py --checkpoint <new-id> --task <queued-task-id> --step <next-number> --action '<exact next action>' --summary '<done and remaining evidence>' --status <honest-status> --lease active` from the checkout. Use `--lease released` at a stop. The helper uses real UTC, synchronizes both STATE files/CURRENT/QUEUE/lease, and appends the journal plus the current UTC day's JSONL events. This records date rollover without fictional dates or needing lost chat. Validate with `python3 scripts/check_continuity.py` and `python3 -m unittest discover -s scripts -p 'test_*.py'`, publish atomically, read back, and print checkpoint/commit. Existing app commands in historical Dart cards are ineligible; future Gradle commands apply only after K2 creates the workspace.
 
 ## Serialization and partial recovery
 

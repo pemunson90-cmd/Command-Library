@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261011-k1-probe-07
+Checkpoint-ID: cp-20261011-k1-evidence-08
 
 Next task: orch-kotlin-toolchain-01
-Next step: 3. Observe the published Kotlin build capability workflow; record actual run and tool evidence before K1 closure.
+Next step: 4. Obtain final independent Astra review of Kotlin map/contracts/K2 task and close K1 only if accepted.
 
-Updated UTC: 2026-10-11T21:37:55Z
+Updated UTC: 2026-10-11T21:46:52Z
 Status: in_progress; lease: active.
-Verified base: cf228b60a70e679af3136b17f47f7239faa286bd.
+Verified base: 210d256a058c46fc620dff9ae951b919695937aa.
 
-Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.
+Hosted capability and continuity runs succeeded at210d256a; real tool versions recorded. Kotlin registry/contracts/K2 functional task drafted; 23 guard tests pass. Final K1 review pending; no app compile or release.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

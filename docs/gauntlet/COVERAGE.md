@@ -59,7 +59,7 @@ Gate 2 draft coverage. Every baseline requirement is in SPEC; every approved par
 | 3 data/index/stream/batches/migration tests | A06,A08,I02,N01 | storage/PERFORMANCE | Required |
 | 3 shared client/politeness/retry/offline | N02 | network/all online paths | Required |
 | 3 zero-placeholder/testing/security/pins | N01,H07,J04 | Gate3/CI acceptance | Required, no fake exceptions |
-| Environment phone/Actions/Android+Windows (Windows v2, D-19) | N01,J04 | hosted CI; signed APK; EXE/ZIP (v2, D-19) | No local developer machine dependency |
+| Environment phone/Actions/Android+Windows (Windows v2, D-19) | N01,J04 | K2 hosted debug APK compile/install/launch/instrumentation; M9 signed release APK and certificate/install verification; EXE/ZIP (v2, D-19) | No local developer machine dependency |
 | D03 existing key/single secret/backups | N01 | CI Gate3/M0 | Preserve key and latest backup ruling; never commit sheets |
 | D14 English and explicit other-language approval | A02,K01,I02 | catalog/transfer/settings | No silent foreign-language/restore-triggered transfer |
 
@@ -68,7 +68,7 @@ Gate 2 draft coverage. Every baseline requirement is in SPEC; every approved par
 | Intake answer | Mapping |
 |---|---|
 | 1 separate orchestrators/component ARCHITECT/checkpoint/isolation | N01; coordination protocol and Gate3 component owned paths |
-| 2 researched stack with working fallback | D07 Flutter approved; COMPONENTS retains runtime acceptance/fallback evidence |
+| 2 researched stack with working fallback | D07 Flutter selection is historical for v1; Kotlin Android is active. COMPONENTS retains product runtime acceptance/fallback obligations |
 | 3 personal first/public later | N03 |
 | 4 Full+Lean offline rules/Oracle/art opt-in | A01-A06 |
 | 5 file/text/CSV now, sync later | B08,I01,I02,N03 |
@@ -94,10 +94,10 @@ These are verification obligations, not unmapped features. Acceptance cannot cla
 | E06 | Cloud schemas/rate/error/price units/tool/stream/auth contracts and account-specific applicable terms including Gemini use eligibility | H02,H06,H08 |
 | E07 | Local server version/port/models/auth/tool/parser configuration | H02 |
 | E08 | Model license/hash/bytes/Range support, native ABI/load/cancel/quality and target memory/speed | H03/P10 |
-| E09 | Stable Flutter vault bridge isolation, backup/reinstall/corruption and origin-bound auth | H07 |
-| E10 | Pinned Flutter engine settings, actual packaged TalkBack and physical fold sensors; MSAA/UIA settings and Narrator (v2, D-19) | J01,J03 |
+| E09 | Kotlin Android Keystore-backed vault integration, backup/reinstall/corruption and origin-bound auth | H07 |
+| E10 | Android Compose/accessibility behavior with TalkBack and physical fold sensors; Windows MSAA/UIA settings and Narrator (v2, D-19) | J01,J03 |
 | E11 | SQLite FTS5 behavior/migrations/bounded import, full corpus perf measurements on actual reference hardware (Android in v1; Windows reference hardware v2, D-19) | A06,A08,I02,J04 |
-| E12 | Hosted signed APK via ANDROID_SIGNING, certificate verification and real Android install/launch; Windows install/launch (v2, D-19) | N01 |
+| E12 | K2 hosted debug APK compile/install/launch/instrumentation evidence; M9 signed release APK via ANDROID_SIGNING, certificate verification and real Android install/launch; Windows install/launch (v2, D-19) | N01 |
 | E13 | Authentic current variant definitions/card data/instructions and applicable personal acquisition/redistribution rights, plus native QR scanner/export and clock background behavior before claims; source uncertainty never silently defers approved modules | G12,G13,B13 |
 
 ## Open product questions

@@ -1,0 +1,1133 @@
+{
+  "schema_version": 1,
+  "status": "candidate_requires_K1_review",
+  "scope": "Kotlin Android v1; legacy registry retained only as product trace, not executable ownership",
+  "components": [
+    {
+      "id": "core",
+      "modules": [
+        ":core:model",
+        ":core:common"
+      ],
+      "owned_paths": [
+        "android-app/core/model/**",
+        "android-app/core/common/**"
+      ],
+      "component_dependencies": [],
+      "coverage_ids": [
+        "N01",
+        "N03"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/core/ARCHITECT.md"
+    },
+    {
+      "id": "network",
+      "modules": [
+        ":data:network"
+      ],
+      "owned_paths": [
+        "android-app/data/network/**"
+      ],
+      "component_dependencies": [
+        "core"
+      ],
+      "coverage_ids": [
+        "N02"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/network/ARCHITECT.md"
+    },
+    {
+      "id": "vault",
+      "modules": [
+        ":data:vault"
+      ],
+      "owned_paths": [
+        "android-app/data/vault/**"
+      ],
+      "component_dependencies": [
+        "core"
+      ],
+      "coverage_ids": [
+        "H07"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/vault/ARCHITECT.md"
+    },
+    {
+      "id": "storage",
+      "modules": [
+        ":data:storage"
+      ],
+      "owned_paths": [
+        "android-app/data/storage/**"
+      ],
+      "component_dependencies": [
+        "core"
+      ],
+      "coverage_ids": [
+        "N01",
+        "A06",
+        "A08",
+        "I02"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/storage/ARCHITECT.md"
+    },
+    {
+      "id": "catalog",
+      "modules": [
+        ":feature:catalog"
+      ],
+      "owned_paths": [
+        "android-app/feature/catalog/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A05",
+        "A06"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/catalog/ARCHITECT.md"
+    },
+    {
+      "id": "rules",
+      "modules": [
+        ":feature:rules"
+      ],
+      "owned_paths": [
+        "android-app/feature/rules/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "A04"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/rules/ARCHITECT.md"
+    },
+    {
+      "id": "search",
+      "modules": [
+        ":feature:search"
+      ],
+      "owned_paths": [
+        "android-app/feature/search/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog",
+        "rules",
+        "storage"
+      ],
+      "coverage_ids": [
+        "A07",
+        "A08"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/search/ARCHITECT.md"
+    },
+    {
+      "id": "decks",
+      "modules": [
+        ":feature:decks"
+      ],
+      "owned_paths": [
+        "android-app/feature/decks/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "storage"
+      ],
+      "coverage_ids": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B07",
+        "B09",
+        "B10",
+        "B12"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/decks/ARCHITECT.md"
+    },
+    {
+      "id": "collection",
+      "modules": [
+        ":feature:collection"
+      ],
+      "owned_paths": [
+        "android-app/feature/collection/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "storage"
+      ],
+      "coverage_ids": [
+        "C01",
+        "B10"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/collection/ARCHITECT.md"
+    },
+    {
+      "id": "pricing",
+      "modules": [
+        ":feature:pricing"
+      ],
+      "owned_paths": [
+        "android-app/feature/pricing/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog",
+        "collection",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "C02",
+        "C03",
+        "C04",
+        "B11"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/pricing/ARCHITECT.md"
+    },
+    {
+      "id": "validation",
+      "modules": [
+        ":feature:validation"
+      ],
+      "owned_paths": [
+        "android-app/feature/validation/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog",
+        "rules"
+      ],
+      "coverage_ids": [
+        "B06"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/validation/ARCHITECT.md"
+    },
+    {
+      "id": "brackets",
+      "modules": [
+        ":feature:brackets"
+      ],
+      "owned_paths": [
+        "android-app/feature/brackets/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog",
+        "rules",
+        "validation",
+        "storage",
+        "network"
+      ],
+      "coverage_ids": [
+        "E01",
+        "E02"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/brackets/ARCHITECT.md"
+    },
+    {
+      "id": "recommendations",
+      "modules": [
+        ":feature:recommendations"
+      ],
+      "owned_paths": [
+        "android-app/feature/recommendations/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "search",
+        "pricing",
+        "validation",
+        "brackets"
+      ],
+      "coverage_ids": [
+        "D01",
+        "D02"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/recommendations/ARCHITECT.md"
+    },
+    {
+      "id": "transfer",
+      "modules": [
+        ":feature:transfer"
+      ],
+      "owned_paths": [
+        "android-app/feature/transfer/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog",
+        "decks",
+        "collection",
+        "storage"
+      ],
+      "coverage_ids": [
+        "B08",
+        "B13",
+        "G14",
+        "I01",
+        "I02"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/transfer/ARCHITECT.md"
+    },
+    {
+      "id": "life",
+      "modules": [
+        ":feature:life"
+      ],
+      "owned_paths": [
+        "android-app/feature/life/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "rules",
+        "storage"
+      ],
+      "coverage_ids": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10",
+        "G11",
+        "G12",
+        "G13"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/life/ARCHITECT.md"
+    },
+    {
+      "id": "inference",
+      "modules": [
+        ":feature:inference"
+      ],
+      "owned_paths": [
+        "android-app/feature/inference/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "H03"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/inference/ARCHITECT.md"
+    },
+    {
+      "id": "ai",
+      "modules": [
+        ":feature:ai"
+      ],
+      "owned_paths": [
+        "android-app/feature/ai/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "search",
+        "validation",
+        "pricing",
+        "recommendations",
+        "vault",
+        "network",
+        "inference",
+        "storage"
+      ],
+      "coverage_ids": [
+        "H01",
+        "H02",
+        "H04",
+        "H05",
+        "H06",
+        "H08",
+        "H09"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/ai/ARCHITECT.md"
+    },
+    {
+      "id": "settings",
+      "modules": [
+        ":feature:settings"
+      ],
+      "owned_paths": [
+        "android-app/feature/settings/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "storage",
+        "vault"
+      ],
+      "coverage_ids": [
+        "K01",
+        "K02"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/settings/ARCHITECT.md"
+    },
+    {
+      "id": "links",
+      "modules": [
+        ":feature:links"
+      ],
+      "owned_paths": [
+        "android-app/feature/links/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog"
+      ],
+      "coverage_ids": [
+        "F01"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/links/ARCHITECT.md"
+    },
+    {
+      "id": "shell",
+      "modules": [
+        ":feature:shell"
+      ],
+      "owned_paths": [
+        "android-app/feature/shell/**"
+      ],
+      "component_dependencies": [
+        "core",
+        "catalog",
+        "rules",
+        "search",
+        "decks",
+        "collection",
+        "pricing",
+        "validation",
+        "brackets",
+        "recommendations",
+        "transfer",
+        "life",
+        "ai",
+        "inference",
+        "settings",
+        "links"
+      ],
+      "coverage_ids": [
+        "J01",
+        "J02",
+        "J03",
+        "J04",
+        "N01",
+        "N03"
+      ],
+      "contract": "docs/architecture/KOTLIN_CONTRACTS.md",
+      "behavior_reference": "docs/architecture/shell/ARCHITECT.md"
+    }
+  ],
+  "modules": [
+    {
+      "id": ":core:model",
+      "component": "core",
+      "owned_root": "android-app/core/model/**",
+      "dependencies": []
+    },
+    {
+      "id": ":data:network",
+      "component": "network",
+      "owned_root": "android-app/data/network/**",
+      "dependencies": [
+        ":core:model"
+      ]
+    },
+    {
+      "id": ":data:vault",
+      "component": "vault",
+      "owned_root": "android-app/data/vault/**",
+      "dependencies": [
+        ":core:model"
+      ]
+    },
+    {
+      "id": ":data:storage",
+      "component": "storage",
+      "owned_root": "android-app/data/storage/**",
+      "dependencies": [
+        ":core:model"
+      ]
+    },
+    {
+      "id": ":feature:catalog",
+      "component": "catalog",
+      "owned_root": "android-app/feature/catalog/**",
+      "dependencies": [
+        ":core:model",
+        ":data:network",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:rules",
+      "component": "rules",
+      "owned_root": "android-app/feature/rules/**",
+      "dependencies": [
+        ":core:model",
+        ":data:network",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:search",
+      "component": "search",
+      "owned_root": "android-app/feature/search/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:rules",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:decks",
+      "component": "decks",
+      "owned_root": "android-app/feature/decks/**",
+      "dependencies": [
+        ":core:model",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:collection",
+      "component": "collection",
+      "owned_root": "android-app/feature/collection/**",
+      "dependencies": [
+        ":core:model",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:pricing",
+      "component": "pricing",
+      "owned_root": "android-app/feature/pricing/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:collection",
+        ":data:network",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:validation",
+      "component": "validation",
+      "owned_root": "android-app/feature/validation/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:rules"
+      ]
+    },
+    {
+      "id": ":feature:brackets",
+      "component": "brackets",
+      "owned_root": "android-app/feature/brackets/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:rules",
+        ":feature:validation",
+        ":data:storage",
+        ":data:network"
+      ]
+    },
+    {
+      "id": ":feature:recommendations",
+      "component": "recommendations",
+      "owned_root": "android-app/feature/recommendations/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:search",
+        ":feature:pricing",
+        ":feature:validation",
+        ":feature:brackets"
+      ]
+    },
+    {
+      "id": ":feature:transfer",
+      "component": "transfer",
+      "owned_root": "android-app/feature/transfer/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:decks",
+        ":feature:collection",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:life",
+      "component": "life",
+      "owned_root": "android-app/feature/life/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:rules",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:inference",
+      "component": "inference",
+      "owned_root": "android-app/feature/inference/**",
+      "dependencies": [
+        ":core:model",
+        ":data:network",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:ai",
+      "component": "ai",
+      "owned_root": "android-app/feature/ai/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:search",
+        ":feature:validation",
+        ":feature:pricing",
+        ":feature:recommendations",
+        ":data:vault",
+        ":data:network",
+        ":feature:inference",
+        ":data:storage"
+      ]
+    },
+    {
+      "id": ":feature:settings",
+      "component": "settings",
+      "owned_root": "android-app/feature/settings/**",
+      "dependencies": [
+        ":core:model",
+        ":data:storage",
+        ":data:vault"
+      ]
+    },
+    {
+      "id": ":feature:links",
+      "component": "links",
+      "owned_root": "android-app/feature/links/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog"
+      ]
+    },
+    {
+      "id": ":feature:shell",
+      "component": "shell",
+      "owned_root": "android-app/feature/shell/**",
+      "dependencies": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:rules",
+        ":feature:search",
+        ":feature:decks",
+        ":feature:collection",
+        ":feature:pricing",
+        ":feature:validation",
+        ":feature:brackets",
+        ":feature:recommendations",
+        ":feature:transfer",
+        ":feature:life",
+        ":feature:ai",
+        ":feature:inference",
+        ":feature:settings",
+        ":feature:links"
+      ]
+    },
+    {
+      "id": ":core:common",
+      "component": "core",
+      "owned_root": "android-app/core/common/**",
+      "dependencies": [
+        ":core:model"
+      ]
+    },
+    {
+      "id": ":app",
+      "component": null,
+      "owned_root": null,
+      "shared_paths": [
+        "android-app/app/**"
+      ],
+      "dependencies": [
+        ":core:model",
+        ":data:network",
+        ":data:vault",
+        ":data:storage",
+        ":feature:catalog",
+        ":feature:rules",
+        ":feature:search",
+        ":feature:decks",
+        ":feature:collection",
+        ":feature:pricing",
+        ":feature:validation",
+        ":feature:brackets",
+        ":feature:recommendations",
+        ":feature:transfer",
+        ":feature:life",
+        ":feature:inference",
+        ":feature:ai",
+        ":feature:settings",
+        ":feature:links",
+        ":feature:shell",
+        ":core:common"
+      ],
+      "role": "orchestrator-only Android entry/composition/native assembly; never imported by any component"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "A01",
+      "primary_component": "catalog",
+      "module": ":feature:catalog",
+      "acceptance": "AC-A01"
+    },
+    {
+      "id": "A02",
+      "primary_component": "catalog",
+      "module": ":feature:catalog",
+      "acceptance": "AC-A02"
+    },
+    {
+      "id": "A03",
+      "primary_component": "catalog",
+      "module": ":feature:catalog",
+      "acceptance": "AC-A03"
+    },
+    {
+      "id": "A04",
+      "primary_component": "rules",
+      "module": ":feature:rules",
+      "acceptance": "AC-A04"
+    },
+    {
+      "id": "A05",
+      "primary_component": "catalog",
+      "module": ":feature:catalog",
+      "acceptance": "AC-A05"
+    },
+    {
+      "id": "A06",
+      "primary_component": "catalog",
+      "module": ":feature:catalog",
+      "acceptance": "AC-A06"
+    },
+    {
+      "id": "A07",
+      "primary_component": "search",
+      "module": ":feature:search",
+      "acceptance": "AC-A07"
+    },
+    {
+      "id": "A08",
+      "primary_component": "search",
+      "module": ":feature:search",
+      "acceptance": "AC-A08"
+    },
+    {
+      "id": "B01",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B01"
+    },
+    {
+      "id": "B02",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B02"
+    },
+    {
+      "id": "B03",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B03"
+    },
+    {
+      "id": "B04",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B04"
+    },
+    {
+      "id": "B05",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B05"
+    },
+    {
+      "id": "B06",
+      "primary_component": "validation",
+      "module": ":feature:validation",
+      "acceptance": "AC-B06"
+    },
+    {
+      "id": "B07",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B07"
+    },
+    {
+      "id": "B08",
+      "primary_component": "transfer",
+      "module": ":feature:transfer",
+      "acceptance": "AC-B08"
+    },
+    {
+      "id": "C01",
+      "primary_component": "collection",
+      "module": ":feature:collection",
+      "acceptance": "AC-C01"
+    },
+    {
+      "id": "C02",
+      "primary_component": "pricing",
+      "module": ":feature:pricing",
+      "acceptance": "AC-C02"
+    },
+    {
+      "id": "C03",
+      "primary_component": "pricing",
+      "module": ":feature:pricing",
+      "acceptance": "AC-C03"
+    },
+    {
+      "id": "C04",
+      "primary_component": "pricing",
+      "module": ":feature:pricing",
+      "acceptance": "AC-C04"
+    },
+    {
+      "id": "D01",
+      "primary_component": "recommendations",
+      "module": ":feature:recommendations",
+      "acceptance": "AC-D01"
+    },
+    {
+      "id": "D02",
+      "primary_component": "recommendations",
+      "module": ":feature:recommendations",
+      "acceptance": "AC-D02"
+    },
+    {
+      "id": "E01",
+      "primary_component": "brackets",
+      "module": ":feature:brackets",
+      "acceptance": "AC-E01"
+    },
+    {
+      "id": "E02",
+      "primary_component": "brackets",
+      "module": ":feature:brackets",
+      "acceptance": "AC-E02"
+    },
+    {
+      "id": "F01",
+      "primary_component": "links",
+      "module": ":feature:links",
+      "acceptance": "AC-F01"
+    },
+    {
+      "id": "G01",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G01"
+    },
+    {
+      "id": "G02",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G02"
+    },
+    {
+      "id": "G03",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G03"
+    },
+    {
+      "id": "G04",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G04"
+    },
+    {
+      "id": "G05",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G05"
+    },
+    {
+      "id": "G06",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G06"
+    },
+    {
+      "id": "G07",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G07"
+    },
+    {
+      "id": "G08",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G08"
+    },
+    {
+      "id": "G09",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G09"
+    },
+    {
+      "id": "G10",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G10"
+    },
+    {
+      "id": "G11",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G11"
+    },
+    {
+      "id": "H01",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H01"
+    },
+    {
+      "id": "H02",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H02"
+    },
+    {
+      "id": "H03",
+      "primary_component": "inference",
+      "module": ":feature:inference",
+      "acceptance": "AC-H03"
+    },
+    {
+      "id": "H04",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H04"
+    },
+    {
+      "id": "H05",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H05"
+    },
+    {
+      "id": "H06",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H06"
+    },
+    {
+      "id": "H07",
+      "primary_component": "vault",
+      "module": ":data:vault",
+      "acceptance": "AC-H07"
+    },
+    {
+      "id": "H08",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H08"
+    },
+    {
+      "id": "H09",
+      "primary_component": "ai",
+      "module": ":feature:ai",
+      "acceptance": "AC-H09"
+    },
+    {
+      "id": "I01",
+      "primary_component": "transfer",
+      "module": ":feature:transfer",
+      "acceptance": "AC-I01"
+    },
+    {
+      "id": "I02",
+      "primary_component": "transfer",
+      "module": ":feature:transfer",
+      "acceptance": "AC-I02"
+    },
+    {
+      "id": "J01",
+      "primary_component": "shell",
+      "module": ":feature:shell",
+      "acceptance": "AC-J01"
+    },
+    {
+      "id": "J02",
+      "primary_component": "shell",
+      "module": ":feature:shell",
+      "acceptance": "AC-J02"
+    },
+    {
+      "id": "J03",
+      "primary_component": "shell",
+      "module": ":feature:shell",
+      "acceptance": "AC-J03"
+    },
+    {
+      "id": "J04",
+      "primary_component": "shell",
+      "module": ":feature:shell",
+      "acceptance": "AC-J04"
+    },
+    {
+      "id": "K01",
+      "primary_component": "settings",
+      "module": ":feature:settings",
+      "acceptance": "AC-K01"
+    },
+    {
+      "id": "K02",
+      "primary_component": "settings",
+      "module": ":feature:settings",
+      "acceptance": "AC-K02"
+    },
+    {
+      "id": "N01",
+      "primary_component": "shell",
+      "module": ":feature:shell",
+      "acceptance": "AC-N01"
+    },
+    {
+      "id": "N02",
+      "primary_component": "network",
+      "module": ":data:network",
+      "acceptance": "AC-N02"
+    },
+    {
+      "id": "N03",
+      "primary_component": "shell",
+      "module": ":feature:shell",
+      "acceptance": "AC-N03"
+    },
+    {
+      "id": "B09",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B09"
+    },
+    {
+      "id": "B10",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B10"
+    },
+    {
+      "id": "B11",
+      "primary_component": "pricing",
+      "module": ":feature:pricing",
+      "acceptance": "AC-B11"
+    },
+    {
+      "id": "B12",
+      "primary_component": "decks",
+      "module": ":feature:decks",
+      "acceptance": "AC-B12"
+    },
+    {
+      "id": "B13",
+      "primary_component": "transfer",
+      "module": ":feature:transfer",
+      "acceptance": "AC-B13"
+    },
+    {
+      "id": "G12",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G12"
+    },
+    {
+      "id": "G13",
+      "primary_component": "life",
+      "module": ":feature:life",
+      "acceptance": "AC-G13"
+    },
+    {
+      "id": "G14",
+      "primary_component": "transfer",
+      "module": ":feature:transfer",
+      "acceptance": "AC-G14"
+    }
+  ],
+  "shared_paths": [
+    "android-app/app/**",
+    "android-app/settings.gradle.kts",
+    "android-app/build.gradle.kts",
+    "android-app/gradle.properties",
+    "android-app/gradle/**",
+    "android-app/gradlew",
+    "android-app/gradlew.bat",
+    "android-app/database/registry/**",
+    "config/**",
+    ".github/workflows/**",
+    "coordination/**",
+    "docs/**",
+    "scripts/**"
+  ],
+  "phase_dependencies": {
+    "K2": {
+      ":feature:shell": [
+        ":core:model",
+        ":feature:catalog",
+        ":feature:settings"
+      ],
+      ":feature:settings": [
+        ":core:model",
+        ":data:storage"
+      ],
+      ":feature:catalog": [
+        ":core:model",
+        ":data:storage"
+      ]
+    },
+    "note": "Envelope permits later edges; import only accepted consumed subset. UI only implemented destinations. No future adapters/stubs."
+  }
+}

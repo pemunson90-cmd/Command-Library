@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261011-k1-probe-07. Updated UTC: 2026-10-11T21:37:55Z.
+Checkpoint: cp-20261011-k1-evidence-08. Updated UTC: 2026-10-11T21:46:52Z.
 
-Stage: K1 Kotlin readiness and architecture translation. Status: in_progress. Next: orch-kotlin-toolchain-01 step3.
-Observe the published Kotlin build capability workflow; record actual run and tool evidence before K1 closure.
+Stage: K1 Kotlin readiness and architecture translation. Status: in_progress. Next: orch-kotlin-toolchain-01 step4.
+Obtain final independent Astra review of Kotlin map/contracts/K2 task and close K1 only if accepted.
 
-Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.
+Hosted capability and continuity runs succeeded at210d256a; real tool versions recorded. Kotlin registry/contracts/K2 functional task drafted; 23 guard tests pass. Final K1 review pending; no app compile or release.
 
 Read CURRENT, machine state and task card.

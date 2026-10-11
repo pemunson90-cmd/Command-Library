@@ -3,31 +3,31 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k1-probe-07",
-  "verified_base_head": "cf228b60a70e679af3136b17f47f7239faa286bd",
+  "checkpoint_id": "cp-20261011-k1-evidence-08",
+  "verified_base_head": "210d256a058c46fc620dff9ae951b919695937aa",
   "stage": "K1 Kotlin readiness and architecture translation",
   "status": "in_progress",
   "next_task": "orch-kotlin-toolchain-01",
-  "next_step": 3,
-  "first_action": "Observe the published Kotlin build capability workflow; record actual run and tool evidence before K1 closure.",
+  "next_step": 4,
+  "first_action": "Obtain final independent Astra review of Kotlin map/contracts/K2 task and close K1 only if accepted.",
   "active_tasks": [
     "orch-kotlin-toolchain-01"
   ],
   "blockers": [],
   "worktree_mode": "git_checkout: /workspace/Command-Library-kotlin; preserved prior snapshot at /workspace/Command-Library",
-  "review_status": "Prior Astra-high discovery audit accepted with named corrections; preserved and completing corrections.",
+  "review_status": "K1 capability workflow independently Luna-reviewed before run; final Astra-high map/contracts/K2-card review pending.",
   "verification": {
-    "continuity": "Current checkpoint checks pending until publish",
+    "continuity": "Local 23 checkpoint/architecture regression tests and checker pass; published continuity run38177202244 succeeded at210d256a (12 then-current tests). Final checkpoint CI pending.",
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "hosted_ci": "historical continuity workflow results only; no Kotlin build workflow exists",
-    "remote_readback": "Verified main3b1d2f4 at resume; checkout clone succeeded.",
-    "toolchain": "not_run",
+    "hosted_ci": "Capability run38177202140 and continuity run38177202244 succeeded at210d256a058c46fc620dff9ae951b919695937aa; actual logs read.",
+    "remote_readback": "Main210d256a checkout and hosted run head verified; new drafts pending publish.",
+    "toolchain": "Hosted Java/javac17.0.20.1; verified Gradle9.6.0; Android36/build-tools36 available. No application compile.",
     "kotlin_compatibility": "not_run",
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
     "k1_source_metadata": "captured in K1-KOTLIN-TOOLCHAIN.md; candidate discovery only",
     "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session"
   },
-  "last_completed": "Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.",
-  "updated_utc": "2026-10-11T21:37:55Z"
+  "last_completed": "Hosted capability and continuity runs succeeded at210d256a; real tool versions recorded. Kotlin registry/contracts/K2 functional task drafted; 23 guard tests pass. Final K1 review pending; no app compile or release.",
+  "updated_utc": "2026-10-11T21:46:52Z"
 }

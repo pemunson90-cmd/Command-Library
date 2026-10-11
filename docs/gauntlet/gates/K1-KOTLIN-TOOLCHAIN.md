@@ -1,47 +1,42 @@
-# K1 Kotlin toolchain readiness and architecture translation
+# K1 Kotlin readiness
 
-Status: in progress. Recovery checkpoint only; not a completed section and not a compatibility approval.
+Status: evidence assembled; final independent section review pending. No Android application or Kotlin compatibility result is claimed.
 
-## Recorded environment observation
+## Selected candidate and sources
 
-Observed 2026-10-11 UTC in the active workspace:
+Official source observations dated 2026-10-11 UTC are captured in [candidate lock](../../../config/kotlin-android-candidate-lock.json), [Android source notes](K1-ANDROID-SOURCES.md), and [FTS5 source notes](K1-FTS5-SOURCES.md). These distinguish documentation, artifact inspection and required runtime evidence.
 
-- Java runtime: OpenJDK 21.0.12.
-- No `javac`, Gradle, Kotlin compiler, Android SDK manager or `adb` executable was found.
-- The workspace is a text snapshot without a Git checkout.
-- Direct GitHub read/write and outbound HTTPS access are available.
+| Item | Selected candidate | Boundary |
+|---|---|---|
+| AGP / Gradle / JDK | 9.4.1 / 9.6.0 / 17 | Official AGP requirements; Gradle distribution SHA-256 pinned |
+| Application Kotlin / Compose compiler | 2.2.10 / 2.2.10 | AGP 9.4.1 published POM built-in Kotlin default; no separate Android Kotlin plugin; K2 must inspect actual resolution |
+| Compose BOM | 2026.09.00 | Source-backed, not compiled |
+| Room / compiler / KSP | androidx.room3 3.0.3 / 3.0.3 / 2.3.12 | Room3 namespace and FTS5 API; actual KSP generation untested |
+| SQLite bundled | 2.7.1 | FTS5 driver candidate; native AAR static 16-KiB alignment observation is not final APK/runtime proof |
+| DataStore | 1.2.1 | Source-backed, not compiled |
+| Android | min 23; compile/target 36; build-tools 36.0.0 | Candidate; K2 must inspect merged manifest/native packaging and minimum-API execution |
 
-This means local compilation and Android installation cannot be claimed from this environment. K1 must determine whether a hosted Android build transport can provide the required JDK/compiler/SDK before K2 can begin.
+Latest discovered versions were not automatically selected: Gradle 9.8.1, Kotlin 2.4.21 and Room2 2.8.5 observations remain historical discovery. Room3 is a distinct namespace. Gradle's embedded Kotlin 2.3.21 printed by --version is its build-script runtime, not the application's selected Kotlin compiler.
 
-## Official metadata observed
+## Observed hosted capability
 
-All sources retrieved 2026-10-11; values are candidate discovery only.
+[Capability run 38177202140](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38177202140) succeeded at tested commit `210d256a058c46fc620dff9ae951b919695937aa`, job `114581983584`. Decoded job logs were read on 2026-10-11 UTC. Runner: Ubuntu 24.04.5, image `20261004.327.1`.
 
-| Dependency | Source | Observation | Status |
-|---|---|---|---|
-| Gradle | `https://services.gradle.org/versions/current` | 9.8.1, final; distribution checksum returned by source | candidate only |
-| Android Gradle Plugin | Google Maven `com.android.tools.build:gradle` metadata and official AGP 9.4 notes | metadata latest is 9.5.0-alpha09; latest final numeric entry is 9.4.1 | 9.4.1 source-backed candidate only |
-| Kotlin Gradle plugin | Maven Central metadata | metadata latest is 2.5.0-Beta1; latest final numeric entry is 2.4.21 | 2.4.21 source-backed candidate only |
-| Room runtime | Google Maven `androidx.room:room-runtime` metadata | 2.8.5 reported as latest/release | candidate only |
-| Compose BOM | Google Maven `androidx.compose:compose-bom` metadata | 2026.09.00 reported as latest/release | candidate only |
+Actual output reports Temurin Java/javac 17.0.20.1, checksum-verified Gradle 9.6.0, sdkmanager 12.0, aapt2 2.20-13193326 and adb 37.0.1-15733141. The script checked Android platform36, build-tools36.0.0 and apksigner executable availability. It ran no Kotlin project, Compose/Room/KSP compilation, FTS5 runtime, signing or app/device tests. [Probe design](K1-PROBE-DESIGN.md) records the independent narrow review and permissions.
 
-No version above proves compatibility with any other version, Android API level, Room compiler, Kotlin compiler, Compose compiler or FTS5 binding. K1 must use official compatibility documentation and a targeted hosted compile/probe before marking a tuple validated.
+[Continuity run 38177202244](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38177202244) also succeeded on that commit, including twelve checkpoint/continuity regression tests. Later changes require their own continuity result; this run is not evidence for later commits.
 
-## Next K1 action
+Local authoritative checkout is now /workspace/Command-Library-kotlin; the earlier /workspace/Command-Library text snapshot is preserved. Local Java21 runtime has no compiler/Android SDK/Gradle; no local app build was attempted. Hosted tooling supplies the next stage's build transport.
 
-The latest final AGP and Kotlin candidates have now been extracted and the AGP/JDK/Gradle release-note compatibility information recorded. The candidate lock and ownership map are under independent Astra-high review.
+## Architecture and next section
 
-## Candidate artifacts awaiting independent review
+[Kotlin ownership map](../../architecture/KOTLIN_OWNERSHIP_MAP.md), [machine registry](../../architecture/kotlin-registry.json), and [contract translation](../../architecture/KOTLIN_CONTRACTS.md) preserve twenty components, sixty-four requirements and the complete acceptance inventory. Twenty-two eventual modules include two core modules and a separate orchestrator-owned bootstrap; component dependencies retain the accepted DAG. K2 creates only its functional subset, with complete public contracts compiled before consumers and no future adapter stubs.
 
-- `config/kotlin-android-candidate-lock.json` contains the source-backed candidate tuple. Android Gradle Plugin 9.4.1 is paired with the AGP 9.4 documented Gradle 9.6.0 and JDK 17 requirements. Gradle 9.8.1 was observed as current but is not selected merely for recency.
-- `docs/architecture/KOTLIN_OWNERSHIP_MAP.md` maps all twenty historical components and their dependency edges to Kotlin Gradle modules. It does not create modules or relax any coverage obligation.
-- Exact Kotlin/AGP integration and the Android FTS5 binding remain unselected/unproven. A documentation-only hosted capability probe cannot prove either; a later targeted Kotlin compile and packaged FTS5 test are required.
+[K2 task card](../../../coordination/tasks/orch-kotlin-m0-01.md) defines a working local catalog/import/settings/status UI, genuine fixture provenance, hosted compile, debug APK, emulator launch and meaningful FTS5/cancellation/persistence checks. Debug foundation evidence is an internal milestone; complete-app acceptance and permanent-key signing remain later work. Physical Fold7/TalkBack and performance evidence must be observed, never inferred from CI.
 
-## Outstanding K1 evidence
+## Remaining proof
 
-- Select and source-check Android SDK compile/min/target policy against the retained phone, foldable and tablet requirements.
-- Verify a current stable DataStore and Compose compiler/plugin path with Kotlin and AGP; record licenses and compatibility source links.
-- Verify the KSP/Room compiler path and its license/compatibility boundary before generating any database code.
-- Identify an Android-packaged SQLite/FTS5 binding strategy and its redistribution/license status. Room alone is not that proof.
-- Draft a concrete hosted capability-probe workflow with only version/configuration checks, immutable action references, no secrets and no application source; obtain independent review before it is committed or run.
+K2 must prove the selected tuple through actual resolution/compile, generated Room3 code, packaged bound FTS5 MATCH behavior, cancellation/transaction durability, persistence, minimum API and final native alignment. Candidate acceptance permits a bounded compatibility attempt, not a validated production binding. If it fails, record the actual diagnostic, correct only the affected candidate with source evidence and independent review, and rerun the affected check.
+
+Standalone future API/terms/source-format research is deferred to [regular-chat packets](../../../coordination/chat-handoffs/README.md). It is required before affected consumers ship, not before unrelated foundation work. Windows and sync remain deferred under D-19/D-20.
 

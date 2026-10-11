@@ -1,5 +1,7 @@
 # Exclusive ownership and shared registry
 
+> Historical technology note (D-20): Any Dart/Flutter path or signature in this document is historical and ineligible for Android v1. Active Kotlin paths and signatures are defined by the Kotlin registry, [KOTLIN_CONTRACTS](KOTLIN_CONTRACTS.md) and [KOTLIN_OWNERSHIP_MAP](KOTLIN_OWNERSHIP_MAP.md). Product behavior and acceptance authority remain in SPEC/COVERAGE.
+
 Component owned roots: packages/<component>/** for all20 component IDs in registry.json. Distinct prefixes cannot overlap. Shell presentation is packages/shell/**, not apps/**. Vault/inference native plugin code remains inside its package; launcher/native application registration is shared.
 
 Orchestrator-only shared roots: apps/command_library/**, root pubspec/lock/workspace/build configuration, database/registry/**, config/**, .github/workflows/**, tool/**, coordination/** and docs/gauntlet/**. Future session scripts are scripts/**, also orchestrator-only. Docs architecture authored by named architect task only; shared registry/CI/interface inventory root-owned.

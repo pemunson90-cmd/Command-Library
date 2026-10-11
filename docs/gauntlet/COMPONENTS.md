@@ -1,6 +1,6 @@
 # COMPONENTS: Gate 2 dependency inventory
 
-Dependencies are allowed conceptual interfaces, not authorization to edit another component's files. Domain entities/ports remain pure Dart. Each implementation gets its own Gate3 ARCHITECT with exclusive owned paths, public signatures and test plan. Shell composition injects adapters; domain code never imports the composition root.
+Dependencies are allowed conceptual interfaces, not authorization to edit another component's files. Android-v1 domain entities/ports are pure Kotlin/JVM. Kotlin registry/contracts/ownership replace historical Dart paths and signatures under D-20. Each implementation needs accepted behavior/public contracts, exclusive paths and a test plan. Orchestrator-owned app bootstrap injects actual adapters; domain code never imports the composition root.
 
 | Component | Purpose | Allowed dependency components |
 |---|---|---|
@@ -23,7 +23,7 @@ Dependencies are allowed conceptual interfaces, not authorization to edit anothe
 | ai | Provider codecs/context/tools/reply validation/history | core, search, validation, pricing, recommendations, vault, network, inference, storage |
 | settings | Preferences, consent and attribution metadata | core, storage, vault |
 | links | Supplied URI selection, safe templates and browser-opening boundary | core, catalog |
-| shell | Flutter navigation, presentation, adaptive UI, composition | core, catalog, rules, search, decks, collection, pricing, validation, brackets, recommendations, transfer, life, ai, inference, settings, links |
+| shell | Kotlin/Compose navigation contracts, presentation and adaptive UI; app bootstrap assembly is orchestrator-owned | core, catalog, rules, search, decks, collection, pricing, validation, brackets, recommendations, transfer, life, ai, inference, settings, links |
 
 ## DAG
 

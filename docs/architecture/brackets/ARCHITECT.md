@@ -1,6 +1,8 @@
 # ARCHITECT: brackets
 
-Gate3 contract draft under D17. Required before component code; exact toolchain/dependency pin tuple still requires orch-toolchain-01. This is not a built implementation.
+> Historical Dart-path/signature notice (D-20): This component contract is retained as product behavior and acceptance authority only. Its Dart paths/signatures are historical and ineligible for Android v1; use the active Kotlin registry, KOTLIN_CONTRACTS and KOTLIN_OWNERSHIP_MAP.
+
+Gate3 contract draft under D17. Historical toolchain instructions are superseded by orch-kotlin-toolchain-01; K2 requires actual compile/runtime proof. This is not a built implementation.
 
 ## Purpose
 

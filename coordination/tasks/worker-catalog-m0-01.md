@@ -1,6 +1,6 @@
 # Task worker-catalog-m0-01
 
-Status: planned, not eligible until listed prerequisites accepted. Role: implementer, component catalog. One assigned lock-holder; branch agent/worker-catalog-m0-01; base SHA verified and recorded at claim. Architect: docs/architecture/catalog/ARCHITECT.md.
+Status: historical and ineligible for Android v1 under D-20. Dart paths/commands below are retained for audit only; preserve coverage through the Kotlin ownership map and active Kotlin task cards.
 
 ## Exact next step
 

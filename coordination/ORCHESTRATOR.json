@@ -4,8 +4,8 @@
   "session_id": "codex-k1-efficient-20261011",
   "model_family": "Codex orchestrator; Luna medium mechanical/source helpers; Astra targeted review only",
   "task_id": "orch-kotlin-toolchain-01",
-  "heartbeat_utc": "2026-10-11T21:37:55Z",
-  "expires_utc": "2026-10-11T22:22:55Z",
-  "checkpoint_id": "cp-20261011-k1-probe-07",
+  "heartbeat_utc": "2026-10-11T21:46:52Z",
+  "expires_utc": "2026-10-11T22:31:52Z",
+  "checkpoint_id": "cp-20261011-k1-evidence-08",
   "note": "Previous lease expired; main3b1d2f4 and previous handoffs inspected, unpublished corrections recovered. Sequential continuation authorized. No component code task active."
 }

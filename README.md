@@ -16,7 +16,7 @@ If Pat says **continue**, start here. Codex, GPT, Claude and Claude Code use the
 
 ## Current facts
 
-Gate 2 specification independently reviewed; source/runtime/device checks remain unperformed. Current continuation work is architecture, CI design and recovery infrastructure; see state for the live pointer, never this summary alone. No application build or usable binary is claimed.
+Gate 2 specification independently reviewed. Kotlin source-backed candidate and hosted build capability are recorded in the K1 report; actual app compilation/runtime/device checks remain unperformed. See state for the live pointer, never this summary alone. No application build or usable binary is claimed.
 
 User's latest continuation mandate supersedes old Codex-only and mandatory-chat-at-every-technical-gate instructions. Routine reviewed stages may advance under [D-17](docs/gauntlet/DECISIONS.md); material product changes, destructive actions, new costs and unresolved actual permission barriers still need a recorded decision. Previously proposed performance numbers remain targets, not measured results.
 
@@ -25,6 +25,8 @@ User's latest continuation mandate supersedes old Codex-only and mandatory-chat-
 [AGENTS.md](AGENTS.md) for Codex/agents, [CLAUDE.md](CLAUDE.md) for Claude Code, this README for general GPT/Claude. All point to the same continuation policy. Historical GAUNTLET editions and prior reports remain intact; latest user decisions control conflicts.
 
 GitHub is the durable source. A local snapshot or downloadable handoff is convenience, not a separate branch of truth. A read-only model can audit and prepare a patch, but must label unpublished work and cannot claim a push it did not perform. Repository access is needed to update shared checkpoints.
+
+Use the weakest capable model and defer standalone research to [regular-chat handoff packets](coordination/chat-handoffs/README.md). Each packet supplies context, source/evidence IDs, output format and executor verification boundaries; no chat explanation is needed. Cloud retains repository integration and actual build/test/byte verification. [Checkpoint helper](scripts/checkpoint.py) keeps UTC dates and all live resume pointers synchronized.
 
 ## Security and deliveries
 

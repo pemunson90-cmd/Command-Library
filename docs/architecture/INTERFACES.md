@@ -1,5 +1,7 @@
 # Shared interface contract inventory
 
+> Historical technology note (D-20): Any Dart/Flutter path or signature in this document is historical and ineligible for Android v1. Active Kotlin paths and signatures are defined by the Kotlin registry, [KOTLIN_CONTRACTS](KOTLIN_CONTRACTS.md) and [KOTLIN_OWNERSHIP_MAP](KOTLIN_OWNERSHIP_MAP.md). Product behavior and acceptance authority remain in SPEC/COVERAGE.
+
 Public exports in registry.json are the only cross-package import boundary. No application code exists yet. Type names below are architectural contracts to define/compile in core before a dependent step; not a claim they are implemented.
 
 Core exports Outcome<T> (success/typed error/unknown), Page<T>/PageRequest, typed source-qualified IDs (Card/Oracle/Rule/Deck/Game/Format), Revision, CancelToken, Clock, RandomSource, DecimalAmount/unit/precision, immutable entity snapshots. DATA_MODEL is field authority.
