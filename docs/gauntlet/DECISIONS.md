@@ -10,7 +10,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 |---|---|---|
 | D-01 | Package / application ID | Ruled 2026-10-11 |
 | D-02 | Repo name and visibility | Ruled 2026-10-11 |
-| D-03 | Release signing key | Open: ruling line arrived unfilled (needed before M0) |
+| D-03 | Release signing key | Ruled 2026-10-11 |
 | D-04 | Default currency and price source | Open (after R-08) |
 | D-05 | Claude Code and Codex concurrency | Ruled 2026-10-11 (through Gate 3) |
 | D-06 | Windows installer format and code signing | Open (after R-15) |
@@ -21,15 +21,6 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-11 | Cloud session setup: repos attached per session | Ruled 2026-10-11 |
 
 ## Open
-
-### D-03 Release signing key
-- Finding: Pocket-Steward CI builds debug-signed APKs only (`.github/workflows/main.yml`, `BUILD_ENVIRONMENT.md` line 157). No release-key workflow exists there to copy.
-- Options: (a) Pat's existing permanent key, added to this repo as GitHub Actions secrets; (b) a new key for this app.
-- Recommendation: (a) if the keystore file exists and Pat can reach it. One key to back up.
-- Tradeoff: (a) a leak of one key affects every app signed with it; (b) isolates the blast radius but adds a second keystore Pat must back up forever. Losing the key means users cannot update in place.
-- Needed from Pat: does the keystore exist, and where.
-- Pat, 2026-10-11, verbatim: "[where your keystore is, or "make a new key"]"
-  - Context: this is the fill-in text from the ruling template, sent unfilled. No option was chosen, so D-03 stays open. Not needed for Gates 1 to 3; needed before M0, where CI signs the first APK. R-15 covers the CI mechanics for either option.
 
 ### D-04 Default currency and price source
 - Ruled after R-08.
@@ -59,6 +50,17 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - Tradeoff: public repos run standard GitHub-hosted runners free (source: https://docs.github.com/en/billing/concepts/product-billing/github-actions, accessed 2026-10-11). Private repos draw from a plan minute quota, and Windows minutes cost more than Linux minutes. Cost of public: the spec and code are visible to anyone. Secrets never enter the repo either way. R-15 verifies current billing figures.
 - Pat, 2026-10-11, verbatim: "Stay public."
 - Applied: repo stays `pemunson90-cmd/Command-Library`, public.
+
+### D-03 Release signing key
+- Finding: Pocket-Steward CI builds debug-signed APKs only (`.github/workflows/main.yml`, `BUILD_ENVIRONMENT.md` line 157). No release-key workflow exists there to copy.
+- Options: (a) Pat's existing permanent key, added to this repo as GitHub Actions secrets; (b) a new key for this app.
+- Recommendation: (a) if the keystore file exists and Pat can reach it. One key to back up.
+- Tradeoff: (a) a leak of one key affects every app signed with it; (b) isolates the blast radius but adds a second keystore Pat must back up forever. Losing the key means users cannot update in place.
+- Needed from Pat: does the keystore exist, and where.
+- Pat, 2026-10-11, verbatim: "[where your keystore is, or "make a new key"]"
+  - Context: this is the fill-in text from the ruling template, sent unfilled. No option was chosen, so D-03 stays open. Not needed for Gates 1 to 3; needed before M0, where CI signs the first APK. R-15 covers the CI mechanics for either option.
+- Pat, 2026-10-11, verbatim: "Make a new key"
+- Applied: option (b). Command Library gets its own release keystore, separate from Pat's existing key. The key is not generated in a cloud session: the private key would sit in an ephemeral VM and have to travel to Pat through chat or a file. The creation method (keytool on Pat's PC, or a workflow that writes directly to GitHub Actions secrets), the secret names, and Pat's backup steps are set from R-15 before M0. Key material and passwords never enter the repo, logs, or chat. Losing the keystore means installed builds cannot be updated in place, so Pat keeps two backups.
 
 ### D-05 Claude Code and Codex concurrency
 - Recommendation: Claude Code alone through Gate 3; both orchestrators concurrently from M0 onward under the lock protocol.
