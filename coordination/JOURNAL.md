@@ -45,3 +45,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | research filed | this commit | cx-research-09 topic evidence and recommendation; no app code
 
 2026-10-11 | codex | usage-limit recovery checkpoint | this commit | 14 topics filed; R16/R17 preserved review-pending; R10 unfinished; corrective documents and durable handoff saved
+
+2026-10-11 | codex | research filed | this commit | cx-research-16 recovered after agent usage-limit error; orchestrator scope/evidence review passed with explicit limits
