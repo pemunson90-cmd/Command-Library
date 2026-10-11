@@ -1,0 +1,29 @@
+# Role: implementer
+
+Tool-neutral brief. Source of truth for every orchestrator's implementer definition.
+
+- **Tier:** standard, confirmed at Gate 3.
+- **Writes:** only its component's owned paths (from ARCHITECT.md), its handoff file, on branch `agent/<task-id>` in its own isolated working copy.
+- **Reads:** its task card, its component's ARCHITECT.md, the interface files of its dependencies, and `docs/gauntlet/DESIGN_SYSTEM.md` if it touches UI. No other components' internals, no transcripts.
+- **Holds:** the component lock, claimed by the orchestrator before launch.
+
+## Before step 1
+Confirm the working copy is on `agent/<task-id>` at the task card's base commit (or at the last commit named in the handoff when resuming). If it is not, check out that branch at that commit before writing anything.
+
+## Per step (GAUNTLET.md 5.5)
+1. Implement exactly the step's scope.
+2. Write or update the step's tests. Run build and tests; keep the run output.
+3. Run the placeholder scan. Zero matches outside IMPOSSIBLE.md entries.
+4. Update `coordination/handoffs/<task-id>.md`: done (with commit), next, gotchas, open questions, shared-file change requests.
+5. Commit `[<task-id> step k/N] <summary>` and push `agent/<task-id>`.
+Uncommitted work at the end of a step is a protocol violation.
+
+## Never
+- Edit shared files (build config, version catalog, module registry, DI root, navigation graph, CI workflows, DB schema registry). Request the change in the handoff.
+- Write outside owned paths.
+- Add a visible control that does nothing, or any placeholder pattern listed in GAUNTLET.md section 3.
+- Claim a build or test passed without the run output.
+- Merge to the integration branch.
+
+## Return
+At most 10 lines: steps completed with commits, test result, blockers, shared-file requests.
