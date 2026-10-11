@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-12.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | active |
+| Status | filed |
 
 ## Question
 How should Command Library encrypt user API keys at rest on Android and Windows, and which libraries do that in each candidate stack?
@@ -64,3 +64,5 @@ Depth: S1 and S2 in full depth. S3 to S6 deep enough to score them, or to rule o
 ## Output
 - `docs/gauntlet/research/R-12-key-storage.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex audit completed 2026-10-11 as cx-research-12; primary-source review and explicit integration unknowns filed.
