@@ -63,3 +63,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | Gate 2 draft checkpoint | this commit | 56 feature contracts,25 screens,20-component DAG,12 target budgets,data model,213 parity obligations; independent review queued
 
 2026-10-11 | codex | Gate 2 review corrections checkpoint | this commit | material trace/extra contracts fixed;64 AC cases;213 parity rows retained; all-format/decoded-art clarifications; final independent recheck pending
+
+2026-10-11 | codex | Gate 2 filed | this commit |64 contracts/25 screens/20-node DAG/213 parity rows; independent all5 findings resolved; document/contrast checks pass; D15/D16 proposed; stopped before Gate3

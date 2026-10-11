@@ -22,6 +22,8 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-12 | Gate 1 matrices and topic recommendations | Ruled; see latest Gate 1 answers |
 | D-13 | Full offline rules acquisition versus public bundling | Ruled; see latest Gate 1 answers |
 | D-14 | Full catalog printing/language scope | Ruled; see latest Gate 1 answers |
+| D-15 | Gate 2 specification/design package | Open: Gate 2 proposal |
+| D-16 | Gate 2 performance targets | Open: Gate 2 proposal |
 
 ## Open
 
@@ -153,3 +155,9 @@ Gate status: five rulings applied; D-04 is the sole outstanding Gate 1 ruling. D
 ## D-04 final Gate 1 ruling
 
 Pat, verbatim: "Approved". Context: approval of the explained default, USD with Scryfall reference pricing conditional on source/terms verification, owned copies counted as zero acquisition cost while market value stays visible, missing prices unknown, selectable supported sources/currencies including EUR/Cardmarket and Magic Online tickets. Applied: D-04 ruled. All six Gate 1 choices are now ruled; Gate 2 specification is authorized. Earlier D-04-open pointers are superseded.
+
+## Gate 2 proposed decisions
+
+D-15 open: approve SPEC, DESIGN_SYSTEM, COVERAGE, DATA_MODEL, COMPONENTS, SCREENS and PARITY_ACCEPTANCE with64 observable contracts and all approved matrix obligations. Includes detailed any-eligible-owned-printing default/strict pin policy, package copy/link semantics and user-enabled life variants/local sharing. All source/runtime verification limits remain explicit. Independent review resolved all five findings; Pat has not yet ruled Gate2.
+
+D-16 open: approve PERFORMANCE P01-P12/reference methods. Key targets p95 cold2.5s, DB query150ms, visible search250ms after debounce, full local import10min, steady base RSS300MiB/peak450MiB excluding loaded LLM only, decoded art64MiB steady/96MiB transient, provisional base-disk1.5GiB. Values are proposed acceptance targets, not measured results; failed targets need reported correction or subsequent ruled change, never scope deletion.
