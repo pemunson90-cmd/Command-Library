@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-17.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 What are the verified URL patterns for each card link target, and which tokens must a user URL template support?
@@ -50,3 +50,6 @@ GAUNTLET.md 2.F (per-card links, user URL templates with tokens).
 ## Output
 - `docs/gauntlet/research/R-17-card-links.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+
+Codex cx-research-17 reviewed the recovered complete document against Scope and Acceptance on 2026-10-11. Source-backed findings and explicitly UNVERIFIED fixtures/transport probes are filed; no runtime checks claimed.

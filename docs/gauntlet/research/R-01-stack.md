@@ -14,10 +14,12 @@ Research date: 2026-10-11. Scores and weights are engineering judgments from doc
 |---|---|---|
 | [R-11 F5/F6](R-11-on-device-llm.md) | S1 and S2 both score 4/5 for LLM integration; S1 needs its desktop JNI/JNA adapter, S2 has llamadart. | Runtime/model byte counts and app performance are unverified; no native app was built. |
 | [R-12 candidate table and recommendation](R-12-key-storage.md) | S1 native Keystore plus JNA DPAPI is viable; S2 has a maintained two-target store. | Stable plugin source parity, isolation and packaged-runtime tests remain required. |
-| [R-13 F2/F3/F4/F7](R-13-adaptive-layouts.md) | S1 has strong Android fold tooling; S2 exposes display features. S1 Windows docs name Java Access Bridge with JAWS/NVDA; S2 has a Windows UIA path. | S1 Narrator is UNVERIFIED. Neither toolkit's documentation proves the app's reader correctness or physical hinge behavior. |
+| [R-13 F2/F3/F4/F7](R-13-adaptive-layouts.md) | S1 has strong Android fold tooling; S2 exposes display features. S1 Windows docs name Java Access Bridge with JAWS/NVDA; S2 documents Windows MSAA/Narrator and a configuration-dependent UIA path. | S1 Narrator is UNVERIFIED. Neither toolkit's documentation proves the app's reader correctness or physical hinge behavior. |
 | [R-14 F2/F3/F4/F5](R-14-database-fts.md) | Room 3 now supports FTS5; drift/sqlite3 also provides bundled FTS5. No database-only reason to abandon Kotlin. | Library capability is documented, final native packages/performance not measured. |
 | [R-15 C/E/G](R-15-ci-cd.md) | Both leaders support native Windows builds, Android signing, CI UI smoke and screenshots. | App installer, signing and complete screenshot workflows have not run. |
 | [R-02 F1/F2/F3](R-02-card-data.md) | Preserved same-day bulk observation reports gzipped JSONL with `jsonl_download_uri`, not a root JSON array. | Fresh access, complete counts, terms and live row validation remain open. R-14's array-parser discussion must not dictate the current importer. |
+
+Flutter Windows accessibility qualification: the official engine document explicitly names Narrator as an MSAA client and describes IAccessibleEx/UIA implementation. Native UIA responses are controlled by `FLUTTER_ENGINE_USE_UIA`; the selected stable engine configuration is UNVERIFIED. This is a credible Narrator integration route, not a guarantee of full UIA being enabled in downloaded stable binaries. The macro alone does not establish absence of Narrator support. Actual packaged-app Narrator tasks remain required. Source: https://github.com/flutter/flutter/blob/master/docs/platforms/desktop/windows/Accessibility-on-Windows.md (accessed 2026-10-11).
 
 Primary URLs supporting this synthesis: https://github.com/ggml-org/llama.cpp/tree/master/examples/llama.android , https://pub.dev/packages/llamadart , https://developer.android.com/jetpack/androidx/releases/room3 , https://drift.simonbinder.eu/platforms/vm/ , https://kotlinlang.org/docs/multiplatform/compose-desktop-accessibility.html , https://github.com/flutter/flutter/blob/master/docs/platforms/desktop/windows/Accessibility-on-Windows.md and https://api.scryfall.com/bulk-data (accessed 2026-10-11; bulk snapshot inherited from R-02 rather than newly fetched).
 
@@ -74,7 +76,7 @@ Scale: 0 no verified route; 1 major unresolved requirement/integration; 2 substa
 
 All cited research inputs read 2026-10-11; underlying URLs/access dates are in F1-F3 and those named findings. Database scores rate access/FTS integration, not an established performance ranking. RNW's lower scores reflect multiple current Windows wrapper/architecture gaps, not a claim that native code cannot solve them.
 
-Narrator is a feasibility gate separate from averaging: S1 has not established it. NVDA/JAWS success cannot close a Narrator acceptance check. S2's documentation supplies a credible route, but its app still must pass reader tasks. A high overall score never waives a missing requirement.
+Narrator is a feasibility gate separate from averaging: S1 has not established it. NVDA/JAWS success cannot close a Narrator acceptance check. S2's documented MSAA/Narrator and conditional UIA mechanisms supply a credible route, but selected stable engine configuration is UNVERIFIED and its app still must pass reader tasks. A high overall score never waives a missing requirement.
 
 Sensitivity uses the same scores and weight ordering as the matrix:
 
@@ -123,7 +125,7 @@ S1 retains the most familiar Android path and excellent foldable/DB support. It 
 
 ## Recommendation
 
-For D-07, recommend **S2 Flutter**, with the platform checks below recorded as Gate 3 acceptance requirements. It clears the stated fallback departure bar under the full brief's baseline matrix because it pairs a documented Windows Narrator/UIA route with comparable DB/LLM/test coverage and turnkey secrets; this is a concrete reason, not a preference for Dart. The result is sensitive and not a claim of universal superiority.
+For D-07, recommend **S2 Flutter**, with the platform checks below recorded as Gate 3 acceptance requirements. It clears the stated fallback departure bar under the full brief's baseline matrix because it pairs a documented Windows MSAA/Narrator route and conditional UIA implementation with comparable DB/LLM/test coverage and turnkey secrets; this is a concrete reason, not a preference for Dart. The result is sensitive and not a claim of universal superiority.
 
 One-line tradeoff for Pat's ruling: **Choose Flutter to preserve a credible Narrator path on Windows, accepting replacement of the known Kotlin application layer and custom adaptive/SSE composition.**
 
@@ -133,7 +135,7 @@ If Pat prefers retaining S1, record actual packaged-runtime Narrator validation 
 
 ## Risks
 
-S2 newest SDK patch and combined dependency compatibility remain unresolved. Material decoupling, plugins' native ABIs, Windows ARM assets, off-main-thread DB/import/inference execution and cache transport ownership need concrete validation. All timing/size/memory figures remain unmeasured. Scryfall JSONL contract/terms and full CR reuse rights are cross-cutting data questions, not fixed by a stack. Weighted scores do not authorize dropping required readers, fake controls or performance budgets.
+S2 newest SDK patch, stable engine UIA build configuration and combined dependency compatibility remain unresolved. Material decoupling, plugins' native ABIs, Windows ARM assets, off-main-thread DB/import/inference execution and cache transport ownership need concrete validation. All timing/size/memory figures remain unmeasured. Scryfall JSONL contract/terms and full CR reuse rights are cross-cutting data questions, not fixed by a stack. Weighted scores do not authorize dropping required readers, fake controls or performance budgets.
 
 ## Confidence
 

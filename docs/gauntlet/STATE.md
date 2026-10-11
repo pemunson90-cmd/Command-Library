@@ -1,29 +1,25 @@
 # STATE
 
-Files beat conversation memory. Updated 2026-10-11 by Codex.
+Updated 2026-10-11. Resume using this file and coordination/handoffs/cx-gate1-resume.md.
 
 | Field | Value |
 |---|---|
-| Gate | 1 (Research): in progress |
-| Milestone | none; no app code |
+| Gate | 1 research in progress; not yet filed for ruling |
 | Integration branch | main |
-| Last verified repository head | d8177959a1b0af560bcc21f328a73bf4a28df7c8 before this topic checkpoint |
-| Active tasks | R-01, R-04 to R-08; filed R-02, R-03, R-11 to R-15; queued R-09, R-10, R-16, R-17 |
-| Locks held | none; confirmed tree contains only .gitkeep |
-| Handoffs | none existed at resume; research status maintained in task cards |
-| Merged ARCHITECT.md files | none |
+| Verified head before recovery checkpoint | 0e0ee18401ca6126941c121ce9f9aa459b9130a6 |
+| Filed topics | R-01 to R-09, R-11 to R-15 (14) |
+| Review-pending complete drafts | R-16, R-17 |
+| Unfinished topic | R-10 LLM provider APIs |
+| Active workers | Root continuing; research agents stopped by account usage limit |
 | Sole orchestrator | Codex through Gate 3, latest D-05 |
-| Execution mode | Native OpenAI research agents, one topic each; six at a time |
-| Repository transport | GitHub connector; shell Git fails because workspace proxy is unreachable |
+| Locks / architecture / app code | none |
+| Transport | GitHub connector fast-forward writes with expected head; local files are a snapshot without .git |
+| Next action | Read recovery handoff; review/file R16/R17, finish R10, synthesize/file Gate1 and stop for Pat |
 
-## Next action
+## Verification limits
 
-Six saved research files are reviewed and filed. Finish current active topics and launch queued topics as slots free. Checkpoint each completed topic to main using GitHub Git-data tools with expected head and fast-forward updates. Preserve all prior commits and files. Then launch remaining queued topics; R-01 depends on R-11 to R-15. Original cc cards remain historical briefs; Codex checkpoint IDs use cx-research-xx. Complete all 17 topics, RESEARCH_SUMMARY.md including parity matrices, decision recommendations and GATE-1.md, then stop for Pat at Gate 1.
+Current measurements blocked by shell proxy failure and browser source errors remain explicit in reports. App builds/tests/device results are not claimed. Preserve full offline rules requirement; public bundling permission is distinct from personal acquisition. Signing sheets remain outside git and no new key is needed.
 
-## Signing
+## Latest progress policy
 
-D-03 already completed key generation and delivery in the previous session. The three uploaded sheets stay outside the repository. Four Actions secrets and two backups remain pending confirmation from Pat before M0; do not regenerate the key. No app build is claimed.
-
-## Resume observations
-
-Read CLAUDE.md (AGENTS.md was absent), STATE, open DECISIONS, tree locks/handoffs, all task cards and JOURNAL. Main head ab33a6c matches the last saved WIP checkpoint; no task handoff commit pointers exist to compare. Six files are WIP, all six cards active; other eleven queued. No completed topic is redone.
+Pat: "Continue and make sure to always print checkpoints and handoffs before usage runs out if possible". Publish recoverable work early, then print commit and handoff link after each checkpoint; do not wait until final gate.
