@@ -72,7 +72,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - Recommendation: (a), starting by merging this Gate 0 branch into `main`.
 - Pat, 2026-10-11, verbatim: "A"
   - Context: answering the offer: Option A, tell me "merge to main" and I'll push it now. That also rules D-09.
-- Applied: option (a). Integration branch is `main`. The fast-forward of `ccr-b0894b79-qzhxhw` into `main` was blocked by the session's auto-mode permission check, so Pat merges it on GitHub (or approves the push) before the next session. Each new cloud session still needs Pat to grant push to `main` and `agent/*` in that session, because the session's own instructions limit pushes to its branch.
+- Applied: option (a). Integration branch is `main`. The first push to `main` was blocked by the session's auto-mode permission check. Pat then chose, verbatim, "2." (switch out of auto mode and approve the push), and `main` was fast-forwarded from 512cdcc to 08cd06a. Each new cloud session still needs Pat to grant push to `main` and `agent/*` in that session, because the session's own instructions limit pushes to its branch.
 
 ### D-10 Subagent model tiering
 - Pat, 2026-10-11, verbatim: "Delegate subagents wisely. If you can use sonnet or haiku subagents, do so. Not every task is worthy of Opus"
