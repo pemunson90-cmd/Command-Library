@@ -10,3 +10,4 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | claude-code | ruling | b1c922e | D-01 D-02 D-05 D-11 ruled; D-09 push granted for session ccr-d1e9ac59-b90cv2; D-03 line arrived unfilled, stays open
 2026-10-11 | claude-code | gate 1 start | pending | 17 research task cards written; wave 1 active: R-02 R-11 R-12 R-13 R-14 R-15
 2026-10-11 | claude-code | ruling | 339a41f | D-03 ruled: new key; creation method from R-15 before M0
+2026-10-11 | claude-code | ruling | b0a6274 | D-03 applied: keystore generated outside git, delivered to Pat; secrets pending on Pat
