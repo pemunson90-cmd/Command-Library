@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "released",
-  "session_id": "codex-k1-efficient-20261011",
-  "model_family": "Codex orchestrator; Luna medium mechanical/source helpers; Astra targeted review only",
+  "status": "active",
+  "session_id": "codex-k2-foundation-20261011",
+  "model_family": "Codex orchestrator; weakest capable scoped helpers; targeted Astra review",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-11T21:52:29Z",
-  "expires_utc": "2026-10-11T21:52:29Z",
-  "checkpoint_id": "cp-20261011-k1-complete-09",
-  "note": "K1 complete and reviewed; lease released at section boundary. No component code task active. Successor reads CURRENT and claims a new lease before K2. Earlier snapshot and publication stashes are preserved."
+  "heartbeat_utc": "2026-10-11T22:42:09Z",
+  "expires_utc": "2026-10-11T23:27:09Z",
+  "checkpoint_id": "cp-20261011-k2-claim-10",
+  "note": "Sequential K2 resume after released K1 lease; no existing component lock. User is handling ordinary-chat research; independent foundation work proceeds."
 }

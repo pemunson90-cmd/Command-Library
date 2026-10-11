@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-k1-complete-09. Next: orch-kotlin-m0-01 step1; ready_to_resume.
+Checkpoint-ID: cp-20261011-k2-claim-10. Next: orch-kotlin-m0-01 step1; in_progress.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
