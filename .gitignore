@@ -44,3 +44,7 @@ google-services.json
 # Claude Code local state
 .claude/worktrees/
 .claude/settings.local.json
+
+# Python bytecode (scripts/check_continuity.py tests)
+__pycache__/
+*.pyc
