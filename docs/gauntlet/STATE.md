@@ -1,7 +1,8 @@
 # STATE
 
-Current checkpoint: cp-20261011-continuity-01. Main verified before this checkpoint: 4f2718c2275230a8de2deccfba53bf47fb784cd7. Latest user D17 supersedes old stop/Codex-only instructions.
+Checkpoint: cp-20261011-architecture-02. Latest D17 enables sequential Codex/GPT/Claude/Claude Code and reviewed technical progression without project chat explanations.
 
-Stage: Gate3 architecture/continuation planning. Gate2 reviewed technical baseline; budgets provisional and unmeasured. Next: orch-architecture-plan-01 step1; first action read COMPONENTS/SPEC/COVERAGE and create dependency-ordered contracts/registry/task sequence. Source: coordination/state.json, QUEUE and CURRENT.md. Active: Codex session under orchestrator lease; no component/application code.
-
-Any sequential Codex/GPT/Claude/Claude Code successor reads README/CONTINUE and current state; no chat explanation needed. Existing signing key, USD default, Full English/non-English consent, full offline rules and all approved parity features remain. GitHub expected-head writes verified; local snapshot lacks .git. No build/device/source-currentness pass claimed. Checkpoint/verify/release before bounded stop; preserve current work before stale takeover.
+Stage: Gate3-A architecture contracts drafted, independent audit pending. Current next: orch-architecture-review-01 step1; write GATE-3-REVIEW from exact saved20 contracts/64 joins/current continuation state. Root active orchestrator lease; no component locks/code.
+After accepted audit: Gate3-B orch-toolchain-01, verify and pin actual tuple/checkout/hostedCI; M0 signed genuine skeleton; M1 English catalog/rules/search. Other stages in MILESTONES/QUEUE/cards.
+No app/native builds, physical tests, current source measurements or dependency locks claimed. Current specs/budgets working baseline/provisionaltargets under D17, latest product rulings retained. GitHub main checkpoint/pointer authoritative; local text snapshot has no .git.
+Read README/CONTINUE/state.json/CURRENT + exactnextcard. Independent reviewer never author. Keep confidential signing sheets offgit/logs and existingkey. All essential context in files, not agentmemory.

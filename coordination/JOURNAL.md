@@ -67,3 +67,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | Gate 2 filed | this commit |64 contracts/25 screens/20-node DAG/213 parity rows; independent all5 findings resolved; document/contrast checks pass; D15/D16 proposed; stopped before Gate3
 
 2026-10-11 | codex | cp-20261011-continuity-01 | containing commit | D17 shared continue mandate; README/protocol/entry overrides/live state/queue; architecture stages authorized, no fabricated D15/D16 approval
+
+2026-10-11 | codex | cp-20261011-architecture-02 | containing commit |20 contract drafts/64 joins/shared ownership/CI/phase+worker cards/continuity checker; independent audit queued; no runtime or pin claims

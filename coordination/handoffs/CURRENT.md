@@ -1,11 +1,12 @@
-# CURRENT: cross-model continuation checkpoint
+# CURRENT: architecture contracts review checkpoint
 
-Checkpoint-ID: cp-20261011-continuity-01
+Checkpoint-ID: cp-20261011-architecture-02
 
-Stage: architecture planning under D17. Status: active protocol setup checkpoint, no app code. Gate2 reviewed working baseline and proposed targets retained; old gate-stop/Codex-only pointers superseded.
+Next task: orch-architecture-review-01
+Next step:1. First action: independent review task card then20 ARCHITECT/registry/coverage/CI/interfaces/ownership and shared continuation state. Output only GATE-3-REVIEW. Root resolves findings; do not self-approve.
 
-Done: root README, shared CONTINUE, Codex/Claude entry overrides, latest mandate and recovery policy. Verified base main: 4f2718c2275230a8de2deccfba53bf47fb784cd7.
-
-Next task: orch-architecture-plan-01, step1: read COMPONENTS/SPEC/COVERAGE and produce dependency-ordered ARCHITECT contracts, registry and upcoming task sequence. Reconcile20-node DAG, all64 requirements/213 parity rows, shared-file ownership and provisional milestones; independent audit before implementation.
-
-Read CONTINUE for lease/capabilities/publication. This checkpoint is located by its Checkpoint-ID in commit message, not a self-referential SHA. Existing local directory is text snapshot without .git; source/build/device checks remain unperformed. No signing secret/key regeneration.
+Done: shared cross-model README/CONTINUE and old entry overrides;20 component architectures;64 requirement joins; exclusive package roots/shared registries; future toolchain/M0/M1/source/worker cards; stage and CI plan; continuity checker. No app code/build/version lock or physical evidence claimed.
+Verified base main before this checkpoint: c1a27336a9b21758a43ef9dfeb814f4d0c92ec26. This containing commit is located by Checkpoint-ID. Root remains active lease-holder during review.
+Next after accepted contract audit: orch-toolchain-01, actual capability/current SDK/dependency locks/hosted probe, then concrete M0 tasks; no fake interface/runtime completion.
+Blockers: actual toolchain checkout/version/build transport/source proofs unverified, deliberately required by next phase rather than marked passed. Product baseline working under D17; budgets targets, no invented D15/D16 literal approval.
+Local snapshot without .git; source GitHub main. Reconcile using CONTINUE; never access signing sheets/keys or force-push. Preserve foreign identity/no implicit language download and fulloffline rules. Historical handoff Next fields superseded by this pointer.

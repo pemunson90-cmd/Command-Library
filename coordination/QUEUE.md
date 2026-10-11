@@ -1,13 +1,20 @@
 # Execution queue
 
-Live pointer: coordination/state.json and CURRENT.md. Latest D17 enables bounded sequential model handoffs.
+Checkpoint-ID: cp-20261011-architecture-02. Live task: orch-architecture-review-01 step1. Use machine state and CURRENT, not stale historical pointers.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
-| orch-architecture-plan-01 | Gate3 contracts/plan | active | reviewed Gate2 working baseline | step1 architecture/coverage audit |
-| orch-architecture-review-01 | independent Gate3 audit | queued | architecture checkpoint | verify contracts/path exclusivity/DAG/coverage |
-| orch-toolchain-01 | pre-M0 capability and version lock | queued | reviewed architecture | verify Git checkout/hosted CI/compiler dependencies and pin real tuple |
-| orch-m0-01 | signed walking skeleton | queued, not eligible yet | accepted architecture + toolchain + exclusive locks | concrete skeleton task cards prepared during plan |
-| orch-m1-01 | English catalog/rules/search | queued, not eligible yet | accepted M0 foundation | resumable real corpus contracts/fixtures/data pipeline |
+| orch-architecture-plan-01 | G3-A contract planning | draft complete, review pending | reviewed Gate2/D17 | resolve independent findings |
+| orch-architecture-review-01 | G3-A independent audit | active | contracts saved | write GATE-3-REVIEW |
+| orch-toolchain-01 | G3-B readiness | queued, next after audit | accepted contract plan | verify current pins/checkout/hosted probe |
+| orch-source-fixtures-01 | source evidence | eligible fallback | source gap registry | one unanswered official-source probe |
+| orch-m0-01 | signed skeleton | planned, not eligible yet | accepted architecture/toolchain | orchestrate concrete foundation workers |
+| worker-core-m0-01 | M0 core | planned | pinned workspace +accepted architecture | value/public DTO contracts +unitfixtures |
+| worker-storage-m0-01 | M0 SQLite | planned | accepted core/registry/native tuple | FTS5/transaction tests |
+| worker-catalog-m0-01 | M0 tiny import | planned | accepted network/storage/authentic fixture | atomic real staging |
+| worker-shell-m0-01 | M0 genuine UI | planned | real catalog/settings/query path | working status/search-only UI |
+| orch-m1-01 | M1 offline data | planned | accepted M0/source proofs | bounded real English/rules |
+| worker-rules-m1-01 | M1 rules | planned | actualofficialsource/acceptedports | corpus parser/refglossary |
+| worker-search-m1-01 | M1 localquery | planned | acceptedcatalog/rules/storage | AST/semanticfixtures |
 
-No task becomes done because listed here. If blocked use named independent eligible work and update pointer; record exact blocker and proof. Full stage/task cards finalized in architecture plan.
+Higher later M2-M9 scopes in MILESTONES. Worker tasks need claimed locks and actual merged interfaces, not merely this row. If write/toolchain access unavailable, preserve checkpoint and source-audit fallback; no claimedbuild or silently skipped requiredtest. At most3 component workers only when disjoint safe worktrees available; single orchestrator.

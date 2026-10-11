@@ -1,0 +1,6 @@
+# Task orch-m1-01
+
+Status: planned; not eligible before accepted foundation. Role: orchestrator. First M1 subtask is verifying authentic current card/rules source contracts and permitted personal acquisition, not importing a remembered bulk schema.
+Dependencies: accepted core/network/storage/catalog/settings/rules/search public interfaces, real hosted M0 builds. Outputs Full English/Lean/safe additional-language consent/atomic data/rulings/rules/FTS query and complete offline screens.
+Steps:1 current E01/E02 source/metadata terms/bytes/format/English-printing and full-rule fixture checks;2 bounded real framing/download/resume/staging/generation activation/kill tests;3 mode/language consent preservation and full offline rules/glossary/crossrefs;4 typed local query/autocomplete/actual corpus benchmark/independent review.
+Each split into concrete package worker card (<20min substep). No foreign pack starts from import or restore. No data refresh deletes user identities. Full corpus/current source measurements remain unverified until actual probes. Keep authentic fixtures small/attributed, don't commit bulk data.

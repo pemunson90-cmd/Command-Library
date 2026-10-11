@@ -1,28 +1,31 @@
-# Handoff <task-id>
+# Task handoff
 
-Path: `coordination/handoffs/<task-id>.md`. Updated at the end of every step, before the step's commit. A fresh agent must be able to continue from this file alone.
+Checkpoint-ID: <published checkpoint identifier>
+Task/status/owner: <exact task, drafted/active/blocked/reviewed/merged>
+Current step: <k/N and last durable substep>
+Base/dependency SHAs: <verified immutable commits>
+Branch/owned/shared paths: <exclusive scope and root requests>
 
-## Status
-active, blocked (with reason), review, or merged
+## Done and evidence
 
-## Done
-- step k/N: <summary> (commit <sha>)
+List finished work, changed files, exact test command/result/run/artifact/review links. Distinguish plan/code/tested/reviewed/published. Never put credentials in command/log snippets.
 
-## Next
-The exact next step, its first action, and any command to run.
+## Exact next action
 
-## Gotchas
+Next task/step/first command or file to read; prerequisites checked/unmet; safe fallback if blocked. All essential detail lives here or linked repository files.
 
-## Open questions
+## Remaining checks and blockers
 
-## Shared-file change requests
-File, exact change, reason. The orchestrator applies these; the agent never edits shared files.
+Specific failed/unrun check, error reason, previous attempt/source and what new evidence is needed. Product rulings separate from technical permission/tool limits.
 
-## Review notes
-Reviewer appends here: verdict (approve or changes requested), findings with file:line.
+## Recovery and unpublished work
 
-## Audit notes
-UI auditor appends here: screen, size class, finding, DESIGN_SYSTEM.md section violated.
+Checkpoint containing this handoff, prior verified head and branch; unpublished files/patch location and maximum possible loss. Preserve/reconcile before takeover. Journal/STATE/current pointer updated together.
 
-## Recovery notes
-Orchestrator only, for stale locks (GAUNTLET.md 5.8).
+## Shared-file requests
+
+Exact shared file/change/reason, for orchestrator only.
+
+## Review/audit
+
+Separate author/model/session, approve or changes requested, addressed findings and verification. A future model must not infer approval from silence.

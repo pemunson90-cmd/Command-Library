@@ -1,0 +1,7 @@
+# Task orch-m0-01
+
+Status: planned; not eligible until architecture audit + toolchain phase accepted. Role: orchestrator. M0 is a parent task; create/claim concrete worker cards before code.
+Outputs genuine Flutter workspace/shared CI/app/database composition and verified signed AndroidAPK/WindowsEXE+ZIP. Public interfaces and matching tests, small authentic catalog import/search/status only; no dummy future destinations.
+Steps:1 workspace/pinned manifest + core DTO contracts/API compile with unit tests;2 real storage/FTS5 + network/settings/catalog tiny authenticated fixture path and domain tests;3 vault native bridge smoke and real shell status/search task +CI artifacts;4 existing-key signing certificate/Windows launch/package tests and independent M0 review.
+Task cards use package-exclusive branch/worktree locks; root applies sharedfile requests. Merge only tests/reviewer approved. Unbuilt features absent from UI. Preserve secret values only runner/temp/vault, single ANDROID_SIGNING, certificateD03. Never release-publish by implication.
+No M0 completion without real CI URLs/checksums/test summaries; installs/readers/physical claims need actual evidence. Exact native proof missing is next task/blocker, not fake success.

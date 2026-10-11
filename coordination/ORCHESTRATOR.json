@@ -3,9 +3,9 @@
   "status": "active",
   "session_id": "codex-continuity-20261011",
   "model_family": "Codex/GPT",
-  "task_id": "orch-architecture-plan-01",
-  "heartbeat_utc": "2026-10-11T16:48:38.000Z",
-  "expires_utc": "2026-10-11T17:33:38.000Z",
-  "checkpoint_id": "cp-20261011-continuity-01",
+  "task_id": "orch-architecture-review-01",
+  "heartbeat_utc": "2026-10-11T16:59:48.000Z",
+  "expires_utc": "2026-10-11T17:44:48.000Z",
+  "checkpoint_id": "cp-20261011-architecture-02",
   "note": "Sequential active orchestrator lease; inspect branch/task/handoff before stale takeover."
 }
