@@ -85,3 +85,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-11 | codex | K1 recovery checkpoint | this commit | Java 21 runtime observed; no javac/Gradle/kotlinc/Android SDK/adb. Initial official metadata captured; candidate discovery only, no app work.
 
 2026-10-11 | codex | K1 recovery checkpoint | this commit | Candidate AGP/Gradle/JDK/Kotlin/Room/Compose metadata and 20-component Kotlin ownership map drafted; Astra-high review active; no app work.
+
+2026-10-11T21:37:55Z | codex | cp-20261011-k1-probe-07 | containing commit | Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.

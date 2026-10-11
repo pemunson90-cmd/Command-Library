@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 """Validate committed continuation pointers and architecture docs, never app/runtime evidence."""
 import argparse,json,re,sys
+from datetime import datetime
 from pathlib import Path
+
+def _valid_datetime(value):
+    try:
+        datetime.fromisoformat(value[:-1]+"+00:00")
+        return True
+    except (ValueError,TypeError):
+        return False
 
 def validate(root):
     errors=[]
@@ -14,6 +22,8 @@ def validate(root):
     def obj(path):
         try:return json.loads(read(path))
         except (ValueError,TypeError) as exc:errors.append("invalid JSON "+path+": "+str(exc));return {}
+    def utc(value):
+        return isinstance(value,str) and bool(re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z",value)) and _valid_datetime(value)
     state=obj("coordination/state.json"); lease=obj("coordination/ORCHESTRATOR.json")
     required=["schema_version","project","repository","integration_branch","checkpoint_id","verified_base_head","stage","status","next_task","next_step","first_action","active_tasks","blockers","worktree_mode","review_status","verification","last_completed","updated_utc"]
     for k in required:need(k in state,"state missing "+k)
@@ -22,22 +32,32 @@ def validate(root):
     cp=state.get("checkpoint_id","")
     need(bool(cp),"missing checkpoint ID")
     current=read("coordination/handoffs/CURRENT.md")
-    need("Checkpoint-ID: "+cp in current,"CURRENT checkpoint differs from machine state")
+    current_cps=re.findall(r"^Checkpoint-ID: (.+)$",current,re.M)
+    need(current_cps==[cp],"CURRENT checkpoint differs from machine state")
     task=state.get("next_task","")
     need(bool(task) and bool(state.get("first_action")),"no executable next pointer")
-    need("Next task: "+task in current,"CURRENT next task differs")
+    need(re.findall(r"^Next task: (.+)$",current,re.M)==[task],"CURRENT next task differs")
     need(bool(read("coordination/tasks/"+task+".md")),"next task card missing")
     queue=read("coordination/QUEUE.md")
-    need("| "+task+" |" in queue,"next task absent from queue")
+    queue_cps=re.findall(r"^Checkpoint-ID: ([^ .]+)",queue,re.M)
+    need(queue_cps==[cp],"QUEUE checkpoint differs from machine state")
+    queue_ids=[v for v in re.findall(r"^\|\s*([a-zA-Z0-9][a-zA-Z0-9-]*)\s*\|",queue,re.M) if v!="Task"]
+    need(len(queue_ids)==len(set(queue_ids)),"QUEUE has duplicate task IDs")
+    need(task in queue_ids,"next task absent from queue")
     for active in state.get("active_tasks",[]):
         need((root/("coordination/tasks/"+active+".md")).is_file(),"active card missing "+active)
     need(lease.get("status") in ["active","released"],"unknown lease status")
     need(lease.get("checkpoint_id")==cp,"lease checkpoint differs")
+    need(lease.get("task_id")==task,"lease task differs from active state")
+    need(utc(state.get("updated_utc")),"invalid state updated_utc (expected RFC3339 UTC)")
     if lease.get("status")=="active":
         need(bool(lease.get("session_id")) and bool(lease.get("expires_utc")),"active lease requires owner+expiry")
+        need(utc(lease.get("heartbeat_utc")),"invalid lease heartbeat_utc (expected RFC3339 UTC)")
+        need(utc(lease.get("expires_utc")),"invalid lease expires_utc (expected RFC3339 UTC)")
     for name in ["README.md","AGENTS.md","CLAUDE.md"]:
         need("CONTINUE.md" in read(name),name+" missing shared protocol")
-    need(cp in read("docs/gauntlet/STATE.md"),"human state checkpoint differs")
+    doc_cps=re.findall(r"^Checkpoint: ([^.]*)\.",read("docs/gauntlet/STATE.md"),re.M)
+    need(doc_cps==[cp],"human state checkpoint differs")
     registry=obj("docs/architecture/registry.json")
     components=registry.get("components",[]); ids=[v.get("id") for v in components]
     need(len(ids)==len(set(ids))==20,"architecture must have20 unique components")

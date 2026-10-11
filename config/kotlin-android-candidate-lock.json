@@ -1,8 +1,7 @@
-
 {
   "schema_version": 1,
   "status": "candidate_for_review_only",
-  "observed_utc": "2026-10-11T20:17:31Z",
+  "observed_utc": "2026-10-11T21:35:47Z",
   "scope": "K1 Kotlin Android version-1 readiness; no application build has used this tuple.",
   "candidates": {
     "android_gradle_plugin": {
@@ -16,7 +15,10 @@
       "version": "9.6.0",
       "source": "https://developer.android.com/build/releases/agp-9-4-0-release-notes",
       "latest_observed": "9.8.1 from https://services.gradle.org/versions/current",
-      "status": "selected_for_agp_compatibility_candidate_not_proven"
+      "status": "selected_for_agp_compatibility_candidate_not_proven",
+      "distribution_url": "https://services.gradle.org/distributions/gradle-9.6.0-bin.zip",
+      "sha256": "bbaeb2fef8710818cf0e261201dab964c572f92b942812df0c3620d62a529a01",
+      "checksum_source": "https://services.gradle.org/distributions/gradle-9.6.0-bin.zip.sha256"
     },
     "jdk": {
       "version": "17",
@@ -25,15 +27,20 @@
       "status": "candidate_not_proven"
     },
     "kotlin": {
-      "version": "2.4.21",
-      "source": "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugin/maven-metadata.xml",
-      "note": "Latest final numeric entry observed; K1 must determine AGP built-in-Kotlin/plugin compatibility before use.",
-      "status": "candidate_not_proven"
+      "version": "2.2.10",
+      "latest_final_observed": "2.4.21 (not selected for this first candidate)",
+      "source": "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/9.4.1/gradle-9.4.1.pom",
+      "integration": "AGP9 built-in Kotlin for Android; matching2.2.10 Compose plugin and JVM plugin for pure modules; no org.jetbrains.kotlin.android or kapt in Android modules",
+      "note": "AGP9.4.1 published POM declares KGP2.2.10. K2 must confirm actual resolved compiler/plugin versions; reject mismatched tuple rather than silently upgrading.",
+      "status": "source_backed_default_candidate_not_compiled"
     },
     "room": {
-      "version": "2.8.5",
-      "source": "https://developer.android.com/jetpack/androidx/releases/room",
-      "status": "candidate_not_proven"
+      "version": "3.0.3",
+      "runtime": "androidx.room3:room3-runtime",
+      "compiler": "androidx.room3:room3-compiler",
+      "source": "https://developer.android.com/jetpack/androidx/releases/room3",
+      "license": "Apache-2.0 declared by published runtime POM; resolved transitive inventory remains K2",
+      "status": "source_backed_fts5_candidate_not_compiled"
     },
     "compose_bom": {
       "version": "2026.09.00",
@@ -41,14 +48,43 @@
       "status": "candidate_not_proven"
     },
     "fts5": {
-      "binding": null,
-      "status": "unselected_and_unproven",
-      "required_future_probe": "Android packaged SQLite must create an FTS5 virtual table, insert and execute a bound MATCH query."
+      "binding": "androidx.sqlite:sqlite-bundled:2.7.1 / BundledSQLiteDriver",
+      "entity_annotation": "androidx.room3.Fts5",
+      "source": "https://developer.android.com/kotlin/multiplatform/sqlite",
+      "artifact_observation": "Four Android ABI payloads and ELF16KB LOAD alignment inspected; no finalAPK alignment or runtime query yet",
+      "license": "Apache-2.0 AndroidX POMs; SQLite core public domain",
+      "status": "source_and_artifact_backed_not_runtime_proven",
+      "required_future_probe": "K2 Android instrumentation: bound MATCH over punctuation fixtures, commit/cancel rollback, reopen persistence, final APK alignment and device smoke."
+    },
+    "compose_compiler": {
+      "version": "2.2.10",
+      "source": "https://developer.android.com/develop/ui/compose/compiler",
+      "rule": "Compiler plugin matches selected Kotlin version, independent of BOM version",
+      "status": "candidate_not_compiled"
+    },
+    "ksp": {
+      "version": "2.3.12",
+      "source": "https://github.com/google/ksp/releases/tag/2.3.12",
+      "status": "candidate_not_compiled"
+    },
+    "datastore": {
+      "version": "1.2.1",
+      "source": "https://developer.android.com/jetpack/androidx/releases/datastore",
+      "status": "source_backed_candidate_not_compiled"
+    },
+    "android_sdk": {
+      "compile": 36,
+      "target": 36,
+      "minimum": 23,
+      "build_tools": "36.0.0",
+      "source": "https://developer.android.com/about/versions/16",
+      "minimum_source": "https://developer.android.com/jetpack/androidx/releases/sqlite",
+      "status": "candidate; effective resolved minSDK and merged manifest checked inK2; Play policy deferred to public release"
     }
   },
   "next_evidence": [
-    "Astra-high review of candidate compatibility assumptions and Kotlin ownership map",
-    "approved hosted capability probe using JDK 17 and Gradle 9.6.0",
-    "targeted Kotlin/Compose/Room/FTS5 compilation and packaged database probe before K2 acceptance"
+    "Review and run concrete hosted capability workflow; JDK/Gradle/SDK execution only, not application compilation",
+    "Accept Kotlin ownership and 64-requirement join; compile actual scoped Kotlin API contracts in K2 before consumers",
+    "K2 Compose/KSP/Room3/FTS5 resolved tuple, emulator launch, persistence tests; no runtime claim from K1"
   ]
 }

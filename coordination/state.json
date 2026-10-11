@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k1-resume-06",
-  "verified_base_head": "3b1d2f4eca580a054b7a419065b12e1e640d00bf",
+  "checkpoint_id": "cp-20261011-k1-probe-07",
+  "verified_base_head": "cf228b60a70e679af3136b17f47f7239faa286bd",
   "stage": "K1 Kotlin readiness and architecture translation",
   "status": "in_progress",
   "next_task": "orch-kotlin-toolchain-01",
   "next_step": 3,
-  "first_action": "Finish accepted K1 candidate corrections, review the concrete hosted capability workflow, publish and observe its run; compile proof remains K2.",
+  "first_action": "Observe the published Kotlin build capability workflow; record actual run and tool evidence before K1 closure.",
   "active_tasks": [
     "orch-kotlin-toolchain-01"
   ],
@@ -28,6 +28,6 @@
     "k1_source_metadata": "captured in K1-KOTLIN-TOOLCHAIN.md; candidate discovery only",
     "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session"
   },
-  "last_completed": "Recovered unpublished K1 corrections into fresh checkout; verified main; regular-chat research deferral recorded",
-  "updated_utc": "2026-10-11T21:31:56Z"
+  "last_completed": "Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.",
+  "updated_utc": "2026-10-11T21:37:55Z"
 }

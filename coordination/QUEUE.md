@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-k1-resume-06. Active task: orch-kotlin-toolchain-01 step3; K1 is unfinished.
+Checkpoint-ID: cp-20261011-k1-probe-07. Next: orch-kotlin-toolchain-01 step3; in_progress.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|

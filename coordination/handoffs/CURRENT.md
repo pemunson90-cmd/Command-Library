@@ -1,14 +1,14 @@
-# CURRENT: K1 readiness in progress
+# CURRENT
 
-Checkpoint-ID: cp-20261011-k1-resume-06
+Checkpoint-ID: cp-20261011-k1-probe-07
 
 Next task: orch-kotlin-toolchain-01
-Next step: 3. Finish candidate/ownership corrections, independently review the concrete hosted capability workflow, publish and observe that workflow. No product modules yet. K2 requires accepted K1 outputs and its own working-foundation card.
+Next step: 3. Observe the published Kotlin build capability workflow; record actual run and tool evidence before K1 closure.
 
-Recovered: fresh Git checkout at `/workspace/Command-Library-kotlin`; previous `/workspace/Command-Library` text snapshot and unpublished corrections preserved. Source main at resume: `3b1d2f4eca580a054b7a419065b12e1e640d00bf`. Old lease expired, inspected and replaced sequentially.
+Updated UTC: 2026-10-11T21:37:55Z
+Status: in_progress; lease: active.
+Verified base: cf228b60a70e679af3136b17f47f7239faa286bd.
 
-K1 candidate discovery was independently reviewed by Astra high; corrections concern exact physical ownership and outstanding compiler/SDK/FTS5 evidence. Two Luna medium helpers are checking narrowly required Android and FTS5 source facts. They cannot create application code. Separate research/discussion should use regular chat; read `coordination/chat-handoffs/README.md` before another cloud research task.
+Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.
 
-Observed: Java runtime only, no local compiler/SDK/Gradle/adb. Hosted probe is not yet run. Android app builds, signing and device tests have not run. Candidate versions are not proven compatibility. Scope: Kotlin Android v1, separate Flutter Windows v2, sync later. English default; optional-language downloads require approval.
-
-K1 finish line: accepted Kotlin ownership/dependency/contract replacement map, reviewed source-backed tuple, successful hosted capability probe, concrete K2 card and current documents. Stop at that complete-section boundary, publish evidence/handoff, release lease. Recovery commits label unfinished work.
+Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

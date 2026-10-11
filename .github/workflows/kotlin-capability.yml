@@ -1,0 +1,26 @@
+name: Kotlin build capability
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kotlin-capability.yml'
+      - 'scripts/kotlin_capability.sh'
+      - 'config/kotlin-android-candidate-lock.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: kotlin-capability-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  capability:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # actions/checkout v7.0.1; tag commit verified2026-10-11.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Observe JDK Gradle Android capabilities
+        run: bash scripts/kotlin_capability.sh

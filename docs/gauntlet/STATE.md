@@ -1,7 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261011-k1-resume-06. K1 readiness is in progress; next task `orch-kotlin-toolchain-01` step3. Current single orchestrator lease is active. Read CURRENT and machine state for exact first action.
+Checkpoint: cp-20261011-k1-probe-07. Updated UTC: 2026-10-11T21:37:55Z.
 
-Fresh checkout: `/workspace/Command-Library-kotlin`. Previous snapshot/drafts preserved. Kotlin candidate discovery and20-component mapping received Astra-high review with corrections. Finish sources/ownership and review then run the hosted capability workflow. No product code/build/signing/device evidence yet; K2 requires accepted K1 and a concrete Kotlin foundation card.
+Stage: K1 Kotlin readiness and architecture translation. Status: in_progress. Next: orch-kotlin-toolchain-01 step3.
+Observe the published Kotlin build capability workflow; record actual run and tool evidence before K1 closure.
 
-Use the weakest capable model, short scoped briefs and targeted review. Pure research/discussion goes to regular chat when possible; use `coordination/chat-handoffs/README.md`. No stale D07 choice or user-release blocker remains. Scope: Kotlin Android v1; separate Flutter Windows v2; sync later. Stop after complete K1 with reviewed evidence, notes, checkpoint and released lease.
+Reviewed main-only capability workflow; Gradle checksum pinned; candidate updated to Room3/bundled SQLite and AGP built-in Kotlin default. Continuity guards pass; hosted capability run pending. K1 unfinished.
+
+Read CURRENT, machine state and task card.
