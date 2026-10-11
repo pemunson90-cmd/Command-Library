@@ -25,3 +25,7 @@ Date: 2026-10-11. Status: all 17 reports and synthesis filed; STOP for Pat's Gat
 - Preserve full offline searchable rules via personal official acquisition/import; public bundling permission is separate. Full catalog every printing/language, default_cards coverage unknown.
 - Provider use, especially Gemini API personal eligibility, needs applicable terms check. Browser documentation is not a live contract test. Exact vendor fixtures/link statuses and current corpus performance remain unknown where reported.
 - Root and research agents publish/print checkpoints early. If usage ends, this handoff plus committed files is the resume source; avoid busy respawning stopped agents.
+
+## Latest Pat ruling handoff
+
+Five Gate 1 choices approved and recorded verbatim in DECISIONS: Flutter, unsigned EXE/ZIP, matrices, offline rules acquisition, and Full catalog with English default. Non-English downloads require user approval. D-04 response was "Explain", not approval. Next: explain USD/Scryfall price estimates and ownership-aware acquisition cost; wait for D-04 ruling, then Gate 2. Earlier six-ruling next-step list is superseded by this update. Gate 2 not started.

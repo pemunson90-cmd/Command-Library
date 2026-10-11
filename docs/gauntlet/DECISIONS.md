@@ -13,15 +13,15 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-03 | Release signing key | Ruled 2026-10-11 |
 | D-04 | Default currency and price source | Open (after R-08) |
 | D-05 | Claude Code and Codex concurrency | Ruled 2026-10-11 (through Gate 3) |
-| D-06 | Windows installer format and code signing | Open (after R-15) |
-| D-07 | Stack | Open (after R-01) |
+| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
+| D-07 | Stack | Ruled; see latest Gate 1 answers |
 | D-08 | Max concurrent implementer agents | Open (Gate 3) |
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
 | D-11 | Cloud session setup: repos attached per session | Ruled 2026-10-11 |
-| D-12 | Gate 1 matrices and topic recommendations | Open: proposed below |
-| D-13 | Full offline rules acquisition versus public bundling | Open: proposed below |
-| D-14 | Full catalog printing/language scope | Open: proposed below |
+| D-12 | Gate 1 matrices and topic recommendations | Ruled; see latest Gate 1 answers |
+| D-13 | Full offline rules acquisition versus public bundling | Ruled; see latest Gate 1 answers |
+| D-14 | Full catalog printing/language scope | Ruled; see latest Gate 1 answers |
 
 ## Open
 
@@ -132,3 +132,16 @@ Preserve full searchable offline Comprehensive Rules and cross-links. Recommend 
 Full covers every Oracle card and every printing/language, preserving foreign owned identities. Do not label default_cards every-language completeness. Resolve actual current all_cards/alternative feed coverage, transfer and disk measurements before performance budgets. Lean retains all fetched gameplay/rulings offline. No narrower language exclusion is proposed.
 
 User checkpoint policy, verbatim: "Continue and make sure to always print checkpoints and handoffs before usage runs out if possible". Applied: durable checkpoint commits and handoff links printed during work; final handoff identifies the next gate and open rulings.
+
+## Pat's Gate 1 answers (latest ruling)
+
+Verbatim, mapped to the six numbered proposals in the Gate 1 message:
+
+1. D-07: "Fine." Applied: Flutter approved; retain documented runtime/accessibility verification requirements.
+2. D-04: "Explain". Not approval. Default price source/currency remains open while Codex explains estimates, source choice, ownership and selectable alternatives.
+3. D-06: "Fine". Applied: unsigned per-user Windows EXE plus portable ZIP approved for the selected Flutter stack; trusted signing deferred for personal use.
+4. D-12: "Yes". Applied: Gate 1 topic recommendations and full parity matrices approved, preserving required baseline and disclosed limitations.
+5. D-13: "Yes". Applied: full offline rules acquisition/import approach approved; no new public corpus redistribution permission inferred.
+6. D-14: "Yes except language default to English the rest needs user approved download." Applied: default Full download includes English card data and printings. Non-English language data downloads require explicit user approval before starting; no silent background download. Preserve foreign owned identities and unresolved rows without automatically downloading their language data. Full offline rules and rulings remain in scope. This supersedes the proposed automatic all-language download scope.
+
+Gate status: five rulings applied; D-04 is the sole outstanding Gate 1 ruling. Do not start Gate 2 until that ruling arrives. Earlier proposal wording is historical; these applied rulings control.
