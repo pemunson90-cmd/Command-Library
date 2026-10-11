@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k1-start-03",
-  "verified_base_head": "a87347d33eab881d6bc09ddc238bc4bab9da5a5d",
+  "checkpoint_id": "cp-20261011-k1-research-04",
+  "verified_base_head": "c7edd23b2e67dd77089afa9d05806d4ec84a5b5e",
   "stage": "K1 Kotlin readiness and architecture translation",
   "status": "in_progress",
   "next_task": "orch-kotlin-toolchain-01",
-  "next_step": 1,
-  "first_action": "Verify official Kotlin/Android/Compose/Room/SQLite/FTS5 sources and build transport; publish candidate evidence and Kotlin ownership replacement map. No application source or Gradle project yet.",
+  "next_step": 2,
+  "first_action": "Extract final AGP/Kotlin candidates from official sources; verify documented AGP/JDK/Gradle compatibility and identify a testable Room/SQLite FTS5 path. Do not create application source.",
   "active_tasks": [
     "orch-kotlin-toolchain-01"
   ],
@@ -23,8 +23,10 @@
     "hosted_ci": "historical continuity workflow results only; no Kotlin build workflow exists",
     "remote_readback": "main read before K1 claim: a87347d33eab881d6bc09ddc238bc4bab9da5a5d",
     "toolchain": "not_run",
-    "kotlin_compatibility": "not_run"
+    "kotlin_compatibility": "not_run",
+    "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
+    "k1_source_metadata": "captured in K1-KOTLIN-TOOLCHAIN.md; candidate discovery only"
   },
-  "last_completed": "Astra-high readiness review released K1 and identified continuity corrections",
+  "last_completed": "K1 environment capability observation and initial official metadata capture",
   "updated_utc": "2026-10-11T20:17:31Z"
 }

@@ -79,3 +79,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-11 | claude-code | lease | this commit | released; checkpoint cp-20261011-cc-plangaps-01 read back on main; next orch-source-fixtures-01
 
 2026-10-11 | codex + astra-high | K1 claim | pending checkpoint | Pat released K1; Astra high approved Kotlin readiness work; continuity pointers reconciled. No app code/build/download/signing performed.
+
+2026-10-11 | codex | K1 recovery checkpoint | this commit | Java 21 runtime observed; no javac/Gradle/kotlinc/Android SDK/adb. Initial official metadata captured; candidate discovery only, no app work.
