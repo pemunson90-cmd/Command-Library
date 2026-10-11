@@ -10,3 +10,6 @@ G3-A architecture/continuation independent audit accepted. G3-B toolchain readin
 
 
 D-20 update: Kotlin Android is version 1; Flutter Windows is a separate version-2 implementation after Android runs; sync is deferred until Windows runs and a later explicit authorization. Current next task is planning-only `orch-kotlin-plan-audit-01`. K0 approval never auto-starts K1; execution requires the user's separate release. No execution step is authorized.
+
+
+K0 audit accepted at cp-20261011-kotlin-audit-02. `orch-kotlin-toolchain-01` is deliberately held until Pat explicitly releases execution. No toolchain research, code, build or data work has begun.

@@ -3,19 +3,23 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-kotlin-plan-01",
-  "verified_base_head": "d2d699d94668c3e26e1a310b2a996868235908c1",
-  "stage": "K0 Kotlin Android version-1 plan audit",
-  "status": "planning_audit_pending",
-  "next_task": "orch-kotlin-plan-audit-01",
-  "next_step": 1,
-  "first_action": "Independently audit V1_KOTLIN_EXECUTION_SPEC.md against current plan files; report contradictions only. Do not begin implementation or toolchain research.",
-  "active_tasks": [
-    "orch-kotlin-plan-audit-01"
+  "checkpoint_id": "cp-20261011-kotlin-audit-02",
+  "verified_base_head": "fd674205d82a2981f547af764bcc7858791660e3",
+  "stage": "K0 Kotlin Android version-1 plan audit accepted",
+  "status": "awaiting_explicit_user_execution_release",
+  "next_task": "orch-kotlin-toolchain-01",
+  "next_step": 0,
+  "first_action": "Await the user's explicit release of K1 Kotlin toolchain planning. Once released, re-fetch main, claim a lease and follow orch-kotlin-toolchain-01; do not create app code.",
+  "active_tasks": [],
+  "blockers": [
+    {
+      "task": "orch-kotlin-toolchain-01",
+      "reason": "Explicit user execution release required after K0 plan audit by D-20 and CURRENT",
+      "since": "2026-10-11"
+    }
   ],
-  "blockers": [],
   "worktree_mode": "git_checkout (Claude Code cloud session)",
-  "review_status": "Kotlin v1 / separate Flutter Windows v2 / post-Windows sync ruling recorded; independent K0 audit pending",
+  "review_status": "K0 independent Astra-low audit approved planning completeness; report K0-KOTLIN-PLAN-AUDIT.md",
   "verification": {
     "app_build": "not_run",
     "runtime_tests": "not_run",
@@ -25,6 +29,6 @@
     "hosted_ci": "Continuity integrity: success on branch head ad717aa (run 38163297326) and lease commit e20a554 (run 38163324949); run 38163419355 on 5737180 was in progress at lease release: https://github.com/pemunson90-cmd/Command-Library/actions/runs/38163419355",
     "plan_implementation": "not_started"
   },
-  "last_completed": "Recorded D-20 execution specification and replaced stale D-07-rescore blocker",
-  "updated_utc": "2026-10-11T18:31:00Z"
+  "last_completed": "D-20 Kotlin plan specification published and independent K0 audit approved",
+  "updated_utc": "2026-10-11T18:36:00Z"
 }
