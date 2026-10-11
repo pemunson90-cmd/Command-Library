@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-01.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | filed |
+| Status | filed by Codex; scope/evidence audited with explicit verification limits |
 
 ## Question
 Which stack builds Command Library from one codebase for Android (phones, foldables, tablets) and Windows desktop, scored against the GAUNTLET.md section 3 criteria with Pat's known setup as the fallback?

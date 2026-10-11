@@ -19,18 +19,21 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
 | D-11 | Cloud session setup: repos attached per session | Ruled 2026-10-11 |
+| D-12 | Gate 1 matrices and topic recommendations | Open: proposed below |
+| D-13 | Full offline rules acquisition versus public bundling | Open: proposed below |
+| D-14 | Full catalog printing/language scope | Open: proposed below |
 
 ## Open
 
 ### D-04 Default currency and price source
-- Ruled after R-08.
+- Open for Gate 1 ruling. Recommend USD/Scryfall reference prices conditional on current source/terms verification; selectable EUR/Cardmarket and MTGO TIX. MTGJSON/public Cardmarket data are documented alternatives. Owned-as-free default with missing prices unknown. See R-08.
 
 ### D-06 Windows installer format and code signing
 - Ruled after R-15.
-- Preliminary recommendation: unsigned installer for personal use. SmartScreen shows a warning that Pat clicks through once per install. Revisit for public release (POST_RELEASE.md).
+- Gate 1 proposal conditional on Flutter: unsigned per-user Inno Setup EXE plus portable ZIP; defer trusted code signing for personal use. Accept possible Windows policy/SmartScreen restrictions, without promising one click resolves them. If Kotlin is selected, revisit jpackage MSI/ZIP. See R-15 and POST_RELEASE.md.
 
 ### D-07 Stack
-- Ruled after R-01. Fallback: Kotlin, Jetpack Compose, Room, Navigation Compose, DataStore, Gradle, GitHub Actions; Windows via Kotlin Multiplatform with Compose Multiplatform desktop.
+- Open for Gate 1 ruling. Recommend Flutter S2, 88.6/100 baseline versus Kotlin S1 84.0, for a documented Windows Narrator accessibility path. Tradeoff: replace known Kotlin application layer and implement adaptive/SSE composition; real pinned-runtime Narrator validation remains required. Kotlin wins with reuse-heavy weighting or verified Narrator support. See R-01 scored matrix and sensitivity. Preserve fallback Kotlin/Compose/Room3/Gradle with Compose Multiplatform desktop.
 
 ### D-08 Max concurrent implementer agents
 - Set at Gate 3. Default 3.
@@ -111,3 +114,21 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - D-05, Pat verbatim: "Codex alone through Gate 3." Supersedes the prior Claude-only ruling. Codex is sole orchestrator through Gate 3.
 - D-11, Pat verbatim: "Approved." Only Command-Library is used for this session.
 - Runtime note: Sonnet/Haiku are not available in this Codex toolset. Native research agents use the inherited OpenAI model; no unsupported model configuration is claimed.
+
+## Gate 1 proposed rulings, 2026-10-11
+
+These are Codex recommendations, not Pat approvals. Gate 1 is filed; wait for Pat before Gate 2.
+
+### D-12 Matrices and topic recommendations
+
+Adopt RESEARCH_SUMMARY.md's 17-topic recommendations and complete R-05/R-06/R-07 build/adapt/skip matrices. Preserve every mandatory baseline even if competitor evidence is UNVERIFIED. Lotus and Mox are the disclosed established-app comparison cohort, not an exhaustive global top-two claim. Guided export/paste replaces automatic Moxfield/Archidekt retrieval pending current permission; automated EDHREC enrichment is excluded under current terms while links remain. All eight cloud and six local candidates remain in scope with applicable API terms and exact contract checks before verified support claims; Gemini personal-use eligibility is unresolved. Optional competitor extras are explicitly proposed, never silent cuts. Details and evidence limits remain in each report.
+
+### D-13 Full offline rules acquisition
+
+Preserve full searchable offline Comprehensive Rules and cross-links. Recommend personal official-source download/cache where applicable terms allow, plus user-initiated local import fallback. Do not claim full public corpus bundling permission; that separate republication question remains unresolved. Official links alone are insufficient. Parser/encoding/count validation follows acquisition before implementation acceptance.
+
+### D-14 Full catalog scope
+
+Full covers every Oracle card and every printing/language, preserving foreign owned identities. Do not label default_cards every-language completeness. Resolve actual current all_cards/alternative feed coverage, transfer and disk measurements before performance budgets. Lean retains all fetched gameplay/rulings offline. No narrower language exclusion is proposed.
+
+User checkpoint policy, verbatim: "Continue and make sure to always print checkpoints and handoffs before usage runs out if possible". Applied: durable checkpoint commits and handoff links printed during work; final handoff identifies the next gate and open rulings.

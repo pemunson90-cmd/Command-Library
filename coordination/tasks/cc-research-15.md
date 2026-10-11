@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-15.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | filed |
+| Status | filed by Codex; scope/evidence audited with explicit verification limits |
 
 ## Question
 How does GitHub Actions build a release-signed Android APK and a Windows package for each candidate stack, run tests and screenshot tests per size class, and enforce the placeholder scan, all without a local machine?

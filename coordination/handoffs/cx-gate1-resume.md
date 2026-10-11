@@ -1,25 +1,27 @@
-# Gate 1 recovery handoff
+# Gate 1 final handoff
 
-Updated 2026-10-11 after research-agent account usage-limit errors. User requested continued work and visible checkpoints/handoffs before exhaustion when possible.
+Date: 2026-10-11. Status: all 17 reports and synthesis filed; STOP for Pat's Gate 1 ruling.
 
 ## Done
 
-- Main head before this checkpoint: 0e0ee18401ca6126941c121ce9f9aa459b9130a6. Fourteen topic reports are filed: R-01 to R-09 and R-11 to R-15. Codex sole orchestrator through Gate 3; original cc task cards are retained acceptance briefs. No application code or builds.
-- Current corrected R-01/R-08/R-13 qualify Flutter UIA engine configuration and multi-source quote identity. R-14 now explicitly frames bounded gzipped JSONL for Scryfall and reserves array parsers for actual array feeds. R-15 includes larger/compact-height screenshots and conditional Flutter EXE/ZIP packaging. These are documentation fixes, no runtime checks claimed.
-- R-16 and R-17 produced complete local documents before their agents failed; this checkpoint preserves them as review-pending work. No final agent success message is relied on.
-- Two independent review notes preserved in coordination/handoffs/. Reviewer-authored reports were excluded from their own review. Gate 1 summary/report have not been finalized.
+- Resume recovered main and applied latest Codex-only D-05. R-01 through R-17 filed with dated primary sources and explicit UNVERIFIED scope gaps.
+- RESEARCH_SUMMARY.md includes all topic proposals and complete R-05/R-06/R-07 parity matrices. No required baseline silently removed.
+- Preliminary independent review and separate R08/R13 review preserved. Final dispositions: cx-gate1-final-review.md. Root authored R10; no independent approval claimed.
+- Corrected JSONL framing, five-class screenshot plan, Flutter UIA qualifications and quote provenance. Current D-03 single ANDROID_SIGNING secret incorporated into R15; concurrent signing-only commit 13a26c3 preserved.
+- Completed checkpoints: recovery f5acefef; R16 33776e0; R17 3b05f9e; R10 143e4fc. This final gate checkpoint contains STATE, GATE-1, summary, decisions and this handoff; resolve its SHA from main history.
 
 ## Next
 
-1. Orchestrator reviews R-16/R-17 against their cards and files each with a topic checkpoint if accepted.
-2. Complete R-10 LLM provider research: current draft only has headings. Verify eight cloud providers and six local-compatible servers from official sources, or mark individual unanswered facts UNVERIFIED with attempted URLs. All credentials remain untouched. Native agents hit account limit, so continue in root if available; no busy respawning.
-3. Rebuild RESEARCH_SUMMARY.md with one topic ruling and full R-05/R-06/R-07 parity tables. Prior in-memory summary draft was lost at turn boundary; generate from committed topic files, not conversation memory.
-4. Carry unresolved acquisition/full-language/sampling decisions, current Scryfall terms/measurements, current Game Changer reconciliation, Flutter engine configuration and real reader/device tests into the gate. Preserve mandatory offline rules and all baseline features.
-5. Update DECISIONS, final review dispositions, GATE-1, STATE and JOURNAL; publish, verify main head, print commit/link plus short numbered rulings and stop at Gate 1. No Gate 2 without Pat ruling.
+1. Verify main head and read GATE-1/DECISIONS open proposals.
+2. Wait for Pat's D04/D06/D07/D12/D13/D14 rulings. Do not treat recommendations as approval.
+3. Record Pat verbatim and begin Gate 2 only after ruling: SPEC, DESIGN_SYSTEM, COVERAGE, numbered budgets, data model, components/DAG and screens across five sizes/height/postures. Obtain independent spec gap review required by protocol.
+4. Carry explicit evidence gaps into acceptance plans; do not re-run completed research just because the session restarted.
+5. No application code until the required architecture is merged and implementation gates authorize it.
 
 ## Gotchas
 
-- Shell network proxy cannot be reached. Local directory is recovered connector snapshot without .git. GitHub connector Git-data writes are verified; all updates use expected head and no force. Normal worktrees remain unverified before implementation.
-- Existing key was generated/delivered previously. Uploaded sheets must never enter git or logs; do not regenerate the key. Four Actions secrets/backups remain future M0 confirmation.
-- Explicit UNVERIFIED facts are not passing measurements. R-16 authentic producer bytes and R-17 HTTP statuses remain unavailable where stated. No public source permission inferred from a readable API.
-- Keep each future progress message concrete: checkpoint commit, filed topic, handoff path and next work. If root also hits limits, this file is the durable resume pointer.
+- Local /workspace/Command-Library is a recovered text snapshot without .git. Shell proxy unreachable. Connector publishes are verified; future worktrees/build transport remain unverified.
+- Signing sheets stay outside git/logs. Existing key must not be regenerated. Current secret is ANDROID_SIGNING (base64 compact JSON containing keystore_base64/store_password/key_alias/key_password), not four separate secrets. Pat confirmed added; first signed M0 build verifies use. Backups still need confirmation.
+- Preserve full offline searchable rules via personal official acquisition/import; public bundling permission is separate. Full catalog every printing/language, default_cards coverage unknown.
+- Provider use, especially Gemini API personal eligibility, needs applicable terms check. Browser documentation is not a live contract test. Exact vendor fixtures/link statuses and current corpus performance remain unknown where reported.
+- Root and research agents publish/print checkpoints early. If usage ends, this handoff plus committed files is the resume source; avoid busy respawning stopped agents.

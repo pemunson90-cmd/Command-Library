@@ -1,25 +1,27 @@
 # STATE
 
-Updated 2026-10-11. Resume using this file and coordination/handoffs/cx-gate1-resume.md.
+Updated 2026-10-11. Run resume protocol and read coordination/handoffs/cx-gate1-resume.md.
 
 | Field | Value |
 |---|---|
-| Gate | 1 research in progress; not yet filed for ruling |
+| Gate | 1 research filed; awaiting Pat ruling; Gate 2 not started |
 | Integration branch | main |
-| Verified head before recovery checkpoint | 0e0ee18401ca6126941c121ce9f9aa459b9130a6 |
+| Last verified topic checkpoint | 143e4fc34cbd512211f43e34cc6075f01859eba7 |
+| Last good gate checkpoint | Commit containing this STATE and GATE-1 report; resolve current branch head and verify handoff before resuming |
 | Filed topics | R-01 through R-17 (17) |
-| Review-pending complete drafts | none |
-| Unfinished topic | none |
-| Active workers | Root continuing; research agents stopped by account usage limit |
+| Active task cards | none; original cc-research cards preserved as acceptance briefs, filed |
+| Active workers | none; root finished synthesis; research agents stopped after account usage limits |
 | Sole orchestrator | Codex through Gate 3, latest D-05 |
-| Locks / architecture / app code | none |
-| Transport | GitHub connector fast-forward writes with expected head; local files are a snapshot without .git |
-| Next action | Read recovery handoff; synthesize/file Gate1 and stop for Pat |
+| Open gate rulings | D-04, D-06, D-07, D-12, D-13, D-14 |
+| Future ruling | D-08 at Gate 3 |
+| Locks / app code | none |
+| Transport | GitHub connector expected-head fast-forward writes; local text snapshot without .git |
+| Next action | Wait for Pat's Gate 1 rulings; record verbatim, then Gate 2 with independent spec review |
 
 ## Verification limits
 
-Current measurements blocked by shell proxy failure and browser source errors remain explicit in reports. App builds/tests/device results are not claimed. Preserve full offline rules requirement; public bundling permission is distinct from personal acquisition. Signing sheets remain outside git and no new key is needed.
+Read GATE-1 and topic confidence/UNVERIFIED findings. No builds/device/API runtime checks claimed. Preserve all mandatory features and full offline rules; distinguish personal acquisition from public corpus bundling. Existing signing key remains; current D-03 uses one ANDROID_SIGNING secret confirmed added by Pat, untested until M0 signed build. Never commit uploaded sheets.
 
-## Latest progress policy
+## Progress policy
 
-Pat: "Continue and make sure to always print checkpoints and handoffs before usage runs out if possible". Publish recoverable work early, then print commit and handoff link after each checkpoint; do not wait until final gate.
+Pat: "Continue and make sure to always print checkpoints and handoffs before usage runs out if possible". Publish completed steps early and print commit/handoff links. Resume from files, not memory.

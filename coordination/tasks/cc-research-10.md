@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-10.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | filed by Codex; scope facts documented or explicitly UNVERIFIED |
+| Status | filed by Codex; scope/evidence audited with explicit verification limits |
 
 ## Question
 For each cloud LLM provider and each OpenAI-compatible local server, what are the auth, streaming, model listing, tool calling, and pricing facts the AI deck lab needs?

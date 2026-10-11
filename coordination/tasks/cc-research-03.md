@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-03.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | filed |
+| Status | filed by Codex; scope/evidence audited with explicit verification limits |
 
 ## Question
 Where do the official Magic Comprehensive Rules come from, in what formats, how often do they change, may an app store and display them, and how should they be parsed into searchable, cross-linked entries?
