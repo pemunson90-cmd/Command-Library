@@ -27,7 +27,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX05-019 | [R-05](research/R-05-moxfield.md) | Type breakdown | build | Derived local stats. | B03,B07 |
 | PX05-020 | [R-05](research/R-05-moxfield.md) | Average mana value | build | Show denominator and MDFC treatment. | B03,B07 |
 | PX05-021 | [R-05](research/R-05-moxfield.md) | Land count guidance | adapt | Explain heuristics and avoid universal land targets. | B03,B07 |
-| PX05-022 | [R-05](research/R-05-moxfield.md) | Hypergeometric calculator | build | Exact without-replacement probability with visible inputs. | B07 |
+| PX05-022 | [R-05](research/R-05-moxfield.md) | Hypergeometric calculator | build | Exact without-replacement probability with visible inputs. | B04,B07 |
 | PX05-023 | [R-05](research/R-05-moxfield.md) | Opening-hand simulator | build | Seeded/repeatable draw results from actual deck. | B04,B07 |
 | PX05-024 | [R-05](research/R-05-moxfield.md) | Goldfish playtester | adapt | Local manual play with clear non-rules-engine scope. | B04,B07 |
 | PX05-025 | [R-05](research/R-05-moxfield.md) | Mulligan rules | build | Format-aware London flow and Commander free first mulligan. | B04,B07 |
@@ -55,7 +55,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX05-047 | [R-05](research/R-05-moxfield.md) | CSV export | build | Document our own stable schema including role and identity. | B08,I01 |
 | PX05-048 | [R-05](research/R-05-moxfield.md) | Bulk Edit tag copying | adapt | Offer editable text plus structured backup for richer fields. | B02,B07 |
 | PX05-049 | [R-05](research/R-05-moxfield.md) | Bracket display | adapt | Current official rules, explain evidence and uncertainty. | E01,E02,B07 |
-| PX05-050 | [R-05](research/R-05-moxfield.md) | Packages | adapt | Reusable local card groups with explicit copy/update semantics. | B07 |
+| PX05-050 | [R-05](research/R-05-moxfield.md) | Packages | adapt | Reusable local card groups with explicit copy/update semantics. | B09 |
 | PX05-051 | [R-05](research/R-05-moxfield.md) | Collection tracking | build | Owned quantities by printing and finish; effective acquisition cost. | C01-C04,D01,B07 |
 | PX05-052 | [R-05](research/R-05-moxfield.md) | Binders | adapt | Physical location labels and CSV preservation. | B07 |
 | PX05-053 | [R-05](research/R-05-moxfield.md) | Price providers/currency | adapt | Only legally available provider fields and current currencies. | C01-C04,D01,B07 |
@@ -66,9 +66,9 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX05-058 | [R-05](research/R-05-moxfield.md) | Social notifications/view counts | skip | Avoid building a social backend for local use. | B07 |
 | PX05-059 | [R-05](research/R-05-moxfield.md) | EDHREC integration | adapt | Local recommendations now; external enrichment only with authorization. | B07 |
 | PX05-060 | [R-05](research/R-05-moxfield.md) | Sandbox counters/dice/copies | adapt | Manual local controls, including life/energy/poison and tokens. | B07 |
-| PX05-061 | [R-05](research/R-05-moxfield.md) | Set/card browsing | build | Offline catalog navigation and printing detail. | B07 |
+| PX05-061 | [R-05](research/R-05-moxfield.md) | Set/card browsing | build | Offline catalog navigation and printing detail. | A07,A08,B07 |
 | PX05-062 | [R-05](research/R-05-moxfield.md) | Scryfall-style search | adapt | Implement locally supported fields and clearly label online fallback. | B02,B07 |
-| PX05-063 | [R-05](research/R-05-moxfield.md) | Card rulings display | build | Offline source-dated rulings and rules links. | B07 |
+| PX05-063 | [R-05](research/R-05-moxfield.md) | Card rulings display | build | Offline source-dated rulings and rules links. | A04,B07 |
 | PX05-064 | [R-05](research/R-05-moxfield.md) | Dark mode/preferences | build | Native theme, accessible contrast and stored preferences. | B07 |
 | PX05-065 | [R-05](research/R-05-moxfield.md) | Patreon tiers | skip | Do not reproduce fundraising tiers; no verified feature gate. | B07 |
 | PX05-066 | [R-05](research/R-05-moxfield.md) | Paid exclusive features | skip | No justified parity requirement until benefits are established. | B07 |
@@ -121,20 +121,20 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX06-046 | [R-06](research/R-06-archidekt.md) | CSV export | Build | Document a stable application-owned schema. | B08,I01 |
 | PX06-047 | [R-06](research/R-06-archidekt.md) | Stacks/Grid/Text/Table/Brewer views | Adapt | Responsive modes with shared state. | B07 |
 | PX06-048 | [R-06](research/R-06-archidekt.md) | Category templates | Adapt | Reusable user role categories. | B02,B07 |
-| PX06-049 | [R-06](research/R-06-archidekt.md) | Multi-edit | Build | Efficient collection and deck changes. | B07 |
+| PX06-049 | [R-06](research/R-06-archidekt.md) | Multi-edit | Build | Efficient collection and deck changes. | B10,C01 |
 | PX06-050 | [R-06](research/R-06-archidekt.md) | Collection | Adapt | Local ownership drives the (n) rule. | C01-C04,D01,B07 |
 | PX06-051 | [R-06](research/R-06-archidekt.md) | Price sources | Adapt | Use only independently verified permitted providers. | C01-C04,D01,B07 |
-| PX06-052 | [R-06](research/R-06-archidekt.md) | Printing optimization | Adapt | Respect owned copies, finishes and budget. | B01,B06,B07 |
+| PX06-052 | [R-06](research/R-06-archidekt.md) | Printing optimization | Adapt | Respect owned copies, finishes and budget. | B11 |
 | PX06-053 | [R-06](research/R-06-archidekt.md) | Bracket display | Adapt | Current R-04 rules with evidence and uncertainty. | E01,E02,B07 |
 | PX06-054 | [R-06](research/R-06-archidekt.md) | Sandbox | Adapt | Local draft with clear save/discard. | B07 |
-| PX06-055 | [R-06](research/R-06-archidekt.md) | Interaction simulator | Adapt | Optional advanced playtest tool after core goldfish. | B07 |
+| PX06-055 | [R-06](research/R-06-archidekt.md) | Interaction simulator | Adapt | Optional advanced playtest tool after core goldfish. | B12 |
 | PX06-056 | [R-06](research/R-06-archidekt.md) | Playtest log | Adapt | Useful replay/debugging with offline persistence. | B04,B07 |
 | PX06-057 | [R-06](research/R-06-archidekt.md) | Autosave/undo | Build | Durable local edits and reversible actions. | B07 |
 | PX06-058 | [R-06](research/R-06-archidekt.md) | Collaboration | Skip | Cloud collaboration outside personal-first brief. | B07 |
 | PX06-059 | [R-06](research/R-06-archidekt.md) | Comments/follows/voting | Skip | No social backend required. | B07 |
-| PX06-060 | [R-06](research/R-06-archidekt.md) | Image/QR sharing | Adapt | Optional user-controlled sharing. | B07 |
+| PX06-060 | [R-06](research/R-06-archidekt.md) | Image/QR sharing | Adapt | Optional user-controlled sharing. | B13 |
 | PX06-061 | [R-06](research/R-06-archidekt.md) | Shopping carts | Adapt | Existing external links and missing-copy export. | B07 |
-| PX06-062 | [R-06](research/R-06-archidekt.md) | EDHREC recommendations/cuts | Adapt | Offline recommendations; online only with R-09 permission. | B07 |
+| PX06-062 | [R-06](research/R-06-archidekt.md) | EDHREC recommendations/cuts | Adapt | Offline recommendations; online only with R-09 permission. | D02,B07 |
 | PX06-063 | [R-06](research/R-06-archidekt.md) | Custom/pinned cards | Skip | Outside baseline official-card catalog; possible backlog. | B07 |
 | PX06-064 | [R-06](research/R-06-archidekt.md) | Paid ad removal | Skip | No reason to add advertising infrastructure. | B07 |
 | PX07-001 | [R-07](research/R-07-life-counters.md) | 1 player | Build | Practice mode required | G01,G11 |
@@ -145,7 +145,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-006 | [R-07](research/R-07-life-counters.md) | Configurable step | Build | Explicit baseline | G02,G11 |
 | PX07-007 | [R-07](research/R-07-life-counters.md) | Starting life 20/25/30/40 | Build | Format setup | G02,G11 |
 | PX07-008 | [R-07](research/R-07-life-counters.md) | Custom starting life | Build | House rules | G02,G11 |
-| PX07-009 | [R-07](research/R-07-life-counters.md) | Damage per opposing commander | Build | Correct loss attribution | G11 |
+| PX07-009 | [R-07](research/R-07-life-counters.md) | Damage per opposing commander | Build | Correct loss attribution | G03,G11 |
 | PX07-010 | [R-07](research/R-07-life-counters.md) | Partners tracked separately | Build | Separate commander identity | G03,G11 |
 | PX07-011 | [R-07](research/R-07-life-counters.md) | Optional auto life deduction | Adapt | Toggle prevents accidental double subtraction | G02,G11 |
 | PX07-012 | [R-07](research/R-07-life-counters.md) | Poison | Build | Loss condition | G04,G11 |
@@ -163,9 +163,9 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-024 | [R-07](research/R-07-life-counters.md) | Dice any sides | Build | Validated arbitrary sides | G06,G11 |
 | PX07-025 | [R-07](research/R-07-life-counters.md) | Dice any count | Adapt | Choose count with practical display limits | G06,G11 |
 | PX07-026 | [R-07](research/R-07-life-counters.md) | Coin flip | Build | Baseline randomizer | G06,G11 |
-| PX07-027 | [R-07](research/R-07-life-counters.md) | Random first player | Adapt | Fair selection plus optional high roll | G01,G11 |
-| PX07-028 | [R-07](research/R-07-life-counters.md) | Seat randomizer | Build | Baseline setup tool | G01,G11 |
-| PX07-029 | [R-07](research/R-07-life-counters.md) | Turn counter | Build | Separate turns from timing | G04,G11 |
+| PX07-027 | [R-07](research/R-07-life-counters.md) | Random first player | Adapt | Fair selection plus optional high roll | G06,G11 |
+| PX07-028 | [R-07](research/R-07-life-counters.md) | Seat randomizer | Build | Baseline setup tool | G06,G11 |
+| PX07-029 | [R-07](research/R-07-life-counters.md) | Turn counter | Build | Separate turns from timing | G07,G11 |
 | PX07-030 | [R-07](research/R-07-life-counters.md) | Turn timer | Adapt | Pause/resume, warnings, undo advancement | G07,G11 |
 | PX07-031 | [R-07](research/R-07-life-counters.md) | Game timer | Build | Persistent elapsed game time | G07,G11 |
 | PX07-032 | [R-07](research/R-07-life-counters.md) | Per-player backgrounds | Adapt | Readable overlay and low-motion fallback | G01,G11 |
@@ -173,7 +173,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-034 | [R-07](research/R-07-life-counters.md) | Game-over detection | Adapt | Explain threshold, allow overrides | G09,G11 |
 | PX07-035 | [R-07](research/R-07-life-counters.md) | Undo life/counter changes | Build | Reversible events prevent miscounts | G02,G11 |
 | PX07-036 | [R-07](research/R-07-life-counters.md) | Autosave | Build | Atomic local event/state writes | G10,G11 |
-| PX07-037 | [R-07](research/R-07-life-counters.md) | Resume after restart | Build | No lost match | G08,G11 |
+| PX07-037 | [R-07](research/R-07-life-counters.md) | Resume after restart | Build | No lost match | G10,G11 |
 | PX07-038 | [R-07](research/R-07-life-counters.md) | Game log | Adapt | Append-only events, undo recorded explicitly | G10,G11 |
 | PX07-039 | [R-07](research/R-07-life-counters.md) | Keep screen awake | Build | Opt-in during active match | G10,G11 |
 | PX07-040 | [R-07](research/R-07-life-counters.md) | Deck linked to seat, W/L | Build | Own deck IDs and match results | G01,G11 |
@@ -184,7 +184,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-045 | [R-07](research/R-07-life-counters.md) | Random player/opponent | Adapt | Exclude eliminated seats and record selection | G01,G11 |
 | PX07-046 | [R-07](research/R-07-life-counters.md) | 3/5-player layout picker | Adapt | Seat arrangement should fit actual table | G01,G11 |
 | PX07-047 | [R-07](research/R-07-life-counters.md) | Timer undo | Adapt | Correct turn and priority advances | G07,G11 |
-| PX07-048 | [R-07](research/R-07-life-counters.md) | Shared profile transport | Adapt | Local export/import, cloud deferred | G08,G11 |
+| PX07-048 | [R-07](research/R-07-life-counters.md) | Shared profile transport | Adapt | Local export/import, cloud deferred | G14 |
 | PX07-049 | [R-07](research/R-07-life-counters.md) | Over 6 players | Skip | Beyond approved 1-6 baseline | G01,G11 |
 | PX07-050 | [R-07](research/R-07-life-counters.md) | Saved player profiles | Adapt | Reusable setup stored locally | G01,G11 |
 | PX07-051 | [R-07](research/R-07-life-counters.md) | Two commander artworks | Adapt | Clear commander source selection | G08,G11 |
@@ -196,14 +196,14 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-057 | [R-07](research/R-07-life-counters.md) | Direct numeric life input | Adapt | Confirm exact total and record delta | G02,G11 |
 | PX07-058 | [R-07](research/R-07-life-counters.md) | Eliminate/restore player | Adapt | Recover mistakes without resetting table | G01,G11 |
 | PX07-059 | [R-07](research/R-07-life-counters.md) | Defeat/victory messages | Skip | Optional cosmetic scope | G11 |
-| PX07-060 | [R-07](research/R-07-life-counters.md) | Planechase | Adapt | Optional data-driven game module, Pat ruling | G11 |
-| PX07-061 | [R-07](research/R-07-life-counters.md) | Archenemy | Adapt | Optional module, no competitor asset copying | G11 |
-| PX07-062 | [R-07](research/R-07-life-counters.md) | Bounty | Adapt | Optional versioned rule/cards module | G11 |
-| PX07-063 | [R-07](research/R-07-life-counters.md) | Custom variant decks/presets | Adapt | Local selection if variant module accepted | G02,G11 |
-| PX07-064 | [R-07](research/R-07-life-counters.md) | CSV/JSON game export | Adapt | Own stable event schema, exclude secrets | G11 |
+| PX07-060 | [R-07](research/R-07-life-counters.md) | Planechase | Adapt | Optional data-driven game module, Pat ruling | G12 |
+| PX07-061 | [R-07](research/R-07-life-counters.md) | Archenemy | Adapt | Optional module, no competitor asset copying | G12 |
+| PX07-062 | [R-07](research/R-07-life-counters.md) | Bounty | Adapt | Optional versioned rule/cards module | G12 |
+| PX07-063 | [R-07](research/R-07-life-counters.md) | Custom variant decks/presets | Adapt | Local selection if variant module accepted | G12 |
+| PX07-064 | [R-07](research/R-07-life-counters.md) | CSV/JSON game export | Adapt | Own stable event schema, exclude secrets | G14 |
 | PX07-065 | [R-07](research/R-07-life-counters.md) | Game history search | Adapt | Filter by player/deck/date | G11 |
 | PX07-066 | [R-07](research/R-07-life-counters.md) | Draw results | Adapt | Do not force every game to have winner | G09,G11 |
-| PX07-067 | [R-07](research/R-07-life-counters.md) | Countdown/chess clock/alerts | Adapt | Optional modes reuse baseline timer model | G11 |
+| PX07-067 | [R-07](research/R-07-life-counters.md) | Countdown/chess clock/alerts | Adapt | Optional modes reuse baseline timer model | G13 |
 | PX07-068 | [R-07](research/R-07-life-counters.md) | Camera/operator orientation | Adapt | All upright on desktop/operator mode | G01,G11 |
 | PX07-069 | [R-07](research/R-07-life-counters.md) | Drag reorder seats | Adapt | Preserve identities, commander relations | G01,G11 |
 | PX07-070 | [R-07](research/R-07-life-counters.md) | Art crop/contain/cover | Adapt | Readable responsive art | G08,G11 |
@@ -217,7 +217,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-078 | [R-07](research/R-07-life-counters.md) | Live TV/spectator sharing | Skip | Network shared state deferred | G11 |
 | PX07-079 | [R-07](research/R-07-life-counters.md) | Shared recap links/voting/chat | Skip | Online scope deferred; local history retained | G11 |
 | PX07-080 | [R-07](research/R-07-life-counters.md) | Account/cloud sync | Skip | Sync post-release per brief | G11 |
-| PX07-081 | [R-07](research/R-07-life-counters.md) | Full backup/import | Build | Integrate required app backup, not account dependency | G11 |
+| PX07-081 | [R-07](research/R-07-life-counters.md) | Full backup/import | Build | Integrate required app backup, not account dependency | I02,G11 |
 | PX07-082 | [R-07](research/R-07-life-counters.md) | Ads/paid ad removal | Skip | No ad system needed for personal app | G11 |
 
 ## Independent review rule

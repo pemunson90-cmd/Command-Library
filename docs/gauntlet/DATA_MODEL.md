@@ -34,6 +34,18 @@ Logical entities and transaction rules, not a physical schema or ORM pin. SQLite
 | Settings / Consent / SourceNotice | versioned user choices/theme/storage/cache/budget; approved scope/time; attribution/license/version/date | explicit non-English consent; consent revocation stops future matching transfer, downloaded data removal optional and previewed |
 | TransferManifest / ImportIssue | schema/app version, hashes/counts/license decisions; raw row/location/issue/resolution | keys excluded; user-data restore transactional; imported IDs retain unresolved provenance |
 
+## Additional approved parity entities
+
+| Entity | Identity/fields | Integrity/transaction contract |
+|---|---|---|
+| CardPackage / PackageVersion / PackageInstance | UUID/version, entries/boards/printing/notes, linked-or-copy instance policy, entry contribution lineage | Immutable package versions; linked update diff, copied instance independent; remove contributions without deleting unrelated same-card quantities |
+| PrintingOptimizationPlan | deck revision/quote generation/source/unit/ownership/pinning policy, eligible choices/objective/conflicts | Deterministic optimum over known eligible choices; unknown quotes explicitly incomplete; preview/apply atomic deck version |
+| PlaytestScenario / PlaytestEvent | UUID/version/seed/deck snapshot, disruption input/manual zone event/order | No hidden opponent rules automation; conserve cards, grouped undo/replay/reset |
+| VariantDefinition / VariantCard / VariantState | module id/version/source/notice, instructions/allowed actions/zones/limits, scenario card IDs/text; per-game deck/order/drawn/discarded/phase/custom state | Planechase/Archenemy/Bounty/custom namespaces; imported manifest validates before use; reducer executes only declared local actions, persists with game event/snapshot and undo. Exact source rules/rights need E13 verification |
+| SeatClockState / ClockAlert | mode/initial/remaining per seat/active seat/monotonic anchor/paused, zero policy/alert-fired transition | Restart and wall-clock-safe accounting; explicit undo switch policy, alert idempotence; background OS delivery separately validated |
+| ShareManifest / QrFrame | native interchange version, allowed fields/privacy choices, content hash/frame index/count | No backend link required; bounded multi-frame assembly then standard import preview; never embed keys/private histories by default |
+| ProfileExchange / GameExchange | schema version/stable IDs/preferences/local art refs; game manifest/events/results/clock/variant version | Local transport reuses transfer validation; CSV lossy flattening labeled; import doesn't duplicate existing result or start optional downloads |
+
 ## Storage and indexes
 
 Canonical Oracle FTS once per language/canonical record, not copied per printing. Independent rules FTS. Relational indexes on normalized name, color/identity bitsets, numeric stats where meaningful, legalities, printing set/number/language/finish, owned identity, deck references and quote dimensions. Typed AST selects parameterized indexed filters and explicit multi-face semantics; raw user query never interpolated into SQL. FTS syntax escapes/literal semantics documented separately from online Scryfall syntax.

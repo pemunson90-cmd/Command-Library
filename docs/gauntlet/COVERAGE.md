@@ -106,3 +106,93 @@ No baseline item is unmapped. Gate2 proposed budgets/design/policy details requi
 ## Exhaustive parity trace
 
 See [PARITY_ACCEPTANCE](PARITY_ACCEPTANCE.md). Imported source feature counts: R-05: 67, R-06: 64, R-07: 82. Every build/adapt row is an acceptance obligation; every skip retains approved reason. These counts are matrix rows, not competitor measurements.
+
+## Explicit parity-extra trace
+
+| Approved source rows | SPEC | Component/screens |
+|---|---|---|
+| PX05-050 packages | B09 | decks/S05-S08 |
+| PX06-049 multi-edit | B10,C01 | decks + collection/S06,S07,S12 |
+| PX06-052 printing optimizer | B11 | pricing/S06,S14 |
+| PX06-055 interaction simulator | B12 | decks/S10 |
+| PX06-060 image/QR sharing | B13 | transfer/S08,S17 |
+| PX07-060 through PX07-063 variants | G12 | life/S20-S22 |
+| PX07-067 countdown/chess/alerts | G13 | life/S20-S22 |
+| PX07-048 profiles; PX07-064 game CSV/JSON | G14 | transfer/S17,S20,S23 |
+
+E13: verify authentic current variant definitions/card data/instructions and applicable personal acquisition/redistribution rights, plus native QR scanner/export and clock background behavior before claims. Covers G12/G13/B13; source uncertainty never silently defers approved modules.
+
+## Requirement to milestone and named acceptance test
+
+Provisional milestone grouping follows GAUNTLET section6; final order/steps are Gate3. AC-ID is a named acceptance case set with exact observable fixture contract in SPEC row ID, not a claim tests are implemented. UI/a11y checks run at each feature milestone and comprehensive regression at M8/M9, not postponed entirely to polish. Source/parser/DB failure and schema migration cases accompany the affected feature.
+
+| SPEC ID | Primary component | Provisional milestone | Named acceptance case and required test kind |
+|---|---|---|---|
+| A01 | catalog | M1 | AC-A01: Full English catalog; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A02 | catalog | M1 | AC-A02: Language consent; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A03 | catalog | M1 | AC-A03: Storage modes; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A04 | rules | M1 | AC-A04: Offline rules; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A05 | catalog | M1 cache/M8 packs | AC-A05: Image packs/cache; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A06 | catalog | M1 | AC-A06: Atomic updates; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A07 | search | M1 | AC-A07: Local query syntax; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| A08 | search | M1 | AC-A08: Text search; source/parser/DB/query fixtures, interruption/offline UI and profile |
+| B01 | decks | M3 | AC-B01: Deck boards/roles; domain fixtures, state/undo persistence and task UI |
+| B02 | decks | M3 | AC-B02: Editing and organization; domain fixtures, state/undo persistence and task UI |
+| B03 | decks | M5 | AC-B03: Deck analysis; domain fixtures, state/undo persistence and task UI |
+| B04 | decks | M5 | AC-B04: Draw/probability; domain fixtures, state/undo persistence and task UI |
+| B05 | decks | M3 | AC-B05: Versions/diff; domain fixtures, state/undo persistence and task UI |
+| B06 | validation | M5 | AC-B06: All-format validation; domain fixtures, state/undo persistence and task UI |
+| B07 | decks | M3 | AC-B07: Native parity; domain fixtures, state/undo persistence and task UI |
+| B08 | transfer | M3 | AC-B08: Deck imports/exports; authentic text/CSV/native fixture round trips, failure atomicity and UI |
+| C01 | collection | M4 | AC-C01: Inventory; domain arithmetic/constraint fixtures, DB and task UI |
+| C02 | pricing | M4 | AC-C02: Acquisition n; domain arithmetic/constraint fixtures, DB and task UI |
+| C03 | pricing | M4 | AC-C03: Price source/currency; domain arithmetic/constraint fixtures, DB and task UI |
+| C04 | pricing | M4 | AC-C04: Printing allocation/totals; domain arithmetic/constraint fixtures, DB and task UI |
+| D01 | recommendations | M6 | AC-D01: Budgets; domain arithmetic/constraint fixtures, DB and task UI |
+| D02 | recommendations | M6 | AC-D02: Offline recommendations; domain arithmetic/constraint fixtures, DB and task UI |
+| E01 | brackets | M5 | AC-E01: Bracket rules data; domain arithmetic/constraint fixtures, DB and task UI |
+| E02 | brackets | M5 | AC-E02: Bracket estimates/targets; domain arithmetic/constraint fixtures, DB and task UI |
+| F01 | links | M5 | AC-F01: External links; domain fixtures, state/undo persistence and task UI |
+| G01 | life | M2 | AC-G01: Players/layout; pure reducer/time/seed fixtures, persistence and offline UI |
+| G02 | life | M2 | AC-G02: Life adjustments; pure reducer/time/seed fixtures, persistence and offline UI |
+| G03 | life | M2 | AC-G03: Commander damage; pure reducer/time/seed fixtures, persistence and offline UI |
+| G04 | life | M2 | AC-G04: Counters; pure reducer/time/seed fixtures, persistence and offline UI |
+| G05 | life | M2 | AC-G05: Game designations; pure reducer/time/seed fixtures, persistence and offline UI |
+| G06 | life | M2 | AC-G06: Random tools; pure reducer/time/seed fixtures, persistence and offline UI |
+| G07 | life | M2 | AC-G07: Timers; pure reducer/time/seed fixtures, persistence and offline UI |
+| G08 | life | M2 | AC-G08: Art/deck profiles; pure reducer/time/seed fixtures, persistence and offline UI |
+| G09 | life | M2 | AC-G09: Loss/end/stats; pure reducer/time/seed fixtures, persistence and offline UI |
+| G10 | life | M2 | AC-G10: Durability/undo/log; pure reducer/time/seed fixtures, persistence and offline UI |
+| G11 | life | M2 | AC-G11: Life parity extras; pure reducer/time/seed fixtures, persistence and offline UI |
+| H01 | ai | M7 | AC-H01: Modes/context; codec/SSE/cancel fixture, domain reply tests and UI |
+| H02 | ai | M7 | AC-H02: Cloud/custom providers; codec/SSE/cancel fixture, domain reply tests and UI |
+| H03 | inference | M7 | AC-H03: On-device; native model fixture/profile/hash/resume/cancel |
+| H04 | ai | M7 | AC-H04: Prompt export/pasteback; codec/SSE/cancel fixture, domain reply tests and UI |
+| H05 | ai | M7 | AC-H05: Grounding/reply validation; codec/SSE/cancel fixture, domain reply tests and UI |
+| H06 | ai | M7 | AC-H06: Bounded tool calling; codec/SSE/cancel fixture, domain reply tests and UI |
+| H07 | vault | M7 | AC-H07: Secrets; native vault integration, corruption/backup and redaction |
+| H08 | ai | M7 | AC-H08: Streaming/history/cost; codec/SSE/cancel fixture, domain reply tests and UI |
+| H09 | ai | M7 | AC-H09: Prompts; codec/SSE/cancel fixture, domain reply tests and UI |
+| I01 | transfer | M3/M9 | AC-I01: Lossless transfer; authentic text/CSV/native fixture round trips, failure atomicity and UI |
+| I02 | transfer | M3/M9 | AC-I02: Restore safety; authentic text/CSV/native fixture round trips, failure atomicity and UI |
+| J01 | shell | each milestone + M8 | AC-J01: Adaptive state; layout golden, task UI, physical reader/posture and profile |
+| J02 | shell | each milestone + M8 | AC-J02: Desktop input; layout golden, task UI, physical reader/posture and profile |
+| J03 | shell | each milestone + M8 | AC-J03: Accessibility/design; layout golden, task UI, physical reader/posture and profile |
+| J04 | shell | each milestone + M8 | AC-J04: Performance/visual audit; layout golden, task UI, physical reader/posture and profile |
+| K01 | settings | M0/M1 + module milestones | AC-K01: Onboarding/settings; domain fixtures, state/undo persistence and task UI |
+| K02 | settings | M0/M1 + module milestones | AC-K02: Attribution/diagnostics; domain fixtures, state/undo persistence and task UI |
+| N01 | shell | M0 + every merge/M9 | AC-N01: Architecture/CI gates; hosted CI/scan/package and interface verification |
+| N02 | network | M0 + every merge/M9 | AC-N02: Network etiquette; hosted CI/scan/package and interface verification |
+| N03 | shell | M0 + every merge/M9 | AC-N03: Scope boundaries; scope/document audit |
+| B09 | decks | M3 | AC-B09: Reusable packages; domain fixtures, state/undo persistence and task UI |
+| B10 | decks | M3 | AC-B10: Multi-edit; domain fixtures, state/undo persistence and task UI |
+| B11 | pricing | M5 | AC-B11: Printing optimizer; domain fixtures, state/undo persistence and task UI |
+| B12 | decks | M5 | AC-B12: Interaction playtest; domain fixtures, state/undo persistence and task UI |
+| B13 | transfer | M3 | AC-B13: Local image/QR sharing; authentic text/CSV/native fixture round trips, failure atomicity and UI |
+| G12 | life | M2 | AC-G12: Variant modules; pure reducer/time/seed fixtures, persistence and offline UI |
+| G13 | life | M2 | AC-G13: Seat clocks/alerts; pure reducer/time/seed fixtures, persistence and offline UI |
+| G14 | transfer | M2/M3 | AC-G14: Profile/game transport; pure reducer/time/seed fixtures, persistence and offline UI |
+
+Every parity PX-ID additionally requires feature-specific scenario evidence with its named behavior/reason and mapped SPEC tests. Skip rows require scope audit, not fake runtime tests. All P01-P12 budgets map to AC-J04 profile suite and affected feature AC-ID; all S01-S25 map to AC-J01/J02/J03/J04 screenshots/task/accessibility suite.
+
+Reviewer clarifications: B06 all-format inventory/limited-custom-team rules added to SPEC; P06/P12 decoded artwork bounded and total RSS includes art; B10 collection OwnedLot co-owner and standalone G14 profile collision policy explicit. Named AC-B10 covers both deck and collection transaction/restart fixtures.

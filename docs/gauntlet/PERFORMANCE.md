@@ -17,7 +17,7 @@ Corpus: verified latest full English Oracle/printing/ruling data plus rules and3
 | P03 suggestions | p95<=100ms after debounce,<=20 suggestions | Prefix/Unicode/group syntax; old request canceled, stable correct result |
 | P04 scrolling | p95 frame<=16.7ms at60Hz; fewer than1% frames>33.3ms |10s result list/grid over30,000+ records; cache warm and art-load run separated; virtualized offscreen rows |
 | P05 full import |<=10min parse/index/validate activation, excluding download | Verified selected English corpus already local, bounded staging; record bytes/rows/sec and actual counts; no full-file RAM |
-| P06 memory |<=300MiB steady RSS,<=450MiB peak during catalog import, excluding loaded LLM/pinned decoded art | List/detail/deck/life scenarios. Record native+managed peaks, file cache separately. On-device model overhead not disguised as base app memory |
+| P06 memory |<=300MiB steady RSS,<=450MiB peak during catalog import, excluding loaded LLM only | List/detail/deck/life scenarios. Record total process RSS including decoded art and native+managed peaks, file cache separately. On-device model overhead not disguised as base app memory |
 | P07 recommendations | p95<=1s initial top20 for100-card Commander deck | Local constrained candidates and known budget/legality/bracket evidence; full recompute<=3s with cancel/progress |
 | P08 durability | accepted committed life event durable<=100ms p95; text autosave<=500ms debounce plus<=200ms transaction p95 | Power/process interruption fixtures distinguish uncommitted draft from committed state; no success before persistence |
 | P09 transfer |100,000 inventory rows<=60s;1MiB text parse<=1s; backup restore metadata phase<=60s for100MiB user archive | Streaming, bounded batches; larger archives cancellable. Catalog/image/model payloads measured separately |
@@ -32,3 +32,7 @@ JSONL decoder maximum record8MiB, fail corrupt/oversized record with source cont
 Restore archive default maximum2GiB user data, per-entry256MiB and manifest-declared/uncompressed limit; user preview can authorize larger legitimate archive with checked free disk, never an unbounded extractor. Reject path traversal and excessive compression. Games keep long event histories paginated, never all in a UI widget.
 
 If a target fails, report failing samples, cause and proposed tuning/budget change at the milestone. No silent widening, dropping corpus/features or replacing actual device results with CI estimates. Physical device/sensor/reader access from phone+GitHub may require a documented manual check; list exact unmet evidence in IMPOSSIBLE only after confirming automation cannot perform it.
+
+## Decoded artwork memory contract
+
+Decoded-image working set target<=64MiB within P06 total RSS; transient decode/upload peaks<=96MiB and must still respect overall450MiB import/base peak. Decode to required visible pixel size, evict offscreen decoded images and cap concurrent decode work. Offline-file pack pinning does not pin decoded pixels in RAM. Profile art-heavy six-seat life and grid/detail transitions with actual loaded images, report total RSS and decoded cache peak; separately report LLM-inclusive RSS when loaded. GPU texture allocation is separately traced where platform exposes it, never used to hide process/art memory. These are proposed targets, not measured Flutter cache behavior.

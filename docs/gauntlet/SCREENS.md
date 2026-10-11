@@ -43,3 +43,14 @@ Tabletop/book layouts are safe-region allocations, not mandatory spanning: if on
 Top-level destinations Cards, Decks, Collection, Rules, Life and AI plus Settings; compact navigation shows primary4 plus More for remaining destinations, medium+ rail. Available destination list includes only implemented complete screens at a given milestone. No empty tab claims shipped feature parity. Context routes S03/S06/S21 retain stable item/game identifiers when navigated away and back. Deep links validate type/ID before resolving; absent local identity provides explicit fetch/resolve choice or raw import identity.
 
 Back/pane close preserves committed state and warns only when draft persistence failed or destructive operation would be lost. New deck/mark-owned/import/restore/end-game confirmations preview real changes. Windows drop triggers S08/S17 preview; touch alternative is file picker. Export/share/copy has real success/failure feedback. Key entry is masked, never autofilled into export/prompt. External templates only open approved schemes; imported Markdown cannot cause arbitrary script navigation.
+
+## Explicit parity-extra surfaces
+
+- S05/S06/S07: package library/create/version/apply-linked-or-copy/update/remove, entry contribution preview; multi-select/action inspector and one-step bulk undo. S14 offers printing optimizer objective/eligibility/source preview, S06 applies versioned patch.
+- S10: interaction scenario input with manual opponent/disruption zone controls, replay/reset/undo and visible log. Automation limits labeled without replacing functional manual controls.
+- S17: image/QR field/privacy preview, frame paging/export; S08 decodes camera/image frames locally and validates before import. Inherited five-class/tabletop/book layout for preview/resolution applies.
+- S20: per-module Planechase/Archenemy/Bounty/custom setup and sourced definition/import; S21 renders current variant cards/zones/status as secondary pane or compact sheet; S22 provides module action/draw/resolve/reset and versioned instructions. Missing data is actionable import state, not pretend complete module.
+- S20 configures countdown/chess modes/zero alert; S21 active seat/remaining clock and pause/switch; S22 timing/alert settings. All states accessible offline with replay/undo policy.
+- S17/S20: profile export/import version/privacy preview. S23 game CSV/JSON selection and export/reimport result reconciliation; no cloud dependency. No additional orphan screen route introduced.
+
+S12 explicitly supports multi-select OwnedLots, mixed-value condition/location/finish/quantity bulk form, per-row eligibility and atomic confirm/cancel/grouped undo; preserve unselected rows and committed changes on restart. S20 profile import collision preview chooses copied new identity by default, explicit merge/replace only. B06 format inventory and source/constraint/manual status are reachable from S06/S09 without deleting selectors for absent source fields.

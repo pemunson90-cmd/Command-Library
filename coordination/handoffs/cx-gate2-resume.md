@@ -7,3 +7,7 @@ Next: independent cx-gate2-review writes GATE-2-REVIEW only; root resolves findi
 Defaults: Flutter, USD/Scryfall subject source verification, unsigned EXE/ZIP, Full English; other-language/image/model downloads require appropriate explicit consent, foreign identity preserved; full offline rules acquisition/import mandatory. Existing key and single ANDROID_SIGNING; latest D03 backup ruling preserved, no secret reading/committing.
 
 Local directory is connector snapshot without .git; GitHub expected-head fast-forward only. Verify main head before mutations, preserve concurrent changes. Native prior research agents hit usage limit; independent review is required, never replace it with self-approval. Publish/print checkpoint and handoff before exhaustion.
+
+## Review corrections checkpoint
+
+Independent first review found missing milestone/test trace and incomplete parity-extra contracts. Corrections now saved:64 contracts with AC/milestone mappings, explicit packages/bulk-edit/optimizer/interaction/QR/variants/clocks/profile-game transport entities/screens/fixtures, all-format registry and art-RAM cap. All213 parity rows remain (194 build/adapt,19 approved skips). Final independent recheck pending; do not self-approve. Next verify final GATE-2-REVIEW, record outcomes, publish gate report and stop for Pat.
