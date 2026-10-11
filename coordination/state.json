@@ -3,8 +3,8 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-handoff-03",
-  "verified_base_head": "f58f3d46299139c52788afcd4523d4911670ec6b",
+  "checkpoint_id": "cp-20261011-handoff-04",
+  "verified_base_head": "86dfd50d35df26be184e5afaa1c729fc2d5424a3",
   "stage": "Gate 3-B toolchain readiness",
   "status": "ready_to_resume",
   "next_task": "orch-toolchain-01",
@@ -17,10 +17,10 @@
   "verification": {
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "remote_readback": "success_requires_checkpoint_commit_readback",
+    "remote_readback": "86dfd50 main and CURRENT verified; final evidence commit requires readback",
     "continuity_checks": "local_pass",
     "regression_tests": "5_pass",
-    "hosted_ci": "not_yet_observed"
+    "hosted_ci": "success: https://github.com/pemunson90-cmd/Command-Library/actions/runs/38158275280 (documentation checks only, tested86dfd50)"
   },
   "last_completed": "Reviewed20 architecture contracts and staged task plan; continuation checker and5 regression tests pass locally",
   "updated_utc": "2026-10-11T17:06:03.929401+00:00"

@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-handoff-03. Next task: orch-toolchain-01 step1; previous lease released. Use machine state and CURRENT, not stale historical pointers.
+Checkpoint-ID: cp-20261011-handoff-04. Next task: orch-toolchain-01 step1; previous lease released. Use machine state and CURRENT, not stale historical pointers.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
