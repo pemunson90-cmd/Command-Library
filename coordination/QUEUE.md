@@ -1,17 +1,17 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-kotlin-audit-02. K0 audit accepted; `orch-kotlin-toolchain-01` is held for explicit user execution release.
+Checkpoint-ID: cp-20261011-k1-start-03. Active task: orch-kotlin-toolchain-01 step1, K1 readiness and architecture translation.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
 | orch-architecture-plan-01 | G3-A contract planning | accepted independent audit | reviewed Gate2/D17 | resolve independent findings |
 | orch-architecture-review-01 | G3-A independent audit | completed, accepted | corrections rechecked | report saved |
 | orch-kotlin-plan-audit-01 | K0 plan consistency | completed, approved | D-20 recorded | report K0-KOTLIN-PLAN-AUDIT.md |
-| orch-kotlin-toolchain-01 | K1 Kotlin readiness | held for explicit user execution release | K0 accepted + explicit release | official-source candidate tuple |
-| orch-kotlin-toolchain-01 | K1 Kotlin readiness | planned, not eligible | K0 accepted + explicit user execution release | official-source candidate tuple |
+| orch-kotlin-toolchain-01 | K1 Kotlin readiness | active | Astra-high readiness approval + user K1 release | source-backed candidate, Kotlin ownership map and probe plan |
+| orch-kotlin-toolchain-01 | K1 Kotlin readiness | active | Astra-high readiness approval + user K1 release | source-backed candidate, Kotlin ownership map and probe plan |
 | orch-toolchain-01 | historical Flutter readiness | superseded for v1 by D-20 | retained evidence only | no action |
-| orch-source-fixtures-01 | source evidence | next (fallback while toolchain blocked) | source gap registry | one unanswered official-source probe |
-| orch-m0-01 | signed Android skeleton | planned, not eligible yet | accepted architecture/toolchain | orchestrate concrete foundation workers |
+| orch-source-fixtures-01 | source evidence | conditional fallback only | K1 identifies an unanswered evidence need | one approved read-only official-source probe |
+| orch-m0-01 | historical Flutter M0 | superseded/ineligible | D-20 | no action |
 | worker-core-m0-01 | M0 core | planned | pinned workspace +accepted architecture | value/public DTO contracts +unitfixtures |
 | worker-storage-m0-01 | M0 SQLite | planned | accepted core/registry/native tuple | FTS5/transaction tests |
 | worker-catalog-m0-01 | M0 tiny import | planned | accepted network/storage/authentic fixture | atomic real staging |

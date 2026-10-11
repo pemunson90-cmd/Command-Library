@@ -45,3 +45,8 @@ For a stale lock inspect last branch commit/CI/handoff. Preserve orphan commit t
 ## Canonical state schema
 
 coordination/state.json version1 requires project/repository/integration_branch/checkpoint_id/verified_base_head/stage/status/next_task/next_step/first_action/active_tasks/blockers/worktree_mode/review_status/verification/last_completed/updated_utc. Unknown values null with explanation; no made-up pass. ORCHESTRATOR schema1 status released/active, session/model/task/heartbeat/expires/checkpoint_id. Scripts/check_continuity.py validates pointers/docs/task completeness, not live lease ownership or app performance. Capture remote identity at resume, not from stale downloaded bundle.
+
+
+## D-20 execution section policy (2026-10-11)
+
+Pat released K1 after requesting Astra verification and a complete scalable Kotlin Android application. For this project, each section must have a defined functional finish line, independent review where architecture/security/durability requires it, a published checkpoint and exact next action. A usage-limit checkpoint can preserve incomplete work but must say so. Do not advance to K2 merely because K1 has a candidate version list; K1 requires reviewed evidence and an explicit Kotlin ownership/replacement map.

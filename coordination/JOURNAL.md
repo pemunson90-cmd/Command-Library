@@ -77,3 +77,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-11 | claude-code | ruling | 0987620 | D-08 ruled 3 with usage-limit operating rules; D-18 English UI; D-19 Android first, Windows version 2
 2026-10-11 | claude-code | checkpoint | this commit | cp-20261011-cc-plangaps-01: pointers updated for D-19; next orch-source-fixtures-01; orch-toolchain-01 blocked on D-07 rescore answer
 2026-10-11 | claude-code | lease | this commit | released; checkpoint cp-20261011-cc-plangaps-01 read back on main; next orch-source-fixtures-01
+
+2026-10-11 | codex + astra-high | K1 claim | pending checkpoint | Pat released K1; Astra high approved Kotlin readiness work; continuity pointers reconciled. No app code/build/download/signing performed.

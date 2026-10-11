@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "released",
-  "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
-  "model_family": "Claude/Anthropic (Claude Code, Opus 5.5)",
-  "task_id": "cc-plangaps-01",
-  "heartbeat_utc": "2026-10-11T18:21:09Z",
-  "expires_utc": "2026-10-11T18:21:09Z",
-  "checkpoint_id": "cp-20261011-cc-plangaps-01",
-  "note": "Claude Code released after merging cc-plangaps-01 and publishing cp-20261011-cc-plangaps-01. Next orchestrator: re-fetch main, claim a new lease, start orch-source-fixtures-01; orch-toolchain-01 waits for Pat's D-07 rescore answer (D-19)."
+  "status": "active",
+  "session_id": "codex-k1-20261011T201731Z",
+  "model_family": "Codex/GPT (root orchestrator); Astra high readiness reviewer",
+  "task_id": "orch-kotlin-toolchain-01",
+  "heartbeat_utc": "2026-10-11T20:17:31Z",
+  "expires_utc": "2026-10-11T21:02:31Z",
+  "checkpoint_id": "cp-20261011-k1-start-03",
+  "note": "K1 claimed after user execution release and Astra-high approval. Only planning/research/architecture translation is authorized. K2 requires accepted K1 evidence, an independent review and a concrete Kotlin implementation card."
 }

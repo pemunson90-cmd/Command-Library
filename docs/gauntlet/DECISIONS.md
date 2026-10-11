@@ -28,6 +28,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-18 | Interface language and localization | Ruled 2026-10-11 |
 | D-19 | Platform priority: Android first, Windows is version 2 | Ruled 2026-10-11 |
 | D-20 | Kotlin Android v1; separate Flutter Windows v2; sync after Windows runs | Ruled 2026-10-11 |
+| D-21 | K1 execution release and complete-section checkpoint policy | Ruled 2026-10-11 |
 
 ## Open
 
@@ -196,3 +197,8 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 
 - Pat, 2026-10-11, verbatim: "Just run with kotlin, but plan for expansion to flutter for windows when v2 launches. It would be a separate file entirely. Then we build sync into it but that's for after it runs period."
 - Applied: supersedes the Android-v1 portion of D-07. Version 1 uses Kotlin on Android. Flutter is reserved for a separate Windows version-2 application source tree, which begins only after the complete Android application runs. Sync planning and implementation begin only after the Windows app runs and receives a future explicit authorization. `V1_KOTLIN_EXECUTION_SPEC.md` is the execution-specification authority. No code, pin, build, download, signing or sync work is authorized by this ruling; K0 audit and an explicit later user execution release are required before K1.
+
+## D-21 K1 execution release and complete-section checkpoint policy
+
+- Pat, 2026-10-11, verbatim: "Use astra to verify and confirm plan to start build, I don't want chunks or unfinished releases. I need a complete, scalable, cleanly noted, highly efficient codebase to support the entire app. I need the app fully built and running, throughly bug checked, and capable of being expanded. Zero placeholders unless literally unbuildable without additional tools/approvals. Stop after each complete section for documentation, handoff, updated notes etc. every single date change and action taken must be functional and resumable after compaction or usage limits hit"
+- Applied: Astra high approved K1. K1 begins now. The full Android app remains the goal; section boundaries are internal verified milestones, not partial releases. Every section must publish evidence, updated coordination files, journal and exact next action; incomplete recovery checkpoints are permitted only when labelled incomplete. Architecture/security/durability/compatibility conclusions require Astra high review. K2 and later implementation require their own accepted cards and evidence.

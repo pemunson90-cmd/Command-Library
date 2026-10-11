@@ -3,32 +3,28 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-kotlin-audit-02",
-  "verified_base_head": "fd674205d82a2981f547af764bcc7858791660e3",
-  "stage": "K0 Kotlin Android version-1 plan audit accepted",
-  "status": "awaiting_explicit_user_execution_release",
+  "checkpoint_id": "cp-20261011-k1-start-03",
+  "verified_base_head": "a87347d33eab881d6bc09ddc238bc4bab9da5a5d",
+  "stage": "K1 Kotlin readiness and architecture translation",
+  "status": "in_progress",
   "next_task": "orch-kotlin-toolchain-01",
-  "next_step": 0,
-  "first_action": "Await the user's explicit release of K1 Kotlin toolchain planning. Once released, re-fetch main, claim a lease and follow orch-kotlin-toolchain-01; do not create app code.",
-  "active_tasks": [],
-  "blockers": [
-    {
-      "task": "orch-kotlin-toolchain-01",
-      "reason": "Explicit user execution release required after K0 plan audit by D-20 and CURRENT",
-      "since": "2026-10-11"
-    }
+  "next_step": 1,
+  "first_action": "Verify official Kotlin/Android/Compose/Room/SQLite/FTS5 sources and build transport; publish candidate evidence and Kotlin ownership replacement map. No application source or Gradle project yet.",
+  "active_tasks": [
+    "orch-kotlin-toolchain-01"
   ],
-  "worktree_mode": "git_checkout (Claude Code cloud session)",
-  "review_status": "K0 independent Astra-low audit approved planning completeness; report K0-KOTLIN-PLAN-AUDIT.md",
+  "blockers": [],
+  "worktree_mode": "text_snapshot_without_git; direct GitHub read/write connector verified",
+  "review_status": "Astra-high execution-readiness review approved K1; K2 remains blocked by K1 evidence and review",
   "verification": {
+    "continuity": "historical documentation checks passed before K1; not rerun at this checkpoint",
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "remote_readback": "5737180 verified equal to origin/main after push",
-    "continuity_checks": "local_pass",
-    "regression_tests": "5_pass",
-    "hosted_ci": "Continuity integrity: success on branch head ad717aa (run 38163297326) and lease commit e20a554 (run 38163324949); run 38163419355 on 5737180 was in progress at lease release: https://github.com/pemunson90-cmd/Command-Library/actions/runs/38163419355",
-    "plan_implementation": "not_started"
+    "hosted_ci": "historical continuity workflow results only; no Kotlin build workflow exists",
+    "remote_readback": "main read before K1 claim: a87347d33eab881d6bc09ddc238bc4bab9da5a5d",
+    "toolchain": "not_run",
+    "kotlin_compatibility": "not_run"
   },
-  "last_completed": "D-20 Kotlin plan specification published and independent K0 audit approved",
-  "updated_utc": "2026-10-11T18:36:00Z"
+  "last_completed": "Astra-high readiness review released K1 and identified continuity corrections",
+  "updated_utc": "2026-10-11T20:17:31Z"
 }

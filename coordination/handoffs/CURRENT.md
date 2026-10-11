@@ -1,14 +1,14 @@
-# CURRENT: Kotlin execution plan ready for independent audit
+# CURRENT: K1 Kotlin readiness and architecture translation
 
-Checkpoint-ID: cp-20261011-kotlin-audit-02
+Checkpoint-ID: cp-20261011-k1-start-03
 
-Next task: orch-kotlin-toolchain-01 (held)
-Next step: 0. Await explicit user execution release. K0 audit is approved; it does not authorize K1. On release, re-fetch main, claim a lease, and execute only the planning/research work in the K1 card.
+Next task: orch-kotlin-toolchain-01
+Next step: 1. Verify official current Kotlin/Android/Compose/Room/SQLite/FTS5 sources and actual build transport; publish a source-backed candidate, Kotlin ownership/replacement map and bounded probe plan. Do not create application source, Gradle modules, data fixtures, signing flow or release artifact in K1.
 
-Ruling D-20 resolves the stale D-07 rescore block: version 1 is Kotlin Android. Flutter Windows is version 2 after Android runs and is its own implementation. Sync needs a future explicit authorization after Windows runs. K0 uses Astra low for an independent consistency review. K1 needs an Astra-high architecture pass before a Sol-high implementation task is formed.
+Authorization: Pat released K1 in the 2026-10-11 message requesting Astra verification and a fully built, scalable Kotlin Android app with complete-section checkpoints. Astra high independently approved K1 readiness. This authorization starts K1 only; K2 requires accepted K1 outputs and its own complete Kotlin implementation card.
 
-Done: D-20 and the planning-only execution specification; K0 and K1 task cards. Previous lease released; no implementation worker is active. Main before this checkpoint: d2d699d94668c3e26e1a310b2a996868235908c1. Re-fetch main before any mutation. This local text snapshot is not a Git checkout; GitHub main is authoritative.
+Required K1 finish line: reviewed candidate toolchain with official URLs/dates/license notes; explicit distinction between source-backed candidate and proven compatibility; Kotlin ownership/dependency map replacing historical Dart packages and pubspec assumptions; approved hosted capability-probe result; updated SPEC/COVERAGE technology clauses; concrete K2 task card. Any missing proof remains a named K1 result, never a placeholder.
 
-Blockers: none for the K0 audit. Execution is intentionally held until the user explicitly releases it after reviewing the K0 report; K0 approval alone never advances to K1. Existing source-fixture work remains read-only fallback only when a future accepted task selects it. Preserve consent, signing, and public-repository rules.
+Current facts: direct GitHub connector works; this workspace is a text snapshot without a Git checkout; no Kotlin project, app build, runtime test, source download or signing action has occurred. FTS5 integration is unverified. The first K2 artifact must be an installable debug APK plus recorded launch smoke evidence; permanent-key release signing is a later defined acceptance gate. Windows Flutter begins only after the complete Android app; sync needs later explicit authorization after Windows runs.
 
-K0 audit: GPT-6 Astra low approved the corrected plan. See `docs/gauntlet/gates/K0-KOTLIN-PLAN-AUDIT.md`. It verified the explicit execution-release boundary, proposed FTS5 treatment, Kotlin ownership-map requirement, debug-APK smoke evidence and complete K5 acceptance trace. No implementation or application check occurred.
+Stop rule: publish a checkpoint, journal line, state/queue/current update, exact evidence and next action at the end of each complete section and before any usage limit. A checkpoint may record incomplete work but cannot claim completion. Release the lease when stopping.

@@ -79,3 +79,8 @@ The following are retained as historical research or obligation inventories and 
 
 The K0 reviewer must verify: D-07 is resolved for version 1; all Android-v1 entry points name Kotlin; no v1 task requires Flutter/Dart or Windows; Windows is recorded as a separate v2 source tree; sync begins only after Windows runs; the source-fixture fallback does not imply an unapproved download; task cards do not contain stale commands; and every next action is planning-only. The reviewer records each remaining discrepancy by file and exact change, then stops.
 
+
+
+## D-21 complete-section execution policy
+
+The full Android app is the delivery target. Each internal section has a functional finish line and is not a public or finished-app release. Before a section closes, publish its evidence, independent-review result where required, current state, queue, handoff, journal entry and exact next action; read back the checkpoint and release the lease. A usage-limit checkpoint preserves unfinished work only when labelled incomplete. No placeholder, fake success path or empty production implementation may satisfy a section. A dependency that cannot be built without unavailable tools or approval must name the exact affected requirement and missing capability.
