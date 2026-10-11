@@ -18,7 +18,7 @@
 | G-06 | MILESTONES one line per milestone | Resolved | MILESTONES rewritten in f58f3d4 |
 | G-07 | no ARCHITECT files | Resolved | 20 files under `docs/architecture/` |
 | G-08 | no CI workflow design | Partly resolved | GATE-3-REVIEW covers the CI plan; `.github/workflows/continuity.yml` exists for documents. App CI is queued as `orch-toolchain-01` |
-| G-09 | D-08 max concurrent implementers unset; no parallel execution plan | Open | DECISIONS index "D-08 ... Open (Gate 3)"; no concurrency figure in MILESTONES, GATE-3, or `registry.json`. Needs a Pat ruling (default 3) before worker tasks run in parallel |
+| G-09 | D-08 max concurrent implementers unset; no parallel execution plan | Ruled; plan open | D-08 ruled 3 (Pat, 2026-10-11) with operating rules in DECISIONS. The per-milestone parallel execution plan is still unwritten; derive it from `registry.json` dependencies and QUEUE prerequisites at `orch-m0-01` |
 | G-10 | IMPOSSIBLE.md empty | This branch, step 3 | Screened against CI capability; rejected candidates listed |
 | G-11 | RISKS.md empty | This branch, step 2 | Rows sourced from DECISIONS, reviews, research, DESIGN_SYSTEM |
 | G-12 | 3 deferred parity rows missing from POST_RELEASE | This branch, step 4 | PX06-063, PX07-078, PX07-079 |
@@ -37,6 +37,6 @@
 
 The Haiku check read `COMPONENTS.md` line "Deck/collection identities are core snapshots" as covering identities only, and reported G-01 to G-03 as missing edges. At 3799edb the ARCHITECT interfaces show the snapshot pattern carries full contents (for example `DeckSnapshot`, `InventorySnapshot`, `QuoteSnapshot`), and `shell`, the composition root, depends on every component. No dependency edge is missing for those flows.
 
-## Still needs a ruling
+## Still open
 
-- D-08: maximum concurrent implementer agents (default 3), plus the parallel execution plan GAUNTLET section 6 lists for Gate 3.
+- The per-milestone parallel execution plan (GAUNTLET section 6, Gate 3), now bounded by D-08.

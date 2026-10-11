@@ -15,7 +15,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-05 | Claude Code and Codex concurrency | Superseded by D-17 sequential cross-model handoff |
 | D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
 | D-07 | Stack | Ruled; see latest Gate 1 answers |
-| D-08 | Max concurrent implementer agents | Open (Gate 3) |
+| D-08 | Max concurrent implementer agents | Ruled 2026-10-11: 3 |
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
 | D-11 | Cloud session setup: repos attached per session | Ruled 2026-10-11 |
@@ -41,6 +41,9 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 
 ### D-08 Max concurrent implementer agents
 - Set at Gate 3. Default 3.
+- Pat, 2026-10-11, verbatim: "I guess 3 default is fine unless you have recs for parallel agents"
+- Applied: at most 3 implementer agents run concurrently. Operating rules added by Claude Code under D-17, which Pat may override: (1) at most 4 subagents of any role run at once, implementers, test-writers and reviewers together, because they share one usage limit; (2) after any subagent stops on a usage limit, the cap drops to 2 for the rest of that session.
+  - Evidence: on 2026-10-11, six Sonnet researchers launched together all stopped on the account session limit (HTTP 429; JOURNAL and cards cc-research-02, 11 to 15). At M0 the dependency graph allows at most three parallel components after `core` (storage, network, vault; `docs/architecture/registry.json`). Merges are serial with review per merge (GAUNTLET.md 5.4).
 
 ## Ruled
 
