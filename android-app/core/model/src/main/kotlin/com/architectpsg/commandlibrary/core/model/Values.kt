@@ -60,7 +60,7 @@ public sealed interface Knowledge<out T> {
     }
 }
 public enum class UnavailableReason { OFFLINE, NOT_INSTALLED, NOT_FOUND, CONSENT_REQUIRED, REVOKED, UNSUPPORTED, SOURCE_UNAVAILABLE, KEY_MISSING }
-public enum class FailureCode { INVALID_INPUT, STALE_REVISION, CORRUPT_DATA, TRANSPORT, PERSISTENCE, PERMISSION, SOURCE_MISMATCH, INTERNAL }
+public enum class FailureCode { INVALID_INPUT, STALE_REVISION, STALE_GENERATION, CORRUPT_DATA, TRANSPORT, PERSISTENCE, PERMISSION, SOURCE_MISMATCH, INTERNAL }
 public data class DomainFailure(public val code: FailureCode, public val message: String, public val evidence: SnapshotList<Evidence>) {
     init { require(message.isNotBlank()) }
 }
@@ -97,11 +97,20 @@ public data class SnapshotReference(
     public val language: LanguageTag?,
 )
 public data class PageRequest(public val limit: Int, public val cursor: String? = null) {
-    init { require(limit in 1..MAX_LIMIT); require(cursor == null || cursor.isNotBlank()) }
-    public companion object { public const val MAX_LIMIT: Int = 100 }
+    init {
+        require(limit in 1..MAX_LIMIT)
+        require(cursor == null || (cursor.isNotBlank() && cursor.toByteArray(Charsets.UTF_8).size <= MAX_CURSOR_BYTES))
+    }
+    public companion object {
+        public const val MAX_LIMIT: Int = 100
+        public const val MAX_CURSOR_BYTES: Int = 2048
+    }
 }
 public data class Page<T>(public val items: SnapshotList<T>, public val nextCursor: String?, public val snapshot: SnapshotReference) {
-    init { require(items.size <= PageRequest.MAX_LIMIT); require(nextCursor == null || nextCursor.isNotBlank()) }
+    init {
+        require(items.size <= PageRequest.MAX_LIMIT)
+        require(nextCursor == null || (nextCursor.isNotBlank() && nextCursor.toByteArray(Charsets.UTF_8).size <= PageRequest.MAX_CURSOR_BYTES))
+    }
     public val revision: Revision? get() = snapshot.revision
 }
 public sealed interface DecimalUnit {
