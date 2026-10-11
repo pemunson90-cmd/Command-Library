@@ -19,3 +19,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | research filed | this commit | cx-research-02 card sources; preserved prior metadata; blocked probes explicit; Codex protocol edition retained separately
 
 2026-10-11 | codex | research filed | this commit | cx-research-11 audited and completed; current primary findings and bounded verification gaps
+
+2026-10-11 | codex | research filed | this commit | cx-research-13 audited and completed; current primary findings and bounded verification gaps
