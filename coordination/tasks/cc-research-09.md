@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-09.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 What data supports offline, budget-aware deck recommendations and automatic role tagging, and which online enrichers can the app use under their terms?
@@ -50,3 +50,5 @@ GAUNTLET.md 2.D (budget-aware recommendations, role tagging), 2.H (AI grounding)
 ## Output
 - `docs/gauntlet/research/R-09-recommendation-data.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex cx-research-09 filed 2026-10-11. Scored/source evidence verified, runtime/permission unknowns explicit.

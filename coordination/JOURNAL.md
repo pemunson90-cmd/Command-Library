@@ -11,3 +11,35 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | claude-code | gate 1 start | pending | 17 research task cards written; wave 1 active: R-02 R-11 R-12 R-13 R-14 R-15
 2026-10-11 | claude-code | ruling | 339a41f | D-03 ruled: new key; creation method from R-15 before M0
 2026-10-11 | claude-code | ruling | b0a6274 | D-03 applied: keystore generated outside git, delivered to Pat; secrets pending on Pat
+
+2026-10-11 | codex | resume checkpoint | this commit | main ab33a6c verified; latest D-05 applied; six WIP research topics resumed; GitHub connector replaces unavailable shell transport
+
+2026-10-11 | codex | research filed | this commit | cx-research-12 secure key storage audited; native platform stores recommended; runtime checks explicit
+
+2026-10-11 | codex | research filed | this commit | cx-research-02 card sources; preserved prior metadata; blocked probes explicit; Codex protocol edition retained separately
+
+2026-10-11 | codex | research filed | this commit | cx-research-11 audited and completed; current primary findings and bounded verification gaps
+
+2026-10-11 | codex | research filed | this commit | cx-research-13 audited and completed; current primary findings and bounded verification gaps
+
+2026-10-11 | codex | research filed | this commit | cx-research-14 audited and completed; current primary findings and bounded verification gaps
+
+2026-10-11 | codex | research filed | this commit | cx-research-15 audited and completed; current primary findings and bounded verification gaps
+
+2026-10-11 | codex | research filed | this commit | cx-research-03 official rules effective 2026-09-25; distribution permission unresolved; wave 2 active
+
+2026-10-11 | codex | tooling checkpoint | this commit | CLI 0.159.2 and native researchers verified; connector writes verified; shell transport/worktrees unresolved
+
+2026-10-11 | codex | research filed | this commit | cx-research-04 complete evidence inventory; conditional data/import contracts documented
+
+2026-10-11 | codex | research filed | this commit | cx-research-06 complete evidence inventory; conditional data/import contracts documented
+
+2026-10-11 | codex | research filed | this commit | cx-research-05 Moxfield parity 67 rows and documented terms; guided export recommended
+
+2026-10-11 | codex | research filed | this commit | cx-research-07 completed with native recommendations and source limits
+
+2026-10-11 | codex | research filed | this commit | cx-research-08 completed with native recommendations and source limits
+
+2026-10-11 | codex | research filed | this commit | cx-research-01 topic evidence and recommendation; no app code
+
+2026-10-11 | codex | research filed | this commit | cx-research-09 topic evidence and recommendation; no app code

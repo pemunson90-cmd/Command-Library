@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-05.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 What does Moxfield offer a deck builder today, which features should Command Library build, adapt, or skip, and is there a terms-compliant way to import a Moxfield deck by URL?
@@ -52,3 +52,5 @@ A table with one row per feature: feature, how Moxfield does it (with source), r
 ## Output
 - `docs/gauntlet/research/R-05-moxfield.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex cx-research-05 filed 2026-10-11; native parity and guided exports recommended; automated access permission unresolved.
