@@ -57,3 +57,5 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 
 2026-10-11 | codex | Gate 1 rulings checkpoint | this commit | D07/D06/D12/D13 approved; D14 English default with user-approved other-language downloads; D04 explanation requested and remains open
 2026-10-11 | claude-code | ruling | this commit | D-03: Pat keeps saved copy, Claude keeps session copy, never committed; public exposure check clean; .gitignore hardened
+
+2026-10-11 | codex | Gate 1 approved / Gate 2 start | this commit | Pat approved explained D04 default; all six rulings applied; specification authorized; no app code

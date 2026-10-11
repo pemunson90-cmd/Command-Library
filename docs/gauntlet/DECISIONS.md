@@ -11,7 +11,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-01 | Package / application ID | Ruled 2026-10-11 |
 | D-02 | Repo name and visibility | Ruled 2026-10-11 |
 | D-03 | Release signing key | Ruled 2026-10-11 |
-| D-04 | Default currency and price source | Open (after R-08) |
+| D-04 | Default currency and price source | Ruled; latest approval below |
 | D-05 | Claude Code and Codex concurrency | Ruled 2026-10-11 (through Gate 3) |
 | D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
 | D-07 | Stack | Ruled; see latest Gate 1 answers |
@@ -149,3 +149,7 @@ Verbatim, mapped to the six numbered proposals in the Gate 1 message:
 6. D-14: "Yes except language default to English the rest needs user approved download." Applied: default Full download includes English card data and printings. Non-English language data downloads require explicit user approval before starting; no silent background download. Preserve foreign owned identities and unresolved rows without automatically downloading their language data. Full offline rules and rulings remain in scope. This supersedes the proposed automatic all-language download scope.
 
 Gate status: five rulings applied; D-04 is the sole outstanding Gate 1 ruling. Do not start Gate 2 until that ruling arrives. Earlier proposal wording is historical; these applied rulings control.
+
+## D-04 final Gate 1 ruling
+
+Pat, verbatim: "Approved". Context: approval of the explained default, USD with Scryfall reference pricing conditional on source/terms verification, owned copies counted as zero acquisition cost while market value stays visible, missing prices unknown, selectable supported sources/currencies including EUR/Cardmarket and Magic Online tickets. Applied: D-04 ruled. All six Gate 1 choices are now ruled; Gate 2 specification is authorized. Earlier D-04-open pointers are superseded.

@@ -1,0 +1,3 @@
+# Gate 2 working handoff
+
+Gate 1 all six rulings approved; latest D04 Pat verbatim: "Approved". Codex sole orchestrator through Gate 3. Next: complete SPEC, DESIGN_SYSTEM, COVERAGE, concrete performance budgets, data model, component DAG, screen inventory, independent reviewer audit, GATE-2, STATE/JOURNAL; checkpoint and print links before exhaustion. Flutter selected; Full English default, other-language downloads need user approval; existing single signing secret; no app code until architecture. Local files are snapshots, GitHub connector is authoritative; preserve concurrent D03 backup/gitignore update. Read current committed files rather than conversation memory.
