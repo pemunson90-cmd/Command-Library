@@ -12,7 +12,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-02 | Repo name and visibility | Ruled 2026-10-11 |
 | D-03 | Release signing key | Ruled 2026-10-11 |
 | D-04 | Default currency and price source | Ruled; latest approval below |
-| D-05 | Claude Code and Codex concurrency | Ruled 2026-10-11 (through Gate 3) |
+| D-05 | Claude Code and Codex concurrency | Superseded by D-17 sequential cross-model handoff |
 | D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
 | D-07 | Stack | Ruled; see latest Gate 1 answers |
 | D-08 | Max concurrent implementer agents | Open (Gate 3) |
@@ -22,8 +22,10 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-12 | Gate 1 matrices and topic recommendations | Ruled; see latest Gate 1 answers |
 | D-13 | Full offline rules acquisition versus public bundling | Ruled; see latest Gate 1 answers |
 | D-14 | Full catalog printing/language scope | Ruled; see latest Gate 1 answers |
-| D-15 | Gate 2 specification/design package | Open: Gate 2 proposal |
-| D-16 | Gate 2 performance targets | Open: Gate 2 proposal |
+| D-15 | Gate 2 specification/design package | Working technical baseline under D-17; no fabricated explicit approval |
+| D-16 | Gate 2 performance targets | Provisional targets under D-17; not measured or relaxed |
+
+| D-17 | Shared continue mandate and delegated technical stage progression | Ruled: latest user instruction below |
 
 ## Open
 
@@ -161,3 +163,11 @@ Pat, verbatim: "Approved". Context: approval of the explained default, USD with 
 D-15 open: approve SPEC, DESIGN_SYSTEM, COVERAGE, DATA_MODEL, COMPONENTS, SCREENS and PARITY_ACCEPTANCE with64 observable contracts and all approved matrix obligations. Includes detailed any-eligible-owned-printing default/strict pin policy, package copy/link semantics and user-enabled life variants/local sharing. All source/runtime verification limits remain explicit. Independent review resolved all five findings; Pat has not yet ruled Gate2.
 
 D-16 open: approve PERFORMANCE P01-P12/reference methods. Key targets p95 cold2.5s, DB query150ms, visible search250ms after debounce, full local import10min, steady base RSS300MiB/peak450MiB excluding loaded LLM only, decoded art64MiB steady/96MiB transient, provisional base-disk1.5GiB. Values are proposed acceptance targets, not measured results; failed targets need reported correction or subsequent ruled change, never scope deletion.
+
+## D-17 shared continuous handoff mandate
+
+Pat, verbatim:
+
+> I need you to check the plans and orchestrate the next several stages leaving files here and on the GitHub with instructions so that codex or other GPT models, as well as Claude and Claude code can continuously pick up where the other leaves off. I should not have to explain anything in chat I should simply be able to state continue, and at any point either set of models should be able to look at a readme and the current state, continue intelligently while maintaining proper notes and checkpointing, this way whenever I run out of usage on either account, the other can just continue work a reasonable amount and then stop and nothing is lost.
+
+Applied: model-neutral sequential orchestration and repository-first bounded sessions. This supersedes prior D05 Codex-only restrictions and generic stop-for-chat at every routine technical gate. Check and orchestrate subsequent stages using current independently reviewed SPEC/design and provisional performance targets, without inventing explicit D15/D16 approval words. Independent review and prerequisite evidence still required before technical advance; material product/security/consent changes, budget relaxation, new costs, destructive actions and public release need actual authorization. README/CONTINUE/CURRENT/STATE/QUEUE become shared entry points. An account limit or model switch requires no task explanation from Pat. Usual GitHub/tool permissions still apply. No background account switching mechanism is claimed.

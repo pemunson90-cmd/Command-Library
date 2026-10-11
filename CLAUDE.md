@@ -37,3 +37,7 @@ Model tiering (Pat, D-10): strongest model for architect and reviewer; Sonnet or
 ## Codex
 
 If `AGENTS.md` exists, it belongs to the Codex orchestrator. Leave it intact and keep protocol statements in both entry files consistent.
+
+## Current cross-model continuation override (D-17)
+
+Read README.md and CONTINUE.md first, then STATE.md, coordination/state.json and coordination/handoffs/CURRENT.md. The latest user mandate supersedes earlier Codex-only and mandatory-chat-stop technical gates. Any model family may take the next sequential turn, holding the single orchestrator lease. Continue only the current queued step, checkpoint early, publish/verify notes and leave an exact next pointer. Preserve original gauntlet/product/security requirements; never pretend a source/device/build test ran. No extra conversation context is required when repository access is available.

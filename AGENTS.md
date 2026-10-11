@@ -9,3 +9,7 @@ Pat rulings override project documents. Codex is sole orchestrator through Gate 
 No component code until its ARCHITECT.md is merged. Zero placeholders in app code. Checkpoint every completed step, update progress, commit and publish to main. Shared configuration and coordination files belong to the orchestrator. Only the orchestrator delegates; subagents do not spawn agents. Researchers write only their own topic file. No secrets in git or logs.
 
 State: docs/gauntlet/STATE.md. Decisions: docs/gauntlet/DECISIONS.md. Codex protocol edition: docs/gauntlet/GAUNTLET_CODEX.md. Existing GAUNTLET.md remains intact for shared historical context.
+
+## Current cross-model continuation override (D-17)
+
+Read README.md and CONTINUE.md first, then STATE.md, coordination/state.json and coordination/handoffs/CURRENT.md. Latest user mandate authorizes sequential Codex/GPT/Claude/Claude Code succession and reviewed technical-stage progress; earlier Codex-only/gate-chat-stop wording above is superseded. Use the current queue pointer, single orchestrator lease and bounded checkpoint policy. Preserve product/security/language rulings and honest unverified evidence. This shared protocol also governs general GPT models.
