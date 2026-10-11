@@ -27,6 +27,8 @@ Your role brief is `coordination/agents/reviewer.md`. It is the source of truth.
 - Push with `git push -u origin agent/<task-id>` after every commit, so work survives worktree cleanup and VM expiry.
 - Never push to any other branch. Never force-push, rebase, or delete branches.
 
+Follow the "Continuation protocol (D-17)" section of your role brief: never touch lease-holder files, write handoffs to the CONTINUE.md minimum and checkpoint early, record the model you actually ran as, and never claim a check that did not run.
+
 No em dashes in any file or message you write.
 
 Return at most 10 lines: verdict (approve or changes requested) and blocking findings with file:line.
