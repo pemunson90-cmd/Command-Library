@@ -11,7 +11,7 @@ Path: `coordination/tasks/cc-research-04.md`. Written by the orchestrator. This 
 | Branch | none. Researchers write one file in the main checkout; the orchestrator commits it to `main` |
 | Base commit | b1c922eaa96c25209691253c9849066b89a71846 |
 | Steps | 1/1: write the research file |
-| Status | queued |
+| Status | filed |
 
 ## Question
 What are the current official Commander Brackets rules, where does the Game Changers list come from in machine-readable form, and which combo database can the app cache offline under its terms?
@@ -52,3 +52,5 @@ GAUNTLET.md 2.E (bracket identifier), 2.D (bracket impact on recommendations).
 ## Output
 - `docs/gauntlet/research/R-04-brackets-combos.md`
 - Handoff: none. A researcher writes only its research file (role brief). The orchestrator tracks status in this card and commits the file. A crash before commit loses only this card's run, which restarts from scratch.
+
+Codex cx-research-04 filed 2026-10-11; documented primary evidence and explicit unresolved measurements/terms.
