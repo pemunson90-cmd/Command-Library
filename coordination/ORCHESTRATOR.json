@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-k1-20261011T201731Z",
-  "model_family": "Codex/GPT (root orchestrator); Astra high readiness reviewer",
+  "session_id": "codex-k1-efficient-20261011",
+  "model_family": "Codex orchestrator; Luna medium mechanical/source helpers; Astra targeted review only",
   "task_id": "orch-kotlin-toolchain-01",
-  "heartbeat_utc": "2026-10-11T20:17:31Z",
-  "expires_utc": "2026-10-11T21:02:31Z",
-  "checkpoint_id": "cp-20261011-k1-start-03",
-  "note": "K1 claimed after user execution release and Astra-high approval. Only planning/research/architecture translation is authorized. K2 requires accepted K1 evidence, an independent review and a concrete Kotlin implementation card."
+  "heartbeat_utc": "2026-10-11T21:31:56Z",
+  "expires_utc": "2026-10-11T22:16:56Z",
+  "checkpoint_id": "cp-20261011-k1-resume-06",
+  "note": "Previous lease expired; main3b1d2f4 and previous handoffs inspected, unpublished corrections recovered. Sequential continuation authorized. No component code task active."
 }

@@ -3,30 +3,31 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k1-candidate-05",
-  "verified_base_head": "814ea650422a9a3a9cb7aae48a5ad4aa43547c40",
+  "checkpoint_id": "cp-20261011-k1-resume-06",
+  "verified_base_head": "3b1d2f4eca580a054b7a419065b12e1e640d00bf",
   "stage": "K1 Kotlin readiness and architecture translation",
   "status": "in_progress",
   "next_task": "orch-kotlin-toolchain-01",
   "next_step": 3,
-  "first_action": "Incorporate independent Astra-high review of candidate lock and Kotlin ownership map. If approved, design a bounded hosted capability-probe proposal; do not create application source.",
+  "first_action": "Finish accepted K1 candidate corrections, review the concrete hosted capability workflow, publish and observe its run; compile proof remains K2.",
   "active_tasks": [
     "orch-kotlin-toolchain-01"
   ],
   "blockers": [],
-  "worktree_mode": "text_snapshot_without_git; direct GitHub read/write connector verified",
-  "review_status": "Astra-high execution-readiness review approved K1; K2 remains blocked by K1 evidence and review",
+  "worktree_mode": "git_checkout: /workspace/Command-Library-kotlin; preserved prior snapshot at /workspace/Command-Library",
+  "review_status": "Prior Astra-high discovery audit accepted with named corrections; preserved and completing corrections.",
   "verification": {
-    "continuity": "historical documentation checks passed before K1; not rerun at this checkpoint",
+    "continuity": "Current checkpoint checks pending until publish",
     "app_build": "not_run",
     "runtime_tests": "not_run",
     "hosted_ci": "historical continuity workflow results only; no Kotlin build workflow exists",
-    "remote_readback": "main read before K1 claim: a87347d33eab881d6bc09ddc238bc4bab9da5a5d",
+    "remote_readback": "Verified main3b1d2f4 at resume; checkout clone succeeded.",
     "toolchain": "not_run",
     "kotlin_compatibility": "not_run",
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
-    "k1_source_metadata": "captured in K1-KOTLIN-TOOLCHAIN.md; candidate discovery only"
+    "k1_source_metadata": "captured in K1-KOTLIN-TOOLCHAIN.md; candidate discovery only",
+    "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session"
   },
-  "last_completed": "K1 source-backed candidate tuple and 20-component Kotlin ownership map drafted; independent review in progress",
-  "updated_utc": "2026-10-11T20:25:00Z"
+  "last_completed": "Recovered unpublished K1 corrections into fresh checkout; verified main; regular-chat research deferral recorded",
+  "updated_utc": "2026-10-11T21:31:56Z"
 }

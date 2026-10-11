@@ -1,11 +1,10 @@
-
 # Kotlin ownership and replacement map
 
 Status: K1 candidate. It preserves existing product obligations while replacing historical Dart/package ownership. It is not application source and requires independent K1 review before K2.
 
 ## Root and shared ownership
 
-Future Android version-1 source root: `android-app/`. The future Gradle settings, version catalog, root build configuration, Android application manifest, CI workflow, database migration registry, DI assembly and navigation assembly are orchestrator-owned shared paths. A component worker may change only its named module and tests; cross-module contracts require the orchestrator and reviewer.
+Future Android version-1 source root: `android-app/`. The future Gradle settings, version catalog, root build configuration, Android application manifest, CI workflow, database migration registry, DI assembly and navigation assembly are orchestrator-owned shared paths: `android-app/settings.gradle.kts`, `android-app/build.gradle.kts`, `android-app/gradle/**`, `android-app/gradle/libs.versions.toml`, `android-app/app/src/main/AndroidManifest.xml`, `.github/workflows/**`, `android-app/database/registry/**`, `android-app/app/src/main/kotlin/**/di/**` and `android-app/app/src/main/kotlin/**/navigation/**`. A component worker may change only its named module and tests; cross-module contracts require the orchestrator and reviewer.
 
 ## Component modules
 
@@ -31,6 +30,8 @@ Future Android version-1 source root: `android-app/`. The future Gradle settings
 | settings | `:feature:settings` | core, storage, vault | K01, K02 |
 | links | `:feature:links` | core, catalog | F01 |
 | shell | `:app` | core plus all feature modules through public UI contracts | J01-J04, N01, N03 |
+
+Exclusive future paths are `android-app/core/model/**`, `android-app/core/common/**`, `android-app/data/network/**`, `android-app/data/vault/**`, `android-app/data/storage/**` and `android-app/feature/<component>/**` for every named feature. The shell's future path is `android-app/app/**`, except the explicitly shared app paths above. `:core:common` may depend on `:core:model`; no other core split or feature edge may be added without updating this map and independent review.
 
 No module may import another module's implementation package. `:core:model` holds immutable IDs, outcomes, cancellation and clock abstractions; `:core:common` holds no Android UI or persistence implementation. `:app` owns Compose navigation and adaptive presentation only. Module naming does not authorize implementation; K2's card will select a small accepted subset.
 

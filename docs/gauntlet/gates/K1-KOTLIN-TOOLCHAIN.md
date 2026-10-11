@@ -37,3 +37,11 @@ The latest final AGP and Kotlin candidates have now been extracted and the AGP/J
 - `docs/architecture/KOTLIN_OWNERSHIP_MAP.md` maps all twenty historical components and their dependency edges to Kotlin Gradle modules. It does not create modules or relax any coverage obligation.
 - Exact Kotlin/AGP integration and the Android FTS5 binding remain unselected/unproven. A documentation-only hosted capability probe cannot prove either; a later targeted Kotlin compile and packaged FTS5 test are required.
 
+## Outstanding K1 evidence
+
+- Select and source-check Android SDK compile/min/target policy against the retained phone, foldable and tablet requirements.
+- Verify a current stable DataStore and Compose compiler/plugin path with Kotlin and AGP; record licenses and compatibility source links.
+- Verify the KSP/Room compiler path and its license/compatibility boundary before generating any database code.
+- Identify an Android-packaged SQLite/FTS5 binding strategy and its redistribution/license status. Room alone is not that proof.
+- Draft a concrete hosted capability-probe workflow with only version/configuration checks, immutable action references, no secrets and no application source; obtain independent review before it is committed or run.
+

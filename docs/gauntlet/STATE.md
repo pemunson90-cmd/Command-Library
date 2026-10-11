@@ -1,9 +1,7 @@
 # STATE
 
-Checkpoint: cp-20261011-k1-start-03. K1 Kotlin readiness and architecture translation is active after Pat's execution release and Astra-high approval.
+Checkpoint: cp-20261011-k1-resume-06. K1 readiness is in progress; next task `orch-kotlin-toolchain-01` step3. Current single orchestrator lease is active. Read CURRENT and machine state for exact first action.
 
-Current task: orch-kotlin-toolchain-01 step 1. It may research and document the current Kotlin/Android toolchain, Kotlin ownership/interface replacement map and bounded build-probe plan. It may not create product code, Gradle modules, fixtures, builds, signing flows or releases. K2 remains blocked until K1 output receives independent review and a new Kotlin implementation card exists.
+Fresh checkout: `/workspace/Command-Library-kotlin`. Previous snapshot/drafts preserved. Kotlin candidate discovery and20-component mapping received Astra-high review with corrections. Finish sources/ownership and review then run the hosted capability workflow. No product code/build/signing/device evidence yet; K2 requires accepted K1 and a concrete Kotlin foundation card.
 
-Android version 1 uses Kotlin. Flutter is a separate Windows version-2 application after the complete Android app. Sync is considered only after Windows runs and a later explicit authorization. FTS5 compatibility, toolchain compatibility, hosted Kotlin transport, source fixtures, application builds and physical-device evidence are all unverified.
-
-Every complete section ends with published evidence, journal, state/queue/current handoff, read-back and released lease. A recovery checkpoint may capture incomplete work but must label it incomplete.
+Use the weakest capable model, short scoped briefs and targeted review. Pure research/discussion goes to regular chat when possible; use `coordination/chat-handoffs/README.md`. No stale D07 choice or user-release blocker remains. Scope: Kotlin Android v1; separate Flutter Windows v2; sync later. Stop after complete K1 with reviewed evidence, notes, checkpoint and released lease.
