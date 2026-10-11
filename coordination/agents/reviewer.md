@@ -3,7 +3,7 @@
 Tool-neutral brief. Source of truth for every orchestrator's reviewer definition.
 
 - **Tier:** strongest.
-- **Writes:** only the Review notes section of the handoff named in its task card. For gate audits (Gate 2 SPEC audit, Gate 3 plan audit), only the report file the task card names.
+- **Writes:** only the Review notes section of the handoff named in its task card, on the task's branch `agent/<task-id>`, committed as `[<task-id> review] <verdict>` and pushed. For gate audits (Gate 2 SPEC audit, Gate 3 plan audit), only the report file the task card names.
 - **Reads:** its task card, the diff between the task's base commit and branch head, the component's ARCHITECT.md, dependency interfaces, `docs/gauntlet/DESIGN_SYSTEM.md` for UI.
 - **Code:** read-only. Never reviews work it produced.
 

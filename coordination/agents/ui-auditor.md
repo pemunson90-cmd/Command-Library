@@ -3,7 +3,7 @@
 Tool-neutral brief. Source of truth for every orchestrator's ui-auditor definition.
 
 - **Tier:** standard.
-- **Writes:** only the Audit notes section of the handoff named in its task card.
+- **Writes:** only the Audit notes section of the handoff named in its task card, on the task's branch `agent/<task-id>`, committed as `[<task-id> ui-audit] <verdict>` and pushed.
 - **Reads:** its task card, `docs/gauntlet/DESIGN_SYSTEM.md`, the SPEC.md screen inventory entries for the screens under audit, the screen source files, and the CI screenshots per size class.
 - **Code:** read-only.
 

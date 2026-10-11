@@ -18,6 +18,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-08 | Max concurrent implementer agents | Open (Gate 3) |
 | D-09 | Integration branch and push permissions | Open: blocks Gate 1 workflow |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
+| D-11 | Cloud session setup: repos attached per session | Open |
 
 ## Open
 
@@ -63,6 +64,11 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
   - (b) Work stays on the session branch; Pat merges a PR to `main` at every gate. Locks and merges stay invisible to Codex and to fresh worktrees until Pat merges.
 - Recommendation: (a), starting by merging this Gate 0 branch into `main`.
 - Status: Open. Until ruled, the provisional integration branch is `ccr-b0894b79-qzhxhw` and no lock is claimed.
+
+### D-11 Cloud session setup: repos attached per session
+- Finding (R-00): this session has Command-Library and Pocket-Steward attached. In an Anthropic-hosted session with several repositories, no repository's `.claude/settings.json` hooks, permission rules, or `env` load (https://code.claude.com/docs/en/cloud-environments, accessed 2026-10-11).
+- Recommendation: start future gauntlet sessions with only Command-Library attached.
+- Tradeoff: repo hooks and permission rules load (fewer prompts, enforcement hooks possible at Gate 3), versus losing direct read access to Pocket-Steward as a reference. What R-01 and R-15 need from it is already recorded in `gates/GATE-0.md`, and a research agent can read it from GitHub when it is attached.
 
 ## Ruled
 
