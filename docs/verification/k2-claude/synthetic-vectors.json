@@ -1,0 +1,3247 @@
+{
+ "schema": "cc-k2-qa-01/synthetic-vectors/v1",
+ "synthetic": true,
+ "notice": "Every vector in this file is a synthetic QA input written by the cc-k2-qa-01 task. None is a Scryfall fixture or authentic source data. No ID, name, URL, date, hash or count here describes a real card or a real upstream publication. Card-shaped JSON uses Scryfall card-object field names (https://scryfall.com/docs/api/cards) so parser tests can consume it; those field names were not re-verified by this task. Use these as test inputs only, never as application data or as the genuine K2 fixture.",
+ "task": "cc-k2-qa-01",
+ "base_commit": "a61daf604ffe8ecff6fcae3b0f1c5e31da42d9db",
+ "contracts_reviewed_commit": "9681aec9866a867c45a4a2f8bd51570687456512",
+ "provider_used_by_vectors": "synthetic-qa",
+ "expected_vocabulary": {
+  "Outcome": "Success, Unavailable, Failure, Unknown as declared in core/model Values.kt",
+  "FailureCode": "INVALID_INPUT, STALE_REVISION, STALE_GENERATION, CORRUPT_DATA, TRANSPORT, PERSISTENCE, PERMISSION, SOURCE_MISMATCH, INTERNAL",
+  "decision_required": "the expected outcome depends on a rule no document defines yet; the root orchestrator decides and the test asserts the chosen option",
+  "repeat": "{repeat: s, count: n} means s repeated n times",
+  "concat": "{concat: [...]} means the parts joined in order",
+  "range": "[start, end) byte range of body_utf8 encoded as UTF-8",
+  "prefix_hex": "raw bytes placed before the UTF-8 body"
+ },
+ "layers": {
+  "JVM": "pure Kotlin unit test",
+  "AIT": "Android instrumentation on a hosted emulator",
+  "EMU": "emulator UI test"
+ },
+ "input_conventions": {
+  "source": "'default' means shared.default_import_source; {base, overrides} replaces only the listed fields",
+  "records": "list of shared.cards keys; the import body is a JSON array of those card objects in list order, encoded as UTF-8",
+  "chunks": "literal byte chunks; used where exact bytes matter (limits, framing, encoding)"
+ },
+ "shared": {
+  "default_import_source": {
+   "provider": "synthetic-qa",
+   "language": "en",
+   "displayName": "synthetic-vector.json",
+   "contentUri": "content://synthetic-qa/vector",
+   "sourceDate": {
+    "knowledge": "Unknown",
+    "reason": "synthetic vector; no upstream date exists"
+   },
+   "sourceUri": {
+    "knowledge": "Absent"
+   },
+   "expectedChecksum": {
+    "knowledge": "Absent"
+   },
+   "expectedBytes": {
+    "knowledge": "Absent"
+   },
+   "notice": {
+    "knowledge": "Absent"
+   }
+  },
+  "cards": {
+   "synthetic-probe-alpha": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000101",
+    "oracle_id": "00000000-0000-4000-8000-000000000901",
+    "name": "Synthetic Probe Alpha",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "1",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-twin": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000102",
+    "oracle_id": "00000000-0000-4000-8000-000000000902",
+    "name": "Synthetic Twin",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "2",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-twin-2": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000103",
+    "oracle_id": "00000000-0000-4000-8000-000000000903",
+    "name": "synthetic  twin",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "3",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-front-synthetic-back": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000010a",
+    "oracle_id": "00000000-0000-4000-8000-0000000009f0",
+    "name": "Synthetic Front // Synthetic Back",
+    "lang": "en",
+    "layout": "transform",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "10",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ],
+    "card_faces": [
+     {
+      "name": "Synthetic Front",
+      "type_line": "Artifact",
+      "oracle_text": "Front text.",
+      "mana_cost": "{1}",
+      "image_uris": {
+       "normal": "https://synthetic.invalid/art-a/0.jpg"
+      }
+     },
+     {
+      "name": "Synthetic Back",
+      "type_line": "Artifact",
+      "oracle_text": "Back text.",
+      "mana_cost": "",
+      "image_uris": {
+       "normal": "https://synthetic.invalid/art-a/1.jpg"
+      }
+     }
+    ]
+   },
+   "synthetic-front-synthetic-back-2": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000010b",
+    "oracle_id": "00000000-0000-4000-8000-0000000009f0",
+    "name": "Synthetic Front // Synthetic Back",
+    "lang": "en",
+    "layout": "transform",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "11",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ],
+    "card_faces": [
+     {
+      "name": "Synthetic Front",
+      "type_line": "Artifact",
+      "oracle_text": "Front text.",
+      "mana_cost": "{1}",
+      "image_uris": {
+       "normal": "https://synthetic.invalid/art-b/0.jpg"
+      }
+     },
+     {
+      "name": "Synthetic Back",
+      "type_line": "Artifact",
+      "oracle_text": "Back text.",
+      "mana_cost": "",
+      "image_uris": {
+       "normal": "https://synthetic.invalid/art-b/1.jpg"
+      }
+     }
+    ]
+   },
+   "synthetic-conflict": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000010d",
+    "oracle_id": "00000000-0000-4000-8000-0000000009f1",
+    "name": "Synthetic Conflict",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "13",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-conflict-2": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000010e",
+    "oracle_id": "00000000-0000-4000-8000-0000000009f1",
+    "name": "Synthetic Conflict",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Different synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "14",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-number-0": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000114",
+    "oracle_id": "00000000-0000-4000-8000-000000000914",
+    "name": "Synthetic Number 0",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "001a",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-number-1": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000115",
+    "oracle_id": "00000000-0000-4000-8000-000000000915",
+    "name": "Synthetic Number 1",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "0012",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-number-2": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000116",
+    "oracle_id": "00000000-0000-4000-8000-000000000916",
+    "name": "Synthetic Number 2",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "12",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-number-3": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000117",
+    "oracle_id": "00000000-0000-4000-8000-000000000917",
+    "name": "Synthetic Number 3",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "★",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-meld-half": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000011e",
+    "oracle_id": "00000000-0000-4000-8000-00000000091e",
+    "name": "Synthetic Meld Half",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "30",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ],
+    "all_parts": [
+     {
+      "object": "related_card",
+      "id": "00000000-0000-4000-8000-000000007777",
+      "component": "meld_result",
+      "name": "Synthetic Unknown Result"
+     }
+    ]
+   },
+   "synthetic-star": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000128",
+    "oracle_id": "00000000-0000-4000-8000-000000000928",
+    "name": "Synthetic Star",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact Creature",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "40",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ],
+    "power": "*",
+    "toughness": "1+*"
+   },
+   "synthetic-noncreature": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000129",
+    "oracle_id": "00000000-0000-4000-8000-000000000929",
+    "name": "Synthetic Noncreature",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "41",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-count-0": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000013c",
+    "oracle_id": "00000000-0000-4000-8000-00000000093c",
+    "name": "Synthetic Count 0",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "60",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-count-1": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000013d",
+    "oracle_id": "00000000-0000-4000-8000-00000000093d",
+    "name": "Synthetic Count 1",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "61",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-count-2": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000013e",
+    "oracle_id": "00000000-0000-4000-8000-00000000093e",
+    "name": "Synthetic Count 2",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "62",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-count-3": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000013f",
+    "oracle_id": "00000000-0000-4000-8000-00000000093f",
+    "name": "Synthetic Count 3",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "63",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-dup-a": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000150",
+    "oracle_id": "00000000-0000-4000-8000-000000000950",
+    "name": "Synthetic Dup A",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "80",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-dup-b": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000150",
+    "oracle_id": "00000000-0000-4000-8000-000000000951",
+    "name": "Synthetic Dup B",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "81",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-no-oracle": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000152",
+    "name": "Synthetic No Oracle",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "82",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-no-id": {
+    "object": "card",
+    "oracle_id": "00000000-0000-4000-8000-000000000953",
+    "name": "Synthetic No Id",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "83",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-english": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000154",
+    "oracle_id": "00000000-0000-4000-8000-000000000954",
+    "name": "Synthetic English",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "84",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synth-tique": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000155",
+    "oracle_id": "00000000-0000-4000-8000-000000000955",
+    "name": "Synthétique",
+    "lang": "fr",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "85",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-import-base": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000132",
+    "oracle_id": "00000000-0000-4000-8000-000000000932",
+    "name": "Synthetic Import Base",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "50",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-bad-cmc": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000157",
+    "oracle_id": "00000000-0000-4000-8000-000000000957",
+    "name": "Synthetic Bad Cmc",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": "abc",
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "87",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-negative-cmc": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000158",
+    "oracle_id": "00000000-0000-4000-8000-000000000958",
+    "name": "Synthetic Negative Cmc",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": -1,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "88",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-q-uote": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000015a",
+    "oracle_id": "00000000-0000-4000-8000-00000000095a",
+    "name": "Synthetic Q'uote",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "90",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-mark": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000015b",
+    "oracle_id": "00000000-0000-4000-8000-00000000095b",
+    "name": "Synthetic \"Mark\"",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "91",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-and-gate": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000015c",
+    "oracle_id": "00000000-0000-4000-8000-00000000095c",
+    "name": "Synthetic AND Gate",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "92",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-star-field": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000015d",
+    "oracle_id": "00000000-0000-4000-8000-00000000095d",
+    "name": "Synthetic Star*Field",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "93",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-hyphen-probe": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000015e",
+    "oracle_id": "00000000-0000-4000-8000-00000000095e",
+    "name": "Synthetic-Hyphen Probe",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "94",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-tie": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-00000000015f",
+    "oracle_id": "00000000-0000-4000-8000-00000000095f",
+    "name": "Synthetic Tie",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "95",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-tie-2": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000160",
+    "oracle_id": "00000000-0000-4000-8000-0000000009a0",
+    "name": "Synthetic Tie",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "96",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   },
+   "synthetic-tie-3": {
+    "object": "card",
+    "id": "00000000-0000-4000-8000-000000000161",
+    "oracle_id": "00000000-0000-4000-8000-0000000009a1",
+    "name": "synthetic tie",
+    "lang": "en",
+    "layout": "normal",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "type_line": "Artifact",
+    "oracle_text": "Synthetic rules text.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "reserved": false,
+    "set": "sqa",
+    "set_name": "Synthetic QA Set",
+    "collector_number": "97",
+    "rarity": "common",
+    "finishes": [
+     "nonfoil"
+    ]
+   }
+  }
+ },
+ "vectors": [
+  {
+   "id": "SV-ID-01",
+   "synthetic": true,
+   "area": "identity",
+   "layer": "JVM",
+   "matrix": [
+    "M01-1"
+   ],
+   "description": "Same raw ID under two providers.",
+   "input": {
+    "a": {
+     "type": "CardId",
+     "source": "synthetic-qa",
+     "raw": "shared-raw-1"
+    },
+    "b": {
+     "type": "CardId",
+     "source": "synthetic-qa-other",
+     "raw": "shared-raw-1"
+    }
+   },
+   "expected": {
+    "outcome": "a != b",
+    "assertions": [
+     "repeat for OracleId, RuleId, DeckId, GameId, FormatId"
+    ]
+   },
+   "basis": "KOTLIN_CONTRACTS shared rules; Values.kt lines 35-40"
+  },
+  {
+   "id": "SV-ID-02",
+   "synthetic": true,
+   "area": "identity",
+   "layer": "JVM",
+   "matrix": [
+    "M01-4"
+   ],
+   "description": "Foreign printing with unresolved oracle mapping.",
+   "input": {
+    "CardIdentity": {
+     "oracleId": {
+      "knowledge": "Unknown",
+      "reason": "no oracle mapping in installed English catalog"
+     },
+     "printingId": {
+      "source": "synthetic-qa",
+      "raw": "00000000-0000-4000-8000-000000000201"
+     },
+     "raw": {
+      "provider": "synthetic-qa",
+      "kind": "printing",
+      "rawId": "00000000-0000-4000-8000-000000000201"
+     },
+     "originalName": "合成プローブ",
+     "language": "ja"
+    }
+   },
+   "expected": {
+    "outcome": "identity retained exactly",
+    "assertions": [
+     "language stays ja",
+     "oracleId stays Unknown",
+     "no oracle ID derived from name",
+     "no language-pack download intent created"
+    ]
+   },
+   "basis": "SPEC A02; DATA_MODEL identity rules"
+  },
+  {
+   "id": "SV-ID-03",
+   "synthetic": true,
+   "area": "identity",
+   "layer": "JVM",
+   "matrix": [
+    "M01-2"
+   ],
+   "description": "Blank identifiers.",
+   "input": {
+    "cases": [
+     {
+      "type": "CardId",
+      "source": "synthetic-qa",
+      "raw": ""
+     },
+     {
+      "type": "CardId",
+      "source": "synthetic-qa",
+      "raw": "   "
+     },
+     {
+      "type": "ProviderId",
+      "value": ""
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "IllegalArgumentException at construction for every case",
+    "assertions": []
+   },
+   "basis": "Values.kt lines 28, 35"
+  },
+  {
+   "id": "SV-ID-04",
+   "synthetic": true,
+   "area": "identity",
+   "layer": "JVM",
+   "matrix": [
+    "M01-6"
+   ],
+   "description": "Language tag spellings for the English-only rule.",
+   "input": {
+    "tags": [
+     "en",
+     "EN",
+     "en-US",
+     "eng"
+    ]
+   },
+   "expected": {
+    "outcome": "one documented rule",
+    "assertions": [
+     "current contract: only 'en' equals LanguageTag.ENGLISH"
+    ],
+    "decision_required": {
+     "question": "Which spellings count as English for K2 import and settings?",
+     "options": [
+      "exact 'en' only; reject others with INVALID_INPUT",
+      "canonicalize case and accept 'en-*' region variants as English"
+     ]
+    }
+   },
+   "basis": "Values.kt lines 31-34"
+  },
+  {
+   "id": "SV-ID-05",
+   "synthetic": true,
+   "area": "identity",
+   "layer": "AIT",
+   "matrix": [
+    "M01-3"
+   ],
+   "description": "Exact identity round trip through import and lookup.",
+   "input": {
+    "limits": {},
+    "source": "default",
+    "records": [
+     "synthetic-probe-alpha"
+    ]
+   },
+   "expected": {
+    "outcome": "Success",
+    "assertions": [
+     "lookupName('Synthetic Probe Alpha') returns oracleId raw 00000000-0000-4000-8000-000000000901 with provider synthetic-qa",
+     "printing id raw is byte-equal to input",
+     "provenance.generation is the new generation, non-null"
+    ]
+   },
+   "basis": "K2 design oracle_card and printing tables"
+  },
+  {
+   "id": "SV-ID-06",
+   "synthetic": true,
+   "area": "identity",
+   "layer": "AIT",
+   "matrix": [
+    "M01-5"
+   ],
+   "description": "Two oracles whose names normalize to the same key.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-twin",
+     "synthetic-twin-2"
+    ]
+   },
+   "expected": {
+    "outcome": "Success with two distinct canonical records",
+    "assertions": [
+     "lookup returns both records, ordered by normalized name then producer ID",
+     "neither record's identity is merged or overwritten"
+    ]
+   },
+   "basis": "KOTLIN_CONTRACTS: never infer identity from name"
+  },
+  {
+   "id": "SV-UNI-01",
+   "synthetic": true,
+   "area": "unicode",
+   "layer": "AIT",
+   "matrix": [
+    "M02-1",
+    "M02-4"
+   ],
+   "description": "Precomposed versus combining forms of the same visible name.",
+   "input": {
+    "stored_names": [
+     {
+      "name": "Dûl Synthetic",
+      "code_points": [
+       "U+0044",
+       "U+00FB",
+       "U+006C",
+       "U+0020",
+       "U+0053",
+       "U+0079",
+       "U+006E",
+       "U+0074",
+       "U+0068",
+       "U+0065",
+       "U+0074",
+       "U+0069",
+       "U+0063"
+      ]
+     }
+    ],
+    "queries": [
+     {
+      "text": "Dûl Synthetic",
+      "code_points": [
+       "U+0044",
+       "U+00FB",
+       "U+006C",
+       "U+0020",
+       "U+0053",
+       "U+0079",
+       "U+006E",
+       "U+0074",
+       "U+0068",
+       "U+0065",
+       "U+0074",
+       "U+0069",
+       "U+0063"
+      ]
+     },
+     {
+      "text": "Dûl Synthetic",
+      "code_points": [
+       "U+0044",
+       "U+0075",
+       "U+0302",
+       "U+006C",
+       "U+0020",
+       "U+0053",
+       "U+0079",
+       "U+006E",
+       "U+0074",
+       "U+0068",
+       "U+0065",
+       "U+0074",
+       "U+0069",
+       "U+0063"
+      ]
+     },
+     {
+      "text": "dul synthetic"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "stored name returned with identical code points",
+    "assertions": [
+     "no destructive normalization of the stored original"
+    ],
+    "decision_required": {
+     "question": "Do the combining-form and accent-free queries match the precomposed record?",
+     "options": [
+      "NFC-normalize the search key and fold diacritics (unicode61 remove_diacritics) so all three match",
+      "match only exact code points"
+     ]
+    }
+   },
+   "basis": "SPEC A08; DATA_MODEL line 53"
+  },
+  {
+   "id": "SV-UNI-02",
+   "synthetic": true,
+   "area": "unicode",
+   "layer": "JVM",
+   "matrix": [
+    "M02-2"
+   ],
+   "description": "Lookup length counted in code points.",
+   "input": {
+    "cases": [
+     {
+      "input": {
+       "repeat": "🧪",
+       "count": 128
+      },
+      "code_points": 128,
+      "utf16_units": 256
+     },
+     {
+      "input": {
+       "repeat": "🧪",
+       "count": 129
+      },
+      "code_points": 129
+     },
+     {
+      "input": {
+       "repeat": "a",
+       "count": 128
+      }
+     },
+     {
+      "input": {
+       "repeat": "a",
+       "count": 129
+      }
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "128 code points accepted; 129 rejected with Outcome.Failure(INVALID_INPUT)",
+    "assertions": [
+     "a 128-emoji input (256 UTF-16 units) is accepted"
+    ]
+   },
+   "basis": "K2 design: maximum 128 Unicode code points"
+  },
+  {
+   "id": "SV-UNI-03",
+   "synthetic": true,
+   "area": "unicode",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M02-3"
+   ],
+   "description": "Empty and whitespace-only lookup input.",
+   "input": {
+    "cases": [
+     "",
+     "   ",
+     "\t\n"
+    ],
+    "page": {
+     "limit": 20
+    }
+   },
+   "expected": {
+    "outcome": "Outcome.Success with an empty bounded page",
+    "assertions": [
+     "no network request",
+     "no failure",
+     "nextCursor null"
+    ]
+   },
+   "basis": "K2 design, bound local lookup"
+  },
+  {
+   "id": "SV-UNI-04",
+   "synthetic": true,
+   "area": "unicode",
+   "layer": "JVM",
+   "matrix": [
+    "M02-2"
+   ],
+   "description": "Trimming before the length check.",
+   "input": {
+    "input": {
+     "concat": [
+      "  ",
+      {
+       "repeat": "a",
+       "count": 128
+      },
+      "  "
+     ]
+    }
+   },
+   "expected": {
+    "outcome": "accepted as 128 code points after trimming",
+    "assertions": []
+   },
+   "basis": "K2 design: name input is trimmed"
+  },
+  {
+   "id": "SV-MF-01",
+   "synthetic": true,
+   "area": "multi-face",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M03-1",
+    "M03-3"
+   ],
+   "description": "Two printings of one transform oracle with different face art.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-front-synthetic-back",
+     "synthetic-front-synthetic-back-2"
+    ]
+   },
+   "expected": {
+    "outcome": "Success",
+    "assertions": [
+     "one canonical CardRecord with 2 faces in source order",
+     "two PrintingRecords, each with 2 faceAssets keyed by its own printing ID and face index",
+     "art-a URIs only on printing 00000000-0000-4000-8000-00000000010a, art-b only on 00000000-0000-4000-8000-00000000010b"
+    ]
+   },
+   "basis": "K2-DESIGN-REVIEW blocker 1"
+  },
+  {
+   "id": "SV-MF-02",
+   "synthetic": true,
+   "area": "multi-face",
+   "layer": "AIT",
+   "matrix": [
+    "M03-2"
+   ],
+   "description": "Same oracle, conflicting canonical rules text across printings.",
+   "input": {
+    "preexisting_active_generation": "G1",
+    "source": "default",
+    "records": [
+     "synthetic-conflict",
+     "synthetic-conflict-2"
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "failure names the conflicting oracle"
+    ]
+   },
+   "basis": "K2 design oracle_card integrity"
+  },
+  {
+   "id": "SV-MF-03",
+   "synthetic": true,
+   "area": "multi-face",
+   "layer": "AIT",
+   "matrix": [
+    "M03-4"
+   ],
+   "description": "Collector numbers stay text.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-number-0",
+     "synthetic-number-1",
+     "synthetic-number-2",
+     "synthetic-number-3"
+    ]
+   },
+   "expected": {
+    "outcome": "Success",
+    "assertions": [
+     "each collectorNumber round-trips byte-exact",
+     "'0012' and '12' remain distinct",
+     "no numeric coercion in any column or sort"
+    ]
+   },
+   "basis": "K2 design printing table"
+  },
+  {
+   "id": "SV-MF-04",
+   "synthetic": true,
+   "area": "multi-face",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M03-5"
+   ],
+   "description": "Related part known only by raw printing ID.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-meld-half"
+    ]
+   },
+   "expected": {
+    "outcome": "Success",
+    "assertions": [
+     "relationship relatedPrinting Known(00000000-0000-4000-8000-000000007777) and rawRelatedIdentity retained",
+     "relatedOracle Unknown; no oracle guessed from the name",
+     "relationship kind MELD_RESULT"
+    ]
+   },
+   "basis": "K2-DESIGN-REVIEW blocker 2"
+  },
+  {
+   "id": "SV-MF-05",
+   "synthetic": true,
+   "area": "multi-face",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M03-6"
+   ],
+   "description": "Face identity inconsistent with its parent record.",
+   "input": {
+    "cases": [
+     {
+      "record_oracle": "00000000-0000-4000-8000-0000000009f2",
+      "face_oracles": [
+       "00000000-0000-4000-8000-0000000009f2",
+       "00000000-0000-4000-8000-0000000009f3"
+      ]
+     },
+     {
+      "face_indices": [
+       0,
+       0
+      ]
+     },
+     {
+      "face_indices": [
+       0,
+       2
+      ]
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "rejected",
+    "assertions": [
+     "current contract does not enforce this; see CONTRACT-REVIEW F4"
+    ],
+    "decision_required": {
+     "question": "Enforce face identity consistency in the DTO init or only in the importer?",
+     "options": [
+      "CardRecord/PrintingRecord init requires matching oracle/printing IDs and indices 0..n-1",
+      "importer validation only, with tests"
+     ]
+    }
+   },
+   "basis": "CatalogContracts.kt lines 86-106"
+  },
+  {
+   "id": "SV-KN-01",
+   "synthetic": true,
+   "area": "knowledge",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M04-1"
+   ],
+   "description": "Variable, absent and missing power.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-star",
+     "synthetic-noncreature"
+    ]
+   },
+   "expected": {
+    "outcome": "Success",
+    "assertions": [
+     "power Known('*'), toughness Known('1+*')",
+     "noncreature power is Absent, not Known('') or Unknown"
+    ],
+    "decision_required": {
+     "question": "Is an explicit JSON null for a stat Absent or Unknown?",
+     "options": [
+      "Absent",
+      "Unknown with reason 'source supplied null'"
+     ]
+    }
+   },
+   "basis": "KOTLIN_CONTRACTS shared rules"
+  },
+  {
+   "id": "SV-KN-02",
+   "synthetic": true,
+   "area": "knowledge",
+   "layer": "JVM",
+   "matrix": [
+    "M04-1"
+   ],
+   "description": "Defense zero versus absent.",
+   "input": {
+    "cases": [
+     {
+      "defense": {
+       "knowledge": "Known",
+       "value": "0"
+      }
+     },
+     {
+      "defense": {
+       "knowledge": "Absent",
+       "reason": "not a battle"
+      }
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "the two CardStats are unequal",
+    "assertions": []
+   },
+   "basis": "ValuesTest knownZeroAbsentAndUnknownAreDistinct"
+  },
+  {
+   "id": "SV-KN-03",
+   "synthetic": true,
+   "area": "knowledge",
+   "layer": "JVM",
+   "matrix": [
+    "M04-1"
+   ],
+   "description": "Empty text versus absent text.",
+   "input": {
+    "cases": [
+     {
+      "originalText": {
+       "knowledge": "Known",
+       "value": ""
+      }
+     },
+     {
+      "originalText": {
+       "knowledge": "Absent",
+       "reason": "vanilla"
+      }
+     },
+     {
+      "originalText": {
+       "knowledge": "Unknown",
+       "reason": "not supplied"
+      }
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "all three are pairwise unequal and survive storage",
+    "assertions": []
+   },
+   "basis": "KOTLIN_CONTRACTS shared rules"
+  },
+  {
+   "id": "SV-KN-04",
+   "synthetic": true,
+   "area": "knowledge",
+   "layer": "JVM",
+   "matrix": [
+    "M04-2"
+   ],
+   "description": "Exact mana value.",
+   "input": {
+    "cases": [
+     {
+      "manaValue": "0.5"
+     },
+     {
+      "pair": [
+       "3",
+       "3.0"
+      ]
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "0.5 kept exactly; '3' and '3.0' compare equal in sameCanonicalGameData",
+    "assertions": []
+   },
+   "basis": "CanonicalCardComparison.kt line 21"
+  },
+  {
+   "id": "SV-DEC-01",
+   "synthetic": true,
+   "area": "decimal",
+   "layer": "JVM",
+   "matrix": [
+    "M04-3"
+   ],
+   "description": "Exact multiplication.",
+   "input": {
+    "cases": [
+     {
+      "amount": "0.10",
+      "unit": "USD",
+      "quantity": 3
+     },
+     {
+      "amount": "0.000425",
+      "unit": "TIX",
+      "quantity": 5
+     },
+     {
+      "amount": "1.00",
+      "unit": "USD",
+      "quantity": -1
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "0.30 USD scale 2; 0.002125 TIX scale 6; quantity -1 rejected",
+    "assertions": [
+     "no Double or Float anywhere in the path"
+    ]
+   },
+   "basis": "ContractSemantics.kt ExactDecimalPolicy"
+  },
+  {
+   "id": "SV-DEC-02",
+   "synthetic": true,
+   "area": "decimal",
+   "layer": "JVM",
+   "matrix": [
+    "M04-5"
+   ],
+   "description": "Exponent-form decimal text.",
+   "input": {
+    "text": [
+     "1E+3",
+     "1.5E2",
+     "2.50"
+    ]
+   },
+   "expected": {
+    "outcome": "defined behavior, never an uncaught exception at an import boundary",
+    "assertions": [
+     "current contract: DecimalAmount.exact('1E+3') throws IllegalArgumentException (scale -3)"
+    ],
+    "decision_required": {
+     "question": "How are exponent forms handled?",
+     "options": [
+      "normalize to non-negative scale before construction",
+      "reject with typed INVALID_INPUT at the parser"
+     ]
+    }
+   },
+   "basis": "Values.kt lines 122-130"
+  },
+  {
+   "id": "SV-DEC-03",
+   "synthetic": true,
+   "area": "decimal",
+   "layer": "JVM",
+   "matrix": [
+    "M04-4"
+   ],
+   "description": "Unknown price is not zero.",
+   "input": {
+    "cases": [
+     {
+      "knowledge": "Unknown",
+      "reason": "no quote"
+     },
+     {
+      "knowledge": "Known",
+      "value": "0.00",
+      "unit": "USD"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "unequal; totals that include an Unknown are not reported as complete",
+    "assertions": []
+   },
+   "basis": "KOTLIN_CONTRACTS shared rules"
+  },
+  {
+   "id": "SV-DEC-04",
+   "synthetic": true,
+   "area": "decimal",
+   "layer": "JVM",
+   "matrix": [
+    "M04-6"
+   ],
+   "description": "Currency code casing.",
+   "input": {
+    "codes": [
+     "usd",
+     "US",
+     "USDT",
+     "USD"
+    ]
+   },
+   "expected": {
+    "outcome": "only 'USD' accepted",
+    "assertions": []
+   },
+   "basis": "Values.kt line 117"
+  },
+  {
+   "id": "SV-PG-01",
+   "synthetic": true,
+   "area": "pages",
+   "layer": "JVM",
+   "matrix": [
+    "M05-1"
+   ],
+   "description": "Page limits.",
+   "input": {
+    "limits": [
+     0,
+     1,
+     100,
+     101
+    ]
+   },
+   "expected": {
+    "outcome": "0 and 101 rejected; 1 and 100 accepted",
+    "assertions": []
+   },
+   "basis": "Values.kt lines 99-108"
+  },
+  {
+   "id": "SV-PG-02",
+   "synthetic": true,
+   "area": "pages",
+   "layer": "JVM",
+   "matrix": [
+    "M05-2"
+   ],
+   "description": "Cursor byte bounds.",
+   "input": {
+    "cursors": [
+     {
+      "text": {
+       "repeat": "a",
+       "count": 2048
+      },
+      "utf8_bytes": 2048
+     },
+     {
+      "text": {
+       "repeat": "a",
+       "count": 2049
+      },
+      "utf8_bytes": 2049
+     },
+     {
+      "repeat": "界",
+      "count": 682,
+      "utf8_bytes": 2046
+     },
+     {
+      "repeat": "界",
+      "count": 683,
+      "utf8_bytes": 2049
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "2048 and 2046 bytes accepted; 2049 rejected, in both PageRequest and Page",
+    "assertions": []
+   },
+   "basis": "Values.kt lines 102, 112"
+  },
+  {
+   "id": "SV-PG-03",
+   "synthetic": true,
+   "area": "pages",
+   "layer": "AIT",
+   "matrix": [
+    "M05-3",
+    "M05-4"
+   ],
+   "description": "Lookahead row at the page boundary.",
+   "input": {
+    "catalog": "101 synthetic records named 'Synthetic Page 000' to 'Synthetic Page 100'",
+    "queries": [
+     {
+      "input": "Synthetic Page",
+      "limit": 100
+     },
+     {
+      "input": "Synthetic Page",
+      "limit": 7
+     }
+    ],
+    "variant": "same with 100 records"
+   },
+   "expected": {
+    "outcome": "101 rows: 100 items plus nextCursor; 100 rows: 100 items, nextCursor null; limit 7: 7 items",
+    "assertions": [
+     "the 101st row never appears in the page",
+     "storage request maxRows is 101 for the 100-limit query"
+    ]
+   },
+   "basis": "K2-DESIGN-REVIEW blocker 3"
+  },
+  {
+   "id": "SV-PG-04",
+   "synthetic": true,
+   "area": "pages",
+   "layer": "AIT",
+   "matrix": [
+    "M05-5"
+   ],
+   "description": "Cursor across a generation change.",
+   "input": {
+    "steps": [
+     "import G1 with 30 records",
+     "lookup limit 10, keep nextCursor",
+     "import G2 successfully",
+     "present the G1 cursor"
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure(STALE_GENERATION)",
+    "assertions": [
+     "no page mixes G1 and G2 rows",
+     "no silent restart from page 1"
+    ]
+   },
+   "basis": "K2 design bound local lookup"
+  },
+  {
+   "id": "SV-PG-05",
+   "synthetic": true,
+   "area": "pages",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M05-6"
+   ],
+   "description": "Malformed cursor.",
+   "input": {
+    "cursors": [
+     "not-a-cursor",
+     "eyJnIjoiPz8iLCJrIjpudWxsfQ==",
+     {
+      "repeat": "x",
+      "count": 2048
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure(INVALID_INPUT) for each",
+    "assertions": [
+     "no exception escapes",
+     "no restart"
+    ]
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-REV-01",
+   "synthetic": true,
+   "area": "revision",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M06-1",
+    "M06-2"
+   ],
+   "description": "Stale and current expected revisions.",
+   "input": {
+    "actual": 12,
+    "expected_cases": [
+     11,
+     12
+    ]
+   },
+   "expected": {
+    "outcome": "11 -> Failure(STALE_REVISION), state unchanged; 12 -> commits once, new revision 13",
+    "assertions": []
+   },
+   "basis": "ContractSemantics.kt"
+  },
+  {
+   "id": "SV-REV-02",
+   "synthetic": true,
+   "area": "revision",
+   "layer": "JVM",
+   "matrix": [
+    "M06-3"
+   ],
+   "description": "Revision exhaustion.",
+   "input": {
+    "actual": 9223372036854775807,
+    "expected": 9223372036854775807
+   },
+   "expected": {
+    "outcome": "Outcome.Failure(PERSISTENCE)",
+    "assertions": []
+   },
+   "basis": "ContractSemantics.kt line 39"
+  },
+  {
+   "id": "SV-REV-03",
+   "synthetic": true,
+   "area": "revision",
+   "layer": "AIT",
+   "matrix": [
+    "M06-2",
+    "M06-4",
+    "M11-6"
+   ],
+   "description": "Concurrent and interrupted settings updates.",
+   "input": {
+    "start_revision": 4,
+    "steps": [
+     "two coroutines call update(expected=4) with different themes at once",
+     "a third update is cancelled before commit",
+     "close and reopen DataStore"
+    ]
+   },
+   "expected": {
+    "outcome": "exactly one of the two commits (revision 5); the other gets STALE_REVISION; the cancelled one changes nothing",
+    "assertions": [
+     "after reopen, revision 5 and the winning theme"
+    ]
+   },
+   "basis": "K2 design settings"
+  },
+  {
+   "id": "SV-TX-01",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "AIT",
+   "matrix": [
+    "M07-2"
+   ],
+   "description": "Write, then an ignored failed query.",
+   "input": {
+    "callback": [
+     "execute INSERT synthetic row R1",
+     "query against a missing table (returns Failure)",
+     "ignore the failure and return normally"
+    ]
+   },
+   "expected": {
+    "outcome": "outer Outcome.Failure (the query failure); R1 not committed",
+    "assertions": [
+     "tx.state is RollbackOnly after the failed query"
+    ]
+   },
+   "basis": "InfrastructureContracts.kt lines 124-148"
+  },
+  {
+   "id": "SV-TX-02",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "AIT",
+   "matrix": [
+    "M07-3"
+   ],
+   "description": "Write, then a caught abort.",
+   "input": {
+    "callback": [
+     "execute INSERT R1",
+     "try { tx.abort(DomainFailure(CORRUPT_DATA, 'synthetic validation')) } catch (TransactionAbort) {}",
+     "return normally"
+    ]
+   },
+   "expected": {
+    "outcome": "outer Outcome.Failure(CORRUPT_DATA); R1 not committed",
+    "assertions": []
+   },
+   "basis": "K2-DESIGN-REVIEW blocker 4"
+  },
+  {
+   "id": "SV-TX-03",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "AIT",
+   "matrix": [
+    "M07-4"
+   ],
+   "description": "Write, then return a non-success Outcome.",
+   "input": {
+    "callback": [
+     "execute INSERT R1",
+     "return Outcome.Unknown('synthetic unknown')"
+    ]
+   },
+   "expected": {
+    "outcome": "outer Outcome.Unknown; never Success(Unknown); R1 not committed",
+    "assertions": []
+   },
+   "basis": "InfrastructureContracts.kt lines 140-143"
+  },
+  {
+   "id": "SV-TX-04",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M07-1"
+   ],
+   "description": "Cancellation after a write, before commit.",
+   "input": {
+    "callback": [
+     "execute INSERT R1",
+     "cancel the caller's job",
+     "suspend"
+    ]
+   },
+   "expected": {
+    "outcome": "CancellationException escapes unchanged; R1 not committed",
+    "assertions": [
+     "no Outcome is returned",
+     "classifier never called"
+    ]
+   },
+   "basis": "InfrastructureContracts.kt line 146"
+  },
+  {
+   "id": "SV-TX-05",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "AIT",
+   "matrix": [
+    "M07-7"
+   ],
+   "description": "Cancellation after durable commit.",
+   "input": {
+    "steps": [
+     "transaction inserting R1 commits",
+     "caller is cancelled immediately after commit returns"
+    ]
+   },
+   "expected": {
+    "outcome": "R1 remains committed; a new read shows it",
+    "assertions": []
+   },
+   "basis": "K2 design import step 5"
+  },
+  {
+   "id": "SV-TX-06",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M07-5"
+   ],
+   "description": "First latched status wins.",
+   "input": {
+    "callback": [
+     "operation returns Unavailable(OFFLINE)",
+     "later operation returns Failure(PERSISTENCE)"
+    ]
+   },
+   "expected": {
+    "outcome": "outer Outcome.Unavailable(OFFLINE)",
+    "assertions": []
+   },
+   "basis": "RollbackOnlyLatch.kt"
+  },
+  {
+   "id": "SV-TX-07",
+   "synthetic": true,
+   "area": "transaction",
+   "layer": "AIT",
+   "matrix": [
+    "M07-6"
+   ],
+   "description": "Cancellation beats a latched failure.",
+   "input": {
+    "callback": [
+     "execute INSERT R1",
+     "operation returns Failure",
+     "caller cancelled before commit"
+    ]
+   },
+   "expected": {
+    "outcome": "CancellationException escapes; R1 not committed",
+    "assertions": []
+   },
+   "basis": "InfrastructureContracts.kt line 146"
+  },
+  {
+   "id": "SV-IMP-01",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-1"
+   ],
+   "description": "Invalid UTF-8.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "hex": "5b7b226e616d65223a22c328227d5d"
+     }
+    ],
+    "note": "bytes spell [{\"name\":\"<0xC3 0x28>\"}]"
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": []
+   },
+   "basis": "K2 design import step 2"
+  },
+  {
+   "id": "SV-IMP-02",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-2"
+   ],
+   "description": "Truncated JSON array.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "utf8": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "no records from the complete part are activated"
+    ]
+   },
+   "basis": "K2 design import step 2"
+  },
+  {
+   "id": "SV-IMP-03",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-2"
+   ],
+   "description": "Stream ends without a final chunk.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": false,
+      "utf8": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": []
+   },
+   "basis": "K2-DESIGN-REVIEW obligations: truncation"
+  },
+  {
+   "id": "SV-IMP-04",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-2"
+   ],
+   "description": "Chunk framing errors.",
+   "input": {
+    "source": "default",
+    "body_utf8": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]",
+    "chunk_bytes_are_ranges_of_body": true,
+    "cases": {
+     "gap_in_offset": [
+      {
+       "sequence": 0,
+       "offset": 0,
+       "final": false,
+       "range": [
+        0,
+        217
+       ]
+      },
+      {
+       "sequence": 1,
+       "offset": 218,
+       "final": true,
+       "range": [
+        217,
+        434
+       ]
+      }
+     ],
+     "out_of_order_sequence": [
+      {
+       "sequence": 1,
+       "offset": 217,
+       "final": true,
+       "range": [
+        217,
+        434
+       ]
+      },
+      {
+       "sequence": 0,
+       "offset": 0,
+       "final": false,
+       "range": [
+        0,
+        217
+       ]
+      }
+     ],
+     "duplicate_sequence": [
+      {
+       "sequence": 0,
+       "offset": 0,
+       "final": false,
+       "range": [
+        0,
+        217
+       ]
+      },
+      {
+       "sequence": 0,
+       "offset": 217,
+       "final": true,
+       "range": [
+        217,
+        434
+       ]
+      }
+     ]
+    }
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated for every case",
+    "assertions": []
+   },
+   "basis": "InfrastructureContracts.kt ByteChunk; CONTRACT-REVIEW F13"
+  },
+  {
+   "id": "SV-IMP-05",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-2"
+   ],
+   "description": "Data after the final chunk.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "utf8": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]"
+     },
+     {
+      "sequence": 1,
+      "offset": 434,
+      "final": false,
+      "utf8": " "
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": []
+   },
+   "basis": "K2-DESIGN-REVIEW obligations"
+  },
+  {
+   "id": "SV-IMP-06",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-3"
+   ],
+   "description": "Input byte limit, using a reduced limit.",
+   "input": {
+    "limits": {
+     "maxInputBytes": 434
+    },
+    "source": "default",
+    "cases": {
+     "at_limit": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]",
+     "over_by_one": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}] "
+    }
+   },
+   "expected": {
+    "outcome": "at_limit -> Success; over_by_one -> Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "failure happens without a truncated partial success"
+    ]
+   },
+   "basis": "LocalCatalogContracts.kt lines 34-48"
+  },
+  {
+   "id": "SV-IMP-07",
+   "synthetic": true,
+   "area": "import",
+   "layer": "AIT",
+   "matrix": [
+    "M08-3",
+    "M08-9"
+   ],
+   "description": "Printing count limit and batch size, using reduced limits.",
+   "input": {
+    "limits": {
+     "maxPrintingRecords": 3,
+     "batchSize": 2
+    },
+    "source": "default",
+    "cases": {
+     "at_limit": {
+      "records": [
+       "synthetic-count-0",
+       "synthetic-count-1",
+       "synthetic-count-2"
+      ]
+     },
+     "over_by_one": {
+      "records": [
+       "synthetic-count-0",
+       "synthetic-count-1",
+       "synthetic-count-2",
+       "synthetic-count-3"
+      ]
+     }
+    }
+   },
+   "expected": {
+    "outcome": "at_limit -> Success with 3 printings; over_by_one -> Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "no staging batch exceeds 2 rows (observe via a counting test double or SQL trace)"
+    ]
+   },
+   "basis": "LocalCatalogContracts.kt"
+  },
+  {
+   "id": "SV-IMP-08",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-3"
+   ],
+   "description": "Per-record byte limit, using a reduced limit.",
+   "input": {
+    "limits": {
+     "maxRecordBytes": 449
+    },
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "utf8": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000146\",\"oracle_id\":\"00000000-0000-4000-8000-000000000946\",\"name\":\"Synthetic Big Record\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"padding padding padding padding padding \",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"70\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]"
+     }
+    ],
+    "note": "maxRecordBytes is set just below this single record's byte size"
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": []
+   },
+   "basis": "LocalCatalogContracts.kt"
+  },
+  {
+   "id": "SV-IMP-09",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM",
+   "matrix": [
+    "M08-3",
+    "M08-4"
+   ],
+   "description": "Nesting limit, using a reduced limit.",
+   "input": {
+    "limits": {
+     "maxNesting": 4
+    },
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "utf8": "[{\"object\":\"card\",\"x\":{\"object\":\"card\",\"x\":{\"object\":\"card\",\"x\":{\"object\":\"card\",\"x\":{\"object\":\"card\",\"x\":1}}}}}]"
+     }
+    ],
+    "nesting_depth_including_array": 6,
+    "stress_case": {
+     "maxNesting": 32,
+     "depth": 100000,
+     "note": "generate in the test; must fail without StackOverflowError"
+    }
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "rejection happens before recursive descent past the limit"
+    ]
+   },
+   "basis": "K2-DESIGN-REVIEW obligations: nesting"
+  },
+  {
+   "id": "SV-IMP-10",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-5"
+   ],
+   "description": "Duplicate printing ID.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-dup-a",
+     "synthetic-dup-b"
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "failure names the duplicated printing ID"
+    ]
+   },
+   "basis": "K2 design printing table"
+  },
+  {
+   "id": "SV-IMP-11",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-5"
+   ],
+   "description": "Missing identity fields.",
+   "input": {
+    "source": "default",
+    "cases": {
+     "missing_oracle_id": {
+      "records": [
+       "synthetic-no-oracle"
+      ]
+     },
+     "missing_id": {
+      "records": [
+       "synthetic-no-id"
+      ]
+     }
+    }
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated for each case",
+    "assertions": []
+   },
+   "basis": "K2 design import step 2"
+  },
+  {
+   "id": "SV-IMP-12",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-8"
+   ],
+   "description": "Non-English record in an English-only import.",
+   "input": {
+    "source": "default",
+    "records": [
+     "synthetic-english",
+     "synth-tique"
+    ]
+   },
+   "expected": {
+    "outcome": "one documented outcome",
+    "assertions": [
+     "no language-pack download intent is created either way"
+    ],
+    "decision_required": {
+     "question": "Does a non-English record fail the whole import or get counted in rejectedRecords?",
+     "options": [
+      "fail the import (no partial success)",
+      "skip and count in rejectedRecords, with the count shown to the user"
+     ]
+    }
+   },
+   "basis": "K2 design import step 1; CONTRACT-REVIEW F3"
+  },
+  {
+   "id": "SV-IMP-13",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-6"
+   ],
+   "description": "Expected checksum mismatch.",
+   "input": {
+    "source": {
+     "base": "default",
+     "overrides": {
+      "expectedChecksum": {
+       "knowledge": "Known",
+       "algorithm": "SHA-256",
+       "hex": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+     }
+    },
+    "records": [
+     "synthetic-import-base"
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure(SOURCE_MISMATCH); nothing activated",
+    "assertions": [
+     "computed hash covers exact incoming bytes"
+    ]
+   },
+   "basis": "LocalCatalogContracts.kt"
+  },
+  {
+   "id": "SV-IMP-14",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-6"
+   ],
+   "description": "Expected byte count mismatch.",
+   "input": {
+    "source": {
+     "base": "default",
+     "overrides": {
+      "expectedBytes": {
+       "knowledge": "Known",
+       "value": 444
+      }
+     }
+    },
+    "records": [
+     "synthetic-import-base"
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure(SOURCE_MISMATCH); nothing activated",
+    "assertions": []
+   },
+   "basis": "LocalCatalogContracts.kt"
+  },
+  {
+   "id": "SV-IMP-15",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT+EMU",
+   "matrix": [
+    "M04-7",
+    "M13-5"
+   ],
+   "description": "No supplied source date.",
+   "input": {
+    "source": "default",
+    "file_modified_time": "2026-01-02T03:04:05Z",
+    "records": [
+     "synthetic-import-base"
+    ]
+   },
+   "expected": {
+    "outcome": "Success",
+    "assertions": [
+     "generation provenance sourceDate is Unknown",
+     "fetchedAt is the observed import time",
+     "file modification time appears nowhere",
+     "UI shows the source date as unknown"
+    ]
+   },
+   "basis": "LocalCatalogContracts.kt line 22"
+  },
+  {
+   "id": "SV-IMP-16",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM",
+   "matrix": [
+    "M08-8"
+   ],
+   "description": "UTF-8 byte order mark.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "prefix_hex": "efbbbf",
+      "utf8": "[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000132\",\"oracle_id\":\"00000000-0000-4000-8000-000000000932\",\"name\":\"Synthetic Import Base\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"50\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "one documented outcome",
+    "assertions": [
+     "computed hash covers the BOM bytes either way"
+    ],
+    "decision_required": {
+     "question": "Accept and skip a leading BOM, or reject the file?",
+     "options": [
+      "skip BOM, hash full bytes",
+      "reject with INVALID_INPUT"
+     ]
+    }
+   },
+   "basis": "RFC 8259 section 8.1 (parsers MAY ignore a BOM)"
+  },
+  {
+   "id": "SV-IMP-17",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-8"
+   ],
+   "description": "Empty array.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "utf8": "[]"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "one documented outcome",
+    "assertions": [
+     "an empty catalog is never reported as initialized with data"
+    ],
+    "decision_required": {
+     "question": "Is an empty array a failure or a successful empty generation?",
+     "options": [
+      "Failure(INVALID_INPUT): nothing to activate",
+      "Success with zero counts and initialized=false"
+     ]
+    }
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-IMP-18",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM",
+   "matrix": [
+    "M08-7"
+   ],
+   "description": "Top-level object instead of an array.",
+   "input": {
+    "source": "default",
+    "chunks": [
+     {
+      "sequence": 0,
+      "offset": 0,
+      "final": true,
+      "utf8": "{\"object\":\"list\",\"data\":[{\"object\":\"card\",\"id\":\"00000000-0000-4000-8000-000000000156\",\"oracle_id\":\"00000000-0000-4000-8000-000000000956\",\"name\":\"Synthetic Wrapped\",\"lang\":\"en\",\"layout\":\"normal\",\"mana_cost\":\"{2}\",\"cmc\":2.0,\"type_line\":\"Artifact\",\"oracle_text\":\"Synthetic rules text.\",\"colors\":[],\"color_identity\":[],\"keywords\":[],\"reserved\":false,\"set\":\"sqa\",\"set_name\":\"Synthetic QA Set\",\"collector_number\":\"86\",\"rarity\":\"common\",\"finishes\":[\"nonfoil\"]}]}"
+     }
+    ]
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated",
+    "assertions": [
+     "typed unsupported-framing failure"
+    ]
+   },
+   "basis": "K2 design import step 1 (JSON-array file)"
+  },
+  {
+   "id": "SV-IMP-19",
+   "synthetic": true,
+   "area": "import",
+   "layer": "JVM+AIT",
+   "matrix": [
+    "M08-5"
+   ],
+   "description": "Invalid numeric field.",
+   "input": {
+    "source": "default",
+    "cases": {
+     "cmc_string": {
+      "records": [
+       "synthetic-bad-cmc"
+      ]
+     },
+     "cmc_negative": {
+      "records": [
+       "synthetic-negative-cmc"
+      ]
+     }
+    }
+   },
+   "expected": {
+    "outcome": "Outcome.Failure; previous active generation, counts and lookups unchanged; nothing activated for each case",
+    "assertions": []
+   },
+   "basis": "K2 design import step 2"
+  },
+  {
+   "id": "SV-ACT-01",
+   "synthetic": true,
+   "area": "activation",
+   "layer": "AIT",
+   "matrix": [
+    "M09-1",
+    "M09-2"
+   ],
+   "description": "Failed import with an existing active generation.",
+   "input": {
+    "steps": [
+     "import G1 (3 synthetic records)",
+     "start G2 import with SV-MF-02 conflict data",
+     "during G2 staging, run lookups"
+    ]
+   },
+   "expected": {
+    "outcome": "G2 fails; G1 stays active with identical counts",
+    "assertions": [
+     "lookups during staging see only G1 rows",
+     "G2 staging rows removed or marked abandoned, never active"
+    ]
+   },
+   "basis": "SPEC A06; K2 design"
+  },
+  {
+   "id": "SV-ACT-02",
+   "synthetic": true,
+   "area": "activation",
+   "layer": "AIT+EMU",
+   "matrix": [
+    "M07-8",
+    "M13-2"
+   ],
+   "description": "Cancel during staging.",
+   "input": {
+    "steps": [
+     "import G1",
+     "start G2 import of 3 records with batchSize 1",
+     "cancel after the first batch is written"
+    ]
+   },
+   "expected": {
+    "outcome": "CancellationException surfaces to the caller; G1 stays active",
+    "assertions": [
+     "UI returns to the G1 status with no success message"
+    ]
+   },
+   "basis": "K2 design import step 4"
+  },
+  {
+   "id": "SV-ACT-03",
+   "synthetic": true,
+   "area": "activation",
+   "layer": "AIT",
+   "matrix": [
+    "M09-3"
+   ],
+   "description": "Successful replacement.",
+   "input": {
+    "steps": [
+     "import G1 (2 records)",
+     "import G2 (3 records)"
+    ]
+   },
+   "expected": {
+    "outcome": "G2 active; G1 retired; status counts 3",
+    "assertions": [
+     "one transaction moves the pointer and statuses"
+    ]
+   },
+   "basis": "K2 design import step 5"
+  },
+  {
+   "id": "SV-ACT-04",
+   "synthetic": true,
+   "area": "activation",
+   "layer": "AIT",
+   "matrix": [
+    "M10-2"
+   ],
+   "description": "Process death during staging.",
+   "input": {
+    "steps": [
+     "import G1",
+     "start G2 import",
+     "kill the process after one staging batch",
+     "restart the app process"
+    ]
+   },
+   "expected": {
+    "outcome": "G1 active; abandoned G2 staging discarded at startup",
+    "assertions": [
+     "retired generations and user tables untouched"
+    ]
+   },
+   "basis": "K2 design import step 5"
+  },
+  {
+   "id": "SV-ACT-05",
+   "synthetic": true,
+   "area": "activation",
+   "layer": "AIT",
+   "matrix": [
+    "M09-4"
+   ],
+   "description": "Two imports at once.",
+   "input": {
+    "steps": [
+     "start import A",
+     "start import B before A finishes"
+    ]
+   },
+   "expected": {
+    "outcome": "B waits or receives a typed status; staging never interleaves",
+    "assertions": []
+   },
+   "basis": "K2 design import step 4: single import mutex"
+  },
+  {
+   "id": "SV-PER-01",
+   "synthetic": true,
+   "area": "persistence",
+   "layer": "AIT",
+   "matrix": [
+    "M10-1"
+   ],
+   "description": "Close and reopen.",
+   "input": {
+    "steps": [
+     "import G1",
+     "record status and lookup results",
+     "close database",
+     "reopen"
+    ]
+   },
+   "expected": {
+    "outcome": "status, generation, counts and lookup results identical",
+    "assertions": []
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-PER-02",
+   "synthetic": true,
+   "area": "persistence",
+   "layer": "AIT",
+   "matrix": [
+    "M10-3"
+   ],
+   "description": "Newer unsupported schema.",
+   "input": {
+    "steps": [
+     "create database file stamped with schema version current+1",
+     "open with the app"
+    ]
+   },
+   "expected": {
+    "outcome": "visible recoverable error; file contents unchanged",
+    "assertions": [
+     "no destructive migration fallback"
+    ]
+   },
+   "basis": "K2 design storage schema"
+  },
+  {
+   "id": "SV-SET-01",
+   "synthetic": true,
+   "area": "settings",
+   "layer": "AIT",
+   "matrix": [
+    "M11-1"
+   ],
+   "description": "Fresh install defaults.",
+   "input": {
+    "steps": [
+     "clear app data",
+     "read settings and catalog status"
+    ]
+   },
+   "expected": {
+    "outcome": "dataLanguage 'en', storageMode FULL, consents empty, catalog initialized=false",
+    "assertions": [
+     "no download job exists"
+    ]
+   },
+   "basis": "SPEC K01"
+  },
+  {
+   "id": "SV-SET-02",
+   "synthetic": true,
+   "area": "settings",
+   "layer": "AIT",
+   "matrix": [
+    "M11-4"
+   ],
+   "description": "Restore with consent records.",
+   "input": {
+    "steps": [
+     "approve a synthetic language-pack intent",
+     "export settings",
+     "clear app data",
+     "restore the exported settings"
+    ]
+   },
+   "expected": {
+    "outcome": "restored settings grant no effective download permission",
+    "assertions": [
+     "no transfer starts",
+     "the user must approve again"
+    ],
+    "decision_required": {
+     "question": "How is restored consent neutralized (CONTRACT-REVIEW F2)?",
+     "options": [
+      "strip consents on restore",
+      "restore them as revoked with a restore marker",
+      "keep a separate non-restorable consent store"
+     ]
+    }
+   },
+   "basis": "KOTLIN_CONTRACTS; SPEC A02"
+  },
+  {
+   "id": "SV-SET-03",
+   "synthetic": true,
+   "area": "settings",
+   "layer": "AIT",
+   "matrix": [
+    "M11-2"
+   ],
+   "description": "Approval records intent only.",
+   "input": {
+    "intent": {
+     "id": "synthetic-intent-1",
+     "kind": "LANGUAGE_PACK",
+     "source": "synthetic-qa",
+     "resource": "https://synthetic.invalid/pack-fr",
+     "version": "synthetic-1",
+     "language": "fr"
+    }
+   },
+   "expected": {
+    "outcome": "ConsentRecord stored with explicitUserApproval true",
+    "assertions": [
+     "no job, network request or download created"
+    ]
+   },
+   "basis": "K2 design settings"
+  },
+  {
+   "id": "SV-SET-04",
+   "synthetic": true,
+   "area": "settings",
+   "layer": "AIT",
+   "matrix": [
+    "M11-3"
+   ],
+   "description": "Revocation persists.",
+   "input": {
+    "steps": [
+     "approve SV-SET-03 intent",
+     "apply RevokeConsent",
+     "close and reopen",
+     "evaluate permits(intent)"
+    ]
+   },
+   "expected": {
+    "outcome": "permits false after reopen",
+    "assertions": []
+   },
+   "basis": "InfrastructureContracts.kt ConsentRecord"
+  },
+  {
+   "id": "SV-SET-05",
+   "synthetic": true,
+   "area": "settings",
+   "layer": "JVM",
+   "matrix": [
+    "M11-5"
+   ],
+   "description": "Same scope, new intent instance.",
+   "input": {
+    "approved_intent": {
+     "id": "synthetic-intent-1",
+     "kind": "LANGUAGE_PACK",
+     "source": "synthetic-qa",
+     "resource": "https://synthetic.invalid/pack-fr",
+     "version": "synthetic-1",
+     "language": "fr"
+    },
+    "candidate": "identical except id 'synthetic-intent-2'"
+   },
+   "expected": {
+    "outcome": "current contract: permits false (whole-intent equality)",
+    "assertions": [],
+    "decision_required": {
+     "question": "Is consent per intent instance or per scope (kind, source, resource, version, language, pack)?",
+     "options": [
+      "per instance (current behavior)",
+      "per scope, excluding id and expectedBytes"
+     ]
+    }
+   },
+   "basis": "InfrastructureContracts.kt line 183"
+  },
+  {
+   "id": "SV-FTS-01",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-1",
+    "M12-3"
+   ],
+   "description": "Apostrophes.",
+   "input": {
+    "catalog": [
+     "synthetic-q-uote",
+     "synthetic-mark",
+     "synthetic-and-gate",
+     "synthetic-star-field",
+     "synthetic-hyphen-probe"
+    ],
+    "queries": [
+     "Synthetic Q'uote",
+     "q'uote",
+     "'"
+    ]
+   },
+   "expected": {
+    "outcome": "no FTS syntax error for any query; the exact full name returns its record",
+    "assertions": [],
+    "decision_required": {
+     "question": "Should 'q'uote' and 'quote' both match (unicode61 splits on the apostrophe)?",
+     "options": [
+      "document tokenizer splitting and accept both",
+      "configure tokenchars to keep apostrophes inside tokens"
+     ]
+    }
+   },
+   "basis": "K2 design bound local lookup"
+  },
+  {
+   "id": "SV-FTS-02",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-1"
+   ],
+   "description": "FTS keywords as literal text.",
+   "input": {
+    "catalog": [
+     "synthetic-q-uote",
+     "synthetic-mark",
+     "synthetic-and-gate",
+     "synthetic-star-field",
+     "synthetic-hyphen-probe"
+    ],
+    "queries": [
+     "AND",
+     "Synthetic AND Gate",
+     "OR",
+     "NOT Gate",
+     "NEAR"
+    ]
+   },
+   "expected": {
+    "outcome": "no syntax error; keywords are matched as literal words, never as operators",
+    "assertions": [
+     "'NOT Gate' does not exclude the Gate record"
+    ]
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-FTS-03",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-1"
+   ],
+   "description": "Double quotes in input.",
+   "input": {
+    "catalog": [
+     "synthetic-q-uote",
+     "synthetic-mark",
+     "synthetic-and-gate",
+     "synthetic-star-field",
+     "synthetic-hyphen-probe"
+    ],
+    "queries": [
+     "Synthetic \"Mark\"",
+     "\"",
+     "a\"b"
+    ]
+   },
+   "expected": {
+    "outcome": "no syntax error; quotes are escaped into the literal",
+    "assertions": []
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-FTS-04",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-1"
+   ],
+   "description": "FTS operator characters.",
+   "input": {
+    "catalog": [
+     "synthetic-q-uote",
+     "synthetic-mark",
+     "synthetic-and-gate",
+     "synthetic-star-field",
+     "synthetic-hyphen-probe"
+    ],
+    "queries": [
+     "Star*",
+     "^Synthetic",
+     "name:Synthetic",
+     "(Synthetic)",
+     "Synthetic + Probe",
+     "Synthetic-Hyphen"
+    ]
+   },
+   "expected": {
+    "outcome": "no syntax error; no column filter, initial-token or grouping semantics take effect",
+    "assertions": []
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-FTS-05",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-2"
+   ],
+   "description": "SQL injection text.",
+   "input": {
+    "queries": [
+     "'); DROP TABLE oracle_card;--",
+     "x' OR '1'='1",
+     "Synthetic%"
+    ]
+   },
+   "expected": {
+    "outcome": "Success with literal matching (likely empty); tables intact; no extra rows",
+    "assertions": [
+     "statement text never contains user input; only bound parameters"
+    ]
+   },
+   "basis": "K2 design"
+  },
+  {
+   "id": "SV-FTS-06",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-3",
+    "M02-4"
+   ],
+   "description": "Diacritics and non-Latin names.",
+   "input": {
+    "catalog": "records named 'Dûl Synthetic', 'Æther Synthetic', '合成 Synthetic'",
+    "queries": [
+     "dul",
+     "aether",
+     "æther",
+     "合成"
+    ]
+   },
+   "expected": {
+    "outcome": "matches follow the written tokenizer policy; original names returned unchanged",
+    "assertions": [],
+    "decision_required": {
+     "question": "Accent folding and ligature handling for lookup?",
+     "options": [
+      "unicode61 remove_diacritics 2, no ligature expansion ('aether' does not match 'Æther')",
+      "add explicit ligature folding to the normalized key"
+     ]
+    }
+   },
+   "basis": "SPEC A08"
+  },
+  {
+   "id": "SV-FTS-07",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M12-3"
+   ],
+   "description": "Prefix behavior.",
+   "input": {
+    "catalog": [
+     "synthetic-q-uote",
+     "synthetic-mark",
+     "synthetic-and-gate",
+     "synthetic-star-field",
+     "synthetic-hyphen-probe"
+    ],
+    "queries": [
+     "synth",
+     "Synthetic Sta"
+    ]
+   },
+   "expected": {
+    "outcome": "matches follow the written prefix policy",
+    "assertions": [],
+    "decision_required": {
+     "question": "Is the final token treated as a prefix?",
+     "options": [
+      "yes, last token prefix-matched",
+      "no, whole tokens only"
+     ]
+    }
+   },
+   "basis": "K2 design: token/phrase/prefix behavior documented and tested"
+  },
+  {
+   "id": "SV-FTS-08",
+   "synthetic": true,
+   "area": "fts",
+   "layer": "AIT",
+   "matrix": [
+    "M05-7"
+   ],
+   "description": "Deterministic ordering with ties.",
+   "input": {
+    "catalog": [
+     "synthetic-tie",
+     "synthetic-tie-2",
+     "synthetic-tie-3"
+    ],
+    "query": "Synthetic Tie",
+    "page_limit": 1
+   },
+   "expected": {
+    "outcome": "order by normalized name, then producer ID; paging with limit 1 visits all three exactly once",
+    "assertions": [
+     "same order on every run and across close/reopen"
+    ]
+   },
+   "basis": "K2 design"
+  }
+ ]
+}
