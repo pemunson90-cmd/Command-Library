@@ -97,3 +97,13 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - Tradeoff: repo hooks and permission rules load (fewer prompts, enforcement hooks possible at Gate 3), versus losing direct read access to Pocket-Steward as a reference. What R-01 and R-15 need from it is already recorded in `gates/GATE-0.md`, and a research agent can read it from GitHub when it is attached.
 - Pat, 2026-10-11, verbatim: "Approved."
 - Applied: the Gate 1 session (session branch `ccr-d1e9ac59-b90cv2`) has only Command-Library attached. Verified at session start: the six `.claude/agents/` definitions loaded as subagent types without hot reload, and `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1` is still set by the environment. No `.claude/settings.json` exists yet, so no repo hooks or permission rules are in play.
+
+## Codex resume rulings, 2026-10-11
+
+- D-09, Pat verbatim: "Approved. You may push to main and to agent/* branches in this repo." Applies to this Codex session.
+- D-01, Pat verbatim: "com.architectpsg.commandlibrary". Reaffirms existing ID.
+- D-02, Pat verbatim: "Stay public." Reaffirms public repository.
+- D-03, Pat verbatim: "[where your keystore is, or \"make a new key\"]". Unfilled template does not supersede the existing completed new-key ruling. Uploaded signing sheets remain outside git; no key regeneration.
+- D-05, Pat verbatim: "Codex alone through Gate 3." Supersedes the prior Claude-only ruling. Codex is sole orchestrator through Gate 3.
+- D-11, Pat verbatim: "Approved." Only Command-Library is used for this session.
+- Runtime note: Sonnet/Haiku are not available in this Codex toolset. Native research agents use the inherited OpenAI model; no unsupported model configuration is claimed.
