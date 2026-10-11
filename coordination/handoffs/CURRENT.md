@@ -1,19 +1,12 @@
-# CURRENT: reviewed architecture and cross-model handoff
+# CURRENT: Kotlin execution plan ready for independent audit
 
-Checkpoint-ID: cp-20261011-cc-plangaps-01
+Checkpoint-ID: cp-20261011-kotlin-plan-01
 
-Next task: orch-source-fixtures-01
-Next step: 1. First action: read orch-source-fixtures-01 and COVERAGE E01-E13; choose the highest dependency-blocking unanswered source item. orch-toolchain-01 is blocked until Pat answers whether D-07 is rescored for an Android-first version 1 (D-19); resume it as soon as he answers.
+Next task: orch-kotlin-plan-audit-01
+Next step: 1. Read V1_KOTLIN_EXECUTION_SPEC.md and audit every active pointer for Kotlin Android v1, a separate Flutter Windows v2 source tree, and sync only after Windows runs. Report only. Do not execute K1, create application files, pin versions, download data, build, sign, release, or implement sync.
 
-Update 2026-10-11 (Claude Code, lease for cc-plangaps-01): merged reviewed branch agent/cc-plangaps-01 (approve 0ad8f6c): gap report GATE-3-CC-GAPS.md, RISKS RK-01 to RK-33, IMPOSSIBLE screened, POST_RELEASE PR-05 to PR-07, SPEC/COVERAGE acceptance for G-13/G-15/G-16/G-18, D-08 ruled 3, D-18 English UI, D-19 Android first with Windows marked v2 everywhere. Base verified 3799edb60bf2ab0b2cbb3e1ffc26613adcc0dd28.
-Toolchain step when unblocked: read orch-toolchain-01, inspect actual checkout/hosted capability, verify current official SDK/dependency versions and evidence before writing pins. Claim a fresh lease on current main. If transport is blocked, record it and select orch-source-fixtures-01 as the documented safe fallback.
+Ruling D-20 resolves the stale D-07 rescore block: version 1 is Kotlin Android. Flutter Windows is version 2 after Android runs and is its own implementation. Sync needs a future explicit authorization after Windows runs. K0 uses Astra low for an independent consistency review. K1 needs an Astra-high architecture pass before a Sol-high implementation task is formed.
 
-Done: model-neutral README/CONTINUE, GPT/Codex/Claude/Claude Code adapters,20 architecture contracts,64 joins/213 parity traces, exclusive paths/DAG, concrete M0/M1 worker cards and M0-M9 plan. Independent G3-A audit accepted after remote-search port and staged prerequisites corrections. Continuity checker and5 regression tests pass locally. Documentation-only CI configured, hosted documentation run passed. No app builds/runtime/device tests or application pins exist.
+Done: D-20 and the planning-only execution specification; K0 and K1 task cards. Previous lease released; no implementation worker is active. Main before this checkpoint: d2d699d94668c3e26e1a310b2a996868235908c1. Re-fetch main before any mutation. This local text snapshot is not a Git checkout; GitHub main is authoritative.
 
-Verified base main: f58f3d46299139c52788afcd4523d4911670ec6b. Find containing commit by this Checkpoint-ID; re-fetch main before continuing. Lease released; no active component workers. Local directory is a text snapshot without .git, not a working checkout. GitHub main is authoritative. Never force-push or expose signing sheets/keys.
-
-Remaining: toolchain/capability proof, compile all public DTOs (including inventory omissions identified in GATE-3-REVIEW), genuine M0 signed Android APK skeleton (Windows: v2, D-19), M1 actual English catalog/rules/search, then milestones M2-M9. Performance budgets are targets, not measured results. Optional-language downloads require user consent; English default, raw foreign identity preserved.
-
-Start with README -> CONTINUE -> state.json/CURRENT -> exact next card. Historical pointers are superseded. Record base/dependency SHAs, checkpoint every10-15minutes/finished substep, preserve unpublished changes, release lease with exact next action before usage/session ends. User need only say continue in a model with repository access.
-
-Evidence follow-up: GitHub documentation workflow38158275280 passed on86dfd50. Final checkpoint records that result; this evidence does not cover application builds. Base for this evidence commit86dfd50d35df26be184e5afaa1c729fc2d5424a3.
+Blockers: none for the K0 audit. Execution is intentionally held until the user explicitly releases it after reviewing the K0 report; K0 approval alone never advances to K1. Existing source-fixture work remains read-only fallback only when a future accepted task selects it. Preserve consent, signing, and public-repository rules.

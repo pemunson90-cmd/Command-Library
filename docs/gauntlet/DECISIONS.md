@@ -14,7 +14,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-04 | Default currency and price source | Ruled; latest approval below |
 | D-05 | Claude Code and Codex concurrency | Superseded by D-17 sequential cross-model handoff |
 | D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers; version 2 per D-19 |
-| D-07 | Stack | Ruled; see latest Gate 1 answers; rescore question open (D-19) |
+| D-07 | Stack | Superseded for Android version 1 by D-20; retained as Windows v2 historical evidence |
 | D-08 | Max concurrent implementer agents | Ruled 2026-10-11: 3 |
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
@@ -27,10 +27,11 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-17 | Shared continue mandate and delegated technical stage progression | Ruled: latest user instruction below |
 | D-18 | Interface language and localization | Ruled 2026-10-11 |
 | D-19 | Platform priority: Android first, Windows is version 2 | Ruled 2026-10-11 |
+| D-20 | Kotlin Android v1; separate Flutter Windows v2; sync after Windows runs | Ruled 2026-10-11 |
 
 ## Open
 
-- D-07 rescore for an Android-first version 1 (question to Pat under D-19). D-04, D-06, D-07 and D-08 entries moved under Ruled; their index rows carry the rulings.
+- No stack-rescore blocker remains. Future platform or sync changes require a new explicit ruling.
 
 ## Ruled
 
@@ -190,3 +191,8 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - Facts from the same message: Pat owns a Samsung Galaxy Z Fold7, the physical device for manual posture, hinge and TalkBack evidence (it is not the mid-range performance reference). Pat is in the USA, which matters for Windows code-signing eligibility if version 2 adopts signing (D-06, RISKS RK-07).
 - Effect on D-06: Windows installer format and signing move to version 2 unchanged.
 - Effect on D-07, flagged to Pat: Flutter won 88.6 to 84.0 mainly on Windows Narrator evidence, and Kotlin wins under reuse-heavy weighting (RISKS RK-08, RESEARCH_SUMMARY D-07). With Windows in version 2 the main reason for the choice no longer applies to version 1. Pat is asked whether to rescore D-07 for an Android-first version 1 before the toolchain is pinned (`orch-toolchain-01`). D-07 stands until he rules, but the toolchain is not pinned until he answers: `orch-toolchain-01` is blocked on that answer and `orch-source-fixtures-01` is the eligible fallback. Either way the version 1 tuple is Android plus pure Dart only.
+
+## D-20 Kotlin Android version 1, separate Flutter Windows version 2, sync after Windows runs
+
+- Pat, 2026-10-11, verbatim: "Just run with kotlin, but plan for expansion to flutter for windows when v2 launches. It would be a separate file entirely. Then we build sync into it but that's for after it runs period."
+- Applied: supersedes the Android-v1 portion of D-07. Version 1 uses Kotlin on Android. Flutter is reserved for a separate Windows version-2 application source tree, which begins only after the complete Android application runs. Sync planning and implementation begin only after the Windows app runs and receives a future explicit authorization. `V1_KOTLIN_EXECUTION_SPEC.md` is the execution-specification authority. No code, pin, build, download, signing or sync work is authorized by this ruling; K0 audit and an explicit later user execution release are required before K1.

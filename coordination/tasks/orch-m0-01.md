@@ -1,7 +1,3 @@
 # Task orch-m0-01
 
-Status: planned; not eligible until architecture audit + toolchain phase accepted. Role: orchestrator. M0 is a parent task; create/claim concrete worker cards before code.
-Outputs genuine Flutter workspace/shared CI/app/database composition and verified signed Android APK (Windows EXE+ZIP: V2 Windows milestone, D-19). Public interfaces and matching tests, small authentic catalog import/search/status only; no dummy future destinations.
-Steps:1 workspace/pinned manifest + core DTO contracts/API compile with unit tests;2 real storage/FTS5 + network/settings/catalog tiny authenticated fixture path and domain tests;3 vault native bridge smoke and real shell status/search task +CI artifacts;4 existing-key signing certificate, Android install/launch/update-in-place tests (CI_PLAN step 5) and independent M0 review.
-Task cards use package-exclusive branch/worktree locks; root applies sharedfile requests. Merge only tests/reviewer approved. Unbuilt features absent from UI. Preserve secret values only runner/temp/vault, single ANDROID_SIGNING, certificateD03. Never release-publish by implication.
-No M0 completion without real CI URLs/checksums/test summaries; installs/readers/physical claims need actual evidence. Exact native proof missing is next task/blocker, not fake success.
+Status: historical and ineligible for version 1. Its Flutter/Dart and Windows assumptions are superseded by D-20. Do not execute this card. A future `orch-kotlin-m0-01` can be created only after K0 approval, explicit user execution release, K1 acceptance and an accepted Kotlin ownership/interface map. Existing product obligations remain in SPEC/COVERAGE; no implementation path is authorized here.

@@ -24,7 +24,7 @@ D15/D16 were previously proposed, not explicitly approved; D17 now authorizes us
 
 Default: one to three small eligible steps, around30-60minutes or earlier when context/tools/usage appear constrained. Stop on a clean checkpoint and do not require Pat to say which model takes over. Prefer reserving the final portion for publication/verification; actual usage limits are not always visible. If interrupted abruptly, committed drafts survive; no promise can preserve an unsaved edit after a hard kill. Reduce that risk through early publication.
 
-A technical stage is ready only after acceptance evidence/review. Under D17 publish its gate report and advance automatically when all prerequisites pass. Record why advance is authorized. If actual product ruling/manual evidence/tool permission is needed, STATE includes exact blocker and safe next alternative, not a generic "ask user to continue." "Continue" is not proof a device test occurred.
+A technical stage is ready only after acceptance evidence/review. Under D17 publish its gate report and advance automatically when all prerequisites pass, except where a current decision or CURRENT explicitly requires user execution release. D-20 requires that release after K0; no audit may auto-start K1. Record why advance is authorized. If actual product ruling/manual evidence/tool permission is needed, STATE includes exact blocker and safe next alternative, not a generic "ask user to continue." "Continue" is not proof a device test occurred.
 
 ## Handoff minimum
 

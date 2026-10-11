@@ -1,12 +1,14 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-cc-plangaps-01. Next task: orch-source-fixtures-01 step1 (orch-toolchain-01 blocked on Pat's D-07 rescore answer, D-19); previous lease released. Use machine state and CURRENT, not stale historical pointers.
+Checkpoint-ID: cp-20261011-kotlin-plan-01. Next task: orch-kotlin-plan-audit-01 step1; planning-only audit.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
 | orch-architecture-plan-01 | G3-A contract planning | accepted independent audit | reviewed Gate2/D17 | resolve independent findings |
 | orch-architecture-review-01 | G3-A independent audit | completed, accepted | corrections rechecked | report saved |
-| orch-toolchain-01 | G3-B readiness | blocked: Pat's D-07 rescore answer (D-19) | accepted contract plan | verify current pins/checkout/hosted probe; Android plus pure Dart tuple only |
+| orch-kotlin-plan-audit-01 | K0 plan consistency | next, planning only | D-20 recorded | independent Astra-low audit |
+| orch-kotlin-toolchain-01 | K1 Kotlin readiness | planned, not eligible | K0 accepted + explicit user execution release | official-source candidate tuple |
+| orch-toolchain-01 | historical Flutter readiness | superseded for v1 by D-20 | retained evidence only | no action |
 | orch-source-fixtures-01 | source evidence | next (fallback while toolchain blocked) | source gap registry | one unanswered official-source probe |
 | orch-m0-01 | signed Android skeleton | planned, not eligible yet | accepted architecture/toolchain | orchestrate concrete foundation workers |
 | worker-core-m0-01 | M0 core | planned | pinned workspace +accepted architecture | value/public DTO contracts +unitfixtures |
