@@ -58,7 +58,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - Tradeoff: (a) a leak of one key affects every app signed with it; (b) isolates the blast radius but adds a second keystore Pat must back up forever. Losing the key means users cannot update in place.
 - Needed from Pat: does the keystore exist, and where.
 - Pat, 2026-10-11, verbatim: "[where your keystore is, or "make a new key"]"
-  - Context: this is the fill-in text from the ruling template, sent unfilled. No option was chosen, so D-03 stays open. Not needed for Gates 1 to 3; needed before M0, where CI signs the first APK. R-15 covers the CI mechanics for either option.
+  - Context: this is the fill-in text from the ruling template, sent unfilled. No option was chosen, so D-03 stayed open until the follow-up below.
 - Pat, 2026-10-11, verbatim: "Make a new key"
 - Applied: option (b). Command Library gets its own release keystore, separate from Pat's existing key. The key is not generated in a cloud session: the private key would sit in an ephemeral VM and have to travel to Pat through chat or a file. The creation method (keytool on Pat's PC, or a workflow that writes directly to GitHub Actions secrets), the secret names, and Pat's backup steps are set from R-15 before M0. Key material and passwords never enter the repo, logs, or chat. Losing the keystore means installed builds cannot be updated in place, so Pat keeps two backups.
 
