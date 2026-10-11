@@ -97,3 +97,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-11T22:42:09Z | codex | cp-20261011-k2-claim-10 | containing commit | K2 resumed from verified1821e1f released lease. K1 closure continuity run38178163051 passed. No application source or build yet; standalone research remains with user.
 
 2026-10-11T22:52:11Z | codex | cp-20261011-k2-draft-11 | containing commit | K2 draft checkpoint, incomplete: isolated core worker drafting real twenty-port contracts; root local import/schema design and verified official Gradle wrapper/core build transport prepared. Narrow CI review passed. Claude Code parallel task published with exclusive folder/branch. No Kotlin compile or Android app/runtime result yet; ordinary-chat research is with user.
+
+2026-10-11T22:57:03Z | codex | cp-20261011-k2-review-12 | containing commit | K2 incomplete checkpoint: real initial pure-core Kotlin build succeeded with15 JVM tests onbcb6654. Astra found four bounded contract/durability corrections; core worker fixing, root design updated. No consumers/app/runtime/signing result yet. Claude Code remains isolated QA writer; ordinary-chat research is with user.

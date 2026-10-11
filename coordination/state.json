@@ -3,31 +3,32 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k2-draft-11",
-  "verified_base_head": "6301e3f46ee3185a4473d81c65b23f802d14a2db",
-  "stage": "K1 accepted; K2 functional Kotlin foundation ready",
+  "checkpoint_id": "cp-20261011-k2-review-12",
+  "verified_base_head": "a6e67e2f275745075a1560ec00a6933a4e9458f2",
+  "stage": "K2 step1 actual contracts, design review and compile",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
   "next_step": 1,
-  "first_action": "Compile isolated full core contract draft on agent/k2-contract-compile and obtain targeted Astra review of actual declarations/local capabilities/schema before consumers; monitor Claude QA branch.",
+  "first_action": "Recheck corrected core face/identity/page/rollback contracts with Astra and rerun hosted compile; only then integrate accepted core and permit reviewed foundation consumers. Monitor Claude QA branch.",
   "active_tasks": [
     "orch-kotlin-m0-01"
   ],
   "blockers": [],
   "worktree_mode": "git_checkout: /workspace/Command-Library-kotlin; preserved prior snapshot at /workspace/Command-Library",
-  "review_status": "Independent Astra-high final review accepts K1 and K2 card; catalog local capability segregation finding resolved. Actual K2 declarations/design require step1 review.",
+  "review_status": "Astra actual-contract/design review requires four bounded corrections; core author fixing. Narrow CI review passed; no consumers yet.",
   "verification": {
-    "continuity": "24 local regression tests/checkers pass, including independently reviewed released-lease UTC regression. Hosted continuity38178006460 passed at5f3b752 with23 then-current tests; closure CI pending publication.",
+    "continuity": "24 local checkpoint/architecture regression tests pass; initial compile branch hosted continuity passed. New checkpoint CI pending publication.",
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "hosted_ci": "Capability38177202140 success at210d256a; continuity38178006460 success at5f3b752. No app workflow exists.",
-    "remote_readback": "Verified published5f3b752 evidence checkpoint against four pinned STATE/CURRENT/lease files.",
+    "hosted_ci": "K1 closure continuity38178163051 passed; K2 initial isolated contract compile38182145326 + branch continuity passed. No Android build workflow yet.",
+    "remote_readback": "Maina6e67e2 checkpoint and coreworker8cf8449 branch published; current compile testedbcb6654. Claude QA branch remains delegated, no result assumed.",
     "toolchain": "Hosted Java/javac17.0.20.1; verified Gradle9.6.0; Android36/build-tools36 available. No application compile.",
-    "kotlin_compatibility": "not_run",
+    "kotlin_compatibility": "JVM Kotlin2.2.10/coroutines1.10.2/JDK17 compilation observed; AndroidAGP/Compose/Room/KSP/FTS compatibility not_run.",
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
     "k1_source_metadata": "Selected source-backed tuple in candidate lock, K1 Android/FTS5 notes and report; compatibility not_run.",
-    "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session"
+    "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session",
+    "kotlin_contracts": "Hosted pure-core run38182145326 success atbcb66546749c94c554a3575b76250f78dc6cd3af,15 executed tests (model9/common6); corrected source needs new review/build."
   },
-  "last_completed": "K2 draft checkpoint, incomplete: isolated core worker drafting real twenty-port contracts; root local import/schema design and verified official Gradle wrapper/core build transport prepared. Narrow CI review passed. Claude Code parallel task published with exclusive folder/branch. No Kotlin compile or Android app/runtime result yet; ordinary-chat research is with user.",
-  "updated_utc": "2026-10-11T22:52:11Z"
+  "last_completed": "K2 incomplete checkpoint: real initial pure-core Kotlin build succeeded with15 JVM tests onbcb6654. Astra found four bounded contract/durability corrections; core worker fixing, root design updated. No consumers/app/runtime/signing result yet. Claude Code remains isolated QA writer; ordinary-chat research is with user.",
+  "updated_utc": "2026-10-11T22:57:03Z"
 }

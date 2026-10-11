@@ -4,8 +4,8 @@
   "session_id": "codex-k2-foundation-20261011",
   "model_family": "Codex orchestrator; weakest capable scoped helpers; targeted Astra review",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-11T22:52:11Z",
-  "expires_utc": "2026-10-11T23:37:11Z",
-  "checkpoint_id": "cp-20261011-k2-draft-11",
+  "heartbeat_utc": "2026-10-11T22:57:03Z",
+  "expires_utc": "2026-10-11T23:42:03Z",
+  "checkpoint_id": "cp-20261011-k2-review-12",
   "note": "Sequential K2 resume after released K1 lease; no existing component lock. User is handling ordinary-chat research; independent foundation work proceeds."
 }
