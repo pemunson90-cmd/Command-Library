@@ -8,7 +8,7 @@ Status: planned, not eligible until listed prerequisites accepted. Role: impleme
 
 ## Dependencies
 
-root workspace/app composition/route registry+accepted core/catalog/search/settings minimal public interface; safe deterministic realfixture
+root workspace/app composition/route registry+accepted core/catalog/settings minimal public interface; name query uses the real indexed CatalogRepository.lookupName, not the M1 search package; safe deterministic realfixture
 
 ## Ownership
 

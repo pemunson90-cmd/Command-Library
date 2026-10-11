@@ -69,3 +69,6 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | codex | cp-20261011-continuity-01 | containing commit | D17 shared continue mandate; README/protocol/entry overrides/live state/queue; architecture stages authorized, no fabricated D15/D16 approval
 
 2026-10-11 | codex | cp-20261011-architecture-02 | containing commit |20 contract drafts/64 joins/shared ownership/CI/phase+worker cards/continuity checker; independent audit queued; no runtime or pin claims
+
+## cp-20261011-handoff-03
+Reviewed architecture/continuity accepted; transport/staging findings resolved. Local checker and5 corruption regression tests pass. Documentation-only CI added with official checkout v7.0.1 immutable commit. Hosted result unobserved; all app checks unrun. Lease released; next orch-toolchain-01 step1. Base f58f3d46299139c52788afcd4523d4911670ec6b.

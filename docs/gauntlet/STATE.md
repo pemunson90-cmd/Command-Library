@@ -1,8 +1,7 @@
 # STATE
 
-Checkpoint: cp-20261011-architecture-02. Latest D17 enables sequential Codex/GPT/Claude/Claude Code and reviewed technical progression without project chat explanations.
+Checkpoint: cp-20261011-handoff-03. D17 enables sequential model succession and reviewed routine technical progression.
 
-Stage: Gate3-A architecture contracts drafted, independent audit pending. Current next: orch-architecture-review-01 step1; write GATE-3-REVIEW from exact saved20 contracts/64 joins/current continuation state. Root active orchestrator lease; no component locks/code.
-After accepted audit: Gate3-B orch-toolchain-01, verify and pin actual tuple/checkout/hostedCI; M0 signed genuine skeleton; M1 English catalog/rules/search. Other stages in MILESTONES/QUEUE/cards.
-No app/native builds, physical tests, current source measurements or dependency locks claimed. Current specs/budgets working baseline/provisionaltargets under D17, latest product rulings retained. GitHub main checkpoint/pointer authoritative; local text snapshot has no .git.
-Read README/CONTINUE/state.json/CURRENT + exactnextcard. Independent reviewer never author. Keep confidential signing sheets offgit/logs and existingkey. All essential context in files, not agentmemory.
+G3-A architecture/continuation independent audit accepted. G3-B toolchain readiness is next: orch-toolchain-01 step1. Read CURRENT and task card; claim fresh lease. Released previous lease; no workers active. Exact toolchain, app builds, native/device evidence and source measurements remain unverified. No Gate3 runtime pass is claimed.
+
+20 components/64 requirement joins/213 parity obligations and M0-M9 stage plan preserved. Local continuation checker and5 regression tests pass. Documentation CI configured but hosted run not yet observed. README/CONTINUE/state.json/CURRENT are canonical; old handoffs are historical. Local text snapshot lacks .git; GitHub main authoritative. Preserve existing signing key and consent boundaries. Next after readiness: genuine M0 then English/rules/search M1. Review interface inventory omissions during core compilation.

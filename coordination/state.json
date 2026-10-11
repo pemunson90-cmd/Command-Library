@@ -3,24 +3,25 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-architecture-02",
-  "verified_base_head": "c1a27336a9b21758a43ef9dfeb814f4d0c92ec26",
-  "stage": "Gate 3 architecture planning",
-  "status": "review_pending",
-  "next_task": "orch-architecture-review-01",
+  "checkpoint_id": "cp-20261011-handoff-03",
+  "verified_base_head": "f58f3d46299139c52788afcd4523d4911670ec6b",
+  "stage": "Gate 3-B toolchain readiness",
+  "status": "ready_to_resume",
+  "next_task": "orch-toolchain-01",
   "next_step": 1,
-  "first_action": "Independently audit all architecture contracts, ownership/coverage/DAG and cross-model continuation files; write GATE-3-REVIEW.md.",
-  "active_tasks": [
-    "orch-architecture-review-01"
-  ],
+  "first_action": "Read orch-toolchain-01; inspect actual checkout/hosted capability, then verify current official SDK and dependency versions before writing pins. No app build has run.",
+  "active_tasks": [],
   "blockers": [],
   "worktree_mode": "text_snapshot_without_git",
-  "review_status": "Gate3 contract and continuity independent audit pending; runtime tuple/toolchain still unverified",
+  "review_status": "Independent G3-A contracts and continuity audit accepted; runtime/toolchain remains unverified",
   "verification": {
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "remote_readback": "verify_after_publish"
+    "remote_readback": "success_requires_checkpoint_commit_readback",
+    "continuity_checks": "local_pass",
+    "regression_tests": "5_pass",
+    "hosted_ci": "not_yet_observed"
   },
-  "last_completed": "20 architecture contracts, execution/CI/interface/ownership plan and concrete M0/M1 cards",
-  "updated_utc": "2026-10-11"
+  "last_completed": "Reviewed20 architecture contracts and staged task plan; continuation checker and5 regression tests pass locally",
+  "updated_utc": "2026-10-11T17:06:03.929401+00:00"
 }

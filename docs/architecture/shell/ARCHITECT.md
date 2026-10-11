@@ -8,7 +8,7 @@ Flutter presentation/navigation/composition adapters;25 screens,5 widths/posture
 
 ## COVERAGE IDs served
 
-J01, J02, J03, J04, N01. Primary and cross-feature obligations in SPEC/COVERAGE/PARITY_ACCEPTANCE. Shell displays every component's required screen; service ownership never silently cuts UI. Registry maps every64 requirement and213 parity row to these contracts.
+J01, J02, J03, J04, N01, N03. Primary and cross-feature obligations in SPEC/COVERAGE/PARITY_ACCEPTANCE. Shell displays every component's required screen; service ownership never silently cuts UI. Registry maps every64 requirement and213 parity row to these contracts.
 
 ## Public interface
 
@@ -56,7 +56,7 @@ Apply PERFORMANCE P01-P12 to this component's involved workflows: DBp95<=150ms, 
 
 S01-S25 real task smoke/goldens allstates/width boundaries/compactheight/book/tabletop, keyboard/drag equivalents,200% text, actualTalkBack/Narrator, no loss across resize/stream/live game, staticcontrast+artRAM/fullperf.
 
-Acceptance cases AC-J01, AC-J02, AC-J03, AC-J04, AC-N01 plus mapped parity PX obligations. Authentic fixtures sanitized/attributed/source-versioned; synthetic labeled. Every relevant migration/failure/cancel case required. Reviewer separate from author; UIphysical tests aren't replaced by goldens. No skipped checks claimed passing.
+Acceptance cases AC-J01, AC-J02, AC-J03, AC-J04, AC-N01, AC-N03 plus mapped parity PX obligations. Authentic fixtures sanitized/attributed/source-versioned; synthetic labeled. Every relevant migration/failure/cancel case required. Reviewer separate from author; UIphysical tests aren't replaced by goldens. No skipped checks claimed passing.
 
 ## Step plan
 
@@ -67,4 +67,6 @@ Acceptance cases AC-J01, AC-J02, AC-J03, AC-J04, AC-N01 plus mapped parity PX ob
 
 ## Implementation prerequisite
 
-Architecture independent audit accepted, all dependency public interfaces merged, verified toolchain/pins, named concrete task/lock/base and available test transport. Until then task is planned, not eligible. Never use a stub implementation to pretend a not-yet-built service exists. Stage report must distinguish contract review from runtime evidence.
+Architecture independent audit accepted, public interfaces of dependencies actually imported by this scoped step merged (declare the exact subset in its task card; unused future services must not be imported or fabricated), verified toolchain/pins, named concrete task/lock/base and available test transport. Until then task is planned, not eligible. Never use a stub implementation to pretend a not-yet-built service exists. Stage report must distinguish contract review from runtime evidence.
+
+M0 consumes only core/catalog/settings and the real CatalogRepository.lookupName local query. M1 adds search/rules after acceptance. Later feature interfaces in the dependency envelope are prerequisites only when their stage imports them; no AI/inference/other future implementation is constructed in M0. Root composition follows this staged subset.

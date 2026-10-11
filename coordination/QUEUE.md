@@ -1,12 +1,12 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-architecture-02. Live task: orch-architecture-review-01 step1. Use machine state and CURRENT, not stale historical pointers.
+Checkpoint-ID: cp-20261011-handoff-03. Next task: orch-toolchain-01 step1; previous lease released. Use machine state and CURRENT, not stale historical pointers.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
-| orch-architecture-plan-01 | G3-A contract planning | draft complete, review pending | reviewed Gate2/D17 | resolve independent findings |
-| orch-architecture-review-01 | G3-A independent audit | active | contracts saved | write GATE-3-REVIEW |
-| orch-toolchain-01 | G3-B readiness | queued, next after audit | accepted contract plan | verify current pins/checkout/hosted probe |
+| orch-architecture-plan-01 | G3-A contract planning | accepted independent audit | reviewed Gate2/D17 | resolve independent findings |
+| orch-architecture-review-01 | G3-A independent audit | completed, accepted | corrections rechecked | report saved |
+| orch-toolchain-01 | G3-B readiness | ready to claim | accepted contract plan | verify current pins/checkout/hosted probe |
 | orch-source-fixtures-01 | source evidence | eligible fallback | source gap registry | one unanswered official-source probe |
 | orch-m0-01 | signed skeleton | planned, not eligible yet | accepted architecture/toolchain | orchestrate concrete foundation workers |
 | worker-core-m0-01 | M0 core | planned | pinned workspace +accepted architecture | value/public DTO contracts +unitfixtures |

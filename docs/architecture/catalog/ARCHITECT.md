@@ -16,6 +16,8 @@ Pure Dart contract sketch; export packages/catalog/lib/catalog.dart. Shared DTOs
 
 ```dart
 abstract interface class CatalogRepository {
+ Future<Outcome<Page<CardRecord>>> lookupName(String input, PageRequest page, CancelToken cancel);
+ Future<Outcome<Page<CardRecord>>> remoteSearch(String input, PageRequest page, CatalogSelection selection, ConsentRecord consent, CancelToken cancel);
  Future<Outcome<CardRecord>> card(CardId id, CancelToken cancel);
  Future<Outcome<Page<PrintingRecord>>> printings(OracleId id, PageRequest page, CancelToken cancel);
  Stream<JobProgress> refresh(CatalogSelection selection, ConsentRecord consent, CancelToken cancel);
@@ -68,4 +70,6 @@ Acceptance cases AC-A01, AC-A02, AC-A03, AC-A05, AC-A06 plus mapped parity PX ob
 
 ## Implementation prerequisite
 
-Architecture independent audit accepted, all dependency public interfaces merged, verified toolchain/pins, named concrete task/lock/base and available test transport. Until then task is planned, not eligible. Never use a stub implementation to pretend a not-yet-built service exists. Stage report must distinguish contract review from runtime evidence.
+Architecture independent audit accepted, public interfaces of dependencies actually imported by this scoped step merged (declare the exact subset in its task card; unused future services must not be imported or fabricated), verified toolchain/pins, named concrete task/lock/base and available test transport. Until then task is planned, not eligible. Never use a stub implementation to pretend a not-yet-built service exists. Stage report must distinguish contract review from runtime evidence.
+
+Catalog owns the remote-search adapter through its declared network dependency. lookupName queries the real local index for M0; remoteSearch validates source policy and consent, delegates transport to network, and returns typed unavailable offline. Non-English acquisition requires explicit consent.

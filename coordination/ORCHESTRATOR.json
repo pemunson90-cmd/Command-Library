@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "active",
+  "status": "released",
   "session_id": "codex-continuity-20261011",
   "model_family": "Codex/GPT",
-  "task_id": "orch-architecture-review-01",
-  "heartbeat_utc": "2026-10-11T16:59:48.000Z",
-  "expires_utc": "2026-10-11T17:44:48.000Z",
-  "checkpoint_id": "cp-20261011-architecture-02",
-  "note": "Sequential active orchestrator lease; inspect branch/task/handoff before stale takeover."
+  "task_id": "orch-toolchain-01",
+  "heartbeat_utc": "2026-10-11T17:06:03.929401+00:00",
+  "expires_utc": "2026-10-11T17:06:03.929401+00:00",
+  "checkpoint_id": "cp-20261011-handoff-03",
+  "note": "Bounded architecture/continuity session completed. Next orchestrator must re-fetch main and claim a new lease before mutations."
 }
