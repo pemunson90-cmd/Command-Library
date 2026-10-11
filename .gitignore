@@ -27,6 +27,13 @@ render.experimental.xml
 # Keystore files
 *.jks
 *.keystore
+*.p12
+*.pfx
+
+# Signing sheets and local secrets (D-03)
+command-library-*SECRET*
+.env
+.env.*
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json

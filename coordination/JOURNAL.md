@@ -50,3 +50,10 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 
 2026-10-11 | codex | research filed | this commit | cx-research-17 recovered after agent usage-limit error; orchestrator scope/evidence review passed with explicit limits
 2026-10-11 | claude-code | ruling | this commit | D-03: four signing secrets replaced by one secret ANDROID_SIGNING; Pat added it; ledger only, no other coordination file touched (Codex sole orchestrator, D-05)
+
+2026-10-11 | codex | research filed | this commit | R-10 eight cloud and six local provider contracts; 17 of 17 filed with bounded verification gaps; preserved concurrent D-03 single-secret ruling at 13a26c3
+
+2026-10-11 | codex | Gate 1 filed | this commit | 17 topics plus full parity synthesis; six proposed rulings; final review dispositions/handoff; current single signing secret preserved; stopped for Pat before Gate 2
+
+2026-10-11 | codex | Gate 1 rulings checkpoint | this commit | D07/D06/D12/D13 approved; D14 English default with user-approved other-language downloads; D04 explanation requested and remains open
+2026-10-11 | claude-code | ruling | this commit | D-03: Pat keeps saved copy, Claude keeps session copy, never committed; public exposure check clean; .gitignore hardened
