@@ -4,9 +4,9 @@ Resume pointer. Updated after every merge and every gate. Files beat conversatio
 
 | Field | Value |
 |---|---|
-| Gate | 0 (Bootstrap): report filed, awaiting Pat's rulings |
+| Gate | 0 (Bootstrap): report filed; D-09 ruled; D-01, D-02, D-03, D-05, D-11 awaiting Pat |
 | Milestone | none. No app code before Gate 4 |
-| Integration branch | `ccr-b0894b79-qzhxhw` (provisional until D-09; target is `main`) |
+| Integration branch | `main` (D-09) |
 | Last good commit | 284069d (Gate 0 report). Later commits: last line of `coordination/JOURNAL.md` |
 | Active tasks | none |
 | Locks held | none |
@@ -15,10 +15,9 @@ Resume pointer. Updated after every merge and every gate. Files beat conversatio
 
 ## Next action
 
-Wait for Pat's rulings on `docs/gauntlet/gates/GATE-0.md`. Then:
-1. Apply D-09 (move integration to `main` if approved).
-2. Record rulings verbatim in DECISIONS.md.
-3. Start Gate 1: write task cards `cc-research-01` to `cc-research-17`, launch researcher subagents in parallel batches, then write RESEARCH_SUMMARY.md and `gates/GATE-1.md`.
+Pat starts a new session with only Command-Library attached and posts the remaining Gate 0 rulings plus push permission for `main` and `agent/*`. Then:
+1. Record the rulings verbatim in DECISIONS.md.
+2. Start Gate 1: write task cards `cc-research-01` to `cc-research-17`, launch researcher subagents in parallel batches (R-01 on the strongest model, the rest on Sonnet per D-10), then write RESEARCH_SUMMARY.md and `gates/GATE-1.md`.
 
 ## Orchestrators
 

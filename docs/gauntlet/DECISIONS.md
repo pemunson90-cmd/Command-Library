@@ -16,7 +16,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-06 | Windows installer format and code signing | Open (after R-15) |
 | D-07 | Stack | Open (after R-01) |
 | D-08 | Max concurrent implementer agents | Open (Gate 3) |
-| D-09 | Integration branch and push permissions | Open: blocks Gate 1 workflow |
+| D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
 | D-11 | Cloud session setup: repos attached per session | Open |
 
@@ -56,6 +56,13 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 ### D-08 Max concurrent implementer agents
 - Set at Gate 3. Default 3.
 
+### D-11 Cloud session setup: repos attached per session
+- Finding (R-00): this session has Command-Library and Pocket-Steward attached. In an Anthropic-hosted session with several repositories, no repository's `.claude/settings.json` hooks, permission rules, or `env` load (https://code.claude.com/docs/en/cloud-environments, accessed 2026-10-11).
+- Recommendation: start future gauntlet sessions with only Command-Library attached.
+- Tradeoff: repo hooks and permission rules load (fewer prompts, enforcement hooks possible at Gate 3), versus losing direct read access to Pocket-Steward as a reference. What R-01 and R-15 need from it is already recorded in `gates/GATE-0.md`, and a research agent can read it from GitHub when it is attached.
+
+## Ruled
+
 ### D-09 Integration branch and push permissions
 - Conflict: GAUNTLET.md 5.2 and 5.4 require the orchestrator to claim locks and merge on `main`, and implementers to push `agent/<task-id>` branches. This cloud session is instructed to push only to `ccr-b0894b79-qzhxhw` unless Pat gives explicit permission. Every new cloud session gets a new `ccr-*` branch name.
 - Finding (R-00): subagent worktrees are created from the repo default branch (`main`, commit 512cdcc), not from the session branch. With work held on a `ccr-*` branch, every implementer starts on stale code unless it re-checks out the base by hand.
@@ -63,14 +70,9 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
   - (a) Pat authorizes Claude Code to push to `main` and to `agent/*` branches in this repo. Protocol runs as written; Codex sees locks on `main`.
   - (b) Work stays on the session branch; Pat merges a PR to `main` at every gate. Locks and merges stay invisible to Codex and to fresh worktrees until Pat merges.
 - Recommendation: (a), starting by merging this Gate 0 branch into `main`.
-- Status: Open. Until ruled, the provisional integration branch is `ccr-b0894b79-qzhxhw` and no lock is claimed.
-
-### D-11 Cloud session setup: repos attached per session
-- Finding (R-00): this session has Command-Library and Pocket-Steward attached. In an Anthropic-hosted session with several repositories, no repository's `.claude/settings.json` hooks, permission rules, or `env` load (https://code.claude.com/docs/en/cloud-environments, accessed 2026-10-11).
-- Recommendation: start future gauntlet sessions with only Command-Library attached.
-- Tradeoff: repo hooks and permission rules load (fewer prompts, enforcement hooks possible at Gate 3), versus losing direct read access to Pocket-Steward as a reference. What R-01 and R-15 need from it is already recorded in `gates/GATE-0.md`, and a research agent can read it from GitHub when it is attached.
-
-## Ruled
+- Pat, 2026-10-11, verbatim: "A"
+  - Context: answering the offer: Option A, tell me "merge to main" and I'll push it now. That also rules D-09.
+- Applied: option (a). Integration branch is `main`. The fast-forward of `ccr-b0894b79-qzhxhw` into `main` was blocked by the session's auto-mode permission check, so Pat merges it on GitHub (or approves the push) before the next session. Each new cloud session still needs Pat to grant push to `main` and `agent/*` in that session, because the session's own instructions limit pushes to its branch.
 
 ### D-10 Subagent model tiering
 - Pat, 2026-10-11, verbatim: "Delegate subagents wisely. If you can use sonnet or haiku subagents, do so. Not every task is worthy of Opus"
