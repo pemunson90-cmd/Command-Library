@@ -1,0 +1,54 @@
+
+{
+  "schema_version": 1,
+  "status": "candidate_for_review_only",
+  "observed_utc": "2026-10-11T20:17:31Z",
+  "scope": "K1 Kotlin Android version-1 readiness; no application build has used this tuple.",
+  "candidates": {
+    "android_gradle_plugin": {
+      "version": "9.4.1",
+      "source": "https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/maven-metadata.xml",
+      "official_release_notes": "https://developer.android.com/build/releases/agp-9-4-0-release-notes",
+      "observed_requirement": "AGP 9.4 documentation lists Gradle 9.6.0 and JDK 17 as minimum/default; API 37 maximum.",
+      "status": "source_backed_candidate_not_proven"
+    },
+    "gradle": {
+      "version": "9.6.0",
+      "source": "https://developer.android.com/build/releases/agp-9-4-0-release-notes",
+      "latest_observed": "9.8.1 from https://services.gradle.org/versions/current",
+      "status": "selected_for_agp_compatibility_candidate_not_proven"
+    },
+    "jdk": {
+      "version": "17",
+      "source": "https://developer.android.com/build/releases/agp-9-4-0-release-notes",
+      "local_observation": "Only a Java 21 runtime is installed; no javac. This is not compatibility evidence.",
+      "status": "candidate_not_proven"
+    },
+    "kotlin": {
+      "version": "2.4.21",
+      "source": "https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugin/maven-metadata.xml",
+      "note": "Latest final numeric entry observed; K1 must determine AGP built-in-Kotlin/plugin compatibility before use.",
+      "status": "candidate_not_proven"
+    },
+    "room": {
+      "version": "2.8.5",
+      "source": "https://developer.android.com/jetpack/androidx/releases/room",
+      "status": "candidate_not_proven"
+    },
+    "compose_bom": {
+      "version": "2026.09.00",
+      "source": "https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/maven-metadata.xml",
+      "status": "candidate_not_proven"
+    },
+    "fts5": {
+      "binding": null,
+      "status": "unselected_and_unproven",
+      "required_future_probe": "Android packaged SQLite must create an FTS5 virtual table, insert and execute a bound MATCH query."
+    }
+  },
+  "next_evidence": [
+    "Astra-high review of candidate compatibility assumptions and Kotlin ownership map",
+    "approved hosted capability probe using JDK 17 and Gradle 9.6.0",
+    "targeted Kotlin/Compose/Room/FTS5 compilation and packaged database probe before K2 acceptance"
+  ]
+}

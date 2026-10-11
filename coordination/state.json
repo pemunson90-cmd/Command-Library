@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-k1-research-04",
-  "verified_base_head": "c7edd23b2e67dd77089afa9d05806d4ec84a5b5e",
+  "checkpoint_id": "cp-20261011-k1-candidate-05",
+  "verified_base_head": "814ea650422a9a3a9cb7aae48a5ad4aa43547c40",
   "stage": "K1 Kotlin readiness and architecture translation",
   "status": "in_progress",
   "next_task": "orch-kotlin-toolchain-01",
-  "next_step": 2,
-  "first_action": "Extract final AGP/Kotlin candidates from official sources; verify documented AGP/JDK/Gradle compatibility and identify a testable Room/SQLite FTS5 path. Do not create application source.",
+  "next_step": 3,
+  "first_action": "Incorporate independent Astra-high review of candidate lock and Kotlin ownership map. If approved, design a bounded hosted capability-probe proposal; do not create application source.",
   "active_tasks": [
     "orch-kotlin-toolchain-01"
   ],
@@ -27,6 +27,6 @@
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
     "k1_source_metadata": "captured in K1-KOTLIN-TOOLCHAIN.md; candidate discovery only"
   },
-  "last_completed": "K1 environment capability observation and initial official metadata capture",
-  "updated_utc": "2026-10-11T20:17:31Z"
+  "last_completed": "K1 source-backed candidate tuple and 20-component Kotlin ownership map drafted; independent review in progress",
+  "updated_utc": "2026-10-11T20:25:00Z"
 }

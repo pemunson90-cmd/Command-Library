@@ -20,8 +20,8 @@ All sources retrieved 2026-10-11; values are candidate discovery only.
 | Dependency | Source | Observation | Status |
 |---|---|---|---|
 | Gradle | `https://services.gradle.org/versions/current` | 9.8.1, final; distribution checksum returned by source | candidate only |
-| Android Gradle Plugin | Google Maven `com.android.tools.build:gradle` metadata | metadata latest is 9.5.0-alpha09 | alpha is ineligible; stable compatibility candidate not yet selected |
-| Kotlin Gradle plugin | Maven Central metadata | metadata latest is 2.5.0-Beta1 | beta is ineligible; stable compatibility candidate not yet selected |
+| Android Gradle Plugin | Google Maven `com.android.tools.build:gradle` metadata and official AGP 9.4 notes | metadata latest is 9.5.0-alpha09; latest final numeric entry is 9.4.1 | 9.4.1 source-backed candidate only |
+| Kotlin Gradle plugin | Maven Central metadata | metadata latest is 2.5.0-Beta1; latest final numeric entry is 2.4.21 | 2.4.21 source-backed candidate only |
 | Room runtime | Google Maven `androidx.room:room-runtime` metadata | 2.8.5 reported as latest/release | candidate only |
 | Compose BOM | Google Maven `androidx.compose:compose-bom` metadata | 2026.09.00 reported as latest/release | candidate only |
 
@@ -29,5 +29,11 @@ No version above proves compatibility with any other version, Android API level,
 
 ## Next K1 action
 
-Extract the latest final AGP and Kotlin releases from official metadata, verify AGP/JDK/Gradle compatibility in official Android documentation, and identify a Room/SQLite FTS5 path that can be tested in a future bounded probe. Then publish the Kotlin ownership/replacement map and candidate lock for independent Astra-high review.
+The latest final AGP and Kotlin candidates have now been extracted and the AGP/JDK/Gradle release-note compatibility information recorded. The candidate lock and ownership map are under independent Astra-high review.
+
+## Candidate artifacts awaiting independent review
+
+- `config/kotlin-android-candidate-lock.json` contains the source-backed candidate tuple. Android Gradle Plugin 9.4.1 is paired with the AGP 9.4 documented Gradle 9.6.0 and JDK 17 requirements. Gradle 9.8.1 was observed as current but is not selected merely for recency.
+- `docs/architecture/KOTLIN_OWNERSHIP_MAP.md` maps all twenty historical components and their dependency edges to Kotlin Gradle modules. It does not create modules or relax any coverage obligation.
+- Exact Kotlin/AGP integration and the Android FTS5 binding remain unselected/unproven. A documentation-only hosted capability probe cannot prove either; a later targeted Kotlin compile and packaged FTS5 test are required.
 

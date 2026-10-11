@@ -15,3 +15,6 @@ Stop rule: publish a checkpoint, journal line, state/queue/current update, exact
 
 
 Recovery checkpoint cp-20261011-k1-research-04: K1 is still in progress. Environment/tool metadata observation is saved in `docs/gauntlet/gates/K1-KOTLIN-TOOLCHAIN.md`; it found no local compiler, Gradle or Android SDK tooling. Next action is official compatibility verification and Kotlin ownership map. No application source, build, download or signing action occurred.
+
+
+Recovery checkpoint cp-20261011-k1-candidate-05: source-backed candidate lock and complete Kotlin ownership map drafted, under Astra-high review. No candidate is proven; no application source, build, download or signing action occurred.

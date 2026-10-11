@@ -81,3 +81,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-11 | codex + astra-high | K1 claim | pending checkpoint | Pat released K1; Astra high approved Kotlin readiness work; continuity pointers reconciled. No app code/build/download/signing performed.
 
 2026-10-11 | codex | K1 recovery checkpoint | this commit | Java 21 runtime observed; no javac/Gradle/kotlinc/Android SDK/adb. Initial official metadata captured; candidate discovery only, no app work.
+
+2026-10-11 | codex | K1 recovery checkpoint | this commit | Candidate AGP/Gradle/JDK/Kotlin/Room/Compose metadata and 20-component Kotlin ownership map drafted; Astra-high review active; no app work.
