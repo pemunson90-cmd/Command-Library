@@ -1,0 +1,6 @@
+# Task orch-source-fixtures-01
+
+Status: queued independent fallback. Role: researcher/probe. Owned output docs/gauntlet/gates/SOURCE-FIXTURES.md and task handoff only, sanitized small fixture files later assigned exclusive paths.
+Feeds E01-E13 verification gaps. Select1 source/item per bounded step; use official dated sources and permitted/read-only public metadata. No credentialed/charged calls or private export without appropriate user action.
+Report source URL/accessdate/contract/terms/probe command/result/hash/size where actual, UNVERIFIED with attempted source/error otherwise. Prior inherited measurements aren't fresh measurements. Verify English printings/language consent bytes, ruleencoding, bracket memberships, authentic vendorformats/linktemplates/providercodes/variantlicense. Do not redo a completed evidence check without reason.
+Can run when toolchain/CI blocked. Never edits SPEC or claims implementation. Next first action: read coverage E01-E13 and previous report; choose highest dependency-blocking unanswered source item.

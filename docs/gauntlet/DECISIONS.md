@@ -11,19 +11,28 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-01 | Package / application ID | Ruled 2026-10-11 |
 | D-02 | Repo name and visibility | Ruled 2026-10-11 |
 | D-03 | Release signing key | Ruled 2026-10-11 |
-| D-04 | Default currency and price source | Open (after R-08) |
-| D-05 | Claude Code and Codex concurrency | Ruled 2026-10-11 (through Gate 3) |
-| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
-| D-07 | Stack | Ruled; see latest Gate 1 answers |
-| D-08 | Max concurrent implementer agents | Open (Gate 3) |
+| D-04 | Default currency and price source | Ruled; latest approval below |
+| D-05 | Claude Code and Codex concurrency | Superseded by D-17 sequential cross-model handoff |
+| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers; version 2 per D-19 |
+| D-07 | Stack | Ruled; see latest Gate 1 answers; rescore question open (D-19) |
+| D-08 | Max concurrent implementer agents | Ruled 2026-10-11: 3 |
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
 | D-11 | Cloud session setup: repos attached per session | Ruled 2026-10-11 |
 | D-12 | Gate 1 matrices and topic recommendations | Ruled; see latest Gate 1 answers |
 | D-13 | Full offline rules acquisition versus public bundling | Ruled; see latest Gate 1 answers |
 | D-14 | Full catalog printing/language scope | Ruled; see latest Gate 1 answers |
+| D-15 | Gate 2 specification/design package | Working technical baseline under D-17; no fabricated explicit approval |
+| D-16 | Gate 2 performance targets | Provisional targets under D-17; not measured or relaxed |
+| D-17 | Shared continue mandate and delegated technical stage progression | Ruled: latest user instruction below |
+| D-18 | Interface language and localization | Ruled 2026-10-11 |
+| D-19 | Platform priority: Android first, Windows is version 2 | Ruled 2026-10-11 |
 
 ## Open
+
+- D-07 rescore for an Android-first version 1 (question to Pat under D-19). D-04, D-06, D-07 and D-08 entries moved under Ruled; their index rows carry the rulings.
+
+## Ruled
 
 ### D-04 Default currency and price source
 - Open for Gate 1 ruling. Recommend USD/Scryfall reference prices conditional on current source/terms verification; selectable EUR/Cardmarket and MTGO TIX. MTGJSON/public Cardmarket data are documented alternatives. Owned-as-free default with missing prices unknown. See R-08.
@@ -37,15 +46,16 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 
 ### D-08 Max concurrent implementer agents
 - Set at Gate 3. Default 3.
-
-## Ruled
+- Pat, 2026-10-11, verbatim: "I guess 3 default is fine unless you have recs for parallel agents"
+- Applied: at most 3 implementer agents run concurrently. Operating rules added by Claude Code under D-17, which Pat may override: (1) at most 4 subagents of any role run at once, implementers, test-writers and reviewers together, because they share one usage limit; (2) after any subagent stops on a usage limit, the cap drops to 2 for the rest of that session.
+  - Evidence: on 2026-10-11, six Sonnet researchers launched together all stopped on the account usage limit (commit 4b69954; JOURNAL.md wave 1 line). At M0 the dependency graph allows at most three parallel components after `core` (storage, network, vault; `docs/architecture/registry.json`). Merges are serial with review per merge (GAUNTLET.md 5.4).
 
 ### D-01 Package / application ID
 - Proposed: `com.architectpsg.commandlibrary`.
 - Recommendation: accept.
 - Tradeoff: permanent once installed. Changing it later makes a separate app and needs a manual data move.
 - Pat, 2026-10-11, verbatim: "com.architectpsg.commandlibrary"
-- Applied: application ID `com.architectpsg.commandlibrary` on Android; the same string is the Windows package identifier where the packaging format takes one (R-15).
+- Applied: application ID `com.architectpsg.commandlibrary` on Android; the same string is the Windows package identifier where the packaging format takes one (R-15; version 2, D-19).
 
 ### D-02 Repo name and visibility
 - Current: `pemunson90-cmd/Command-Library`, public, default branch `main`.
@@ -149,3 +159,34 @@ Verbatim, mapped to the six numbered proposals in the Gate 1 message:
 6. D-14: "Yes except language default to English the rest needs user approved download." Applied: default Full download includes English card data and printings. Non-English language data downloads require explicit user approval before starting; no silent background download. Preserve foreign owned identities and unresolved rows without automatically downloading their language data. Full offline rules and rulings remain in scope. This supersedes the proposed automatic all-language download scope.
 
 Gate status: five rulings applied; D-04 is the sole outstanding Gate 1 ruling. Do not start Gate 2 until that ruling arrives. Earlier proposal wording is historical; these applied rulings control.
+
+## D-04 final Gate 1 ruling
+
+Pat, verbatim: "Approved". Context: approval of the explained default, USD with Scryfall reference pricing conditional on source/terms verification, owned copies counted as zero acquisition cost while market value stays visible, missing prices unknown, selectable supported sources/currencies including EUR/Cardmarket and Magic Online tickets. Applied: D-04 ruled. All six Gate 1 choices are now ruled; Gate 2 specification is authorized. Earlier D-04-open pointers are superseded.
+
+## Gate 2 proposed decisions
+
+D-15 open: approve SPEC, DESIGN_SYSTEM, COVERAGE, DATA_MODEL, COMPONENTS, SCREENS and PARITY_ACCEPTANCE with64 observable contracts and all approved matrix obligations. Includes detailed any-eligible-owned-printing default/strict pin policy, package copy/link semantics and user-enabled life variants/local sharing. All source/runtime verification limits remain explicit. Independent review resolved all five findings; Pat has not yet ruled Gate2.
+
+D-16 open: approve PERFORMANCE P01-P12/reference methods. Key targets p95 cold2.5s, DB query150ms, visible search250ms after debounce, full local import10min, steady base RSS300MiB/peak450MiB excluding loaded LLM only, decoded art64MiB steady/96MiB transient, provisional base-disk1.5GiB. Values are proposed acceptance targets, not measured results; failed targets need reported correction or subsequent ruled change, never scope deletion.
+
+## D-17 shared continuous handoff mandate
+
+Pat, verbatim:
+
+> I need you to check the plans and orchestrate the next several stages leaving files here and on the GitHub with instructions so that codex or other GPT models, as well as Claude and Claude code can continuously pick up where the other leaves off. I should not have to explain anything in chat I should simply be able to state continue, and at any point either set of models should be able to look at a readme and the current state, continue intelligently while maintaining proper notes and checkpointing, this way whenever I run out of usage on either account, the other can just continue work a reasonable amount and then stop and nothing is lost.
+
+Applied: model-neutral sequential orchestration and repository-first bounded sessions. This supersedes prior D05 Codex-only restrictions and generic stop-for-chat at every routine technical gate. Check and orchestrate subsequent stages using current independently reviewed SPEC/design and provisional performance targets, without inventing explicit D15/D16 approval words. Independent review and prerequisite evidence still required before technical advance; material product/security/consent changes, budget relaxation, new costs, destructive actions and public release need actual authorization. README/CONTINUE/CURRENT/STATE/QUEUE become shared entry points. An account limit or model switch requires no task explanation from Pat. Usual GitHub/tool permissions still apply. No background account switching mechanism is claimed.
+
+## D-18 Interface language and localization
+- Gap G-15 (`docs/gauntlet/gates/GATE-3-CC-GAPS.md`): PARITY_ACCEPTANCE PX07-071 said "languages Pat rules", and no ledger entry, SPEC row, or acceptance ID existed.
+- Recommendation put to Pat by Claude Code: "English-only interface, built so translations can be added later, with no translations now."
+- Pat, 2026-10-11, verbatim: "Approve all"
+- Applied (branch `agent/cc-plangaps-01`): SPEC J03 and COVERAGE AC-J03 require English as the only shipped interface language, every user-facing string from externalized localization resources with no hardcoded UI strings in widgets (checked by a scan of widget code), no other translation, and no interface-language selector. Card data language stays governed by A02. PX07-071 stays Adapt with the ruling noted.
+
+## D-19 Platform priority: Android first, Windows is version 2
+- Pat, 2026-10-11, verbatim: "Own foldable Samsung Galaxy fold 7.  Usa. Prioritize full Android app before touching any windows code. That's v2 spec."
+- Applied: version 1 is the complete Android app (phones, foldables, tablets). Windows is version 2 and starts after M9. No Windows code, Windows packaging, Windows CI job, or Windows-only platform adapter is built in version 1. Planning documents mark Windows-only scope "(v2, D-19)" and MILESTONES gains a final "V2 Windows" row; no scope is deleted. GAUNTLET.md and Appendix A stay as the historical baseline; this ruling overrides them (GAUNTLET.md section 0). Keyboard, mouse, hover, right-click, drag-and-drop and large-window layouts stay version 1 because Android supports them.
+- Facts from the same message: Pat owns a Samsung Galaxy Z Fold7, the physical device for manual posture, hinge and TalkBack evidence (it is not the mid-range performance reference). Pat is in the USA, which matters for Windows code-signing eligibility if version 2 adopts signing (D-06, RISKS RK-07).
+- Effect on D-06: Windows installer format and signing move to version 2 unchanged.
+- Effect on D-07, flagged to Pat: Flutter won 88.6 to 84.0 mainly on Windows Narrator evidence, and Kotlin wins under reuse-heavy weighting (RISKS RK-08, RESEARCH_SUMMARY D-07). With Windows in version 2 the main reason for the choice no longer applies to version 1. Pat is asked whether to rescore D-07 for an Android-first version 1 before the toolchain is pinned (`orch-toolchain-01`). D-07 stands until he rules, but the toolchain is not pinned until he answers: `orch-toolchain-01` is blocked on that answer and `orch-source-fixtures-01` is the eligible fallback. Either way the version 1 tuple is Android plus pure Dart only.

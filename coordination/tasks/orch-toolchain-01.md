@@ -1,0 +1,10 @@
+# Task orch-toolchain-01
+
+Blocked (D-19, 2026-10-11): do not pin a toolchain until Pat answers whether D-07 is rescored for an Android-first version 1. Fallback while blocked: orch-source-fixtures-01.
+
+Status: queued; next after accepted architecture/continuity audit. Role: orchestrator with probe/research helpers as available. Owned shared config/CI/tool manifest only by lease-holder. Outputs config/toolchain-lock.json, docs/gauntlet/gates/GATE-3-TOOLCHAIN.md, task handoff and honest CI probe evidence. No secret values.
+1. Resume current main/checkpoint/lease. Inspect real git checkout versus snapshot, tools/network/GitHub-write/Actions trigger capabilities. Verify current official stable Flutter SDK exact commit/archive hash and compatible Dart generated version; Android Java/Gradle/SDK/NDK and SQLite/vault/native llama tuple. Windows compiler/CMake/Inno are version 2 (D-19) and stay out of the v1 lock manifest. Record URLs/access dates/version constraints/license/current unknowns. Never use remembered versions as pins.
+2. Create bounded hosted push/dispatch probe using reviewed immutable action refs and version checks (not dummy app). Confirm actual run URL/log/SDK invocation and availability of required signing/native environment without printing/reading secrets. Prefer safe trusted push-run when no dispatch tool.
+3. Lock verified tuple and package dependencies; make actual safe isolated checkout/worktree available before implementation. Pure API contract compile can occur as first M0 step, not claimed now. Preserve partial failure state in handoff.
+4. Independent toolchain/CI plan review and publish. Eligibility for M0 requires accepted contract plan, concrete interface task and working build/test transport. If access blocked, record exact BLOCKER and choose safe source/fixture audit task; don't ask Pat to explain the project.
+First action: CONTINUE resume, then inspect available tools/version sources. Stop after1-3 smallsteps and leave exact next command. Docs target policy isn't a lock.

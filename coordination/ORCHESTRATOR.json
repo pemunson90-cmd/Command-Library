@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "released",
+  "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
+  "model_family": "Claude/Anthropic (Claude Code, Opus 5.5)",
+  "task_id": "cc-plangaps-01",
+  "heartbeat_utc": "2026-10-11T18:21:09Z",
+  "expires_utc": "2026-10-11T18:21:09Z",
+  "checkpoint_id": "cp-20261011-cc-plangaps-01",
+  "note": "Claude Code released after merging cc-plangaps-01 and publishing cp-20261011-cc-plangaps-01. Next orchestrator: re-fetch main, claim a new lease, start orch-source-fixtures-01; orch-toolchain-01 waits for Pat's D-07 rescore answer (D-19)."
+}

@@ -1,0 +1,451 @@
+{
+  "schema_version": 1,
+  "architecture_status": "contracts_draft",
+  "product_baseline_commit": "4f2718c2275230a8de2deccfba53bf47fb784cd7",
+  "components": [
+    {
+      "id": "core",
+      "architecture": "docs/architecture/core/ARCHITECT.md",
+      "public_export": "packages/core/lib/core.dart",
+      "owned_paths": [
+        "packages/core/**"
+      ],
+      "dependencies": [],
+      "coverage_ids": [
+        "N01",
+        "N03"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "network",
+      "architecture": "docs/architecture/network/ARCHITECT.md",
+      "public_export": "packages/network/lib/network.dart",
+      "owned_paths": [
+        "packages/network/**"
+      ],
+      "dependencies": [
+        "core"
+      ],
+      "coverage_ids": [
+        "N02"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "vault",
+      "architecture": "docs/architecture/vault/ARCHITECT.md",
+      "public_export": "packages/vault/lib/vault.dart",
+      "owned_paths": [
+        "packages/vault/**"
+      ],
+      "dependencies": [
+        "core"
+      ],
+      "coverage_ids": [
+        "H07"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "storage",
+      "architecture": "docs/architecture/storage/ARCHITECT.md",
+      "public_export": "packages/storage/lib/storage.dart",
+      "owned_paths": [
+        "packages/storage/**"
+      ],
+      "dependencies": [
+        "core"
+      ],
+      "coverage_ids": [
+        "N01",
+        "A06",
+        "A08",
+        "I02"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "catalog",
+      "architecture": "docs/architecture/catalog/ARCHITECT.md",
+      "public_export": "packages/catalog/lib/catalog.dart",
+      "owned_paths": [
+        "packages/catalog/**"
+      ],
+      "dependencies": [
+        "core",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A05",
+        "A06"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "rules",
+      "architecture": "docs/architecture/rules/ARCHITECT.md",
+      "public_export": "packages/rules/lib/rules.dart",
+      "owned_paths": [
+        "packages/rules/**"
+      ],
+      "dependencies": [
+        "core",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "A04"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "search",
+      "architecture": "docs/architecture/search/ARCHITECT.md",
+      "public_export": "packages/search/lib/search.dart",
+      "owned_paths": [
+        "packages/search/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog",
+        "rules",
+        "storage"
+      ],
+      "coverage_ids": [
+        "A07",
+        "A08"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "decks",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "public_export": "packages/decks/lib/decks.dart",
+      "owned_paths": [
+        "packages/decks/**"
+      ],
+      "dependencies": [
+        "core",
+        "storage"
+      ],
+      "coverage_ids": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B07",
+        "B09",
+        "B10",
+        "B12"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "collection",
+      "architecture": "docs/architecture/collection/ARCHITECT.md",
+      "public_export": "packages/collection/lib/collection.dart",
+      "owned_paths": [
+        "packages/collection/**"
+      ],
+      "dependencies": [
+        "core",
+        "storage"
+      ],
+      "coverage_ids": [
+        "C01",
+        "B10"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "pricing",
+      "architecture": "docs/architecture/pricing/ARCHITECT.md",
+      "public_export": "packages/pricing/lib/pricing.dart",
+      "owned_paths": [
+        "packages/pricing/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog",
+        "collection",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "C02",
+        "C03",
+        "C04",
+        "B11"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "validation",
+      "architecture": "docs/architecture/validation/ARCHITECT.md",
+      "public_export": "packages/validation/lib/validation.dart",
+      "owned_paths": [
+        "packages/validation/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog",
+        "rules"
+      ],
+      "coverage_ids": [
+        "B06"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "brackets",
+      "architecture": "docs/architecture/brackets/ARCHITECT.md",
+      "public_export": "packages/brackets/lib/brackets.dart",
+      "owned_paths": [
+        "packages/brackets/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog",
+        "rules",
+        "validation",
+        "storage",
+        "network"
+      ],
+      "coverage_ids": [
+        "E01",
+        "E02"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "recommendations",
+      "architecture": "docs/architecture/recommendations/ARCHITECT.md",
+      "public_export": "packages/recommendations/lib/recommendations.dart",
+      "owned_paths": [
+        "packages/recommendations/**"
+      ],
+      "dependencies": [
+        "core",
+        "search",
+        "pricing",
+        "validation",
+        "brackets"
+      ],
+      "coverage_ids": [
+        "D01",
+        "D02"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "transfer",
+      "architecture": "docs/architecture/transfer/ARCHITECT.md",
+      "public_export": "packages/transfer/lib/transfer.dart",
+      "owned_paths": [
+        "packages/transfer/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog",
+        "decks",
+        "collection",
+        "storage"
+      ],
+      "coverage_ids": [
+        "B08",
+        "B13",
+        "G14",
+        "I01",
+        "I02"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "life",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "public_export": "packages/life/lib/life.dart",
+      "owned_paths": [
+        "packages/life/**"
+      ],
+      "dependencies": [
+        "core",
+        "rules",
+        "storage"
+      ],
+      "coverage_ids": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10",
+        "G11",
+        "G12",
+        "G13"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "inference",
+      "architecture": "docs/architecture/inference/ARCHITECT.md",
+      "public_export": "packages/inference/lib/inference.dart",
+      "owned_paths": [
+        "packages/inference/**"
+      ],
+      "dependencies": [
+        "core",
+        "network",
+        "storage"
+      ],
+      "coverage_ids": [
+        "H03"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "ai",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "public_export": "packages/ai/lib/ai.dart",
+      "owned_paths": [
+        "packages/ai/**"
+      ],
+      "dependencies": [
+        "core",
+        "search",
+        "validation",
+        "pricing",
+        "recommendations",
+        "vault",
+        "network",
+        "inference",
+        "storage"
+      ],
+      "coverage_ids": [
+        "H01",
+        "H02",
+        "H04",
+        "H05",
+        "H06",
+        "H08",
+        "H09"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "settings",
+      "architecture": "docs/architecture/settings/ARCHITECT.md",
+      "public_export": "packages/settings/lib/settings.dart",
+      "owned_paths": [
+        "packages/settings/**"
+      ],
+      "dependencies": [
+        "core",
+        "storage",
+        "vault"
+      ],
+      "coverage_ids": [
+        "K01",
+        "K02"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "links",
+      "architecture": "docs/architecture/links/ARCHITECT.md",
+      "public_export": "packages/links/lib/links.dart",
+      "owned_paths": [
+        "packages/links/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog"
+      ],
+      "coverage_ids": [
+        "F01"
+      ],
+      "steps": 4,
+      "status": "draft"
+    },
+    {
+      "id": "shell",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "public_export": "packages/shell/lib/shell.dart",
+      "owned_paths": [
+        "packages/shell/**"
+      ],
+      "dependencies": [
+        "core",
+        "catalog",
+        "rules",
+        "search",
+        "decks",
+        "collection",
+        "pricing",
+        "validation",
+        "brackets",
+        "recommendations",
+        "transfer",
+        "life",
+        "ai",
+        "inference",
+        "settings",
+        "links"
+      ],
+      "coverage_ids": [
+        "J01",
+        "J02",
+        "J03",
+        "J04",
+        "N01",
+        "N03"
+      ],
+      "steps": 4,
+      "status": "draft"
+    }
+  ],
+  "shared_paths": [
+    "pubspec.yaml",
+    "pubspec.lock",
+    "apps/command_library/**",
+    "database/registry/**",
+    "config/**",
+    ".github/workflows/**",
+    "tool/**",
+    "coordination/**",
+    "docs/gauntlet/**",
+    "scripts/**"
+  ],
+  "missing_runtime_evidence": [
+    "dependency tuple/toolchain not pinned or built yet",
+    "source/fixture verification E01-E13",
+    "native sensor/screen reader/device/install"
+  ]
+}

@@ -57,3 +57,23 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 
 2026-10-11 | codex | Gate 1 rulings checkpoint | this commit | D07/D06/D12/D13 approved; D14 English default with user-approved other-language downloads; D04 explanation requested and remains open
 2026-10-11 | claude-code | ruling | this commit | D-03: Pat keeps saved copy, Claude keeps session copy, never committed; public exposure check clean; .gitignore hardened
+
+2026-10-11 | codex | Gate 1 approved / Gate 2 start | this commit | Pat approved explained D04 default; all six rulings applied; specification authorized; no app code
+
+2026-10-11 | codex | Gate 2 draft checkpoint | this commit | 56 feature contracts,25 screens,20-component DAG,12 target budgets,data model,213 parity obligations; independent review queued
+
+2026-10-11 | codex | Gate 2 review corrections checkpoint | this commit | material trace/extra contracts fixed;64 AC cases;213 parity rows retained; all-format/decoded-art clarifications; final independent recheck pending
+
+2026-10-11 | codex | Gate 2 filed | this commit |64 contracts/25 screens/20-node DAG/213 parity rows; independent all5 findings resolved; document/contrast checks pass; D15/D16 proposed; stopped before Gate3
+
+2026-10-11 | codex | cp-20261011-continuity-01 | containing commit | D17 shared continue mandate; README/protocol/entry overrides/live state/queue; architecture stages authorized, no fabricated D15/D16 approval
+
+2026-10-11 | codex | cp-20261011-architecture-02 | containing commit |20 contract drafts/64 joins/shared ownership/CI/phase+worker cards/continuity checker; independent audit queued; no runtime or pin claims
+
+## cp-20261011-handoff-04
+Reviewed architecture/continuity accepted; transport/staging findings resolved. Local checker and5 corruption regression tests pass. Documentation-only CI added with official checkout v7.0.1 immutable commit. Hosted documentation CI passed; all app checks unrun. Lease released; next orch-toolchain-01 step1. Base f58f3d46299139c52788afcd4523d4911670ec6b.
+2026-10-11 | claude-code | lease | e20a554 | claimed for cc-plangaps-01 merge
+2026-10-11 | claude-code | merge | 0987620 | agent/cc-plangaps-01 merged after independent review (approve 0ad8f6c)
+2026-10-11 | claude-code | ruling | 0987620 | D-08 ruled 3 with usage-limit operating rules; D-18 English UI; D-19 Android first, Windows version 2
+2026-10-11 | claude-code | checkpoint | this commit | cp-20261011-cc-plangaps-01: pointers updated for D-19; next orch-source-fixtures-01; orch-toolchain-01 blocked on D-07 rescore answer
+2026-10-11 | claude-code | lease | this commit | released; checkpoint cp-20261011-cc-plangaps-01 read back on main; next orch-source-fixtures-01

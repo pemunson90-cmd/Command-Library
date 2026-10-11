@@ -14,5 +14,12 @@ Tool-neutral brief. Source of truth for every orchestrator's researcher definiti
 4. Follow the RESEARCH.md template: question, findings, options, recommendation, risks, confidence.
 5. Terms and licensing get their own findings with quotes of the relevant clauses.
 
+## Continuation protocol (D-17)
+`CONTINUE.md` is the shared cross-model protocol. For this role:
+- Never claim the orchestrator lease or edit lease-holder files: `coordination/state.json`, `coordination/ORCHESTRATOR.json`, `coordination/QUEUE.md`, `coordination/handoffs/CURRENT.md`, `coordination/JOURNAL.md`, `docs/gauntlet/STATE.md`, `docs/gauntlet/DECISIONS.md`. Request changes through the orchestrator.
+- Component owned paths are `packages/<component>/**` as listed in `docs/architecture/registry.json`. Anything outside them is shared or another component's.
+- Record the model that actually ran in your return summary.
+- Never claim a build, test, device, or source check that did not run. Unrun evidence is reported as unrun.
+
 ## Return
 At most 10 lines: the recommendation, confidence, and anything that contradicts GAUNTLET.md section 10 or Appendix A.

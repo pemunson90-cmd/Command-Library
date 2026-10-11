@@ -29,3 +29,7 @@ Date: 2026-10-11. Status: all 17 reports and synthesis filed; STOP for Pat's Gat
 ## Latest Pat ruling handoff
 
 Five Gate 1 choices approved and recorded verbatim in DECISIONS: Flutter, unsigned EXE/ZIP, matrices, offline rules acquisition, and Full catalog with English default. Non-English downloads require user approval. D-04 response was "Explain", not approval. Next: explain USD/Scryfall price estimates and ownership-aware acquisition cost; wait for D-04 ruling, then Gate 2. Earlier six-ruling next-step list is superseded by this update. Gate 2 not started.
+
+## Gate 1 closed
+
+Pat approved explained D04 default, verbatim "Approved". All Gate 1 rulings applied. Next pointer is coordination/handoffs/cx-gate2-resume.md; Gate 2 specification in progress.

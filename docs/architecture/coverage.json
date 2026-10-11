@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "requirements": [
+    {
+      "requirement_id": "A01",
+      "primary_component": "catalog",
+      "screens": "S02,S03,S18",
+      "architecture": "docs/architecture/catalog/ARCHITECT.md",
+      "acceptance": "AC-A01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A02",
+      "primary_component": "catalog",
+      "screens": "S01,S08,S18",
+      "architecture": "docs/architecture/catalog/ARCHITECT.md",
+      "acceptance": "AC-A02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A03",
+      "primary_component": "catalog",
+      "screens": "S01,S18",
+      "architecture": "docs/architecture/catalog/ARCHITECT.md",
+      "acceptance": "AC-A03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A04",
+      "primary_component": "rules",
+      "screens": "S03,S04,S18",
+      "architecture": "docs/architecture/rules/ARCHITECT.md",
+      "acceptance": "AC-A04",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A05",
+      "primary_component": "catalog",
+      "screens": "S03,S18",
+      "architecture": "docs/architecture/catalog/ARCHITECT.md",
+      "acceptance": "AC-A05",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A06",
+      "primary_component": "catalog",
+      "screens": "S18,S19",
+      "architecture": "docs/architecture/catalog/ARCHITECT.md",
+      "acceptance": "AC-A06",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A07",
+      "primary_component": "search",
+      "screens": "S02,S04",
+      "architecture": "docs/architecture/search/ARCHITECT.md",
+      "acceptance": "AC-A07",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "A08",
+      "primary_component": "search",
+      "screens": "S02,S04",
+      "architecture": "docs/architecture/search/ARCHITECT.md",
+      "acceptance": "AC-A08",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B01",
+      "primary_component": "decks",
+      "screens": "S05,S06,S07",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B02",
+      "primary_component": "decks",
+      "screens": "S05,S06,S07",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B03",
+      "primary_component": "decks",
+      "screens": "S09",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B04",
+      "primary_component": "decks",
+      "screens": "S09,S10",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B04",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B05",
+      "primary_component": "decks",
+      "screens": "S06,S11",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B05",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B06",
+      "primary_component": "validation",
+      "screens": "S06,S09",
+      "architecture": "docs/architecture/validation/ARCHITECT.md",
+      "acceptance": "AC-B06",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B07",
+      "primary_component": "decks",
+      "screens": "S05-S11",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B07",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B08",
+      "primary_component": "transfer",
+      "screens": "S08,S17",
+      "architecture": "docs/architecture/transfer/ARCHITECT.md",
+      "acceptance": "AC-B08",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "C01",
+      "primary_component": "collection",
+      "screens": "S02,S08,S12",
+      "architecture": "docs/architecture/collection/ARCHITECT.md",
+      "acceptance": "AC-C01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "C02",
+      "primary_component": "pricing",
+      "screens": "S02,S03,S06,S12,S13,S16",
+      "architecture": "docs/architecture/pricing/ARCHITECT.md",
+      "acceptance": "AC-C02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "C03",
+      "primary_component": "pricing",
+      "screens": "S14,S18",
+      "architecture": "docs/architecture/pricing/ARCHITECT.md",
+      "acceptance": "AC-C03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "C04",
+      "primary_component": "pricing",
+      "screens": "S06,S12,S14",
+      "architecture": "docs/architecture/pricing/ARCHITECT.md",
+      "acceptance": "AC-C04",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "D01",
+      "primary_component": "recommendations",
+      "screens": "S13,S14",
+      "architecture": "docs/architecture/recommendations/ARCHITECT.md",
+      "acceptance": "AC-D01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "D02",
+      "primary_component": "recommendations",
+      "screens": "S13,S14",
+      "architecture": "docs/architecture/recommendations/ARCHITECT.md",
+      "acceptance": "AC-D02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "E01",
+      "primary_component": "brackets",
+      "screens": "S03,S15,S18",
+      "architecture": "docs/architecture/brackets/ARCHITECT.md",
+      "acceptance": "AC-E01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "E02",
+      "primary_component": "brackets",
+      "screens": "S13,S15",
+      "architecture": "docs/architecture/brackets/ARCHITECT.md",
+      "acceptance": "AC-E02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "F01",
+      "primary_component": "links",
+      "screens": "S03,S18",
+      "architecture": "docs/architecture/links/ARCHITECT.md",
+      "acceptance": "AC-F01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G01",
+      "primary_component": "life",
+      "screens": "S20,S21",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G02",
+      "primary_component": "life",
+      "screens": "S20,S21",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G03",
+      "primary_component": "life",
+      "screens": "S21",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G04",
+      "primary_component": "life",
+      "screens": "S21,S22",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G04",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G05",
+      "primary_component": "life",
+      "screens": "S21,S22",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G05",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G06",
+      "primary_component": "life",
+      "screens": "S22",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G06",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G07",
+      "primary_component": "life",
+      "screens": "S21,S22",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G07",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G08",
+      "primary_component": "life",
+      "screens": "S20,S21",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G08",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G09",
+      "primary_component": "life",
+      "screens": "S21,S23",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G09",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G10",
+      "primary_component": "life",
+      "screens": "S21",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G10",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G11",
+      "primary_component": "life",
+      "screens": "S20-S23",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G11",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H01",
+      "primary_component": "ai",
+      "screens": "S16",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H02",
+      "primary_component": "ai",
+      "screens": "S16,S24",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H03",
+      "primary_component": "inference",
+      "screens": "S16,S25",
+      "architecture": "docs/architecture/inference/ARCHITECT.md",
+      "acceptance": "AC-H03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H04",
+      "primary_component": "ai",
+      "screens": "S16",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H04",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H05",
+      "primary_component": "ai",
+      "screens": "S16,S14",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H05",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H06",
+      "primary_component": "ai",
+      "screens": "S16,S24",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H06",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H07",
+      "primary_component": "vault",
+      "screens": "S24",
+      "architecture": "docs/architecture/vault/ARCHITECT.md",
+      "acceptance": "AC-H07",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H08",
+      "primary_component": "ai",
+      "screens": "S16",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H08",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "H09",
+      "primary_component": "ai",
+      "screens": "S24",
+      "architecture": "docs/architecture/ai/ARCHITECT.md",
+      "acceptance": "AC-H09",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "I01",
+      "primary_component": "transfer",
+      "screens": "S08,S17",
+      "architecture": "docs/architecture/transfer/ARCHITECT.md",
+      "acceptance": "AC-I01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "I02",
+      "primary_component": "transfer",
+      "screens": "S17",
+      "architecture": "docs/architecture/transfer/ARCHITECT.md",
+      "acceptance": "AC-I02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "J01",
+      "primary_component": "shell",
+      "screens": "S01-S25",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "acceptance": "AC-J01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "J02",
+      "primary_component": "shell",
+      "screens": "S02-S25",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "acceptance": "AC-J02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "J03",
+      "primary_component": "shell",
+      "screens": "S01-S25",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "acceptance": "AC-J03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "J04",
+      "primary_component": "shell",
+      "screens": "S01-S25",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "acceptance": "AC-J04",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "K01",
+      "primary_component": "settings",
+      "screens": "S01,S18,S24",
+      "architecture": "docs/architecture/settings/ARCHITECT.md",
+      "acceptance": "AC-K01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "K02",
+      "primary_component": "settings",
+      "screens": "S19",
+      "architecture": "docs/architecture/settings/ARCHITECT.md",
+      "acceptance": "AC-K02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "N01",
+      "primary_component": "shell",
+      "screens": "all",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "acceptance": "AC-N01",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "N02",
+      "primary_component": "network",
+      "screens": "S18",
+      "architecture": "docs/architecture/network/ARCHITECT.md",
+      "acceptance": "AC-N02",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "N03",
+      "primary_component": "shell",
+      "screens": "all",
+      "architecture": "docs/architecture/shell/ARCHITECT.md",
+      "acceptance": "AC-N03",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B09",
+      "primary_component": "decks",
+      "screens": "S05,S06,S07,S08",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B09",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B10",
+      "primary_component": "decks",
+      "screens": "S06,S07,S12",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B10",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B11",
+      "primary_component": "pricing",
+      "screens": "S06,S14",
+      "architecture": "docs/architecture/pricing/ARCHITECT.md",
+      "acceptance": "AC-B11",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B12",
+      "primary_component": "decks",
+      "screens": "S10",
+      "architecture": "docs/architecture/decks/ARCHITECT.md",
+      "acceptance": "AC-B12",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "B13",
+      "primary_component": "transfer",
+      "screens": "S08,S17",
+      "architecture": "docs/architecture/transfer/ARCHITECT.md",
+      "acceptance": "AC-B13",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G12",
+      "primary_component": "life",
+      "screens": "S20,S21,S22",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G12",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G13",
+      "primary_component": "life",
+      "screens": "S20,S21,S22",
+      "architecture": "docs/architecture/life/ARCHITECT.md",
+      "acceptance": "AC-G13",
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "requirement_id": "G14",
+      "primary_component": "transfer",
+      "screens": "S17,S20,S23",
+      "architecture": "docs/architecture/transfer/ARCHITECT.md",
+      "acceptance": "AC-G14",
+      "status": "planned",
+      "evidence": []
+    }
+  ],
+  "parity_source": "docs/gauntlet/PARITY_ACCEPTANCE.md",
+  "parity_policy": "Each PX row joins its listed SPEC IDs and corresponding architecture/test evidence;194 build/adapt required,19 skips retain reason."
+}
