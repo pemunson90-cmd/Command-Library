@@ -7,3 +7,4 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 2026-10-11 | claude-code | gate 0 filed | 284069d | R-00, .claude/agents, GATE-0.md; awaiting rulings D-01 D-02 D-03 D-05 D-09 D-11
 2026-10-11 | claude-code | ruling | 5bbc125 | D-09 ruled (option a); push to main blocked by session permission check, Pat merges branch on GitHub
 2026-10-11 | claude-code | merge | 08cd06a | main fast-forwarded 512cdcc..08cd06a after Pat approved the push; integration branch is now main
+2026-10-11 | claude-code | ruling | pending | D-01 D-02 D-05 D-11 ruled; D-09 push granted for session ccr-d1e9ac59-b90cv2; D-03 line arrived unfilled, stays open
