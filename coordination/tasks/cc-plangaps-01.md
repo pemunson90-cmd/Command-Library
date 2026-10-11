@@ -21,5 +21,5 @@
 
 ## Constraints
 - `python3 scripts/check_continuity.py` and `python3 scripts/test_continuity.py` must pass at every commit: SPEC keeps exactly 64 requirement rows, PARITY_ACCEPTANCE exactly 213 rows.
-- Do not edit coordination/state.json, ORCHESTRATOR.json, QUEUE.md, handoffs/CURRENT.md, or any ARCHITECT/registry/coverage.json file.
+- Do not edit coordination/state.json, ORCHESTRATOR.json, QUEUE.md, handoffs/CURRENT.md, registry.json or coverage.json on this branch. ARCHITECT files: only the D-19 propagation (vault, storage, shell, inference), the shell AC-J04 launcher note, CI_PLAN.md, and the D-08 line in OWNERSHIP.md, all authorized by D-08 and D-19 rulings made after this card was opened.
 - Merge only after a review approves and a D-17 lease is claimed.

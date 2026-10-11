@@ -1,27 +1,81 @@
 # Handoff cc-plangaps-01
 
 ## Status
-active
+reviewed (approve, 0ad8f6c); review findings applied on the branch; merge to `main` under a D-17 lease is the next action.
+
+## Continuation fields (CONTINUE.md handoff minimum)
+- Checkpoint ID: cp-20261011-cc-plangaps-01 (set on `main` at merge)
+- Owner: claude-code orchestrator, session https://claude.ai/code/session_019gTNLDK7xZq1X8MTXvBVdA, model Opus 5.5 (claude-opus-5-5)
+- Task and step: cc-plangaps-01, steps 0 to 8 of 8
+- Base SHA: 3799edb60bf2ab0b2cbb3e1ffc26613adcc0dd28 (`main` after Codex released the G3-A lease). Dependency SHAs: none beyond base.
+- Owned paths on the branch: the files listed under "Files changed". Shared paths touched: DECISIONS.md, CI_PLAN.md, OWNERSHIP.md, four ARCHITECT files, `.gitignore`, `.claude/agents/*`, `coordination/agents/*`, each under Pat's rulings ("Approve all", D-08, D-19).
+- Work status: documents drafted, verified (`check_continuity.py` PASS and 5 tests OK at every commit), reviewed. Not merged.
+- Workers: three Sonnet 5.5 (claude-sonnet-5-5) workers drafted RISKS.md, IMPOSSIBLE.md, the SPEC/COVERAGE/PARITY additions and the D-19 propagation; one Haiku 5.5 check produced the gap list; one Opus 5.5 reviewer reviewed. The orchestrator diff-reviewed every worker draft before commit.
+- Runtime limits: no build, device or CI run applies; documents only. Some web sources cited in IMPOSSIBLE.md were not re-fetched by the reviewer (see Review notes).
+- Safe fallback: if no D-17 lease can be claimed, leave the branch unmerged; nothing on it is lost.
 
 ## Done
 - step 0: task card and handoff (6d964e2)
 - step 1: gap report `docs/gauntlet/gates/GATE-3-CC-GAPS.md` (18e4253)
-- step 2: RISKS.md, 32 sourced rows (3de0828; RK-07/08/09 updated for D-19 in a85668b)
-- step 3: IMPOSSIBLE.md, 5 v1 entries naming the Fold7, 4 v2 Windows entries, 13 rejected with CI method (71161bf; labelled WIP, but it holds the worker's final file)
+- step 2: RISKS.md, 32 sourced rows (3de0828); RK-07/08/09 for D-19 (a85668b)
+- step 3: IMPOSSIBLE.md (71161bf; titled WIP, but it holds the worker's final file)
 - step 4: POST_RELEASE PR-05 to PR-07 (d5e6877)
-- step 5: role briefs and Claude agents follow D-17, D-10 tiers kept (e516768)
+- step 5: role briefs and Claude agents carry a D-17 section; D-10 tiers kept (e516768)
 - step 6: SPEC/COVERAGE/PARITY acceptance for G-13, G-15, G-16, G-18 (f3248ce)
 - step 7: D-18 (d2bd752), D-08 ruled 3 (75f7740), D-19 Android first (a85668b), D-19 propagation (9dacaf9)
-- Every step: `python3 scripts/check_continuity.py` PASS; 64 requirements and 213 parity rows unchanged. Sonnet worker drafts were diff-reviewed by the orchestrator (model: Opus 5.5).
+- step 8: independent review, approve (0ad8f6c); findings N1 to N13 and check-4 items 9 to 12 applied on the branch (next commit). RISKS gains RK-33 (Android developer verification). Worktree agent definitions gain a shared-branch checkout rule.
 
 ## Next
-Step 8: independent review (reviewer, strongest tier), then claim a D-17 lease, merge to `main`, update lease-holder files (QUEUE, state.json, CURRENT, STATE, JOURNAL) for D-19, release the lease.
+1. Fetch `main`; claim `coordination/ORCHESTRATOR.json` (status active, this session, task cc-plangaps-01) in a fast-forward commit.
+2. Merge `agent/cc-plangaps-01` into `main`.
+3. Apply check-4 items 1 to 8 and L-a to L-d: CURRENT.md, README.md, CLAUDE.md, AGENTS.md product line only, task cards orch-m0-01, orch-toolchain-01, worker-shell-m0-01, QUEUE.md, state.json, STATE.md, JOURNAL.md; new checkpoint cp-20261011-cc-plangaps-01 everywhere it is checked.
+4. Run `python3 scripts/check_continuity.py` and `python3 scripts/test_continuity.py`, push, read back `main`, release the lease.
+
+## Blockers
+- `orch-toolchain-01` waits for Pat's answer on the D-07 rescore (D-19); `orch-source-fixtures-01` is the eligible fallback.
 
 ## Gotchas
-- G-01 to G-05 from the Haiku check are resolved by design at base: data crosses components as core snapshot DTOs composed in shell, and Codex's GATE-3-REVIEW accepted it. G-22 is resolved: scripts/check_continuity.py exists and passes.
+- G-01 to G-03 are resolved by design at base (core snapshot DTOs composed in `shell`). G-04 stays open (cosmetic Mermaid projection). G-05 is acknowledged, not resolved: the M2 life stage cards must split the deck-linked parts of AC-G08 and AC-G09 into M3 follow-ups.
+- A worktree agent that checks out a branch already checked out in the orchestrator's checkout moves the shared branch ref and leaves the orchestrator's working copy stale (it then shows the agent's commit as reverted). Fixed in the worktree agent definitions; the orchestrator restores with `git checkout HEAD -- <files>` if it happens.
+- Codex's `check_continuity.py` fixes SPEC at 64 requirement rows and PARITY_ACCEPTANCE at 213 rows: extend rows, never add.
 
 ## Open questions
 - D-07 rescore for an Android-first version 1 is with Pat (D-19).
+
+## Files changed (base 3799edb to branch head)
+  - `.claude/agents/architect.md`
+  - `.claude/agents/implementer.md`
+  - `.claude/agents/researcher.md`
+  - `.claude/agents/reviewer.md`
+  - `.claude/agents/test-writer.md`
+  - `.claude/agents/ui-auditor.md`
+  - `.gitignore`
+  - `coordination/agents/architect.md`
+  - `coordination/agents/implementer.md`
+  - `coordination/agents/researcher.md`
+  - `coordination/agents/reviewer.md`
+  - `coordination/agents/test-writer.md`
+  - `coordination/agents/ui-auditor.md`
+  - `coordination/handoffs/cc-plangaps-01.md`
+  - `coordination/tasks/cc-plangaps-01.md`
+  - `docs/architecture/CI_PLAN.md`
+  - `docs/architecture/OWNERSHIP.md`
+  - `docs/architecture/inference/ARCHITECT.md`
+  - `docs/architecture/shell/ARCHITECT.md`
+  - `docs/architecture/storage/ARCHITECT.md`
+  - `docs/architecture/vault/ARCHITECT.md`
+  - `docs/gauntlet/COVERAGE.md`
+  - `docs/gauntlet/DECISIONS.md`
+  - `docs/gauntlet/DESIGN_SYSTEM.md`
+  - `docs/gauntlet/IMPOSSIBLE.md`
+  - `docs/gauntlet/MILESTONES.md`
+  - `docs/gauntlet/PARITY_ACCEPTANCE.md`
+  - `docs/gauntlet/PERFORMANCE.md`
+  - `docs/gauntlet/POST_RELEASE.md`
+  - `docs/gauntlet/RISKS.md`
+  - `docs/gauntlet/SCREENS.md`
+  - `docs/gauntlet/SPEC.md`
+  - `docs/gauntlet/gates/GATE-3-CC-GAPS.md`
 
 ## Review notes
 

@@ -13,8 +13,8 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-03 | Release signing key | Ruled 2026-10-11 |
 | D-04 | Default currency and price source | Ruled; latest approval below |
 | D-05 | Claude Code and Codex concurrency | Superseded by D-17 sequential cross-model handoff |
-| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
-| D-07 | Stack | Ruled; see latest Gate 1 answers |
+| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers; version 2 per D-19 |
+| D-07 | Stack | Ruled; see latest Gate 1 answers; rescore question open (D-19) |
 | D-08 | Max concurrent implementer agents | Ruled 2026-10-11: 3 |
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
@@ -30,6 +30,10 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 
 ## Open
 
+- D-07 rescore for an Android-first version 1 (question to Pat under D-19). D-04, D-06, D-07 and D-08 entries moved under Ruled; their index rows carry the rulings.
+
+## Ruled
+
 ### D-04 Default currency and price source
 - Open for Gate 1 ruling. Recommend USD/Scryfall reference prices conditional on current source/terms verification; selectable EUR/Cardmarket and MTGO TIX. MTGJSON/public Cardmarket data are documented alternatives. Owned-as-free default with missing prices unknown. See R-08.
 
@@ -44,16 +48,14 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - Set at Gate 3. Default 3.
 - Pat, 2026-10-11, verbatim: "I guess 3 default is fine unless you have recs for parallel agents"
 - Applied: at most 3 implementer agents run concurrently. Operating rules added by Claude Code under D-17, which Pat may override: (1) at most 4 subagents of any role run at once, implementers, test-writers and reviewers together, because they share one usage limit; (2) after any subagent stops on a usage limit, the cap drops to 2 for the rest of that session.
-  - Evidence: on 2026-10-11, six Sonnet researchers launched together all stopped on the account session limit (HTTP 429; JOURNAL and cards cc-research-02, 11 to 15). At M0 the dependency graph allows at most three parallel components after `core` (storage, network, vault; `docs/architecture/registry.json`). Merges are serial with review per merge (GAUNTLET.md 5.4).
-
-## Ruled
+  - Evidence: on 2026-10-11, six Sonnet researchers launched together all stopped on the account usage limit (commit 4b69954; JOURNAL.md wave 1 line). At M0 the dependency graph allows at most three parallel components after `core` (storage, network, vault; `docs/architecture/registry.json`). Merges are serial with review per merge (GAUNTLET.md 5.4).
 
 ### D-01 Package / application ID
 - Proposed: `com.architectpsg.commandlibrary`.
 - Recommendation: accept.
 - Tradeoff: permanent once installed. Changing it later makes a separate app and needs a manual data move.
 - Pat, 2026-10-11, verbatim: "com.architectpsg.commandlibrary"
-- Applied: application ID `com.architectpsg.commandlibrary` on Android; the same string is the Windows package identifier where the packaging format takes one (R-15).
+- Applied: application ID `com.architectpsg.commandlibrary` on Android; the same string is the Windows package identifier where the packaging format takes one (R-15; version 2, D-19).
 
 ### D-02 Repo name and visibility
 - Current: `pemunson90-cmd/Command-Library`, public, default branch `main`.
@@ -187,4 +189,4 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - Applied: version 1 is the complete Android app (phones, foldables, tablets). Windows is version 2 and starts after M9. No Windows code, Windows packaging, Windows CI job, or Windows-only platform adapter is built in version 1. Planning documents mark Windows-only scope "(v2, D-19)" and MILESTONES gains a final "V2 Windows" row; no scope is deleted. GAUNTLET.md and Appendix A stay as the historical baseline; this ruling overrides them (GAUNTLET.md section 0). Keyboard, mouse, hover, right-click, drag-and-drop and large-window layouts stay version 1 because Android supports them.
 - Facts from the same message: Pat owns a Samsung Galaxy Z Fold7, the physical device for manual posture, hinge and TalkBack evidence (it is not the mid-range performance reference). Pat is in the USA, which matters for Windows code-signing eligibility if version 2 adopts signing (D-06, RISKS RK-07).
 - Effect on D-06: Windows installer format and signing move to version 2 unchanged.
-- Effect on D-07, flagged to Pat: Flutter won 88.6 to 84.0 mainly on Windows Narrator evidence, and Kotlin wins under reuse-heavy weighting (RISKS RK-08, RESEARCH_SUMMARY D-07). With Windows in version 2 the main reason for the choice no longer applies to version 1. Pat is asked whether to rescore D-07 for an Android-first version 1 before the toolchain is pinned (`orch-toolchain-01`). Until he rules, D-07 stands.
+- Effect on D-07, flagged to Pat: Flutter won 88.6 to 84.0 mainly on Windows Narrator evidence, and Kotlin wins under reuse-heavy weighting (RISKS RK-08, RESEARCH_SUMMARY D-07). With Windows in version 2 the main reason for the choice no longer applies to version 1. Pat is asked whether to rescore D-07 for an Android-first version 1 before the toolchain is pinned (`orch-toolchain-01`). D-07 stands until he rules, but the toolchain is not pinned until he answers: `orch-toolchain-01` is blocked on that answer and `orch-source-fixtures-01` is the eligible fallback. Either way the version 1 tuple is Android plus pure Dart only.
