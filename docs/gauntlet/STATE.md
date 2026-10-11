@@ -1,6 +1,8 @@
 # STATE
 
-Checkpoint: cp-20261011-handoff-04. D17 enables sequential model succession and reviewed routine technical progression.
+Checkpoint: cp-20261011-cc-plangaps-01. D17 enables sequential model succession and reviewed routine technical progression.
+
+Update 2026-10-11 (Claude Code): D-19 makes version 1 the complete Android app; Windows is version 2 after M9 (V2 Windows milestone). D-18: English-only UI with externalized strings. D-08: at most 3 implementers. Next: orch-source-fixtures-01; orch-toolchain-01 is blocked until Pat answers the D-07 rescore question (D-19).
 
 G3-A architecture/continuation independent audit accepted. G3-B toolchain readiness is next: orch-toolchain-01 step1. Read CURRENT and task card; claim fresh lease. Released previous lease; no workers active. Exact toolchain, app builds, native/device evidence and source measurements remain unverified. No Gate3 runtime pass is claimed.
 

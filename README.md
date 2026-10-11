@@ -1,6 +1,6 @@
 # Command Library
 
-Personal-first, offline-first Magic companion for Android and Windows. Flutter; Full English by default; extra-language downloads require user approval. Repository: https://github.com/pemunson90-cmd/Command-Library, integration branch main.
+Personal-first, offline-first Magic companion for Android phones, foldables and tablets; Windows is version 2 (D-19). Flutter; Full English by default; extra-language downloads require user approval. Repository: https://github.com/pemunson90-cmd/Command-Library, integration branch main.
 
 ## Continue from any model
 

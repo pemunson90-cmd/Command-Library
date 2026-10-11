@@ -1,6 +1,6 @@
 # Command Library
 
-Magic: The Gathering companion app for Android (phones, foldables, tablets) and Windows desktop. Built through the gated protocol in `docs/gauntlet/GAUNTLET.md`. Pat is the product owner. His rulings in `docs/gauntlet/DECISIONS.md` override every other document.
+Magic: The Gathering companion app for Android (phones, foldables, tablets); Windows desktop is version 2 (D-19). Built through the gated protocol in `docs/gauntlet/GAUNTLET.md`. Pat is the product owner. His rulings in `docs/gauntlet/DECISIONS.md` override every other document.
 
 ## Every session starts here
 

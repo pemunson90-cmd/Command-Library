@@ -17,7 +17,7 @@ Only packages/shell/** plus assigned task handoff coordination/handoffs/worker-s
 ## Acceptance and test
 
 buttons perform actual import/query/error/retry action; no future inerttabs; textaccessible, widthresize retainsstate; no userdevice install inference.
-Planned command/harness: flutter test in packages/shell +hostedAndroid/Windows UIlaunch and breakpoint screenshots. Actual invocation/result/runner URL and revisions go into handoff; a missing harness is not pass. Reviewer independent of author; path/placeholder/secret checks before merge.
+Planned command/harness: flutter test in packages/shell +hosted Android UI launch (Windows UI launch: v2, D-19) and breakpoint screenshots. Actual invocation/result/runner URL and revisions go into handoff; a missing harness is not pass. Reviewer independent of author; path/placeholder/secret checks before merge.
 
 ## Checkpoint and next
 

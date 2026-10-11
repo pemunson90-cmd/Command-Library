@@ -4,8 +4,8 @@
   "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
   "model_family": "Claude/Anthropic (Claude Code, Opus 5.5)",
   "task_id": "cc-plangaps-01",
-  "heartbeat_utc": "2026-10-11T18:19:27Z",
+  "heartbeat_utc": "2026-10-11T18:20:34Z",
   "expires_utc": "2026-10-11T19:04:27Z",
-  "checkpoint_id": "cp-20261011-handoff-04",
+  "checkpoint_id": "cp-20261011-cc-plangaps-01",
   "note": "Claude Code merging reviewed branch agent/cc-plangaps-01 (Pat: Approve all, D-08, D-18, D-19) and updating pointers for D-19. Release follows read-back."
 }

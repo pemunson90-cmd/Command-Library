@@ -3,25 +3,31 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261011-handoff-04",
-  "verified_base_head": "86dfd50d35df26be184e5afaa1c729fc2d5424a3",
-  "stage": "Gate 3-B toolchain readiness",
+  "checkpoint_id": "cp-20261011-cc-plangaps-01",
+  "verified_base_head": "3799edb60bf2ab0b2cbb3e1ffc26613adcc0dd28",
+  "stage": "Gate 3-B toolchain readiness (toolchain blocked on D-07 rescore answer; source evidence fallback)",
   "status": "ready_to_resume",
-  "next_task": "orch-toolchain-01",
+  "next_task": "orch-source-fixtures-01",
   "next_step": 1,
-  "first_action": "Read orch-toolchain-01; inspect actual checkout/hosted capability, then verify current official SDK and dependency versions before writing pins. No app build has run.",
+  "first_action": "Read orch-source-fixtures-01 and COVERAGE E01-E13; choose the highest dependency-blocking unanswered source item. Resume orch-toolchain-01 when Pat answers the D-07 rescore question (D-19). No app build has run.",
   "active_tasks": [],
-  "blockers": [],
-  "worktree_mode": "text_snapshot_without_git",
-  "review_status": "Independent G3-A contracts and continuity audit accepted; runtime/toolchain remains unverified",
+  "blockers": [
+    {
+      "task": "orch-toolchain-01",
+      "reason": "Pat's answer on whether D-07 is rescored for an Android-first version 1 (D-19)",
+      "since": "2026-10-11"
+    }
+  ],
+  "worktree_mode": "git_checkout (Claude Code cloud session)",
+  "review_status": "G3-A contracts accepted; cc-plangaps-01 planning fills independently reviewed (approve 0ad8f6c) and merged; D-08, D-18, D-19 recorded",
   "verification": {
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "remote_readback": "86dfd50 main and CURRENT verified; final evidence commit requires readback",
+    "remote_readback": "pending until this commit is pushed and re-fetched",
     "continuity_checks": "local_pass",
     "regression_tests": "5_pass",
-    "hosted_ci": "success: https://github.com/pemunson90-cmd/Command-Library/actions/runs/38158275280 (documentation checks only, tested86dfd50)"
+    "hosted_ci": "documentation workflow runs on push; result not yet read"
   },
-  "last_completed": "Reviewed20 architecture contracts and staged task plan; continuation checker and5 regression tests pass locally",
-  "updated_utc": "2026-10-11T17:06:03.929401+00:00"
+  "last_completed": "Merged cc-plangaps-01: gap report, RISKS, IMPOSSIBLE, POST_RELEASE, SPEC/COVERAGE acceptance, D-08 ruled 3, D-18 English UI, D-19 Android first with Windows v2",
+  "updated_utc": "2026-10-11T18:20:34Z"
 }

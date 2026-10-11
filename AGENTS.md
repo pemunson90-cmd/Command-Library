@@ -1,6 +1,6 @@
 # Command Library
 
-Android and Windows MTG companion, built through gated research and implementation.
+Android MTG companion (Windows is version 2, D-19), built through gated research and implementation.
 
 Run docs/gauntlet/GAUNTLET.md section 5.6 resume protocol first: STATE, open DECISIONS, locks, active task cards and handoffs, last 20 JOURNAL lines, then verify branch heads.
 

@@ -72,3 +72,7 @@ Append-only. One line per checkpoint, merge, or gate. Format: `date | orchestrat
 
 ## cp-20261011-handoff-04
 Reviewed architecture/continuity accepted; transport/staging findings resolved. Local checker and5 corruption regression tests pass. Documentation-only CI added with official checkout v7.0.1 immutable commit. Hosted documentation CI passed; all app checks unrun. Lease released; next orch-toolchain-01 step1. Base f58f3d46299139c52788afcd4523d4911670ec6b.
+2026-10-11 | claude-code | lease | e20a554 | claimed for cc-plangaps-01 merge
+2026-10-11 | claude-code | merge | 0987620 | agent/cc-plangaps-01 merged after independent review (approve 0ad8f6c)
+2026-10-11 | claude-code | ruling | 0987620 | D-08 ruled 3 with usage-limit operating rules; D-18 English UI; D-19 Android first, Windows version 2
+2026-10-11 | claude-code | checkpoint | this commit | cp-20261011-cc-plangaps-01: pointers updated for D-19; next orch-source-fixtures-01; orch-toolchain-01 blocked on D-07 rescore answer

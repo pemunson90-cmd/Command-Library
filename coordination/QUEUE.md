@@ -1,14 +1,14 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-handoff-04. Next task: orch-toolchain-01 step1; previous lease released. Use machine state and CURRENT, not stale historical pointers.
+Checkpoint-ID: cp-20261011-cc-plangaps-01. Next task: orch-source-fixtures-01 step1 (orch-toolchain-01 blocked on Pat's D-07 rescore answer, D-19); previous lease released. Use machine state and CURRENT, not stale historical pointers.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
 | orch-architecture-plan-01 | G3-A contract planning | accepted independent audit | reviewed Gate2/D17 | resolve independent findings |
 | orch-architecture-review-01 | G3-A independent audit | completed, accepted | corrections rechecked | report saved |
-| orch-toolchain-01 | G3-B readiness | ready to claim | accepted contract plan | verify current pins/checkout/hosted probe |
-| orch-source-fixtures-01 | source evidence | eligible fallback | source gap registry | one unanswered official-source probe |
-| orch-m0-01 | signed skeleton | planned, not eligible yet | accepted architecture/toolchain | orchestrate concrete foundation workers |
+| orch-toolchain-01 | G3-B readiness | blocked: Pat's D-07 rescore answer (D-19) | accepted contract plan | verify current pins/checkout/hosted probe; Android plus pure Dart tuple only |
+| orch-source-fixtures-01 | source evidence | next (fallback while toolchain blocked) | source gap registry | one unanswered official-source probe |
+| orch-m0-01 | signed Android skeleton | planned, not eligible yet | accepted architecture/toolchain | orchestrate concrete foundation workers |
 | worker-core-m0-01 | M0 core | planned | pinned workspace +accepted architecture | value/public DTO contracts +unitfixtures |
 | worker-storage-m0-01 | M0 SQLite | planned | accepted core/registry/native tuple | FTS5/transaction tests |
 | worker-catalog-m0-01 | M0 tiny import | planned | accepted network/storage/authentic fixture | atomic real staging |
@@ -17,4 +17,4 @@ Checkpoint-ID: cp-20261011-handoff-04. Next task: orch-toolchain-01 step1; previ
 | worker-rules-m1-01 | M1 rules | planned | actualofficialsource/acceptedports | corpus parser/refglossary |
 | worker-search-m1-01 | M1 localquery | planned | acceptedcatalog/rules/storage | AST/semanticfixtures |
 
-Higher later M2-M9 scopes in MILESTONES. Worker tasks need claimed locks and actual merged interfaces, not merely this row. If write/toolchain access unavailable, preserve checkpoint and source-audit fallback; no claimedbuild or silently skipped requiredtest. At most3 component workers only when disjoint safe worktrees available; single orchestrator.
+Higher later M2-M9 scopes in MILESTONES. Worker tasks need claimed locks and actual merged interfaces, not merely this row. If write/toolchain access unavailable, preserve checkpoint and source-audit fallback; no claimedbuild or silently skipped requiredtest. At most3 component workers only when disjoint safe worktrees available (D-08 ruled 3; at most 4 subagents of any role at once, 2 after a usage-limit stop); single orchestrator.
