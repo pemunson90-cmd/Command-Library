@@ -36,8 +36,15 @@ public data class CatalogImportLimits(
     public val maxPrintingRecords: Int = 10_000,
     public val maxRecordBytes: Int = 128 * 1024,
     public val batchSize: Int = 128,
+    public val maxNesting: Int = 32,
 ) {
-    init { require(maxInputBytes in 1..8L * 1024 * 1024); require(maxPrintingRecords in 1..10_000); require(maxRecordBytes in 1..128 * 1024); require(batchSize in 1..128) }
+    init {
+        require(maxInputBytes in 1..8L * 1024 * 1024)
+        require(maxPrintingRecords in 1..10_000)
+        require(maxRecordBytes in 1..128 * 1024)
+        require(batchSize in 1..128)
+        require(maxNesting in 1..32)
+    }
 }
 public enum class ChecksumVerification { MATCHED_EXPECTED, COMPUTED_WITHOUT_EXPECTATION }
 public data class CatalogImportVerification(
