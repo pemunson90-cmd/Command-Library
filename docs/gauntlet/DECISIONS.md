@@ -60,7 +60,13 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 - Pat, 2026-10-11, verbatim: "[where your keystore is, or "make a new key"]"
   - Context: this is the fill-in text from the ruling template, sent unfilled. No option was chosen, so D-03 stayed open until the follow-up below.
 - Pat, 2026-10-11, verbatim: "Make a new key"
-- Applied: option (b). Command Library gets its own release keystore, separate from Pat's existing key. The key is not generated in a cloud session: the private key would sit in an ephemeral VM and have to travel to Pat through chat or a file. The creation method (keytool on Pat's PC, or a workflow that writes directly to GitHub Actions secrets), the secret names, and Pat's backup steps are set from R-15 before M0. Key material and passwords never enter the repo, logs, or chat. Losing the keystore means installed builds cannot be updated in place, so Pat keeps two backups.
+- Applied (first pass, superseded by the follow-up below): option (b), with generation held back from the cloud session because the key would have to reach Pat as a file.
+- Pat, 2026-10-11, verbatim: "Key as file is fine if it stays off git"
+- Applied: keystore generated 2026-10-11 in the session scratchpad, outside the git checkout, with JDK 21 keytool. The password was generated and used inside one script and never printed to logs or chat. Delivered to Pat as two files: the keystore and a secrets sheet (password, alias, base64 value for the Actions secret, backup steps). Both are deleted from the session once Pat confirms the secrets are added and two backups exist.
+  - Keystore: PKCS12, alias `commandlibrary`, RSA 4096, SHA384withRSA, valid 2026-10-11 to 2054-02-26, subject `CN=Command Library, O=Architect PSG LLC`.
+  - Certificate SHA-256 (public, used by CI to verify signed APKs): `E2:D8:F5:0D:A6:01:48:CE:E8:55:BF:C6:F3:01:D4:FE:38:E9:E3:DE:28:10:C6:05:83:30:16:7F:B4:F5:77:E7`
+  - GitHub Actions secret names, fixed for every workflow: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`.
+  - Pat adds the four secrets in the GitHub UI before M0. Losing every copy of the keystore means installed builds cannot be updated in place.
 
 ### D-05 Claude Code and Codex concurrency
 - Recommendation: Claude Code alone through Gate 3; both orchestrators concurrently from M0 onward under the lock protocol.
