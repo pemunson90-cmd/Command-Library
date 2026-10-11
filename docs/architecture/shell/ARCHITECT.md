@@ -54,9 +54,9 @@ Apply PERFORMANCE P01-P12 to this component's involved workflows: DBp95<=150ms, 
 
 ## Tests and acceptance criteria
 
-S01-S25 real task smoke/goldens allstates/width boundaries/compactheight/book/tabletop, keyboard/drag equivalents,200% text, actualTalkBack/Narrator, no loss across resize/stream/live game, staticcontrast+artRAM/fullperf.
+S01-S25 real task smoke/goldens allstates/width boundaries/compactheight/book/tabletop, keyboard/drag equivalents,200% text, actualTalkBack (Narrator v2, D-19), no loss across resize/stream/live game, staticcontrast+artRAM/fullperf.
 
-Acceptance cases AC-J01, AC-J02, AC-J03, AC-J04, AC-N01, AC-N03 plus mapped parity PX obligations. Authentic fixtures sanitized/attributed/source-versioned; synthetic labeled. Every relevant migration/failure/cancel case required. Reviewer separate from author; UIphysical tests aren't replaced by goldens. No skipped checks claimed passing.
+Acceptance cases AC-J01, AC-J02, AC-J03, AC-J04, AC-N01, AC-N03 plus mapped parity PX obligations. Authentic fixtures sanitized/attributed/source-versioned; synthetic labeled. Every relevant migration/failure/cancel case required. Reviewer separate from author; UIphysical tests aren't replaced by goldens. No skipped checks claimed passing. AC-J04 profile builds include a profile-only performance suite launcher so Pat can run IMPOSSIBLE.md IM-03 and IM-04 on his device.
 
 ## Step plan
 

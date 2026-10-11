@@ -50,8 +50,8 @@ Gate 2 draft coverage. Every baseline requirement is in SPEC; every approved par
 | 2.I sync | N03 | POST_RELEASE | Explicit deferral |
 | 2.J tokens/components/themes/identity/cards/icons | J03 | DESIGN_SYSTEM/all screens | Required UI audit |
 | 2.J widths/panes/postures/state | J01 | shell/all screens | Five widths and height override |
-| 2.J desktop keys/hover/context/drop/resize | J02 | shell/all screens | Required |
-| 2.J TalkBack/Narrator/text/contrast/targets | J03 | shell/all screens | Actual reader tests required |
+| 2.J desktop keys/hover/context/drop/resize | J02 | shell/all screens | Required; v1 on Android with external keyboard/mouse and large screens, Windows window chrome (v2, D-19) |
+| 2.J TalkBack/Narrator (v2, D-19)/text/contrast/targets | J03 | shell/all screens | Actual TalkBack reader tests required; Narrator tests (v2, D-19) |
 | 2.J numbered performance/screenshot auditor | J04 | PERFORMANCE/SCREENS | Proposed targets, not measurements |
 | 2.K first-run/mode/estimate/download/resume | K01 | settings/S01,S18 | Required |
 | 2.K module settings/about/attribution/dates | K01,K02 | settings/S18,S19,S24 | Required |
@@ -59,7 +59,7 @@ Gate 2 draft coverage. Every baseline requirement is in SPEC; every approved par
 | 3 data/index/stream/batches/migration tests | A06,A08,I02,N01 | storage/PERFORMANCE | Required |
 | 3 shared client/politeness/retry/offline | N02 | network/all online paths | Required |
 | 3 zero-placeholder/testing/security/pins | N01,H07,J04 | Gate3/CI acceptance | Required, no fake exceptions |
-| Environment phone/Actions/Android+Windows | N01,J04 | hosted CI; signed APK/EXE/ZIP | No local developer machine dependency |
+| Environment phone/Actions/Android+Windows (Windows v2, D-19) | N01,J04 | hosted CI; signed APK; EXE/ZIP (v2, D-19) | No local developer machine dependency |
 | D03 existing key/single secret/backups | N01 | CI Gate3/M0 | Preserve key and latest backup ruling; never commit sheets |
 | D14 English and explicit other-language approval | A02,K01,I02 | catalog/transfer/settings | No silent foreign-language/restore-triggered transfer |
 
@@ -95,9 +95,10 @@ These are verification obligations, not unmapped features. Acceptance cannot cla
 | E07 | Local server version/port/models/auth/tool/parser configuration | H02 |
 | E08 | Model license/hash/bytes/Range support, native ABI/load/cancel/quality and target memory/speed | H03/P10 |
 | E09 | Stable Flutter vault bridge isolation, backup/reinstall/corruption and origin-bound auth | H07 |
-| E10 | Pinned Flutter engine MSAA/UIA settings, actual packaged TalkBack/Narrator and physical fold sensors | J01,J03 |
-| E11 | SQLite FTS5 behavior/migrations/bounded import, full corpus perf measurements on actual reference hardware | A06,A08,I02,J04 |
-| E12 | Hosted signed APK via ANDROID_SIGNING, certificate verification and real Android/Windows install/launch | N01 |
+| E10 | Pinned Flutter engine settings, actual packaged TalkBack and physical fold sensors; MSAA/UIA settings and Narrator (v2, D-19) | J01,J03 |
+| E11 | SQLite FTS5 behavior/migrations/bounded import, full corpus perf measurements on actual reference hardware (Android in v1; Windows reference hardware v2, D-19) | A06,A08,I02,J04 |
+| E12 | Hosted signed APK via ANDROID_SIGNING, certificate verification and real Android install/launch; Windows install/launch (v2, D-19) | N01 |
+| E13 | Authentic current variant definitions/card data/instructions and applicable personal acquisition/redistribution rights, plus native QR scanner/export and clock background behavior before claims; source uncertainty never silently defers approved modules | G12,G13,B13 |
 
 ## Open product questions
 
@@ -153,7 +154,7 @@ Provisional milestone grouping follows GAUNTLET section6; final order/steps are 
 | E01 | brackets | M5 | AC-E01: Bracket rules data; domain arithmetic/constraint fixtures, DB and task UI |
 | E02 | brackets | M5 | AC-E02: Bracket estimates/targets; domain arithmetic/constraint fixtures, DB and task UI |
 | F01 | links | M5 | AC-F01: External links; domain fixtures, state/undo persistence and task UI |
-| G01 | life | M2 | AC-G01: Players/layout; pure reducer/time/seed fixtures, persistence and offline UI |
+| G01 | life | M2 | AC-G01: Players/layout; pure reducer/time/seed fixtures, persistence and offline UI, incl seat eliminate/restore, eligible-seat random pick and keyboard seat reorder |
 | G02 | life | M2 | AC-G02: Life adjustments; pure reducer/time/seed fixtures, persistence and offline UI |
 | G03 | life | M2 | AC-G03: Commander damage; pure reducer/time/seed fixtures, persistence and offline UI |
 | G04 | life | M2 | AC-G04: Counters; pure reducer/time/seed fixtures, persistence and offline UI |
@@ -163,8 +164,8 @@ Provisional milestone grouping follows GAUNTLET section6; final order/steps are 
 | G08 | life | M2 | AC-G08: Art/deck profiles; pure reducer/time/seed fixtures, persistence and offline UI |
 | G09 | life | M2 | AC-G09: Loss/end/stats; pure reducer/time/seed fixtures, persistence and offline UI |
 | G10 | life | M2 | AC-G10: Durability/undo/log; pure reducer/time/seed fixtures, persistence and offline UI |
-| G11 | life | M2 | AC-G11: Life parity extras; pure reducer/time/seed fixtures, persistence and offline UI |
-| H01 | ai | M7 | AC-H01: Modes/context; codec/SSE/cancel fixture, domain reply tests and UI |
+| G11 | life | M2 | AC-G11: Life parity extras; pure reducer/time/seed fixtures, persistence and offline UI, incl game-history filter by player/deck/date |
+| H01 | ai | M7 | AC-H01: Modes/context; codec/SSE/cancel fixture, domain reply tests and UI, incl Surprise named-angle prompt, stated angle and H05 grounding |
 | H02 | ai | M7 | AC-H02: Cloud/custom providers; codec/SSE/cancel fixture, domain reply tests and UI |
 | H03 | inference | M7 | AC-H03: On-device; native model fixture/profile/hash/resume/cancel |
 | H04 | ai | M7 | AC-H04: Prompt export/pasteback; codec/SSE/cancel fixture, domain reply tests and UI |
@@ -177,7 +178,7 @@ Provisional milestone grouping follows GAUNTLET section6; final order/steps are 
 | I02 | transfer | M3/M9 | AC-I02: Restore safety; authentic text/CSV/native fixture round trips, failure atomicity and UI |
 | J01 | shell | each milestone + M8 | AC-J01: Adaptive state; layout golden, task UI, physical reader/posture and profile |
 | J02 | shell | each milestone + M8 | AC-J02: Desktop input; layout golden, task UI, physical reader/posture and profile |
-| J03 | shell | each milestone + M8 | AC-J03: Accessibility/design; layout golden, task UI, physical reader/posture and profile |
+| J03 | shell | each milestone + M8 | AC-J03: Accessibility/design; layout golden, task UI, physical reader/posture and profile, incl English-only externalized-string scan |
 | J04 | shell | each milestone + M8 | AC-J04: Performance/visual audit; layout golden, task UI, physical reader/posture and profile |
 | K01 | settings | M0/M1 + module milestones | AC-K01: Onboarding/settings; domain fixtures, state/undo persistence and task UI |
 | K02 | settings | M0/M1 + module milestones | AC-K02: Attribution/diagnostics; domain fixtures, state/undo persistence and task UI |

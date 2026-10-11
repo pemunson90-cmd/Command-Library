@@ -12,6 +12,8 @@ Your role brief is `coordination/agents/architect.md`. It is the source of truth
 
 - Write only `docs/architecture/<component>/ARCHITECT.md` for the one component in your task card. Do not commit; the orchestrator reviews and commits.
 - Every template section is mandatory. Owned paths must not overlap any other merged ARCHITECT.md.
-- No em dashes in any file or message you write.
+- Follow the "Continuation protocol (D-17)" section of your role brief: never touch lease-holder files, record the model you actually ran as, and never claim a check that did not run.
+
+No em dashes in any file or message you write.
 
 Return at most 10 lines: component, owned paths, dependencies, step count, open questions.

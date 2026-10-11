@@ -20,5 +20,14 @@ Tool-neutral brief. Source of truth for every orchestrator's reviewer definition
 ## Verdict
 `approve` or `changes requested`, each finding with file:line, severity (blocking or non-blocking), and the concrete failure it causes.
 
+## Continuation protocol (D-17)
+`CONTINUE.md` is the shared cross-model protocol. For this role:
+- Never claim the orchestrator lease or edit lease-holder files: `coordination/state.json`, `coordination/ORCHESTRATOR.json`, `coordination/QUEUE.md`, `coordination/handoffs/CURRENT.md`, `coordination/JOURNAL.md`, `docs/gauntlet/STATE.md`, `docs/gauntlet/DECISIONS.md`. Request changes through the orchestrator.
+- Component owned paths are `packages/<component>/**` as listed in `docs/architecture/registry.json`. Anything outside them is shared or another component's.
+- Every handoff update meets the CONTINUE.md "Handoff minimum": checkpoint ID, owner, task and step, base and dependency SHAs, owned and shared paths, done list with evidence, work status (draft, code, verified, reviewed), exact next action and commands, blockers, gotchas, files changed, remaining tests and review, runtime or tool limits, safe fallback. Record the model that actually ran.
+- Checkpoint any finished step or valuable partial work within about 10 to 15 minutes; do not hold work for a whole step plan.
+- Review must come from a different agent and session than the author. If you authored any part of the diff, stop and report it.
+- Never claim a build, test, device, or source check that did not run. Unrun evidence is reported as unrun.
+
 ## Return
 At most 10 lines: verdict and blocking findings.

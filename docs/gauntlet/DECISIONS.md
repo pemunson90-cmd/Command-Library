@@ -13,9 +13,9 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-03 | Release signing key | Ruled 2026-10-11 |
 | D-04 | Default currency and price source | Ruled; latest approval below |
 | D-05 | Claude Code and Codex concurrency | Superseded by D-17 sequential cross-model handoff |
-| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers |
-| D-07 | Stack | Ruled; see latest Gate 1 answers |
-| D-08 | Max concurrent implementer agents | Open (Gate 3) |
+| D-06 | Windows installer format and code signing | Ruled; see latest Gate 1 answers; version 2 per D-19 |
+| D-07 | Stack | Ruled; see latest Gate 1 answers; rescore question open (D-19) |
+| D-08 | Max concurrent implementer agents | Ruled 2026-10-11: 3 |
 | D-09 | Integration branch and push permissions | Ruled 2026-10-11 |
 | D-10 | Subagent model tiering | Ruled 2026-10-11 |
 | D-11 | Cloud session setup: repos attached per session | Ruled 2026-10-11 |
@@ -24,10 +24,15 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-14 | Full catalog printing/language scope | Ruled; see latest Gate 1 answers |
 | D-15 | Gate 2 specification/design package | Working technical baseline under D-17; no fabricated explicit approval |
 | D-16 | Gate 2 performance targets | Provisional targets under D-17; not measured or relaxed |
-
 | D-17 | Shared continue mandate and delegated technical stage progression | Ruled: latest user instruction below |
+| D-18 | Interface language and localization | Ruled 2026-10-11 |
+| D-19 | Platform priority: Android first, Windows is version 2 | Ruled 2026-10-11 |
 
 ## Open
+
+- D-07 rescore for an Android-first version 1 (question to Pat under D-19). D-04, D-06, D-07 and D-08 entries moved under Ruled; their index rows carry the rulings.
+
+## Ruled
 
 ### D-04 Default currency and price source
 - Open for Gate 1 ruling. Recommend USD/Scryfall reference prices conditional on current source/terms verification; selectable EUR/Cardmarket and MTGO TIX. MTGJSON/public Cardmarket data are documented alternatives. Owned-as-free default with missing prices unknown. See R-08.
@@ -41,15 +46,16 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 
 ### D-08 Max concurrent implementer agents
 - Set at Gate 3. Default 3.
-
-## Ruled
+- Pat, 2026-10-11, verbatim: "I guess 3 default is fine unless you have recs for parallel agents"
+- Applied: at most 3 implementer agents run concurrently. Operating rules added by Claude Code under D-17, which Pat may override: (1) at most 4 subagents of any role run at once, implementers, test-writers and reviewers together, because they share one usage limit; (2) after any subagent stops on a usage limit, the cap drops to 2 for the rest of that session.
+  - Evidence: on 2026-10-11, six Sonnet researchers launched together all stopped on the account usage limit (commit 4b69954; JOURNAL.md wave 1 line). At M0 the dependency graph allows at most three parallel components after `core` (storage, network, vault; `docs/architecture/registry.json`). Merges are serial with review per merge (GAUNTLET.md 5.4).
 
 ### D-01 Package / application ID
 - Proposed: `com.architectpsg.commandlibrary`.
 - Recommendation: accept.
 - Tradeoff: permanent once installed. Changing it later makes a separate app and needs a manual data move.
 - Pat, 2026-10-11, verbatim: "com.architectpsg.commandlibrary"
-- Applied: application ID `com.architectpsg.commandlibrary` on Android; the same string is the Windows package identifier where the packaging format takes one (R-15).
+- Applied: application ID `com.architectpsg.commandlibrary` on Android; the same string is the Windows package identifier where the packaging format takes one (R-15; version 2, D-19).
 
 ### D-02 Repo name and visibility
 - Current: `pemunson90-cmd/Command-Library`, public, default branch `main`.
@@ -171,3 +177,16 @@ Pat, verbatim:
 > I need you to check the plans and orchestrate the next several stages leaving files here and on the GitHub with instructions so that codex or other GPT models, as well as Claude and Claude code can continuously pick up where the other leaves off. I should not have to explain anything in chat I should simply be able to state continue, and at any point either set of models should be able to look at a readme and the current state, continue intelligently while maintaining proper notes and checkpointing, this way whenever I run out of usage on either account, the other can just continue work a reasonable amount and then stop and nothing is lost.
 
 Applied: model-neutral sequential orchestration and repository-first bounded sessions. This supersedes prior D05 Codex-only restrictions and generic stop-for-chat at every routine technical gate. Check and orchestrate subsequent stages using current independently reviewed SPEC/design and provisional performance targets, without inventing explicit D15/D16 approval words. Independent review and prerequisite evidence still required before technical advance; material product/security/consent changes, budget relaxation, new costs, destructive actions and public release need actual authorization. README/CONTINUE/CURRENT/STATE/QUEUE become shared entry points. An account limit or model switch requires no task explanation from Pat. Usual GitHub/tool permissions still apply. No background account switching mechanism is claimed.
+
+## D-18 Interface language and localization
+- Gap G-15 (`docs/gauntlet/gates/GATE-3-CC-GAPS.md`): PARITY_ACCEPTANCE PX07-071 said "languages Pat rules", and no ledger entry, SPEC row, or acceptance ID existed.
+- Recommendation put to Pat by Claude Code: "English-only interface, built so translations can be added later, with no translations now."
+- Pat, 2026-10-11, verbatim: "Approve all"
+- Applied (branch `agent/cc-plangaps-01`): SPEC J03 and COVERAGE AC-J03 require English as the only shipped interface language, every user-facing string from externalized localization resources with no hardcoded UI strings in widgets (checked by a scan of widget code), no other translation, and no interface-language selector. Card data language stays governed by A02. PX07-071 stays Adapt with the ruling noted.
+
+## D-19 Platform priority: Android first, Windows is version 2
+- Pat, 2026-10-11, verbatim: "Own foldable Samsung Galaxy fold 7.  Usa. Prioritize full Android app before touching any windows code. That's v2 spec."
+- Applied: version 1 is the complete Android app (phones, foldables, tablets). Windows is version 2 and starts after M9. No Windows code, Windows packaging, Windows CI job, or Windows-only platform adapter is built in version 1. Planning documents mark Windows-only scope "(v2, D-19)" and MILESTONES gains a final "V2 Windows" row; no scope is deleted. GAUNTLET.md and Appendix A stay as the historical baseline; this ruling overrides them (GAUNTLET.md section 0). Keyboard, mouse, hover, right-click, drag-and-drop and large-window layouts stay version 1 because Android supports them.
+- Facts from the same message: Pat owns a Samsung Galaxy Z Fold7, the physical device for manual posture, hinge and TalkBack evidence (it is not the mid-range performance reference). Pat is in the USA, which matters for Windows code-signing eligibility if version 2 adopts signing (D-06, RISKS RK-07).
+- Effect on D-06: Windows installer format and signing move to version 2 unchanged.
+- Effect on D-07, flagged to Pat: Flutter won 88.6 to 84.0 mainly on Windows Narrator evidence, and Kotlin wins under reuse-heavy weighting (RISKS RK-08, RESEARCH_SUMMARY D-07). With Windows in version 2 the main reason for the choice no longer applies to version 1. Pat is asked whether to rescore D-07 for an Android-first version 1 before the toolchain is pinned (`orch-toolchain-01`). D-07 stands until he rules, but the toolchain is not pinned until he answers: `orch-toolchain-01` is blocked on that answer and `orch-source-fixtures-01` is the eligible fallback. Either way the version 1 tuple is Android plus pure Dart only.

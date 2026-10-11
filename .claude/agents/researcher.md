@@ -13,6 +13,8 @@ Your role brief is `coordination/agents/researcher.md`. It is the source of trut
 - Write only `docs/gauntlet/research/R-xx-<topic>.md` as named in your task card. Do not commit; the orchestrator commits research files.
 - Bash is for measurement only (for example `curl -sI` to read a file size, or fetching a JSON index). Never edit the repo through Bash.
 - Every claim carries a source URL and the access date. Unconfirmed means UNVERIFIED, written as such.
-- No em dashes in any file or message you write.
+- Follow the "Continuation protocol (D-17)" section of your role brief: never touch lease-holder files, record the model you actually ran as, and never claim a check that did not run.
+
+No em dashes in any file or message you write.
 
 Return at most 10 lines: recommendation, confidence, contradictions with GAUNTLET.md section 10 or Appendix A.

@@ -139,7 +139,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX06-064 | [R-06](research/R-06-archidekt.md) | Paid ad removal | Skip | No reason to add advertising infrastructure. | B07 |
 | PX07-001 | [R-07](research/R-07-life-counters.md) | 1 player | Build | Practice mode required | G01,G11 |
 | PX07-002 | [R-07](research/R-07-life-counters.md) | 2, 3, 4, 5, 6 players | Build | Every required table size | G01,G11 |
-| PX07-003 | [R-07](research/R-07-life-counters.md) | Seat-oriented panels | Adapt | Seat mode plus operator-facing desktop mode | G01,G11 |
+| PX07-003 | [R-07](research/R-07-life-counters.md) | Seat-oriented panels | Adapt | Seat mode plus operator-facing desktop mode (large-screen Android, v1) | G01,G11 |
 | PX07-004 | [R-07](research/R-07-life-counters.md) | Tap +1/-1 | Build | Predictable fast adjustment | G02,G11 |
 | PX07-005 | [R-07](research/R-07-life-counters.md) | Hold auto-repeat | Adapt | Repeat with visible delta, cancel on release | G02,G11 |
 | PX07-006 | [R-07](research/R-07-life-counters.md) | Configurable step | Build | Explicit baseline | G02,G11 |
@@ -204,10 +204,10 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-065 | [R-07](research/R-07-life-counters.md) | Game history search | Adapt | Filter by player/deck/date | G11 |
 | PX07-066 | [R-07](research/R-07-life-counters.md) | Draw results | Adapt | Do not force every game to have winner | G09,G11 |
 | PX07-067 | [R-07](research/R-07-life-counters.md) | Countdown/chess clock/alerts | Adapt | Optional modes reuse baseline timer model | G13 |
-| PX07-068 | [R-07](research/R-07-life-counters.md) | Camera/operator orientation | Adapt | All upright on desktop/operator mode | G01,G11 |
+| PX07-068 | [R-07](research/R-07-life-counters.md) | Camera/operator orientation | Adapt | All upright on desktop/operator mode (large-screen Android, v1) | G01,G11 |
 | PX07-069 | [R-07](research/R-07-life-counters.md) | Drag reorder seats | Adapt | Preserve identities, commander relations | G01,G11 |
 | PX07-070 | [R-07](research/R-07-life-counters.md) | Art crop/contain/cover | Adapt | Readable responsive art | G08,G11 |
-| PX07-071 | [R-07](research/R-07-life-counters.md) | Languages | Adapt | Localization-ready architecture; languages Pat rules | G11 |
+| PX07-071 | [R-07](research/R-07-life-counters.md) | Languages | Adapt | Pat ruled 2026-10-11: English UI, externalized strings, no translations yet (J03) | G11 |
 | PX07-072 | [R-07](research/R-07-life-counters.md) | OLED/dark appearance | Adapt | Use app-wide light/dark tokens | G11 |
 | PX07-073 | [R-07](research/R-07-life-counters.md) | Disable dice animation | Adapt | Respect reduced-motion preference | G06,G11 |
 | PX07-074 | [R-07](research/R-07-life-counters.md) | Background music | Skip | Licensing/audio scope with low utility | G08,G11 |

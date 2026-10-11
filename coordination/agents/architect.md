@@ -16,5 +16,12 @@ Tool-neutral brief. Source of truth for every orchestrator's architect definitio
 6. Step plan: each step finishable, testable, and committable by one agent in one run. Each step names its files and its test.
 7. State the offline behavior and performance budget with numbers from SPEC.md.
 
+## Continuation protocol (D-17)
+`CONTINUE.md` is the shared cross-model protocol. For this role:
+- Never claim the orchestrator lease or edit lease-holder files: `coordination/state.json`, `coordination/ORCHESTRATOR.json`, `coordination/QUEUE.md`, `coordination/handoffs/CURRENT.md`, `coordination/JOURNAL.md`, `docs/gauntlet/STATE.md`, `docs/gauntlet/DECISIONS.md`. Request changes through the orchestrator.
+- Component owned paths are `packages/<component>/**` as listed in `docs/architecture/registry.json`. Anything outside them is shared or another component's.
+- Record the model that actually ran in your return summary.
+- Never claim a build, test, device, or source check that did not run. Unrun evidence is reported as unrun.
+
 ## Return
 At most 10 lines: component, owned paths, dependencies, step count, open questions.
