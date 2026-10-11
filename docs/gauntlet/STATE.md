@@ -9,14 +9,14 @@ Updated 2026-10-11. Run resume protocol and read coordination/handoffs/cx-gate1-
 | Last verified topic checkpoint | 143e4fc34cbd512211f43e34cc6075f01859eba7 |
 | Last good gate checkpoint | Commit containing this STATE and GATE-1 report; resolve current branch head and verify handoff before resuming |
 | Filed topics | R-01 through R-17 (17) |
-| Active task cards | none; original cc-research cards preserved as acceptance briefs, filed |
+| Active task cards | cx-gate2-review; all research cards filed |
 | Active workers | Codex root drafting Gate 2; independent reviewer to run after draft checkpoint |
 | Sole orchestrator | Codex through Gate 3, latest D-05 |
 | Open gate rulings | none from Gate 1; all six ruled |
 | Future ruling | D-08 at Gate 3 |
 | Locks / app code | none |
 | Transport | GitHub connector expected-head fast-forward writes; local text snapshot without .git |
-| Next action | Write SPEC/DESIGN_SYSTEM/COVERAGE, budgets, data model, dependency DAG and screen inventory; independent spec review; file Gate 2 and stop |
+| Next action | Gate 2 eight-document draft checkpoint ready; run independent cx-gate2-review, resolve findings, verify and file Gate 2; stop for Pat |
 
 ## Verification limits
 
