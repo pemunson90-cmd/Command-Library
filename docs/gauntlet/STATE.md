@@ -7,7 +7,7 @@ Resume pointer. Updated after every merge and every gate. Files beat conversatio
 | Gate | 0 (Bootstrap): report filed, awaiting Pat's rulings |
 | Milestone | none. No app code before Gate 4 |
 | Integration branch | `ccr-b0894b79-qzhxhw` (provisional until D-09; target is `main`) |
-| Last good commit | see last line of `coordination/JOURNAL.md` |
+| Last good commit | 284069d (Gate 0 report). Later commits: last line of `coordination/JOURNAL.md` |
 | Active tasks | none |
 | Locks held | none |
 | Merged ARCHITECT.md files | none |
