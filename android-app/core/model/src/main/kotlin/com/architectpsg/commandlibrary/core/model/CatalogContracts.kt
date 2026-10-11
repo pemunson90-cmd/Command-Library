@@ -19,12 +19,27 @@ public data class CardStats(
     public val loyalty: Knowledge<String>,
     public val defense: Knowledge<String>,
 )
-public data class FaceIdentity(public val oracleId: OracleId, public val index: Int, public val providerFaceId: Knowledge<String>) { init { require(index >= 0) } }
+/** Producer identity for a canonical game face, when supplied; never a printing-face ID. */
+public data class FaceIdentity(
+    public val oracleId: OracleId,
+    public val index: Int,
+    public val providerFaceId: Knowledge<String>,
+) { init { require(index >= 0) } }
 public enum class FaceRelationshipKind { SPLIT, ADVENTURE, TRANSFORM, MODAL_DOUBLE_FACE, MELD_PART, MELD_RESULT, OTHER }
+/** Canonical game relationships contain no printing identities or art metadata. */
+public data class CanonicalFaceRelationship(
+    public val kind: FaceRelationshipKind,
+    public val relatedOracle: Knowledge<OracleId>,
+    public val relatedFace: Knowledge<FaceIdentity>,
+    public val evidence: SnapshotList<Evidence>,
+)
+/** Source-supplied printing relationships survive even when oracle resolution is unavailable. */
 public data class FaceRelationship(
     public val kind: FaceRelationshipKind,
     public val relatedOracle: Knowledge<OracleId>,
     public val relatedFace: Knowledge<FaceIdentity>,
+    public val relatedPrinting: Knowledge<CardId>,
+    public val rawRelatedIdentity: Knowledge<ProviderIdentity>,
     public val evidence: SnapshotList<Evidence>,
 )
 public data class CardFace(
@@ -34,7 +49,37 @@ public data class CardFace(
     public val manaCost: Knowledge<String>,
     public val types: Knowledge<TypeLine>,
     public val stats: CardStats,
-    public val image: Knowledge<ResourceUri>,
+    public val relationships: SnapshotList<CanonicalFaceRelationship>,
+)
+public data class PrintingFaceIdentity(
+    public val printingId: CardId,
+    public val index: Int,
+    public val providerFaceId: Knowledge<String>,
+) { init { require(index >= 0) } }
+/** The producer's variant key is retained verbatim (for example a resolution or crop name). */
+public data class PrintingImageAsset(
+    public val variant: String,
+    public val uri: ResourceUri,
+    public val width: Knowledge<Int>,
+    public val height: Knowledge<Int>,
+) {
+    init {
+        require(variant.isNotBlank())
+        if (width is Knowledge.Known) require(width.value > 0)
+        if (height is Knowledge.Known) require(height.value > 0)
+    }
+}
+/** Localized printing text and illustration metadata never participate in canonical face equality. */
+public data class PrintingFaceAsset(
+    public val identity: PrintingFaceIdentity,
+    public val language: LanguageTag,
+    public val printedName: Knowledge<String>,
+    public val printedText: Knowledge<String>,
+    public val printedTypeLine: Knowledge<String>,
+    public val flavorText: Knowledge<String>,
+    public val artist: Knowledge<String>,
+    public val illustrationIdentity: Knowledge<ProviderIdentity>,
+    public val images: SnapshotList<PrintingImageAsset>,
     public val relationships: SnapshotList<FaceRelationship>,
 )
 public data class ProviderIdentity(public val provider: ProviderId, public val kind: String, public val rawId: String) { init { require(rawId.isNotBlank()) } }
@@ -54,6 +99,7 @@ public data class CardRecord(
     public val normalizedSearchText: String,
     public val language: LanguageTag,
     public val faces: SnapshotList<CardFace>,
+    /** Oracle/canonical mappings only; printing and illustration identities stay on PrintingRecord. */
     public val providerIdentities: SnapshotList<ProviderIdentity>,
     public val provenance: Provenance,
     public val revision: Revision?,
@@ -68,7 +114,11 @@ public data class PrintingRecord(
     public val language: LanguageTag,
     public val rarity: Knowledge<String>,
     public val finishes: Knowledge<SnapshotList<Finish>>,
+    /** Source-supplied overall image, if present; not inferred from one of the faces. */
     public val imageUri: Knowledge<ResourceUri>,
+    public val images: SnapshotList<PrintingImageAsset>,
+    public val faceAssets: SnapshotList<PrintingFaceAsset>,
+    public val relationships: SnapshotList<FaceRelationship>,
     public val suppliedLinks: SnapshotList<SuppliedLink>,
     public val vendorIds: SnapshotList<ProviderIdentity>,
     public val provenance: Provenance,

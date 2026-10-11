@@ -22,6 +22,30 @@ class ValuesTest {
         assertThrows(IllegalArgumentException::class.java) { Page(SnapshotList.copyOf((1..101).toList()), null, reference) }
     }
 
+    @Test fun opaqueCursorsAreBoundedByUtf8BytesInRequestsAndResponses() {
+        assertEquals("a".repeat(2048), PageRequest(1, "a".repeat(2048)).cursor)
+        assertThrows(IllegalArgumentException::class.java) { PageRequest(1, "a".repeat(2049)) }
+        assertThrows(IllegalArgumentException::class.java) { PageRequest(1, "界".repeat(683)) }
+        val reference = SnapshotReference(provider, GenerationId("gen"), Revision(8), LanguageTag.ENGLISH)
+        assertEquals("界".repeat(682), Page<Int>(SnapshotList.empty(), "界".repeat(682), reference).nextCursor)
+        assertThrows(IllegalArgumentException::class.java) {
+            Page<Int>(SnapshotList.empty(), "界".repeat(683), reference)
+        }
+    }
+
+    @Test fun sqlLookaheadAllows101RowsWithoutRelaxingPublicPageBound() {
+        val query = SqlRequest("SELECT bound_values", SnapshotList.empty(), 101)
+        assertEquals(101, query.maxRows)
+        assertThrows(IllegalArgumentException::class.java) {
+            SqlRequest("SELECT bound_values", SnapshotList.empty(), 102)
+        }
+        assertThrows(IllegalArgumentException::class.java) { PageRequest(101) }
+        val reference = SnapshotReference(provider, GenerationId("gen"), Revision(8), LanguageTag.ENGLISH)
+        assertThrows(IllegalArgumentException::class.java) {
+            Page(SnapshotList.copyOf((1..101).toList()), null, reference)
+        }
+    }
+
     @Test fun snapshotsDefensivelyCopyListsAndBytes() {
         val input = mutableListOf("original")
         val snapshot = SnapshotList.copyOf(input)
@@ -72,13 +96,13 @@ class ValuesTest {
         val unknown = Knowledge.Unknown("Not supplied", SnapshotList.empty())
         val stats = CardStats(Knowledge.Known("*"), unknown, Knowledge.Absent("Not planeswalker"), Knowledge.Known("0"))
         val faceId = FaceIdentity(oracle, 0, Knowledge.Known("face-raw"))
-        val face = CardFace(faceId, "Synthetic front", Knowledge.Known(""), Knowledge.Known("{0}"), unknown, stats, unknown, SnapshotList.empty())
+        val face = CardFace(faceId, "Synthetic front", Knowledge.Known(""), Knowledge.Known("{0}"), unknown, stats, SnapshotList.empty())
         val card = CardRecord(oracle, "Synthetic card", unknown, Knowledge.Known("{0}"), Knowledge.Known(BigDecimal.ZERO), Knowledge.Known(SnapshotList.empty()), Knowledge.Known(SnapshotList.empty()), unknown, stats, Knowledge.Known(SnapshotList.empty()), Knowledge.Known("transform"), Knowledge.Known(false), "synthetic card", LanguageTag.ENGLISH, SnapshotList.of(face), SnapshotList.empty(), provenance(), Revision(2))
         assertEquals(Knowledge.Known("0"), card.stats.defense)
         assertEquals(Knowledge.Known(""), card.faces[0].text)
         assertTrue(card.originalText is Knowledge.Unknown)
         assertEquals(faceId, card.faces[0].identity)
-        val printing = PrintingRecord(CardId(provider, "print-raw"), Knowledge.Known(oracle), "SYN", unknown, "001a", LanguageTag("ja"), unknown, Knowledge.Known(SnapshotList.of(Finish.FOIL)), unknown, SnapshotList.empty(), SnapshotList.empty(), provenance())
+        val printing = PrintingRecord(CardId(provider, "print-raw"), Knowledge.Known(oracle), "SYN", unknown, "001a", LanguageTag("ja"), unknown, Knowledge.Known(SnapshotList.of(Finish.FOIL)), unknown, SnapshotList.empty(), SnapshotList.empty(), SnapshotList.empty(), SnapshotList.empty(), SnapshotList.empty(), provenance())
         assertEquals("001a", printing.collectorNumber)
         assertEquals(LanguageTag("ja"), printing.language)
     }
@@ -108,6 +132,8 @@ class ValuesTest {
         assertEquals(8L * 1024 * 1024, CatalogImportLimits().maxInputBytes)
         assertThrows(IllegalArgumentException::class.java) { CatalogImportLimits(maxRecordBytes = 128 * 1024 + 1) }
         assertThrows(IllegalArgumentException::class.java) { CatalogImportLimits(batchSize = 129) }
+        assertEquals(32, CatalogImportLimits().maxNesting)
+        assertThrows(IllegalArgumentException::class.java) { CatalogImportLimits(maxNesting = 33) }
         val source = CatalogImportSource(ResourceUri("content://synthetic/input"), "Synthetic input", provider, LanguageTag.ENGLISH, Knowledge.Unknown("No source date", SnapshotList.empty()), Knowledge.Absent("Local file only"), Knowledge.Unknown("No expected digest", SnapshotList.empty()), Knowledge.Unknown("Unknown before streaming", SnapshotList.empty()), Knowledge.Unknown("No notice", SnapshotList.empty()))
         assertTrue(source.sourceDate is Knowledge.Unknown)
         val verified = CatalogImportVerification(1234, ContentHash("SHA-256", "abcd"), ChecksumVerification.COMPUTED_WITHOUT_EXPECTATION, true, 0)

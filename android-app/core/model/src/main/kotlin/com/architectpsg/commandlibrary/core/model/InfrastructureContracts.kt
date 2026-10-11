@@ -69,7 +69,18 @@ public sealed interface SqlValue {
     public data class Blob(public val value: SnapshotBytes) : SqlValue
 }
 public data class SqlParameter(public val name: String, public val value: SqlValue) { init { require(name.isNotBlank()) } }
-public data class SqlRequest(public val statement: String, public val parameters: SnapshotList<SqlParameter>, public val maxRows: Int = PageRequest.MAX_LIMIT) { init { require(statement.isNotBlank()); require(maxRows in 1..PageRequest.MAX_LIMIT) } }
+/** Internal bounded query permits one lookahead row; public pages still contain at most 100 items. */
+public data class SqlRequest(
+    public val statement: String,
+    public val parameters: SnapshotList<SqlParameter>,
+    public val maxRows: Int = PageRequest.MAX_LIMIT,
+) {
+    init {
+        require(statement.isNotBlank())
+        require(maxRows in 1..MAX_ROWS)
+    }
+    public companion object { public const val MAX_ROWS: Int = PageRequest.MAX_LIMIT + 1 }
+}
 public data class RowColumn(public val name: String, public val value: SqlValue)
 public data class RowData(public val columns: SnapshotList<RowColumn>) { init { require(columns.map { it.name }.distinct().size == columns.size) } }
 public data class DbCapabilities(
@@ -100,12 +111,40 @@ public data class GenerationMetadata(
     public val schemaVersion: Int,
 )
 public data class DbWriteResult(public val affectedRows: Long) { init { require(affectedRows >= 0) } }
+/** The rollback latch is read-only to callbacks and irreversible for the transaction's lifetime. */
+public sealed interface DbTransactionState {
+    public data object Active : DbTransactionState
+    public data class RollbackOnly(public val status: Outcome<Nothing>) : DbTransactionState {
+        init { require(status !is Outcome.Success) }
+    }
+}
+/** Validation rejection is typed; catching this exception never clears the rollback latch. */
+public class TransactionAbort(public val failure: DomainFailure) : RuntimeException(failure.message)
+
+/**
+ * query/execute must latch their first non-success Outcome before returning it. The latch cannot
+ * be reset, including when the callback catches an abort or ignores a returned failure.
+ * abort first latches Failure(error), then throws TransactionAbort(error).
+ * Implementations must check caller cancellation and never convert CancellationException to an
+ * Outcome; cancellation rolls back and escapes unchanged.
+ */
 public interface DbTransaction {
+    public val state: DbTransactionState
     public suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>>
     public suspend fun execute(request: SqlRequest, cancel: CancelToken): Outcome<DbWriteResult>
+    public fun abort(error: DomainFailure): Nothing
 }
 public interface Database {
     public suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>>
+    /**
+     * Commit only after action returns normally, caller cancellation has been checked, and the
+     * transaction's irreversible latch is Active. A returned Failure/Unavailable/Unknown Outcome
+     * also latches rollback, even though action returned normally. Rollback returns the matching
+     * outer Failure/Unavailable/Unknown (first latched status wins), never Success(non-success).
+     * TransactionAbort rolls back and yields its typed Failure unless an earlier status latched.
+     * Other thrown exceptions roll back and are classified by the adapter. Cancellation always
+     * rolls back and is rethrown unchanged; it takes precedence over all typed statuses.
+     */
     public suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T>
     public suspend fun capabilities(cancel: CancelToken): Outcome<DbCapabilities>
 }
