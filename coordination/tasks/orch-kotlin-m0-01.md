@@ -1,6 +1,6 @@
 # Task orch-kotlin-m0-01
 
-Status: ready; independently accepted K1/K2 card by Astra-high final review. No implementation yet. Start at step1 after resume/lease claim. This is a complete functional foundation section, not a finished-app release.
+Status: in progress, step1. Pure contract draft delegated on an isolated core branch; root design/build preparation underway. Independent actual-declaration/durability review and hosted compile remain prerequisites before consumers. Parallel Claude Code QA has its own exclusive card/branch. K2 is incomplete, not a finished-app release.
 
 ## Preconditions and ownership
 

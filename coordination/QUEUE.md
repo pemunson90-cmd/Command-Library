@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261011-k2-claim-10. Next: orch-kotlin-m0-01 step1; in_progress.
+Checkpoint-ID: cp-20261011-k2-draft-11. Next: orch-kotlin-m0-01 step1; in_progress.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
@@ -9,6 +9,8 @@ Checkpoint-ID: cp-20261011-k2-claim-10. Next: orch-kotlin-m0-01 step1; in_progre
 | orch-kotlin-plan-audit-01 | K0 plan consistency | completed, approved | D-20 recorded | report K0-KOTLIN-PLAN-AUDIT.md |
 | orch-kotlin-toolchain-01 | K1 Kotlin readiness | completed; independently accepted | Astra-high final review + observed hosted capability | report K1-KOTLIN-TOOLCHAIN and K1-FINAL-REVIEW |
 | orch-kotlin-m0-01 | K2 functional Kotlin foundation | ready; no implementation | accepted K1 candidate/map + hosted capability | step1 actual contracts/capability segregation/schema design review, then real foundation |
+| k2-core-contracts | K2 pure contract draft | delegated; isolated core lock | accepted K1 behavior/contracts; no consumers | actual twenty-port DTO/declaration/test draft on agent/k2-core-contracts |
+| cc-k2-qa-01 | K2 parallel Claude Code QA | delegated; exclusive QA lock | user D-23; independent docs/vectors only | worker commits READY-FOR-REVIEW on agent/cc-k2-qa-01; root reviews/integrates |
 | orch-toolchain-01 | historical Flutter readiness | superseded for v1 by D-20 | retained evidence only | no action |
 | orch-source-fixtures-01 | source evidence | conditional fallback only | K1 identifies an unanswered evidence need | one approved read-only official-source probe |
 | orch-m0-01 | historical Flutter M0 | superseded/ineligible | D-20 | no action |

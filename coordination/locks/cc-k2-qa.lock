@@ -2,7 +2,7 @@ component: independent-k2-qa
 orchestrator: codex
 task: cc-k2-qa-01
 branch: agent/cc-k2-qa-01
-base_commit: containing main commit; worker records full verified SHA before starting
+base_commit: 7f3b9b83ea6b5abcda2f75d0dc8d82d24135e626
 claimed: 2026-10-11
 owned_paths: docs/verification/k2-claude/**
 step: 1; independent QA matrix/synthetic vectors; no shared-file or production-code writes

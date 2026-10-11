@@ -1,0 +1,61 @@
+name: Kotlin contract compile
+on:
+  push:
+    branches: ['agent/k2-contract-compile']
+    paths: ['android-app/**', 'scripts/verify_kotlin_contracts.py', '.github/workflows/kotlin-contracts.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: kotlin-contracts-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  contracts:
+    if: github.repository == 'pemunson90-cmd/Command-Library' && (github.ref == 'refs/heads/agent/k2-contract-compile' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Verify source and select observed JDK17
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x "$JAVA_HOME_17_X64/bin/javac"
+          export JAVA_HOME="$JAVA_HOME_17_X64"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          python3 scripts/verify_kotlin_contracts.py
+          java -version
+          javac -version
+          cd android-app
+          bash gradlew --no-daemon :core:model:check :core:common:check :core:model:dependencies --configuration testRuntimeClasspath
+      - name: Check actual test reports
+        if: success()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          total = 0
+          for module in ('model', 'common'):
+              reports = list(pathlib.Path(f'android-app/core/{module}').glob('build/test-results/test/TEST-*.xml'))
+              assert reports, f'No executed JVM reports for {module}'
+              count = sum(int(ET.parse(p).getroot().get('tests', 0)) for p in reports)
+              failures = sum(int(ET.parse(p).getroot().get('failures', 0)) + int(ET.parse(p).getroot().get('errors', 0)) for p in reports)
+              assert count > 0 and failures == 0, (module, count, failures)
+              total += count
+              print(module, 'executed JVM tests:', count)
+          print('Total executed JVM contract tests:', total)
+          print('No Android application build, Room/FTS runtime, device or signing test ran in this job.')
+          PY
+      - name: Retain JVM evidence
+        if: always()
+        # actions/upload-artifact v7.0.2; official release/tag commit observed2026-10-11.
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: kotlin-contract-evidence-${{ github.sha }}
+          path: |
+            android-app/core/*/build/reports/tests/test/**
+            android-app/core/*/build/test-results/test/**
+          if-no-files-found: ignore
+          retention-days: 14
