@@ -26,6 +26,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-16 | Gate 2 performance targets | Provisional targets under D-17; not measured or relaxed |
 | D-17 | Shared continue mandate and delegated technical stage progression | Ruled: latest user instruction below |
 | D-18 | Interface language and localization | Ruled 2026-10-11 |
+| D-19 | Platform priority: Android first, Windows is version 2 | Ruled 2026-10-11 |
 
 ## Open
 
@@ -180,3 +181,10 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - Recommendation put to Pat by Claude Code: "English-only interface, built so translations can be added later, with no translations now."
 - Pat, 2026-10-11, verbatim: "Approve all"
 - Applied (branch `agent/cc-plangaps-01`): SPEC J03 and COVERAGE AC-J03 require English as the only shipped interface language, every user-facing string from externalized localization resources with no hardcoded UI strings in widgets (checked by a scan of widget code), no other translation, and no interface-language selector. Card data language stays governed by A02. PX07-071 stays Adapt with the ruling noted.
+
+## D-19 Platform priority: Android first, Windows is version 2
+- Pat, 2026-10-11, verbatim: "Own foldable Samsung Galaxy fold 7.  Usa. Prioritize full Android app before touching any windows code. That's v2 spec."
+- Applied: version 1 is the complete Android app (phones, foldables, tablets). Windows is version 2 and starts after M9. No Windows code, Windows packaging, Windows CI job, or Windows-only platform adapter is built in version 1. Planning documents mark Windows-only scope "(v2, D-19)" and MILESTONES gains a final "V2 Windows" row; no scope is deleted. GAUNTLET.md and Appendix A stay as the historical baseline; this ruling overrides them (GAUNTLET.md section 0). Keyboard, mouse, hover, right-click, drag-and-drop and large-window layouts stay version 1 because Android supports them.
+- Facts from the same message: Pat owns a Samsung Galaxy Z Fold7, the physical device for manual posture, hinge and TalkBack evidence (it is not the mid-range performance reference). Pat is in the USA, which matters for Windows code-signing eligibility if version 2 adopts signing (D-06, RISKS RK-07).
+- Effect on D-06: Windows installer format and signing move to version 2 unchanged.
+- Effect on D-07, flagged to Pat: Flutter won 88.6 to 84.0 mainly on Windows Narrator evidence, and Kotlin wins under reuse-heavy weighting (RISKS RK-08, RESEARCH_SUMMARY D-07). With Windows in version 2 the main reason for the choice no longer applies to version 1. Pat is asked whether to rescore D-07 for an Android-first version 1 before the toolchain is pinned (`orch-toolchain-01`). Until he rules, D-07 stands.
