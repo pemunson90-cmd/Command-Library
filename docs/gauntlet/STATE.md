@@ -21,7 +21,7 @@ Resume pointer. Updated after every merge and every gate. Files beat conversatio
 
 ## Next action
 
-Resume: any card marked `active` whose research file is not committed restarts from scratch (an uncommitted partial file may be reused only if it is present in the checkout). Launch queued cards per the run plan. When all 17 are filed: write RESEARCH_SUMMARY.md (one ruling per topic, parity matrices from R-05, R-06, R-07), update DECISIONS.md (D-04, D-06, D-07 recommendations and any new decisions), write `gates/GATE-1.md`, update this file, commit, push, message Pat, stop.
+Resume: a card marked `active` is not finished, even if its research file exists. Partial files are committed as `[gate-1] WIP checkpoint` whenever the orchestrator ends a turn, so a fresh session finds them on `main`. Relaunch the researcher with the partial file in place and tell it to complete it against the card's Acceptance list. Launch queued cards per the run plan. When all 17 are filed: write RESEARCH_SUMMARY.md (one ruling per topic, parity matrices from R-05, R-06, R-07), update DECISIONS.md (D-04, D-06, D-07 recommendations and any new decisions), write `gates/GATE-1.md`, update this file, commit, push, message Pat, stop.
 
 Still open from Gate 0: D-03 (signing key). Pat's ruling line arrived unfilled. Needed before M0.
 
