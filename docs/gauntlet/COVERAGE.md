@@ -98,6 +98,7 @@ These are verification obligations, not unmapped features. Acceptance cannot cla
 | E10 | Pinned Flutter engine MSAA/UIA settings, actual packaged TalkBack/Narrator and physical fold sensors | J01,J03 |
 | E11 | SQLite FTS5 behavior/migrations/bounded import, full corpus perf measurements on actual reference hardware | A06,A08,I02,J04 |
 | E12 | Hosted signed APK via ANDROID_SIGNING, certificate verification and real Android/Windows install/launch | N01 |
+| E13 | Authentic current variant definitions/card data/instructions and applicable personal acquisition/redistribution rights, plus native QR scanner/export and clock background behavior before claims; source uncertainty never silently defers approved modules | G12,G13,B13 |
 
 ## Open product questions
 
@@ -153,7 +154,7 @@ Provisional milestone grouping follows GAUNTLET section6; final order/steps are 
 | E01 | brackets | M5 | AC-E01: Bracket rules data; domain arithmetic/constraint fixtures, DB and task UI |
 | E02 | brackets | M5 | AC-E02: Bracket estimates/targets; domain arithmetic/constraint fixtures, DB and task UI |
 | F01 | links | M5 | AC-F01: External links; domain fixtures, state/undo persistence and task UI |
-| G01 | life | M2 | AC-G01: Players/layout; pure reducer/time/seed fixtures, persistence and offline UI |
+| G01 | life | M2 | AC-G01: Players/layout; pure reducer/time/seed fixtures, persistence and offline UI, incl seat eliminate/restore, eligible-seat random pick and keyboard seat reorder |
 | G02 | life | M2 | AC-G02: Life adjustments; pure reducer/time/seed fixtures, persistence and offline UI |
 | G03 | life | M2 | AC-G03: Commander damage; pure reducer/time/seed fixtures, persistence and offline UI |
 | G04 | life | M2 | AC-G04: Counters; pure reducer/time/seed fixtures, persistence and offline UI |
@@ -163,8 +164,8 @@ Provisional milestone grouping follows GAUNTLET section6; final order/steps are 
 | G08 | life | M2 | AC-G08: Art/deck profiles; pure reducer/time/seed fixtures, persistence and offline UI |
 | G09 | life | M2 | AC-G09: Loss/end/stats; pure reducer/time/seed fixtures, persistence and offline UI |
 | G10 | life | M2 | AC-G10: Durability/undo/log; pure reducer/time/seed fixtures, persistence and offline UI |
-| G11 | life | M2 | AC-G11: Life parity extras; pure reducer/time/seed fixtures, persistence and offline UI |
-| H01 | ai | M7 | AC-H01: Modes/context; codec/SSE/cancel fixture, domain reply tests and UI |
+| G11 | life | M2 | AC-G11: Life parity extras; pure reducer/time/seed fixtures, persistence and offline UI, incl game-history filter by player/deck/date |
+| H01 | ai | M7 | AC-H01: Modes/context; codec/SSE/cancel fixture, domain reply tests and UI, incl Surprise named-angle prompt, stated angle and H05 grounding |
 | H02 | ai | M7 | AC-H02: Cloud/custom providers; codec/SSE/cancel fixture, domain reply tests and UI |
 | H03 | inference | M7 | AC-H03: On-device; native model fixture/profile/hash/resume/cancel |
 | H04 | ai | M7 | AC-H04: Prompt export/pasteback; codec/SSE/cancel fixture, domain reply tests and UI |
@@ -177,7 +178,7 @@ Provisional milestone grouping follows GAUNTLET section6; final order/steps are 
 | I02 | transfer | M3/M9 | AC-I02: Restore safety; authentic text/CSV/native fixture round trips, failure atomicity and UI |
 | J01 | shell | each milestone + M8 | AC-J01: Adaptive state; layout golden, task UI, physical reader/posture and profile |
 | J02 | shell | each milestone + M8 | AC-J02: Desktop input; layout golden, task UI, physical reader/posture and profile |
-| J03 | shell | each milestone + M8 | AC-J03: Accessibility/design; layout golden, task UI, physical reader/posture and profile |
+| J03 | shell | each milestone + M8 | AC-J03: Accessibility/design; layout golden, task UI, physical reader/posture and profile, incl English-only externalized-string scan |
 | J04 | shell | each milestone + M8 | AC-J04: Performance/visual audit; layout golden, task UI, physical reader/posture and profile |
 | K01 | settings | M0/M1 + module milestones | AC-K01: Onboarding/settings; domain fixtures, state/undo persistence and task UI |
 | K02 | settings | M0/M1 + module milestones | AC-K02: Attribution/diagnostics; domain fixtures, state/undo persistence and task UI |

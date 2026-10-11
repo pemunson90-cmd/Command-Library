@@ -207,7 +207,7 @@ For each build/adapt row, demonstrate the named behavior and source reason with 
 | PX07-068 | [R-07](research/R-07-life-counters.md) | Camera/operator orientation | Adapt | All upright on desktop/operator mode | G01,G11 |
 | PX07-069 | [R-07](research/R-07-life-counters.md) | Drag reorder seats | Adapt | Preserve identities, commander relations | G01,G11 |
 | PX07-070 | [R-07](research/R-07-life-counters.md) | Art crop/contain/cover | Adapt | Readable responsive art | G08,G11 |
-| PX07-071 | [R-07](research/R-07-life-counters.md) | Languages | Adapt | Localization-ready architecture; languages Pat rules | G11 |
+| PX07-071 | [R-07](research/R-07-life-counters.md) | Languages | Adapt | Pat ruled 2026-10-11: English UI, externalized strings, no translations yet (J03) | G11 |
 | PX07-072 | [R-07](research/R-07-life-counters.md) | OLED/dark appearance | Adapt | Use app-wide light/dark tokens | G11 |
 | PX07-073 | [R-07](research/R-07-life-counters.md) | Disable dice animation | Adapt | Respect reduced-motion preference | G06,G11 |
 | PX07-074 | [R-07](research/R-07-life-counters.md) | Background music | Skip | Licensing/audio scope with low utility | G08,G11 |
