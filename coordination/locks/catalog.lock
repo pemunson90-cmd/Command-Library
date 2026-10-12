@@ -1,0 +1,7 @@
+component: catalog
+orchestrator: codex
+task: cx-catalog-k2-01
+branch: agent/cx-catalog-k2-01
+base_commit: bdb7645511d8744ee2f021eba56eb1edec810ef9
+owned_paths: android-app/feature/catalog/**
+step: bounded K2 local importer/status/lookup and tests; shared config root-owned
