@@ -145,3 +145,99 @@ java -cp "$COMPILER_CP" org.jetbrains.kotlin.cli.jvm.K2JVMCompiler \
 ```
 
 This is distinct from the earlier combined compile, which reported 10 passing tests before the hosted boundary check. The strict current-source compile and test pass reported 11. This confirms the cross-module fix at `0c58cfb` for the scoped JVM sources; it remains separate from Android/Gradle integration. The execution image lacks the `jar` utility, so compiler-produced module directories were used directly as separate classpath artifacts instead of packaging JARs.
+
+## Pre-fix unresolved-reference diagnosis
+
+A pre-fix run at HEAD `0c58cfb` used the actual parser with a temporary callback that emitted only owning IDs, short raw references, and target IDs. A direct trace of `RulesStructure` checked the relevant LF-delimited source line in its region and open-entry state. No rule prose was retained in the report. The pre-fix parser reported five unresolved reference occurrences across four unique target IDs:
+
+- `608.2`: raw `608.2c–m` leaves target `608.2l` unresolved; the exact target string does not occur anywhere in the official file.
+- `glossary:Evasion Ability`: raw `509.1b–c` leaves `509.1b` unresolved.
+- `glossary:Restriction`: raw `509.1b` leaves `509.1b` unresolved.
+- `glossary:Role`: raw `111.10j–r` leaves `111.10l` and `111.10o` unresolved; neither exact target occurs anywhere in the official file.
+
+`509.1b` is different: the official file has a candidate numbered heading on LF line 2352. The actual structure trace reported `region=BODY`, `section=5`, `chapter=509`, and current entry `509.1a`, but the current Kotlin heading regex returned false. The parser consequently retained that candidate line as text under `509.1a`; the parse reported no anomaly. The candidate line includes U+2028 LINE SEPARATOR at character offset 287. The UTF-8 line reader only separates on LF, while Java regex `.` does not match U+2028 by default, so the `.*` tail in the numbered heading patterns rejects this otherwise valid line. This establishes that `509.1b` is a parser omission in these bytes; the other three unresolved target IDs are absent from these bytes.
+
+Arithmetic: three unresolved occurrences target three IDs absent from the raw file (`608.2l`, `111.10l`, `111.10o`); two occurrences target the same genuine `509.1b` heading that the old parser omitted. The parser fix was delegated and landed separately; this probe made no repository edits.
+
+## Post-fix genuine rules rerun
+
+After the Unicode regex fix landed at HEAD `32ae241`, the same official file was reprocessed by the actual production Kotlin parser in two bounded 32 KiB streams. The input SHA-256 and byte count remained unchanged. The post-fix callback retained only identifier strings and aggregates; it confirmed both known glossary references now resolve to a distinct `509.1b` entry. The three remaining unresolved target IDs are absent from the raw source.
+
+```text
+result=OK
+byte_count=977752
+sha256=8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca
+indexed_identifiers=4357
+entries=4357
+entries_by_kind=NUMBERED=3321,GLOSSARY=741,EXAMPLE=277,NOTICE=18
+references=2075
+unresolved_references=3
+duplicate_identifiers_parser=0
+duplicate_identifiers_callback=0
+anomalies=0
+reference_status owner=glossary:Evasion Ability raw=509.1b–c target=509.1b status=resolved
+reference_status owner=glossary:Restriction raw=509.1b target=509.1b status=resolved
+unresolved_reference owner=608.2 raw=608.2c–m target=608.2l
+unresolved_reference owner=glossary:Role raw=111.10j–r target=111.10l
+unresolved_reference owner=glossary:Role raw=111.10j–r target=111.10o
+```
+
+The parser compilation used every current `feature/rules/src/main/kotlin` source plus the temporary `GenuineRulesProbe.kt`, against separately compiled `core/model` and `core/common` class directories. The JUnit runtime used the repository-declared Kotlin 2.2.10, coroutines 1.10.2, Gson 2.13.2, JUnit 4.13.2, and Hamcrest 1.3 artifacts.
+
+The parser regression test sources `SyntheticRules.kt` and `RulesTextParserTest.kt` were then compiled with all rules production sources against those separate model/common outputs. The JUnit class run included the new `unicodeLineAndParagraphSeparatorsRemainInHeadingAndRuleTails` case:
+
+```text
+JUnit version 4.13.2
+....................................
+Time: 0.403
+
+OK (36 tests)
+```
+
+Both runs used Java 21 and JVM target 17, outside Android/Gradle. The rules input and card payload remain in the private scratch input directory; this report contains no rules prose or card JSON.
+
+## Final post-range-fix validation
+
+At HEAD `e1d5e90` (production/test sources unchanged through current HEAD `9527c87`), I repeated separate module compilation from current sources: compile `core/model` alone, compile `core/common` against the model output, then compile all `feature/rules` production and pure JVM test sources against both separate outputs. I also compiled `LocalRulesContractsTest.kt` separately. Java 21, Kotlin 2.2.10, coroutines 1.10.2, coroutines-test 1.10.2, Gson 2.13.2, JUnit 4.13.2, Hamcrest Core 1.3, and JVM target 17 were used.
+
+JUnitCore ran all pure `feature/rules` test classes and the focused model contract test:
+
+- `RulesCodecTest`
+- `RulesCursorTest`
+- `RuleReferenceScannerTest`
+- `RulesParserLimitsTest`
+- `RulesParserMutationTest`
+- `RulesTextParserTest`
+- `Utf8LineReaderTest`
+- `LocalRulesContractsTest`
+
+Result:
+
+```text
+JUnit version 4.13.2
+...............................................................................
+Time: 0.636
+
+OK (79 tests)
+```
+
+The genuine Wizards file was then run through the current production `RulesTextParser` with its two 32 KiB passes. The exact-byte hash remained unchanged. The current result is:
+
+```text
+result=OK
+byte_count=977752
+sha256=8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca
+indexed_identifiers=4357
+entries=4357
+entries_by_kind=NUMBERED=3321,GLOSSARY=741,EXAMPLE=277,NOTICE=18
+references=2072
+unresolved_references=0
+duplicate_identifiers_parser=0
+duplicate_identifiers_callback=0
+anomalies=0
+heading_candidate_text_owner=509.1b
+reference_status owner=glossary:Evasion Ability raw=509.1b–c target=509.1b status=resolved
+reference_status owner=glossary:Restriction raw=509.1b target=509.1b status=resolved
+```
+
+Thus the range fix removed the three phantom unresolved targets previously produced from two ranges, with no unresolved targets in the final genuine-file run. Both glossary references to the real `509.1b` heading remain resolved. Aggregate rule text was never printed or stored; only the scratch probe code, compiled classes, source file, and aggregate outputs were used.

@@ -1,15 +1,14 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-gap-execution-39. Next: orch-kotlin-k3-offline-data-01 step3; K3 active implementation and verification.
+Checkpoint-ID: cp-20261012-fold7-functional-40. Next: orch-fold7-functional-01 step1; Functional Fold7 build awaiting Android verification.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
-| orch-kotlin-k3-offline-data-01 | K3 offline catalog/rules/search | active; recovery orchestrator | K2 accepted; existing K3 candidates preserved | repair diagnostic compile failure; review contracts and source evidence; implement production bindings |
-| cc-k3-rules-parser-01 | K3 internal rules parser | complete; merged and hosted verified | genuine source and production binding remain gated | no parser reassignment |
-| cx-k3-catalog-framer-01 | K3 local bulk framing | preserved candidate; integration gated | combined matrix failed to compile shell diagnostics | repair shell diagnostic; obtain runtime evidence |
-| orch-source-fixtures-01 | source evidence fallback | conditional only | current accepted task identifies an unanswered evidence need | one approved narrow read-only source probe |
+| orch-fold7-functional-01 | Functional Fold7 build | active root verification | D-22/D-23; reviewed real candidates preserved | green exact Android matrix, package APK, physical Fold7 install |
+| orch-kotlin-k3-offline-data-01 | K3 full offline corpus | retained; paused behind working build | D-23 prioritizes functional APK | resume full-feed/rulings/coverage work later; no acceptance claim |
+| orch-source-fixtures-01 | Source evidence fallback | policy gap closed; source-specific cases retained | FIXTURE_POLICY and genuine input evidence | exact rights/coverage review when a later acquisition/distribution path needs it |
 
 ## Accepted history summary
 

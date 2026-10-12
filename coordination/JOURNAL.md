@@ -155,3 +155,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T19:50:02Z | codex | cp-20261012-k3-execute-38 | containing commit | Pat requests finish; shell writer isolated, catalog preserved, root resumes implementation orchestration
 
 2026-10-12T20:38:54Z | codex | cp-20261012-k3-gap-execution-39 | containing commit | Authorized plan execution; expired lease recovered after branch inspection; existing candidates preserved; README and queue reconciled
+
+2026-10-12T21:16:55Z | codex | cp-20261012-fold7-functional-40 | containing commit | Functional Fold7 target controls; all workers complete; genuine parser79tests pass; actual schema export preserved; native verification pending
