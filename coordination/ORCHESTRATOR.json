@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-k2-resume-20261012",
-  "model_family": "Codex orchestrator; weakest capable scoped implementers/reviewers",
+  "session_id": "codex-k2-recovery-20261012",
+  "model_family": "Codex",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-12T03:23:55Z",
-  "expires_utc": "2026-10-12T04:08:55Z",
-  "checkpoint_id": "cp-20261012-k2-fixes-18",
-  "note": "Claude lease expired01:12:54UTC; inspected main d3a84d1 and its step2 handoff, preserved all worker branches/locks. User continue resumes Codex orchestration; review completed settings/QA and resume storage without repeating accepted core/tuple work."
+  "heartbeat_utc": "2026-10-12T03:46:33Z",
+  "expires_utc": "2026-10-12T04:31:33Z",
+  "checkpoint_id": "cp-20261012-k2-settings-20",
+  "note": "Resume requested in replacement chat; verified released lease and committed checkpoint478e663. Diagnose retained storage reports before changes."
 }

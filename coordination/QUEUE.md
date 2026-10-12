@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k2-fixes-18. Next: orch-kotlin-m0-01 step2; in_progress.
+Checkpoint-ID: cp-20261012-k2-settings-20. Next: orch-kotlin-m0-01 step2; in_progress.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
@@ -12,8 +12,8 @@ Checkpoint-ID: cp-20261012-k2-fixes-18. Next: orch-kotlin-m0-01 step2; in_progre
 | k2-core-contracts | K2 pure contracts | completed; compiled and independently accepted | corrected actual declarations25 JVM tests/Astra review | integrated unchanged; core lock released |
 | cc-k2-qa-01 | K2 parallel Claude Code QA | completed; independently reviewed/integrated | user D-23; docs/vectors only | lock released; assertions remain not_run |
 | cx-storage-01 | K2 Room3 storage | delegated; preserved schema step1 | accepted core/tuple/design + current storage lock | step2 real Database adapter, then instrumentation/review |
-| cc-settings-01 | K2 persisted settings | READY-FOR-REVIEW | accepted core/tuple; source branch714cd7e | targeted independent consent/durability/minAPI review before integration |
-| cx-settings-01 | K2 settings remediation | delegated; exclusive settings lock | independent bounded persistence/UTF8 findings | scoped fixes, restart-preservation tests and hosted review |
+| cc-settings-01 | K2 persisted settings | completed; original source preserved and corrected implementation integrated | independent scoped review + hosted evidence | app/runtime integration remains in root K2 card |
+| cx-settings-01 | K2 settings remediation | completed; integrated and lock released | 68 JVM tests, fatal API lint and library assembly passed at4f20764 | no further component writer assigned |
 | orch-toolchain-01 | historical Flutter readiness | superseded for v1 by D-20 | retained evidence only | no action |
 | orch-source-fixtures-01 | source evidence | conditional fallback only | K1 identifies an unanswered evidence need | one approved read-only official-source probe |
 | orch-m0-01 | historical Flutter M0 | superseded/ineligible | D-20 | no action |

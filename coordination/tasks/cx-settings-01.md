@@ -1,6 +1,6 @@
 # Task cx-settings-01: correct reviewed settings defects
 
-Status: delegated narrow remediation, not a new settings implementation. Original Claude branch714cd7e and35-test evidence are preserved. Root independent review: K2-SETTINGS-REVIEW.md.
+Status: completed and integrated with reviewed remediation; tested source4f20764, hosted run38199662988. Settings lock released. K2 app/runtime integration remains pending.
 
 Branch agent/cx-settings-01, worktree /workspace/Command-Library-cx-settings. Exclusive writes android-app/feature/settings/** and coordination/handoffs/cx-settings-01.md. Core/build/CI/coordination state belong to root. No original branch overwrite.
 
