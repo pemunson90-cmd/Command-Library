@@ -3,16 +3,18 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k2-accepted-27",
-  "verified_base_head": "21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4",
-  "stage": "K2 Kotlin Android foundation accepted; K3 offline data ready",
-  "status": "ready",
+  "checkpoint_id": "cp-20261012-k3-start-28",
+  "verified_base_head": "6b68906b72ebead34026d1a4682ae879e22aa7f6",
+  "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
+  "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 1,
-  "first_action": "Verify current main is 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4 or a continuity-green descendant, claim the orchestrator lease for orch-kotlin-k3-offline-data-01, read docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md and the K3 task card, then build the K3 requirement/ownership delta before application writes or product-data acquisition.",
-  "active_tasks": [],
+  "first_action": "Build the K3 requirement/ownership delta from accepted K2 and existing core/storage/catalog/rules/search/settings/shell contracts, review the meaningful architecture boundary, then decide permitted corpus input paths. No product-data acquisition or app writes before reconciliation.",
+  "active_tasks": [
+    "orch-kotlin-k3-offline-data-01"
+  ],
   "blockers": [],
-  "worktree_mode": "No active component ownership at K2 closeout. Catalog and shell K2 locks are released; the K3 claimant must create only the locks/worktrees it actually needs.",
+  "worktree_mode": "Clean git checkout /workspace/Command-Library at continuity-green6b68906; no K3 component workers/locks yet.",
   "review_status": "K2 final integration independently reviewed by GPT-5.6 Sol after Claude/Codex implementation. Touch-target and reproducible hosted shell-search timing blockers were corrected; final candidate passed the complete hosted matrix. K3 card published but not claimed.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
@@ -27,6 +29,6 @@
     "network_policy": "K2 product path performs no automatic product-data download. User-selected local import is explicit; Windows and sync remain out of scope. K3 must separately resolve any network acquisition source/terms before implementation.",
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters."
   },
-  "last_completed": "K2 Kotlin Android foundation accepted. Real :app, Compose shell, storage/catalog/settings wiring, bounded user-selected import, local persisted lookup/status and hosted debug artifact are integrated. Final run 38275330760 passed JVM/build, API23, API36 and API36-16KiB; APK SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659. K2 locks/lease released; K3 ready but not started.",
-  "updated_utc": "2026-10-12T16:22:46Z"
+  "last_completed": "Resumed continuity-green6b68906 under lightweight documentation policy; K2/catalog/Claude shell/app are accepted and preserved. Claimed released K3 lease, corrected task DATA_MODEL link, no K3 code/download/component ownership started.",
+  "updated_utc": "2026-10-12T18:02:15Z"
 }

@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k2-accepted-27. Next: orch-kotlin-k3-offline-data-01 step1; ready.
+Checkpoint-ID: cp-20261012-k3-start-28. Next: orch-kotlin-k3-offline-data-01 step1; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

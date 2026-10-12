@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "released",
-  "session_id": "marlow-k2-closeout-20261012",
-  "model_family": "GPT-5.6 Sol",
+  "status": "active",
+  "session_id": "codex-k3-offline-data-20261012",
+  "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-12T16:22:46Z",
-  "expires_utc": "2026-10-12T16:22:46Z",
-  "checkpoint_id": "cp-20261012-k2-accepted-27",
-  "note": "K2 accepted after independent integration review and hosted run 38275330760 passed JVM/build, API23, API36 and API36-16KiB. Exact tested head 2e08e696 merged into main at 21bf53f; continuity 38276257988 green. K2 catalog/shell locks released. K3 task card is ready but no K3 lease is claimed by this closeout."
+  "heartbeat_utc": "2026-10-12T18:02:15Z",
+  "expires_utc": "2026-10-12T18:47:15Z",
+  "checkpoint_id": "cp-20261012-k3-start-28",
+  "note": "User continue resumes K3 from continuity-green6b68906; K2 accepted and all integrated work preserved. No old K2 ownership reclaimed."
 }

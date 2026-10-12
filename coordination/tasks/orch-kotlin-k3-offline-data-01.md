@@ -1,6 +1,6 @@
 # Task orch-kotlin-k3-offline-data-01
 
-Status: ready for claim. K2 foundation is accepted; this card defines the next bounded Android section and does not itself start implementation.
+Status: in progress, step1 requirement/ownership reconciliation. K2 foundation remains accepted. No K3 application implementation or product-data acquisition has started.
 
 ## Purpose
 
@@ -10,7 +10,7 @@ K3 is an internal section, not a public finished-app release. It advances the re
 
 ## Preconditions
 
-1. Read `docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`, `docs/gauntlet/V1_KOTLIN_EXECUTION_SPEC.md`, `docs/architecture/KOTLIN_CONTRACTS.md`, `docs/architecture/KOTLIN_OWNERSHIP_MAP.md`, `docs/architecture/DATA_MODEL.md`, and `docs/architecture/kotlin-registry.json`.
+1. Read `docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`, `docs/gauntlet/V1_KOTLIN_EXECUTION_SPEC.md`, `docs/architecture/KOTLIN_CONTRACTS.md`, `docs/architecture/KOTLIN_OWNERSHIP_MAP.md`, `docs/gauntlet/DATA_MODEL.md`, and `docs/architecture/kotlin-registry.json`.
 2. Verify `main` contains K2 accepted base `21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4` or a descendant with continuity green.
 3. Claim the orchestrator lease before writes. Claim component locks only for actually delegated owned paths. Do not resurrect K2 catalog/shell locks.
 4. Before adding any network acquisition path, resolve the exact source/license/terms question for that source from existing evidence or a narrowly scoped source review. A user-selected local file path remains permitted independently of network acquisition.
@@ -58,3 +58,7 @@ Requirement claims remain scoped. K3 may close foundation/data portions of requi
 ## First action after claim
 
 Verify current `main`, claim the lease, then build a K3 requirement/ownership delta from the accepted K2 tree and existing architecture documents before modifying application code or contacting a product-data source.
+
+## Latest continuation delta
+
+Verified main6b68906 is a descendant of accepted K2 base21bf53f; continuity38281170275 succeeded. Catalog638caba and Claude shell/app are already integrated and K2 accepted; obsolete component workers/locks are not resumed. Corrected the DATA_MODEL precondition path. Read only this task-linked scope under updated documentation policy. Next build/review the K3 requirement and exclusive-path delta before application/source writes; no new component lock yet. Verification: accepted evidence reused, no duplicate Android matrix or application changes.
