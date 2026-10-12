@@ -42,7 +42,17 @@ jobs:
       - name: Rules JVM unit tests
         shell: bash
         working-directory: android-app
-        run: bash gradlew --no-daemon --console=plain :feature:rules:check :feature:rules:assembleDebug
+        run: bash gradlew --no-daemon --console=plain :feature:rules:check :feature:rules:assembleDebug :data:storage:compileDebugKotlin
+      - name: Retain authentic generated schema identity in evidence
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import base64, hashlib, pathlib
+          schema = pathlib.Path('android-app/data/storage/schemas/com.architectpsg.commandlibrary.data.storage.schema.StorageSchemaDatabase/2.json')
+          payload = schema.read_bytes()
+          print('KSP_SCHEMA2_SHA256=' + hashlib.sha256(payload).hexdigest())
+          print('KSP_SCHEMA2_B64=' + base64.b64encode(payload).decode('ascii'))
+          PYCODE
       - name: Require executed rules tests without skips or failures
         shell: bash
         run: |
@@ -79,5 +89,6 @@ jobs:
           path: |
             android-app/feature/rules/build/test-results/**
             android-app/feature/rules/build/reports/tests/**
+            android-app/data/storage/schemas/**/*.json
           if-no-files-found: ignore
           retention-days: 14
