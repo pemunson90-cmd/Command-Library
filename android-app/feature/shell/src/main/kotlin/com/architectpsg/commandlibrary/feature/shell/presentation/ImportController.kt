@@ -16,6 +16,7 @@ import com.architectpsg.commandlibrary.feature.shell.document.DocumentDescriptio
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentRef
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentSource
 import java.io.InputStream
+import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -172,16 +173,30 @@ internal class ImportController(
         class Refused(val failure: ImportFailure) : Opened
     }
 
-    private suspend fun open(ref: DocumentRef): Opened =
-        try {
-            Opened.Stream(withContext(ioDispatcher) { documents.open(ref) })
+    private suspend fun open(ref: DocumentRef): Opened {
+        // Keep ownership outside the dispatcher hop: withContext can discard its result when the
+        // caller is cancelled before resuming, even though documents.open already returned.
+        val opened = AtomicReference<InputStream?>()
+        return try {
+            withContext(ioDispatcher) { opened.set(documents.open(ref)) }
+            Opened.Stream(checkNotNull(opened.getAndSet(null)))
         } catch (cancelled: CancellationException) {
+            withContext(NonCancellable + ioDispatcher) {
+                opened.getAndSet(null)?.let { input ->
+                    try {
+                        input.close()
+                    } catch (failure: Exception) {
+                        cancelled.addSuppressed(failure)
+                    }
+                }
+            }
             throw cancelled
         } catch (_: SecurityException) {
             Opened.Refused(ImportFailure.PermissionDenied)
         } catch (_: Exception) {
             Opened.Refused(ImportFailure.ReadFailed)
         }
+    }
 
     private fun onProgress(progress: JobProgress) {
         updateRunning { it.copy(phase = progress.phase, recordsStaged = progress.completedUnits) }
