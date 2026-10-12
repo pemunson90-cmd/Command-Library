@@ -49,4 +49,13 @@ class ScryfallCodecTest {
         assertThrows(Exception::class.java) { map(raw.replace("\"cmc\":1.25", "\"cmc\":1e99999999")) }
         assertThrows(Exception::class.java) { map(raw.replace("\"name\":\"Éclair\"", "\"name\":\"Éclair\",\"card_faces\":[{\"object\":\"wrong\",\"name\":\"Face\"}]")) }
     }
+    @Test fun genuineMeldComponentsKeepRawPrintingIdentities() {
+        val raw = javaClass.getResourceAsStream("/hanweir-battlements.json")!!.bufferedReader().readText()
+        val (_, printing) = map(raw)
+        assertEquals(4, printing.relationships.size)
+        assertEquals(2, printing.relationships.count { it.kind == FaceRelationshipKind.MELD_PART })
+        assertEquals(1, printing.relationships.count { it.kind == FaceRelationshipKind.MELD_RESULT })
+        assertTrue(printing.relationships.all { it.rawRelatedIdentity is Knowledge.Known && it.relatedOracle is Knowledge.Unknown })
+        assertThrows(Exception::class.java) { map(raw.replace("\"component\":\"meld_part\"", "\"component\":\"invented\"")) }
+    }
 }
