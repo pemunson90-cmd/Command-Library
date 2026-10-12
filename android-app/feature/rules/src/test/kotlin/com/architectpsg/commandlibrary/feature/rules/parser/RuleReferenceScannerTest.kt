@@ -44,6 +44,32 @@ class RuleReferenceScannerTest {
     }
 
     @Test
+    fun sameRuleRangesSkipOnlyIntermediateUnnumberedLetters() {
+        assertEquals(listOf("111.10j-r" to listOf("111.10j", "111.10k", "111.10m", "111.10n", "111.10p", "111.10q", "111.10r")), scan("See rules 111.10j-r."))
+        assertEquals(listOf("608.2c-m" to listOf("608.2c", "608.2d", "608.2e", "608.2f", "608.2g", "608.2h", "608.2i", "608.2j", "608.2k", "608.2m")), scan("See rules 608.2c-m."))
+        assertEquals(listOf("111.10j through 111.10r" to listOf("111.10j", "111.10k", "111.10m", "111.10n", "111.10p", "111.10q", "111.10r")), scan("rules 111.10j through 111.10r"))
+    }
+
+    @Test
+    fun explicitlyNamedSkippedLettersAndRangeEndpointsAreRetained() {
+        assertEquals(listOf("111.10l" to listOf("111.10l"), "111.10o" to listOf("111.10o")), scan("rules 111.10l and 111.10o"))
+        assertEquals(listOf("111.10j-l" to listOf("111.10j", "111.10k", "111.10l")), scan("rules 111.10j-l"))
+        assertEquals(listOf("111.10l-o" to listOf("111.10l", "111.10m", "111.10n", "111.10o")), scan("rules 111.10l-o"))
+        assertEquals(listOf("111.10o-r" to listOf("111.10o", "111.10p", "111.10q", "111.10r")), scan("rules 111.10o-r"))
+    }
+
+    @Test
+    fun rangeLimitCountsActualEmittedTargets() {
+        assertEquals(7, RuleReferenceScanner(maxRangeExpansion = 7).scan("rules 111.10j-r").single().identifiers.size)
+        try {
+            RuleReferenceScanner(maxRangeExpansion = 6).scan("rules 111.10j-r")
+            fail("Expected seven emitted targets to exceed limit six")
+        } catch (expected: RulesParseException) {
+            assertEquals(RulesParseFailure.LimitExceeded(RulesLimit.RANGE_EXPANSION, 6, 7), expected.failure)
+        }
+    }
+
+    @Test
     fun otherRangesKeepOnlyTheirEnds() {
         assertEquals(listOf("100.1-100.4" to listOf("100.1", "100.4")), scan("rules 100.1-100.4"))
         assertEquals(listOf("702.19d-702.20a" to listOf("702.19d", "702.20a")), scan("rules 702.19d-702.20a"))
