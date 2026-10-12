@@ -29,6 +29,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-19 | Platform priority: Android first, Windows is version 2 | Ruled 2026-10-11 |
 | D-20 | Kotlin Android v1; separate Flutter Windows v2; sync after Windows runs | Ruled 2026-10-11 |
 | D-21 | K1 execution release and complete-section checkpoint policy | Ruled 2026-10-11 |
+| D-22 | Fold7-first acceptance and genuine input acquisition | Ruled 2026-10-12 |
 
 ## Open
 
@@ -224,3 +225,8 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - Context: the Codex lease (session codex-k2-catalog-20261012, task orch-kotlin-m0-01) expired at 2026-10-12T13:54:34Z after catalog PR #1 merged (e5ae264). Codex left `coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md`.
 - Pat, 2026-10-12, verbatim: "Fetch the latest \"main\" from \"pemunson90-cmd/Command-Library\", then read \"coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md\" and continue the project from that packet."
 - Applied: Claude Code holds the lease from checkpoint cp-20261012-claude-k2-26. Shell branch agent/cc-k2-shell-01 (b1064f2) was authored under this same Claude Code session, so its review uses fresh-context reviewer subagents and is recorded as not independent of the author session; an Astra review may still be required for formal acceptance.
+
+## D-22 Fold7-first acceptance and genuine input acquisition
+
+- Pat, 2026-10-12, answering whether genuine English inputs already exist: "you need to find them". Applied: find and acquire official English representative cards/rulings and rules TXT for personal validation; retain exact-byte provenance and keep source payloads out of public Git/artifacts. This does not authorize non-English downloads or settle public redistribution rights.
+- Pat, answering whether a separate mid-range reference device is available: "irrelevant. it needs to work on my phone. backwards compatibility is an afterthought". Applied: the Galaxy Z Fold7 is the primary Android acceptance target. The separate Snapdragon778G-class reference-device prerequisite is superseded; retained budgets are provisional engineering targets evaluated on the Fold7, not measured passes. Existing minSdk23 and compatibility checks remain unless a later technical change is needed; backward compatibility is secondary, not the release-driving hardware criterion. Physical Fold7/manual behavior still requires actual evidence and cannot be claimed from an emulator.
