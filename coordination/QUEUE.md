@@ -1,12 +1,12 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-fold7-functional-40. Next: orch-fold7-functional-01 step1; Functional Fold7 build awaiting Android verification.
+Checkpoint-ID: cp-20261012-fold7-apk-ready-41. Next: orch-fold7-functional-01 step4; Functional APK ready; physical Fold7 validation pending.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
-| orch-fold7-functional-01 | Functional Fold7 build | active root verification | D-22/D-23; reviewed real candidates preserved | green exact Android matrix, package APK, physical Fold7 install |
+| orch-fold7-functional-01 | Functional Fold7 build | APK verified and integrated; physical device next | exact hosted matrix green; APK artifact retained | install on Fold7 and record/fix actual device behavior |
 | orch-kotlin-k3-offline-data-01 | K3 full offline corpus | retained; paused behind working build | D-23 prioritizes functional APK | resume full-feed/rulings/coverage work later; no acceptance claim |
 | orch-source-fixtures-01 | Source evidence fallback | policy gap closed; source-specific cases retained | FIXTURE_POLICY and genuine input evidence | exact rights/coverage review when a later acquisition/distribution path needs it |
 

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "active",
+  "status": "released",
   "session_id": "codex-k3-plan-execution-20261012",
   "model_family": "Codex",
   "task_id": "orch-fold7-functional-01",
-  "heartbeat_utc": "2026-10-12T21:16:55Z",
-  "expires_utc": "2026-10-12T22:01:55Z",
-  "checkpoint_id": "cp-20261012-fold7-functional-40",
+  "heartbeat_utc": "2026-10-12T21:31:18Z",
+  "expires_utc": "2026-10-12T21:31:18Z",
+  "checkpoint_id": "cp-20261012-fold7-apk-ready-41",
   "note": "User authorized execute reviewed plan. Prior lease expired20:35; main and worker heads inspected, all preserved. Recovery uses isolated branches; no reset/rebase/force-push."
 }
