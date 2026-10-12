@@ -1,3 +1,5 @@
+> Superseded as the active delivery pointer by D-24. This remains historical debug foundation evidence; it did not satisfy complete-app delivery. Continue orch-kotlin-k3-offline-data-01.
+
 # Functional Fold7 Android build
 
 D-22/D-23 control this bounded task: deliver a real working Android APK for Pat's Galaxy Z Fold7 before broader specification/polish work. No placeholder/fake adapters, unimplemented navigation, fabricated evidence, public corpus bundling or non-English download.

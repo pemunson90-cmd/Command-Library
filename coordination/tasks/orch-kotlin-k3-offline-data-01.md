@@ -1,6 +1,6 @@
 # Task orch-kotlin-k3-offline-data-01
 
-Status: in progress, local-first input paths selected; step3 private parser preparation. K2 remains accepted. Production full-corpus contracts/migration/activation are not implemented.
+Status: active, incomplete. D-24 restores complete-app execution. Small-file catalog and durable rules import are implemented; full-feed, in-app downloads, card rulings and complete local search remain unfinished.
 
 ## Purpose
 
@@ -116,4 +116,4 @@ Next meaningful design boundary: additive bulk budget/coverage semantics; bounde
 
 ## Latest continuation delta
 
-D-22/D-23 set Fold7-first functional build priority; broader polish/spec/full-feed closure is retained for later, not fabricated complete. Genuine English card/rulings and official rules TXT acquired privately under user instruction; production parser2passes4355entries2075references5unresolved0anomalies and exact977752bytehash agree. Current pure-JVM model/common/rules compile and10focusedtests passed (not Android evidence). Additive rules contracts/schema2/repository/UI real candidates reviewed; app graph wires actualLocalRules. Catalog identity heap retention removed; K2caps preserved. Hosted38306191466 failed before compilation due AGP sourceSets getter cast; repaired to accepted sourceSets block. Next finish combined exactSHA Android compile/native/migration/UI matrix, retain actualKSP2.json, fix any failures and produce functional debugAPK. No physicalFold7 or completeK3 assertion.
+Main f4760ba contains the tested debug foundation only. Full audit retained at docs/verification/full-v1-audit/FEATURE-AUDIT.md maps all64requirements,213parityrows,25screens; no complete-v1 acceptance. D-24 rejects the mistaken reduced-scope handoff and requires working in-app downloads plus canonical signing at final acceptance. Existing catalog map/set memory issue and rules schema/parser/UI are already fixed; do not redo those completed steps. Current branch agent/cx-full-v1-resume-01; orchestrator owns shared config/core/storage/DI/UI until exact worker locks published. Verification: source reread/audit only; no new app test run. Next finish narrowly scoped source/architecture reviews for explicit personal downloads and full-corpus budgets, then publish additive contract/ownership baseline and implement network/full-feed/rulings/search. Maintain full retained product scope through M2–M9; no partial APK is final delivery.

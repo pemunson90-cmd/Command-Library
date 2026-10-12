@@ -3,20 +3,22 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-fold7-apk-ready-41",
-  "verified_base_head": "875ad4f2bfc4b1cf4aa8035c9182618424bfcb73",
-  "stage": "Functional Android APK delivered; physical Fold7 validation next",
-  "status": "Functional APK ready; physical Fold7 validation pending",
-  "next_task": "orch-fold7-functional-01",
-  "next_step": 4,
-  "first_action": "Install verified APK on physical Fold7 and record actual device behavior",
-  "active_tasks": [],
-  "blockers": [
-    "Physical Fold7 installation/runtime has not been observed by this executor; use the verified APK and record device results.",
-    "Full English printing/rulings/bulk coverage retained for later under D-23; existing small catalog import limits remain enforced."
+  "checkpoint_id": "cp-20261012-full-v1-resume-42",
+  "verified_base_head": "f4760ba2451ee369519ee6e0220ff6352fc60fc5",
+  "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
+  "status": "Full Android v1 execution active; incomplete",
+  "next_task": "orch-kotlin-k3-offline-data-01",
+  "next_step": 2,
+  "first_action": "Finish scoped personal-source/download architecture reviews, then implement full K3 corpus/download/rulings/search",
+  "active_tasks": [
+    "orch-kotlin-k3-offline-data-01"
   ],
-  "worktree_mode": "Root isolated /workspace/scratch/Command-Library branch agent/cx-k3-execute-01, PR7. All worker branches preserved; no active component writers.",
-  "review_status": "Functional-build source reviewed and exact hosted Android matrix passed; source identical after guarded PR7 merge. No finalK3/fullproduct/physical-device acceptance claim.",
+  "blockers": [
+    "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
+    "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
+  ],
+  "worktree_mode": "Root agent/cx-full-v1-resume-01 based on main f4760ba; prior branches preserved; no component writers active.",
+  "review_status": "Full 64-requirement/213-parity/25-screen audit complete; narrow source/download architecture review in progress.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -36,6 +38,6 @@
     "genuine_rules": "Actual977752byte officialTXT SHA8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca parsed2passes4357entries2072references0unresolved0duplicates0anomalies.79pureJVMtests pass in separate model/common/rules compile. This is not Android/physical evidence.",
     "rules_schema": "Committed actualKSP2.json SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentitiesunchanged; native migration/preservation/reopen passes all3Androidlanes."
   },
-  "last_completed": "Exact tested APK integrated through PR7; all4Android lanes green; artifact and checksum retained; physical Fold7 is next",
-  "updated_utc": "2026-10-12T21:31:18Z"
+  "last_completed": "Reread gauntlet and active Kotlin plan; full audit persisted; D-24 restores complete delivery scope and supersedes mistaken partial-build pointer. K3 and M2-M9 remain incomplete.",
+  "updated_utc": "2026-10-12T21:58:55Z"
 }
