@@ -1,3 +1,5 @@
+> Reviewed correction: original HttpURLConnection adapter is blocked by NETWORK-INDEPENDENT-REVIEW.md. Remediate with verified OkHttp5.5.0/Okio3.18.1 candidate; preserve existing core NetworkClient and source/security policies, remove the500ms usability cap and timeout-read recovery loop.
+
 # cx-k3-network-01: shared cancelable transport
 
 Status: assigned; implementation unrun. Parent orch-kotlin-k3-offline-data-01, N02. Internal component work, not complete-app delivery.
@@ -13,3 +15,7 @@ Coroutine and CancelToken cancellation must disconnect blocked socket/read withi
 Tests use synthetic local HttpServer fixtures: streaming/empty/non2xx, bounds/truncation, HTTP metadata, cancellation while blocked and token-only cancellation, forbidden initial origin/redirect/credential isolation, safe retries vs charged/no-replay, Retry-After and limiter, close. Use injected timing/seams for fast deterministic retry tests. No external charged/network calls in tests. Compiler scratch /workspace/scratch/kotlin-probe/lib can run pure JVM sources/tests; hosted full Android validation is root integration.
 
 Before returning: commit code/tests and replace Latest continuation delta in your handoff with exact verification and next action, push branch. <=10-line summary. No subagents.
+
+## Remediation acceptance
+
+Use cancellable async Call.enqueue/cancel with closed response bodies, actual configured15sconnect/30sread/requestoverall budgets, no transparentgzip/defaultretry/redirect/auth/cookies/cache. Slow healthy responseheaders >500ms must succeed. Token and coroutine cancel duringblockedheaders/body/close muststop <=1s withoutshrinkingvalidrequestbudget. Explicit retries onlysafeGETHEAD beforeemission. Retry-After anyvalid duration/date mustnotbeignoredforbeinglarge; failclosed ifbeyondjobdeadline andretainorigin cooldown. Malformedvalue policy conservative. Source limiter search2/sec andmanifest10/minute, otherAPI<=8/sec. Crossorigin sensitiveheaderisolation andverifiedURIcontinue. Tests syntheticlocalserver withtested engine; optionallocalTLS fixture ifpossible. No applicationbinding or finalacceptanceuntilindependentreview+hostedAndroid. Shareddependenciesrootprepared; worker ownsnetworksrc/handoff only.
