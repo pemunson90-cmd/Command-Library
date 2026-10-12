@@ -5,7 +5,11 @@ import com.architectpsg.commandlibrary.core.model.CancelToken
 import com.architectpsg.commandlibrary.core.model.SnapshotBytes
 import java.security.MessageDigest
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.yield
 import org.junit.Assert.*
@@ -75,6 +79,18 @@ class JsonLinesFramerTest {
         }
     }
 
+    @Test fun rejectsUnsafeLimitConstruction(): Unit {
+        assertEquals(128 * 1024, JsonLinesLimits(1, 128 * 1024, 1, 32).maxRecordBytes)
+        for (recordBytes in listOf(0, 128 * 1024 + 1, Int.MAX_VALUE)) {
+            assertThrows(IllegalArgumentException::class.java) { JsonLinesLimits(1, recordBytes, 1, 1) }
+        }
+        for (nesting in listOf(0, 33, Int.MAX_VALUE)) {
+            assertThrows(IllegalArgumentException::class.java) { JsonLinesLimits(1, 1, 1, nesting) }
+        }
+        assertThrows(IllegalArgumentException::class.java) { JsonLinesLimits(0, 1, 1, 1) }
+        assertThrows(IllegalArgumentException::class.java) { JsonLinesLimits(1, 1, 0, 1) }
+    }
+
     @Test fun enforcesChunkContinuityAndFinal(): Unit = runBlocking {
         val f = JsonLinesFramer(defaults, Token())
         f.accept(chunk("{}".toByteArray(), final = false)) {}
@@ -111,6 +127,24 @@ class JsonLinesFramerTest {
             runBlocking { JsonLinesFramer(defaults, cancelled).accept(chunk("{}".toByteArray())) {} }
         }
         yield()
+    }
+
+    @Test fun cancelledCoroutineStopsEvenWhenTokenIsLiveAndCallbackDoesNotSuspend(): Unit = runBlocking {
+        val parent = Job()
+        val framer = JsonLinesFramer(defaults, Token())
+        var emitted = 0
+        var caught = false
+        val job = CoroutineScope(parent).launch(start = CoroutineStart.UNDISPATCHED) {
+            parent.cancel()
+            try {
+                framer.accept(chunk("{}\n{}".toByteArray())) { emitted++ }
+            } catch (_: kotlinx.coroutines.CancellationException) {
+                caught = true
+            }
+        }
+        job.join()
+        assertTrue(caught)
+        assertEquals(0, emitted)
     }
 
     @Test fun syntheticManyRecordsUseOneCallbackAtATime(): Unit = runBlocking {

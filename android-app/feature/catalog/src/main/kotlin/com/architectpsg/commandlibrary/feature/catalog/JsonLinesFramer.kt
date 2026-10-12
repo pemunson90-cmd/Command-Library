@@ -6,6 +6,8 @@ import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 
 /** Internal parser safeguards, not an estimate of a source feed or an import contract. */
 internal data class JsonLinesLimits(
@@ -15,7 +17,9 @@ internal data class JsonLinesLimits(
     val maxNesting: Int,
 ) {
     init {
-        require(maxInputBytes > 0 && maxRecordBytes > 0 && maxRecords > 0 && maxNesting > 0)
+        require(maxInputBytes > 0 && maxRecords > 0)
+        require(maxRecordBytes in 1..(128 * 1024)) { "Record byte limit exceeds parser ceiling" }
+        require(maxNesting in 1..32) { "Nesting limit exceeds parser ceiling" }
     }
 }
 
@@ -41,6 +45,7 @@ internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val 
     val sha256: String get() = requireNotNull(finalHash) { "Hash requires final byte chunk" }
 
     suspend fun accept(chunk: ByteChunk, onRecord: suspend (String) -> Unit) {
+        currentCoroutineContext().ensureActive()
         cancel.throwIfCancelled()
         require(!finalSeen && chunk.sequence == sequence && chunk.offset == offset) {
             "Noncontiguous or repeated byte chunk"
@@ -49,6 +54,7 @@ internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val 
         val bytes = chunk.bytes.copyBytes()
         require(bytes.size.toLong() <= limits.maxInputBytes - offset) { "Input exceeds byte limit" }
         for (byte in bytes) {
+            currentCoroutineContext().ensureActive()
             cancel.throwIfCancelled()
             digest.update(byte)
             offset++
@@ -83,6 +89,8 @@ internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val 
     }
 
     private suspend fun emit(onRecord: suspend (String) -> Unit) {
+        currentCoroutineContext().ensureActive()
+        cancel.throwIfCancelled()
         require(length > 0) { "Blank JSONL line" }
         require(count < limits.maxRecords) { "Record count exceeds limit" }
         val decoder = StandardCharsets.UTF_8.newDecoder()
@@ -91,8 +99,10 @@ internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val 
         val raw = decoder.decode(ByteBuffer.wrap(line, 0, length)).toString()
         require(!raw.startsWith('\uFEFF')) { "UTF-8 BOM is not accepted" }
         ScryfallCodec.parse(raw, limits.maxNesting)
+        currentCoroutineContext().ensureActive()
         cancel.throwIfCancelled()
         onRecord(raw)
+        currentCoroutineContext().ensureActive()
         cancel.throwIfCancelled()
         count++
         length = 0
