@@ -2,7 +2,10 @@ package com.architectpsg.commandlibrary.feature.catalog
 
 import com.architectpsg.commandlibrary.core.common.sameCanonicalGameData
 import com.architectpsg.commandlibrary.core.model.*
-import java.util.Base64
+import java.nio.ByteBuffer
+import java.nio.charset.CodingErrorAction
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +30,7 @@ public class LocalCatalog(
     }
 
     override suspend fun status(cancel: CancelToken): Outcome<LocalCatalogStatus> {
-        initialize(cancel)
+        when (val ready = initialize(cancel)) { is Outcome.Success -> Unit; else -> return ready.nonSuccess() }
         val row = when (val result = database.query(sql("SELECT g.* FROM catalog_active a JOIN catalog_generation g ON g.generation_id=a.generation_id WHERE a.dataset_key=:key", 1, "key" to dataset), cancel)) {
             is Outcome.Success -> result.value.firstOrNull()
             else -> return result.nonSuccess()
@@ -44,7 +47,7 @@ public class LocalCatalog(
     }
 
     override suspend fun lookupName(input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>> {
-        initialize(cancel)
+        when (val ready = initialize(cancel)) { is Outcome.Success -> Unit; else -> return ready.nonSuccess() }
         if (input.codePointCount(0, input.length) > 128) return invalid("Name query exceeds 128 code points")
         val active = when (val result = activeRow(cancel)) {
             is Outcome.Success -> result.value
@@ -54,9 +57,11 @@ public class LocalCatalog(
         if (cursor != null && cursor.generation != active?.text("generation_id")) return failure(FailureCode.STALE_GENERATION, "Catalog generation changed")
         val reference = SnapshotReference(active?.let { ProviderId(it.text("provider")) } ?: ProviderId("scryfall"),
             active?.let { GenerationId(it.text("generation_id")) }, null, LanguageTag.ENGLISH)
-        val words = Regex("[\\p{L}\\p{N}]+", RegexOption.UNICODE_CASE).findAll(input).map { it.value }.toList()
+        val words = Regex("[\\p{L}\\p{M}\\p{N}]+").findAll(ScryfallCodec.normalize(input)).map { it.value }.toList()
         if (active == null || words.isEmpty()) return Outcome.Success(Page(SnapshotList.empty(), null, reference))
         val expression = "name : \"${words.joinToString(" ") { it.replace("\"", "\"\"") }}\"*"
+        val queryKey = digest(expression).take(24)
+        if (cursor != null && cursor.query != queryKey) return invalid("Cursor belongs to a different query")
         val rows = when (val result = database.query(sql("""SELECT c.record_payload AS payload,c.normalized_name AS sort_name,c.provider AS provider,c.oracle_id AS oracle_id FROM catalog_name_fts JOIN oracle_card c ON c.generation_id=catalog_name_fts.generation_id AND c.provider=catalog_name_fts.provider AND c.oracle_id=catalog_name_fts.oracle_id AND c.language=catalog_name_fts.language WHERE catalog_name_fts MATCH :match AND c.generation_id=:generation AND c.language='en' AND (c.normalized_name>:name OR (c.normalized_name=:name AND (c.provider>:provider OR (c.provider=:provider AND c.oracle_id>:oracle)))) ORDER BY c.normalized_name,c.provider,c.oracle_id LIMIT :limit""", page.limit + 1,
             "match" to expression, "generation" to active.text("generation_id"), "name" to (cursor?.name ?: ""), "provider" to (cursor?.provider ?: ""), "oracle" to (cursor?.oracle ?: ""), "limit" to (page.limit + 1).toLong()), cancel)) {
             is Outcome.Success -> result.value
@@ -67,26 +72,32 @@ public class LocalCatalog(
             val provenance = active.provenance()
             val cards = shown.map { row -> ScryfallCodec.mapped(row.text("payload"), provenance.provider, GenerationId(active.text("generation_id")),
                 provenance.source, provenance.sourceDate, provenance.fetchedAt, provenance.checksum, provenance.notice, limits.maxNesting).first }
-            val next = if (rows.size > page.limit) shown.last().let { encodeCursor(Cursor(active.text("generation_id"), it.text("sort_name"), it.text("provider"), it.text("oracle_id"))) } else null
+            val next = if (rows.size > page.limit) shown.last().let { encodeCursor(Cursor(active.text("generation_id"), queryKey, it.text("sort_name"), it.text("provider"), it.text("oracle_id"))) } else null
             Outcome.Success(Page(SnapshotList.copyOf(cards), next, reference))
         } catch (failure: Exception) { corrupt(failure) }
     }
 
     override suspend fun `import`(source: CatalogImportSource, chunks: Flow<ByteChunk>, onProgress: (JobProgress) -> Unit, cancel: CancelToken): Outcome<CatalogImportResult> = importMutex.withLock {
-        initializeLocked(cancel)
+        when (val ready = initializeLocked(cancel)) { is Outcome.Success -> Unit; else -> return@withLock ready.nonSuccess() }
         if (source.provider.value != "scryfall" || source.language != LanguageTag.ENGLISH) return@withLock invalid("Only English Scryfall input is supported")
+        if (!source.contentUri.value.startsWith("content://") || source.displayName.isBlank() || source.displayName.toByteArray(Charsets.UTF_8).size > 512)
+            return@withLock invalid("Expected a named local content source")
+        source.expectedBytes.knownOrNull()?.let { if (it < 0 || it > limits.maxInputBytes) return@withLock invalid("Expected byte count exceeds import limits") }
+        source.expectedChecksum.knownOrNull()?.let { if (!it.algorithm.equals("SHA-256", true) || it.hex.length != 64) return@withLock invalid("Expected SHA-256 checksum") }
         val generation = GenerationId(ids.nextId())
+        if (generation.value.toByteArray(Charsets.UTF_8).size > 128 || '\u0000' in generation.value) return@withLock invalid("Generation identity exceeds cursor limits")
         val job = EntityId(ids.nextId())
         val observed = clock.utcNow()
         var staging = false
         try {
             val stage = database.transaction({ tx ->
-                tx.write("""INSERT INTO catalog_generation(generation_id,provider,format,content_uri,display_name,source_uri,source_version,source_date_epoch_seconds,source_date_nano,observed_at_epoch_seconds,observed_at_nano,content_sha256,observed_bytes,language_scope,payload_schema_version,parser_version,notice_payload,oracle_count,face_count,printing_count,status,activated_at_epoch_seconds,activated_at_nano) VALUES(:id,:provider,:format,:content,:display,:source,NULL,:date,:date_nano,:observed,:observed_nano,'',0,'en',:payload_version,:parser,NULL,0,0,0,'STAGING',NULL,NULL)""", cancel,
+                tx.write("""INSERT INTO catalog_generation(generation_id,provider,format,content_uri,display_name,source_uri,source_version,source_date_epoch_seconds,source_date_nano,observed_at_epoch_seconds,observed_at_nano,content_sha256,observed_bytes,language_scope,payload_schema_version,parser_version,notice_payload,oracle_count,face_count,printing_count,status,activated_at_epoch_seconds,activated_at_nano) VALUES(:id,:provider,:format,:content,:display,:source,NULL,:date,:date_nano,:observed,:observed_nano,'',0,'en',:payload_version,:parser,:metadata,0,0,0,'STAGING',NULL,NULL)""", cancel,
                     "id" to generation.value, "provider" to source.provider.value, "format" to ScryfallCodec.FORMAT,
                     "content" to source.contentUri.value, "display" to source.displayName, "source" to source.sourceUri.knownOrNull()?.value,
                     "date" to source.sourceDate.knownOrNull()?.epochSeconds, "date_nano" to source.sourceDate.knownOrNull()?.nanoAdjustment?.toLong(),
                     "observed" to observed.epochSeconds, "observed_nano" to observed.nanoAdjustment.toLong(),
-                    "payload_version" to ScryfallCodec.VERSION.toLong(), "parser" to ScryfallCodec.PARSER)
+                    "payload_version" to ScryfallCodec.VERSION.toLong(), "parser" to ScryfallCodec.PARSER,
+                    "metadata" to SourceMetadataCodec.encode(source))
             }, cancel)
             if (stage !is Outcome.Success) return@withLock stage.nonSuccess()
             staging = true
@@ -157,23 +168,30 @@ public class LocalCatalog(
         }
     }
 
-    private suspend fun initialize(cancel: CancelToken) {
-        if (!initialized) importMutex.withLock { initializeLocked(cancel) }
-    }
-    private suspend fun initializeLocked(cancel: CancelToken) {
-        if (initialized) return
-        val stale = database.query(sql("SELECT generation_id FROM catalog_generation WHERE status='STAGING' LIMIT 101", 101), cancel)
-        if (stale is Outcome.Success) for (row in stale.value) cleanup(GenerationId(row.text("generation_id")))
+    private suspend fun initialize(cancel: CancelToken): Outcome<Unit> = if (initialized) Outcome.Success(Unit)
+        else importMutex.withLock { initializeLocked(cancel) }
+    private suspend fun initializeLocked(cancel: CancelToken): Outcome<Unit> {
+        if (initialized) return Outcome.Success(Unit)
+        while (true) {
+            val stale = when (val result = database.query(sql("SELECT generation_id FROM catalog_generation WHERE status='STAGING' LIMIT 101", 101), cancel)) {
+                is Outcome.Success -> result.value
+                else -> return result.nonSuccess()
+            }
+            if (stale.isEmpty()) break
+            for (row in stale) when (val result = cleanup(GenerationId(row.text("generation_id")))) {
+                is Outcome.Success -> Unit
+                else -> return result.nonSuccess()
+            }
+        }
         initialized = true
+        return Outcome.Success(Unit)
     }
-    private suspend fun cleanup(id: GenerationId) {
-        withContext(NonCancellable) {
+    private suspend fun cleanup(id: GenerationId): Outcome<Unit> = withContext(NonCancellable) {
             database.transaction({ tx ->
                 tx.write("DELETE FROM catalog_name_fts WHERE generation_id=:id", cleanupCancel, "id" to id.value)
                 tx.write("DELETE FROM catalog_generation WHERE generation_id=:id AND status='STAGING'", cleanupCancel, "id" to id.value)
             }, cleanupCancel)
         }
-    }
     private suspend fun activeRow(cancel: CancelToken): Outcome<RowData?> = when (val result = database.query(sql("SELECT g.* FROM catalog_active a JOIN catalog_generation g ON a.generation_id=g.generation_id WHERE a.dataset_key=:key", 1, "key" to dataset), cancel)) {
         is Outcome.Success -> Outcome.Success(result.value.firstOrNull())
         else -> result.nonSuccess()
@@ -213,36 +231,69 @@ private suspend fun DbTransaction.read(request: SqlRequest, cancel: CancelToken)
 }
 private fun RowData.provenance(): Provenance {
     val provider = ProviderId(text("provider"))
-    val date = optionalLong("source_date_epoch_seconds")?.let { Knowledge.Known(UtcTimestamp(it, (optionalLong("source_date_nano") ?: 0).toInt())) }
-        ?: Knowledge.Unknown("Source date not supplied", SnapshotList.empty())
+    val date = SourceMetadataCodec.sourceDate(optionalText("notice_payload"))
     return Provenance(provider, optionalText("source_uri")?.let(::ResourceUri), Knowledge.Unknown("Source version not supplied", SnapshotList.empty()), date,
         UtcTimestamp(long("observed_at_epoch_seconds"), long("observed_at_nano").toInt()), Knowledge.Unknown("Effective date not supplied", SnapshotList.empty()),
-        GenerationId(text("generation_id")), ContentHash("SHA-256", text("content_sha256")), null)
+        GenerationId(text("generation_id")), ContentHash("SHA-256", text("content_sha256")), SourceMetadataCodec.notice(optionalText("notice_payload")))
 }
 private fun RowData.generation(): CatalogGeneration = CatalogGeneration(GenerationId(text("generation_id")), provenance(), SnapshotList.of(LanguageTag.ENGLISH),
     text("format"), CatalogCounts(long("oracle_count"), long("printing_count"), long("face_count"), 0), GenerationStatus.valueOf(text("status")))
-private data class Cursor(val generation: String, val name: String, val provider: String, val oracle: String)
-private fun encodeCursor(cursor: Cursor): String = Base64.getUrlEncoder().withoutPadding().encodeToString(listOf(cursor.generation, cursor.name, cursor.provider, cursor.oracle).joinToString("\u0000").toByteArray(Charsets.UTF_8)).also {
-    require(it.toByteArray(Charsets.UTF_8).size <= PageRequest.MAX_CURSOR_BYTES)
-}
+private data class Cursor(val generation: String, val query: String, val name: String, val provider: String, val oracle: String)
+private fun encodeCursor(cursor: Cursor): String = listOf(cursor.generation, cursor.query, cursor.name, cursor.provider, cursor.oracle)
+    .joinToString("\u0000").toByteArray(Charsets.UTF_8).joinToString("") { "%02x".format(it) }.also {
+        require(it.length <= PageRequest.MAX_CURSOR_BYTES)
+    }
 private fun decodeCursor(value: String): Cursor {
-    require(value.length <= PageRequest.MAX_CURSOR_BYTES && value.matches(Regex("[A-Za-z0-9_-]+")))
-    val parts = Base64.getUrlDecoder().decode(value).toString(Charsets.UTF_8).split('\u0000')
-    require(parts.size == 4 && parts.all { it.isNotEmpty() })
-    return Cursor(parts[0], parts[1], parts[2], parts[3])
+    require(value.length in 2..PageRequest.MAX_CURSOR_BYTES && value.length % 2 == 0 && value.matches(Regex("[0-9a-f]+")))
+    val bytes = ByteArray(value.length / 2) { value.substring(it * 2, it * 2 + 2).toInt(16).toByte() }
+    val decoded = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+        .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes)).toString()
+    val parts = decoded.split('\u0000')
+    require(parts.size == 5 && parts.all { it.isNotEmpty() })
+    return Cursor(parts[0], parts[1], parts[2], parts[3], parts[4])
 }
+private fun digest(value: String): String = MessageDigest.getInstance("SHA-256").digest(value.toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
 
 private suspend fun DbTransaction.insertCard(generation: GenerationId, card: CardRecord, raw: String, cancel: CancelToken) {
     write("""INSERT INTO oracle_card(generation_id,provider,oracle_id,language,name,original_text,normalized_name,normalized_search_text,canonical_digest,record_payload) VALUES(:generation,:provider,:oracle,'en',:name,:text,:normalized,:search,:digest,:payload)""", cancel,
         "generation" to generation.value, "provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw,
         "name" to card.name, "text" to card.originalText.knownOrNull(), "normalized" to ScryfallCodec.normalize(card.name),
-        "search" to card.normalizedSearchText, "digest" to card.hashCode().toString(), "payload" to raw)
+        "search" to card.normalizedSearchText, "digest" to canonicalDigest(card), "payload" to raw)
     for (face in card.faces) write("""INSERT INTO card_face(generation_id,provider,oracle_id,language,face_index,provider_face_id,name,face_payload) VALUES(:generation,:provider,:oracle,'en',:index,:face_id,:name,:payload)""", cancel,
         "generation" to generation.value, "provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw,
         "index" to face.identity.index.toLong(), "face_id" to face.identity.providerFaceId.knownOrNull(), "name" to face.name, "payload" to raw)
     write("""INSERT INTO catalog_name_fts(name,text,generation_id,provider,oracle_id,language) VALUES(:name,:text,:generation,:provider,:oracle,'en')""", cancel,
         "name" to card.name, "text" to (card.originalText.knownOrNull() ?: card.faces.joinToString(" ") { it.text.knownOrNull() ?: "" }),
         "generation" to generation.value, "provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw)
+}
+private fun canonicalDigest(card: CardRecord): String {
+    val fields = buildList {
+        add(card.oracleId.source.value); add(card.oracleId.raw); add(card.language.value); add(card.name)
+        fun <T> known(value: Knowledge<T>): String = when (value) {
+            is Knowledge.Known -> "known:${value.value}"
+            is Knowledge.Absent -> "absent"
+            is Knowledge.Unknown -> "unknown"
+        }
+        add(known(card.originalText)); add(known(card.manaCost))
+        add(when (val mana = card.manaValue) { is Knowledge.Known -> "known:${mana.value.stripTrailingZeros().toPlainString()}"; is Knowledge.Absent -> "absent"; is Knowledge.Unknown -> "unknown" })
+        add(known(card.colors)); add(known(card.colorIdentity)); add(known(card.types))
+        add(known(card.stats.power)); add(known(card.stats.toughness)); add(known(card.stats.loyalty)); add(known(card.stats.defense))
+        add(known(card.keywords)); add(known(card.layout)); add(known(card.reserved))
+        for (face in card.faces) {
+            add(face.identity.oracleId.source.value); add(face.identity.oracleId.raw); add(face.identity.index.toString())
+            add(face.name); add(known(face.text)); add(known(face.manaCost)); add(known(face.types))
+            add(known(face.stats.power)); add(known(face.stats.toughness)); add(known(face.stats.loyalty)); add(known(face.stats.defense))
+            for (relation in face.relationships) {
+                add(relation.kind.name); add(known(relation.relatedOracle))
+                add(when (val related = relation.relatedFace) {
+                    is Knowledge.Known -> "known:${related.value.oracleId.source.value}:${related.value.oracleId.raw}:${related.value.index}"
+                    is Knowledge.Absent -> "absent"; is Knowledge.Unknown -> "unknown"
+                })
+            }
+        }
+    }
+    val bytes = fields.joinToString("") { "${it.length}:$it" }.toByteArray(Charsets.UTF_8)
+    return MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 }
 private suspend fun DbTransaction.insertPrinting(generation: GenerationId, printing: PrintingRecord, raw: String, cancel: CancelToken) {
     val oracle = printing.oracleId.knownOrNull()

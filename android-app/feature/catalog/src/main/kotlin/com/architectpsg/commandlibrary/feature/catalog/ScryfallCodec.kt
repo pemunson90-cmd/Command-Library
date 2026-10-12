@@ -30,7 +30,7 @@ internal object ScryfallCodec {
                 val value = JsonObject()
                 reader.beginObject()
                 while (reader.hasNext()) {
-                    val key = reader.nextName()
+                    val key = reader.nextName().also(::requireValidUnicode)
                     require(!value.has(key)) { "Duplicate JSON field: $key" }
                     value.add(key, read(reader, depth + 1, limit))
                 }
@@ -44,11 +44,25 @@ internal object ScryfallCodec {
                 reader.endArray()
                 value
             }
-            JsonToken.STRING -> JsonPrimitive(reader.nextString())
+            JsonToken.STRING -> JsonPrimitive(reader.nextString().also(::requireValidUnicode))
             JsonToken.NUMBER -> JsonPrimitive(BigDecimal(reader.nextString()))
             JsonToken.BOOLEAN -> JsonPrimitive(reader.nextBoolean())
             JsonToken.NULL -> { reader.nextNull(); JsonNull.INSTANCE }
             else -> error("Unexpected JSON token")
+        }
+    }
+    private fun requireValidUnicode(value: String) {
+        var index = 0
+        while (index < value.length) {
+            val char = value[index]
+            when {
+                char.isHighSurrogate() -> {
+                    require(index + 1 < value.length && value[index + 1].isLowSurrogate()) { "Unpaired Unicode surrogate" }
+                    index += 2
+                }
+                char.isLowSurrogate() -> error("Unpaired Unicode surrogate")
+                else -> index++
+            }
         }
     }
 
@@ -59,6 +73,7 @@ internal object ScryfallCodec {
         val provenance = Provenance(provider, source, Knowledge.Unknown("Source version not supplied", SnapshotList.empty()), date, observed, Knowledge.Unknown("Effective date not supplied", SnapshotList.empty()), generation, hash, notice)
         val oracle = OracleId(provider, obj.required("oracle_id"))
         val id = CardId(provider, obj.required("id"))
+        require(oracle.raw.toByteArray(Charsets.UTF_8).size <= 128 && id.raw.toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in oracle.raw && '\u0000' !in id.raw) { "Source identity exceeds cursor limits" }
         val language = LanguageTag.ENGLISH
         val faceObjects = obj.objects("card_faces")
         faceObjects.forEach { require(it.string("object") == "card_face") { "Invalid card face object" } }
@@ -70,6 +85,7 @@ internal object ScryfallCodec {
             )
         }
         val name = obj.required("name")
+        require(name.toByteArray(Charsets.UTF_8).size <= 512 && '\u0000' !in name) { "Card name exceeds cursor limits" }
         val card = CardRecord(
             oracle, name, obj.knowledgeString("oracle_text"), obj.knowledgeString("mana_cost"),
             obj.knowledgeDecimal("cmc"), obj.knowledgeColors("colors"), obj.knowledgeColors("color_identity"),
@@ -90,7 +106,8 @@ internal object ScryfallCodec {
                 unknown("Face mapping not supplied by all_parts"), Knowledge.Known(CardId(provider, rawId)),
                 Knowledge.Known(ProviderIdentity(provider, "printing", rawId)), SnapshotList.empty())
         }
-        val faceAssets = faceObjects.mapIndexed { index, face ->
+        val printingFaceObjects = if (faceObjects.isEmpty()) listOf(obj) else faceObjects
+        val faceAssets = printingFaceObjects.mapIndexed { index, face ->
             PrintingFaceAsset(
                 PrintingFaceIdentity(id, index, face.knowledgeString("id")), language,
                 face.knowledgeString("printed_name"), face.knowledgeString("printed_text"),

@@ -2,6 +2,7 @@ package com.architectpsg.commandlibrary.feature.catalog
 
 import com.architectpsg.commandlibrary.core.common.sameCanonicalGameData
 import com.architectpsg.commandlibrary.core.model.*
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -11,9 +12,13 @@ class ScryfallCodecTest {
     private val observed = UtcTimestamp(123)
     private fun map(raw: String) = ScryfallCodec.mapped(raw, provider, generation, null,
         Knowledge.Unknown("No source date", SnapshotList.empty()), observed, null, null, 32)
-    @Test fun genuineCardsRetainCanonicalAndPrintingDifferences() {
-        val rows = javaClass.getResourceAsStream("/english-three-printings.json")!!.bufferedReader().readText()
-            .lines().filter { it.startsWith("{") }.map(::map)
+    @Test fun genuineCardsRetainCanonicalAndPrintingDifferences() = runBlocking {
+        val bytes = javaClass.getResourceAsStream("/english-three-printings.json")!!.readBytes()
+        val framed = mutableListOf<String>()
+        val framer = JsonArrayFramer(CatalogImportLimits())
+        framer.accept(ByteChunk(0, 0, SnapshotBytes(bytes), null, true)) { framed.add(it) }
+        framer.finish()
+        val rows = framed.map(::map)
         assertEquals(3, rows.size)
         val bolts = rows.filter { it.first.name == "Lightning Bolt" }
         assertEquals(2, bolts.size)
@@ -22,6 +27,7 @@ class ScryfallCodecTest {
         assertNotEquals(bolts[0].second.images, bolts[1].second.images)
         val delver = rows.single { it.first.name.startsWith("Delver") }
         assertEquals(2, delver.first.faces.size)
+        assertFalse((delver.first.types as Knowledge.Known).value.subtypes.contains("//"))
         assertEquals(2, delver.second.faceAssets.size)
         assertTrue(delver.second.faceAssets.all { it.images.isNotEmpty() })
         assertTrue(delver.second.relationships.isNotEmpty())
@@ -40,5 +46,7 @@ class ScryfallCodecTest {
         assertTrue(card.originalText is Knowledge.Absent)
         assertThrows(Exception::class.java) { map(raw.replace("\"lang\":\"en\"", "\"lang\":\"fr\"")) }
         assertThrows(Exception::class.java) { map(raw.replace("\"cmc\":1.25", "\"cmc\":-1")) }
+        assertThrows(Exception::class.java) { map(raw.replace("\"cmc\":1.25", "\"cmc\":1e99999999")) }
+        assertThrows(Exception::class.java) { map(raw.replace("\"name\":\"Éclair\"", "\"name\":\"Éclair\",\"card_faces\":[{\"object\":\"wrong\",\"name\":\"Face\"}]")) }
     }
 }

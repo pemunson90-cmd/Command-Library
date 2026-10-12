@@ -5,7 +5,10 @@ plugins {
 android {
     namespace = "com.architectpsg.commandlibrary.feature.catalog"
     compileSdk = 37
-    defaultConfig { minSdk = 23 }
+    defaultConfig {
+        minSdk = 23
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
     lint { fatal += "NewApi" }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
