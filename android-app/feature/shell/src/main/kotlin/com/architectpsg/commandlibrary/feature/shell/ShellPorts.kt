@@ -5,6 +5,8 @@ import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.CatalogLookup
 import com.architectpsg.commandlibrary.core.model.CatalogStatus
 import com.architectpsg.commandlibrary.core.model.SettingsRepository
+import com.architectpsg.commandlibrary.core.model.LocalRulesImport
+import com.architectpsg.commandlibrary.core.model.LocalRulesLookup
 
 /**
  * The accepted core capabilities the shell presents. Root assembly supplies real adapters, created
@@ -13,6 +15,9 @@ import com.architectpsg.commandlibrary.core.model.SettingsRepository
  * [importLimits] must be the same limits the [catalogImport] adapter enforces. The shell discloses
  * them to the user, stops reading a selected file once [CatalogImportLimits.maxInputBytes] is
  * exceeded, and never relaxes them.
+ *
+ * Rules are optional: both [rulesImport] and [rulesLookup] must be supplied before that destination
+ * appears. The local rules adapter must enforce the shell's disclosed 8 MiB document bound.
  */
 public class ShellPorts(
     public val catalogLookup: CatalogLookup,
@@ -20,4 +25,6 @@ public class ShellPorts(
     public val catalogImport: CatalogImport,
     public val settings: SettingsRepository,
     public val importLimits: CatalogImportLimits = CatalogImportLimits(),
+    public val rulesImport: LocalRulesImport? = null,
+    public val rulesLookup: LocalRulesLookup? = null,
 )

@@ -34,6 +34,9 @@ internal class ShellControllers(
         onFinished = status::refresh,
     )
     val settings = SettingsController(scope, ports.settings, ioDispatcher)
+    val rules: RulesController? = if (ports.rulesImport != null && ports.rulesLookup != null) {
+        RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher)
+    } else null
 
     init {
         scope.launch {
@@ -45,5 +48,6 @@ internal class ShellControllers(
         }
         status.refresh()
         settings.load()
+        rules?.refresh()
     }
 }

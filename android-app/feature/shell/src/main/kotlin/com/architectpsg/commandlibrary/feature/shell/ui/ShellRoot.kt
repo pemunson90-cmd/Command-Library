@@ -44,6 +44,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.activeGenerati
 internal enum class ShellDestination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int, val tag: String) {
     CARDS(R.string.shell_nav_cards, R.drawable.shell_ic_cards, "shell-nav-cards"),
     CATALOG(R.string.shell_nav_catalog, R.drawable.shell_ic_catalog, "shell-nav-catalog"),
+    RULES(R.string.rules_title, R.drawable.shell_ic_catalog, "shell-nav-rules"),
     SETTINGS(R.string.shell_nav_settings, R.drawable.shell_ic_settings, "shell-nav-settings"),
 }
 
@@ -64,6 +65,20 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
     ShellTheme(settingsState.theme) {
         var destination by rememberSaveable { mutableStateOf(ShellDestination.CARDS) }
         var pickerUnavailable by rememberSaveable { mutableStateOf(false) }
+        val destinations = ShellDestination.entries.filter { it != ShellDestination.RULES || controllers.rules != null }
+        val visibleDestination = destination.takeIf { it in destinations } ?: ShellDestination.CARDS
+        var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
+        val rulesPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) controllers.rules?.start(DocumentRef(uri.toString()))
+        }
+        val pickRules = {
+            rulesPickerUnavailable = try {
+                rulesPicker.launch(arrayOf("text/plain"))
+                false
+            } catch (_: ActivityNotFoundException) {
+                true
+            }
+        }
         // Registered at the root so a pending pick survives layout changes and activity recreation.
         val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri != null) controllers.catalogImport.start(DocumentRef(uri.toString()))
@@ -81,10 +96,12 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 val widthClass = WidthClass.of(maxWidth)
                 val content: @Composable (Modifier) -> Unit = { contentModifier ->
                     DestinationContent(
-                        destination = destination,
+                        destination = visibleDestination,
                         controllers = controllers,
                         widthClass = widthClass,
                         pickerUnavailable = pickerUnavailable,
+                        rulesPickerUnavailable = rulesPickerUnavailable,
+                        onPickRules = pickRules,
                         onPickFile = pickFile,
                         onNavigate = { destination = it },
                         modifier = contentModifier,
@@ -95,9 +112,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                         containerColor = MaterialTheme.colorScheme.background,
                         bottomBar = {
                             NavigationBar(Modifier.testTag(ShellTags.NAVIGATION_BAR)) {
-                                ShellDestination.entries.forEach { item ->
+                                destinations.forEach { item ->
                                     NavigationBarItem(
-                                        selected = destination == item,
+                                        selected = visibleDestination == item,
                                         onClick = { destination = item },
                                         icon = { Icon(painterResource(item.icon), contentDescription = null) },
                                         label = { Text(stringResource(item.label)) },
@@ -115,9 +132,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             modifier = Modifier.fillMaxHeight().testTag(ShellTags.NAVIGATION_RAIL),
                             windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.Start),
                         ) {
-                            ShellDestination.entries.forEach { item ->
+                            destinations.forEach { item ->
                                 NavigationRailItem(
-                                    selected = destination == item,
+                                    selected = visibleDestination == item,
                                     onClick = { destination = item },
                                     icon = { Icon(painterResource(item.icon), contentDescription = null) },
                                     label = { Text(stringResource(item.label)) },
@@ -145,6 +162,8 @@ private fun DestinationContent(
     widthClass: WidthClass,
     pickerUnavailable: Boolean,
     onPickFile: () -> Unit,
+    rulesPickerUnavailable: Boolean,
+    onPickRules: () -> Unit,
     onNavigate: (ShellDestination) -> Unit,
     modifier: Modifier,
 ) {
@@ -171,6 +190,9 @@ private fun DestinationContent(
                 onRetryStatus = controllers.status::refresh,
                 modifier = modifier,
             )
+        }
+        ShellDestination.RULES -> controllers.rules?.let { rules ->
+            RulesScreen(rules, widthClass, rulesPickerUnavailable, onPickRules, modifier)
         }
         ShellDestination.SETTINGS -> {
             val settingsState by controllers.settings.state.collectAsState()
