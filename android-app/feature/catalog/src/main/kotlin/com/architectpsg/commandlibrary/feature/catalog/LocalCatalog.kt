@@ -198,7 +198,7 @@ public class LocalCatalog(
     private suspend fun cleanup(id: GenerationId): Outcome<Unit> = withContext(NonCancellable) {
         try {
             withTimeout(1_000) { database.transaction({ tx ->
-                tx.write("DELETE FROM catalog_name_fts WHERE generation_id=:id", cleanupCancel, "id" to id.value)
+                tx.write("DELETE FROM catalog_name_fts WHERE generation_id=:id AND EXISTS (SELECT 1 FROM catalog_generation WHERE generation_id=:id AND status='STAGING')", cleanupCancel, "id" to id.value)
                 tx.write("DELETE FROM catalog_generation WHERE generation_id=:id AND status='STAGING'", cleanupCancel, "id" to id.value)
             }, cleanupCancel) }
         } catch (_: CancellationException) { failure(FailureCode.PERSISTENCE, "Staged cleanup exceeded time limit") }
