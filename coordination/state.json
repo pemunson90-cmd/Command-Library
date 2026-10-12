@@ -14,8 +14,8 @@
     "orch-kotlin-k3-offline-data-01"
   ],
   "blockers": [
-    "Catalog01e0c40 new cancellation native regression passed all3 device types; matrix38292134079 first attempt failed only shell expanded-width search20s timeout on16KiB. Failed lane rerun exact sameSHA; require completed green before merge.",
-    "Claude rules209a938/code796c665 token-cancellation success bug needs Claude-owned correction/re-review; see CLAUDE-PARALLEL.md.",
+    "Catalog01e0c40 quarantined/unmerged: attempt2 reproduces shell expanded-width20s timeout; catalog6 native tests pass. Targeted state/semantics diagnostics required, no blind retry.",
+    "Claude4971166 F1/hardening source reviewed; isolated integration9f88015 hosted38299615365 pending. Merge only exact passing candidate; external branch preserved.",
     "Confirmed systembar icon/in-app-theme mismatch remains queued; shell open leak is fixed and verified.",
     "Full-corpus budget/snapshot/migration/source contracts remain unbound; private parsers do not constitute K3 acceptance."
   ],
@@ -35,7 +35,7 @@
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters.",
     "k3_shell": "Merged source3ffbb1f unchanged at9d7e0fd; focused38292178104 passed68 tests (14 ImportController),0 failures/errors/skips; continuity38292178108 passed. Main postmerge Android matrix remains separate ongoing continuity verification. Main postmerge full matrix38292576595 passed exactffc5cc0 on all4 lanes.",
     "k3_catalog": "Parser86dc00d focused38291004261 passed. Cleanuped26b326 independent source accepted. Matrix38292134079 JVM/API23/API36 passed;16KiB catalog6 tests passed but shell1/17 failed20s timeout. Exact-SHA failed-lane rerun requested; no code edits. Evidence docs/verification/k3-catalog-cleanup/MATRIX-TRIAGE.md.",
-    "k3_rules": "Claude reports46 synthetic tests and check/assemble in throwaway root, not rerun by root. Code796c665 requires private token-cancellation correction; no hosted include/merge yet."
+    "k3_rules": "Independent private review accepted hardened4971166; root candidate9f88015 adds shared include and focused check/assemble. Hosted38299615365 pending, continuity38299615489 passed. External reports63 synthetic tests; no genuine corpus validation."
   },
   "last_completed": "Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review",
   "updated_utc": "2026-10-12T19:43:24Z"
