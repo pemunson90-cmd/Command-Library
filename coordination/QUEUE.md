@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-downloads-active-43. Next: orch-kotlin-k3-offline-data-01 step3; K3 implementation active; no finished app delivery.
+Checkpoint-ID: cp-20261012-routing-resumed-45. Next: orch-kotlin-k3-offline-data-01 step3; Full Android v1 execution active; incomplete.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
@@ -8,8 +8,7 @@ This file lists runnable or conditionally runnable work. Completed and supersede
 |---|---|---|---|---|
 | orch-fold7-functional-01 | Historical internal build | superseded as delivery pointer by D-24 | debug foundation evidence retained | no finished-app delivery claim |
 | orch-kotlin-k3-offline-data-01 | K3 full offline corpus | active; incomplete | reviewed K2 foundation and D-24 complete-app execution | reviewed downloads/full-feed/rulings/search implementation and acceptance |
-| cx-k3-network-01 | K3 transport | assigned; remediation in progress | network lock; existing merged core port | review/test cancellable engine then root hosted integration |
-| cx-k3-storage-03 | K3 job schema | assigned; implementation in progress | storage lock; reviewed additive schema | native migration fixtures, root KSP/registry/hosted validation |
+| cc-m2-life-domain-01 | M2 domain preparation | assigned to Claude; disjoint life lock | merged core contracts; prepared life module | pure counter/clock/random logic and tests; no milestone closure |
 | orch-source-fixtures-01 | Source evidence fallback | policy gap closed; source-specific cases retained | FIXTURE_POLICY and genuine input evidence | exact rights/coverage review when a later acquisition/distribution path needs it |
 
 ## Accepted history summary

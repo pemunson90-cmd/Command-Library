@@ -1,0 +1,3 @@
+# Copy-ready Claude assignment
+
+Implement `coordination/tasks/cc-m2-life-domain-01.md` on `agent/cc-m2-life-domain-01` in a separate worktree. First merge `origin/agent/cx-claude-life-handoff-01` to obtain this assignment and ownership lock. Read the task and its linked documentation before coding. Own only its life/domain source and test paths and your named handoff. Do not take over orchestration or touch downloads, imports, storage, UI, core contracts or shared configuration. Complete the counter, clock and random logic with meaningful tests, commit/push, and leave precise evidence in your handoff. This is an internal M2 component; do not claim the whole app is ready.

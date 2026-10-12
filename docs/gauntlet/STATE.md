@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k3-downloads-active-43. Updated UTC: 2026-10-12T22:41:19Z.
+Checkpoint: cp-20261012-routing-resumed-45. Updated UTC: 2026-10-12T23:18:06Z.
 
-Stage: K3 full offline data/downloads implementation; full Android v1 incomplete. Status: K3 implementation active; no finished app delivery. Next: orch-kotlin-k3-offline-data-01 step3.
-Finish reviewed cancellable transport and additive job migration; implement durable acquisition/full importer using genuine source evidence
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Full Android v1 execution active; incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
+Integrate reviewed transport/storage candidates, verify native gates, then complete K3
 
-Full English printing/rulings source bytes measured privately; current mapper cannot represent83validreversible records. Download capabilities/schema reviewed; transport workaround rejected and remediation active. Full K3 and M2-M9 remain incomplete.
+Merged published Claude assignment and routing; resumed network/storage preserved work; canonical comparison tests pass. Full Android v1 remains incomplete.
 
 Read CURRENT, machine state and task card.
