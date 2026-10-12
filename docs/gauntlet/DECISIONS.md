@@ -30,6 +30,8 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-20 | Kotlin Android v1; separate Flutter Windows v2; sync after Windows runs | Ruled 2026-10-11 |
 | D-21 | K1 execution release and complete-section checkpoint policy | Ruled 2026-10-11 |
 | D-22 | Fold7-first acceptance and genuine input acquisition | Ruled 2026-10-12 |
+| D-23 | Parallel Claude Code assignment | Ruled 2026-10-11 |
+| D-24 | Complete Android v1 delivery reaffirmed | Ruled 2026-10-12 |
 
 ## Open
 
