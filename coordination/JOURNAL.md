@@ -159,3 +159,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T21:16:55Z | codex | cp-20261012-fold7-functional-40 | containing commit | Functional Fold7 target controls; all workers complete; genuine parser79tests pass; actual schema export preserved; native verification pending
 
 2026-10-12T21:31:18Z | codex | cp-20261012-fold7-apk-ready-41 | containing commit | Exact tested APK integrated through PR7; all4Android lanes green; artifact and checksum retained; physical Fold7 is next
+
+2026-10-12T21:58:55Z | codex | cp-20261012-full-v1-resume-42 | containing commit | Reread gauntlet and active Kotlin plan; full audit persisted; D-24 restores complete delivery scope and supersedes mistaken partial-build pointer. K3 and M2-M9 remain incomplete.
