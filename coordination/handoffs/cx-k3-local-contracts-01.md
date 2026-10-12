@@ -24,3 +24,5 @@ Added synthetic model tests for unversioned provenance, local/English scope, exp
 ## Latest continuation delta
 
 Candidate is confined to the three assigned files in the isolated branch. Next: root reviews public contract and storage implications, runs hosted model tests, then decides integration. No source call, product download or schema/app change was made.
+
+Independent recovery review found signatures sound conditional on public KDoc fixes. Snapshot/cursor, stream lifecycle, cancellation/bounds/commit guarantees now specified in capability contract. Hosted validation pending; no production acceptance.

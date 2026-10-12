@@ -76,7 +76,19 @@ public data class LocalRulesImportResult(
 /**
  * Independently injectable local import. [reopen] supplies a fresh byte stream on each call so a
  * bounded two-pass parser can compare exact bytes; implementations must discard staging if either
- * pass or activation fails. Progress callbacks do not signal durable success.
+ * pass or activation fails. Each call returns a fresh cold stream: sequence/offset restart at zero,
+ * chunks are contiguous, exactly one is final, and no chunk follows it. Producers close their input
+ * on completion, failure and cancellation; read/permission errors cannot become empty success.
+ * Reopening must not retain the whole document in memory. Both passes must agree on observed bytes
+ * and exact-byte SHA-256; known expected bytes/hash must match or return SOURCE_MISMATCH.
+ *
+ * Implementations enforce finite byte/chunk/line/entry/reference/index ceilings and bounded batches
+ * with backpressure; exceeding a limit rejects input without truncation. Coroutine and token
+ * cancellation propagate as CancellationException. Activation is atomic after complete validation.
+ * Precommit failure/cancellation preserves the last good corpus. Cleanup can delete only proven
+ * uncommitted staging; postcommit cancellation or progress failure must not remove active data.
+ * Progress callbacks do not signal durable success. Reopened status resolves a cancellation/commit
+ * race and recovers interrupted attempts separately from the installed corpus.
  */
 public interface LocalRulesImport {
     public suspend fun `import`(
@@ -91,6 +103,14 @@ public interface LocalRulesImport {
  * Local capability only, not a partial RulesRepository implementation. A search with null
  * RulesQuery.corpusId uses the active corpus and returns its Page.snapshot. Entry lookup explicitly
  * pins the corpus; replacement must never silently substitute a newer entry with the same RuleId.
+ * Null corpus selection binds the active generation atomically for that operation. Every successful
+ * page snapshot has a nonnull generation matching all entries/provenance. Cursors bind generation,
+ * query text, kinds and deterministic ordering; changed query returns INVALID_INPUT, changed active
+ * generation returns STALE_GENERATION. Explicit retired-corpus reads return that retained generation
+ * or STALE_GENERATION if unavailable; retention is not guaranteed. Missing IDs in an available
+ * corpus return NOT_FOUND. Entry never falls back to active. Adapters document finite query bounds
+ * and unsupported syntax, and enforce bounded deterministic pagination. Installed lookup uses
+ * stored data and does not depend on retained content URI permission.
  */
 public interface LocalRulesLookup {
     public suspend fun status(cancel: CancelToken): Outcome<LocalRulesStatus>
