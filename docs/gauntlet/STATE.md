@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k2-storage-verified-22. Updated UTC: 2026-10-12T12:31:15Z.
+Checkpoint: cp-20261012-k2-catalog-draft-23. Updated UTC: 2026-10-12T12:54:00Z.
 
 Stage: K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification. Status: in_progress. Next: orch-kotlin-m0-01 step2.
-Create scoped catalog Kotlin task/lock from accepted schema and LocalCatalogContracts; verify tiny genuine English Scryfall fixture provenance; implement bounded staged UTF8 import, atomic activation, status and FTS lookup with cancellation/reopen tests and narrow review. Then real Compose app/UI. Storage/core/settings need no repeated audit.
+Continue exclusive catalog taskcx-catalog-k2-01: fix four pinned parser review findings and finish staged import/status/lookup with meaningful JVM/packaged tests. Review final committed source and observe final hosted suites before integration. Claude owns shell taskcc-k2-shell-01 exclusively until reviewed merge.
 
-Recovered prior committed work; fixed and independently reviewed coroutine ownership985e03d. Hosted38248782526 passed81 JVM tests/lint/assembly and20 storage tests on eachAPI23/API36/16KB image. Tested storage integrated unchanged; storage lock released; core-common envelope reviewed and25 repository tests pass. K2 incomplete: importer/app/UI/debug artifact remain. All branches preserved.
+Catalog task/lock and verified genuine tiny English fixtures published, strict Gson dependency pinned. Parser draft4407ff5 independently reviewed with4 concrete fixes assigned; importer/tests underway, not accepted or integrated. Claude parallel shell instructions/lock published and its owned paths reserved. Prior storage/core/settings preserved. K2 incomplete.
 
 Read CURRENT, machine state and task card.

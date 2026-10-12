@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k2-storage-verified-22
+Checkpoint-ID: cp-20261012-k2-catalog-draft-23
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Create scoped catalog Kotlin task/lock from accepted schema and LocalCatalogContracts; verify tiny genuine English Scryfall fixture provenance; implement bounded staged UTF8 import, atomic activation, status and FTS lookup with cancellation/reopen tests and narrow review. Then real Compose app/UI. Storage/core/settings need no repeated audit.
+Next step: 2. Continue exclusive catalog taskcx-catalog-k2-01: fix four pinned parser review findings and finish staged import/status/lookup with meaningful JVM/packaged tests. Review final committed source and observe final hosted suites before integration. Claude owns shell taskcc-k2-shell-01 exclusively until reviewed merge.
 
-Updated UTC: 2026-10-12T12:31:15Z
-Status: in_progress; lease: released.
-Verified base: 5a34a80bd6f81cbabd389bb46376606cdd19705d.
+Updated UTC: 2026-10-12T12:54:00Z
+Status: in_progress; lease: active.
+Verified base: b2b8b829cfbeeaf17a551b0d561ad0b0d4a5bcc6.
 
-Recovered prior committed work; fixed and independently reviewed coroutine ownership985e03d. Hosted38248782526 passed81 JVM tests/lint/assembly and20 storage tests on eachAPI23/API36/16KB image. Tested storage integrated unchanged; storage lock released; core-common envelope reviewed and25 repository tests pass. K2 incomplete: importer/app/UI/debug artifact remain. All branches preserved.
+Catalog task/lock and verified genuine tiny English fixtures published, strict Gson dependency pinned. Parser draft4407ff5 independently reviewed with4 concrete fixes assigned; importer/tests underway, not accepted or integrated. Claude parallel shell instructions/lock published and its owned paths reserved. Prior storage/core/settings preserved. K2 incomplete.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
