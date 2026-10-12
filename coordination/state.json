@@ -3,27 +3,25 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k2-storage-recovery-21",
-  "verified_base_head": "5dd5f951e7330f2a80fa9ea8b0cabb41b2a9b009",
+  "checkpoint_id": "cp-20261012-k2-storage-verified-22",
+  "verified_base_head": "5a34a80bd6f81cbabd389bb46376606cdd19705d",
   "stage": "K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
   "next_step": 2,
-  "first_action": "Observe hosted38248782526 at985e03d; require JVM/lint/assembly and20 storage tests on all3 emulator images. Diagnose remaining API23 collector failure if any before integration; source recovery independently accepted. Then reconcile core envelope and implement importer/app.",
-  "active_tasks": [
-    "orch-kotlin-m0-01"
-  ],
+  "first_action": "Create scoped catalog Kotlin task/lock from accepted schema and LocalCatalogContracts; verify tiny genuine English Scryfall fixture provenance; implement bounded staged UTF8 import, atomic activation, status and FTS lookup with cancellation/reopen tests and narrow review. Then real Compose app/UI. Storage/core/settings need no repeated audit.",
+  "active_tasks": [],
   "blockers": [
-    "Storage corrected source985e03d independently accepted; hosted38248782526 pending. Original reports show18/19 pass per image and sole coroutine ownership failure. API23 collector secondary failure may remain. Importer/app not implemented."
+    "K2 catalog importer, genuine fixture provenance, app/UI/debug artifact and final section review remain incomplete. API23 auxiliary additional-test-output collector warning persists but required storage tests/reports pass."
   ],
   "worktree_mode": "git checkout /workspace/Command-Library; isolated storage recovery /workspace/Command-Library-storage",
-  "review_status": "Settings/core/tuple accepted; prior storage review preserved. Independent Astra-high recovery review accepts985e03d source; corrected packaged runtime acceptance pending.",
+  "review_status": "Core/settings/tuple/storage source accepted independently; recovery985e03d and core-common envelope Astra-high accepted. Storage required JVM/packaged suites passed before unchanged integration.",
   "verification": {
-    "continuity": "24 local continuation/architecture/helper tests pass, including correct cross-model actor/date events; branch continuity passes observed.",
+    "continuity": "25 local continuation/architecture/helper tests passed; architecture/continuity checks pass. Hosted recovery continuity38248782603 passed.",
     "app_build": "not_run",
-    "runtime_tests": "not_run",
-    "hosted_ci": "Recovery continuity38248782603 passed. Android38248782526 at985e03d in progress; original38200190935 XML:19 tests/1 failure per image, sole ownership assertion.",
-    "remote_readback": "Main lease and lock published5dd5f95; corrected recovery branch985e03d published and hosted run observed.",
+    "runtime_tests": "Storage20 tests per3 emulator images pass. Catalog/importer/app/UI product runtime not_run.",
+    "hosted_ci": "38248782526 at985e03d success:81 JVM tests zero failures, check/lint/library assembly;20 instrumentation tests on eachAPI23/API36/default/API36ps16k, zero failures/errors/skips. Actual modern page sizes4096/16384.",
+    "remote_readback": "Verified published main825e7ac and recovery985e03d; final checkpoint readback performed after publication. All prior branches preserved.",
     "toolchain": "K1 hostedJDK17/Gradle9.6/SDK36observed; Claude probe+hostedSDK37 installation recorded. CurrentlocalexecutorJava21only noSDK; hostedtransportused.",
     "kotlin_compatibility": "Core JVM compiled; Claude independently reviewed actual localAGP/Compose/Room3/KSP tuple probe compile37target36min23 withretainedlogs. Product Androidruntime not accepted.",
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
@@ -31,6 +29,6 @@
     "network_policy": "Current environment_status connected, running, observations_current true, unrestricted enforced; no secret/outbound identity bindings. GitHub API/git transport observed.",
     "kotlin_contracts": "Corrected hosted run38182564573 succeeded at2ac4a302f6832a9ec33e2739a687b5e3905a6015 with25 executed JVM tests(model13/common12); main integrated exact unchanged core tree."
   },
-  "last_completed": "Recovered committed repo, preserved all branches, diagnosed all3 retained XML reports:18/19 pass per image with sole coroutine ownership failure. Published stable-token fix985e03d on isolated recovery branch, independently source accepted; hosted verification pending. K2 incomplete, no app/importer/release.",
-  "updated_utc": "2026-10-12T12:25:17Z"
+  "last_completed": "Recovered prior committed work; fixed and independently reviewed coroutine ownership985e03d. Hosted38248782526 passed81 JVM tests/lint/assembly and20 storage tests on eachAPI23/API36/16KB image. Tested storage integrated unchanged; storage lock released; core-common envelope reviewed and25 repository tests pass. K2 incomplete: importer/app/UI/debug artifact remain. All branches preserved.",
+  "updated_utc": "2026-10-12T12:31:15Z"
 }

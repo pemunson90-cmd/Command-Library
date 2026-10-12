@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k2-storage-recovery-21
+Checkpoint-ID: cp-20261012-k2-storage-verified-22
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Observe hosted38248782526 at985e03d; require JVM/lint/assembly and20 storage tests on all3 emulator images. Diagnose remaining API23 collector failure if any before integration; source recovery independently accepted. Then reconcile core envelope and implement importer/app.
+Next step: 2. Create scoped catalog Kotlin task/lock from accepted schema and LocalCatalogContracts; verify tiny genuine English Scryfall fixture provenance; implement bounded staged UTF8 import, atomic activation, status and FTS lookup with cancellation/reopen tests and narrow review. Then real Compose app/UI. Storage/core/settings need no repeated audit.
 
-Updated UTC: 2026-10-12T12:25:17Z
-Status: in_progress; lease: active.
-Verified base: 5dd5f951e7330f2a80fa9ea8b0cabb41b2a9b009.
+Updated UTC: 2026-10-12T12:31:15Z
+Status: in_progress; lease: released.
+Verified base: 5a34a80bd6f81cbabd389bb46376606cdd19705d.
 
-Recovered committed repo, preserved all branches, diagnosed all3 retained XML reports:18/19 pass per image with sole coroutine ownership failure. Published stable-token fix985e03d on isolated recovery branch, independently source accepted; hosted verification pending. K2 incomplete, no app/importer/release.
+Recovered prior committed work; fixed and independently reviewed coroutine ownership985e03d. Hosted38248782526 passed81 JVM tests/lint/assembly and20 storage tests on eachAPI23/API36/16KB image. Tested storage integrated unchanged; storage lock released; core-common envelope reviewed and25 repository tests pass. K2 incomplete: importer/app/UI/debug artifact remain. All branches preserved.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

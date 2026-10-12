@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="20" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-10-12T12:27:18" hostname="localhost">
+  <testsuite name="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" tests="20" failures="0" errors="0" skipped="0" time="0.339" timestamp="2026-10-12T12:27:18" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="abortAndCaughtAbortBothRollBackWithTypedStatus" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.001" />
+    <testcase name="foreignCoroutineAndThreadCallsCannotPoisonOwnerTransaction" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.028" />
+    <testcase name="newerSchemaIsRejectedAndCommittedRowsRemain" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.019" />
+    <testcase name="committedRowsSurviveCloseReopenAndLateTokenCancellation" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.016" />
+    <testcase name="engineRollbackPreventsEveryLaterStatementAndSurvivesReopen" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.018" />
+    <testcase name="escapedTransactionAndClosedDatabaseCannotBeUsed" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.013" />
+    <testcase name="boundFtsLiteralPunctuationQuotesAndKeywordsRemainData" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.016" />
+    <testcase name="structuredCancellationAfterWriteRollsBackAndRethrows" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.016" />
+    <testcase name="queryBoundsAt101AndValuesAreCopiedOutOfStatementLifetime" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.019" />
+    <testcase name="returnedTypedStatusesRollBackAndFirstFailureWins" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.027" />
+    <testcase name="callerTokenCancellationBeforeCommitWinsOverLatchedFailure" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.015" />
+    <testcase name="capabilitiesUseRealEngineForeignKeysParameterLimitAndFts5" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.017" />
+    <testcase name="repeatedNamedParametersUseActualSqliteIndexes" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.012" />
+    <testcase name="thrownExceptionAndForeignKeyViolationRollBack" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.016" />
+    <testcase name="ownerAbortAfterSuspendedNestedScopesRollsBack" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.015" />
+    <testcase name="mutationReturningQueriesIncludingWithAreRejectedAndRollBack" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.018" />
+    <testcase name="corruptFileIsRejectedWithoutChangingItsBytes" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.012" />
+    <testcase name="ignoredQueryFailureRollsBackEarlierWrite" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.019" />
+    <testcase name="sqliteExtendedParameterSuffixesAreRejectedBeforeNativeBinding" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.022" />
+    <testcase name="missingParameterAndManualCommitLatchRollback" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.020" />
+  </testsuite>
+</testsuites>

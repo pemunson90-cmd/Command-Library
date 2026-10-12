@@ -1,6 +1,6 @@
 # K2 storage runtime recovery
 
-Status: incomplete; corrected source independently accepted, hosted verification pending. This is not storage integration or K2 completion.
+Status: storage component recovery verified and integrated unchanged. K2 remains incomplete; importer/app are not yet built.
 
 ## Retained failure diagnosis
 
@@ -33,3 +33,13 @@ Then reconcile core/model+common registry envelope and implement genuine bounded
 ## Core envelope reconciliation
 
 The conceptual core component already owns model/common. Updated full registry maps it to both pure modules; K2 consumed envelope includes common and explicitly lists storage. Checker exact-edge validation remains enforced, with a regression for missing storage common dependency. No component/module/coverage/ownership count changes. Independent Astra-high reviewer accepted four-file diff and independently ran architecture checker. Repository suite25 tests passes. Actual build imports remain only consumed modules.
+
+## Observed corrected-source result and integration
+
+Hosted38248782526 at985e03d completed **success**. Actual logs:81 JVM tests across11 reports, zero failures/errors, check/lint and Android library assembly successful. All three emulator jobs count20 storage tests, zero failures/errors/skips. Retained corrected XML beside original XML in docs/verification/k2-storage-runtime. API36 default observed4096-byte pages and ps16k observed16384-byte pages. API23 getconf unavailable: no API23 page-size claim. No app/APK alignment result is claimed; library runtime verifies bundled storage behavior only.
+
+API23 still logs an auxiliary AndroidAdditionalTestOutputCollector File name too long warning after tests, but its connected task and all20 XML results succeed. There are no test-produced additional output files required for this component; the retained instrumentation XML/HTML and emulator log are available. Treat this as a known upstream collector limitation, not a failed test or a reason to drop mandatory evidence. Investigate if later UI/fixture tests need auxiliary device output.
+
+Independent source review plus exact corrected runtime evidence meet the component integration conditions. Root ordinary merge preserves all historical branches. `git diff985e03d -- android-app/data/storage android-app/core/model android-app/core/common android-app/feature/settings android-app/settings.gradle.kts` is empty after integration; tested code/build configuration unchanged. Storage lock released, reviewed envelope included,25 repository tests pass. K2 functional importer/app/debug artifact acceptance remains unrun.
+
+Next exact action: orch-kotlin-m0-01 step2, consume accepted schema/LocalCatalogContracts; claim catalog module lock and create its scoped Kotlin task. Verify tiny genuine English Scryfall fixture bytes, source URL/retrieval date/hash/parser lineage. Implement bounded incremental UTF8/JSON framing with input/record/nesting/count limits, staged canonical/printing/face rows, failed/cancelled import rollback and atomic generation activation, bound FTS lookup and stale cursor validation. Obtain narrow independent durability/parser review and actual hosted tests before integrating. Then step3 real Compose import/status/search/settings UI. Do not revisit accepted tuple/core/storage/settings or repeat source surveys.

@@ -33,3 +33,7 @@ Checkpoint useful partial work before usage exhaustion, explicitly incomplete. R
 ## Runtime recovery continuation
 
 Retained three reports diagnosed, exact source fix985e03d on agent/cx-storage-recovery-01 independently accepted. Hosted38248782526 pending; see K2-STORAGE-RUNTIME-RECOVERY.md. Original storage branch preserved. Next inspect corrected reports before integration or collector change. No importer/app acceptance yet.
+
+## Verified storage recovery checkpoint
+
+Recovery985e03d independently reviewed; hosted38248782526 succeeded81 JVM tests and20 storage instrumentation tests perAPI23/API36/16KB image. Adapter integrated unchanged and storage lock released; core-common envelope reviewed/reconciled. Next step2 implement genuine-fixture bounded catalog importer/lookup/status under its scoped task/lock, then step3 real app UI. See K2-STORAGE-RUNTIME-RECOVERY.md for exact source/evidence/gotchas. K2 remains incomplete.

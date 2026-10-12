@@ -1,9 +1,0 @@
-component: storage
-orchestrator: codex
-task: cx-storage-01
-branch: agent/cx-storage-recovery-01
-preserved_branch: agent/cx-storage-01
-base_commit: 09ea4ccf9e09d8532c2b236828036aa0d71e2376
-claimed: 2026-10-12
-owned_paths: android-app/data/storage/**
-step: runtime ownership correction after retained reports diagnosis; original source080cd391 preserved

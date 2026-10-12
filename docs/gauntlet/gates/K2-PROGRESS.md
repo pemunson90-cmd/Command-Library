@@ -47,3 +47,7 @@ Final narrow storage recheck accepts080cd391 at source: S1–S4 closed. Runtime 
 ### Final observed runtime result
 
 Run38200190935 completed: JVM/assembly success; all three connectedDebugAndroidTest tasks failed after successful boot. Jobs114651716486 (API36 default),114651716677 (API36 ps16k),114651716755 (API23). Actual page sizes4096 and16384 observed on modern images. API23 logs also show IOException File name too long in AndroidAdditionalTestOutputCollector recursion; do not presume this explains modern-image failures. Fetch retained android-k2-emulator artifacts/test XML and diagnose before retrying unchanged source. No packaged test acceptance.
+
+### Storage runtime recovery accepted and integrated
+
+Recovery source985e03d on preserved agent/cx-storage-recovery-01 independently reviewed and hosted38248782526 success:81 JVM tests, library check/lint/assembly,20 packaged storage tests on each API23/API36/API36-16KB image. Retained original/corrected XML and exact diagnosis: K2-STORAGE-RUNTIME-RECOVERY.md. Tested adapter/source configuration integrated unchanged, storage lock released. Core/common dependency envelope reviewed and reconciled;25 repository tests pass. API23 auxiliary collector warning remains, tests/report retention succeed. K2 importer/app/UI/debug artifact still absent.
