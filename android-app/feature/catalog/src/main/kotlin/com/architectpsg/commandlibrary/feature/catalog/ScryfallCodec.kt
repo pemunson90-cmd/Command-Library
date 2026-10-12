@@ -61,6 +61,7 @@ internal object ScryfallCodec {
         val id = CardId(provider, obj.required("id"))
         val language = LanguageTag.ENGLISH
         val faceObjects = obj.objects("card_faces")
+        faceObjects.forEach { require(it.string("object") == "card_face") { "Invalid card face object" } }
         val faces = faceObjects.mapIndexed { index, face ->
             CardFace(
                 FaceIdentity(oracle, index, face.knowledgeString("oracle_id")),
@@ -77,8 +78,15 @@ internal object ScryfallCodec {
             SnapshotList.copyOf(faces), SnapshotList.of(ProviderIdentity(provider, "oracle", oracle.raw)), provenance, null,
         )
         val printingRelationships = obj.objects("all_parts").map { part ->
+            require(part.string("object") == "related_card") { "Invalid related card object" }
+            val kind = when (part.required("component")) {
+                "meld_part" -> FaceRelationshipKind.MELD_PART
+                "meld_result" -> FaceRelationshipKind.MELD_RESULT
+                "combo_piece", "token" -> FaceRelationshipKind.OTHER
+                else -> error("Unknown related card component")
+            }
             val rawId = part.required("id")
-            FaceRelationship(FaceRelationshipKind.OTHER, unknown("Oracle mapping not supplied by all_parts"),
+            FaceRelationship(kind, unknown("Oracle mapping not supplied by all_parts"),
                 unknown("Face mapping not supplied by all_parts"), Knowledge.Known(CardId(provider, rawId)),
                 Knowledge.Known(ProviderIdentity(provider, "printing", rawId)), SnapshotList.empty())
         }
@@ -135,7 +143,9 @@ internal object ScryfallCodec {
     }
     private fun JsonElement.strictInteger(): Long {
         require(isJsonPrimitive && asJsonPrimitive.isNumber) { "Expected integer" }
-        return asBigDecimal.toBigIntegerExact().longValueExact().also { require(it >= 0) }
+        val decimal = asBigDecimal
+        require(decimal >= BigDecimal.ZERO && decimal <= BigDecimal.valueOf(Long.MAX_VALUE)) { "Integer out of range" }
+        return decimal.longValueExact()
     }
     private fun JsonObject.knowledgeString(key: String): Knowledge<String> = when {
         !has(key) -> Knowledge.Absent("$key not supplied")
@@ -181,11 +191,12 @@ internal object ScryfallCodec {
         } })
     }
     private fun JsonObject.knowledgeTypeLine(key: String): Knowledge<TypeLine> = knowledgeString(key).map { line ->
-        val parts = line.split(" — ", limit = 2)
-        val tokens = parts[0].split(' ').filter { it.isNotBlank() }
         val superTypes = setOf("Basic", "Legendary", "Snow", "World", "Ongoing", "Elite", "Host")
-        TypeLine(line, SnapshotList.copyOf(tokens.filter { it in superTypes }), SnapshotList.copyOf(tokens.filter { it !in superTypes }),
-            SnapshotList.copyOf(if (parts.size == 2) parts[1].split(' ').filter { it.isNotBlank() } else emptyList()))
+        val segments = line.split(" // ").map { it.split(" — ", limit = 2) }
+        val mainTokens = segments.flatMap { it[0].split(' ').filter(String::isNotBlank) }
+        val subtypes = segments.flatMap { if (it.size == 2) it[1].split(' ').filter(String::isNotBlank) else emptyList() }
+        TypeLine(line, SnapshotList.copyOf(mainTokens.filter { it in superTypes }.distinct()),
+            SnapshotList.copyOf(mainTokens.filter { it !in superTypes }.distinct()), SnapshotList.copyOf(subtypes.distinct()))
     }
     private fun JsonObject.stats(): CardStats = CardStats(knowledgeString("power"), knowledgeString("toughness"), knowledgeString("loyalty"), knowledgeString("defense"))
     private fun JsonObject.optionalObject(key: String): JsonObject? {

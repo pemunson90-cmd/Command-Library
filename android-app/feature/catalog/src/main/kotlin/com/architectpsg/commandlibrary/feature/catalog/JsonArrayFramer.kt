@@ -10,7 +10,7 @@ import java.security.MessageDigest
 
 /** Byte framing deliberately precedes JSON parsing so neither the file nor a record is buffered without a bound. */
 internal class JsonArrayFramer(private val limits: CatalogImportLimits) {
-    private enum class State { START, FIRST, RECORD, AFTER_RECORD, DONE }
+    private enum class State { START, FIRST, NEXT, RECORD, AFTER_RECORD, DONE }
     private var state = State.START
     private var sequence = 0L
     private var offset = 0L
@@ -42,6 +42,7 @@ internal class JsonArrayFramer(private val limits: CatalogImportLimits) {
                 State.FIRST -> if (!space(character)) {
                     if (character == ']'.code) state = State.DONE else begin(character)
                 }
+                State.NEXT -> if (!space(character)) begin(character)
                 State.RECORD -> {
                     require(record.size() < limits.maxRecordBytes) { "Record exceeds byte limit" }
                     record.write(character)
@@ -70,7 +71,7 @@ internal class JsonArrayFramer(private val limits: CatalogImportLimits) {
                 }
                 State.AFTER_RECORD -> if (!space(character)) {
                     when (character) {
-                        ','.code -> state = State.FIRST
+                        ','.code -> state = State.NEXT
                         ']'.code -> state = State.DONE
                         else -> error("Expected comma or array end")
                     }
