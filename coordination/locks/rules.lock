@@ -1,0 +1,8 @@
+component: rules
+orchestrator: codex-k3-offline-data-20261012
+owner: external-claude-code
+task: cc-k3-rules-parser-01
+branch: agent/cc-k3-rules-parser-01
+base_commit: verified current main containing this task/lock; record exactSHA in handoff
+owned_paths: android-app/feature/rules/**; coordination/handoffs/cc-k3-rules-parser-01.md
+step: private streaming parser and synthetic tests only; no DB/core/UI/shared writes; root reserves until reviewed merge

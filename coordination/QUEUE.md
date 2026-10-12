@@ -1,12 +1,13 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-start-28. Next: orch-kotlin-k3-offline-data-01 step1; in_progress.
+Checkpoint-ID: cp-20261012-k3-scope-29. Next: orch-kotlin-k3-offline-data-01 step2; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
 | orch-kotlin-k3-offline-data-01 | K3 offline catalog/rules/search | ready; not claimed | K2 accepted at cp-20261012-k2-accepted-27 | claim lease; requirement/ownership delta first |
+| cc-k3-rules-parser-01 | K3 internal rules parser | delegated to external Claude; parser/tests only | accepted core/rules behavior; active rules lock | publish isolated source/test draft and handoff |
 | orch-source-fixtures-01 | source evidence fallback | conditional only | current accepted task identifies an unanswered evidence need | one approved narrow read-only source probe |
 
 ## Accepted history summary

@@ -3,18 +3,20 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-start-28",
-  "verified_base_head": "6b68906b72ebead34026d1a4682ae879e22aa7f6",
+  "checkpoint_id": "cp-20261012-k3-scope-29",
+  "verified_base_head": "ac6e02f0418e314791499c99f93116bb3086c92c",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
-  "next_step": 1,
-  "first_action": "Build the K3 requirement/ownership delta from accepted K2 and existing core/storage/catalog/rules/search/settings/shell contracts, review the meaningful architecture boundary, then decide permitted corpus input paths. No product-data acquisition or app writes before reconciliation.",
+  "next_step": 2,
+  "first_action": "Select permitted local-first corpus input formats and truthful rules/rulings/version/snapshot contracts; review scaling/migration design before production bindings. External Claude exclusively implements private rules parser/tests on agent/cc-k3-rules-parser-01; do not touch its owned paths until reviewed merge.",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
-  "blockers": [],
-  "worktree_mode": "Clean git checkout /workspace/Command-Library at continuity-green6b68906; no K3 component workers/locks yet.",
+  "blockers": [
+    "K3 production corpus binding requires verified input format/source lineage, truthful unversioned-rules and snapshot contracts, and reviewed migration/scaling design. Parser drafts may proceed independently; network terms remain unresolved."
+  ],
+  "worktree_mode": "Git checkout /workspace/Command-Library. External Claude rules parser branch agent/cc-k3-rules-parser-01 is explicitly reserved; no shared/corpus activation writes delegated.",
   "review_status": "K2 final integration independently reviewed by GPT-5.6 Sol after Claude/Codex implementation. Touch-target and reproducible hosted shell-search timing blockers were corrected; final candidate passed the complete hosted matrix. K3 card published but not claimed.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
@@ -29,6 +31,6 @@
     "network_policy": "K2 product path performs no automatic product-data download. User-selected local import is explicit; Windows and sync remain out of scope. K3 must separately resolve any network acquisition source/terms before implementation.",
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters."
   },
-  "last_completed": "Resumed continuity-green6b68906 under lightweight documentation policy; K2/catalog/Claude shell/app are accepted and preserved. Claimed released K3 lease, corrected task DATA_MODEL link, no K3 code/download/component ownership started.",
-  "updated_utc": "2026-10-12T18:02:15Z"
+  "last_completed": "K3 requirement/ownership inventory audited against accepted K2; existing DataStore consent reused. Published exclusive Claude private rules-parser task/lock and instructions; no product-data acquisition, app/schema/core changes or K2 retesting. Full-corpus scaling/source/snapshot design remains next.",
+  "updated_utc": "2026-10-12T18:09:02Z"
 }

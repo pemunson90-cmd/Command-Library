@@ -1,16 +1,7 @@
-# Claude Code parallel assignment
+# Current Claude Code parallel assignment
 
-Status: no active parallel Claude Code assignment.
+Status: active explicit K3 parser assignment at Pat request. K2 assignments are finished; do not reopen them.
 
-The K2 shell and QA assignments previously stored here are complete and historical. Do not resume them from this file.
+> Work on https://github.com/pemunson90-cmd/Command-Library on branch agent/cc-k3-rules-parser-01 from verified current main. Read only CONTINUE.md, the Latest continuation delta and ownership section in coordination/tasks/orch-kotlin-k3-offline-data-01.md, coordination/tasks/cc-k3-rules-parser-01.md and coordination/locks/rules.lock, plus their relevant contracts. You exclusively own android-app/feature/rules/** and coordination/handoffs/cc-k3-rules-parser-01.md. Codex reserves these until reviewed merge and handles catalog scaling, storage/core/contracts/shared config and later UI integration. Implement a private pure streaming strict-UTF8 rules TXT parser and meaningful explicitly synthetic JVM tests against the accepted RuleEntry DTOs; no database/repository fake adapter or application wiring. Preserve original text/examples/notices and unresolved references; use supplied truthful provenance, never guessed official versions/dates. Genuine fixture/source binding remains a later review gate, so do not download/bundle product rules or claim official completeness. Use the weakest capable model available. Commit useful actions with a single replaceable Latest continuation delta in your handoff, push the branch, then report exact commit/shared requests/test evidence or not_run as READY-FOR-REVIEW. Do not claim the orchestrator lease, touch other/shared paths, push main, reset/clean/rebase/force-push or merge your work. No recursive workers.
 
-When Pat or the orchestrator starts a new parallel Claude Code worker, this file may contain one current self-contained assignment. That assignment is valid only when all of the following agree:
-
-- `coordination/state.json` and `coordination/QUEUE.md` show compatible current work;
-- the orchestrator lease is active for the delegating session;
-- an explicit component/task lock names the worker branch and owned paths;
-- the worker task card exists and its prerequisites are satisfied.
-
-Without those conditions, do not claim ownership or modify shared state. Follow `CLAUDE.md`, `CONTINUE.md` and `docs/gauntlet/DOCUMENTATION_POLICY.md` instead.
-
-Historical K2 assignments remain available through git history, completed task cards, handoffs and gate reports. They are evidence, not current instructions.
+Verify the live lock/task before beginning. Request root Gradle inclusion/dependencies in your handoff; do not edit them yourself. No application feature is accepted until actual tests and required review pass.
