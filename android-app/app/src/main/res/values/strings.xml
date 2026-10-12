@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Command Library</string>
+    <string name="startup_opening">Opening the catalog stored on this device…</string>
+    <string name="startup_failed_title">The catalog could not be opened</string>
+    <string name="startup_failed_body">Command Library could not open the catalog database stored on this device.</string>
+    <string name="startup_retry">Try again</string>
+</resources>
