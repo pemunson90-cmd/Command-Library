@@ -17,8 +17,11 @@ internal fun androidArtifactFiles(directory: File): DurableArtifactFiles {
     return DurableArtifactFiles(privateDirectory, ::artifactEntryKind, ::syncArtifactDirectory)
 }
 private fun syncArtifactDirectory(parent: File) {
-    val descriptor = Os.open(parent.absolutePath, OsConstants.O_RDONLY or OsConstants.O_DIRECTORY, 0)
-    try { Os.fsync(descriptor) } finally { Os.close(descriptor) }
+    val descriptor = Os.open(parent.absolutePath, OsConstants.O_RDONLY, 0)
+    try {
+        if (!OsConstants.S_ISDIR(Os.fstat(descriptor).st_mode)) throw IOException("Artifact sync target is not a directory")
+        Os.fsync(descriptor)
+    } finally { Os.close(descriptor) }
 }
 
 private fun artifactEntryKind(file: File): ArtifactEntryKind {
