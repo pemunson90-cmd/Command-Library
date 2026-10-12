@@ -106,34 +106,48 @@ public class LocalCatalog(
             if (stage !is Outcome.Success) return@withLock stage.nonSuccess()
             staging = true
             val frame = JsonArrayFramer(limits)
-            val seenPrintings = HashSet<CardId>()
-            val canonical = HashMap<OracleId, CardRecord>()
             val batch = ArrayList<Triple<String, CardRecord, PrintingRecord>>()
+            var oracleCount = 0L
+            var printingCount = 0L
             var faceCount = 0L
             suspend fun flush() {
                 if (batch.isEmpty()) return
+                var newOracles = 0L
+                var newFaces = 0L
                 val writing = database.transaction({ tx ->
                     for ((raw, card, printing) in batch) {
-                        if (card.oracleId !in canonical || canonical[card.oracleId] === card) {
+                        cancel.throwIfCancelled()
+                        // Read our own earlier writes in this transaction: duplicates and canonical
+                        // conflicts are detected both within a batch and across committed batches.
+                        val duplicate = tx.read(sql("SELECT printing_id FROM printing WHERE generation_id=:generation AND provider=:provider AND printing_id=:printing", 1,
+                            "generation" to generation.value, "provider" to printing.id.source.value, "printing" to printing.id.raw), cancel)
+                        if (duplicate.isNotEmpty()) tx.abort(DomainFailure(FailureCode.INVALID_INPUT, "Duplicate printing identity", SnapshotList.empty()))
+                        val existing = tx.read(sql("SELECT record_payload FROM oracle_card WHERE generation_id=:generation AND provider=:provider AND oracle_id=:oracle AND language='en'", 1,
+                            "generation" to generation.value, "provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw), cancel).firstOrNull()
+                        if (existing == null) {
                             // The first representative alone owns canonical rows and FTS entries.
-                            if (canonical[card.oracleId] === card) tx.insertCard(generation, card, raw, cancel)
+                            tx.insertCard(generation, card, raw, cancel)
+                            newOracles++
+                            newFaces += card.faces.size
+                        } else {
+                            val first = ScryfallCodec.mapped(existing.text("record_payload"), source.provider, generation,
+                                source.sourceUri.knownOrNull(), source.sourceDate, observed, null, source.notice.knownOrNull(), limits.maxNesting).first
+                            if (!sameCanonicalGameData(first, card)) tx.abort(DomainFailure(FailureCode.INVALID_INPUT, "Canonical game data conflict", SnapshotList.empty()))
                         }
                         tx.insertPrinting(generation, printing, raw, cancel)
                     }
                 }, cancel)
                 if (writing !is Outcome.Success) throw CatalogFailure(writing.nonSuccess())
+                oracleCount += newOracles
+                faceCount += newFaces
+                printingCount += batch.size
                 batch.clear()
-                onProgress(JobProgress(job, JobPhase.STAGING, seenPrintings.size.toLong(), Knowledge.Unknown("Total count not supplied", SnapshotList.empty()), "Staging local records", null))
+                onProgress(JobProgress(job, JobPhase.STAGING, printingCount, Knowledge.Unknown("Total count not supplied", SnapshotList.empty()), "Staging local records", null))
             }
             chunks.collect { chunk ->
                 cancel.throwIfCancelled()
                 frame.accept(chunk) { raw ->
                     val (card, printing) = ScryfallCodec.mapped(raw, source.provider, generation, source.sourceUri.knownOrNull(), source.sourceDate, observed, null, source.notice.knownOrNull(), limits.maxNesting)
-                    require(seenPrintings.add(printing.id)) { "Duplicate printing identity" }
-                    val first = canonical[card.oracleId]
-                    if (first == null) canonical[card.oracleId] = card
-                    require(first == null || sameCanonicalGameData(first, card)) { "Canonical game data conflict" }
-                    if (first == null) faceCount += card.faces.size
                     batch.add(Triple(raw, card, printing))
                     if (batch.size == limits.batchSize) flush()
                 }
@@ -144,7 +158,7 @@ public class LocalCatalog(
             val hash = ContentHash("SHA-256", frame.sha256)
             source.expectedChecksum.knownOrNull()?.let { require(it.algorithm.equals("SHA-256", true) && it.hex.equals(hash.hex, true)) { "Expected checksum mismatch" } }
             val activated = clock.utcNow()
-            val count = CatalogCounts(canonical.size.toLong(), seenPrintings.size.toLong(), faceCount, 0)
+            val count = CatalogCounts(oracleCount, printingCount, faceCount, 0)
             val final = database.transaction({ tx ->
                 val actual = tx.read(sql("SELECT (SELECT count(*) FROM oracle_card WHERE generation_id=:id) AS oracles,(SELECT count(*) FROM printing WHERE generation_id=:id) AS printings,(SELECT count(*) FROM card_face WHERE generation_id=:id) AS faces", 1, "id" to generation.value), cancel).single()
                 if (actual.long("oracles") != count.oracleCards || actual.long("printings") != count.printings || actual.long("faces") != count.faces) tx.abort(DomainFailure(FailureCode.CORRUPT_DATA, "Staged counts differ", SnapshotList.empty()))
