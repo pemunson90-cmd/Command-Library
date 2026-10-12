@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="19" failures="1" errors="0" skipped="0" time="0.000" timestamp="2026-10-12T03:37:41" hostname="localhost">
+  <testsuite name="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" tests="19" failures="1" errors="0" skipped="0" time="2.018" timestamp="2026-10-12T03:37:41" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="abortAndCaughtAbortBothRollBackWithTypedStatus" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.055" />
+    <testcase name="foreignCoroutineAndThreadCallsCannotPoisonOwnerTransaction" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.041">
+      <failure>java.lang.AssertionError: Expected success, got Failure(error=DomainFailure(code=INVALID_INPUT, message=Transaction belongs to its active callback coroutine, evidence=[]))
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest.success(StorageDatabaseTest.kt:368)
+	at com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest.access$success(StorageDatabaseTest.kt:17)
+	at com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest$foreignCoroutineAndThreadCallsCannotPoisonOwnerTransaction$1$1.invokeSuspend(StorageDatabaseTest.kt:145)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+</failure>
+    </testcase>
+    <testcase name="newerSchemaIsRejectedAndCommittedRowsRemain" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.335" />
+    <testcase name="committedRowsSurviveCloseReopenAndLateTokenCancellation" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.278" />
+    <testcase name="engineRollbackPreventsEveryLaterStatementAndSurvivesReopen" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.054" />
+    <testcase name="escapedTransactionAndClosedDatabaseCannotBeUsed" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.040" />
+    <testcase name="boundFtsLiteralPunctuationQuotesAndKeywordsRemainData" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.073" />
+    <testcase name="structuredCancellationAfterWriteRollsBackAndRethrows" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.200" />
+    <testcase name="queryBoundsAt101AndValuesAreCopiedOutOfStatementLifetime" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.120" />
+    <testcase name="returnedTypedStatusesRollBackAndFirstFailureWins" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.128" />
+    <testcase name="callerTokenCancellationBeforeCommitWinsOverLatchedFailure" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.136" />
+    <testcase name="capabilitiesUseRealEngineForeignKeysParameterLimitAndFts5" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.207" />
+    <testcase name="repeatedNamedParametersUseActualSqliteIndexes" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.055" />
+    <testcase name="thrownExceptionAndForeignKeyViolationRollBack" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.038" />
+    <testcase name="mutationReturningQueriesIncludingWithAreRejectedAndRollBack" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.048" />
+    <testcase name="corruptFileIsRejectedWithoutChangingItsBytes" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.026" />
+    <testcase name="ignoredQueryFailureRollsBackEarlierWrite" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.033" />
+    <testcase name="sqliteExtendedParameterSuffixesAreRejectedBeforeNativeBinding" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.097" />
+    <testcase name="missingParameterAndManualCommitLatchRollback" classname="com.architectpsg.commandlibrary.data.storage.StorageDatabaseTest" time="0.054" />
+  </testsuite>
+</testsuites>

@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k2-settings-20. Updated UTC: 2026-10-12T03:38:39Z.
+Checkpoint: cp-20261012-k2-storage-recovery-21. Updated UTC: 2026-10-12T12:25:17Z.
 
 Stage: K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification. Status: in_progress. Next: orch-kotlin-m0-01 step2.
-Download retained test reports for storage run38200190935 at080cd391; all connected tasks failed after boot, API23 collector also reports File name too long. Diagnose actual failures before retry or integration; source review accepted. Then reconcile core-common envelope and implement catalog/importer/app.
+Observe hosted38248782526 at985e03d; require JVM/lint/assembly and20 storage tests on all3 emulator images. Diagnose remaining API23 collector failure if any before integration; source recovery independently accepted. Then reconcile core envelope and implement importer/app.
 
-Verified settings component integrated with68 JVM tests, fatal API lint and assembly; lock released. Storage source080cd391 independently accepted, JVM/assembly passed, but all3 connected tasks failed after boot (16KB pages observed). Storage integration blocked pending actual report diagnosis. K2 remains incomplete; no app/importer or finished release. All branches preserved, lease released for cross-model continuation.
+Recovered committed repo, preserved all branches, diagnosed all3 retained XML reports:18/19 pass per image with sole coroutine ownership failure. Published stable-token fix985e03d on isolated recovery branch, independently source accepted; hosted verification pending. K2 incomplete, no app/importer/release.
 
 Read CURRENT, machine state and task card.

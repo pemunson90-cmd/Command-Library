@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k2-settings-20
+Checkpoint-ID: cp-20261012-k2-storage-recovery-21
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Download retained test reports for storage run38200190935 at080cd391; all connected tasks failed after boot, API23 collector also reports File name too long. Diagnose actual failures before retry or integration; source review accepted. Then reconcile core-common envelope and implement catalog/importer/app.
+Next step: 2. Observe hosted38248782526 at985e03d; require JVM/lint/assembly and20 storage tests on all3 emulator images. Diagnose remaining API23 collector failure if any before integration; source recovery independently accepted. Then reconcile core envelope and implement importer/app.
 
-Updated UTC: 2026-10-12T03:38:39Z
-Status: in_progress; lease: released.
-Verified base: 6a3103419a1603acf0ac81c685b7eda231032517.
+Updated UTC: 2026-10-12T12:25:17Z
+Status: in_progress; lease: active.
+Verified base: 5dd5f951e7330f2a80fa9ea8b0cabb41b2a9b009.
 
-Verified settings component integrated with68 JVM tests, fatal API lint and assembly; lock released. Storage source080cd391 independently accepted, JVM/assembly passed, but all3 connected tasks failed after boot (16KB pages observed). Storage integration blocked pending actual report diagnosis. K2 remains incomplete; no app/importer or finished release. All branches preserved, lease released for cross-model continuation.
+Recovered committed repo, preserved all branches, diagnosed all3 retained XML reports:18/19 pass per image with sole coroutine ownership failure. Published stable-token fix985e03d on isolated recovery branch, independently source accepted; hosted verification pending. K2 incomplete, no app/importer/release.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

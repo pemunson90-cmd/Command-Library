@@ -4,8 +4,8 @@
   "session_id": "codex-k2-recovery-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-12T03:46:33Z",
-  "expires_utc": "2026-10-12T04:31:33Z",
-  "checkpoint_id": "cp-20261012-k2-settings-20",
+  "heartbeat_utc": "2026-10-12T12:25:17Z",
+  "expires_utc": "2026-10-12T13:10:17Z",
+  "checkpoint_id": "cp-20261012-k2-storage-recovery-21",
   "note": "Resume requested in replacement chat; verified released lease and committed checkpoint478e663. Diagnose retained storage reports before changes."
 }

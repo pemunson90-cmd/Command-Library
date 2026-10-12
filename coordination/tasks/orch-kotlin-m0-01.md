@@ -29,3 +29,7 @@ This finishes the foundation portions of N01/N03/A06/A08/K01/K02; it does not ma
 Required: actual resolved tuple/compile, real contracts, genuine fixture lineage, working import/settings/lookup, meaningful JVM and packaged FTS5/durability tests, hosted install/launch and reviewed debug artifact. No app exists at card creation; every result begins not_run. Store fixtures with provenance and size bounds; do not put API keys/signing sheets in git/logs. If a tool or approval is truly unavailable, record the exact unmet acceptance and safe independent next step, never silently skip it.
 
 Checkpoint useful partial work before usage exhaustion, explicitly incomplete. Run scripts/checkpoint.py at each checkpoint using real UTC; all continuation pointers move together and daily event files roll over automatically. Do not claim a section complete until its entire functional finish line and independent review pass.
+
+## Runtime recovery continuation
+
+Retained three reports diagnosed, exact source fix985e03d on agent/cx-storage-recovery-01 independently accepted. Hosted38248782526 pending; see K2-STORAGE-RUNTIME-RECOVERY.md. Original storage branch preserved. Next inspect corrected reports before integration or collector change. No importer/app acceptance yet.
