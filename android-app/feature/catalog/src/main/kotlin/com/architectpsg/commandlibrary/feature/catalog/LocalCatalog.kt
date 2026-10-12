@@ -18,7 +18,7 @@ public class LocalCatalog(
     private val ids: IdSource,
     private val limits: CatalogImportLimits = CatalogImportLimits(),
 ) : CatalogImport, CatalogLookup, CatalogStatus {
-    private val importMutex = Mutex()
+    private companion object { val importMutex = Mutex() }
     private var initialized = false
     private val dataset = "scryfall:en"
     private val cleanupCancel = object : CancelToken {
@@ -57,7 +57,7 @@ public class LocalCatalog(
         val words = Regex("[\\p{L}\\p{N}]+", RegexOption.UNICODE_CASE).findAll(input).map { it.value }.toList()
         if (active == null || words.isEmpty()) return Outcome.Success(Page(SnapshotList.empty(), null, reference))
         val expression = "name : \"${words.joinToString(" ") { it.replace("\"", "\"\"") }}\"*"
-        val rows = when (val result = database.query(sql("""SELECT c.record_payload AS payload,c.normalized_name AS sort_name,c.provider AS provider,c.oracle_id AS oracle_id FROM catalog_name_fts f JOIN oracle_card c ON c.generation_id=f.generation_id AND c.provider=f.provider AND c.oracle_id=f.oracle_id AND c.language=f.language WHERE f.catalog_name_fts MATCH :match AND c.generation_id=:generation AND c.language='en' AND (c.normalized_name>:name OR (c.normalized_name=:name AND (c.provider>:provider OR (c.provider=:provider AND c.oracle_id>:oracle)))) ORDER BY c.normalized_name,c.provider,c.oracle_id LIMIT :limit""", page.limit + 1,
+        val rows = when (val result = database.query(sql("""SELECT c.record_payload AS payload,c.normalized_name AS sort_name,c.provider AS provider,c.oracle_id AS oracle_id FROM catalog_name_fts JOIN oracle_card c ON c.generation_id=catalog_name_fts.generation_id AND c.provider=catalog_name_fts.provider AND c.oracle_id=catalog_name_fts.oracle_id AND c.language=catalog_name_fts.language WHERE catalog_name_fts MATCH :match AND c.generation_id=:generation AND c.language='en' AND (c.normalized_name>:name OR (c.normalized_name=:name AND (c.provider>:provider OR (c.provider=:provider AND c.oracle_id>:oracle)))) ORDER BY c.normalized_name,c.provider,c.oracle_id LIMIT :limit""", page.limit + 1,
             "match" to expression, "generation" to active.text("generation_id"), "name" to (cursor?.name ?: ""), "provider" to (cursor?.provider ?: ""), "oracle" to (cursor?.oracle ?: ""), "limit" to (page.limit + 1).toLong()), cancel)) {
             is Outcome.Success -> result.value
             else -> return result.nonSuccess()
