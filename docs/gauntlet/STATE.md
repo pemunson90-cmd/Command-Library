@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-fold7-functional-40. Updated UTC: 2026-10-12T21:16:55Z.
+Checkpoint: cp-20261012-fold7-apk-ready-41. Updated UTC: 2026-10-12T21:31:18Z.
 
-Stage: Fold7 functional Android build verification. Status: Functional Fold7 build awaiting Android verification. Next: orch-fold7-functional-01 step1.
-Verify exact final Android matrix and produce working Fold7 APK
+Stage: Functional Android APK delivered; physical Fold7 validation next. Status: Functional APK ready; physical Fold7 validation pending. Next: orch-fold7-functional-01 step4.
+Install verified APK on physical Fold7 and record actual device behavior
 
-Functional Fold7 target controls; all workers complete; genuine parser79tests pass; actual schema export preserved; native verification pending
+Exact tested APK integrated through PR7; all4Android lanes green; artifact and checksum retained; physical Fold7 is next
 
 Read CURRENT, machine state and task card.
