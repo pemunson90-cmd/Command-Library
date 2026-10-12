@@ -73,7 +73,7 @@ public data class AcquisitionRequest(
     }
 }
 
-public data class AcquisitionPlan(
+public data class DownloadPlan(
     public val jobId: EntityId,
     public val request: AcquisitionRequest,
     public val planHash: ContentHash,
@@ -114,8 +114,9 @@ public data class VerifiedArtifact(
 }
 
 public data class AcquisitionSnapshot(
-    public val plan: AcquisitionPlan,
+    public val plan: DownloadPlan,
     public val revision: Revision,
+    public val attempt: Int,
     public val state: AcquisitionState,
     public val phase: AcquisitionPhase,
     public val transferredBytes: Long,
@@ -129,13 +130,13 @@ public data class AcquisitionSnapshot(
     public val failure: DomainFailure?,
 ) {
     init {
-        require(transferredBytes >= 0 && durableArtifactBytes >= 0 && acquiredRecords >= 0 && acquiredPages >= 0)
+        require(attempt >= 0 && transferredBytes >= 0 && durableArtifactBytes >= 0 && acquiredRecords >= 0 && acquiredPages >= 0)
         if (expectedRecords is Knowledge.Known) require(expectedRecords.value >= 0)
     }
 }
 
 private fun requireSha256(hash: ContentHash): Unit {
-    require(hash.algorithm.equals("sha256", ignoreCase = true) && hash.hex.length == 64)
+    require(hash.algorithm.equals("SHA-256", ignoreCase = true) && hash.hex.length == 64)
 }
 
 /** Indicates artifact lookup/read/integrity failure on the requested Flow<ByteChunk> surface. */

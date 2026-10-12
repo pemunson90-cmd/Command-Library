@@ -1,3 +1,5 @@
+> Root integration corrections: new plan type is DownloadPlan (pricing already owns AcquisitionPlan); use SHA-256 spelling and explicit snapshot attempt. See ACQUISITION-INDEPENDENT-REVIEW.md for mandatory consent/file/commit/budget protocols before binding.
+
 # Proposed acquisition contracts and additive schema 3
 
 Read-only proposal for root review, based on f4760ba and `/workspace/scratch/k3-personal-source-review.md`. No implementation, migration or tests run. Source review supersedes the previous generic 8/sec suggestion: English search is sequential, at least 600 ms between starts; bulk metadata at most 10/minute; 429 pauses at least 30 seconds or longer Retry-After. Full Android/64 requirements/213 parity remain unchanged. Schema3 finishes durable acquisition infrastructure, not catalog/rulings/search acceptance.
