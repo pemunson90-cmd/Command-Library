@@ -3,14 +3,16 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-stop-33",
-  "verified_base_head": "ffc5cc069a069fc7d524ede6e174e0083058980b",
+  "checkpoint_id": "cp-20261012-k3-triage-34",
+  "verified_base_head": "f20ba4a11b217a771a27e5fc1a3563231dcf7fc8",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
-  "status": "Paused at user request; K3 incomplete, hosted catalog gate pending",
+  "status": "K3 narrow catalog verification resumed; Claude testing independently",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Inspect catalog matrix38292134079; merge only exact reviewed tested green source; leave Claude rules correction exclusively owned",
-  "active_tasks": [],
+  "first_action": "Triage failed16KiB lane38292134079 without touching Claude rules; retain catalog candidate until matrix green",
+  "active_tasks": [
+    "orch-kotlin-k3-offline-data-01"
+  ],
   "blockers": [
     "Catalog cleanup correction01e0c40 has independent source acceptance, but full hosted matrix38292134079 was in_progress at stop; require pass before exact-source merge.",
     "Claude rules209a938/code796c665 token-cancellation success bug needs Claude-owned correction/re-review; see CLAUDE-PARALLEL.md.",
@@ -35,6 +37,6 @@
     "k3_catalog": "Parser86dc00d focused38291004261 success. Cleanup codeed26b326/branch01e0c40 independent source accepted; full Android matrix38292134079 in_progress at stop. No claimed native pass or merge.",
     "k3_rules": "Claude reports46 synthetic tests and check/assemble in throwaway root, not rerun by root. Code796c665 requires private token-cancellation correction; no hosted include/merge yet."
   },
-  "last_completed": "Pat requested usage stop; shell fix published and verified, catalog candidate/review/CI and Claude correction packet preserved",
-  "updated_utc": "2026-10-12T18:42:08Z"
+  "last_completed": "User authorizes nonoverlapping work; catalog JVM/API23/API36 passed,16KiB shell lane failed, artifact triage delegated",
+  "updated_utc": "2026-10-12T19:26:17Z"
 }

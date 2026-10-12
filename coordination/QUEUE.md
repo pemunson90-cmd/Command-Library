@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-stop-33. Next: orch-kotlin-k3-offline-data-01 step3; Paused at user request; K3 incomplete, hosted catalog gate pending.
+Checkpoint-ID: cp-20261012-k3-triage-34. Next: orch-kotlin-k3-offline-data-01 step3; K3 narrow catalog verification resumed; Claude testing independently.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

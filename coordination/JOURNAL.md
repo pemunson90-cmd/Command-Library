@@ -143,3 +143,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T18:40:44Z | codex | cp-20261012-k3-shell-pass-32 | containing commit | Shell cancellation guard merged after68 passing JVM tests; release shell lock, preserve rules/catalog reservations
 
 2026-10-12T18:42:08Z | codex | cp-20261012-k3-stop-33 | containing commit | Pat requested usage stop; shell fix published and verified, catalog candidate/review/CI and Claude correction packet preserved
+
+2026-10-12T19:26:17Z | codex | cp-20261012-k3-triage-34 | containing commit | User authorizes nonoverlapping work; catalog JVM/API23/API36 passed,16KiB shell lane failed, artifact triage delegated

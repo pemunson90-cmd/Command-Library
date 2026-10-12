@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k3-stop-33
+Checkpoint-ID: cp-20261012-k3-triage-34
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Inspect catalog matrix38292134079; merge only exact reviewed tested green source; leave Claude rules correction exclusively owned
+Next step: 3. Triage failed16KiB lane38292134079 without touching Claude rules; retain catalog candidate until matrix green
 
-Updated UTC: 2026-10-12T18:42:08Z
-Status: Paused at user request; K3 incomplete, hosted catalog gate pending; lease: released.
-Verified base: ffc5cc069a069fc7d524ede6e174e0083058980b.
+Updated UTC: 2026-10-12T19:26:17Z
+Status: K3 narrow catalog verification resumed; Claude testing independently; lease: active.
+Verified base: f20ba4a11b217a771a27e5fc1a3563231dcf7fc8.
 
-Pat requested usage stop; shell fix published and verified, catalog candidate/review/CI and Claude correction packet preserved
+User authorizes nonoverlapping work; catalog JVM/API23/API36 passed,16KiB shell lane failed, artifact triage delegated
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
