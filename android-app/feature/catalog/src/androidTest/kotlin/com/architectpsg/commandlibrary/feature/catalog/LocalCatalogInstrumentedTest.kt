@@ -18,7 +18,7 @@ import kotlin.time.Duration
 @RunWith(AndroidJUnit4::class)
 class LocalCatalogInstrumentedTest {
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
-    private val bytes get() = context.assets.open("english-three-printings.json").use { it.readBytes() }
+    private val bytes get() = InstrumentationRegistry.getInstrumentation().context.assets.open("english-three-printings.json").use { it.readBytes() }
     private class TestClock : Clock {
         private var now = 1000L
         override fun utcNow(): UtcTimestamp = UtcTimestamp(now++)

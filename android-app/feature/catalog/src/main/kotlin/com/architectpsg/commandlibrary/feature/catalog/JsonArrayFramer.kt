@@ -28,8 +28,8 @@ internal class JsonArrayFramer(private val limits: CatalogImportLimits) {
     suspend fun accept(chunk: ByteChunk, onRecord: suspend (String) -> Unit) {
         require(!finalSeen && chunk.sequence == sequence && chunk.offset == offset) { "Noncontiguous or repeated byte chunk" }
         sequence++
+        require(offset + chunk.bytes.size <= limits.maxInputBytes) { "Input exceeds byte limit" }
         val bytes = chunk.bytes.copyBytes()
-        require(offset + bytes.size <= limits.maxInputBytes) { "Input exceeds byte limit" }
         digest.update(bytes)
         offset += bytes.size
         for (byte in bytes) {

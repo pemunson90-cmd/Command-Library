@@ -48,6 +48,8 @@ class ScryfallCodecTest {
         assertThrows(Exception::class.java) { map(raw.replace("\"cmc\":1.25", "\"cmc\":-1")) }
         assertThrows(Exception::class.java) { map(raw.replace("\"cmc\":1.25", "\"cmc\":1e99999999")) }
         assertThrows(Exception::class.java) { map(raw.replace("\"name\":\"Éclair\"", "\"name\":\"Éclair\",\"card_faces\":[{\"object\":\"wrong\",\"name\":\"Face\"}]")) }
+        assertThrows(Exception::class.java) { map(raw.replace("Éclair", "ﷺ".repeat(100))) }
+        assertThrows(Exception::class.java) { map(raw.replace("Éclair", "bad\\u0000name")) }
     }
     @Test fun genuineMeldComponentsKeepRawPrintingIdentities() {
         val raw = javaClass.getResourceAsStream("/hanweir-battlements.json")!!.bufferedReader().readText()

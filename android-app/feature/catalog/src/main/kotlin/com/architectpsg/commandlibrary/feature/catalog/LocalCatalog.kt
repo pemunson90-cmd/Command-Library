@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 
 /** Owns only the local English Scryfall import, status and lookup capabilities. */
 public class LocalCatalog(
@@ -48,7 +49,8 @@ public class LocalCatalog(
 
     override suspend fun lookupName(input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>> {
         when (val ready = initialize(cancel)) { is Outcome.Success -> Unit; else -> return ready.nonSuccess() }
-        if (input.codePointCount(0, input.length) > 128) return invalid("Name query exceeds 128 code points")
+        val trimmed = input.trim()
+        if (trimmed.codePointCount(0, trimmed.length) > 128) return invalid("Name query exceeds 128 code points")
         val active = when (val result = activeRow(cancel)) {
             is Outcome.Success -> result.value
             else -> return result.nonSuccess()
@@ -57,7 +59,7 @@ public class LocalCatalog(
         if (cursor != null && cursor.generation != active?.text("generation_id")) return failure(FailureCode.STALE_GENERATION, "Catalog generation changed")
         val reference = SnapshotReference(active?.let { ProviderId(it.text("provider")) } ?: ProviderId("scryfall"),
             active?.let { GenerationId(it.text("generation_id")) }, null, LanguageTag.ENGLISH)
-        val words = Regex("[\\p{L}\\p{M}\\p{N}]+").findAll(ScryfallCodec.normalize(input)).map { it.value }.toList()
+        val words = Regex("[\\p{L}\\p{M}\\p{N}]+").findAll(ScryfallCodec.normalize(trimmed)).map { it.value }.toList()
         if (active == null || words.isEmpty()) return Outcome.Success(Page(SnapshotList.empty(), null, reference))
         val expression = "name : \"${words.joinToString(" ") { it.replace("\"", "\"\"") }}\"*"
         val queryKey = digest(expression).take(24)
@@ -126,7 +128,8 @@ public class LocalCatalog(
                 frame.accept(chunk) { raw ->
                     val (card, printing) = ScryfallCodec.mapped(raw, source.provider, generation, source.sourceUri.knownOrNull(), source.sourceDate, observed, null, source.notice.knownOrNull(), limits.maxNesting)
                     require(seenPrintings.add(printing.id)) { "Duplicate printing identity" }
-                    val first = canonical.putIfAbsent(card.oracleId, card)
+                    val first = canonical[card.oracleId]
+                    if (first == null) canonical[card.oracleId] = card
                     require(first == null || sameCanonicalGameData(first, card)) { "Canonical game data conflict" }
                     if (first == null) faceCount += card.faces.size
                     batch.add(Triple(raw, card, printing))
@@ -156,10 +159,11 @@ public class LocalCatalog(
             Outcome.Success(CatalogImportResult(CatalogGeneration(generation, provenance, SnapshotList.of(LanguageTag.ENGLISH), ScryfallCodec.FORMAT, count, GenerationStatus.ACTIVE),
                 count, provenance, CatalogImportVerification(frame.observedBytes, hash, if (source.expectedChecksum is Knowledge.Known) ChecksumVerification.MATCHED_EXPECTED else ChecksumVerification.COMPUTED_WITHOUT_EXPECTATION, true, 0), activated))
         } catch (cancelled: CancellationException) {
-            if (staging) cleanup(generation)
+            if (staging) cleanup(generation) // Reopen recovery remains available if bounded cleanup fails.
             throw cancelled
         } catch (failure: Exception) {
-            if (staging) cleanup(generation)
+            val cleaned = if (staging) cleanup(generation) else Outcome.Success(Unit)
+            if (cleaned !is Outcome.Success) return@withLock failure(FailureCode.PERSISTENCE, "Import failed and staged cleanup remains pending")
             when (failure) {
                 is CatalogFailure -> failure.outcome
                 is IllegalArgumentException, is IllegalStateException -> invalid(failure.message ?: "Invalid catalog input")
@@ -187,10 +191,13 @@ public class LocalCatalog(
         return Outcome.Success(Unit)
     }
     private suspend fun cleanup(id: GenerationId): Outcome<Unit> = withContext(NonCancellable) {
-            database.transaction({ tx ->
+        try {
+            withTimeout(1_000) { database.transaction({ tx ->
                 tx.write("DELETE FROM catalog_name_fts WHERE generation_id=:id", cleanupCancel, "id" to id.value)
                 tx.write("DELETE FROM catalog_generation WHERE generation_id=:id AND status='STAGING'", cleanupCancel, "id" to id.value)
-            }, cleanupCancel)
+            }, cleanupCancel) }
+        } catch (_: CancellationException) { failure(FailureCode.PERSISTENCE, "Staged cleanup exceeded time limit") }
+        catch (_: Exception) { failure(FailureCode.PERSISTENCE, "Staged cleanup failed") }
         }
     private suspend fun activeRow(cancel: CancelToken): Outcome<RowData?> = when (val result = database.query(sql("SELECT g.* FROM catalog_active a JOIN catalog_generation g ON a.generation_id=g.generation_id WHERE a.dataset_key=:key", 1, "key" to dataset), cancel)) {
         is Outcome.Success -> Outcome.Success(result.value.firstOrNull())

@@ -85,7 +85,7 @@ internal object ScryfallCodec {
             )
         }
         val name = obj.required("name")
-        require(name.toByteArray(Charsets.UTF_8).size <= 512 && '\u0000' !in name) { "Card name exceeds cursor limits" }
+        require(name.toByteArray(Charsets.UTF_8).size <= 512 && normalize(name).toByteArray(Charsets.UTF_8).size <= 512 && '\u0000' !in name) { "Card name exceeds cursor limits" }
         val card = CardRecord(
             oracle, name, obj.knowledgeString("oracle_text"), obj.knowledgeString("mana_cost"),
             obj.knowledgeDecimal("cmc"), obj.knowledgeColors("colors"), obj.knowledgeColors("color_identity"),
@@ -184,7 +184,9 @@ internal object ScryfallCodec {
         else -> {
             val value = get(key)
             require(value.isJsonPrimitive && value.asJsonPrimitive.isNumber) { "Invalid $key" }
-            Knowledge.Known(value.asBigDecimal.also { require(it.signum() >= 0 && it.scale() <= 16 && it.precision() <= 32) })
+            Knowledge.Known(value.asBigDecimal.also {
+                require(it.signum() >= 0 && it <= BigDecimal("1000000") && it.scale() in -16..16 && it.precision() <= 32) { "Invalid $key value" }
+            })
         }
     }
     private fun JsonObject.knowledgeStrings(key: String): Knowledge<SnapshotList<String>> = when {
