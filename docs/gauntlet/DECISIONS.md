@@ -219,3 +219,8 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - Pat, 2026-10-12, verbatim: "2. Just leave very clear notes so I can tell codex to read the next steps.md or wherever you put your work notes so it knows what's up and can continue without having to audit the whole codebase."
 - Applied: Claude Code holds the lease from checkpoint cp-20261012-claude-k2-14. Work notes for Codex: `coordination/handoffs/K2-STEP2-CLAUDE.md`.
 
+
+## Lease takeover, 2026-10-12 (catalog to shell)
+- Context: the Codex lease (session codex-k2-catalog-20261012, task orch-kotlin-m0-01) expired at 2026-10-12T13:54:34Z after catalog PR #1 merged (e5ae264). Codex left `coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md`.
+- Pat, 2026-10-12, verbatim: "Fetch the latest \"main\" from \"pemunson90-cmd/Command-Library\", then read \"coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md\" and continue the project from that packet."
+- Applied: Claude Code holds the lease from checkpoint cp-20261012-claude-k2-26. Shell branch agent/cc-k2-shell-01 (b1064f2) was authored under this same Claude Code session, so its review uses fresh-context reviewer subagents and is recorded as not independent of the author session; an Astra review may still be required for formal acceptance.

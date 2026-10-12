@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-k2-catalog-20261012",
-  "model_family": "Codex",
+  "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
+  "model_family": "Claude Code",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-12T13:09:34Z",
-  "expires_utc": "2026-10-12T13:54:34Z",
-  "checkpoint_id": "cp-20261012-k2-catalog-review-25",
-  "note": "Continue authorized; resume verifiedbdb7645 to scoped catalog importer/status/lookup. Storage/settings/core preserved."
+  "heartbeat_utc": "2026-10-12T14:14:47Z",
+  "expires_utc": "2026-10-12T14:59:47Z",
+  "checkpoint_id": "cp-20261012-claude-k2-26",
+  "note": "Expired Codex lease (codex-k2-catalog-20261012, expired 2026-10-12T13:54:34Z) taken over at Pat's instruction to continue from coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md. Inspected and preserved: catalog merge e5ae264 on main, shell branch agent/cc-k2-shell-01 at b1064f2 unchanged."
 }
