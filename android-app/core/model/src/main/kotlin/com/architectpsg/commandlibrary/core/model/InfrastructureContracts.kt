@@ -7,7 +7,13 @@ public data class Origin(public val scheme: String, public val host: String, pub
 public enum class HttpMethod { GET, HEAD, POST, PUT, PATCH, DELETE }
 public enum class RequestCharge { NONCHARGED, POTENTIALLY_CHARGED }
 public enum class RetryClassification { SAFE_IDEMPOTENT, EXPLICIT_IDEMPOTENCY_KEY, NEVER_AUTOMATIC }
-public data class HttpHeader(public val name: String, public val value: String) { init { require(name.isNotBlank()); require(!name.contains('\n') && !value.contains('\n') && !value.contains('\r')) } }
+/** Header names use the HTTP token grammar; CR/LF cannot create a second header line. */
+public data class HttpHeader(public val name: String, public val value: String) {
+    init {
+        require(name.isNotEmpty() && name.all { it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it in "!#$%&'*+-.^_`|~" })
+        require(!value.contains('\n') && !value.contains('\r'))
+    }
+}
 public data class RetryPolicy(
     public val maxAttempts: Int,
     public val initialDelay: Duration,

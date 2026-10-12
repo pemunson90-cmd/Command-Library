@@ -73,10 +73,11 @@ internal class CancelOnCallToken(private val cancelOnCall: Int) : CancelToken {
 internal class Fixture(val directory: File, val clock: FakeClock = FakeClock(), val ids: SequenceIds = SequenceIds()) {
     val storeFile = File(directory, "files/datastore/settings.bin")
     val idFile = File(directory, "nobackup/installation_id")
+    val consentCoordinator = com.architectpsg.commandlibrary.core.common.ConsentCoordinator()
     private val opened = mutableListOf<DataStoreSettingsRepository>()
 
     fun open(): DataStoreSettingsRepository =
-        DataStoreSettingsRepository.create(storeFile, idFile, clock, ids).also { opened += it }
+        DataStoreSettingsRepository.create(storeFile, idFile, consentCoordinator, clock, ids).also { opened += it }
 
     var repo: DataStoreSettingsRepository = open()
         private set

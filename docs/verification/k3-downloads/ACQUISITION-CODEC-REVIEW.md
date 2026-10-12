@@ -1,0 +1,8 @@
+Verdict: ACCEPT the codec source at `4be4dfe62deeb406f0891855ef1730230a371cbb` for integration; no blocking codec defect found. No production persistence/app-binding acceptance is implied.
+Reviewed actual AcquisitionPayloadCodec.kt, its 13 tests, shared strict parser, acquisition/core constructor invariants, and handoff; repository remained unchanged and clean.
+Version/type/source/Knowledge discriminators, exact field sets, duplicate keys, strict primitive kinds, exact integer conversion/overflow, enums, constructor limits and required SHA-256 metadata fail closed; explicit constructors avoid reflection-based invariant bypass.
+Complete plan/artifact fields round-trip, including nullable fields, Unknown evidence/reasons, Absent reasons, Known empty values, notices, origins, timestamps/nanos and provenance; Unknown is not collapsed into Absent.
+Serialized UTF-8 is capped at 1 MiB, parsing depth at 32, Unicode is validated, output writing is bounded, and invalid data produces the fixed redacted message without an exception cause.
+Independently reran all seven supplied compiled JVM suites: OK (40 tests), 0.863 seconds, including 13 codec tests; worker-reported compilation was not repeated by this reviewer.
+Future DB/service integration must compare decoded job IDs with row/artifact identities, recompute/validate planHash against its canonical request, and enforce consent/source/limit policy and artifact integrity; decoding intentionally does not authorize or establish these relationships.
+Not run: AndroidArtifactFiles/Android Gradle/lint/device or application persistence binding. Next action: integrate this codec, preserve those boundary checks in the future job store/service, and obtain required hosted Android evidence.

@@ -1,6 +1,7 @@
 package com.architectpsg.commandlibrary.di
 
 import android.content.Context
+import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
@@ -19,7 +20,8 @@ import kotlinx.coroutines.sync.withLock
 internal class AppGraph(context: Context) {
     private val appContext = context.applicationContext
     private val limits = CatalogImportLimits()
-    private val settings = DataStoreSettingsRepository.create(appContext)
+    private val consentCoordinator = ConsentCoordinator()
+    private val settings = DataStoreSettingsRepository.create(appContext, consentCoordinator)
     private val mutex = Mutex()
     private var ready: ShellPorts? = null
 

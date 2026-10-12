@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-claude-life-handoff-44. Updated UTC: 2026-10-12T23:10:01Z.
+Checkpoint: cp-20261012-consent-framing-47. Updated UTC: 2026-10-12T23:44:48Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Full Android v1 execution active; incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
-Continue K3 network/storage integration while Claude implements isolated life domain logic
+Verify corrected hosted acquisition infrastructure, then implement full durable runner/import
 
-Claude assigned cc-m2-life-domain-01 with exclusive life/domain ownership; Codex retains full-app orchestration. Complete Android v1 remains incomplete.
+Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.
 
 Read CURRENT, machine state and task card.

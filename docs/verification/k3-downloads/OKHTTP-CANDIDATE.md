@@ -1,0 +1,9 @@
+# Cancellable transport dependency candidate
+
+Observed 2026-10-12. Existing HttpURLConnection candidate is not eligible for production binding: NETWORK-INDEPENDENT-REVIEW.md identifies healthy slow-connection rejection and unverified timeout recovery. Use one injected OkHttp engine with built-in retry/redirect/cache/cookie/auth disabled; preserve explicit source policy and raw bytes. Actual compile/native cancellation remains required, not implied by the pin.
+
+Maven Central official published metadata https://repo.maven.apache.org/maven2/com/squareup/okhttp3/okhttp/maven-metadata.xml reports latest/release5.5.0. Exact okhttp-jvm5.5.0 POM1866bytes SHAe72ea7261789a91b5a60920c8fd2ee860d0584765aadde249548c2ed1dba4631; JVMjar961167bytes SHA234194a04aac54858df0a750d243af7b2e39df5e4eb86e9912043ad33a9f9a52. POM declares Apache2 license, Kotlinstdlib2.1.21 and okio-jvm3.18.1. Versioned okhttp5.5.0 Gradle module publishes Android and JVM variants. Root pins okhttp5.5.0 and okio3.18.1; accepted project Kotlin2.2.10 remains unchanged.
+
+Versioned sources jar (same official Maven path) contains Call.cancel()/enqueue and RealCall.cancel(), documented to close held/connecting sockets. OkHttpClient.callTimeout covers DNS/connect/write/server/read; configured connect/read timeouts must remain real. Explicit Accept-Encoding identity prevents BridgeInterceptor transparent gzip; followRedirects/followSslRedirects/retryOnConnectionFailure=false, cache=null, CookieJar.NO_COOKIES, Authenticator.NONE. Private source jars/binaries in scratch, not Git. These are observed capabilities, not actual Android proof. Public generated API overview URLs returned404, so no claim those web docs were checked successfully.
+
+Next implement/review/test asynchronous Call.cancel integration, token+coroutine cancellation, slow healthy headers/TLS, long Retry-After failclosed and actual hosted Android artifact/native execution before binding.

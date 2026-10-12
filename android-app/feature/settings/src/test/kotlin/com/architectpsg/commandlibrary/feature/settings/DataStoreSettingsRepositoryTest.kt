@@ -567,7 +567,7 @@ class DataStoreSettingsRepositoryTest {
         }
         val directory = temporary.newFolder()
         val storeFile = File(directory, "gated/settings.bin")
-        val repo = DataStoreSettingsRepository.create(storeFile, File(directory, "gated/id"), gate, SequenceIds())
+        val repo = DataStoreSettingsRepository.create(storeFile, File(directory, "gated/id"), com.architectpsg.commandlibrary.core.common.ConsentCoordinator(), gate, SequenceIds())
         try {
             val job = launch(Dispatchers.Default) {
                 repo.update(patch(SettingChange.Theme(ThemePreference.DARK)), Revision(0), CoroutineCancelToken(coroutineContext))
@@ -613,4 +613,80 @@ class DataStoreSettingsRepositoryTest {
         java.nio.ByteBuffer.wrap(bytes, 4, 4).putInt(version)
         return bytes
     }
+    @Test
+    fun consentRevocationSharesAcquisitionGuardAndReadDoesNotDeadlock(): Unit = blocking {
+        val f = fixture()
+        val approved = f.repo.approve(intent(), LiveToken).success()
+        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val owner = launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            f.consentCoordinator.withExclusive(LiveToken) {
+                assertTrue(f.repo.read(LiveToken).success().consents.any { it.id == approved.id })
+                entered.complete(Unit)
+                release.await()
+            }
+        }
+        entered.await()
+        val revision = f.repo.read(LiveToken).success().revision
+        val revoke = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            f.repo.update(patch(SettingChange.RevokeConsent(approved.id, false)), revision, LiveToken)
+        }
+        assertFalse("revocation waits for bounded acquisition critical section", revoke.isCompleted)
+        release.complete(Unit)
+        kotlinx.coroutines.withTimeout(2000) { owner.join(); revoke.await().success() }
+        f.consentCoordinator.withExclusive(LiveToken) {
+            assertFalse(f.repo.read(LiveToken).success().consents.single { it.id == approved.id }.permits(approved.intent))
+        }
+    }
+
+    @Test
+    fun cancellationDuringConsentWriteKeepsGuardUntilActorCommitSettles(): Unit = blocking {
+        val directory = temporary.newFolder()
+        val coordinator = com.architectpsg.commandlibrary.core.common.ConsentCoordinator()
+        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val blockWrite = java.util.concurrent.atomic.AtomicBoolean(false)
+        val serializer = object : androidx.datastore.core.Serializer<StoredSettings> {
+            override val defaultValue = SettingsStoreSerializer.defaultValue
+            override suspend fun readFrom(input: java.io.InputStream) = SettingsStoreSerializer.readFrom(input)
+            override suspend fun writeTo(t: StoredSettings, output: java.io.OutputStream) {
+                if (blockWrite.get()) { entered.complete(Unit); release.await() }
+                SettingsStoreSerializer.writeTo(t, output)
+            }
+        }
+        val repo = DataStoreSettingsRepository.createWithSerializer(
+            File(directory, "settings.bin"), File(directory, "installation-id"), coordinator,
+            FakeClock(), SequenceIds(), serializer,
+        )
+        try {
+            val approved = repo.approve(intent(), LiveToken).success()
+            val revision = repo.read(LiveToken).success().revision
+            blockWrite.set(true)
+            val revoke = launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                repo.update(patch(SettingChange.RevokeConsent(approved.id, false)), revision, LiveToken)
+            }
+            kotlinx.coroutines.withTimeout(2000) { entered.await() }
+            revoke.cancel()
+            kotlinx.coroutines.yield()
+            assertFalse("caller cancellation must await outstanding actor write", revoke.isCompleted)
+            var dispatched = false
+            val dispatch = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                coordinator.withExclusive(LiveToken) {
+                    dispatched = true
+                    repo.read(LiveToken).success()
+                }
+            }
+            assertFalse(dispatch.isCompleted)
+            assertFalse(dispatched)
+            release.complete(Unit)
+            val final = kotlinx.coroutines.withTimeout(2000) { revoke.join(); dispatch.await() }
+            assertTrue(revoke.isCancelled)
+            assertTrue(dispatched)
+            assertFalse(final.consents.single { it.id == approved.id }.permits(approved.intent))
+        } finally {
+            release.complete(Unit)
+            repo.close()
+        }
+    }
+
 }

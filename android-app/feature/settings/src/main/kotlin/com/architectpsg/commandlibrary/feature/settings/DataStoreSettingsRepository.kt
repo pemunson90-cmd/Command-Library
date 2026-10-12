@@ -1,8 +1,10 @@
 package com.architectpsg.commandlibrary.feature.settings
 
 import android.content.Context
+import androidx.datastore.core.Serializer
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
+import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.common.cancellableOutcome
 import com.architectpsg.commandlibrary.core.common.requireCurrentRevision
 import com.architectpsg.commandlibrary.core.common.revisionForCommittedEdit
@@ -30,6 +32,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -52,8 +57,10 @@ import kotlinx.coroutines.isActive
  *   `Context.noBackupFilesDir`); consents from a restored or transferred store stay inert in the file
  *   and are never reported, revoked or granted.
  * - `approve` records the intent and returns the record. It starts no job and makes no network call.
- * - Cancellation is checked before and after the work and inside the transaction before it commits;
- *   it is rethrown, never converted to an Outcome.
+ * - All consent writers share the application consent guard. Read stays available inside it.
+ * - Cancellation before the write boundary aborts the transform. Once writing starts, the guard
+ *   remains held until DataStore acknowledges settlement; caller cancellation is then rethrown.
+ *   A settled write can therefore be durable even when its caller receives cancellation.
  *
  * Create exactly one instance per store file per process. DataStore rejects a second live instance
  * for the same file, and that rejection is reported as an INTERNAL failure.
@@ -64,11 +71,13 @@ public class DataStoreSettingsRepository private constructor(
     private val clock: Clock,
     private val idSource: IdSource,
     dispatcher: CoroutineDispatcher,
+    private val consentCoordinator: ConsentCoordinator,
+    serializer: Serializer<StoredSettings> = SettingsStoreSerializer,
 ) : SettingsRepository {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
     private val installation = InstallationIdStore(installationIdFile, dispatcher)
     private val store: DataStore<StoredSettings> =
-        DataStoreFactory.create(serializer = SettingsStoreSerializer, scope = scope) { storeFile }
+        DataStoreFactory.create(serializer = serializer, scope = scope) { storeFile }
 
     public override suspend fun read(cancel: CancelToken): Outcome<SettingsSnapshot> = operate(cancel) {
         val installationId = installation.get()
@@ -79,10 +88,10 @@ public class DataStoreSettingsRepository private constructor(
         patch: SettingsPatch,
         expected: Revision,
         cancel: CancelToken,
-    ): Outcome<SettingsSnapshot> = operate(cancel) {
+    ): Outcome<SettingsSnapshot> = guardedOperate(cancel) {
         validate(patch)
         val installationId = installation.get()
-        val committed = store.updateData { current ->
+        val committed = settleMutation(cancel) { current ->
             cancel.throwIfCancelled()
             reject(requireCurrentRevision(expected, current.revision))
             val now = clock.utcNow()
@@ -93,16 +102,16 @@ public class DataStoreSettingsRepository private constructor(
                 working.copy(revision = nextRevision(expected, current.revision), updatedAt = now)
             }
             if (result != current) SettingsStoreCodec.validateCandidate(result)
-            // Last chance to abort: past this line DataStore writes the result.
+            // settleMutation rechecks original caller cancellation before DataStore starts writing.
             cancel.throwIfCancelled()
             result
         }
         committed.toSnapshot(installationId)
     }
 
-    public override suspend fun approve(intent: DownloadIntent, cancel: CancelToken): Outcome<ConsentRecord> = operate(cancel) {
+    public override suspend fun approve(intent: DownloadIntent, cancel: CancelToken): Outcome<ConsentRecord> = guardedOperate(cancel) {
         val installationId = installation.get()
-        val committed = store.updateData { current ->
+        val committed = settleMutation(cancel) { current ->
             cancel.throwIfCancelled()
             val result = if (current.effectiveConsentPermitting(installationId, intent) != null) {
                 current
@@ -125,7 +134,7 @@ public class DataStoreSettingsRepository private constructor(
                 )
             }
             if (result != current) SettingsStoreCodec.validateCandidate(result)
-            // Last chance to abort: past this line DataStore writes the result.
+            // settleMutation rechecks original caller cancellation before DataStore starts writing.
             cancel.throwIfCancelled()
             result
         }
@@ -142,6 +151,27 @@ public class DataStoreSettingsRepository private constructor(
         scope.cancel()
         scope.coroutineContext[Job]?.join()
     }
+
+    /** DataStore's actor can keep writing after its caller stops awaiting acknowledgement.
+     * Keep consent ownership until that acknowledgement settles, while original caller/token
+     * cancellation still aborts the transform before its irreversible write boundary.
+     */
+    private suspend fun settleMutation(cancel: CancelToken, transform: suspend (StoredSettings) -> StoredSettings): StoredSettings {
+        val caller = currentCoroutineContext()
+        return withContext(NonCancellable) {
+            store.updateData { current ->
+                caller.ensureActive()
+                cancel.throwIfCancelled()
+                transform(current).also {
+                    caller.ensureActive()
+                    cancel.throwIfCancelled()
+                }
+            }
+        }
+    }
+
+    private suspend fun <T> guardedOperate(cancel: CancelToken, action: suspend () -> T): Outcome<T> =
+        operate(cancel) { consentCoordinator.withExclusive(cancel, action) }
 
     private suspend fun <T> operate(cancel: CancelToken, action: suspend () -> T): Outcome<T> =
         try {
@@ -188,6 +218,7 @@ public class DataStoreSettingsRepository private constructor(
         /** Production factory: store under filesDir, installation ID under noBackupFilesDir. */
         public fun create(
             context: Context,
+            consentCoordinator: ConsentCoordinator,
             clock: Clock = SystemUtcClock,
             idSource: IdSource = RandomUuidIdSource,
             dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -199,18 +230,32 @@ public class DataStoreSettingsRepository private constructor(
                 clock = clock,
                 idSource = idSource,
                 dispatcher = dispatcher,
+                consentCoordinator = consentCoordinator,
             )
         }
+
+        /** Internal real-DataStore serializer seam for cancellation-during-write regression tests. */
+        internal fun createWithSerializer(
+            storeFile: File,
+            installationIdFile: File,
+            consentCoordinator: ConsentCoordinator,
+            clock: Clock,
+            idSource: IdSource,
+            serializer: Serializer<StoredSettings>,
+        ): DataStoreSettingsRepository = DataStoreSettingsRepository(
+            storeFile, installationIdFile, clock, idSource, Dispatchers.IO, consentCoordinator, serializer,
+        )
 
         /** File based factory with no Android dependency at run time, used by JVM tests. */
         public fun create(
             storeFile: File,
             installationIdFile: File,
+            consentCoordinator: ConsentCoordinator,
             clock: Clock = SystemUtcClock,
             idSource: IdSource = RandomUuidIdSource,
             dispatcher: CoroutineDispatcher = Dispatchers.IO,
         ): DataStoreSettingsRepository =
-            DataStoreSettingsRepository(storeFile, installationIdFile, clock, idSource, dispatcher)
+            DataStoreSettingsRepository(storeFile, installationIdFile, clock, idSource, dispatcher, consentCoordinator)
     }
 }
 

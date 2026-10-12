@@ -295,16 +295,16 @@ private suspend fun DbTransaction.insertCard(generation: GenerationId, card: Car
 private fun canonicalDigest(card: CardRecord): String {
     val fields = buildList {
         add(card.oracleId.source.value); add(card.oracleId.raw); add(card.language.value); add(card.name)
-        fun <T> known(value: Knowledge<T>): String = when (value) {
-            is Knowledge.Known -> "known:${value.value}"
+        fun <T> known(value: Knowledge<T>, render: (T) -> String = { it.toString() }): String = when (value) {
+            is Knowledge.Known -> "known:${render(value.value)}"
             is Knowledge.Absent -> "absent"
             is Knowledge.Unknown -> "unknown"
         }
         add(known(card.originalText)); add(known(card.manaCost))
         add(when (val mana = card.manaValue) { is Knowledge.Known -> "known:${mana.value.stripTrailingZeros().toPlainString()}"; is Knowledge.Absent -> "absent"; is Knowledge.Unknown -> "unknown" })
-        add(known(card.colors)); add(known(card.colorIdentity)); add(known(card.types))
+        add(known(card.colors) { it.sortedBy { color -> color.name }.toString() }); add(known(card.colorIdentity) { it.sortedBy { color -> color.name }.toString() }); add(known(card.types))
         add(known(card.stats.power)); add(known(card.stats.toughness)); add(known(card.stats.loyalty)); add(known(card.stats.defense))
-        add(known(card.keywords)); add(known(card.layout)); add(known(card.reserved))
+        add(known(card.keywords) { it.sorted().toString() }); add(known(card.layout)); add(known(card.reserved))
         for (face in card.faces) {
             add(face.identity.oracleId.source.value); add(face.identity.oracleId.raw); add(face.identity.index.toString())
             add(face.name); add(known(face.text)); add(known(face.manaCost)); add(known(face.types))
