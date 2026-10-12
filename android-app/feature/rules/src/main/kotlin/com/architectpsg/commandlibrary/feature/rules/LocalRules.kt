@@ -90,17 +90,18 @@ public class LocalRules(private val database: Database, private val clock: Clock
         initialize(cancel)
         val active = database.query(rulesSql("SELECT g.* FROM rules_active a JOIN rules_corpus g ON g.generation_id=a.generation_id WHERE a.singleton_id=1"), cancel).requireSuccess().firstOrNull()
         val attempt = database.query(rulesSql("SELECT * FROM rules_import_attempt ORDER BY started_at_epoch_seconds DESC,started_at_nano DESC,rowid DESC LIMIT 1"), cancel).requireSuccess().firstOrNull()
-        LocalRulesStatus(active?.let { Knowledge.Known(corpus(it)) } ?: Knowledge.Absent("No rules installed"), attempt?.let { Knowledge.Known(RulesCodec.attempt(RulesCodec.decode(it.text("attempt_payload")))) } ?: Knowledge.Absent("No rules import attempted"))
+        LocalRulesStatus(active?.let { Knowledge.Known(corpus(it).also { value -> stored { require(value.status == GenerationStatus.ACTIVE) } }) } ?: Knowledge.Absent("No rules installed"), attempt?.let { Knowledge.Known(attempt(it)) } ?: Knowledge.Absent("No rules import attempted"))
     }
 
     override suspend fun entry(id: RuleId, corpusId: GenerationId, cancel: CancelToken): Outcome<RuleEntry> = readOperation(cancel) {
         initialize(cancel)
         readTransaction(cancel) { tx ->
-            val installed = tx.query(rulesSql("SELECT generation_id FROM rules_corpus WHERE generation_id=:id AND status IN ('ACTIVE','RETIRED')", 1, "id" to corpusId.value), cancel).requireSuccess()
+            val installed = tx.query(rulesSql("SELECT * FROM rules_corpus WHERE generation_id=:id AND status IN ('ACTIVE','RETIRED')", 1, "id" to corpusId.value), cancel).requireSuccess()
             if (installed.isEmpty()) throw RulesFailure(rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot unavailable"))
-            val row = tx.query(rulesSql("SELECT entry_payload FROM rule_entry WHERE corpus_id=:corpus AND provider=:provider AND local_id=:id", 1, "corpus" to corpusId.value, "provider" to id.source.value, "id" to id.raw), cancel).requireSuccess().firstOrNull()
+            val metadata = corpus(installed.single())
+            val row = tx.query(rulesSql("SELECT * FROM rule_entry WHERE corpus_id=:corpus AND provider=:provider AND local_id=:id", 1, "corpus" to corpusId.value, "provider" to id.source.value, "id" to id.raw), cancel).requireSuccess().firstOrNull()
                 ?: throw RulesFailure(Outcome.Unavailable(UnavailableReason.NOT_FOUND, "Rule not found in snapshot"))
-            RulesCodec.entry(RulesCodec.decode(row.text("entry_payload"))).also { require(it.id == id && it.corpusId == corpusId && it.provenance.generation == corpusId) }
+            storedEntry(row, metadata).also { stored { require(it.id == id && it.corpusId == corpusId) } }
         }
     }
 
@@ -118,16 +119,19 @@ public class LocalRules(private val database: Database, private val clock: Clock
             val selected = if (query.corpusId == null) tx.query(rulesSql("SELECT g.* FROM rules_active a JOIN rules_corpus g ON g.generation_id=a.generation_id WHERE a.singleton_id=1"), cancel).requireSuccess().firstOrNull()
                 else tx.query(rulesSql("SELECT * FROM rules_corpus WHERE generation_id=:id AND status IN ('ACTIVE','RETIRED')", 1, "id" to query.corpusId.value), cancel).requireSuccess().firstOrNull()
             if (selected == null) throw RulesFailure(if (query.corpusId != null || cursor != null) rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot unavailable") else Outcome.Unavailable(UnavailableReason.NOT_INSTALLED, "No rules installed"))
-            val generation = selected.text("generation_id")
+            val metadata = corpus(selected)
+            val generation = metadata.id.value
             if (cursor != null && cursor.generation != generation) throw RulesFailure(rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot changed"))
             val kindSql = if (kinds.isEmpty()) "" else " AND e.kind IN (${kinds.indices.joinToString(",") { ":kind$it" }})"
-            val ftsSql = if (tokens.isEmpty()) "" else " AND EXISTS (SELECT 1 FROM rules_text_fts WHERE rules_text_fts MATCH :match AND corpus_id=e.corpus_id AND provider=e.provider AND local_id=e.local_id)"
+            val ftsJoin = if (tokens.isEmpty()) "" else " JOIN rules_text_fts ON rules_text_fts.corpus_id=e.corpus_id AND rules_text_fts.provider=e.provider AND rules_text_fts.local_id=e.local_id"
+            val ftsSql = if (tokens.isEmpty()) "" else " AND rules_text_fts MATCH :match"
             val values = mutableListOf<Pair<String, Any?>>("generation" to generation, "ordinal" to (cursor?.ordinal ?: -1L), "limit" to query.page.limit + 1)
             kinds.forEachIndexed { i, value -> values.add("kind$i" to value) }; if (tokens.isNotEmpty()) values.add("match" to RulesCursors.match(tokens))
-            val rows = tx.query(rulesSql("SELECT e.entry_payload,e.ordinal FROM rule_entry e WHERE e.corpus_id=:generation AND e.ordinal>:ordinal$kindSql$ftsSql ORDER BY e.ordinal LIMIT :limit", query.page.limit + 1, *values.toTypedArray()), cancel).requireSuccess()
-            val entries = rows.take(query.page.limit).map { RulesCodec.entry(RulesCodec.decode(it.text("entry_payload"))).also { e -> require(e.corpusId.value == generation && e.provenance.generation?.value == generation) } }
+            val rows = tx.query(rulesSql("SELECT e.* FROM rule_entry e$ftsJoin WHERE e.corpus_id=:generation AND e.ordinal>:ordinal$kindSql$ftsSql ORDER BY e.ordinal LIMIT :limit", query.page.limit + 1, *values.toTypedArray()), cancel).requireSuccess()
+            val entries = rows.take(query.page.limit).map { storedEntry(it, metadata) }
+            stored { require(entries.zipWithNext().all { (first, second) -> first.ordinal < second.ordinal }) }
             val next = if (rows.size > query.page.limit) RulesCursors.encode(RulesCursor(generation, key, entries.last().ordinal)) else null
-            Page(SnapshotList.copyOf(entries), next, SnapshotReference(ProviderId(selected.text("provider")), GenerationId(generation), null, LanguageTag.ENGLISH))
+            Page(SnapshotList.copyOf(entries), next, SnapshotReference(metadata.source.provider, metadata.id, null, LanguageTag.ENGLISH))
         }
     }
 
@@ -138,7 +142,41 @@ public class LocalRules(private val database: Database, private val clock: Clock
         e.references.forEachIndexed { i, r -> tx.write("INSERT INTO rule_reference(corpus_id,from_provider,from_local_id,ref_ordinal,raw_target,resolved_provider,resolved_local_id,evidence_payload) VALUES(:corpus,:provider,:id,:ordinal,:target,:resolved_provider,:resolved_id,:payload)", cancel,
             "corpus" to e.corpusId.value, "provider" to e.id.source.value, "id" to e.id.raw, "ordinal" to i, "target" to r.rawTarget, "resolved_provider" to r.resolved.known()?.source?.value, "resolved_id" to r.resolved.known()?.raw, "payload" to RulesCodec.encode(RulesCodec.reference(r))) }
     }
-    private fun corpus(row: RowData): LocalRulesCorpus = LocalRulesCorpus(GenerationId(row.text("generation_id")), RulesCodec.source(RulesCodec.decode(row.text("source_payload"))), RulesCodec.provenance(RulesCodec.decode(row.text("provenance_payload"))), GenerationStatus.valueOf(row.text("status")), row.number("entry_count"), row.number("reference_count"))
+    /** Stored bytes/projections are corruption, never caller input errors. */
+    private inline fun <T> stored(action: () -> T): T = try { action() }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) { throw RulesFailure(rulesFailure(FailureCode.CORRUPT_DATA, "Stored rules metadata or payload is inconsistent")) }
+    private fun corpus(row: RowData): LocalRulesCorpus = stored {
+        val source = RulesCodec.source(RulesCodec.decode(row.text("source_payload")))
+        val provenance = RulesCodec.provenance(RulesCodec.decode(row.text("provenance_payload")))
+        val value = LocalRulesCorpus(GenerationId(row.text("generation_id")), source, provenance, GenerationStatus.valueOf(row.text("status")), row.number("entry_count"), row.number("reference_count"))
+        require(row.number("payload_schema_version") == 1L && value.status in setOf(GenerationStatus.ACTIVE, GenerationStatus.RETIRED))
+        require(source.provider.value == row.text("provider") && source.language.value == row.text("language") && source.language == LanguageTag.ENGLISH)
+        require(source.contentUri.value == row.text("content_uri") && source.displayName == row.text("display_name"))
+        require(source.version.known() == row.optionalText("upstream_version") && source.sourceUri.known()?.value == row.optionalText("source_uri"))
+        require(source.effectiveAt.known() == row.date("effective_at") && source.sourceDate.known() == row.date("source_date"))
+        require(provenance.provider == source.provider && provenance.generation == value.id && provenance.source == source.sourceUri.known())
+        require(provenance.version == source.version && provenance.sourceDate == source.sourceDate && provenance.effectiveAt == source.effectiveAt && provenance.notice == source.notice.known())
+        require(provenance.fetchedAt == row.date("observed_at") && provenance.checksum == ContentHash("SHA-256", row.text("content_sha256")))
+        require(row.number("observed_bytes") >= 0 && row.date("activated_at") != null)
+        value
+    }
+    private fun attempt(row: RowData): LocalRulesImportAttempt = stored {
+        val value = RulesCodec.attempt(RulesCodec.decode(row.text("attempt_payload")))
+        require(row.number("payload_schema_version") == 1L && value.id.value == row.text("attempt_id") && value.phase.name == row.text("phase"))
+        require(value.source == RulesCodec.source(RulesCodec.decode(row.text("source_payload"))))
+        require(value.startedAt == row.date("started_at") && value.finishedAt.known() == row.date("finished_at"))
+        require(value.failure == row.optionalText("failure_payload")?.let { RulesCodec.failure(RulesCodec.decode(it)) })
+        value
+    }
+    private fun storedEntry(row: RowData, corpus: LocalRulesCorpus): RuleEntry = stored {
+        val value = RulesCodec.entry(RulesCodec.decode(row.text("entry_payload")))
+        require(value.id.source.value == row.text("provider") && value.id.raw == row.text("local_id") && value.ordinal == row.number("ordinal"))
+        require(value.corpusId.value == row.text("corpus_id") && value.corpusId == corpus.id && value.id.source == corpus.source.provider)
+        require(value.provenance == corpus.provenance && value.provenance.provider == value.id.source && value.provenance.generation == corpus.id)
+        require(value.kind.name == row.text("kind") && value.number.known() == row.optionalText("number") && value.title.known() == row.optionalText("title") && value.text == row.text("text"))
+        value
+    }
     private suspend fun initialize(cancel: CancelToken) { if (!initialized) mutex.withLock { initializeLocked(cancel) } }
     private suspend fun initializeLocked(cancel: CancelToken) {
         cancel.check(); if (initialized) return
@@ -158,7 +196,7 @@ public class LocalRules(private val database: Database, private val clock: Clock
                 if (attempt != null) {
                     val now = clock.utcNow()
                     val row = tx.query(rulesSql("SELECT attempt_payload FROM rules_import_attempt WHERE attempt_id=:attempt", 1, "attempt" to attempt.value), cleanupCancel).requireSuccess().firstOrNull()
-                    val payload = row?.let { RulesCodec.attempt(RulesCodec.decode(it.text("attempt_payload"))).copy(phase = phase, finishedAt = Knowledge.Known(now), failure = failure) }?.let { RulesCodec.encode(RulesCodec.attempt(it)) }
+                    val payload = row?.let { stored { RulesCodec.attempt(RulesCodec.decode(it.text("attempt_payload"))) }.copy(phase = phase, finishedAt = Knowledge.Known(now), failure = failure) }?.let { RulesCodec.encode(RulesCodec.attempt(it)) }
                     tx.write("UPDATE rules_import_attempt SET phase=:phase,attempt_payload=:payload,finished_at_epoch_seconds=:seconds,finished_at_nano=:nano,failure_payload=:failure WHERE attempt_id=:attempt AND phase!='COMPLETED' AND NOT EXISTS (SELECT 1 FROM rules_active WHERE generation_id=:id)", cleanupCancel,
                         "phase" to phase.name, "payload" to payload, "seconds" to now.epochSeconds, "nano" to now.nanoAdjustment, "failure" to failure?.let { RulesCodec.encode(RulesCodec.failure(it)) }, "attempt" to attempt.value, "id" to id?.value)
                 }

@@ -10,7 +10,13 @@ internal fun RowData.cell(name: String): SqlValue = columns.single { it.name == 
 internal fun RowData.text(name: String): String = (cell(name) as SqlValue.Text).value
 internal fun RowData.number(name: String): Long = (cell(name) as SqlValue.Integer).value
 internal fun RowData.optionalText(name: String): String? = if (cell(name) == SqlValue.Null) null else text(name)
-internal fun RowData.date(name: String): UtcTimestamp? = if (cell("${name}_epoch_seconds") == SqlValue.Null) null else UtcTimestamp(number("${name}_epoch_seconds"), number("${name}_nano").toInt())
+internal fun RowData.date(name: String): UtcTimestamp? {
+    val seconds = cell("${name}_epoch_seconds"); val nanos = cell("${name}_nano")
+    require((seconds == SqlValue.Null) == (nanos == SqlValue.Null))
+    if (seconds == SqlValue.Null) return null
+    val nano = (nanos as SqlValue.Integer).value.also { require(it in 0..999_999_999) }
+    return UtcTimestamp((seconds as SqlValue.Integer).value, nano.toInt())
+}
 internal fun <T> Knowledge<T>.known(): T? = (this as? Knowledge.Known)?.value
 internal class RulesFailure(val outcome: Outcome<Nothing>) : RuntimeException()
 internal fun rulesFailure(code: FailureCode, message: String): Outcome.Failure = Outcome.Failure(DomainFailure(code, message, SnapshotList.empty()))

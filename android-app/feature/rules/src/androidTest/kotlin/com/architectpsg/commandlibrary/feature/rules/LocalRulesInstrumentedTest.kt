@@ -60,6 +60,28 @@ class LocalRulesInstrumentedTest {
         } finally { db.close(); context.deleteDatabase(name) }
     }
 
+    @Test fun corruptedStoredEntryAndCorpusAreCorruptionWhileBadCursorIsInput() = runBlocking {
+        val name = "rules-${UUID.randomUUID()}.db"; val db = open(name)
+        try {
+            val adapter = LocalRules(db, clock, ids); val installed = install(adapter)
+            val id = RuleId(provider, "100.1")
+            val good = (adapter.entry(id, installed.corpus.id, Token()) as Outcome.Success).value
+            val payload = RulesCodec.encode(RulesCodec.entry(good))
+            val fractional = RulesCodec.entry(good).apply { addProperty("ordinal", 1.5) }
+            val wrongProvenance = good.copy(provenance = good.provenance.copy(provider = ProviderId("different")))
+            for (corrupt in listOf("{", RulesCodec.encode(RulesCodec.entry(good.copy(id = RuleId(provider, "wrong")))), RulesCodec.encode(fractional), RulesCodec.encode(RulesCodec.entry(wrongProvenance)))) {
+                db.transaction({ tx -> tx.write("UPDATE rule_entry SET entry_payload=:payload WHERE corpus_id=:corpus AND local_id='100.1'", Token(), "payload" to corrupt, "corpus" to installed.corpus.id.value) }, Token()).requireSuccess()
+                assertEquals(FailureCode.CORRUPT_DATA, (adapter.entry(id, installed.corpus.id, Token()) as Outcome.Failure).error.code)
+                assertEquals(FailureCode.CORRUPT_DATA, (adapter.search(query("cafe"), Token()) as Outcome.Failure).error.code)
+            }
+            db.transaction({ tx -> tx.write("UPDATE rule_entry SET entry_payload=:payload WHERE corpus_id=:corpus AND local_id='100.1'", Token(), "payload" to payload, "corpus" to installed.corpus.id.value) }, Token()).requireSuccess()
+            assertEquals(FailureCode.INVALID_INPUT, (adapter.search(query(cursor = "{\"schema\":1.5}"), Token()) as Outcome.Failure).error.code)
+            db.transaction({ tx -> tx.write("UPDATE rules_corpus SET provider='different' WHERE generation_id=:id", Token(), "id" to installed.corpus.id.value) }, Token()).requireSuccess()
+            assertEquals(FailureCode.CORRUPT_DATA, (adapter.status(Token()) as Outcome.Failure).error.code)
+            assertEquals(FailureCode.CORRUPT_DATA, (adapter.entry(id, installed.corpus.id, Token()) as Outcome.Failure).error.code)
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
+
     @Test fun changedReplayAndExpectedMismatchPreserveActiveAndRecordFailure() = runBlocking {
         val name = "rules-${UUID.randomUUID()}.db"; val db = open(name)
         try {

@@ -10,7 +10,7 @@ internal object RulesCursors {
     fun encode(v: RulesCursor): String = JsonObject().apply { addProperty("schema", 1); addProperty("generation", v.generation); addProperty("query", v.query); addProperty("ordinal", v.ordinal) }.toString()
     fun decode(v: String): RulesCursor = RulesCodec.decode(v).let {
         require(it.keySet() == setOf("schema", "generation", "query", "ordinal"))
-        RulesCursor(it["generation"].asString, it["query"].asString, it["ordinal"].asLong).also { c -> require(c.generation.isNotBlank() && c.generation.length <= 128 && c.query.matches(Regex("[a-f0-9]{64}")) && c.ordinal >= 0) }
+        RulesCursor(RulesCodec.string(it["generation"]), RulesCodec.string(it["query"]), RulesCodec.integer(it["ordinal"])).also { c -> require(c.generation.isNotBlank() && c.generation.length <= 128 && c.query.matches(Regex("[a-f0-9]{64}")) && c.ordinal >= 0) }
     }
     /** Literal words only; quote FTS tokens so punctuation/operators cannot become MATCH syntax. */
     fun tokens(text: String): List<String> = Regex("[\\p{L}\\p{M}\\p{N}]+").findAll(Normalizer.normalize(text, Normalizer.Form.NFC)).map { it.value }.toList()
