@@ -1,0 +1,12 @@
+{
+  "component": "catalog-acquisition-codec",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cx-k3-acquisition-codec-01",
+  "branch": "agent/cx-k3-acquisition-codec-01",
+  "base_commit": "ad31c58cd9dfdb53fe55d32080f4d4846fa58080",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/AcquisitionPayloadCodec.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/AcquisitionPayloadCodecTest.kt",
+    "coordination/handoffs/cx-k3-acquisition-codec-01.md"
+  ]
+}

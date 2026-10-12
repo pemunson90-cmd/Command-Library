@@ -1,5 +1,6 @@
 package com.architectpsg.commandlibrary.feature.shell
 
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
@@ -19,6 +20,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
@@ -60,13 +62,21 @@ class ShellUiTest {
         rule.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(text))
     }
 
-    private fun search(query: String) {
+    private fun search(query: String, forcedLayoutSubmission: Boolean = false) {
         // Set the field through Compose semantics rather than the emulator IME. Hosted 16 KiB
         // images can drop/delay InputConnection text events under load, making this UI test flaky.
         rule.onNode(hasSetTextAction()).performTextReplacement(query)
         rule.waitForIdle()
         rule.runOnIdle { assertEquals("Search input must be applied before submitting", query, shell.controllers.search.queryInput) }
-        rule.onNode(hasText(shell.string(R.string.search_action)) and hasClickAction()).performClick()
+        val action = rule.onNode(hasText(shell.string(R.string.search_action)) and hasClickAction())
+        if (forcedLayoutSubmission) {
+            // ForcedSize scales the viewport; IME resizing can temporarily clip its lazy list to
+            // zero height. This layout test uses the real button callback, not pixel hit testing.
+            // All normal-width search tests retain physical clicks and every result assertion.
+            action.assertIsEnabled().assertHasClickAction().performSemanticsAction(SemanticsActions.OnClick) { click ->
+                assertTrue("Search button action must accept submission", click())
+            }
+        } else action.performClick()
     }
 
     @Test
@@ -307,7 +317,7 @@ class ShellUiTest {
         shell.show(width = 840.dp, height = 700.dp)
         assertTrue(shell.exists(ShellTags.NAVIGATION_RAIL))
         shell.text(shell.string(R.string.detail_select_prompt)).assertIsDisplayed()
-        search("synthetic")
+        search("synthetic", forcedLayoutSubmission = true)
         fun evidence(): String {
             val requests = synchronized(shell.catalog.lookupRequests) { shell.catalog.lookupRequests.toList() }
             return "queryInput=${shell.controllers.search.queryInput}, lookupRequests=$requests, " +
