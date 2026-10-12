@@ -1,9 +1,54 @@
 # Handoff cc-k3-rules-parser-01: private K3 rules TXT parser
 
-Status: IN-PROGRESS (design committed; implementation next).
+Status: READY-FOR-REVIEW. Not accepted; root reviews and decides inclusion.
 Owner: Claude Code (external-claude-code per `coordination/locks/rules.lock`). Model tier: strongest tier, no subagents (card rule).
-Branch: `agent/cc-k3-rules-parser-01`. Base: `main` at `dd3abf7b` (contains the task card and `rules.lock`, verified before any write).
-Owned paths written: `android-app/feature/rules/**`, this file. Nothing else.
+Branch: `agent/cc-k3-rules-parser-01`. Base: `main` at `dd3abf7d2c3159d1e9b2553d5b1d2e32dfe86472` (contains the task card and `rules.lock`, verified before any write). Code commit: `796c665`; this handoff is the commit after it.
+Owned paths written: `android-app/feature/rules/**`, this file. Nothing else; `git diff --name-only dd3abf7d2c3159d1e9b2553d5b1d2e32dfe86472...HEAD` lists only those.
+
+## Changed files
+
+- `android-app/feature/rules/build.gradle.kts`: Android library, compileSdk 37, minSdk 23, Java 17, explicit API, fatal NewApi lint; depends on `:core:model` (api), `:core:common`, coroutines; tests on JUnit 4 and coroutines-test. All through existing catalog aliases.
+- `src/main/kotlin/.../feature/rules/parser/`: `RulesTextParser.kt` (two entry points), `Utf8LineReader.kt`, `RulesStructure.kt`, `RuleReferenceScanner.kt`, `RulesParseResult.kt` (result, failures, index, summary), `RulesParserLimits.kt`. Every declaration is `internal`; the module exposes no public API yet.
+- `src/test/kotlin/.../feature/rules/parser/`: `SyntheticRules.kt` (labelled synthetic corpus, chunker, provenance with unknown version and dates), `RulesTextParserTest.kt` (27), `Utf8LineReaderTest.kt` (11), `RuleReferenceScannerTest.kt` (8).
+
+## Verification actually run
+
+In a throwaway copy of `android-app/` at this branch whose only difference is `":feature:rules"` added to `settings.gradle.kts` (JDK 17, Gradle wrapper 9.6.0, local SDK with platform 37.0):
+
+- `./gradlew --no-daemon :feature:rules:check :feature:rules:assembleDebug`: BUILD SUCCESSFUL. JUnit reports: 46 tests, 0 failures, 0 errors, 0 skipped. Lint report: "No issues found" (an earlier run caught a literal byte-order-mark character in source; fixed by escaping, and all new files are ASCII-only).
+- Same test count with chunk sizes 1, 3, 7, 64 and 4096 producing identical entries (inside the 46).
+
+not_run: hosted CI for this module (the branch's `settings.gradle.kts` does not include it, so `android-k2.yml` runs on this branch only rebuild main's modules); any genuine Comprehensive Rules bytes; Android instrumentation (none needed for a pure parser); performance on a full corpus.
+
+## Entry signature as built
+
+```kotlin
+internal class RulesTextParser(limits: RulesParserLimits = RulesParserLimits()) {
+    suspend fun index(chunks: Flow<ByteChunk>, cancel: CancelToken): RulesParseResult<RulesIndex>
+    suspend fun parse(
+        chunks: Flow<ByteChunk>,
+        index: RulesIndex,
+        provenance: Provenance,
+        corpusId: GenerationId,
+        cancel: CancelToken,
+        onEntry: suspend (RuleEntry) -> Unit,
+    ): RulesParseResult<RulesParseSummary>
+}
+```
+
+`RulesParseSummary` reports entries, entries by kind, references, unresolved references, duplicate identifiers, anomalies (count plus the first 20 with line numbers), byte count and SHA-256.
+
+## Open grammar and limit questions for root (need genuine bytes)
+
+1. Two passes versus one pass plus a reference update in SQL after staging. Two passes keep every emitted DTO final; the cost is reading the file twice.
+2. Glossary definitions that contain a blank line would be read as a new term. R-03 did not establish whether that occurs.
+3. Body section headings must match their Contents line exactly (after trailing whitespace). A real file where they differ would surface as anomalies and fold that section into the previous entry; the anomaly count makes this visible.
+4. `Example:` must start at column 0. Indented examples would be continuation text.
+5. Subrule letters accept any lowercase letter; the l/o skip is not validated.
+6. Numeric ranges (`rules 100.1-100.4`) keep only their ends; only letter ranges on one rule expand.
+7. Exact (raw target, identifier) duplicates within one entry are collapsed to the first occurrence.
+8. Examples carry `number` Absent and encode their parent in the id (`<parent>#example-<n>`); root may prefer a parent field in a later contract.
+9. Limits are proposals (table above). The card's genuine-fixture review should set them.
 
 ## Design
 
@@ -82,7 +127,7 @@ Regions in order: front matter, optional `Contents`, body, `Glossary`, `Credits`
 
 ### Cross-references
 
-Only contextual references: `rule`, `rules`, `section`, `sections` (case-insensitive) followed by one or more targets separated by `,`, `and`, `or`, `through`, `to`, `-`, `–`. Targets are `\d{3}(\.\d+[a-z]?)?` or a single digit section after `section`. Letter ranges (`702.19b-d`, `702.19b–702.19d`) expand to each letter up to `maxRangeExpansion`. Each produced reference keeps `rawTarget` as the exact matched source text; `resolved` is Known when the identifier is in the index, otherwise Unknown with reason "Target not found in this corpus" and one Evidence naming the target. Bare decimal numbers are never linked.
+Only contextual references: `rule`, `rules`, `section`, `sections` (case-insensitive) followed by one or more targets separated by `,`, `and`, `or`, `through`, `to`, `-`, en dash U+2013, em dash U+2014. Targets are `\d{3}(\.\d+[a-z]?)?` or a single digit section after `section`. Letter ranges (`702.19b-d`, `702.19b-702.19d`) expand to each letter up to `maxRangeExpansion`. Each produced reference keeps `rawTarget` as the exact matched source text; `resolved` is Known when the identifier is in the index, otherwise Unknown with reason "Target not found in this corpus" and one Evidence naming the target. Bare decimal numbers are never linked.
 
 ## Synthetic test plan (all inputs labelled synthetic in test names and comments)
 
@@ -105,4 +150,4 @@ Unverified minor findings from the same review are listed in the session transcr
 
 ## Latest continuation delta
 
-Design, limits, grammar, ID scheme and test plan committed on `agent/cc-k3-rules-parser-01` from base `dd3abf7`. No parser code yet. Verification: not_run. Next: implement `android-app/feature/rules` (build file, decoder, recognizer, reference tokenizer, two-pass parser) and the synthetic JVM tests, build in a throwaway root that includes `:feature:rules`, then publish READY-FOR-REVIEW.
+Parser and 46 synthetic tests committed at `796c665` on `agent/cc-k3-rules-parser-01` (base `dd3abf7d2c3159d1e9b2553d5b1d2e32dfe86472`); this handoff marks READY-FOR-REVIEW. Verification: `:feature:rules:check` and `:feature:rules:assembleDebug` passed in a throwaway root that only adds the include; hosted CI and genuine-bytes checks not_run. Next (root): review the branch against the card, decide the two-pass question, add `":feature:rules"` to `android-app/settings.gradle.kts` so hosted CI builds it, then merge or return findings. The worker stops here.
