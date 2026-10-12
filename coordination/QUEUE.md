@@ -28,3 +28,5 @@ Checkpoint-ID: cp-20261012-k2-storage-verified-22. Next: orch-kotlin-m0-01 step2
 Higher later M2-M9 scopes in MILESTONES. Worker tasks need claimed locks and actual merged interfaces, not merely this row. If write/toolchain access unavailable, preserve checkpoint and source-audit fallback; no claimedbuild or silently skipped requiredtest. At most3 component workers only when disjoint safe worktrees available (D-08 ruled 3; at most 4 subagents of any role at once, 2 after a usage-limit stop); single orchestrator.
 
 | cx-catalog-k2-01 | K2 local catalog import/status/lookup | delegated | core/storage accepted | agent/cx-catalog-k2-01; catalog lock |
+
+| cc-k2-shell-01 | Compose foundation UI | delegated external Claude | core ports accepted | agent/cc-k2-shell-01; shell lock |

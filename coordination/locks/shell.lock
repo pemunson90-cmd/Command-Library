@@ -1,0 +1,8 @@
+component: shell
+orchestrator: codex
+task: cc-k2-shell-01
+owner: external-claude-code
+branch: agent/cc-k2-shell-01
+base_commit: current main containing task/lock; record verifiedSHA before work
+owned_paths: android-app/feature/shell/**; coordination/handoffs/cc-k2-shell-01.md
+step: real Compose local foundation UI; Codex leaves owned paths untouched until reviewed merge
