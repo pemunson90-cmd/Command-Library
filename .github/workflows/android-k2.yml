@@ -41,8 +41,12 @@ jobs:
           java -version
           bash gradlew --no-daemon --console=plain projects
           bash gradlew --no-daemon --console=plain check
-          if bash gradlew --no-daemon -q tasks --all | grep -q '^app:assembleDebug'; then
+          if [ -f app/build.gradle.kts ]; then
             bash gradlew --no-daemon --console=plain :app:assembleDebug
+          elif [ -f data/storage/build.gradle.kts ] || [ -f feature/settings/build.gradle.kts ]; then
+            bash gradlew --no-daemon --console=plain assembleDebug
+          else
+            echo 'Core-only revision: no Android module to assemble.'
           fi
       - name: Count executed JVM tests
         shell: bash
@@ -130,12 +134,19 @@ jobs:
           SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$SDKM" --licenses > /dev/null || true
           "$SDKM" --install "$SDK_PLATFORM" "$SDK_BUILD_TOOLS" emulator platform-tools "${{ matrix.image }}" > /dev/null
-          echo no | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd --force -n k2 -k "${{ matrix.image }}"
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/command-library-avd"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
+          echo no | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd --force -n k2 -p "$ANDROID_AVD_HOME/k2.avd" -k "${{ matrix.image }}"
+          test -f "$ANDROID_AVD_HOME/k2.ini"
+          "$ANDROID_HOME/emulator/emulator" -list-avds
       - name: Boot emulator
         if: steps.gate.outputs.run == 'true'
         shell: bash
         run: |
           set -euo pipefail
+          test -f "$ANDROID_AVD_HOME/k2.ini"
+          trap 'tail -n 80 emulator.log' ERR
           nohup "$ANDROID_HOME/emulator/emulator" -avd k2 -no-window -no-audio -no-boot-anim -no-snapshot \
             -gpu swiftshader_indirect -camera-back none -camera-front none -accel on > emulator.log 2>&1 &
           ADB="$ANDROID_HOME/platform-tools/adb"

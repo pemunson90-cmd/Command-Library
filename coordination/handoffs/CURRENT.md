@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-codex-k2-17
+Checkpoint-ID: cp-20261012-k2-fixes-18
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Read Claude step2 handoff; independently review completed settings/QA branches, preserve and resume storage at its exact committed step, then build importer and UI.
+Next step: 2. Rerun updated CI on corrected settings/storage branches, finish bounded storage fixes and independent recheck, then integrate accepted adapters and implement local importer/UI; use K2 progress and latest worker handoffs.
 
-Updated UTC: 2026-10-12T02:56:47Z
+Updated UTC: 2026-10-12T03:23:55Z
 Status: in_progress; lease: active.
-Verified base: d3a84d1ce66800cac4dc7a3a301455bd92b0fbb8.
+Verified base: 2faa71edaa18a53abda54f7f50bdc450a41cdb89.
 
-Codex resumed from verifiedd3a84d1 after expired Claude lease; UTCdate12 recorded automatically. Preserved Claude compileSdk37 tuple evidence, hosted workflow and all worker branches/locks. Settings READY-FOR-REVIEW, storage schema step1 saved, QA branch ready. No app/emulator completion claimed.
+K2 incomplete checkpoint: preserved Claude source/tuple/worker notes; QA independently integrated. Settings persistence/UTF8 fixes source-reviewed with68 JVM/lint pass; explicit libraryassembly pending. Storage actualJVM/lint pass butSQL correctness reviewfound4 fixes and all emulatorbootsfailed UnknownAVD; sourcefixes and sharedAVDpath correction underway. Cross-model actor/date checkpoint helper corrected and reviewed; no app/runtime success claim.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
