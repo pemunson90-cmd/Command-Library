@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-triage-34. Next: orch-kotlin-k3-offline-data-01 step3; K3 narrow catalog verification resumed; Claude testing independently.
+Checkpoint-ID: cp-20261012-k3-retry-35. Next: orch-kotlin-k3-offline-data-01 step3; Bounded independent verification complete; hosted retry pending, K3 incomplete.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

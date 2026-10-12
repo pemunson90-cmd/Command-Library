@@ -145,3 +145,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T18:42:08Z | codex | cp-20261012-k3-stop-33 | containing commit | Pat requested usage stop; shell fix published and verified, catalog candidate/review/CI and Claude correction packet preserved
 
 2026-10-12T19:26:17Z | codex | cp-20261012-k3-triage-34 | containing commit | User authorizes nonoverlapping work; catalog JVM/API23/API36 passed,16KiB shell lane failed, artifact triage delegated
+
+2026-10-12T19:27:35Z | codex | cp-20261012-k3-retry-35 | containing commit | Independent triage completed and published; new catalog regression passed all device types, isolated16KiB shell timeout rerun pending, no Claude writes

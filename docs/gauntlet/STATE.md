@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k3-triage-34. Updated UTC: 2026-10-12T19:26:17Z.
+Checkpoint: cp-20261012-k3-retry-35. Updated UTC: 2026-10-12T19:27:35Z.
 
-Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: K3 narrow catalog verification resumed; Claude testing independently. Next: orch-kotlin-k3-offline-data-01 step3.
-Triage failed16KiB lane38292134079 without touching Claude rules; retain catalog candidate until matrix green
+Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: Bounded independent verification complete; hosted retry pending, K3 incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
+Inspect exact-SHA failed-lane rerun38292134079; merge catalog only if full matrix green; leave Claude testing/documenting alone
 
-User authorizes nonoverlapping work; catalog JVM/API23/API36 passed,16KiB shell lane failed, artifact triage delegated
+Independent triage completed and published; new catalog regression passed all device types, isolated16KiB shell timeout rerun pending, no Claude writes
 
 Read CURRENT, machine state and task card.
