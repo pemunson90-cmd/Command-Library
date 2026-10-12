@@ -352,10 +352,11 @@ internal class RulesStructure(
         const val GLOSSARY = "Glossary"
         const val CREDITS = "Credits"
         const val EXAMPLE = "Example:"
-        val SECTION = Regex("""([1-9])\.\s+(\S.*)""")
-        val CHAPTER = Regex("""(\d{3})\.\s+(\S.*)""")
-        val RULE = Regex("""(\d{3})\.(\d+)\.?(?:\s+.*)?""")
-        val SUBRULE = Regex("""(\d{3})\.(\d+)([a-z])\.?(?:\s+.*)?""")
+        // The reader splits physical LF lines; Unicode paragraph/line separators remain body text.
+        val SECTION = Regex("""([1-9])\.\s+(\S.*)""", RegexOption.DOT_MATCHES_ALL)
+        val CHAPTER = Regex("""(\d{3})\.\s+(\S.*)""", RegexOption.DOT_MATCHES_ALL)
+        val RULE = Regex("""(\d{3})\.(\d+)\.?(?:\s+.*)?""", RegexOption.DOT_MATCHES_ALL)
+        val SUBRULE = Regex("""(\d{3})\.(\d+)([a-z])\.?(?:\s+.*)?""", RegexOption.DOT_MATCHES_ALL)
 
         fun utf8Length(text: String): Int {
             var bytes = 0

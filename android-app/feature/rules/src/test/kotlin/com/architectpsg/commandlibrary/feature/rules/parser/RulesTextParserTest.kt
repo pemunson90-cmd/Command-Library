@@ -38,6 +38,28 @@ import org.junit.Test
 class RulesTextParserTest {
 
     @Test
+    fun unicodeLineAndParagraphSeparatorsRemainInHeadingAndRuleTails() = runTest {
+        for (separator in listOf('\u2028', '\u2029')) {
+            val section = "5. Synthetic${separator}Concepts"
+            val chapter = "509. Synthetic${separator}Chapter"
+            val numbered = "509.1. Synthetic${separator}parent. See rule 509.1b."
+            val subruleA = "509.1a Synthetic${separator}first subrule."
+            val subruleB = "509.1b Synthetic${separator}second subrule. See rule 509.1a."
+            val text = listOf(section, chapter, numbered, subruleA, subruleB).joinToString("\n") + "\n"
+            // One-byte chunks also split each separator's UTF-8 sequence across chunk boundaries.
+            val parsed = parseAll(text, chunkSize = 1)
+            assertTrue(parsed.result is RulesParseResult.Ok)
+            assertEquals(listOf("5", "509", "509.1", "509.1a", "509.1b"), parsed.entries.map { it.id.raw })
+            assertEquals(listOf(section, chapter, numbered, subruleA, subruleB), parsed.entries.map { it.text })
+            assertEquals(Knowledge.Known("Synthetic${separator}Concepts"), parsed.entry("5").title)
+            assertEquals(Knowledge.Known("Synthetic${separator}Chapter"), parsed.entry("509").title)
+            assertEquals(Knowledge.Known(RuleId(PROVIDER, "509.1b")), parsed.entry("509.1").references.single().resolved)
+            assertEquals(Knowledge.Known(RuleId(PROVIDER, "509.1a")), parsed.entry("509.1b").references.single().resolved)
+            assertEquals(0L, parsed.summary.anomalies)
+        }
+    }
+
+    @Test
     fun syntheticCorpusYieldsEveryEntryKindInDocumentOrder() = runTest {
         val parsed = parseAll(CORPUS)
         assertTrue(parsed.result is RulesParseResult.Ok)
