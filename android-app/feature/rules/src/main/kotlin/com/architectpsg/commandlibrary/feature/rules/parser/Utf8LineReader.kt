@@ -16,12 +16,22 @@ import kotlinx.coroutines.flow.Flow
 internal class ReadDigest(val byteCount: Long, val sha256Hex: String)
 
 /**
+ * Stops on either cancellation signal: the coroutine's job or the caller's token. Both throw
+ * `CancellationException`, which the parser never converts into a result.
+ */
+internal suspend fun CancelToken.checkpoint() {
+    currentCoroutineContext().ensureActive()
+    throwIfCancelled()
+}
+
+/**
  * Reads [chunks] as strict UTF-8 and hands each line to [onLine] without holding more than one line.
  *
  * Chunks must be contiguous from sequence 0 and offset 0 and end with exactly one final chunk. A
  * leading byte order mark is removed. `\r\n`, `\n` and a lone `\r` each end a line; terminators are
  * not part of the line. The line after the last terminator is delivered when it is not empty.
- * Throws [RulesParseException] for any failure; cancellation propagates unchanged.
+ * Cancellation is checked for every chunk, before and after every line callback, and before the
+ * digest is returned. Throws [RulesParseException] for any failure; cancellation propagates unchanged.
  */
 internal suspend fun readUtf8Lines(
     chunks: Flow<ByteChunk>,
@@ -29,7 +39,7 @@ internal suspend fun readUtf8Lines(
     cancel: CancelToken,
     onLine: suspend (line: String, lineNumber: Long) -> Unit,
 ): ReadDigest {
-    val reader = LineAssembler(limits, onLine)
+    val reader = LineAssembler(limits, cancel, onLine)
     val decoder: CharsetDecoder = StandardCharsets.UTF_8.newDecoder()
         .onMalformedInput(CodingErrorAction.REPORT)
         .onUnmappableCharacter(CodingErrorAction.REPORT)
@@ -51,8 +61,7 @@ internal suspend fun readUtf8Lines(
     }
 
     chunks.collect { chunk ->
-        cancel.throwIfCancelled()
-        currentCoroutineContext().ensureActive()
+        cancel.checkpoint()
         if (finalSeen) throw RulesParseException(RulesParseFailure.ChunkAfterFinal)
         if (chunk.sequence != expectedSequence || chunk.offset != expectedOffset) {
             throw RulesParseException(
@@ -82,6 +91,7 @@ internal suspend fun readUtf8Lines(
     tail.flip()
     reader.accept(tail)
     reader.finish()
+    cancel.checkpoint()
     return ReadDigest(expectedOffset, digest.digest().toHex())
 }
 
@@ -99,6 +109,7 @@ private fun ByteArray.toHex(): String {
 /** Splits decoded characters into lines, enforcing the per-line UTF-8 byte limit. */
 private class LineAssembler(
     private val limits: RulesParserLimits,
+    private val cancel: CancelToken,
     private val onLine: suspend (String, Long) -> Unit,
 ) {
     private val line = StringBuilder()
@@ -145,8 +156,10 @@ private class LineAssembler(
         val text = line.toString()
         line.setLength(0)
         lineBytes = 0
-        if (lineNumber % 256L == 0L) currentCoroutineContext().ensureActive()
+        cancel.checkpoint()
         onLine(text, lineNumber)
+        // A callback that does not suspend gives the coroutine no other chance to notice a cancel.
+        cancel.checkpoint()
     }
 
     // A surrogate pair is 4 UTF-8 bytes: count them all on the high surrogate.

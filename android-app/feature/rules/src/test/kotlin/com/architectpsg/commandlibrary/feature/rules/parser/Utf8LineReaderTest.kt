@@ -1,10 +1,12 @@
 package com.architectpsg.commandlibrary.feature.rules.parser
 
 import com.architectpsg.commandlibrary.core.model.ByteChunk
+import com.architectpsg.commandlibrary.core.model.CancelToken
 import com.architectpsg.commandlibrary.core.model.SnapshotBytes
 import com.architectpsg.commandlibrary.feature.rules.parser.SyntheticRules.NeverCancelled
 import com.architectpsg.commandlibrary.feature.rules.parser.SyntheticRules.chunks
 import java.security.MessageDigest
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -111,6 +113,28 @@ class Utf8LineReaderTest {
             RulesParseFailure.LimitExceeded(RulesLimit.LINE_BYTES, 4, 6),
             failure(chunks("\u00E9\u00E9\u00E9\n"), RulesParserLimits(maxLineBytes = 4)),
         )
+    }
+
+    @Test
+    fun tokenCancelledByTheLastUnterminatedLineCallbackThrowsInsteadOfReturningADigest() = runTest {
+        // "two" has no terminator, so it is delivered from the end-of-input path of one final chunk.
+        val token = object : CancelToken {
+            var cancelled = false
+            override val isCancelled: Boolean get() = cancelled
+            override fun throwIfCancelled() {
+                if (cancelled) throw CancellationException("Synthetic caller cancelled")
+            }
+        }
+        val seen = ArrayList<String>()
+        try {
+            readUtf8Lines(chunks("one\ntwo"), RulesParserLimits(), token) { line, _ ->
+                seen += line
+                if (line == "two") token.cancelled = true
+            }
+            fail("Expected cancellation")
+        } catch (expected: CancellationException) {
+            assertEquals(listOf("one", "two"), seen)
+        }
     }
 
     @Test

@@ -21,6 +21,10 @@ import kotlinx.coroutines.flow.Flow
  * The caller supplies [Provenance] and the corpus generation; both are copied unchanged into every
  * entry. The parser never infers a provider, source version, source date or effective date.
  * A [RulesParseResult.Failed] from [parse] means every entry it emitted must be discarded.
+ *
+ * Cancellation (the coroutine's job or the caller's [CancelToken]) is checked for every chunk and
+ * line, before and after every `onEntry` call, and before a result is returned, so a cancelled
+ * caller always receives `CancellationException` and never [RulesParseResult.Ok].
  */
 internal class RulesTextParser(private val limits: RulesParserLimits = RulesParserLimits()) {
     private val scanner = RuleReferenceScanner(limits.maxRangeExpansion)
@@ -38,6 +42,7 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
             structure.line(line, number)
         }
         structure.finish(lastLine)
+        cancel.checkpoint()
         RulesIndex(identifiers, read.byteCount, ContentHash(SHA_256, read.sha256Hex))
     }
 
@@ -67,7 +72,10 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
                 references = SnapshotList.copyOf(crossReferences),
                 provenance = provenance,
             )
+            cancel.checkpoint()
             onEntry(entry)
+            // A callback that does not suspend gives the coroutine no other chance to notice a cancel.
+            cancel.checkpoint()
         }
         var lastLine = 0L
         val read = readUtf8Lines(chunks, limits, cancel) { line, number ->
@@ -80,6 +88,7 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
                 RulesParseFailure.SourceChanged(index.byteCount, index.sha256.hex, read.byteCount, read.sha256Hex),
             )
         }
+        cancel.checkpoint()
         RulesParseSummary(
             entries = ordinal,
             entriesByKind = stats.entriesByKind,

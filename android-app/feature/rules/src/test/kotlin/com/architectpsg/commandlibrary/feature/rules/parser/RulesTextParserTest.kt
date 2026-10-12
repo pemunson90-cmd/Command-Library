@@ -17,8 +17,14 @@ import com.architectpsg.commandlibrary.feature.rules.parser.SyntheticRules.index
 import com.architectpsg.commandlibrary.feature.rules.parser.SyntheticRules.parseAll
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
@@ -328,11 +334,101 @@ class RulesTextParserTest {
         assertEquals(seen.map { it.id.raw }.toSet().size, seen.size)
     }
 
+    @Test
+    fun tokenCancelledDuringTheLastEntryCallbackNeverReturnsOk() = runTest {
+        val parser = RulesTextParser()
+        val index = (parser.index(chunks(CORPUS), NeverCancelled) as RulesParseResult.Ok).value
+        val token = SwitchToken()
+        var result: RulesParseResult<RulesParseSummary>? = null
+        try {
+            // The callback does not suspend, so only the parser's own check can notice the cancel.
+            result = parser.parse(chunks(CORPUS), index, PROVENANCE, CORPUS_ID, token) { entry ->
+                if (entry.id.raw == "credits:2") token.cancelled = true
+            }
+            fail("Expected cancellation, got $result")
+        } catch (expected: CancellationException) {
+            assertEquals(null, result)
+        }
+    }
+
+    @Test
+    fun coroutineCancelledDuringTheLastEntryCallbackNeverReturnsOk() = runTest {
+        val parser = RulesTextParser()
+        val index = (parser.index(chunks(CORPUS), NeverCancelled) as RulesParseResult.Ok).value
+        var result: RulesParseResult<RulesParseSummary>? = null
+        val job = launch {
+            result = parser.parse(chunks(CORPUS), index, PROVENANCE, CORPUS_ID, NeverCancelled) { entry ->
+                if (entry.id.raw == "credits:2") currentCoroutineContext().cancel()
+            }
+        }
+        job.join()
+        assertTrue(job.isCancelled)
+        assertEquals(null, result)
+    }
+
+    @Test
+    fun cancelledCoroutineWithALiveTokenAndNonSuspendingInputEmitsNothing() = runTest {
+        val parser = RulesTextParser()
+        val index = (parser.index(chunks(CORPUS), NeverCancelled) as RulesParseResult.Ok).value
+        // asFlow() does not check cancellation itself, so the parser's checks are the only guard.
+        val input = chunks(CORPUS, size = 16).toList().asFlow()
+        var emitted = 0
+        var result: RulesParseResult<RulesParseSummary>? = null
+        val job = launch(start = CoroutineStart.UNDISPATCHED) {
+            coroutineContext.job.cancel()
+            result = parser.parse(input, index, PROVENANCE, CORPUS_ID, NeverCancelled) { emitted++ }
+        }
+        job.join()
+        assertTrue(job.isCancelled)
+        assertEquals(0, emitted)
+        assertEquals(null, result)
+    }
+
+    @Test
+    fun tokenCancelledAfterTheFirstEntryOfOneFinalChunkThrowsAndEmitsNothingMore() = runTest {
+        // Review finding F1: one final chunk holds the whole synthetic corpus, so a per-chunk check alone misses this.
+        val parser = RulesTextParser()
+        val index = (parser.index(chunks(CORPUS), NeverCancelled) as RulesParseResult.Ok).value
+        val token = SwitchToken()
+        val seen = ArrayList<String>()
+        var result: RulesParseResult<RulesParseSummary>? = null
+        try {
+            result = parser.parse(chunks(CORPUS, size = 1 shl 20), index, PROVENANCE, CORPUS_ID, token) { entry ->
+                seen += entry.id.raw
+                token.cancelled = true
+            }
+            fail("Expected cancellation, got $result")
+        } catch (expected: CancellationException) {
+            assertEquals(listOf("front:1"), seen)
+            assertEquals(null, result)
+        }
+    }
+
+    @Test
+    fun indexPassNoticesTokenCancellationInsideOneFinalChunk() = runTest {
+        var result: RulesParseResult<RulesIndex>? = null
+        try {
+            result = RulesTextParser().index(chunks(CORPUS, size = 1 shl 20), CountdownToken(remaining = 5))
+            fail("Expected cancellation, got $result")
+        } catch (expected: CancellationException) {
+            assertEquals(null, result)
+        }
+    }
+
     /** Lets [remaining] checks pass, then reports cancellation the way a cancelled caller would. */
     private class CountdownToken(private var remaining: Int) : CancelToken {
         override val isCancelled: Boolean get() = remaining <= 0
         override fun throwIfCancelled() {
             if (remaining-- <= 0) throw CancellationException("Synthetic caller cancelled")
+        }
+    }
+
+    /** A caller's token that the test flips at a chosen moment. */
+    private class SwitchToken : CancelToken {
+        var cancelled = false
+        override val isCancelled: Boolean get() = cancelled
+        override fun throwIfCancelled() {
+            if (cancelled) throw CancellationException("Synthetic caller cancelled")
         }
     }
 }
