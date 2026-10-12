@@ -411,7 +411,10 @@ class OkHttpNetworkClientTest {
     }
 
     @Test fun globalCookieHandlerAndAuthenticatorNeverSupplyCredentials() = runBlocking {
-        val oldCookies = java.net.CookieHandler.getDefault(); val oldAuth = java.net.Authenticator.getDefault()
+        val oldCookies = java.net.CookieHandler.getDefault()
+        // This fixture runs on the host JDK. Android's compile stubs omit the
+        // Java 9 getter, so resolve it reflectively while preserving restoration.
+        val oldAuth = java.net.Authenticator::class.java.getMethod("getDefault").invoke(null) as java.net.Authenticator?
         val authCalls = AtomicInteger()
         try {
             java.net.CookieHandler.setDefault(object : java.net.CookieHandler() {
