@@ -25,7 +25,7 @@ public class LocalCatalog(
     private val limits: CatalogImportLimits = CatalogImportLimits(),
 ) : CatalogImport, CatalogLookup, CatalogStatus {
     private companion object { val importMutex = Mutex() }
-    private var initialized = false
+    @Volatile private var initialized = false
     private val dataset = "scryfall:en"
     private val cleanupCancel = object : CancelToken {
         override val isCancelled: Boolean = false

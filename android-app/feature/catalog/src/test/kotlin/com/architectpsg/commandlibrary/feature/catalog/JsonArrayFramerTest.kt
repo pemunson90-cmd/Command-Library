@@ -34,7 +34,8 @@ class JsonArrayFramerTest {
     }
     @Test fun rejectsInvalidUtf8AndLimits(): Unit = runBlocking {
         assertThrows(Exception::class.java) { runBlocking { frame(byteArrayOf(91, 123, 34, 120, 34, 58, 34, -1, 34, 125, 93)) } }
-        assertThrows(IllegalArgumentException::class.java) { runBlocking { frame("[{}]".toByteArray(), CatalogImportLimits(maxInputBytes = 4)) } }
+        assertEquals(1, frame("[{}]".toByteArray(), CatalogImportLimits(maxInputBytes = 4)).size)
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { frame("[{}]\n".toByteArray(), CatalogImportLimits(maxInputBytes = 4)) } }
         assertThrows(IllegalArgumentException::class.java) { runBlocking { frame("[{\"a\":1}]".toByteArray(), CatalogImportLimits(maxRecordBytes = 5)) } }
     }
     @Test fun validatesSequenceAndFinalFlag(): Unit = runBlocking {
