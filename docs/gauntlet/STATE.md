@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k3-retry-35. Updated UTC: 2026-10-12T19:27:35Z.
+Checkpoint: cp-20261012-k3-finish-36. Updated UTC: 2026-10-12T19:43:24Z.
 
-Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: Bounded independent verification complete; hosted retry pending, K3 incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
-Inspect exact-SHA failed-lane rerun38292134079; merge catalog only if full matrix green; leave Claude testing/documenting alone
+Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: K3 finish-or-quarantine work active; candidate tests pending. Next: orch-kotlin-k3-offline-data-01 step3.
+Review Claude ready4971166 for bounded integration; diagnose repeated16KiB lane without blind rerun
 
-Independent triage completed and published; new catalog regression passed all device types, isolated16KiB shell timeout rerun pending, no Claude writes
+Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review
 
 Read CURRENT, machine state and task card.

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k3-retry-35
+Checkpoint-ID: cp-20261012-k3-finish-36
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Inspect exact-SHA failed-lane rerun38292134079; merge catalog only if full matrix green; leave Claude testing/documenting alone
+Next step: 3. Review Claude ready4971166 for bounded integration; diagnose repeated16KiB lane without blind rerun
 
-Updated UTC: 2026-10-12T19:27:35Z
-Status: Bounded independent verification complete; hosted retry pending, K3 incomplete; lease: released.
-Verified base: b273ac713f544d8bd1a10041a12c64d76d4500f1.
+Updated UTC: 2026-10-12T19:43:24Z
+Status: K3 finish-or-quarantine work active; candidate tests pending; lease: active.
+Verified base: fa6f0a8c4f03a479d39c1326a017476a13b9ad68.
 
-Independent triage completed and published; new catalog regression passed all device types, isolated16KiB shell timeout rerun pending, no Claude writes
+Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

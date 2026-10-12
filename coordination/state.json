@@ -3,14 +3,16 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-retry-35",
-  "verified_base_head": "b273ac713f544d8bd1a10041a12c64d76d4500f1",
+  "checkpoint_id": "cp-20261012-k3-finish-36",
+  "verified_base_head": "fa6f0a8c4f03a479d39c1326a017476a13b9ad68",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
-  "status": "Bounded independent verification complete; hosted retry pending, K3 incomplete",
+  "status": "K3 finish-or-quarantine work active; candidate tests pending",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Inspect exact-SHA failed-lane rerun38292134079; merge catalog only if full matrix green; leave Claude testing/documenting alone",
-  "active_tasks": [],
+  "first_action": "Review Claude ready4971166 for bounded integration; diagnose repeated16KiB lane without blind rerun",
+  "active_tasks": [
+    "orch-kotlin-k3-offline-data-01"
+  ],
   "blockers": [
     "Catalog01e0c40 new cancellation native regression passed all3 device types; matrix38292134079 first attempt failed only shell expanded-width search20s timeout on16KiB. Failed lane rerun exact sameSHA; require completed green before merge.",
     "Claude rules209a938/code796c665 token-cancellation success bug needs Claude-owned correction/re-review; see CLAUDE-PARALLEL.md.",
@@ -35,6 +37,6 @@
     "k3_catalog": "Parser86dc00d focused38291004261 passed. Cleanuped26b326 independent source accepted. Matrix38292134079 JVM/API23/API36 passed;16KiB catalog6 tests passed but shell1/17 failed20s timeout. Exact-SHA failed-lane rerun requested; no code edits. Evidence docs/verification/k3-catalog-cleanup/MATRIX-TRIAGE.md.",
     "k3_rules": "Claude reports46 synthetic tests and check/assemble in throwaway root, not rerun by root. Code796c665 requires private token-cancellation correction; no hosted include/merge yet."
   },
-  "last_completed": "Independent triage completed and published; new catalog regression passed all device types, isolated16KiB shell timeout rerun pending, no Claude writes",
-  "updated_utc": "2026-10-12T19:27:35Z"
+  "last_completed": "Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review",
+  "updated_utc": "2026-10-12T19:43:24Z"
 }
