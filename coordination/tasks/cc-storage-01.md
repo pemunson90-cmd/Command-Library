@@ -1,6 +1,6 @@
 # Task cc-storage-01
 
-Status: active. Orchestrator: Claude Code (lease holder, cp-20261012-claude-k2-15 onward). Worker tier: Sonnet (D-10). Parent: orch-kotlin-m0-01 step 2.
+Status: preserved step1/4; resumed by cx-storage-01 after expired Claude orchestration lease. Original branch is retained, not overwritten. Do not write this component while the current storage lock names cx-storage-01. Parent: orch-kotlin-m0-01 step2.
 
 ## Ownership
 
