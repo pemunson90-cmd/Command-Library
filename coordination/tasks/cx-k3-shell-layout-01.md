@@ -1,0 +1,5 @@
+# Shell layout gate task
+
+Owner delegated Sol medium; worktree /workspace/Command-Library-k3-layout branch agent/k3-shell-layout-01. Exclusive feature/shell/** and coordination/handoffs/cx-k3-shell-layout-01.md. Root owns app/core/catalog/rules/shared config/CI/coordination.
+
+Diagnose repeated16KiB ShellUiTest.expandedWidthShowsResultsAndDetailsTogether timeout waiting Synthetic Existing Card after search at line305. Evidence docs/verification/k3-catalog-cleanup/RETRY-TRIAGE.md. Do not just extend timeout/drop assertion. Capture query/lookupRequests/controller result/semantics at submission and timeout, identify actual cause, fix narrow product or harness defect with meaningful regression. Synthetic search should work expanded840x700 and medium. Main shell source matches tested catalog branch except already verified stream guard unrelated to this synthetic case. Root supplies hosted matrix; local Gradle may unavailable. No unrun-test claims. Commit/push coherent candidate with owned replaceable Latest continuation delta and exact evidence. No subagents.

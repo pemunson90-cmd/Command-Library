@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k3-rules-done-37
+Checkpoint-ID: cp-20261012-k3-execute-38
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Check postmerge main CI, then targeted expanded-width shell diagnostics before quarantined catalog merge
+Next step: 3. Resolve expanded-layout gate and integrate reviewed catalog; implement remaining K3 bounded offline repository/search
 
-Updated UTC: 2026-10-12T19:47:54Z
-Status: Private rules parser complete; K3 incomplete, catalog integration quarantined; lease: released.
-Verified base: 8a9b7a502b032ada6561e3765b9cbf9779b2b05d.
+Updated UTC: 2026-10-12T19:50:02Z
+Status: K3 active implementation and verification; lease: active.
+Verified base: 3181904fce4d141f2df6e3aa5290d3555a5dac3a.
 
-Claude private parser finished: reviewed unchanged source merged after63 hosted tests/build/lint; rules lock released, catalog quarantined with exact evidence
+Pat requests finish; shell writer isolated, catalog preserved, root resumes implementation orchestration
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

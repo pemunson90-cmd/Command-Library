@@ -1,0 +1,7 @@
+component: shell
+orchestrator: codex-k3-offline-data-20261012
+owner: delegated-gpt-6-sol-medium
+task: cx-k3-shell-layout-01
+branch: agent/k3-shell-layout-01
+owned_paths: android-app/feature/shell/**; coordination/handoffs/cx-k3-shell-layout-01.md
+step: expanded-layout repeated search timeout diagnosis/fix and tests; no app/shared writes
