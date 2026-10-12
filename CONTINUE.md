@@ -1,58 +1,72 @@
 # Shared continuation protocol
 
-Applies to Codex, other GPT models, Claude and Claude Code. Latest D-17 user mandate controls earlier tool-specific/orchestrator/gate-stop text. The supplied original GAUNTLET documents are historical baseline requirements, not rewritten.
+Applies to Codex, GPT, Claude and Claude Code. The repository must remain resumable without chat history, but normal resume should be fast and should not require rereading the whole project.
+
+See `docs/gauntlet/DOCUMENTATION_POLICY.md` for documentation authority and duplication rules.
 
 ## What "continue" authorizes
 
-Resume the exact committed queue pointer, review plans, carry out reversible planned work within the current reviewed product scope, and publish bounded checkpoints. Any model family may replace a stopped prior orchestrator. One orchestrator at a time; component workers may run only under exclusive locks and merged dependency interfaces. Do not impersonate another author, infer missing approvals, report planned tests as run, or drop requirements to simplify handoff.
+Resume the exact committed queue pointer, perform reversible work inside the current reviewed product scope, verify it honestly and publish a bounded checkpoint. Any model family may replace a stopped prior orchestrator. One orchestrator lease-holder at a time. Parallel component writers require explicit disjoint ownership/locks.
 
-D15/D16 were previously proposed, not explicitly approved; D17 now authorizes using the independently reviewed specification and proposed targets as the working technical baseline while orchestrating subsequent stages. Keep that distinction in decisions and results. Routine design/dependency/CI choices are delegated; changing product scope/English consent/security, relaxing a failed budget, spending money, deleting user data or public release is not. Write a concrete BLOCKER before asking only for actually needed information.
+Pat's recorded rulings in `docs/gauntlet/DECISIONS.md` override project documents. Routine technical implementation is delegated. Product scope changes, security/language-consent changes, destructive user-data behavior, new spending, public release and unresolved permission barriers still require an explicit ruling.
 
-## Resume algorithm
+Never impersonate another author, invent approvals, report planned tests as run, silently drop requirements, or treat a stale file as stronger evidence than the current repository state.
 
-1. Fetch README, CONTINUE, STATE, coordination/state.json and CURRENT from current main. Pin all reads to one verified head. Read latest applicable DECISIONS/current queue task; inspect locks/lease and final20 JOURNAL lines. Tool entry files must not introduce a different protocol.
-2. Compare checkpoint_id across machine state and CURRENT. Verify checkpoint commit by locating that ID in GitHub commit message; current main may be a descendant. Validate the task's base/dependency commits. A checkpoint file cannot embed its own commit SHA; verified_base_head records its parent, while checkpoint_id locates the containing immutable commit.
-3. Inspect local git status/branch/remotes or explicitly record snapshot mode. Never reset/clean/rebase/force-push someone else's work. Recover unpublished local changes to a bounded recovery branch/checkpoint before replacing files. A file snapshot without .git is not a checkout or worktree.
-4. Claim coordination/ORCHESTRATOR.json in an expected-head atomic commit: session ID, model family, task, heartbeat UTC, expiry UTC, checkpoint ID and no secret. Existing fresh active lease means inspect/review only, never shared-file writes. Release when stopping. Expired lease is suspect, not automatic evidence of death: inspect named branch/task/handoff/head, preserve work, then record takeover reason atomically. Never steal a fresh lease.
-5. Pick state.next_task, not an old "Next" section in a historical handoff. Confirm dependencies accepted, architecture merged before code, owned paths disjoint and tool capability adequate. If blocked, update blocker record, choose an independent eligible task from QUEUE, and record why; never repeat a known failing probe without new evidence.
-6. Execute one numbered step. Save useful drafts early. Checkpoint after any finished step or valuable partial work, ideally within10-15minutes; do not wait for an entire gate or predicted usage exhaustion. Task state distinguishes draft/code/verified/reviewed/merged/blocked, with exact evidence and uncommitted losses.
-7. Validate task-specific tests/fixtures/reviewer, path ownership and secret-safe content. Do not merge unchecked component code. Independent review must come from a different agent/session than its author; lack of agents means queue review for another model, never self-approve.
-8. Publish code/docs, task state, CURRENT, both STATE files, queue and append-only journal together. Use ordinary fast-forward Git, or Git-data tree+commit+expected-head ref update. On rejection re-read main and reconcile; do not blindly retry stale state. Preserve unrelated concurrent ledger changes.
-9. Re-fetch published head and exact key files; record whether checks/push/read-back succeeded. Print commit/checkpoint and CURRENT link. Release lease. Leave next eligible task/step/first action, prerequisites and remaining evidence.
+## Fast resume path
 
-## Bounded session contract
+For a normal clean resume:
 
-Default: one to three small eligible steps, around30-60minutes or earlier when context/tools/usage appear constrained. Stop on a clean checkpoint and do not require Pat to say which model takes over. Prefer reserving the final portion for publication/verification; actual usage limits are not always visible. If interrupted abruptly, committed drafts survive; no promise can preserve an unsaved edit after a hard kill. Reduce that risk through early publication.
+1. Verify current `main` head.
+2. Read `coordination/state.json`.
+3. Read `coordination/ORCHESTRATOR.json`.
+4. Read only `coordination/tasks/<state.next_task>.md` and the specific documents it names.
+5. If the lease is released, claim it before shared-file writes. If a fresh active lease exists, inspect/review only unless the owner has clearly stopped and the takeover procedure applies.
+6. Execute a coherent commit-worthy work unit, run the task-required checks, update the task card, then checkpoint and publish.
 
-A technical stage is ready only after acceptance evidence/review. Under D17 publish its gate report and advance automatically when all prerequisites pass, except where a current decision or CURRENT explicitly requires user execution release. D-20 requires that release after K0; no audit may auto-start K1. Record why advance is authorized. If actual product ruling/manual evidence/tool permission is needed, STATE includes exact blocker and safe next alternative, not a generic "ask user to continue." "Continue" is not proof a device test occurred.
+`coordination/QUEUE.md` is needed when choosing an alternate task, resolving a blocker or checking runnable work. `coordination/handoffs/CURRENT.md` and `docs/gauntlet/STATE.md` are generated human-readable mirrors. The journal/events are audit history. Do not read all of them on every clean resume.
 
-## Handoff minimum
+## Recovery or takeover path
 
-Every task handoff: checkpoint_id, owner, task/step, base and dependency SHAs, owned/shared paths, done list with evidence, work status, exact next action/commands, blockers, gotchas, files changed, remaining tests/review, runtime/tool limitations, safe fallback. CURRENT has one live next pointer; old handoffs are historical. QUEUE and machine state agree. Journals append; decisions quote user words and separate their implementation interpretation.
+Use the heavier recovery path only when state is inconsistent, work may be orphaned, a lease is stale, a branch is unclear, or a prior model stopped mid-step:
 
-No essential instruction belongs only in a private agent memory, lost chat, tool session or ephemeral local branch.
+1. Compare checkpoint IDs and branch heads across `coordination/state.json`, `coordination/ORCHESTRATOR.json` and `coordination/handoffs/CURRENT.md`.
+2. Inspect the named task branch, task card, active locks and the recent journal/events needed to explain the mismatch.
+3. Preserve unpublished useful work on a recovery branch before replacing anything. Never reset, clean, rebase or force-push someone else's work.
+4. An expired lease is not automatic proof that the writer is dead. Inspect its branch/head/handoff before takeover and record the reason.
+5. Reconcile to one truthful next pointer, then resume the normal path.
 
-## Models and unavailable tools
+## Ownership and execution
 
-Use actual installed capabilities, not a provider name in old role definitions. User's current cost policy: choose the weakest capable model for each task. Luna handles narrow mechanical validation/docs; Sol medium handles isolated routine code; Sol high handles complex implementation. Use Astra only for justified architectural/security/durability judgments and the independently required reviews, with bounded scope. Record actual model or unknown. Standalone API/terms/source-format research and design alternatives go to ordinary chat through coordination/chat-handoffs/README.md; cloud retains integration, builds/tests and exact bytes/material-claim verification. Do not duplicate completed research. Never spawn recursive untracked workers. Read-only models can prepare public patches; publishers apply/verify them. If GitHub write is denied, preserve a local recovery bundle and mark unpublished.
+Main is the integration branch. Agent branches isolate work. Shared configuration, schema/DI/navigation/CI registries and coordination files belong to the orchestrator lease-holder. Component workers may modify only their locked/owned paths.
 
-## Functional checkpoint command
+No production placeholder or fake-success adapter may satisfy a task. Unbuilt product features should remain absent rather than pretending to work. Existing public contracts and requirement tracking remain binding unless a recorded decision changes them.
 
-After updating the task card, queue rows and actual verification fields, run `python3 scripts/checkpoint.py --checkpoint <new-id> --task <queued-task-id> --step <next-number> --action '<exact next action>' --summary '<done and remaining evidence>' --status <honest-status> --lease active` from the checkout. Use `--lease released` at a stop. The helper uses real UTC, synchronizes both STATE files/CURRENT/QUEUE/lease, and appends the journal plus the current UTC day's JSONL events. This records date rollover without fictional dates or needing lost chat. Validate with `python3 scripts/check_continuity.py` and `python3 -m unittest discover -s scripts -p 'test_*.py'`, publish atomically, read back, and print checkpoint/commit. Existing app commands in historical Dart cards are ineligible; future Gradle commands apply only after K2 creates the workspace.
+Windows/Flutter is version 2 after Android v1 acceptance. Sync begins only after the Windows app runs and receives explicit authorization. Old Flutter/Dart version-1 instructions are historical unless a current task explicitly references them as evidence.
 
-Journal/event actor now derives from the recorded lease model_family (Codex, Claude Code or GPT); an unfamiliar family records unknown-model rather than impersonating Codex. Use `--actor <short-author-id>` to supply an explicit author. Claim identity/session fields explicitly before calling the helper; it does not elect an owner or verify live remote lease. Claude's previously reported hard-coded Codex-author workaround is superseded; no manual journal rewrite is needed.
+## Checkpoint policy
 
-## Serialization and partial recovery
+Checkpoint meaningful work, not every tiny edit. A checkpoint is warranted when a coherent unit is complete, ownership changes, a shared/public contract changes, a risky migration is about to begin, a useful partial result would otherwise be lost, or tool/context/usage limits make interruption likely.
 
-Main is integration; agent/<task-id> branches isolate implementers. Shared configuration, schema/DI/navigation/CI registries and coordination files belong to the lease-holder. Component locks contain branch/base/step; claim/release through main commits. Draft architecture/research only writes the output named by task card.
+A resumable checkpoint must contain enough information for another model to continue without chat history:
 
-For a stale lock inspect last branch commit/CI/handoff. Preserve orphan commit to named recovery ref if necessary before takeover. If takeover overlaps an alive writer, stop mutation and resolve ownership; don't delete another writer's commit or lock. Session-continuity tooling never contains secrets.
+- checkpoint ID and published head/base;
+- current task and exact next action;
+- files/components changed or owned;
+- verification actually run and its result;
+- blockers or unresolved review items, if any.
 
-## Canonical state schema
+Omit empty boilerplate and do not restate architecture background already linked by the task card.
 
-coordination/state.json version1 requires project/repository/integration_branch/checkpoint_id/verified_base_head/stage/status/next_task/next_step/first_action/active_tasks/blockers/worktree_mode/review_status/verification/last_completed/updated_utc. Unknown values null with explanation; no made-up pass. ORCHESTRATOR schema1 status released/active, session/model/task/heartbeat/expires/checkpoint_id. Scripts/check_continuity.py validates pointers/docs/task completeness, not live lease ownership or app performance. Capture remote identity at resume, not from stale downloaded bundle.
+After updating the task card and real verification fields, use `scripts/checkpoint.py` to synchronize machine state, lease status, CURRENT, STATE, queue header, journal and event log. Then run `scripts/check_continuity.py` and `python3 -m unittest discover -s scripts -p 'test_*.py'` before publishing a coordination-changing checkpoint.
 
+## Review policy
 
-## D-20 execution section policy (2026-10-11)
+Independent review is required when the current task/decision requires it, especially for architecture or public-contract changes, source/license conclusions, database durability or migration semantics, credentials/security, destructive behavior and final section acceptance.
 
-Pat released K1 after requesting Astra verification and a complete scalable Kotlin Android application. For this project, each section must have a defined functional finish line, independent review where architecture/security/durability requires it, a published checkpoint and exact next action. A usage-limit checkpoint can preserve incomplete work but must say so. Do not advance to K2 merely because K1 has a candidate version list; K1 requires reviewed evidence and an explicit Kotlin ownership/replacement map.
+Routine isolated implementation still needs tests and truthful evidence, but it does not require a separate review document for every micro-step. Consolidate review at meaningful risk boundaries and stage acceptance.
+
+## Models and tools
+
+Use actual installed capabilities, not stale provider role text. Use the weakest capable model for routine work and stronger review only where complexity/risk justifies it. Standalone source/API/terms/design research may use regular chat packets in `coordination/chat-handoffs/`; repository integration, builds/tests and byte-level verification stay with tooling that can actually perform them.
+
+No essential instruction may live only in private memory, lost chat, an ephemeral tool session or an unpublished branch.

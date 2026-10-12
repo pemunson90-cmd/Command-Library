@@ -1,15 +1,16 @@
-# Current Claude Code parallel assignment
+# Claude Code parallel assignment
 
-Pat requested parallel work again on2026-10-12. This assignment supersedes the earlier completed QA-only packet below.
+Status: no active parallel Claude Code assignment.
 
-> Work on https://github.com/pemunson90-cmd/Command-Library on branch agent/cc-k2-shell-01. Read current main README.md, CONTINUE.md, coordination/tasks/cc-k2-shell-01.md and coordination/locks/shell.lock. Codex owns orchestration, catalog implementation and app/bootstrap/shared configuration. You exclusively own android-app/feature/shell/** and coordination/handoffs/cc-k2-shell-01.md; Codex will not touch those paths until your work is committed, reviewed and merged. Use a separate checkout/worktree from the verified main head and record it. Preserve existing work; no reset/clean/force-push. Implement the task's real Compose import/status/search/settings presentation against the accepted core ports, with externalized English resources, accessible adaptive layouts and meaningful tests. No product fake adapters, no root/Gradle settings/CI/state/lock edits, no lease takeover/main merge. Request shared changes in your handoff. Commit/push useful drafts early, then a READY-FOR-REVIEW handoff with actual test evidence or not_run, entry signature, branch/commit and next action. Stop for Codex independent review/integration. No extra chat context is required.
+The K2 shell and QA assignments previously stored here are complete and historical. Do not resume them from this file.
 
-## Historical completed QA assignment
+When Pat or the orchestrator starts a new parallel Claude Code worker, this file may contain one current self-contained assignment. That assignment is valid only when all of the following agree:
 
-# Claude Code parallel start
+- `coordination/state.json` and `coordination/QUEUE.md` show compatible current work;
+- the orchestrator lease is active for the delegating session;
+- an explicit component/task lock names the worker branch and owned paths;
+- the worker task card exists and its prerequisites are satisfied.
 
-Copy the instruction below into Claude Code. It is self-contained; the repository task card supplies the detailed scope.
+Without those conditions, do not claim ownership or modify shared state. Follow `CLAUDE.md`, `CONTINUE.md` and `docs/gauntlet/DOCUMENTATION_POLICY.md` instead.
 
-> Work on public repository https://github.com/pemunson90-cmd/Command-Library. Codex is actively orchestrating K2, so do not claim the orchestrator lease or change main/shared state. Read README.md, CONTINUE.md and coordination/tasks/cc-k2-qa-01.md from current verified main. Verify coordination/locks/cc-k2-qa.lock delegates your exclusive docs/verification/k2-claude/** folder. Use a separate worktree/checkout on agent/cc-k2-qa-01, based on that main head; preserve existing uncommitted work and do not reset/clean/force-push. Produce the task's K2 QA matrix, small explicitly synthetic test vectors, and—only when a published core commit exists—a pinned read-only contract review. Codex's worker owns all core source/tests, and Codex owns Gradle/CI/coordination/application assembly. Standalone provider/API/terms research is already in ordinary chat; do not repeat it. Write findings and a READY-FOR-REVIEW handoff only in your exclusive folder, run JSON parsing and git diff --check, commit and push your branch, then stop. Do not merge or edit STATE/CURRENT/QUEUE/JOURNAL/locks. Report branch/commit and handoff path. Follow the card's safety and evidence boundaries; no fabricated test/build/source results. No additional chat context is needed.
-
-Root monitors the worker branch when resuming and reviews before integrating. The active lease authorizes this delegated writer's exclusive folder, not a second orchestrator. If returning later, read the task/lock and your own branch HANDOFF before continuing.
+Historical K2 assignments remain available through git history, completed task cards, handoffs and gate reports. They are evidence, not current instructions.

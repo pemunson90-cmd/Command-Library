@@ -28,7 +28,8 @@ class ContinuityTests(unittest.TestCase):
         self.assertTrue(any('human state checkpoint differs' in e for e in validate(self.root)))
     def test_duplicate_queue_task_ids(self):
         def duplicate(s):
-            row=next(line for line in s.splitlines() if line.startswith('| orch-kotlin-toolchain-01 |'))
+            task=json.loads((self.root/'coordination/state.json').read_text())['next_task']
+            row=next(line for line in s.splitlines() if line.startswith(f'| {task} |'))
             return s.replace(row+'\n',row+'\n'+row+'\n',1)
         self.edit('coordination/QUEUE.md',duplicate)
         self.assertTrue(any('QUEUE has duplicate task IDs' in e for e in validate(self.root)))
