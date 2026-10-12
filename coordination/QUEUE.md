@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-codex-k2-17. Next: orch-kotlin-m0-01 step2; in_progress.
+Checkpoint-ID: cp-20261012-k2-fixes-18. Next: orch-kotlin-m0-01 step2; in_progress.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
@@ -8,9 +8,9 @@ Checkpoint-ID: cp-20261012-codex-k2-17. Next: orch-kotlin-m0-01 step2; in_progre
 | orch-architecture-review-01 | G3-A independent audit | completed, accepted | corrections rechecked | report saved |
 | orch-kotlin-plan-audit-01 | K0 plan consistency | completed, approved | D-20 recorded | report K0-KOTLIN-PLAN-AUDIT.md |
 | orch-kotlin-toolchain-01 | K1 Kotlin readiness | completed; independently accepted | Astra-high final review + observed hosted capability | report K1-KOTLIN-TOOLCHAIN and K1-FINAL-REVIEW |
-| orch-kotlin-m0-01 | K2 functional Kotlin foundation | ready; no implementation | accepted K1 candidate/map + hosted capability | step1 actual contracts/capability segregation/schema design review, then real foundation |
+| orch-kotlin-m0-01 | K2 functional Kotlin foundation | active step2; incomplete | accepted actual core/contracts/tuple/design | reviewed storage/settings, then local importer/UI/emulator acceptance |
 | k2-core-contracts | K2 pure contracts | completed; compiled and independently accepted | corrected actual declarations25 JVM tests/Astra review | integrated unchanged; core lock released |
-| cc-k2-qa-01 | K2 parallel Claude Code QA | delegated; exclusive QA lock | user D-23; independent docs/vectors only | worker commits READY-FOR-REVIEW on agent/cc-k2-qa-01; root reviews/integrates |
+| cc-k2-qa-01 | K2 parallel Claude Code QA | completed; independently reviewed/integrated | user D-23; docs/vectors only | lock released; assertions remain not_run |
 | cx-storage-01 | K2 Room3 storage | delegated; preserved schema step1 | accepted core/tuple/design + current storage lock | step2 real Database adapter, then instrumentation/review |
 | cc-settings-01 | K2 persisted settings | READY-FOR-REVIEW | accepted core/tuple; source branch714cd7e | targeted independent consent/durability/minAPI review before integration |
 | cx-settings-01 | K2 settings remediation | delegated; exclusive settings lock | independent bounded persistence/UTF8 findings | scoped fixes, restart-preservation tests and hosted review |

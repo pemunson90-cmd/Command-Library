@@ -9,13 +9,20 @@ import subprocess
 
 
 def record(root, *, checkpoint, task, step, action, summary, status, lease_status,
-           base, now=None):
+           base, now=None, actor=None):
     now = now or dt.datetime.now(dt.timezone.utc)
     timestamp = now.isoformat(timespec="seconds").replace("+00:00", "Z")
     state_path = root / "coordination/state.json"
     state = json.loads(state_path.read_text())
     lease_path = root / "coordination/ORCHESTRATOR.json"
     lease = json.loads(lease_path.read_text())
+    if actor is None:
+        family = lease.get("model_family", "").lower()
+        actor = ("claude-code" if family.startswith("claude") else
+                 "codex" if family.startswith("codex") else
+                 "gpt" if family.startswith("gpt") else "unknown-model")
+    if not re.fullmatch(r"[a-z][a-z0-9_-]{0,63}", actor):
+        raise ValueError("Checkpoint actor must be a short single-line identifier")
     queue_path = root / "coordination/QUEUE.md"
     queue = queue_path.read_text()
     if not re.fullmatch(r"[0-9a-f]{40}", base):
@@ -52,14 +59,14 @@ def record(root, *, checkpoint, task, step, action, summary, status, lease_statu
     queue = re.sub(r"Checkpoint-ID:[^\n]*", header + f". Next: {task} step{step}; {status}.",
                    queue, count=1)
     queue_path.write_text(queue)
-    event = {"utc": timestamp, "checkpoint": checkpoint, "base": base,
+    event = {"utc": timestamp, "actor": actor, "checkpoint": checkpoint, "base": base,
              "task": task, "step": step, "status": status, "summary": summary}
     event_dir = root / "coordination/events"
     event_dir.mkdir(exist_ok=True)
     with (event_dir / f"{now.date()}.jsonl").open("a") as file:
         file.write(json.dumps(event) + "\n")
     with (root / "coordination/JOURNAL.md").open("a") as file:
-        file.write(f"\n{timestamp} | codex | {checkpoint} | containing commit | {summary}\n")
+        file.write(f"\n{timestamp} | {actor} | {checkpoint} | containing commit | {summary}\n")
 
 
 def main():
@@ -70,12 +77,13 @@ def main():
     parser.add_argument("--step", type=int, required=True)
     parser.add_argument("--lease", choices=("active", "released"), required=True)
     parser.add_argument("--base")
+    parser.add_argument("--actor", help="Explicit author identifier; otherwise derived from recorded lease model_family")
     args = parser.parse_args()
     base = args.base or subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=args.root, text=True).strip()
     record(args.root, checkpoint=args.checkpoint, task=args.task, step=args.step,
            action=args.action, summary=args.summary, status=args.status,
-           lease_status=args.lease, base=base)
+           lease_status=args.lease, base=base, actor=args.actor)
 
 
 if __name__ == "__main__":

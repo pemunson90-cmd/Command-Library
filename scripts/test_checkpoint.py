@@ -19,6 +19,9 @@ class CheckpointTests(unittest.TestCase):
             (root / "coordination/QUEUE.md").write_text("Checkpoint-ID: old\n| next | pending |\n")
             (root / "coordination/JOURNAL.md").write_text("Earlier work\n")
             for day, status in ((11, "active"), (12, "released")):
+                lease = json.loads((root / "coordination/ORCHESTRATOR.json").read_text())
+                lease["model_family"] = "Codex orchestrator" if day == 11 else "Claude Code"
+                (root / "coordination/ORCHESTRATOR.json").write_text(json.dumps(lease))
                 record(root, checkpoint=f"cp-day-{day}", task="next", step=day,
                        action="Read evidence", summary=f"Evidence day{day}", status="in_progress",
                        lease_status=status, base="a" * 40,
@@ -33,3 +36,8 @@ class CheckpointTests(unittest.TestCase):
             self.assertIn("Earlier work", (root / "coordination/JOURNAL.md").read_text())
             self.assertTrue((root / "coordination/events/2026-10-11.jsonl").is_file())
             self.assertTrue((root / "coordination/events/2026-10-12.jsonl").is_file())
+            journal = (root / "coordination/JOURNAL.md").read_text()
+            self.assertIn("| codex | cp-day-11", journal)
+            self.assertIn("| claude-code | cp-day-12", journal)
+            event = json.loads((root / "coordination/events/2026-10-12.jsonl").read_text())
+            self.assertEqual(event["actor"], "claude-code")
