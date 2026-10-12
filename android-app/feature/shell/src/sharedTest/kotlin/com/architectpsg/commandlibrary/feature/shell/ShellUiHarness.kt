@@ -98,9 +98,8 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule) {
         scope?.cancel()
     }
 
-    // The hosted 16 KiB emulator is materially slower under Compose semantics traversal than
-    // default-page images. Keep the assertion identical and allow enough time for the same state
-    // to become observable instead of turning scheduler variance into a false product failure.
+    // Hosted 16 KiB images are materially slower under Compose semantics traversal than the
+    // default-page emulator. Keep the assertion unchanged while allowing scheduler variance.
     fun waitForText(text: String, substring: Boolean = false, timeoutMillis: Long = 20_000) {
         rule.waitUntil(timeoutMillis) { rule.onAllNodesWithText(text, substring = substring).fetchSemanticsNodes().isNotEmpty() }
     }
