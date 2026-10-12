@@ -1,0 +1,7 @@
+component: storage
+orchestrator: codex-k3-offline-data-20261012
+owner: delegated-gpt-6-sol-medium
+task: cx-k3-rules-storage-01
+branch: agent/k3-rules-storage-01
+owned_paths: android-app/data/storage/**; coordination/handoffs/cx-k3-rules-storage-01.md
+step: additive rules schema2/migration candidate for independent durability review before binding
