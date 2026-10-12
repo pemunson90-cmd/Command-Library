@@ -21,7 +21,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.architectpsg.commandlibrary.core.model.FailureCode
@@ -59,7 +59,10 @@ class ShellUiTest {
     }
 
     private fun search(query: String) {
-        rule.onNode(hasSetTextAction()).performTextInput(query)
+        // Set the field through Compose semantics rather than the emulator IME. Hosted 16 KiB
+        // images can drop/delay InputConnection text events under load, making this UI test flaky.
+        rule.onNode(hasSetTextAction()).performTextReplacement(query)
+        rule.waitForIdle()
         rule.onNode(hasText(shell.string(R.string.search_action)) and hasClickAction()).performClick()
     }
 
