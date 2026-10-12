@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-shell-31",
-  "verified_base_head": "df8ef2d5fe261b93c19850ee584d273d65fbb0be",
+  "checkpoint_id": "cp-20261012-k3-shell-pass-32",
+  "verified_base_head": "9d7e0fdcfb55b6aeec1a24a9ea76dd0807084563",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
-  "status": "K3 preparatory implementation active; full corpus binding remains incomplete",
+  "status": "K3 preparatory work active; catalog native evidence pending",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Audit catalog guard and shell open cancellation candidates; narrow durability review then hosted matrix",
+  "first_action": "Verify catalog matrix38292134079 and merge exact reviewed tested source; Claude owns rules cancellation correction",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -33,6 +33,6 @@
     "network_policy": "K2 product path performs no automatic product-data download. User-selected local import is explicit; Windows and sync remain out of scope. K3 must separately resolve any network acquisition source/terms before implementation.",
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters."
   },
-  "last_completed": "Focused parser JVM gate passed86dc00d; separate shell writer reserved without overlap with Claude rules",
-  "updated_utc": "2026-10-12T18:36:13Z"
+  "last_completed": "Shell cancellation guard merged after68 passing JVM tests; release shell lock, preserve rules/catalog reservations",
+  "updated_utc": "2026-10-12T18:40:44Z"
 }
