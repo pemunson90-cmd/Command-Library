@@ -3,16 +3,16 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k2-settings-19",
-  "verified_base_head": "406c9ab641b3390d6da308dcd07e9c7609fc8d4d",
+  "checkpoint_id": "cp-20261012-k2-settings-20",
+  "verified_base_head": "6a3103419a1603acf0ac81c685b7eda231032517",
   "stage": "K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
   "next_step": 2,
-  "first_action": "Read storage review: source080cd391 accepted conditionally; inspect run38200190935, resolve actual failures and verify all three packaged suites before integration. Then reconcile core-common envelope and implement bounded catalog/importer/app under exclusive task cards.",
+  "first_action": "Download retained test reports for storage run38200190935 at080cd391; all connected tasks failed after boot, API23 collector also reports File name too long. Diagnose actual failures before retry or integration; source review accepted. Then reconcile core-common envelope and implement catalog/importer/app.",
   "active_tasks": [],
   "blockers": [
-    "Storage source review accepted at080cd391; all three packaged runtime suites pending. K2 catalog/importer, genuine fixture, app/UI and runtime acceptance remain incomplete. No missing user permission."
+    "Storage run38200190935: all emulators booted, but all connectedDebugAndroidTest tasks failed; download actual test reports before any retry/integration. API23 log additionally shows File name too long in AndroidAdditionalTestOutputCollector. K2 importer/app/runtime still incomplete."
   ],
   "worktree_mode": "git_checkout: /workspace/Command-Library-kotlin; preserved prior snapshot at /workspace/Command-Library",
   "review_status": "Settings accepted/integrated at4f20764; independent narrow storage review closesS1-S4 at080cd391, conditional on all packaged runtime suites. Core/tuple remain accepted.",
@@ -20,7 +20,7 @@
     "continuity": "24 local continuation/architecture/helper tests pass, including correct cross-model actor/date events; branch continuity passes observed.",
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "hosted_ci": "Settings run38199662988 success at4f20764:68 JVM tests, fatal API lint, actual library assembly. Storage run38200190935 at080cd391 JVM/assembly success; API23/API36/API36-16k emulator jobs pending.",
+    "hosted_ci": "Settings38199662988 accepted68 JVM/lint/assembly. Storage38200190935 at080cd391 JVM/assembly passed; all three connected tasks failed after boot. API36 default4096-byte pages and ps16k16384-byte pages observed. Exact test failures require retained reports.",
     "remote_readback": "Verified main d3a84d1 Claudehandoff, workerbranches09ea4cc/714cd7e/836e6df; allpreserved. Rootresumelease claimedcp17; newcheckpoint readback pending.",
     "toolchain": "K1 hostedJDK17/Gradle9.6/SDK36observed; Claude probe+hostedSDK37 installation recorded. CurrentlocalexecutorJava21only noSDK; hostedtransportused.",
     "kotlin_compatibility": "Core JVM compiled; Claude independently reviewed actual localAGP/Compose/Room3/KSP tuple probe compile37target36min23 withretainedlogs. Product Androidruntime not accepted.",
@@ -29,6 +29,6 @@
     "network_policy": "Current environment_status connected, running, observations_current true, unrestricted enforced; no secret/outbound identity bindings. GitHub API/git transport observed.",
     "kotlin_contracts": "Corrected hosted run38182564573 succeeded at2ac4a302f6832a9ec33e2739a687b5e3905a6015 with25 executed JVM tests(model13/common12); main integrated exact unchanged core tree."
   },
-  "last_completed": "Settings component integrated unchanged from tested4f20764:68 JVM tests, fatal API lint and library assembly passed; settings lock released. Storage080cd391 independent source recheck closesS1-S4; JVM/assembly passed, three emulator suites pending. K2 incomplete: no app, importer, genuine fixture or product runtime acceptance yet. Preserve branches and resume exact pending evidence without broad audit.",
-  "updated_utc": "2026-10-12T03:37:50Z"
+  "last_completed": "Verified settings component integrated with68 JVM tests, fatal API lint and assembly; lock released. Storage source080cd391 independently accepted, JVM/assembly passed, but all3 connected tasks failed after boot (16KB pages observed). Storage integration blocked pending actual report diagnosis. K2 remains incomplete; no app/importer or finished release. All branches preserved, lease released for cross-model continuation.",
+  "updated_utc": "2026-10-12T03:38:39Z"
 }

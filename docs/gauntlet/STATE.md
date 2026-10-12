@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k2-settings-19. Updated UTC: 2026-10-12T03:37:50Z.
+Checkpoint: cp-20261012-k2-settings-20. Updated UTC: 2026-10-12T03:38:39Z.
 
 Stage: K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification. Status: in_progress. Next: orch-kotlin-m0-01 step2.
-Read storage review: source080cd391 accepted conditionally; inspect run38200190935, resolve actual failures and verify all three packaged suites before integration. Then reconcile core-common envelope and implement bounded catalog/importer/app under exclusive task cards.
+Download retained test reports for storage run38200190935 at080cd391; all connected tasks failed after boot, API23 collector also reports File name too long. Diagnose actual failures before retry or integration; source review accepted. Then reconcile core-common envelope and implement catalog/importer/app.
 
-Settings component integrated unchanged from tested4f20764:68 JVM tests, fatal API lint and library assembly passed; settings lock released. Storage080cd391 independent source recheck closesS1-S4; JVM/assembly passed, three emulator suites pending. K2 incomplete: no app, importer, genuine fixture or product runtime acceptance yet. Preserve branches and resume exact pending evidence without broad audit.
+Verified settings component integrated with68 JVM tests, fatal API lint and assembly; lock released. Storage source080cd391 independently accepted, JVM/assembly passed, but all3 connected tasks failed after boot (16KB pages observed). Storage integration blocked pending actual report diagnosis. K2 remains incomplete; no app/importer or finished release. All branches preserved, lease released for cross-model continuation.
 
 Read CURRENT, machine state and task card.

@@ -43,3 +43,7 @@ Settings merged unchanged from tested4f20764; run38199662988 closed43 settings +
 Before K2 closure reconcile registry/checker core dependency mapping: physical adapters depend on both :core:model and :core:common, while conceptual core currently maps only model. Preserve20-component DAG; review a narrow machine-envelope correction. Catalog/importer, genuine English fixture, app/UI and runtime acceptance still required.
 
 Final narrow storage recheck accepts080cd391 at source: S1–S4 closed. Runtime conditions remain pending and storage is not integrated.
+
+### Final observed runtime result
+
+Run38200190935 completed: JVM/assembly success; all three connectedDebugAndroidTest tasks failed after successful boot. Jobs114651716486 (API36 default),114651716677 (API36 ps16k),114651716755 (API23). Actual page sizes4096 and16384 observed on modern images. API23 logs also show IOException File name too long in AndroidAdditionalTestOutputCollector recursion; do not presume this explains modern-image failures. Fetch retained android-k2-emulator artifacts/test XML and diagnose before retrying unchanged source. No packaged test acceptance.
