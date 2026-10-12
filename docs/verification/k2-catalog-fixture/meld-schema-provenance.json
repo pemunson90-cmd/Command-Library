@@ -1,0 +1,11 @@
+{
+  "file": "hanweir-battlements.json",
+  "source_url": "https://api.scryfall.com/cards/named?exact=Hanweir%20Battlements",
+  "observed_retrieval_utc": "2026-10-12T12:54:00+00:00",
+  "bytes": 5947,
+  "sha256": "e107207e208f960ac8838a3d26d5d0a75c0f797f14b236711c56b4167d6cbb00",
+  "purpose": "Exact small meld-card schema evidence: all_parts related_card objects with meld_part, meld_result and combo_piece components; source printing identities remain unresolved oracle mappings unless supplied.",
+  "source_date": null,
+  "not_part_of_three_printing_array": true,
+  "rights_status": "Same unverified upstream terms/test-only boundary as provenance.json; no product bundling or images fetched."
+}
