@@ -1,0 +1,12 @@
+{
+  "component": "life",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cc-m2-life-domain-01",
+  "branch": "agent/cc-m2-life-domain-01",
+  "base_commit": "9ce1a488902d18b1a670ecef08c024466c841249",
+  "owned_paths": [
+    "android-app/feature/life/src/main/kotlin/com/architectpsg/commandlibrary/feature/life/domain/**",
+    "android-app/feature/life/src/test/kotlin/com/architectpsg/commandlibrary/feature/life/domain/**",
+    "coordination/handoffs/cc-m2-life-domain-01.md"
+  ]
+}

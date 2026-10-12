@@ -161,3 +161,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T21:31:18Z | codex | cp-20261012-fold7-apk-ready-41 | containing commit | Exact tested APK integrated through PR7; all4Android lanes green; artifact and checksum retained; physical Fold7 is next
 
 2026-10-12T21:58:55Z | codex | cp-20261012-full-v1-resume-42 | containing commit | Reread gauntlet and active Kotlin plan; full audit persisted; D-24 restores complete delivery scope and supersedes mistaken partial-build pointer. K3 and M2-M9 remain incomplete.
+
+2026-10-12T23:10:01Z | codex | cp-20261012-claude-life-handoff-44 | containing commit | Claude assigned cc-m2-life-domain-01 with exclusive life/domain ownership; Codex retains full-app orchestration. Complete Android v1 remains incomplete.
