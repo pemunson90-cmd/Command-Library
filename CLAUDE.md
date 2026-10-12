@@ -1,43 +1,32 @@
-# Command Library
+# Command Library Claude entrypoint
 
-Magic: The Gathering companion app for Android (phones, foldables, tablets); Windows desktop is version 2 (D-19). Built through the gated protocol in `docs/gauntlet/GAUNTLET.md`. Pat is the product owner. His rulings in `docs/gauntlet/DECISIONS.md` override every other document.
+Command Library is a Magic: The Gathering companion app. Android version 1 is Kotlin for phones, foldables and tablets. Windows is a separate Flutter version 2 after Android v1 is accepted. Sync is later.
 
-## Every session starts here
+Do not maintain a separate Claude execution protocol here. The active cross-model protocol is `CONTINUE.md`, and documentation authority is defined by `docs/gauntlet/DOCUMENTATION_POLICY.md`.
 
-Run the resume protocol (GAUNTLET.md section 5.6) before anything else:
+## Start here
 
-1. This file.
-2. `docs/gauntlet/STATE.md`: current gate, milestone, integration branch, next action.
-3. Open items in `docs/gauntlet/DECISIONS.md`.
-4. `coordination/locks/`.
-5. Active task cards in `coordination/tasks/` and their handoffs in `coordination/handoffs/`.
-6. Last 20 lines of `coordination/JOURNAL.md`.
+For a clean resume:
 
-Verify branch heads match the handoffs. Continue from each handoff's "Next" field. Never redo a step whose commit exists. Files beat conversation memory every time.
+1. Verify current `main`.
+2. Read `coordination/state.json`.
+3. Read `coordination/ORCHESTRATOR.json`.
+4. Read the task card named by `state.next_task` and only the documents it links.
+5. Follow `CONTINUE.md` for lease, ownership, checkpoint and recovery rules.
 
-## Hard rules
+`coordination/handoffs/CURRENT.md`, `docs/gauntlet/STATE.md`, journal/events and historical GAUNTLET editions are recovery/audit material, not mandatory clean-resume reading.
 
-- **Gates.** At every gate: write `docs/gauntlet/gates/GATE-<n>.md`, update STATE.md, commit, push, send Pat a short message, then STOP until he rules.
-- **ARCHITECT.md before code** (5.1). No code in a component until `docs/architecture/<component>/ARCHITECT.md` is merged and listed in STATE.md.
-- **Zero placeholders.** No `TODO`, `FIXME`, `XXX`, placeholder text, `not implemented`, `NotImplementedError`, Kotlin `TODO()`, empty click handlers, lorem ipsum, or stub returns. Unbuilt features are absent from the UI, never stubbed. The only exceptions are exact file and line entries in `docs/gauntlet/IMPOSSIBLE.md`.
-- **Checkpoint every step** (5.5): code and tests for the step, handoff updated, commit `[<task-id> step k/N] <summary>`, push. Uncommitted work at the end of a step is a protocol violation.
-- **Shared files belong to the orchestrator only:** build config, version catalog, module/settings registry, DI or composition root, navigation graph, CI workflows, DB schema registry. Subagents request changes in their handoff.
-- **Locks.** One file per component in `coordination/locks/`. Owned paths are writable only by the lock holder. Never rewrite, rebase, force-push, or delete another orchestrator's commits, branches, or locks.
-- **Task IDs.** `cc-<component>-<nn>` for Claude Code, `cx-<component>-<nn>` for Codex.
-- **Secrets.** None in the repo. API keys and signing material never get logged or committed.
-- **Truth.** Never claim a build or test passed without the run log. Never invent an API, field, file format, or library capability.
-- **Style** for every file and message: no em dashes, no filler, no flattery.
+## Hard invariants
 
-## Subagents
+- Pat's recorded rulings in `docs/gauntlet/DECISIONS.md` control conflicts.
+- One orchestrator lease-holder at a time. Parallel Claude/other workers require explicit disjoint ownership and locks.
+- No production placeholders, fake-success adapters or fabricated build/test/source claims.
+- No secrets, API keys or signing material in git or logs.
+- Public contract, schema, durability, security and source-license changes receive the review required by the active task.
+- Kotlin Android v1 uses the current Kotlin ownership/contracts/registry documents. Old Dart/Flutter v1 instructions are historical.
+- Shared coordination/configuration files belong to the orchestrator.
+- Preserve other writers' branches and commits. No blind reset, clean, rebase or force-push.
 
-Definitions live in `.claude/agents/`, generated from the tool-neutral briefs in `coordination/agents/`. The neutral briefs are the source of truth; keep both in sync. Only the orchestrator delegates. Verified tooling facts and the worktree procedure: `docs/gauntlet/research/R-00-tooling.md`.
+Claude subagent definitions may exist in `.claude/agents/`, but only the orchestrator delegates and every worker remains bounded by the current task/lock. `CLAUDE-PARALLEL.md` is valid only when it explicitly says an assignment is active and that assignment agrees with the live queue/locks.
 
-Model tiering (Pat, D-10): strongest model for architect and reviewer; Sonnet or Haiku for everything else unless a task card says otherwise.
-
-## Codex
-
-If `AGENTS.md` exists, it belongs to the Codex orchestrator. Leave it intact and keep protocol statements in both entry files consistent.
-
-## Current cross-model continuation override (D-17)
-
-Read README.md and CONTINUE.md first, then STATE.md, coordination/state.json and coordination/handoffs/CURRENT.md. The latest user mandate supersedes earlier Codex-only and mandatory-chat-stop technical gates. Any model family may take the next sequential turn, holding the single orchestrator lease. Continue only the current queued step, checkpoint early, publish/verify notes and leave an exact next pointer. Preserve original gauntlet/product/security requirements; never pretend a source/device/build test ran. No extra conversation context is required when repository access is available.
+Use the weakest capable model for routine work and stronger review only where risk/complexity warrants it. No essential handoff information may exist only in chat memory.
