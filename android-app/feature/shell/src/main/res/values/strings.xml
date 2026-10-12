@@ -211,4 +211,5 @@
     <string name="rules_file">Selected file</string>
     <string name="rules_attempt_completed">Completed</string>
     <string name="rules_status_loading">Reading installed rules status…</string>
+    <string name="rules_results_shown">Entries shown: %1$s</string>
 </resources>

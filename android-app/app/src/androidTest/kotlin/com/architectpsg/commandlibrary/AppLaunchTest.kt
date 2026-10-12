@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.onNodeWithTag
@@ -135,8 +136,11 @@ class AppLaunchTest {
         waitForText(string(ShellR.string.rules_title))
         rule.onNodeWithTag("shell-nav-rules").performClick()
         waitForText(string(ShellR.string.rules_choose))
+        rule.onNodeWithTag("rules-list").performScrollToNode(hasSetTextAction())
         rule.onAllNodes(hasSetTextAction()).onFirst().performTextReplacement("synthetic")
-        rule.onAllNodes(hasText(string(ShellR.string.search_action)) and hasClickAction()).onFirst().performClick()
+        rule.onAllNodes(hasText(string(ShellR.string.search_action)) and hasClickAction()).onFirst().performScrollTo().performClick()
+        waitForText(rule.activity.getString(ShellR.string.rules_results_shown, "1"))
+        rule.onNodeWithTag("rules-list").performScrollToNode(hasText("100.1") and hasClickAction())
         waitForText("100.1")
         rule.onAllNodes(hasText("100.1") and hasClickAction()).onFirst().performScrollTo().performClick()
         rule.waitUntil(20_000) {

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.architectpsg.commandlibrary.core.model.JobPhase
@@ -33,7 +34,7 @@ internal fun RulesScreen(
     modifier: Modifier = Modifier,
 ) {
     val state by controller.state.collectAsState()
-    LazyColumn(modifier, contentPadding = PaddingValues(widthClass.gutter), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    LazyColumn(modifier.testTag("rules-list"), contentPadding = PaddingValues(widthClass.gutter), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item { SectionHeading(stringResource(R.string.rules_title)) }
         item { Text(stringResource(R.string.rules_local_help)) }
         item { Text(stringResource(R.string.rules_limits)) }
@@ -86,6 +87,9 @@ internal fun RulesScreen(
             state.searchProblem?.let { Text(stringResource(problemText(it))) }
             state.detailProblem?.let { Text(stringResource(problemText(it))) }
             if (state.searchLoading || state.detailLoading) Text(stringResource(R.string.search_loading))
+            if (state.query != null && !state.searchLoading && state.searchProblem == null) {
+                Text(stringResource(R.string.rules_results_shown, formatCount(state.results.size.toLong())))
+            }
         }
         val selected = state.selected
         if (selected != null) {
