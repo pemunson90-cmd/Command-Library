@@ -141,3 +141,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T18:36:13Z | codex | cp-20261012-k3-shell-31 | containing commit | Focused parser JVM gate passed86dc00d; separate shell writer reserved without overlap with Claude rules
 
 2026-10-12T18:40:44Z | codex | cp-20261012-k3-shell-pass-32 | containing commit | Shell cancellation guard merged after68 passing JVM tests; release shell lock, preserve rules/catalog reservations
+
+2026-10-12T18:42:08Z | codex | cp-20261012-k3-stop-33 | containing commit | Pat requested usage stop; shell fix published and verified, catalog candidate/review/CI and Claude correction packet preserved

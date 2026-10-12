@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "active",
+  "status": "released",
   "session_id": "codex-k3-offline-data-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-12T18:40:44Z",
-  "expires_utc": "2026-10-12T19:25:44Z",
-  "checkpoint_id": "cp-20261012-k3-shell-pass-32",
+  "heartbeat_utc": "2026-10-12T18:42:08Z",
+  "expires_utc": "2026-10-12T18:42:08Z",
+  "checkpoint_id": "cp-20261012-k3-stop-33",
   "note": "User continue resumes K3 from continuity-green6b68906; K2 accepted and all integrated work preserved. No old K2 ownership reclaimed."
 }

@@ -3,23 +3,22 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-shell-pass-32",
-  "verified_base_head": "9d7e0fdcfb55b6aeec1a24a9ea76dd0807084563",
+  "checkpoint_id": "cp-20261012-k3-stop-33",
+  "verified_base_head": "ffc5cc069a069fc7d524ede6e174e0083058980b",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
-  "status": "K3 preparatory work active; catalog native evidence pending",
+  "status": "Paused at user request; K3 incomplete, hosted catalog gate pending",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Verify catalog matrix38292134079 and merge exact reviewed tested source; Claude owns rules cancellation correction",
-  "active_tasks": [
-    "orch-kotlin-k3-offline-data-01"
-  ],
+  "first_action": "Inspect catalog matrix38292134079; merge only exact reviewed tested green source; leave Claude rules correction exclusively owned",
+  "active_tasks": [],
   "blockers": [
-    "Confirmed catalog post-durable-commit cancellation cleanup can delete active FTS; narrow fix/native regression assigned under catalog lock before new corpus binding.",
-    "Shell document-open cancellation leak and status-bar theme findings from Claude handoff need scoped verification/follow-up.",
-    "Full-corpus budget/snapshot/migration/source contracts remain unbound; Claude rules parser is independent draft-only."
+    "Catalog cleanup correction01e0c40 has independent source acceptance, but full hosted matrix38292134079 was in_progress at stop; require pass before exact-source merge.",
+    "Claude rules209a938/code796c665 token-cancellation success bug needs Claude-owned correction/re-review; see CLAUDE-PARALLEL.md.",
+    "Confirmed systembar icon/in-app-theme mismatch remains queued; shell open leak is fixed and verified.",
+    "Full-corpus budget/snapshot/migration/source contracts remain unbound; private parsers do not constitute K3 acceptance."
   ],
   "worktree_mode": "Git checkout /workspace/Command-Library. External Claude rules parser branch agent/cc-k3-rules-parser-01 is explicitly reserved; no shared/corpus activation writes delegated.",
-  "review_status": "K2 final integration independently reviewed by GPT-5.6 Sol after Claude/Codex implementation. Touch-target and reproducible hosted shell-search timing blockers were corrected; final candidate passed the complete hosted matrix. K3 card published but not claimed.",
+  "review_status": "K2 historical acceptance retained. K3 narrow catalog cleanup source review accepted exacted26b326; runtime gate pending. Root audited shell stream guard, merged unchanged after68 passing hosted JVM tests. Claude rules private review returned cancellation finding before merge.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -31,8 +30,11 @@
     "k1_environment": "Historical local-executor limitations remain historical evidence only; K2 acceptance uses hosted Android build/emulator evidence.",
     "k1_source_metadata": "K1 source-backed lock and K1 final review remain authoritative for the accepted tuple; K2 did not silently repin it.",
     "network_policy": "K2 product path performs no automatic product-data download. User-selected local import is explicit; Windows and sync remain out of scope. K3 must separately resolve any network acquisition source/terms before implementation.",
-    "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters."
+    "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters.",
+    "k3_shell": "Merged source3ffbb1f unchanged at9d7e0fd; focused38292178104 passed68 tests (14 ImportController),0 failures/errors/skips; continuity38292178108 passed. Main postmerge Android matrix remains separate ongoing continuity verification.",
+    "k3_catalog": "Parser86dc00d focused38291004261 success. Cleanup codeed26b326/branch01e0c40 independent source accepted; full Android matrix38292134079 in_progress at stop. No claimed native pass or merge.",
+    "k3_rules": "Claude reports46 synthetic tests and check/assemble in throwaway root, not rerun by root. Code796c665 requires private token-cancellation correction; no hosted include/merge yet."
   },
-  "last_completed": "Shell cancellation guard merged after68 passing JVM tests; release shell lock, preserve rules/catalog reservations",
-  "updated_utc": "2026-10-12T18:40:44Z"
+  "last_completed": "Pat requested usage stop; shell fix published and verified, catalog candidate/review/CI and Claude correction packet preserved",
+  "updated_utc": "2026-10-12T18:42:08Z"
 }
