@@ -1,4 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="shell_app_name">Command Library</string>
+    <!-- Navigation -->
+    <string name="shell_nav_cards">Cards</string>
+    <string name="shell_nav_catalog">Catalog</string>
+    <string name="shell_nav_settings">Settings</string>
+
+    <!-- Shared -->
+    <string name="shell_action_retry">Try again</string>
+    <string name="shell_action_dismiss">Dismiss</string>
+    <string name="shell_value_unknown">Unknown</string>
+    <string name="shell_value_not_supplied">Not supplied</string>
+    <string name="shell_value_yes">Yes</string>
+    <string name="shell_value_no">No</string>
+    <string name="shell_value_none">None</string>
+    <string name="shell_timestamp_utc">%1$s UTC</string>
+    <string name="shell_size_kib">%1$s KiB</string>
+    <string name="shell_size_mib">%1$s MiB</string>
+    <plurals name="shell_size_bytes">
+        <item quantity="one">%1$s byte</item>
+        <item quantity="other">%1$s bytes</item>
+    </plurals>
+    <string name="shell_language_english">English</string>
+
+    <!-- Plain reasons for problems reported by core ports -->
+    <string name="shell_problem_invalid_input">The request was not accepted.</string>
+    <string name="shell_problem_stale_revision">The data changed before this could be saved.</string>
+    <string name="shell_problem_stale_generation">The catalog changed while this was in progress.</string>
+    <string name="shell_problem_corrupt_data">Data stored on this device is damaged.</string>
+    <string name="shell_problem_persistence">Data could not be read from or saved to this device.</string>
+    <string name="shell_problem_permission">Access was denied.</string>
+    <string name="shell_problem_source_mismatch">The data did not match its expected size or checksum.</string>
+    <string name="shell_problem_transport">The data could not be transferred.</string>
+    <string name="shell_problem_internal">Something went wrong inside the app.</string>
+    <string name="shell_problem_offline">This needs a network connection.</string>
+    <string name="shell_problem_not_installed">No catalog is installed.</string>
+    <string name="shell_problem_not_found">It could not be found.</string>
+    <string name="shell_problem_consent_required">This needs your approval first.</string>
+    <string name="shell_problem_revoked">Your approval for this was withdrawn.</string>
+    <string name="shell_problem_unsupported">This is not supported in this version.</string>
+    <string name="shell_problem_source_unavailable">The data source is unavailable.</string>
+    <string name="shell_problem_key_missing">A required key is missing.</string>
+    <string name="shell_problem_unknown_result">The result is unknown.</string>
+    <string name="shell_problem_unexpected">Something went wrong unexpectedly.</string>
+
+    <!-- Catalog status -->
+    <string name="catalog_title">Catalog on this device</string>
+    <string name="catalog_status_loading">Reading catalog status…</string>
+    <string name="catalog_status_failed">The catalog status could not be read.</string>
+    <string name="catalog_empty_title">No catalog installed</string>
+    <string name="catalog_empty_body">Cards are searched offline in a catalog stored on this device. Import an English Scryfall JSON file to install one. Nothing is downloaded automatically.</string>
+    <string name="catalog_field_source">Source</string>
+    <string name="catalog_field_source_date">Source date</string>
+    <string name="catalog_field_imported">Imported</string>
+    <string name="catalog_field_generation">Catalog generation</string>
+    <string name="catalog_field_format">Format</string>
+    <string name="catalog_field_cards">Cards</string>
+    <string name="catalog_field_printings">Printings</string>
+    <string name="catalog_field_faces">Card faces</string>
+    <string name="catalog_field_languages">Installed languages</string>
+    <string name="catalog_field_default_language">Default data language</string>
+    <string name="catalog_field_checksum">File SHA-256</string>
+    <string name="catalog_source_date_unknown_note">The imported file did not state when its data was published, so the source date is unknown.</string>
+
+    <!-- Import -->
+    <string name="import_title">Import a catalog file</string>
+    <string name="import_body">Choose an English Scryfall JSON file: a JSON array of card objects, stored on this device or in a storage app. Only the file you choose is read.</string>
+    <string name="import_replace_note">A new import replaces the catalog above only after the whole file has been checked. If it fails or is cancelled, the current catalog stays.</string>
+    <string name="import_limits_title">Limits in this version</string>
+    <string name="import_limit_size">File size up to %1$s</string>
+    <string name="import_limit_records">Up to %1$s card printings</string>
+    <string name="import_limit_record_size">Each card record up to %1$s</string>
+    <string name="import_limit_nesting">JSON nesting depth up to %1$d</string>
+    <string name="import_limit_language">English card data only</string>
+    <string name="import_action_choose">Choose a file to import</string>
+    <string name="import_picker_unavailable">No app on this device can open a file picker.</string>
+    <string name="import_running_title">Importing %1$s</string>
+    <string name="import_running_opening">Opening the selected file…</string>
+    <string name="import_progress_read_of">Read %1$s of %2$s</string>
+    <string name="import_progress_read">Read %1$s</string>
+    <string name="import_progress_description">Import progress</string>
+    <string name="import_phase_queued">Waiting to start</string>
+    <string name="import_phase_downloading">Reading the file</string>
+    <string name="import_phase_staging">Checking and saving records</string>
+    <string name="import_phase_validating">Validating the new catalog</string>
+    <string name="import_phase_activating">Activating the new catalog</string>
+    <string name="import_phase_completed">Finishing</string>
+    <string name="import_phase_failed">Stopping after an error</string>
+    <string name="import_phase_cancelled">Stopping</string>
+    <plurals name="import_records_saved">
+        <item quantity="one">%1$s record saved so far</item>
+        <item quantity="other">%1$s records saved so far</item>
+    </plurals>
+    <string name="import_action_cancel">Cancel import</string>
+    <string name="import_cancelling">Cancelling…</string>
+    <string name="import_succeeded_title">Import complete</string>
+    <string name="import_succeeded_body">%1$s is now the active catalog.</string>
+    <string name="import_result_bytes">File size read</string>
+    <string name="import_result_checksum_computed">Computed from the file. No expected checksum was supplied to compare.</string>
+    <string name="import_result_checksum_matched">Matched the expected checksum.</string>
+    <string name="import_result_rejected">Records rejected</string>
+    <string name="import_failed_title">Import failed</string>
+    <string name="import_failed_unchanged">The catalog that was already installed, if any, is unchanged.</string>
+    <string name="import_failed_too_large">The file is larger than the %1$s limit.</string>
+    <string name="import_failed_too_large_reported">The file reports %1$s, more than the %2$s limit.</string>
+    <string name="import_failed_read">The file could not be read. It may have been moved, deleted or become unavailable.</string>
+    <string name="import_failed_permission">Permission to read the file was denied.</string>
+    <string name="import_failed_invalid">The file is not an English Scryfall JSON array within the limits shown, or it contains a record that could not be accepted.</string>
+    <string name="import_failed_source_mismatch">The file did not match its expected size or checksum.</string>
+    <string name="import_failed_storage">The catalog could not be saved on this device.</string>
+    <string name="import_cancelled_title">Import cancelled</string>
+    <string name="import_cancelled_body">The import of %1$s was cancelled. The catalog status shown is read from this device.</string>
+    <string name="import_unnamed_file">the selected file</string>
+
+    <!-- Card search -->
+    <string name="search_field_label">Card name</string>
+    <string name="search_field_help">Searches the catalog stored on this device. Nothing is sent online.</string>
+    <string name="search_action">Search</string>
+    <string name="search_problem_empty">Enter a card name.</string>
+    <string name="search_problem_too_long">Use %1$d characters or fewer.</string>
+    <string name="search_idle_title">Search cards by name</string>
+    <string name="search_no_catalog">No catalog is installed yet. Import one in Catalog to search cards.</string>
+    <string name="search_action_open_catalog">Go to Catalog</string>
+    <string name="search_loading">Searching…</string>
+    <string name="search_no_results">No cards match “%1$s”.</string>
+    <plurals name="search_results_count">
+        <item quantity="one">%1$s card shown</item>
+        <item quantity="other">%1$s cards shown</item>
+    </plurals>
+    <string name="search_more_available">More results are available.</string>
+    <string name="search_load_more">Load more results</string>
+    <string name="search_loading_more">Loading more results…</string>
+    <string name="search_stale_title">The catalog changed</string>
+    <string name="search_stale_body">These results come from the catalog that was active before. Search again to see the current catalog.</string>
+    <string name="search_again">Search again</string>
+    <string name="search_failed">The search could not be completed.</string>
+    <string name="search_more_failed">More results could not be loaded.</string>
+    <string name="search_result_open">Show details</string>
+
+    <!-- Card details -->
+    <string name="detail_back">Back to results</string>
+    <string name="detail_select_prompt">Select a card in the results to see its details.</string>
+    <string name="detail_mana_cost">Mana cost</string>
+    <string name="detail_mana_value">Mana value</string>
+    <string name="detail_type">Type</string>
+    <string name="detail_text">Rules text</string>
+    <string name="detail_power_toughness">Power and toughness</string>
+    <string name="detail_power_toughness_value">%1$s/%2$s</string>
+    <string name="detail_loyalty">Loyalty</string>
+    <string name="detail_defense">Defense</string>
+    <string name="detail_colors">Colors</string>
+    <string name="detail_color_identity">Color identity</string>
+    <string name="detail_colorless">Colorless</string>
+    <string name="detail_keywords">Keywords</string>
+    <string name="detail_layout">Layout</string>
+    <string name="detail_reserved">Reserved list</string>
+    <string name="detail_language">Language</string>
+    <string name="detail_faces_title">Faces</string>
+    <string name="detail_face_heading">Face %1$d: %2$s</string>
+    <string name="detail_source_title">Source</string>
+    <string name="detail_list_separator">, </string>
+    <string name="color_white">White</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_black">Black</string>
+    <string name="color_red">Red</string>
+    <string name="color_green">Green</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_loading">Reading settings…</string>
+    <string name="settings_load_failed">Settings could not be read.</string>
+    <string name="settings_theme_title">Theme</string>
+    <string name="settings_theme_system">Use the system setting</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_saving">Saving…</string>
+    <string name="settings_save_failed">The theme could not be saved.</string>
+    <string name="settings_changed_elsewhere">Settings were changed elsewhere. The latest saved settings are shown and your choice was not saved. Choose again if you still want it.</string>
+    <string name="settings_about_title">About this version</string>
+    <string name="settings_about_body">Card data comes only from files you import. Card images are not shown or downloaded in this version.</string>
+    <string name="settings_notices_title">Source notices</string>
+    <string name="settings_notice_license">License</string>
 </resources>
