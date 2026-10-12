@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k2-catalog-fixes-24. Next: orch-kotlin-m0-01 step2; in_progress.
+Checkpoint-ID: cp-20261012-k2-catalog-review-25. Next: orch-kotlin-m0-01 step2; in_progress.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
