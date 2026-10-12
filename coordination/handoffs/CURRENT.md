@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261011-k2-core-13
+Checkpoint-ID: cp-20261012-claude-k2-14
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Implement and probe accepted Room3 storage/local importer/settings consumers under exclusive locks; root configures Android compile/UI and verifies fixture provenance; monitor Claude QA branch.
+Next step: 2. Claude Code holds the lease (Pat authorized takeover of the expired Codex lease). Working K2 step 2: prove the AGP/Room3/KSP/FTS5 tuple compiles, then storage. Read coordination/handoffs/K2-STEP2-CLAUDE.md for exact progress and next actions.
 
-Updated UTC: 2026-10-11T23:02:41Z
+Updated UTC: 2026-10-12T00:05:55Z
 Status: in_progress; lease: active.
-Verified base: f5fb2767be2270de81c6a8deb80eb6e0d458bbad.
+Verified base: 575159ba13be87def464fa419d1bbcb22a48211d.
 
-K2 incomplete but core gate complete: corrected actual twenty-component public contracts independently Astra-accepted, hosted25 JVM tests pass at2ac4a302, exact core source integrated and component lock released. Actual Room3/Android/import/settings/UI/runtime/debug artifact remain unrun. Claude Code parallel QA instructions and exclusive lock remain active; user handles regular-chat research.
+Claude Code took over the expired Codex lease (expired 2026-10-11T23:47:41Z) at Pat's instruction to continue K2 step 2. Core contracts accepted and integrated at 575159b; Claude QA branch agent/cc-k2-qa-01 is READY-FOR-REVIEW and unmerged (needs an independent reviewer, not its author).
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

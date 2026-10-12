@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-k2-foundation-20261011",
-  "model_family": "Codex orchestrator; weakest capable scoped helpers; targeted Astra review",
+  "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
+  "model_family": "Claude Code (Opus 5.5); Sonnet/Haiku helpers per D-10",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-11T23:02:41Z",
-  "expires_utc": "2026-10-11T23:47:41Z",
-  "checkpoint_id": "cp-20261011-k2-core-13",
-  "note": "Sequential K2 resume after released K1 lease; no existing component lock. User is handling ordinary-chat research; independent foundation work proceeds."
+  "heartbeat_utc": "2026-10-12T00:05:55Z",
+  "expires_utc": "2026-10-12T00:50:55Z",
+  "checkpoint_id": "cp-20261012-claude-k2-14",
+  "note": "Stale Codex lease (codex-k2-foundation-20261011, expired 2026-10-11T23:47:41Z) taken over at Pat's instruction on 2026-10-12. Codex resumes from coordination/handoffs/K2-STEP2-CLAUDE.md."
 }

@@ -213,3 +213,9 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 
 - Pat, 2026-10-11, verbatim: "Also I want to have Claude code working in parallel so give me an instruction set so you don't step on each other's toes please"
 - Applied: Codex retains the active integration lease; Claude Code receives one bounded independent K2 QA task on agent/cc-k2-qa-01, writing only docs/verification/k2-claude/** under its own published lock. This delegated parallel writer does not take over orchestration or write shared state/build configuration. Codex reviews and integrates the worker branch sequentially. Existing core implementation ownership remains exclusive. Further production-code delegation requires an explicit task/lock and accepted dependency interfaces, not a broad parallel mandate. Ordinary-chat research remains with Pat.
+
+## Lease takeover, 2026-10-12
+- Context: Codex ran out of usage; its lease (session codex-k2-foundation-20261011, task orch-kotlin-m0-01) expired at 2026-10-11T23:47:41Z without release. GAUNTLET.md 5.8 requires Pat's ruling before another orchestrator takes over. Claude Code offered: (1) wait for Codex, or (2) claim the expired lease and start K2 step 2.
+- Pat, 2026-10-12, verbatim: "2. Just leave very clear notes so I can tell codex to read the next steps.md or wherever you put your work notes so it knows what's up and can continue without having to audit the whole codebase."
+- Applied: Claude Code holds the lease from checkpoint cp-20261012-claude-k2-14. Work notes for Codex: `coordination/handoffs/K2-STEP2-CLAUDE.md`.
+
