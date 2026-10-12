@@ -137,3 +137,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T18:09:02Z | codex | cp-20261012-k3-scope-29 | containing commit | K3 requirement/ownership inventory audited against accepted K2; existing DataStore consent reused. Published exclusive Claude private rules-parser task/lock and instructions; no product-data acquisition, app/schema/core changes or K2 retesting. Full-corpus scaling/source/snapshot design remains next.
 
 2026-10-12T18:32:54Z | codex | cp-20261012-k3-guards-30 | containing commit | Local-first K3 paths/metadata and weak-agent parser work published. Root audit added structured cancellation/allocation guards. Claude rules design272f177 preserved; its confirmed late-commit cleanup index race is assigned to catalog worker with native regression and risk review, not silently dismissed by prior K2 passes.
+
+2026-10-12T18:36:13Z | codex | cp-20261012-k3-shell-31 | containing commit | Focused parser JVM gate passed86dc00d; separate shell writer reserved without overlap with Claude rules
