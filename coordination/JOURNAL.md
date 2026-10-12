@@ -163,3 +163,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T21:58:55Z | codex | cp-20261012-full-v1-resume-42 | containing commit | Reread gauntlet and active Kotlin plan; full audit persisted; D-24 restores complete delivery scope and supersedes mistaken partial-build pointer. K3 and M2-M9 remain incomplete.
 
 2026-10-12T22:30:08Z | codex | cp-20261012-k3-full-execution-43 | containing commit | Full scope restored; source/contract/schema reviews recorded, verified acquisition core compiles, English traversal count complete. Transport timeout workaround rejected; isolated network remediation and additive schema work active. K3 and M2-M9 remain incomplete.
+
+2026-10-12T22:41:19Z | codex | cp-20261012-k3-downloads-active-43 | containing commit | Full English printing/rulings source bytes measured privately; current mapper cannot represent83validreversible records. Download capabilities/schema reviewed; transport workaround rejected and remediation active. Full K3 and M2-M9 remain incomplete.

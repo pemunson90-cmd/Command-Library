@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-full-execution-43",
+  "checkpoint_id": "cp-20261012-k3-downloads-active-43",
   "verified_base_head": "32b532f1d30920ba2cc7f6dd45a931cdccc9ce65",
-  "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
-  "status": "Full Android v1 implementation active; no finished-app delivery",
+  "stage": "K3 full offline data/downloads implementation; full Android v1 incomplete",
+  "status": "K3 implementation active; no finished app delivery",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Finish reviewed cancellable transport and additive job storage; bind durable downloads and full-corpus import/search",
+  "first_action": "Finish reviewed cancellable transport and additive job migration; implement durable acquisition/full importer using genuine source evidence",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -17,8 +17,8 @@
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
-  "worktree_mode": "Root agent/cx-full-v1-resume-01; exclusive cx-k3-network-01 and cx-k3-storage-03 isolated worktrees, locked on main. Other branches preserved.",
-  "review_status": "Scoped personal-source and additive acquisition/schema design independently reviewed; rejected URLConnection draft under cancellable-engine remediation. No K3/full-v1 acceptance.",
+  "worktree_mode": "Root agent/cx-full-v1-resume-01; network worker agent/cx-k3-network-01, storage worker agent/cx-k3-storage-03 in isolated worktrees under published locks; all prior branches preserved.",
+  "review_status": "Source and acquisition schema reviews completed; consent/file/CAS/budget protocols mandatory. First URLConnection transport rejected; verified OkHttp remediation in progress. No K3/full-app acceptance.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -37,8 +37,9 @@
     "functional_build": "Exactd334d9e hosted38309643911 all4lanes success;256JVMtests0failures/errors;57native tests per API23/API36/API36-16KiB lane0failures/errors. APKartifact11774097672 SHAcdc696e77ba78023dcd2b20e4b02016f68264e4890c62510d6f43a09f5d7c3b6; alignmentpassed; ps16K page16384. PhysicalFold7 next.",
     "genuine_rules": "Actual977752byte officialTXT SHA8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca parsed2passes4357entries2072references0unresolved0duplicates0anomalies.79pureJVMtests pass in separate model/common/rules compile. This is not Android/physical evidence.",
     "rules_schema": "Committed actualKSP2.json SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentitiesunchanged; native migration/preservation/reopen passes all3Androidlanes.",
-    "acquisition_core": "Real model API compile and18JUnit tests passed;4English-page tests and genuine first175/last159 protocol decoding passed. DownloadPlan name preserves existing pricing AcquisitionPlan; SHA-256 interop corrected."
+    "acquisition_core": "Real model API compile and18JUnit tests passed;4English-page tests and genuine first175/last159 protocol decoding passed. DownloadPlan name preserves existing pricing AcquisitionPlan; SHA-256 interop corrected.",
+    "genuine_full_sources": "Full private English traversal116009uniqueprints/663pages; derived620805214bytes SHA c379fb8470157d1015b0aede0b1e275cd12867757ccad0c9bac4ef9059998f00;38743topOracleIDs;83validreversibleprints lacktopID. Fullrulings79706records/gzipCRCvalid. NON_ATOMIC_TRAVERSAL, not producer snapshot or Androidactivation."
   },
-  "last_completed": "Full scope restored; source/contract/schema reviews recorded, verified acquisition core compiles, English traversal count complete. Transport timeout workaround rejected; isolated network remediation and additive schema work active. K3 and M2-M9 remain incomplete.",
-  "updated_utc": "2026-10-12T22:30:08Z"
+  "last_completed": "Full English printing/rulings source bytes measured privately; current mapper cannot represent83validreversible records. Download capabilities/schema reviewed; transport workaround rejected and remediation active. Full K3 and M2-M9 remain incomplete.",
+  "updated_utc": "2026-10-12T22:41:19Z"
 }

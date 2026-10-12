@@ -4,8 +4,8 @@
   "session_id": "codex-full-v1-execution-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-12T22:30:08Z",
-  "expires_utc": "2026-10-12T23:15:08Z",
-  "checkpoint_id": "cp-20261012-k3-full-execution-43",
+  "heartbeat_utc": "2026-10-12T22:41:19Z",
+  "expires_utc": "2026-10-12T23:26:19Z",
+  "checkpoint_id": "cp-20261012-k3-downloads-active-43",
   "note": "User explicitly reaffirmed complete Android v1 execution; prior released lease claimed. No other active component writers."
 }

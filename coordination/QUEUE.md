@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-full-execution-43. Next: orch-kotlin-k3-offline-data-01 step3; Full Android v1 implementation active; no finished-app delivery.
+Checkpoint-ID: cp-20261012-k3-downloads-active-43. Next: orch-kotlin-k3-offline-data-01 step3; K3 implementation active; no finished app delivery.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
