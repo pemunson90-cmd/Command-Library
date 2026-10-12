@@ -1,0 +1,178 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :fts-jvm:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :fts-jvm:compileKotlin NO-SOURCE
+> Task :fts-jvm:compileJava NO-SOURCE
+> Task :fts-jvm:processResources NO-SOURCE
+> Task :fts-jvm:classes UP-TO-DATE
+> Task :fts-jvm:jar
+> Task :fts-jvm:processTestResources NO-SOURCE
+> Task :probe:preBuild UP-TO-DATE
+> Task :probe:preDebugBuild UP-TO-DATE
+> Task :probe:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :probe:generateDebugResources
+> Task :probe:packageDebugResources
+> Task :fts-jvm:compileTestKotlin
+> Task :probe:processDebugNavigationResources
+> Task :fts-jvm:compileTestJava NO-SOURCE
+> Task :fts-jvm:testClasses UP-TO-DATE
+
+> Task :fts-jvm:test
+
+> Task :probe:parseDebugLocalResources
+> Task :probe:javaPreCompileDebug
+> Task :probe:generateDebugRFile
+> Task :probe:checkDebugAarMetadata FAILED
+> Task :probe:kspDebugKotlin
+> Task :probe:copyRoomSchemas
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':probe:checkDebugAarMetadata' (registered by plugin 'com.android.internal.application').
+> A failure occurred while executing com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+   > 9 issues were found when checking AAR metadata:
+     
+       1.  Dependency 'androidx.compose.material:material-ripple-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       2.  Dependency 'androidx.compose.foundation:foundation-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       3.  Dependency 'androidx.compose.animation:animation-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       4.  Dependency 'androidx.compose.foundation:foundation-layout-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       5.  Dependency 'androidx.compose.animation:animation-core-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       6.  Dependency 'androidx.compose.ui:ui-graphics-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       7.  Dependency 'androidx.compose.ui:ui-text-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       8.  Dependency 'androidx.compose.ui:ui-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       9.  Dependency 'androidx.compose.runtime:runtime-saveable-android:1.12.1' requires libraries and applications that
+           depend on it to compile against version 37 or later of the
+           Android APIs.
+     
+           :probe is currently compiled against android-36.
+     
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 37, for example 37.2.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 49s
+12 actionable tasks: 12 executed
