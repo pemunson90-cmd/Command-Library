@@ -1,0 +1,81 @@
+name: K3 catalog JVM
+
+on:
+  push:
+    branches: ['agent/k3-catalog-framer-01']
+    paths:
+      - 'android-app/feature/catalog/**'
+      - '.github/workflows/k3-catalog-jvm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: k3-catalog-jvm-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SDK_PLATFORM: 'platforms;android-37.0'
+  SDK_BUILD_TOOLS: 'build-tools;36.0.0'
+
+jobs:
+  catalog-jvm:
+    if: github.repository == 'pemunson90-cmd/Command-Library'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      # actions/checkout v7.0.1; same pinned commit as android-k2.yml.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: JDK 17 and SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x "$JAVA_HOME_17_X64/bin/javac"
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" --install "$SDK_PLATFORM" "$SDK_BUILD_TOOLS" > /dev/null
+      - name: Catalog JVM unit tests
+        shell: bash
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain :feature:catalog:testDebugUnitTest
+      - name: Require executed catalog tests without skips or failures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib
+          import xml.etree.ElementTree as ET
+
+          root = pathlib.Path('android-app/feature/catalog/build/test-results')
+          reports = sorted(root.glob('**/TEST-*.xml'))
+          assert reports, 'No catalog JVM test XML reports found'
+          added = [p for p in reports if p.name.endswith('JsonLinesFramerTest.xml')]
+          assert added and sum(int(ET.parse(p).getroot().get('tests', 0)) for p in added) > 0, 'New JSONL parser tests did not execute'
+          tests = failures = errors = skipped = 0
+          for path in reports:
+              suite = ET.parse(path).getroot()
+              tests += int(suite.get('tests', 0))
+              failures += int(suite.get('failures', 0))
+              errors += int(suite.get('errors', 0))
+              skipped += int(suite.get('skipped', 0))
+          print(f'Catalog XML reports: {len(reports)}; tests: {tests}; failures: {failures}; errors: {errors}; skipped: {skipped}')
+          assert tests > 0, 'No catalog tests executed'
+          assert failures == 0 and errors == 0, 'Catalog tests failed'
+          assert skipped == 0, 'Catalog tests were skipped'
+          PY
+      - name: Retain catalog test evidence
+        if: always()
+        # actions/upload-artifact v7.0.2; same pinned commit as android-k2.yml.
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: k3-catalog-jvm-${{ github.sha }}
+          path: |
+            android-app/feature/catalog/build/test-results/**
+            android-app/feature/catalog/build/reports/tests/**
+          if-no-files-found: ignore
+          retention-days: 14
