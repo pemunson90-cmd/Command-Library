@@ -1,6 +1,6 @@
 # Claude Code task: K3 pure rules parser
 
-Status: delegated; exclusive scope bound by current K3 task/lock. Start parser design and internal implementation/tests now; production activation is gated on genuine fixture and independent review.
+Status: private parser assignment complete; reviewed hardened4971166 merged unchanged after hosted63-test gate38299615365. Rules lock released; production activation remains gated on genuine fixture/source and storage review. See docs/verification/k3-rules-parser/HOSTED-EVIDENCE.md.
 Branch: `agent/cc-k3-rules-parser-01`, based on verified current `main` supplied by root.
 
 ## Scope

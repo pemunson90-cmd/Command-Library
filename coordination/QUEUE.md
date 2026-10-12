@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261012-k3-finish-36. Next: orch-kotlin-k3-offline-data-01 step3; K3 finish-or-quarantine work active; candidate tests pending.
+Checkpoint-ID: cp-20261012-k3-rules-done-37. Next: orch-kotlin-k3-offline-data-01 step3; Private rules parser complete; K3 incomplete, catalog integration quarantined.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

@@ -4,4 +4,4 @@ owner: delegated-gpt-6-sol-medium
 task: cx-k3-catalog-framer-01
 branch: agent/k3-catalog-framer-01
 owned_paths: android-app/feature/catalog/**; coordination/handoffs/cx-k3-catalog-framer-01.md
-step: internal JSONL framer plus STAGING-only cleanup guard/native regression; schema/public contracts unchanged
+step: quarantined pending repeated16KiB shell UI gate diagnosis; no active worker writes; preserve exact01e0c40 source

@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k3-finish-36. Updated UTC: 2026-10-12T19:43:24Z.
+Checkpoint: cp-20261012-k3-rules-done-37. Updated UTC: 2026-10-12T19:47:54Z.
 
-Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: K3 finish-or-quarantine work active; candidate tests pending. Next: orch-kotlin-k3-offline-data-01 step3.
-Review Claude ready4971166 for bounded integration; diagnose repeated16KiB lane without blind rerun
+Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: Private rules parser complete; K3 incomplete, catalog integration quarantined. Next: orch-kotlin-k3-offline-data-01 step3.
+Check postmerge main CI, then targeted expanded-width shell diagnostics before quarantined catalog merge
 
-Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review
+Claude private parser finished: reviewed unchanged source merged after63 hosted tests/build/lint; rules lock released, catalog quarantined with exact evidence
 
 Read CURRENT, machine state and task card.

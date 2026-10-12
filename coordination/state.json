@@ -3,24 +3,22 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-finish-36",
-  "verified_base_head": "fa6f0a8c4f03a479d39c1326a017476a13b9ad68",
+  "checkpoint_id": "cp-20261012-k3-rules-done-37",
+  "verified_base_head": "8a9b7a502b032ada6561e3765b9cbf9779b2b05d",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
-  "status": "K3 finish-or-quarantine work active; candidate tests pending",
+  "status": "Private rules parser complete; K3 incomplete, catalog integration quarantined",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Review Claude ready4971166 for bounded integration; diagnose repeated16KiB lane without blind rerun",
-  "active_tasks": [
-    "orch-kotlin-k3-offline-data-01"
-  ],
+  "first_action": "Check postmerge main CI, then targeted expanded-width shell diagnostics before quarantined catalog merge",
+  "active_tasks": [],
   "blockers": [
     "Catalog01e0c40 quarantined/unmerged: attempt2 reproduces shell expanded-width20s timeout; catalog6 native tests pass. Targeted state/semantics diagnostics required, no blind retry.",
-    "Claude4971166 F1/hardening source reviewed; isolated integration9f88015 hosted38299615365 pending. Merge only exact passing candidate; external branch preserved.",
+    "Private rules parser assignment complete and hosted verified; genuine CR byte/grammar/source/production binding remain gated.",
     "Confirmed systembar icon/in-app-theme mismatch remains queued; shell open leak is fixed and verified.",
     "Full-corpus budget/snapshot/migration/source contracts remain unbound; private parsers do not constitute K3 acceptance."
   ],
   "worktree_mode": "Git checkout /workspace/Command-Library. External Claude rules parser branch agent/cc-k3-rules-parser-01 is explicitly reserved; no shared/corpus activation writes delegated.",
-  "review_status": "K2 historical acceptance retained. K3 narrow catalog cleanup source review accepted exacted26b326; runtime gate pending. Root audited shell stream guard, merged unchanged after68 passing hosted JVM tests. Claude rules private review returned cancellation finding before merge.",
+  "review_status": "K2 historical acceptance retained. Private K3 rules hardened4971166 independently reviewed and hosted verified/merged unchanged. Catalog cleanuped26b326 source accepted and native regression passes, but candidate remains quarantined due repeated16KiB shell UI gate failure.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -35,8 +33,8 @@
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters.",
     "k3_shell": "Merged source3ffbb1f unchanged at9d7e0fd; focused38292178104 passed68 tests (14 ImportController),0 failures/errors/skips; continuity38292178108 passed. Main postmerge Android matrix remains separate ongoing continuity verification. Main postmerge full matrix38292576595 passed exactffc5cc0 on all4 lanes.",
     "k3_catalog": "Parser86dc00d focused38291004261 passed. Cleanuped26b326 independent source accepted. Matrix38292134079 JVM/API23/API36 passed;16KiB catalog6 tests passed but shell1/17 failed20s timeout. Exact-SHA failed-lane rerun requested; no code edits. Evidence docs/verification/k3-catalog-cleanup/MATRIX-TRIAGE.md.",
-    "k3_rules": "Independent private review accepted hardened4971166; root candidate9f88015 adds shared include and focused check/assemble. Hosted38299615365 pending, continuity38299615489 passed. External reports63 synthetic tests; no genuine corpus validation."
+    "k3_rules": "Reviewed4971166 merged unchanged at8a9b7a502b032ada6561e3765b9cbf9779b2b05d after candidate9f88015 hosted38299615365 passed check/lint/assemble and63 tests0 failures/errors/skips across5 suites. Continuity38299615489 passed. No genuine corpus/production activation claim."
   },
-  "last_completed": "Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review",
-  "updated_utc": "2026-10-12T19:43:24Z"
+  "last_completed": "Claude private parser finished: reviewed unchanged source merged after63 hosted tests/build/lint; rules lock released, catalog quarantined with exact evidence",
+  "updated_utc": "2026-10-12T19:47:54Z"
 }

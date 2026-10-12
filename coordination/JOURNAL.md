@@ -149,3 +149,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T19:27:35Z | codex | cp-20261012-k3-retry-35 | containing commit | Independent triage completed and published; new catalog regression passed all device types, isolated16KiB shell timeout rerun pending, no Claude writes
 
 2026-10-12T19:43:24Z | codex | cp-20261012-k3-finish-36 | containing commit | Claude usage stop confirmed; completed F1/hardening handoff available, root resumes finish-or-quarantine review
+
+2026-10-12T19:47:54Z | codex | cp-20261012-k3-rules-done-37 | containing commit | Claude private parser finished: reviewed unchanged source merged after63 hosted tests/build/lint; rules lock released, catalog quarantined with exact evidence
