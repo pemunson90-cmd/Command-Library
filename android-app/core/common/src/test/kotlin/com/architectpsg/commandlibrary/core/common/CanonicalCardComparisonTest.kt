@@ -62,4 +62,22 @@ class CanonicalCardComparisonTest {
         assertEquals(Knowledge.Known("actual-producer-canonical-face-id"), second.faces[0].identity.providerFaceId)
         assertEquals(evidence, (second.faces[0].types as Knowledge.Unknown).evidence)
     }
+    @Test fun printingOrderVariationsDoNotChangeCanonicalGameData() {
+        val first = card().copy(
+            colors = Knowledge.Known(SnapshotList.of(Color.BLUE, Color.WHITE)),
+            colorIdentity = Knowledge.Known(SnapshotList.of(Color.GREEN, Color.RED)),
+            keywords = Knowledge.Known(SnapshotList.of("Synthetic Alpha", "Synthetic Beta")),
+        )
+        val reordered = first.copy(
+            colors = Knowledge.Known(SnapshotList.of(Color.WHITE, Color.BLUE)),
+            colorIdentity = Knowledge.Known(SnapshotList.of(Color.RED, Color.GREEN)),
+            keywords = Knowledge.Known(SnapshotList.of("Synthetic Beta", "Synthetic Alpha")),
+        )
+        assertTrue(sameCanonicalGameData(first, reordered))
+        assertEquals(listOf("Synthetic Beta", "Synthetic Alpha"), (reordered.keywords as Knowledge.Known).value)
+        assertFalse(sameCanonicalGameData(first, first.copy(keywords = Knowledge.Known(SnapshotList.of("Synthetic Alpha")))))
+        assertFalse(sameCanonicalGameData(first, first.copy(keywords = Knowledge.Known(SnapshotList.of("Synthetic Alpha", "Synthetic Alpha", "Synthetic Beta")))))
+        assertFalse(sameCanonicalGameData(first, first.copy(faces = SnapshotList.copyOf(first.faces.reversed()))))
+    }
+
 }

@@ -65,6 +65,7 @@ class ShellUiTest {
         // images can drop/delay InputConnection text events under load, making this UI test flaky.
         rule.onNode(hasSetTextAction()).performTextReplacement(query)
         rule.waitForIdle()
+        rule.runOnIdle { assertEquals("Search input must be applied before submitting", query, shell.controllers.search.queryInput) }
         rule.onNode(hasText(shell.string(R.string.search_action)) and hasClickAction()).performClick()
     }
 
@@ -319,8 +320,10 @@ class ShellUiTest {
             }
             // At this width the result row may be below the lazy list's composed viewport.
             scrollResultsTo("Synthetic Existing Card")
-        } catch (failure: Exception) {
-            throw AssertionError("Expanded search failed. After submit: $afterSubmit; at failure: ${evidence()}", failure)
+        } catch (failure: Throwable) {
+            // ComposeTimeoutException derives from AssertionError, so Exception missed diagnostics.
+            val current = runCatching { evidence() }.getOrElse { "Diagnostic unavailable: ${it.javaClass.simpleName}" }
+            throw AssertionError("Expanded search failed. After submit: $afterSubmit; at failure: $current", failure)
         }
         assertEquals("synthetic", shell.controllers.search.queryInput)
         assertEquals("synthetic", synchronized(shell.catalog.lookupRequests) { shell.catalog.lookupRequests.last().first })

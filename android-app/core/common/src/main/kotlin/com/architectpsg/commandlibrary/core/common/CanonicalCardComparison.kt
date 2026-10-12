@@ -11,6 +11,8 @@ import com.architectpsg.commandlibrary.core.model.Knowledge
  * producer mappings, derived search text, relationship evidence, and printing assets are excluded.
  * Unknown remains distinct from absent and known; its diagnostic reason/evidence is metadata.
  * Canonical face identity uses source-qualified oracle plus face index, never a guessed producer ID.
+ * Keyword/color collection order is incidental; original source order remains stored. Duplicate
+ * multiplicity remains comparable, and ordered card faces are never reordered.
  */
 public fun sameCanonicalGameData(first: CardRecord, second: CardRecord): Boolean =
     first.oracleId == second.oracleId &&
@@ -19,14 +21,14 @@ public fun sameCanonicalGameData(first: CardRecord, second: CardRecord): Boolean
         sameKnowledge(first.originalText, second.originalText) &&
         sameKnowledge(first.manaCost, second.manaCost) &&
         sameKnowledge(first.manaValue, second.manaValue) { left, right -> left.compareTo(right) == 0 } &&
-        sameKnowledge(first.colors, second.colors) &&
-        sameKnowledge(first.colorIdentity, second.colorIdentity) &&
+        sameKnowledge(first.colors, second.colors) { left, right -> left.sortedBy { it.name } == right.sortedBy { it.name } } &&
+        sameKnowledge(first.colorIdentity, second.colorIdentity) { left, right -> left.sortedBy { it.name } == right.sortedBy { it.name } } &&
         sameKnowledge(first.types, second.types) &&
         sameKnowledge(first.stats.power, second.stats.power) &&
         sameKnowledge(first.stats.toughness, second.stats.toughness) &&
         sameKnowledge(first.stats.loyalty, second.stats.loyalty) &&
         sameKnowledge(first.stats.defense, second.stats.defense) &&
-        sameKnowledge(first.keywords, second.keywords) &&
+        sameKnowledge(first.keywords, second.keywords) { left, right -> left.sorted() == right.sorted() } &&
         sameKnowledge(first.layout, second.layout) &&
         sameKnowledge(first.reserved, second.reserved) &&
         first.faces.size == second.faces.size &&
