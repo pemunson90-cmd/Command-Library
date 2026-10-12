@@ -1,6 +1,6 @@
 # K2 tuple probe: actual resolution and compile of the K1 candidate tuple
 
-Status: executed locally by Claude Code on 2026-10-12 (UTC) in a throwaway probe project outside the repo. One binding changed (compileSdk 36 to 37). That change needs independent review before `android-app` consumes it (K2 card step 1: "independently review any changed binding"). No emulator or device run happened here; this container has no `/dev/kvm`.
+Status: executed locally by Claude Code on 2026-10-12 (UTC) in a throwaway probe project outside the repo. One binding changed (compileSdk 36 to 37). Independently reviewed: ACCEPT-WITH-CHANGES in [K2-TUPLE-REVIEW.md](K2-TUPLE-REVIEW.md); its required changes are applied (lock `android_sdk.compile` 37 with the pinned platform package; hosted workflow `android-k2.yml` installs `platforms;android-37.0`). No emulator or device run happened here; this container has no `/dev/kvm`.
 
 ## Environment (observed)
 
@@ -43,7 +43,9 @@ A second pure-JVM module `:fts-jvm` tests `androidx.sqlite:sqlite-bundled-jvm:2.
 
 ## Results
 
-### Run 1: compileSdk 36 (as locked) fails
+### First complete run: compileSdk 36 (as locked) fails
+
+An earlier invocation stopped during configuration on Maven Central HTTP 429 (see Environment); it is not counted.
 
 `./gradlew :probe:assembleDebug` failed in `:probe:checkDebugAarMetadata` with 9 issues, all the same cause. First issue verbatim:
 
@@ -60,7 +62,7 @@ A second pure-JVM module `:fts-jvm` tests `androidx.sqlite:sqlite-bundled-jvm:2.
 
 The other eight: `foundation-android`, `animation-android`, `foundation-layout-android`, `animation-core-android`, `ui-graphics-android`, `ui-text-android`, `ui-android`, `runtime-saveable-android`, all 1.12.1 from Compose BOM 2026.09.00.
 
-### Run 2: compileSdk 37, targetSdk 36, minSdk 23 succeeds
+### Second complete run: compileSdk 37, targetSdk 36, minSdk 23 succeeds
 
 `./gradlew --no-daemon --max-workers=2 :probe:assembleDebug :probe:assembleDebugAndroidTest`: BUILD SUCCESSFUL, zero Kotlin `w:` warnings.
 
@@ -88,9 +90,9 @@ The other eight: `foundation-android`, `animation-android`, `foundation-layout-a
 
 | Field | Lock | Proposed | Reason |
 |---|---|---|---|
-| `android_sdk.compile` | 36 | 37 (`platforms;android-37.0`) | Compose BOM 2026.09.00 artifacts declare minCompileSdk 37 in AAR metadata; build fails at 36. |
+| `android_sdk.compile` | 36 | 37 (`platforms;android-37.0`) | Nine Compose 1.12.1 artifacts from BOM 2026.09.00 declare minCompileSdk 37 in AAR metadata; build fails at 36. Other BOM artifacts declare lower values. |
 
-Unchanged: targetSdk 36, minSdk 23, build-tools 36.0.0, every library and plugin version. compileSdk only selects the API surface compiled against; runtime behavior is governed by targetSdk, which stays 36. AGP 9.4 documents API 37 as its maximum, so 37 is inside AGP's supported range.
+Unchanged: targetSdk 36, minSdk 23, build-tools 36.0.0, every library and plugin version. compileSdk only selects the API surface compiled against; it does not opt the app into new runtime behavior, which targetSdk (still 36) does. Device OS version and library code also affect runtime behavior; neither changes with this binding. Because compileSdk 37 exposes API 37 symbols to code that must run on API 23, lint `NewApi` stays fatal. AGP 9.4 documents API 37 as its maximum, so 37 is inside AGP's supported range.
 
 Alternative not probed: keep compileSdk 36 and select an older Compose BOM whose artifacts accept 36. That would change a library binding instead of an SDK level and would need its own probe.
 
@@ -101,3 +103,14 @@ Consequence for hosted CI: the workflow must install `platforms;android-37.0` wi
 - `connectedDebugAndroidTest` (no KVM). The probe's androidTest APK assembled; it was not executed.
 - API 23 and API 36 emulator runs, install/launch, Compose launch checks.
 - Transitive license inventory.
+
+## Retained logs
+
+Sanitized copies (the environment's `JAVA_TOOL_OPTIONS` proxy line removed, scratchpad path replaced by `<scratchpad>`) in [k2-tuple-probe/](k2-tuple-probe/):
+
+| File | SHA-256 |
+|---|---|
+| run-compilesdk36-fail.txt | `691c55dd1d63777da306037e092c05edf690b0fafd3957712d03b0faf8a7c64c` |
+| run-compilesdk37-success.txt | `86d5171d34e16893570a1c0debfd040589884f0091057eec54bfabae0f01231e` |
+| build-classpath.txt | `7b8da52545a01c2337b80fca6dd1515d66668d0136e714756584396407c048c1` |
+| debug-runtime-classpath.txt | `5f3a9d635cd5fe27284d5a8cb1f18f49d7305be16cd85fb65df5e920a38e9f47` |

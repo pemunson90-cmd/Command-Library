@@ -73,13 +73,26 @@
       "status": "source_backed_candidate_not_compiled"
     },
     "android_sdk": {
-      "compile": 36,
+      "compile": 37,
       "target": 36,
       "minimum": 23,
       "build_tools": "36.0.0",
-      "source": "https://developer.android.com/about/versions/16",
       "minimum_source": "https://developer.android.com/jetpack/androidx/releases/sqlite",
-      "status": "candidate; effective resolved minSDK and merged manifest checked inK2; Play policy deferred to public release"
+      "status": "compile 37 compiled in the K2 tuple probe and independently reviewed; target 36 and minimum 23 unchanged; merged manifest min 23 / target 36 observed in K2 probe; emulator execution and Play policy still pending",
+      "compile_platform_package": {
+        "path": "platforms;android-37.0",
+        "revision": 2,
+        "archive": "platform-37.0_r02.zip",
+        "sha1": "ed8ebf7f8822a4de5686d427f237d2fa30ff7410",
+        "source": "https://dl.google.com/android/repository/repository2-3.xml"
+      },
+      "compile_source": [
+        "Released AAR metadata: androidx.compose.material:material-ripple-android:1.12.1 and androidx.compose.ui:ui-android:1.12.1 declare minCompileSdk=37 (Compose BOM 2026.09.00)",
+        "https://developer.android.com/jetpack/androidx/releases/compose-ui (1.12.0-alpha01: Updated Compose compileSdk to API 37)",
+        "https://developer.android.com/build/releases/agp-9-4-0-release-notes (maximum supported API level 37; build-tools minimum and default 36.0.0)"
+      ],
+      "compile_evidence": "docs/gauntlet/gates/K2-TUPLE-PROBE.md and docs/gauntlet/gates/K2-TUPLE-REVIEW.md (ACCEPT-WITH-CHANGES, 2026-10-12)",
+      "source_target": "https://developer.android.com/about/versions/16"
     }
   },
   "next_evidence": [
