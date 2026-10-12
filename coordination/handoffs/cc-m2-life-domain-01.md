@@ -7,7 +7,7 @@ Worker handoff for `coordination/tasks/cc-m2-life-domain-01.md`. Branch `agent/c
 | # | Section | Status |
 |---|---|---|
 | 0 | Design, plan, baseline check | done (this commit) |
-| 1 | Counter reductions + tests | pending |
+| 1 | Counter reductions + tests | done: `LifeDomainSupport.kt`, `CounterReducer.kt`, `CounterReducerTest.kt` (20 tests) |
 | 2 | Seat clock calculations + tests | pending |
 | 3 | Random tools + tests | pending |
 | 4 | Independent adversarial review of 1-3, fixes, final checks | pending |
@@ -26,12 +26,18 @@ Random: `RandomSource` is injected; results outside `0 until bound` are a typed 
 
 ## Verification
 
-- Baseline before code: `cd android-app && bash gradlew --no-daemon --console=plain :core:model:test :feature:life:test` ran locally in this container, BUILD SUCCESSFUL, `:core:model` 16 tests, 0 failures/errors/skips; `:feature:life:test` NO-SOURCE.
+All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 toolchain, cached Gradle 9.6.0). No hosted CI run has been requested or claimed.
+
+- Baseline before code: `cd android-app && bash gradlew --no-daemon --console=plain :core:model:test :feature:life:test` BUILD SUCCESSFUL, `:core:model` 16 tests, 0 failures/errors/skips; `:feature:life:test` NO-SOURCE.
+- Section 1: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` `CounterReducerTest` 20 tests, 0 failures/errors/skips.
 
 ## Contract requests for Codex
 
-Recorded as found; see section commits.
+1. Counter roles are not persisted. `GameSettings` and `CounterDefinition` carry no role, so the domain takes an internal `CounterRoles(life, commanderDamage?, commanderTax?)` from its caller. Proposed core addition: `public enum class CounterRole { LIFE, COMMANDER_DAMAGE, COMMANDER_TAX, OTHER }` and `CounterDefinition.role: CounterRole` (or `GameSettings.counterRoles` holding the three IDs). Without it a resumed game cannot recover which definition is life or commander damage.
+2. Starting life has two sources: `GameSettings.initialLife` and the life `CounterDefinition.initial`. The domain rejects disagreement as `CORRUPT_DATA`. Proposed: document that the life definition's `initial` must equal `initialLife`, or drop one field.
+3. Elimination has no contract surface. SPEC G01/G09 require logged, undoable eliminate/restore, but `Seat`, `GameSnapshot` and `GameAction` have no eliminated state or action. The domain reports `LossCandidate`s only. Proposed: `GameAction.SetSeatEliminated(seatId: EntityId, eliminated: Boolean, reason: String)` plus `GameSnapshot.eliminatedSeatIds: SnapshotList<EntityId>` (or `Seat.eliminated`), so eligible-seat selection can be derived instead of caller-supplied.
+4. `GameAction.SetCounterHidden` has no commander slot, so hiding applies to every slot of that seat's counter (commander damage covers all opposing slots plus any recorded slot). Per-slot hiding would need `commanderSlotId: EntityId?` on the action. No change requested unless per-slot hiding is wanted.
 
 ## Latest continuation delta
 
-Section 0 complete: design recorded, baseline green. Next action: implement section 1 (counter reductions) in `feature/life/.../domain/` with tests, run the task's Gradle command, commit, push, update this file.
+Section 1 complete at the commit that carries this text: counter reductions with tests, local check green as recorded above. Next action: implement section 2 (seat clock calculations) in `feature/life/.../domain/` with tests, run the task's Gradle command, commit, push, update this file.
