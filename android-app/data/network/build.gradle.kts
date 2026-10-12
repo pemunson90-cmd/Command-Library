@@ -17,8 +17,6 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.okhttp)
     implementation(libs.okio)
-    implementation(libs.okhttp)
-    implementation(libs.okio)
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
 }
