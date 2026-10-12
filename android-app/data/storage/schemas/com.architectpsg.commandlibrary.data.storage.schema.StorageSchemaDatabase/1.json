@@ -1,0 +1,703 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "3c9df8f3d6ad3fda813b926ddfb7227f",
+    "entities": [
+      {
+        "tableName": "catalog_generation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`generation_id` TEXT NOT NULL, `provider` TEXT NOT NULL, `format` TEXT NOT NULL, `content_uri` TEXT NOT NULL, `display_name` TEXT NOT NULL, `source_uri` TEXT, `source_version` TEXT, `source_date_epoch_seconds` INTEGER, `source_date_nano` INTEGER, `observed_at_epoch_seconds` INTEGER NOT NULL, `observed_at_nano` INTEGER NOT NULL, `content_sha256` TEXT NOT NULL, `observed_bytes` INTEGER NOT NULL, `language_scope` TEXT NOT NULL, `payload_schema_version` INTEGER NOT NULL, `parser_version` TEXT NOT NULL, `notice_payload` TEXT, `oracle_count` INTEGER NOT NULL, `face_count` INTEGER NOT NULL, `printing_count` INTEGER NOT NULL, `status` TEXT NOT NULL, `activated_at_epoch_seconds` INTEGER, `activated_at_nano` INTEGER, PRIMARY KEY(`generation_id`))",
+        "fields": [
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "format",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contentUri",
+            "columnName": "content_uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayName",
+            "columnName": "display_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceUri",
+            "columnName": "source_uri",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sourceVersion",
+            "columnName": "source_version",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sourceDateEpochSeconds",
+            "columnName": "source_date_epoch_seconds",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "sourceDateNano",
+            "columnName": "source_date_nano",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "observedAtEpochSeconds",
+            "columnName": "observed_at_epoch_seconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observedAtNano",
+            "columnName": "observed_at_nano",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contentSha256",
+            "columnName": "content_sha256",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observedBytes",
+            "columnName": "observed_bytes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "languageScope",
+            "columnName": "language_scope",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payloadSchemaVersion",
+            "columnName": "payload_schema_version",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "parserVersion",
+            "columnName": "parser_version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "noticePayload",
+            "columnName": "notice_payload",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "oracleCount",
+            "columnName": "oracle_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "faceCount",
+            "columnName": "face_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "printingCount",
+            "columnName": "printing_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "activatedAtEpochSeconds",
+            "columnName": "activated_at_epoch_seconds",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "activatedAtNano",
+            "columnName": "activated_at_nano",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "generation_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_catalog_generation_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_catalog_generation_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_catalog_generation_provider_status",
+            "unique": false,
+            "columnNames": [
+              "provider",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_catalog_generation_provider_status` ON `${TABLE_NAME}` (`provider`, `status`)"
+          }
+        ]
+      },
+      {
+        "tableName": "catalog_active",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dataset_key` TEXT NOT NULL, `generation_id` TEXT NOT NULL, PRIMARY KEY(`dataset_key`), FOREIGN KEY(`generation_id`) REFERENCES `catalog_generation`(`generation_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "datasetKey",
+            "columnName": "dataset_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "dataset_key"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_catalog_active_generation_id",
+            "unique": false,
+            "columnNames": [
+              "generation_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_catalog_active_generation_id` ON `${TABLE_NAME}` (`generation_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "catalog_generation",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generation_id"
+            ],
+            "referencedColumns": [
+              "generation_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "oracle_card",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`generation_id` TEXT NOT NULL, `provider` TEXT NOT NULL, `oracle_id` TEXT NOT NULL, `language` TEXT NOT NULL, `name` TEXT NOT NULL, `original_text` TEXT, `normalized_name` TEXT NOT NULL, `normalized_search_text` TEXT NOT NULL, `canonical_digest` TEXT NOT NULL, `record_payload` TEXT NOT NULL, PRIMARY KEY(`generation_id`, `provider`, `oracle_id`, `language`), FOREIGN KEY(`generation_id`) REFERENCES `catalog_generation`(`generation_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oracleId",
+            "columnName": "oracle_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "originalText",
+            "columnName": "original_text",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "normalizedName",
+            "columnName": "normalized_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "normalizedSearchText",
+            "columnName": "normalized_search_text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "canonicalDigest",
+            "columnName": "canonical_digest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordPayload",
+            "columnName": "record_payload",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "generation_id",
+            "provider",
+            "oracle_id",
+            "language"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_oracle_card_lookup_order",
+            "unique": false,
+            "columnNames": [
+              "generation_id",
+              "language",
+              "normalized_name",
+              "provider",
+              "oracle_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_oracle_card_lookup_order` ON `${TABLE_NAME}` (`generation_id`, `language`, `normalized_name`, `provider`, `oracle_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "catalog_generation",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generation_id"
+            ],
+            "referencedColumns": [
+              "generation_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "card_face",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`generation_id` TEXT NOT NULL, `provider` TEXT NOT NULL, `oracle_id` TEXT NOT NULL, `language` TEXT NOT NULL, `face_index` INTEGER NOT NULL, `provider_face_id` TEXT, `name` TEXT NOT NULL, `face_payload` TEXT NOT NULL, PRIMARY KEY(`generation_id`, `provider`, `oracle_id`, `language`, `face_index`), FOREIGN KEY(`generation_id`, `provider`, `oracle_id`, `language`) REFERENCES `oracle_card`(`generation_id`, `provider`, `oracle_id`, `language`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oracleId",
+            "columnName": "oracle_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "faceIndex",
+            "columnName": "face_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerFaceId",
+            "columnName": "provider_face_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "facePayload",
+            "columnName": "face_payload",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "generation_id",
+            "provider",
+            "oracle_id",
+            "language",
+            "face_index"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "oracle_card",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generation_id",
+              "provider",
+              "oracle_id",
+              "language"
+            ],
+            "referencedColumns": [
+              "generation_id",
+              "provider",
+              "oracle_id",
+              "language"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "printing",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`generation_id` TEXT NOT NULL, `provider` TEXT NOT NULL, `printing_id` TEXT NOT NULL, `oracle_provider` TEXT, `oracle_id` TEXT, `oracle_language` TEXT, `set_code` TEXT NOT NULL, `set_name` TEXT, `collector_number` TEXT NOT NULL, `language` TEXT NOT NULL, `rarity` TEXT, `finishes` TEXT, `image_uri` TEXT, `metadata_payload` TEXT NOT NULL, PRIMARY KEY(`generation_id`, `provider`, `printing_id`), FOREIGN KEY(`generation_id`) REFERENCES `catalog_generation`(`generation_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`generation_id`, `oracle_provider`, `oracle_id`, `oracle_language`) REFERENCES `oracle_card`(`generation_id`, `provider`, `oracle_id`, `language`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "printingId",
+            "columnName": "printing_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oracleProvider",
+            "columnName": "oracle_provider",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "oracleId",
+            "columnName": "oracle_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "oracleLanguage",
+            "columnName": "oracle_language",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "setCode",
+            "columnName": "set_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "setName",
+            "columnName": "set_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "collectorNumber",
+            "columnName": "collector_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rarity",
+            "columnName": "rarity",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "finishes",
+            "columnName": "finishes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "imageUri",
+            "columnName": "image_uri",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "metadataPayload",
+            "columnName": "metadata_payload",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "generation_id",
+            "provider",
+            "printing_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_printing_oracle",
+            "unique": false,
+            "columnNames": [
+              "generation_id",
+              "oracle_provider",
+              "oracle_id",
+              "oracle_language"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_printing_oracle` ON `${TABLE_NAME}` (`generation_id`, `oracle_provider`, `oracle_id`, `oracle_language`)"
+          },
+          {
+            "name": "index_printing_set_number",
+            "unique": false,
+            "columnNames": [
+              "generation_id",
+              "set_code",
+              "collector_number",
+              "language"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_printing_set_number` ON `${TABLE_NAME}` (`generation_id`, `set_code`, `collector_number`, `language`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "catalog_generation",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generation_id"
+            ],
+            "referencedColumns": [
+              "generation_id"
+            ]
+          },
+          {
+            "table": "oracle_card",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generation_id",
+              "oracle_provider",
+              "oracle_id",
+              "oracle_language"
+            ],
+            "referencedColumns": [
+              "generation_id",
+              "provider",
+              "oracle_id",
+              "language"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "printing_face_asset",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`generation_id` TEXT NOT NULL, `provider` TEXT NOT NULL, `printing_id` TEXT NOT NULL, `face_index` INTEGER NOT NULL, `provider_face_id` TEXT, `language` TEXT NOT NULL, `printed_name` TEXT, `asset_payload` TEXT NOT NULL, PRIMARY KEY(`generation_id`, `provider`, `printing_id`, `face_index`), FOREIGN KEY(`generation_id`, `provider`, `printing_id`) REFERENCES `printing`(`generation_id`, `provider`, `printing_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "printingId",
+            "columnName": "printing_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "faceIndex",
+            "columnName": "face_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerFaceId",
+            "columnName": "provider_face_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "printedName",
+            "columnName": "printed_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "assetPayload",
+            "columnName": "asset_payload",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "generation_id",
+            "provider",
+            "printing_id",
+            "face_index"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "printing",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generation_id",
+              "provider",
+              "printing_id"
+            ],
+            "referencedColumns": [
+              "generation_id",
+              "provider",
+              "printing_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "catalog_name_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS5(`name`, `text`, `generation_id` UNINDEXED, `provider` UNINDEXED, `oracle_id` UNINDEXED, `language` UNINDEXED, tokenize=`unicode61 remove_diacritics 2`)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "generationId",
+            "columnName": "generation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oracleId",
+            "columnName": "oracle_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        },
+        "ftsVersion": "FTS5",
+        "ftsOptions": {
+          "tokenizer": "unicode61",
+          "tokenizerArgs": [
+            "remove_diacritics",
+            "2"
+          ],
+          "contentTable": "",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [
+            "generation_id",
+            "provider",
+            "oracle_id",
+            "language"
+          ],
+          "prefixSizes": [],
+          "preferredOrder": "ASC",
+          "contentRowId": "",
+          "columnSize": true,
+          "detail": "FULL"
+        },
+        "contentSyncTriggers": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c9df8f3d6ad3fda813b926ddfb7227f')"
+    ]
+  }
+}
