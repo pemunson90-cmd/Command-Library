@@ -335,3 +335,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T23:10:01Z | codex | cp-20261012-claude-life-handoff-44 | containing commit | Claude assigned cc-m2-life-domain-01 with exclusive life/domain ownership; Codex retains full-app orchestration. Complete Android v1 remains incomplete.
 
 2026-10-12T23:18:06Z | codex | cp-20261012-routing-resumed-45 | containing commit | Merged published Claude assignment and routing; resumed network/storage preserved work; canonical comparison tests pass. Full Android v1 remains incomplete.
+
+2026-10-12T23:33:15Z | codex | cp-20261012-acquisition-integration-46 | containing commit | Reviewed transport/schema3 candidates integrated; genuine full mapper verified; schema3 generated and legacy entities preserved. Hosted failures corrected pending rerun; isolated payload codec assigned. Full app incomplete.
