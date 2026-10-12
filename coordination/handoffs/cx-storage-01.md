@@ -1,6 +1,6 @@
 # Handoff: cx-storage-01
 
-Checkpoint: cx-storage-01 step 2/4 draft, incomplete; root assigns global checkpoint.
+Checkpoint: cx-storage-01 steps 2/3 code, incomplete acceptance; root assigns global checkpoint.
 Owner: Codex implementer, Sol tier. Task: coordination/tasks/cx-storage-01.md.
 Branch: agent/cx-storage-01. Base: preserved schema 09ea4ccf9e09d8532c2b236828036aa0d71e2376, ordinary main merges through 3d80fb7. Accepted core contracts unchanged.
 Owned paths: android-app/data/storage/** and this handoff. Shared paths changed: none.
@@ -17,14 +17,17 @@ Capabilities probe the real bundled engine/schema/foreign_keys, read MAX_VARIABL
 
 ## Evidence
 
-- git diff --check: passed on draft before checkpoint.
+- Adapter draft published at f291896; remote branch read-back matched.
+- git diff --check: passed on draft and instrumentation before checkpoint.
+- Placeholder scan: no matches in storage module.
 - Local Gradle/JVM/Android checks: not_run; selected executor only has Java21 runtime, no JDK17/compiler or Android SDK. Prior schema checks remain the original handoff's evidence, not this draft's tests.
 - Pure parser/row-bound/latch tests added, not_run.
+- Android StorageDatabaseTest now has15 tests covering actual bound FTS punctuation/quotes/keywords, injection as data, ignored query failure, missing parameter/manual COMMIT rejection, abort/caught abort, returned three typed statuses/first-status precedence, thrown exception/FK enforcement, caller-token and structured cancellation,101 row bound and copied values, committed reopen/late token, escaped scope/closed guard, newer schema and corrupt bytes, repeated real capabilities. All not_run locally.
 
 ## Next
 
-Add Android instrumentation for FTS punctuation and injection, typed/ignored/abort/cancellation rollback, row bound, committed reopen, newer/corrupt schema preservation and capabilities. Push owned branch to trigger hosted android-k2 build and API23/API36/16KiB instrumentation, then address actual diagnostics. Root performs independent durability review before merge.
+Run hosted android-k2 build and API23/API36/16KiB instrumentation on this branch, then address actual diagnostics. Root performs independent durability review before merge. Gradle commands: bash gradlew --no-daemon --max-workers=2 :data:storage:testDebugUnitTest :data:storage:assembleDebug :data:storage:assembleDebugAndroidTest, then :data:storage:connectedDebugAndroidTest on the workflow emulator matrix. Check tested SHA and actual XML counts before acceptance.
 
 ## Limitations and fallback
 
-Incomplete and unverified adapter checkpoint. No build/runtime acceptance claim. Preserve this branch and original agent/cc-storage-01; never reset/rebase or delete saved schema. Resume from pushed branch with ordinary fetch/checkout when no local edits would be lost. No shared changes requested.
+Implemented adapter/instrumentation source, incomplete and unverified acceptance checkpoint. No build/runtime acceptance claim. Preserve this branch and original agent/cc-storage-01; never reset/rebase or delete saved schema. Resume from pushed branch with ordinary fetch/checkout when no local edits would be lost. No shared changes requested.
