@@ -5,6 +5,7 @@ import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import com.architectpsg.commandlibrary.feature.catalog.LocalCatalog
+import com.architectpsg.commandlibrary.feature.rules.LocalRules
 import com.architectpsg.commandlibrary.feature.settings.DataStoreSettingsRepository
 import com.architectpsg.commandlibrary.feature.shell.ShellPorts
 import kotlinx.coroutines.sync.Mutex
@@ -28,7 +29,8 @@ internal class AppGraph(context: Context) {
         when (val opened = StorageDatabase.open(appContext, DATABASE_FILE)) {
             is Outcome.Success -> {
                 val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
-                val ports = ShellPorts(catalog, catalog, catalog, settings, limits)
+                val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
+                val ports = ShellPorts(catalog, catalog, catalog, settings, limits, rulesImport = rules, rulesLookup = rules)
                 ready = ports
                 Outcome.Success(ports)
             }

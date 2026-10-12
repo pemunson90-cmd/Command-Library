@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":data:storage"))
     implementation(project(":feature:catalog"))
+    implementation(project(":feature:rules"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:shell"))
     implementation(libs.coroutines.core)

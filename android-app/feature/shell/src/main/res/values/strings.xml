@@ -184,7 +184,7 @@
     <string name="settings_notices_title">Source notices</string>
     <string name="settings_notice_license">License</string>
     <string name="rules_title">Rules</string>
-    <string name="rules_local_help">Choose an English rules TXT file to read offline. File selection permits this local import only. No source version, date or rights are inferred from the file.</string>
+    <string name="rules_local_help">Import an English rules TXT file to read and search offline.</string>
     <string name="rules_limits">English TXT, up to 8 MiB. Search uses plain text with up to 128 characters. Results are limited to 200 entries per search.</string>
     <string name="rules_choose">Choose rules TXT</string>
     <string name="rules_empty">No local rules installed</string>
@@ -197,7 +197,7 @@
     <string name="rules_import_cancelled">Rules import cancelled. Installed status below shows whether activation completed.</string>
     <string name="rules_import_failed">Rules import failed. Check the installed status below to see which rules are available.</string>
     <string name="rules_import_large">The selected file exceeds the 8 MiB limit.</string>
-    <string name="rules_progress">Reading pass %1$s: %2$s</string>
+    <string name="rules_progress">Reading file (step %1$s of 2): %2$s</string>
     <string name="rules_staged">Entries processed: %1$s</string>
     <string name="rules_attempt">Latest import: %1$s</string>
     <string name="rules_search_label">Search installed rules</string>

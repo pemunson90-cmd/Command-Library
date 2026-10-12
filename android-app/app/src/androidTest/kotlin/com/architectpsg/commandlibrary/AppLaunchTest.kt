@@ -10,12 +10,16 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.core.view.WindowCompat
 import android.os.Build
 import com.architectpsg.commandlibrary.core.common.CoroutineCancelToken
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.core.model.ThemePreference
+import com.architectpsg.commandlibrary.core.model.*
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -105,6 +109,38 @@ class AppLaunchTest {
             val bars = WindowCompat.getInsetsController(rule.activity.window, rule.activity.window.decorView)
             assertTrue(bars.isAppearanceLightStatusBars)
             if (Build.VERSION.SDK_INT >= 26) assertTrue(bars.isAppearanceLightNavigationBars)
+        }
+    }
+
+    @Test
+    fun realRulesImportIsSearchableInTheAppWithoutChangingConsent() {
+        // Authored synthetic content exercises the real graph and SQLite, never source coverage.
+        val bytes = "100.1. Synthetic local rule for the application integration test.\n".toByteArray()
+        val unknown = Knowledge.Unknown("Synthetic input has no upstream metadata", SnapshotList.empty())
+        val source = LocalRulesImportSource(
+            ResourceUri("content://synthetic-app/rules"), "synthetic-rules.txt", ProviderId("synthetic-app"),
+            LanguageTag.ENGLISH, unknown, unknown, unknown, unknown, unknown,
+            Knowledge.Absent("No expected hash"), Knowledge.Known(bytes.size.toLong()),
+        )
+        val graph = (rule.activity.application as CommandLibraryApplication).graph
+        runBlocking {
+            val ports = (graph.ports() as Outcome.Success).value
+            val token = CoroutineCancelToken(currentCoroutineContext())
+            val before = (ports.settings.read(token) as Outcome.Success).value.consents
+            val imported = checkNotNull(ports.rulesImport).import(source,
+                { flowOf(ByteChunk(0, 0, SnapshotBytes(bytes), null, true)) }, {}, token)
+            check(imported is Outcome.Success) { "Real rules import failed: $imported" }
+            assertEquals(before, (ports.settings.read(token) as Outcome.Success).value.consents)
+        }
+        waitForText(string(ShellR.string.rules_title))
+        rule.onNodeWithTag("shell-nav-rules").performClick()
+        waitForText(string(ShellR.string.rules_choose))
+        rule.onAllNodes(hasSetTextAction()).onFirst().performTextReplacement("synthetic")
+        rule.onAllNodes(hasText(string(ShellR.string.search_action)) and hasClickAction()).onFirst().performClick()
+        waitForText("100.1")
+        rule.onAllNodes(hasText("100.1") and hasClickAction()).onFirst().performScrollTo().performClick()
+        rule.waitUntil(20_000) {
+            rule.onAllNodes(hasText("Synthetic local rule", substring = true)).fetchSemanticsNodes().isNotEmpty()
         }
     }
 }
