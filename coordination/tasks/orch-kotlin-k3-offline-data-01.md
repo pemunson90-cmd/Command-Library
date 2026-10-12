@@ -95,7 +95,16 @@ Assumptions/open decisions: user-selected local files are an allowed first input
 
 Exact next action: Claude may begin the bound internal parser/tests task; Codex selects local-first corpus input formats and the necessary truthful source/version/snapshot contracts before proposing catalog scaling or storage migration. No new public contract/schema binding is accepted by this inventory alone.
 
+## Local-first input decision
+
+K3 starts with explicitly user-selected local cards, separate dated card-rulings input, and rules TXT; file selection permits that import only and never grants remote consent. Keep network acquisition and bundled datasets absent until source-specific rights/contract review. Reuse existing DataStore consent.
+
+Exact metadata probe is retained in docs/verification/k3-input-probe: one public metadata GET,3472 bytes, SHA256f454b3f9df03ae0d4b5c7912ae6748d9d9791b509030a36d70a4e3f79950557b. It advertises7 JSONL/gzip-suffixed feeds but does not prove actual compressed/framing bytes or complete English printing coverage. default_cards explicitly includes a printed-language fallback; all_cards claims every card object/every language. No product download occurred. Do not promote metadata updated_at, file name or fetch time into an unverified dataset as-of date.
+
+Preserve K2 small-file behavior. Implement independent private JSONL framing with finite byte/record/nesting bounds first; production full-feed limits must be based on verified source size/disk/memory and reviewed together with on-disk duplicate/canonical checks. The corpus-sized HashMap/ID set cannot become the full-feed engine merely by increasing8MiB. Handle legal valid source shapes lacking top-level Oracle IDs before claiming all layouts; obtain genuine evidence rather than inventing identity joins.
+
+Next meaningful design boundary: additive bulk budget/coverage semantics; bounded disk-backed staging; rules/rulings/source tables and Room1 migration; truthful unknown source/version capability; snapshot-bound entry/ruling retrieval. Those public-contract/durability changes require independent review before application binding. Parser drafts have no repository/network/UI activation.
 
 ## Latest continuation delta
 
-K3 scope inventory audited against accepted K2 and SPEC. Existing consent is reused; K2 full-corpus memory/limits, missing rules/rulings persistence and source/version/snapshot bindings are identified above. External Claude taskcc-k3-rules-parser-01 exclusively owns feature/rules plus its handoff; private parser/test drafts may start against accepted DTOs, with no product-data/network acquisition or DB/core/UI/shared edits. Source/contract/schema activation still requires review. Verification: inventory only, application tests not_run because app code unchanged. Next select permitted local-first input formats and prepare the narrow corpus/source contract design.
+Local-first input policy selected within K3 task authorization; metadata-only source probe by Luna confirms advertised JSONL/gzip and mixed-language default scope, with exact body/hash retained. No product data or license claim. Sol-medium inventory/support completed; external Claude rules parser remains exclusively reserved. Next delegate private catalog JSONL framing/tests independently, then draft/review bulk limits and disk-backed schema/capability bindings. Verification: metadata JSON parsed; app code unchanged so no Android matrix rerun.
