@@ -129,6 +129,34 @@ class ImportControllerTest {
     }
 
     @Test
+    fun cancellationDuringOpenDispatcherReturnClosesTheUnhandedStreamOnce() = runTest {
+        val closes = AtomicInteger(0)
+        val stream = object : ByteArrayInputStream(syntheticBytes(10)) {
+            override fun close() {
+                closes.incrementAndGet()
+                super.close()
+            }
+        }
+        lateinit var controller: ImportController
+        documents.put(uri, MemoryDocuments.Entry("catalog.json", 10, {
+            // This runs on the IO test dispatcher. Cancellation takes effect as withContext
+            // dispatches its result back to the controller's own dispatcher.
+            controller.cancel()
+            stream
+        }))
+        controller = controller()
+
+        assertTrue(controller.start(DocumentRef(uri)))
+        advanceUntilIdle()
+
+        assertEquals(1, documents.opened.get())
+        assertEquals(ImportUiState.Cancelled("catalog.json"), controller.state.value)
+        assertEquals("stream closed exactly once", 1, closes.get())
+        assertEquals("importer never called", 0, catalog.importCalls.get())
+        assertEquals(1, finished.get())
+    }
+
+    @Test
     fun reportedSizeOverTheLimitIsRejectedBeforeReading() = runTest {
         val limits = CatalogImportLimits(maxInputBytes = 1_000)
         documents.putBytes(uri, "big.json", syntheticBytes(10), reportedBytes = 5_000)
