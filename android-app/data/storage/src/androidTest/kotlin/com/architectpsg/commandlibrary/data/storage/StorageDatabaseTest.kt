@@ -60,6 +60,88 @@ class StorageDatabaseTest {
             rows.single().columns.map { it.value })
     }
 
+    @Test fun unicodeParameterSuffixesAreRejectedBeforeNativeBinding() = runBlocking {
+        for (suffix in listOf("😀", "\u0301", "\u2003")) {
+            val sql = "SELECT :a$suffix AS first_value, :a AS second_value"
+            BundledSQLiteDriver().open(":memory:").use { connection ->
+                connection.prepare(sql).use { statement ->
+                    statement.bindLong(1, 11)
+                    statement.bindLong(2, 22)
+                    assertTrue(statement.step())
+                    assertEquals(11L, statement.getLong(0))
+                    assertEquals(22L, statement.getLong(1))
+                }
+            }
+            val refused = database.query(request(sql, "a" to SqlValue.Integer(11)), neverCancel)
+            assertEquals(FailureCode.INVALID_INPUT, (refused as Outcome.Failure).error.code)
+        }
+    }
+
+    @Test fun engineRollbackPreventsEveryLaterStatementAndSurvivesReopen() = runBlocking {
+        success(database.transaction({ transaction ->
+            success(transaction.execute(request("CREATE TABLE storage_rollback_probe(id INTEGER PRIMARY KEY)"), neverCancel))
+        }, neverCancel))
+        var first: Outcome<*>? = null
+        val outcome = database.transaction({ transaction ->
+            success(transaction.execute(request("INSERT INTO storage_rollback_probe(id) VALUES (1)"), neverCancel))
+            first = transaction.execute(request("INSERT OR ROLLBACK INTO storage_rollback_probe(id) VALUES (1)"), neverCancel)
+            assertTrue(first is Outcome.Failure)
+            assertSame(first, transaction.execute(request("INSERT INTO storage_rollback_probe(id) VALUES (2)"), neverCancel))
+            assertSame(first, transaction.query(request("SELECT id FROM storage_rollback_probe"), neverCancel))
+            Unit
+        }, neverCancel)
+        assertSame(first, outcome)
+        database.close()
+        database = success(StorageDatabase.open(context, fileName))
+        val rows = success(database.query(request("SELECT count(*) AS total FROM storage_rollback_probe"), neverCancel))
+        assertEquals(SqlValue.Integer(0), rows.single().columns.single().value)
+    }
+
+    @Test fun mutationReturningQueriesIncludingWithAreRejectedAndRollBack() = runBlocking {
+        val mutating = listOf(
+            "INSERT INTO catalog_name_fts(name, text, generation_id, provider, oracle_id, language) VALUES ('bad', '', 'g', 'p', 'o', 'en') RETURNING name",
+            "UPDATE catalog_name_fts SET name='bad' RETURNING name",
+            "DELETE FROM catalog_name_fts RETURNING name",
+            "WITH source AS (SELECT 'bad' AS name) INSERT INTO catalog_name_fts(name, text, generation_id, provider, oracle_id, language) SELECT name, '', 'g', 'p', 'o', 'en' FROM source RETURNING name",
+        )
+        for (sql in mutating) {
+            val outcome = database.transaction({ transaction ->
+                success(transaction.execute(insert("discard"), neverCancel))
+                val rejected = transaction.query(request(sql), neverCancel)
+                assertEquals(FailureCode.INVALID_INPUT, (rejected as Outcome.Failure).error.code)
+                Unit
+            }, neverCancel)
+            assertTrue(outcome is Outcome.Failure)
+            assertEquals(0L, count())
+        }
+    }
+
+    @Test fun foreignCoroutineAndThreadCallsCannotPoisonOwnerTransaction() = runBlocking {
+        val failure = DomainFailure(FailureCode.INVALID_INPUT, "foreign abort", SnapshotList.empty())
+        success(database.transaction({ transaction ->
+            success(transaction.execute(insert("keep"), neverCancel))
+            coroutineScope {
+                launch {
+                    assertTrue(transaction.query(request("SELECT 1 AS value"), neverCancel) is Outcome.Failure)
+                    assertTrue(transaction.execute(insert("foreign"), neverCancel) is Outcome.Failure)
+                    try { transaction.abort(failure) }
+                    catch (rejected: IllegalStateException) { assertTrue(rejected.message!!.contains("callback coroutine")) }
+                }.join()
+            }
+            val threadResult = CompletableDeferred<Throwable>()
+            val thread = Thread {
+                try { transaction.abort(failure) } catch (rejected: Throwable) { threadResult.complete(rejected) }
+            }
+            thread.start()
+            assertTrue(withTimeout(10_000) { threadResult.await() } is IllegalStateException)
+            thread.join()
+            assertEquals(DbTransactionState.Active, transaction.state)
+            success(transaction.query(request("SELECT count(*) AS total FROM catalog_name_fts"), neverCancel))
+            Unit
+        }, neverCancel))
+        assertEquals(1L, count())
+    }
+
     @Test fun ignoredQueryFailureRollsBackEarlierWrite() = runBlocking {
         val outcome = database.transaction({ transaction ->
             success(transaction.execute(insert("discard"), neverCancel))
@@ -216,6 +298,9 @@ class StorageDatabaseTest {
         var escaped: DbTransaction? = null
         success(database.transaction({ transaction -> escaped = transaction; Unit }, neverCancel))
         assertTrue(escaped!!.query(request("SELECT 1 AS value"), neverCancel) is Outcome.Failure)
+        try { escaped!!.abort(DomainFailure(FailureCode.INVALID_INPUT, "late abort", SnapshotList.empty())) }
+        catch (rejected: IllegalStateException) { assertTrue(rejected.message!!.contains("callback coroutine")) }
+        assertEquals(DbTransactionState.Active, escaped!!.state)
         database.close()
         database.close()
         assertTrue(database.query(request("SELECT 1 AS value"), neverCancel) is Outcome.Failure)

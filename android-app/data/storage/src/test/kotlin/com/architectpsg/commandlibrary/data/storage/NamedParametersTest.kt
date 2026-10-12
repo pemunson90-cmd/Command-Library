@@ -18,11 +18,23 @@ class NamedParametersTest {
     }
 
     @Test fun rejectsAmbiguousAndUnsupportedBindings() {
-        val invalid = listOf("SELECT ?", "SELECT ?12", "SELECT @value", "SELECT ${'$'}value", "SELECT :1", "SELECT :é", "SELECT :a${'$'}b", "SELECT :aé")
+        val invalid = listOf("SELECT ?", "SELECT ?12", "SELECT @value", "SELECT ${'$'}value", "SELECT :1", "SELECT :é", "SELECT :a${'$'}b", "SELECT :aé", "SELECT :a😀", "SELECT :a\u0301", "SELECT :a\u2003")
         invalid.forEach { sql -> assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder(sql, emptyList()) } }
         assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder("SELECT :a", emptyList()) }
         assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder("SELECT 1", listOf(SqlParameter("a", SqlValue.Null))) }
         assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder("SELECT :a", listOf(SqlParameter("a", SqlValue.Null), SqlParameter("a", SqlValue.Null))) }
+    }
+
+    @Test fun readPolicyFindsMainStatementAfterCteDefinitions() {
+        listOf("SELECT 1", "WITH x AS (SELECT 1) SELECT * FROM x",
+            "WITH RECURSIVE x(value) AS NOT MATERIALIZED (SELECT 1 UNION ALL SELECT value+1 FROM x WHERE value<3), \"second\" AS MATERIALIZED (SELECT * FROM x) SELECT * FROM \"second\"").forEach {
+            NamedParameters.requireReadQuery(it)
+        }
+        listOf("INSERT INTO x VALUES(1) RETURNING value", "UPDATE x SET value=1 RETURNING value",
+            "DELETE FROM x RETURNING value", "WITH x AS (SELECT 1) INSERT INTO y SELECT * FROM x RETURNING value",
+            "WITH x AS (SELECT 1), y AS (SELECT * FROM x) DELETE FROM z RETURNING value").forEach {
+            assertThrows(IllegalArgumentException::class.java) { NamedParameters.requireReadQuery(it) }
+        }
     }
 
     @Test fun rejectsMultipleStatementsUnterminatedTokensAndManualCommit() {

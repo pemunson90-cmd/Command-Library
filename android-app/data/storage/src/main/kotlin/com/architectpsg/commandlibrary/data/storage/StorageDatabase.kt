@@ -18,11 +18,19 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.ThreadContextElement
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.AbstractCoroutineContextElement
+import kotlin.coroutines.CoroutineContext
 
-/** Real Room3 storage. Close after callers have finished using this database. */
+/**
+ * Real Room3 storage. Close after callers have finished using this database.
+ * Transaction operations belong to the callback Job. Foreign Job/thread or expired-scope
+ * query/execute returns INVALID_INPUT without altering the owner latch; abort throws
+ * IllegalStateException before altering it. Queries support SELECT and WITH SELECT only.
+ */
 public class StorageDatabase private constructor(private val room: StorageSchemaDatabase) : Database, Closeable {
     private val closed = AtomicBoolean(false)
 
@@ -32,40 +40,53 @@ public class StorageDatabase private constructor(private val room: StorageSchema
             room.useReaderConnection { queryRows(it, request, cancel) }
         }
 
-    public override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> =
-        attempt(cancel, checkAfter = false) {
+    public override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> {
+        var rollbackStatus: Outcome<Nothing>? = null
+        val result = attempt(cancel, checkAfter = false) {
             checkOpen()
             room.useWriterConnection { writer ->
                 writer.withTransaction<Outcome<T>>(Transactor.SQLiteTransactionType.IMMEDIATE) {
-                    val transaction = StorageTransaction(this, currentCoroutineContext()[Job])
-                    try {
-                        val value = try {
-                            action(transaction)
-                        } catch (failure: TransactionAbort) {
-                            transaction.latch.observe(Outcome.Failure(failure.failure))
+                    val transaction = StorageTransaction(this)
+                    withContext(TransactionContext(transaction)) {
+                        transaction.start(currentCoroutineContext()[Job])
+                        try {
+                            val value = try {
+                                action(transaction)
+                            } catch (failure: TransactionAbort) {
+                                transaction.observe(Outcome.Failure(failure.failure))
+                                checkCancellation(cancel)
+                                rollbackStatus = transaction.complete().nonSuccess()
+                                rollback(rollbackStatus!!)
+                            } catch (cancelled: CancellationException) {
+                                throw cancelled
+                            } catch (failure: Exception) {
+                                transaction.observe(classify(failure))
+                                checkCancellation(cancel)
+                                rollbackStatus = transaction.complete().nonSuccess()
+                                rollback(rollbackStatus!!)
+                            }
+                            if (value is Outcome<*>) transaction.observe(value)
+                            // Room commits in NonCancellable after this callback. This is the final
+                            // cancellation boundary; a cancellation after durable commit cannot undo it.
                             checkCancellation(cancel)
-                            rollback(transaction.latch.commitPermission().nonSuccess())
-                        } catch (cancelled: CancellationException) {
-                            throw cancelled
-                        } catch (failure: Exception) {
-                            transaction.latch.observe(classify(failure))
-                            checkCancellation(cancel)
-                            rollback(transaction.latch.commitPermission().nonSuccess())
+                            when (val permission = transaction.complete()) {
+                                is Outcome.Success -> Outcome.Success(value)
+                                else -> {
+                                    rollbackStatus = permission.nonSuccess()
+                                    rollback(rollbackStatus!!)
+                                }
+                            }
+                        } finally {
+                            transaction.finish()
                         }
-                        if (value is Outcome<*>) transaction.latch.observe(value)
-                        // Room commits in NonCancellable after this callback. This is the final
-                        // cancellation boundary; a cancellation after durable commit cannot undo it.
-                        checkCancellation(cancel)
-                        when (val permission = transaction.latch.commitPermission()) {
-                            is Outcome.Success -> Outcome.Success(value)
-                            else -> rollback(permission.nonSuccess())
-                        }
-                    } finally {
-                        transaction.finish()
                     }
                 }
             }
         }.flatten()
+        // SQLite can already have rolled back after an OR ROLLBACK conflict. Room's final
+        // ROLLBACK then throws; retain the first typed status without allowing any later SQL.
+        return rollbackStatus ?: result
+    }
 
     public override suspend fun capabilities(cancel: CancelToken): Outcome<DbCapabilities> = attempt(cancel) {
         checkOpen()
@@ -139,17 +160,35 @@ public class StorageDatabase private constructor(private val room: StorageSchema
     }
 }
 
-private class StorageTransaction(connection: PooledConnection, private val owner: Job?) : DbTransaction {
+private class StorageTransaction(connection: PooledConnection) : DbTransaction {
+    private val monitor = Any()
+    private var owner: Job? = null
     private var connection: PooledConnection? = connection
-    val latch = RollbackOnlyLatch()
-    override val state: DbTransactionState get() = latch.state
+    private val latch = RollbackOnlyLatch()
+    override val state: DbTransactionState get() = synchronized(monitor) { latch.state }
+
+    fun start(job: Job?): Unit = synchronized(monitor) { owner = job }
+
+    fun observe(outcome: Outcome<*>): Unit = synchronized(monitor) {
+        checkOwner()
+        check(connection != null) { "Transaction callback has finished" }
+        latch.observe(outcome)
+        Unit
+    }
+
+    /** Revocation and the final latch decision are one atomic operation. */
+    fun complete(): Outcome<Unit> = synchronized(monitor) {
+        checkOwner()
+        check(connection != null) { "Transaction callback has finished" }
+        connection = null
+        latch.commitPermission()
+    }
 
     override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> =
-        latch.observe(attempt(cancel) { queryRows(activeConnection(), request, cancel) })
+        operation(cancel) { queryRows(it, request, cancel) }
 
     override suspend fun execute(request: SqlRequest, cancel: CancelToken): Outcome<DbWriteResult> =
-        latch.observe(attempt(cancel) {
-            val active = activeConnection()
+        operation(cancel) { active ->
             val values = NamedParameters.bindOrder(request.statement, request.parameters)
             active.usePrepared(request.statement) { statement ->
                 bind(statement, values)
@@ -158,23 +197,55 @@ private class StorageTransaction(connection: PooledConnection, private val owner
             }
             checkCancellation(cancel)
             active.usePrepared("SELECT changes()") { check(it.step()); DbWriteResult(it.getLong(0)) }
-        })
+        }
 
-    override fun abort(error: DomainFailure): Nothing {
+    override fun abort(error: DomainFailure): Nothing = synchronized(monitor) {
+        checkOwner()
         check(connection != null) { "Transaction callback has finished" }
         latch.abort(error)
     }
 
-    fun finish(): Unit { connection = null }
+    fun finish(): Unit = synchronized(monitor) { connection = null }
 
-    private suspend fun activeConnection(): PooledConnection {
-        check(currentCoroutineContext()[Job] === owner) { "Transaction belongs to its callback coroutine" }
-        return checkNotNull(connection) { "Transaction callback has finished" }
+    private suspend fun <T> operation(cancel: CancelToken, action: suspend (PooledConnection) -> T): Outcome<T> {
+        checkCancellation(cancel)
+        val active = synchronized(monitor) {
+            // Reject foreign/post-callback calls before inspecting or mutating the latch.
+            if (!isOwner() || connection == null) return invalid("Transaction belongs to its active callback coroutine")
+            when (val status = latch.state) {
+                is DbTransactionState.RollbackOnly -> return status.status
+                DbTransactionState.Active -> checkNotNull(connection)
+            }
+        }
+        val outcome = attempt(cancel) { action(active) }
+        observe(outcome)
+        return outcome
+    }
+
+    private fun isOwner(): Boolean = TransactionContext.current.get().let { it != null && it.transaction === this && it.job === owner }
+    private fun checkOwner(): Unit = check(isOwner()) { "Transaction belongs to its callback coroutine" }
+}
+
+/** Carries the current Job onto the executing thread so synchronous abort has the same guard. */
+private class TransactionContext(private val transaction: StorageTransaction) :
+    ThreadContextElement<TransactionContext.Frame?>, AbstractCoroutineContextElement(Key) {
+    data class Frame(val transaction: StorageTransaction, val job: Job?)
+    companion object Key : CoroutineContext.Key<TransactionContext> {
+        val current = ThreadLocal<Frame?>()
+    }
+    override fun updateThreadContext(context: CoroutineContext): Frame? {
+        val previous = current.get()
+        current.set(Frame(transaction, context[Job]))
+        return previous
+    }
+    override fun restoreThreadContext(context: CoroutineContext, oldState: Frame?): Unit {
+        if (oldState == null) current.remove() else current.set(oldState)
     }
 }
 
 private suspend fun queryRows(connection: PooledConnection, request: SqlRequest, cancel: CancelToken): SnapshotList<RowData> {
     val values = NamedParameters.bindOrder(request.statement, request.parameters)
+    NamedParameters.requireReadQuery(request.statement)
     return connection.usePrepared(request.statement) { statement ->
         bind(statement, values)
         val names = (0 until statement.getColumnCount()).map(statement::getColumnName)
