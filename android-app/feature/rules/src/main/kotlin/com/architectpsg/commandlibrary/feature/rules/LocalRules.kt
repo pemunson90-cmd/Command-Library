@@ -108,6 +108,7 @@ public class LocalRules(private val database: Database, private val clock: Clock
     /** Literal Unicode words, AND semantics; at most 256 code points and 32 words. Empty text lists entries. */
     override suspend fun search(query: RulesQuery, cancel: CancelToken): Outcome<Page<RuleEntry>> = readOperation(cancel) {
         initialize(cancel)
+        val requestedCorpus = query.corpusId
         require(query.text.codePointCount(0, query.text.length) <= 256) { "Rules query exceeds 256 code points" }
         val tokens = RulesCursors.tokens(query.text); require(tokens.size <= 32) { "Rules query exceeds 32 words" }
         require(query.text.isBlank() || tokens.isNotEmpty()) { "Rules query needs a Unicode word" }
@@ -116,9 +117,9 @@ public class LocalRules(private val database: Database, private val clock: Clock
         val cursor = try { query.page.cursor?.let { RulesCursors.decode(it) } } catch (_: Exception) { throw RulesFailure(rulesFailure(FailureCode.INVALID_INPUT, "Malformed rules cursor")) }
         if (cursor != null && cursor.query != key) throw RulesFailure(rulesFailure(FailureCode.INVALID_INPUT, "Cursor query changed"))
         readTransaction(cancel) { tx ->
-            val selected = if (query.corpusId == null) tx.query(rulesSql("SELECT g.* FROM rules_active a JOIN rules_corpus g ON g.generation_id=a.generation_id WHERE a.singleton_id=1"), cancel).requireSuccess().firstOrNull()
-                else tx.query(rulesSql("SELECT * FROM rules_corpus WHERE generation_id=:id AND status IN ('ACTIVE','RETIRED')", 1, "id" to query.corpusId.value), cancel).requireSuccess().firstOrNull()
-            if (selected == null) throw RulesFailure(if (query.corpusId != null || cursor != null) rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot unavailable") else Outcome.Unavailable(UnavailableReason.NOT_INSTALLED, "No rules installed"))
+            val selected = if (requestedCorpus == null) tx.query(rulesSql("SELECT g.* FROM rules_active a JOIN rules_corpus g ON g.generation_id=a.generation_id WHERE a.singleton_id=1"), cancel).requireSuccess().firstOrNull()
+                else tx.query(rulesSql("SELECT * FROM rules_corpus WHERE generation_id=:id AND status IN ('ACTIVE','RETIRED')", 1, "id" to requestedCorpus.value), cancel).requireSuccess().firstOrNull()
+            if (selected == null) throw RulesFailure(if (requestedCorpus != null || cursor != null) rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot unavailable") else Outcome.Unavailable(UnavailableReason.NOT_INSTALLED, "No rules installed"))
             val metadata = corpus(selected)
             val generation = metadata.id.value
             if (cursor != null && cursor.generation != generation) throw RulesFailure(rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot changed"))
