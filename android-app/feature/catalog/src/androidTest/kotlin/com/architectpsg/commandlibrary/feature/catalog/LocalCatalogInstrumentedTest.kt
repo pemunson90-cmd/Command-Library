@@ -58,7 +58,7 @@ class LocalCatalogInstrumentedTest {
             }, cancel)
     }
 
-    @Test fun genuineImportLookupAndReopen() = runBlocking {
+    @Test fun genuineImportLookupAndReopen(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val data = bytes
         val token = TestCancel()
@@ -86,7 +86,7 @@ class LocalCatalogInstrumentedTest {
         } finally { reopened.close(); context.deleteDatabase(name) }
     }
 
-    @Test fun checksumFailureAndCancellationAfterWriteKeepPriorGeneration() = runBlocking {
+    @Test fun checksumFailureAndCancellationAfterWriteKeepPriorGeneration(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val data = bytes
         val db = open(name)
@@ -106,7 +106,7 @@ class LocalCatalogInstrumentedTest {
         } finally { db.close(); context.deleteDatabase(name) }
     }
 
-    @Test fun syntheticPagingCursorAndLiteralPunctuation() = runBlocking {
+    @Test fun syntheticPagingCursorAndLiteralPunctuation(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val array = JSONArray(bytes.toString(Charsets.UTF_8))
         val synthetic = JSONArray()
@@ -138,7 +138,7 @@ class LocalCatalogInstrumentedTest {
         } finally { db.close(); context.deleteDatabase(name) }
     }
 
-    @Test fun syntheticCleanupFailureRethrowsOriginalCancellationAndRetriesRecovery() = runBlocking {
+    @Test fun syntheticCleanupFailureRethrowsOriginalCancellationAndRetriesRecovery(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val db = open(name)
         try {
@@ -154,7 +154,7 @@ class LocalCatalogInstrumentedTest {
             assertFalse((catalog.status(fresh) as Outcome.Success).value.initialized) // Next retry cleans staging.
         } finally { db.close(); context.deleteDatabase(name) }
     }
-    @Test fun syntheticCleanupTimeoutRethrowsOriginalCancellationAndRecovers() = runBlocking {
+    @Test fun syntheticCleanupTimeoutRethrowsOriginalCancellationAndRecovers(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val db = open(name)
         try {

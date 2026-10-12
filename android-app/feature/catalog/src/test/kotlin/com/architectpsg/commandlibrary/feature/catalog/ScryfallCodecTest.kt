@@ -12,7 +12,7 @@ class ScryfallCodecTest {
     private val observed = UtcTimestamp(123)
     private fun map(raw: String) = ScryfallCodec.mapped(raw, provider, generation, null,
         Knowledge.Unknown("No source date", SnapshotList.empty()), observed, null, null, 32)
-    @Test fun genuineCardsRetainCanonicalAndPrintingDifferences() = runBlocking {
+    @Test fun genuineCardsRetainCanonicalAndPrintingDifferences(): Unit = runBlocking {
         val bytes = javaClass.getResourceAsStream("/english-three-printings.json")!!.readBytes()
         val framed = mutableListOf<String>()
         val framer = JsonArrayFramer(CatalogImportLimits())

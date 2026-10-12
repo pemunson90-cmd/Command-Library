@@ -6,6 +6,8 @@ import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
+import java.io.IOException
+import com.google.gson.JsonParseException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -169,7 +171,7 @@ public class LocalCatalog(
             }
             when (cause) {
                 is CatalogFailure -> cause.outcome
-                is IllegalArgumentException, is IllegalStateException -> invalid(cause.message ?: "Invalid catalog input")
+                is IllegalArgumentException, is IllegalStateException, is ArithmeticException, is IOException, is JsonParseException -> invalid(cause.message ?: "Invalid catalog input")
                 else -> failure(FailureCode.INTERNAL, "Catalog import failed")
             }
         }
