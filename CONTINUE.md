@@ -6,7 +6,7 @@ See `docs/gauntlet/DOCUMENTATION_POLICY.md` for documentation authority and dupl
 
 ## What "continue" authorizes
 
-Resume the exact committed queue pointer, perform reversible work inside the current reviewed product scope, verify it honestly and publish a bounded checkpoint. Any model family may replace a stopped prior orchestrator. One orchestrator lease-holder at a time. Parallel component writers require explicit disjoint ownership/locks.
+Resume the exact committed queue pointer, perform reversible work inside the current reviewed product scope, verify it honestly and publish bounded progress. Any model family may replace a stopped prior orchestrator. One orchestrator lease-holder at a time. Parallel component writers require explicit disjoint ownership/locks.
 
 Pat's recorded rulings in `docs/gauntlet/DECISIONS.md` override project documents. Routine technical implementation is delegated. Product scope changes, security/language-consent changes, destructive user-data behavior, new spending, public release and unresolved permission barriers still require an explicit ruling.
 
@@ -19,11 +19,22 @@ For a normal clean resume:
 1. Verify current `main` head.
 2. Read `coordination/state.json`.
 3. Read `coordination/ORCHESTRATOR.json`.
-4. Read only `coordination/tasks/<state.next_task>.md` and the specific documents it names.
-5. If the lease is released, claim it before shared-file writes. If a fresh active lease exists, inspect/review only unless the owner has clearly stopped and the takeover procedure applies.
-6. Execute a coherent commit-worthy work unit, run the task-required checks, update the task card, then checkpoint and publish.
+4. Read only `coordination/tasks/<state.next_task>.md` and its `Latest continuation delta` when present.
+5. Read only the specific files, contracts, decisions or evidence named by that task step/delta.
+6. If the lease is released, claim it before shared-file writes. If a fresh active lease exists, inspect/review only unless the owner has clearly stopped and the takeover procedure applies.
+7. Execute the next coherent action, verify it as appropriate, update the smallest local continuation surface, and commit the action when it mutates the repository.
 
 `coordination/QUEUE.md` is needed when choosing an alternate task, resolving a blocker or checking runnable work. `coordination/handoffs/CURRENT.md` and `docs/gauntlet/STATE.md` are generated human-readable mirrors. The journal/events are audit history. Do not read all of them on every clean resume.
+
+## Per-action handoff rule
+
+Every completed model, agent or subagent action must leave a minimal continuation delta so another actor can continue from that exact point without reconstructing the whole repository history.
+
+For an orchestrator action, update the current task card. For a delegated worker, update that worker's task handoff or task card. The delta contains only what changed/was learned, affected branch/commit/files when applicable, verification actually run or `not_run`, and the exact next action.
+
+Use a single replaceable `Latest continuation delta` section. Do not append a growing mini-journal to the task card. Git history provides provenance for previous deltas.
+
+A local action delta does not require synchronizing every global coordination file. Global state is updated only when the actual global pointer, ownership, blocker, task/step, accepted evidence or other coordination state changes.
 
 ## Recovery or takeover path
 
@@ -45,7 +56,7 @@ Windows/Flutter is version 2 after Android v1 acceptance. Sync begins only after
 
 ## Checkpoint policy
 
-Checkpoint meaningful work, not every tiny edit. A checkpoint is warranted when a coherent unit is complete, ownership changes, a shared/public contract changes, a risky migration is about to begin, a useful partial result would otherwise be lost, or tool/context/usage limits make interruption likely.
+Do not confuse an action delta with a global checkpoint. Checkpoint when a coherent unit is complete or global coordination state changes: ownership, task/step, blockers, shared/public contracts, risky migration boundaries, accepted verification/review, or a useful partial result that could otherwise be lost.
 
 A resumable checkpoint must contain enough information for another model to continue without chat history:
 
