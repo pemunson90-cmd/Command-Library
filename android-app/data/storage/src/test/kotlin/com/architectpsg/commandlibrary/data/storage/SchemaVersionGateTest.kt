@@ -48,8 +48,8 @@ class SchemaVersionGateTest {
     }
 
     @Test
-    fun unreadableFileIsLeftForRoomToRejectVisibly() {
+    fun unreadableFileIsRejectedBeforeWritableOpen() {
         val unreadable = OnDiskSchema.Unreadable(IllegalStateException("not a database"))
-        assertEquals(Outcome.Success(Unit), SchemaVersionGate.admit(unreadable, 1))
+        assertTrue(SchemaVersionGate.admit(unreadable, 1) is Outcome.Failure)
     }
 }

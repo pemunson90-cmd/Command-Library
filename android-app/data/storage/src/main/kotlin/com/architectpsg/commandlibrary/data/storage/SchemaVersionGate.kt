@@ -4,6 +4,9 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.driver.bundled.SQLITE_OPEN_READONLY
 import com.architectpsg.commandlibrary.core.model.Outcome
+import com.architectpsg.commandlibrary.core.model.DomainFailure
+import com.architectpsg.commandlibrary.core.model.FailureCode
+import com.architectpsg.commandlibrary.core.model.SnapshotList
 import com.architectpsg.commandlibrary.core.model.UnavailableReason
 import java.io.File
 
@@ -15,7 +18,7 @@ internal sealed interface OnDiskSchema {
     /** The PRAGMA user_version stored in the file. Room writes its schema version there. */
     data class Versioned(val userVersion: Int) : OnDiskSchema
 
-    /** The file could not be inspected. Room is left to open it and fail visibly if it is unusable. */
+    /** The file could not be inspected. Do not let a writable Room open touch it. */
     data class Unreadable(val cause: Exception) : OnDiskSchema
 }
 
@@ -55,7 +58,11 @@ internal object SchemaVersionGate {
 
     fun admit(found: OnDiskSchema, supportedVersion: Int): Outcome<Unit> = when (found) {
         is OnDiskSchema.Absent -> Outcome.Success(Unit)
-        is OnDiskSchema.Unreadable -> Outcome.Success(Unit)
+        is OnDiskSchema.Unreadable -> Outcome.Failure(DomainFailure(
+            FailureCode.CORRUPT_DATA,
+            "The local database could not be read. No data was changed or removed.",
+            SnapshotList.empty(),
+        ))
         is OnDiskSchema.Versioned ->
             if (found.userVersion <= supportedVersion) {
                 Outcome.Success(Unit)
