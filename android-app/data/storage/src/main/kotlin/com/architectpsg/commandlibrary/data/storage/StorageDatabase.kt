@@ -18,7 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.ThreadContextElement
+import kotlinx.coroutines.CopyableThreadContextElement
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
@@ -27,9 +29,11 @@ import kotlin.coroutines.CoroutineContext
 
 /**
  * Real Room3 storage. Close after callers have finished using this database.
- * Transaction operations belong to the callback Job. Foreign Job/thread or expired-scope
- * query/execute returns INVALID_INPUT without altering the owner latch; abort throws
- * IllegalStateException before altering it. Queries support SELECT and WITH SELECT only.
+ * Suspend transaction operations belong to the callback Job. Foreign Job or expired-scope
+ * query/execute returns INVALID_INPUT without altering the owner latch. Synchronous abort
+ * accepts the callback's sequential lexical scopes; independently launched coroutines,
+ * foreign threads and expired scopes throw IllegalStateException before altering the latch.
+ * Queries support SELECT and WITH SELECT only.
  */
 public class StorageDatabase private constructor(private val room: StorageSchemaDatabase) : Database, Closeable {
     private val closed = AtomicBoolean(false)
@@ -48,7 +52,10 @@ public class StorageDatabase private constructor(private val room: StorageSchema
                 writer.withTransaction<Outcome<T>>(Transactor.SQLiteTransactionType.IMMEDIATE) {
                     val transaction = StorageTransaction(this)
                     withContext(TransactionContext(transaction)) {
-                        transaction.start(currentCoroutineContext()[Job])
+                        transaction.start(
+                            currentCoroutineContext()[Job],
+                            checkNotNull(currentCoroutineContext()[TransactionContext]).token,
+                        )
                         try {
                             val value = try {
                                 action(transaction)
@@ -163,11 +170,15 @@ public class StorageDatabase private constructor(private val room: StorageSchema
 private class StorageTransaction(connection: PooledConnection) : DbTransaction {
     private val monitor = Any()
     private var owner: Job? = null
+    private var ownerToken: Any? = null
     private var connection: PooledConnection? = connection
     private val latch = RollbackOnlyLatch()
     override val state: DbTransactionState get() = synchronized(monitor) { latch.state }
 
-    fun start(job: Job?): Unit = synchronized(monitor) { owner = job }
+    fun start(job: Job?, token: Any): Unit = synchronized(monitor) {
+        owner = job
+        ownerToken = token
+    }
 
     fun observe(outcome: Outcome<*>): Unit = synchronized(monitor) {
         checkOwner()
@@ -223,25 +234,35 @@ private class StorageTransaction(connection: PooledConnection) : DbTransaction {
         return outcome
     }
 
-    private fun isOwner(): Boolean = TransactionContext.current.get().let { it != null && it.transaction === this && it.job === owner }
+    private fun isOwner(): Boolean = TransactionContext.current.get().let {
+        it != null && it.transaction === this && it.token === ownerToken
+    }
     private fun checkOwner(): Unit = check(isOwner()) { "Transaction belongs to its callback coroutine" }
 }
 
-/** Carries the current Job onto the executing thread so synchronous abort has the same guard. */
+/**
+ * A stable callback token survives undispatched scope restoration. Child coroutine builders
+ * receive a distinct token, so they cannot synchronously abort the owner's transaction.
+ * Suspend operations additionally require the exact callback Job.
+ */
+@OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 private class TransactionContext(private val transaction: StorageTransaction) :
-    ThreadContextElement<TransactionContext.Frame?>, AbstractCoroutineContextElement(Key) {
-    data class Frame(val transaction: StorageTransaction, val job: Job?)
+    CopyableThreadContextElement<TransactionContext.Frame?>, AbstractCoroutineContextElement(Key) {
+    val token: Any = Any()
+    data class Frame(val transaction: StorageTransaction, val token: Any)
     companion object Key : CoroutineContext.Key<TransactionContext> {
         val current = ThreadLocal<Frame?>()
     }
     override fun updateThreadContext(context: CoroutineContext): Frame? {
         val previous = current.get()
-        current.set(Frame(transaction, context[Job]))
+        current.set(Frame(transaction, token))
         return previous
     }
     override fun restoreThreadContext(context: CoroutineContext, oldState: Frame?): Unit {
         if (oldState == null) current.remove() else current.set(oldState)
     }
+    override fun copyForChild(): TransactionContext = TransactionContext(transaction)
+    override fun mergeForChild(overwritingElement: CoroutineContext.Element): CoroutineContext = overwritingElement
 }
 
 private suspend fun queryRows(connection: PooledConnection, request: SqlRequest, cancel: CancelToken): SnapshotList<RowData> {

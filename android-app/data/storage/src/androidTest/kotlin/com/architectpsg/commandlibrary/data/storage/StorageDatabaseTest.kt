@@ -127,13 +127,22 @@ class StorageDatabaseTest {
         success(database.transaction({ transaction ->
             success(transaction.execute(insert("keep"), neverCancel))
             coroutineScope {
-                launch {
+                suspend fun rejectForeignCalls() {
                     assertTrue(transaction.query(request("SELECT 1 AS value"), neverCancel) is Outcome.Failure)
                     assertTrue(transaction.execute(insert("foreign"), neverCancel) is Outcome.Failure)
-                    try { transaction.abort(failure) }
+                    try {
+                        transaction.abort(failure)
+                    }
                     catch (rejected: IllegalStateException) { assertTrue(rejected.message!!.contains("callback coroutine")) }
-                }.join()
+                }
+                launch { rejectForeignCalls() }.join()
+                launch(start = CoroutineStart.UNDISPATCHED) { rejectForeignCalls() }.join()
+                async { rejectForeignCalls() }.await()
             }
+            // Returning from an undispatched scope must restore usable callback ownership.
+            success(transaction.query(request("SELECT 1 AS value"), neverCancel))
+            coroutineScope { yield() }
+            success(transaction.execute(insert("keep-after-scope"), neverCancel))
             val threadResult = CompletableDeferred<Throwable>()
             val thread = Thread {
                 try { transaction.abort(failure) } catch (rejected: Throwable) { threadResult.complete(rejected) }
@@ -145,7 +154,22 @@ class StorageDatabaseTest {
             success(transaction.query(request("SELECT count(*) AS total FROM catalog_name_fts"), neverCancel))
             Unit
         }, neverCancel))
-        assertEquals(1L, count())
+        assertEquals(2L, count())
+    }
+
+    @Test fun ownerAbortAfterSuspendedNestedScopesRollsBack() = runBlocking {
+        val failure = DomainFailure(FailureCode.INVALID_INPUT, "owner abort after scope", SnapshotList.empty())
+        val outcome = database.transaction({ transaction ->
+            success(transaction.execute(insert("discard"), neverCancel))
+            coroutineScope {
+                launch(start = CoroutineStart.UNDISPATCHED) { yield() }.join()
+                yield()
+            }
+            // No query/execute call may be needed to repair a stale thread-local frame.
+            transaction.abort(failure)
+        }, neverCancel)
+        assertEquals(failure, (outcome as Outcome.Failure).error)
+        assertEquals(0L, count())
     }
 
     @Test fun ignoredQueryFailureRollsBackEarlierWrite() = runBlocking {
