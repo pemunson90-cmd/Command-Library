@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-claude-k2-14",
+  "checkpoint_id": "cp-20261012-claude-k2-15",
   "verified_base_head": "575159ba13be87def464fa419d1bbcb22a48211d",
   "stage": "K2 core contracts accepted; foundation adapters next",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
   "next_step": 2,
-  "first_action": "Claude Code holds the lease (Pat authorized takeover of the expired Codex lease). Working K2 step 2: prove the AGP/Room3/KSP/FTS5 tuple compiles, then storage. Read coordination/handoffs/K2-STEP2-CLAUDE.md for exact progress and next actions.",
+  "first_action": "K2 step 2 (tuple part of step 1): Claude Code resolved and compiled the K1 tuple in a scratch probe; compileSdk must be 37 for Compose BOM 2026.09.00; independent review requested. Read coordination/handoffs/K2-STEP2-CLAUDE.md for the exact next action.",
   "active_tasks": [
     "orch-kotlin-m0-01"
   ],
@@ -29,6 +29,6 @@
     "network_policy": "cloud runtime connected, enforced unrestricted HTTP policy observed this session",
     "kotlin_contracts": "Corrected hosted run38182564573 succeeded at2ac4a302f6832a9ec33e2739a687b5e3905a6015 with25 executed JVM tests(model13/common12); main integrated exact unchanged core tree."
   },
-  "last_completed": "Claude Code took over the expired Codex lease (expired 2026-10-11T23:47:41Z) at Pat's instruction to continue K2 step 2. Core contracts accepted and integrated at 575159b; Claude QA branch agent/cc-k2-qa-01 is READY-FOR-REVIEW and unmerged (needs an independent reviewer, not its author).",
-  "updated_utc": "2026-10-12T00:05:55Z"
+  "last_completed": "K1 tuple compiled locally (AGP 9.4.1 built-in Kotlin 2.2.10, KSP 2.3.12, Room3 3.0.3 FTS5, sqlite-bundled 2.7.1, DataStore 1.2.1) with compileSdk 37, target 36, min 23; APK native libs 16KB aligned; JVM bundled FTS5 MATCH passes. No emulator run. Evidence docs/gauntlet/gates/K2-TUPLE-PROBE.md.",
+  "updated_utc": "2026-10-12T00:19:38Z"
 }

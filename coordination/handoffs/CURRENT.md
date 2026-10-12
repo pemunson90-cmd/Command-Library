@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-claude-k2-14
+Checkpoint-ID: cp-20261012-claude-k2-15
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Claude Code holds the lease (Pat authorized takeover of the expired Codex lease). Working K2 step 2: prove the AGP/Room3/KSP/FTS5 tuple compiles, then storage. Read coordination/handoffs/K2-STEP2-CLAUDE.md for exact progress and next actions.
+Next step: 2. K2 step 2 (tuple part of step 1): Claude Code resolved and compiled the K1 tuple in a scratch probe; compileSdk must be 37 for Compose BOM 2026.09.00; independent review requested. Read coordination/handoffs/K2-STEP2-CLAUDE.md for the exact next action.
 
-Updated UTC: 2026-10-12T00:05:55Z
+Updated UTC: 2026-10-12T00:19:38Z
 Status: in_progress; lease: active.
 Verified base: 575159ba13be87def464fa419d1bbcb22a48211d.
 
-Claude Code took over the expired Codex lease (expired 2026-10-11T23:47:41Z) at Pat's instruction to continue K2 step 2. Core contracts accepted and integrated at 575159b; Claude QA branch agent/cc-k2-qa-01 is READY-FOR-REVIEW and unmerged (needs an independent reviewer, not its author).
+K1 tuple compiled locally (AGP 9.4.1 built-in Kotlin 2.2.10, KSP 2.3.12, Room3 3.0.3 FTS5, sqlite-bundled 2.7.1, DataStore 1.2.1) with compileSdk 37, target 36, min 23; APK native libs 16KB aligned; JVM bundled FTS5 MATCH passes. No emulator run. Evidence docs/gauntlet/gates/K2-TUPLE-PROBE.md.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

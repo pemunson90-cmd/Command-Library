@@ -5,12 +5,12 @@ reviewed (approve, 0ad8f6c); review findings applied on the branch; merge to `ma
 
 ## Continuation fields (CONTINUE.md handoff minimum)
 - Checkpoint ID: cp-20261011-cc-plangaps-01 (set on `main` at merge)
-- Owner: claude-code orchestrator, session https://claude.ai/code/session_019gTNLDK7xZq1X8MTXvBVdA, model Opus 5.5 (claude-opus-5-5)
+- Owner: claude-code orchestrator, session https://claude.ai/code/session_019gTNLDK7xZq1X8MTXvBVdA, strongest model tier per D-10
 - Task and step: cc-plangaps-01, steps 0 to 8 of 8
 - Base SHA: 3799edb60bf2ab0b2cbb3e1ffc26613adcc0dd28 (`main` after Codex released the G3-A lease). Dependency SHAs: none beyond base.
 - Owned paths on the branch: the files listed under "Files changed". Shared paths touched: DECISIONS.md, CI_PLAN.md, OWNERSHIP.md, four ARCHITECT files, `.gitignore`, `.claude/agents/*`, `coordination/agents/*`, each under Pat's rulings ("Approve all", D-08, D-19).
 - Work status: documents drafted, verified (`check_continuity.py` PASS and 5 tests OK at every commit), reviewed. Not merged.
-- Workers: three Sonnet 5.5 (claude-sonnet-5-5) workers drafted RISKS.md, IMPOSSIBLE.md, the SPEC/COVERAGE/PARITY additions and the D-19 propagation; one Haiku 5.5 check produced the gap list; one Opus 5.5 reviewer reviewed. The orchestrator diff-reviewed every worker draft before commit.
+- Workers: three Sonnet-tier workers drafted RISKS.md, IMPOSSIBLE.md, the SPEC/COVERAGE/PARITY additions and the D-19 propagation; one Haiku-tier check produced the gap list; one strongest-tier reviewer reviewed. The orchestrator diff-reviewed every worker draft before commit.
 - Runtime limits: no build, device or CI run applies; documents only. Some web sources cited in IMPOSSIBLE.md were not re-fetched by the reviewer (see Review notes).
 - Safe fallback: if no D-17 lease can be claimed, leave the branch unmerged; nothing on it is lost.
 
@@ -82,7 +82,7 @@ reviewed (approve, 0ad8f6c); review findings applied on the branch; merge to `ma
 Verdict: **approve**. No blocking findings. Apply the non-blocking findings and the D-19 list below at merge, or on this branch before merge.
 
 Review checkpoint (handoff minimum for this section)
-- Reviewer: independent reviewer subagent, model Opus 5.5 (claude-opus-5-5), separate session from the authors (Claude Code orchestrator and Sonnet workers). I authored no part of the diff.
+- Reviewer: independent reviewer subagent, strongest model tier per D-10, separate session from the authors (Claude Code orchestrator and Sonnet workers). I authored no part of the diff.
 - Task/step: cc-plangaps-01 step 8/8, independent review. Owner of the task: claude-code orchestrator.
 - Reviewed: `git diff 3799edb60bf2ab0b2cbb3e1ffc26613adcc0dd28..49d5eb1` on `agent/cc-plangaps-01` (32 files, 323 added lines). Work status after this commit: reviewed, not merged.
 - Written by this review: this section only. No shared or lease-holder file touched.

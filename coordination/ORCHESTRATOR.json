@@ -2,10 +2,10 @@
   "schema_version": 1,
   "status": "active",
   "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
-  "model_family": "Claude Code (Opus 5.5); Sonnet/Haiku helpers per D-10",
+  "model_family": "Claude Code; Sonnet/Haiku helpers per D-10",
   "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-12T00:05:55Z",
-  "expires_utc": "2026-10-12T00:50:55Z",
-  "checkpoint_id": "cp-20261012-claude-k2-14",
+  "heartbeat_utc": "2026-10-12T00:19:38Z",
+  "expires_utc": "2026-10-12T01:04:38Z",
+  "checkpoint_id": "cp-20261012-claude-k2-15",
   "note": "Stale Codex lease (codex-k2-foundation-20261011, expired 2026-10-11T23:47:41Z) taken over at Pat's instruction on 2026-10-12. Codex resumes from coordination/handoffs/K2-STEP2-CLAUDE.md."
 }
