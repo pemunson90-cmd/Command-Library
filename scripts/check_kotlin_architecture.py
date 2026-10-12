@@ -99,7 +99,7 @@ def validate(root: Path) -> list[str]:
         module_owners[module_id] = owner
 
     # Component-level dependencies define the only legal inter-component
-    # module edges. Every component first consumes core:model, then each named
+    # module edges. Every non-core component consumes the model/common core envelope, then each named
     # dependency's implementation module. The app module is composition only.
     owner_modules = {}
     for module_id, owner in module_owners.items():
@@ -123,7 +123,7 @@ def validate(root: Path) -> list[str]:
             elif module_id == ":core:common":
                 expected = {":core:model"}
             else:
-                expected = {":core:model"}
+                expected = {":core:model", ":core:common"}
                 for dependency in component_dependencies:
                     if dependency == "core":
                         continue

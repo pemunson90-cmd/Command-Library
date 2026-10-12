@@ -29,3 +29,7 @@ Independent reviewer requested gpt-6-astra/high, separate storage_review agent. 
 Observe [38248782526](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38248782526) at985e03d. Require actual JVM/lint/library assembly and all three instrumentation suites, with 20 storage methods per image, before integrating corrected storage. Download artifacts via connected GitHub artifact tool if gh download's signed blob URL returns Forbidden; the connector download succeeded in this session. Update this report with exact results and any remaining API23 collector diagnosis. No unchanged retry without new evidence.
 
 Then reconcile core/model+common registry envelope and implement genuine bounded catalog importer/app per orch-kotlin-m0-01, preserving original source/QA/settings/core evidence. No app/importer/debug release or physical device result exists yet.
+
+## Core envelope reconciliation
+
+The conceptual core component already owns model/common. Updated full registry maps it to both pure modules; K2 consumed envelope includes common and explicitly lists storage. Checker exact-edge validation remains enforced, with a regression for missing storage common dependency. No component/module/coverage/ownership count changes. Independent Astra-high reviewer accepted four-file diff and independently ran architecture checker. Repository suite25 tests passes. Actual build imports remain only consumed modules.

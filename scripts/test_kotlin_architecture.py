@@ -53,6 +53,11 @@ class KotlinArchitectureTests(unittest.TestCase):
                     next(m for m in value["modules"] if m["id"] == ":data:network")["dependencies"].append(":feature:catalog"))
         self.assertTrue(any("module :data:network dependencies do not match" in error for error in validate(self.root)))
 
+    def test_core_common_is_part_of_storage_dependency_envelope(self):
+        self.change("docs/architecture/kotlin-registry.json", lambda value:
+                    next(m for m in value["modules"] if m["id"] == ":data:storage")["dependencies"].remove(":core:common"))
+        self.assertTrue(any("module :data:storage dependencies do not match" in error for error in validate(self.root)))
+
     def test_requirement_module_must_belong_to_primary_component(self):
         self.change("docs/architecture/kotlin-registry.json", lambda value:
                     next(r for r in value["requirements"] if r["id"] == "A01").update(module=":feature:rules"))

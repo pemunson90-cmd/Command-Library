@@ -465,7 +465,8 @@
       "component": "network",
       "owned_root": "android-app/data/network/**",
       "dependencies": [
-        ":core:model"
+        ":core:model",
+        ":core:common"
       ]
     },
     {
@@ -473,7 +474,8 @@
       "component": "vault",
       "owned_root": "android-app/data/vault/**",
       "dependencies": [
-        ":core:model"
+        ":core:model",
+        ":core:common"
       ]
     },
     {
@@ -481,7 +483,8 @@
       "component": "storage",
       "owned_root": "android-app/data/storage/**",
       "dependencies": [
-        ":core:model"
+        ":core:model",
+        ":core:common"
       ]
     },
     {
@@ -490,6 +493,7 @@
       "owned_root": "android-app/feature/catalog/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":data:network",
         ":data:storage"
       ]
@@ -500,6 +504,7 @@
       "owned_root": "android-app/feature/rules/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":data:network",
         ":data:storage"
       ]
@@ -510,6 +515,7 @@
       "owned_root": "android-app/feature/search/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:rules",
         ":data:storage"
@@ -521,6 +527,7 @@
       "owned_root": "android-app/feature/decks/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":data:storage"
       ]
     },
@@ -530,6 +537,7 @@
       "owned_root": "android-app/feature/collection/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":data:storage"
       ]
     },
@@ -539,6 +547,7 @@
       "owned_root": "android-app/feature/pricing/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:collection",
         ":data:network",
@@ -551,6 +560,7 @@
       "owned_root": "android-app/feature/validation/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:rules"
       ]
@@ -561,6 +571,7 @@
       "owned_root": "android-app/feature/brackets/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:rules",
         ":feature:validation",
@@ -574,6 +585,7 @@
       "owned_root": "android-app/feature/recommendations/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:search",
         ":feature:pricing",
         ":feature:validation",
@@ -586,6 +598,7 @@
       "owned_root": "android-app/feature/transfer/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:decks",
         ":feature:collection",
@@ -598,6 +611,7 @@
       "owned_root": "android-app/feature/life/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:rules",
         ":data:storage"
       ]
@@ -608,6 +622,7 @@
       "owned_root": "android-app/feature/inference/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":data:network",
         ":data:storage"
       ]
@@ -618,6 +633,7 @@
       "owned_root": "android-app/feature/ai/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:search",
         ":feature:validation",
         ":feature:pricing",
@@ -634,6 +650,7 @@
       "owned_root": "android-app/feature/settings/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":data:storage",
         ":data:vault"
       ]
@@ -644,6 +661,7 @@
       "owned_root": "android-app/feature/links/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog"
       ]
     },
@@ -653,6 +671,7 @@
       "owned_root": "android-app/feature/shell/**",
       "dependencies": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:rules",
         ":feature:search",
@@ -1116,16 +1135,23 @@
     "K2": {
       ":feature:shell": [
         ":core:model",
+        ":core:common",
         ":feature:catalog",
         ":feature:settings"
       ],
       ":feature:settings": [
         ":core:model",
+        ":core:common",
         ":data:storage"
       ],
       ":feature:catalog": [
         ":core:model",
+        ":core:common",
         ":data:storage"
+      ],
+      ":data:storage": [
+        ":core:model",
+        ":core:common"
       ]
     },
     "note": "Envelope permits later edges; import only accepted consumed subset. UI only implemented destinations. No future adapters/stubs."
