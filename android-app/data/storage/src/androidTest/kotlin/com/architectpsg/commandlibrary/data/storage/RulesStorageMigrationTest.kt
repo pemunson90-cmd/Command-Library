@@ -36,11 +36,14 @@ class RulesStorageMigrationTest {
         context.deleteDatabase(fileName)
     }
 
-    @Test fun actualV1CatalogSurvivesRulesMigrationActivationAndReopen() = runBlocking {
+    @Test fun actualV1CatalogSurvivesRulesAndAcquisitionMigrationsActivationAndReopen() = runBlocking {
         val schema = exportedV1()
         val original = createV1(schema)
         database = success(StorageDatabase.open(context, fileName))
-        assertEquals(2, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(3, success(database!!.capabilities(token)).schemaVersion)
+        for (table in listOf("acquisition_job", "acquisition_artifact", "acquisition_seen_id")) {
+            assertEquals("1->2->3 creates $table", 0L, scalar("SELECT count(*) AS total FROM $table"))
+        }
         assertCatalogUnchanged(schema, original)
         assertEquals(1L, scalar("SELECT count(*) AS total FROM catalog_name_fts WHERE catalog_name_fts MATCH 'sentinel'"))
 
