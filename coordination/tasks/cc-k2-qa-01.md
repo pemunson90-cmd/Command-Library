@@ -1,6 +1,6 @@
 # Task cc-k2-qa-01: parallel Claude Code QA
 
-Status: delegated and eligible for independent documentation/test-vector work. Codex remains the sole integration orchestrator for this parallel turn; Claude Code must not claim its lease. This task is authorized by Pat's parallel-work request, not a competing orchestrator takeover.
+Status: completed and independently reviewed. Claude source836e6df was accepted by a separate Luna review and integrated unchanged; QA lock released. All80 matrix assertions remain not_run and77 vectors explicitly synthetic; documentation is not runtime evidence. Further writes require a new delegation/lock. This task did not authorize competing orchestration.
 
 Branch: agent/cc-k2-qa-01. Exclusive outputs: docs/verification/k2-claude/** only. Base is the verified main commit containing this card/lock; record full base SHA in the worker handoff. Core implementation belongs to agent/k2-core-contracts. No production code or shared-file changes are authorized here.
 

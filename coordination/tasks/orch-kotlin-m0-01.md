@@ -1,6 +1,6 @@
 # Task orch-kotlin-m0-01
 
-Status: in progress, step1. Pure contract draft delegated on an isolated core branch; root design/build preparation underway. Independent actual-declaration/durability review and hosted compile remain prerequisites before consumers. Parallel Claude Code QA has its own exclusive card/branch. K2 is incomplete, not a finished-app release.
+Status: in progress, step2. Core gate compiled/reviewed/integrated; compileSdk37 tuple adjustment independently verified in Claude handoff. QA docs/vectors independently reviewed/integrated. Preserved storage schema resumed on cx-storage-01; completed settings source has narrow reviewed persistence/UTF8 corrections on cx-settings-01. Hosted adapter/runtime acceptance remains before integration. K2 is incomplete, not a finished-app release.
 
 ## Preconditions and ownership
 

@@ -1,6 +1,6 @@
 # Task cc-settings-01
 
-Status: active. Orchestrator: Claude Code (lease holder). Worker tier: Sonnet (D-10). Parent: orch-kotlin-m0-01 step 2.
+Status: original implementation READY-FOR-REVIEW, preserved. Independent review requested bounded fixes; cx-settings-01 now holds the settings lock. Do not write this component while that lock is active. Parent: orch-kotlin-m0-01 step2.
 
 ## Ownership
 
