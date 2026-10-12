@@ -159,14 +159,17 @@ public class LocalCatalog(
             Outcome.Success(CatalogImportResult(CatalogGeneration(generation, provenance, SnapshotList.of(LanguageTag.ENGLISH), ScryfallCodec.FORMAT, count, GenerationStatus.ACTIVE),
                 count, provenance, CatalogImportVerification(frame.observedBytes, hash, if (source.expectedChecksum is Knowledge.Known) ChecksumVerification.MATCHED_EXPECTED else ChecksumVerification.COMPUTED_WITHOUT_EXPECTATION, true, 0), activated))
         } catch (cancelled: CancellationException) {
-            if (staging) cleanup(generation) // Reopen recovery remains available if bounded cleanup fails.
+            if (staging && cleanup(generation) !is Outcome.Success) initialized = false
             throw cancelled
-        } catch (failure: Exception) {
+        } catch (cause: Exception) {
             val cleaned = if (staging) cleanup(generation) else Outcome.Success(Unit)
-            if (cleaned !is Outcome.Success) return@withLock failure(FailureCode.PERSISTENCE, "Import failed and staged cleanup remains pending")
-            when (failure) {
-                is CatalogFailure -> failure.outcome
-                is IllegalArgumentException, is IllegalStateException -> invalid(failure.message ?: "Invalid catalog input")
+            if (cleaned !is Outcome.Success) {
+                initialized = false
+                return@withLock failure(FailureCode.PERSISTENCE, "Import failed and staged cleanup remains pending")
+            }
+            when (cause) {
+                is CatalogFailure -> cause.outcome
+                is IllegalArgumentException, is IllegalStateException -> invalid(cause.message ?: "Invalid catalog input")
                 else -> failure(FailureCode.INTERNAL, "Catalog import failed")
             }
         }

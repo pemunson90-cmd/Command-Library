@@ -7,6 +7,7 @@ import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import java.security.MessageDigest
 import java.util.UUID
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
@@ -39,6 +40,23 @@ class LocalCatalogInstrumentedTest {
     private fun hash(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
     private fun chunks(bytes: ByteArray) = flowOf(ByteChunk(0, 0, SnapshotBytes(bytes), null, true))
     private suspend fun open(name: String): StorageDatabase = (StorageDatabase.open(context, name) as Outcome.Success).value
+    private class CleanupFailureDatabase(private val real: Database, var failures: Int, var slowCleanups: Int = 0) : Database by real {
+        override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> =
+            real.transaction({ original ->
+                action(object : DbTransaction by original {
+                    override suspend fun execute(request: SqlRequest, cancel: CancelToken): Outcome<DbWriteResult> {
+                        if (request.statement.startsWith("DELETE FROM catalog_name_fts")) {
+                            if (slowCleanups > 0) { slowCleanups--; delay(1_500) }
+                            if (failures > 0) {
+                                failures--
+                                return Outcome.Failure(DomainFailure(FailureCode.PERSISTENCE, "Synthetic cleanup failure", SnapshotList.empty()))
+                            }
+                        }
+                        return original.execute(request, cancel)
+                    }
+                })
+            }, cancel)
+    }
 
     @Test fun genuineImportLookupAndReopen() = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
@@ -117,6 +135,37 @@ class LocalCatalogInstrumentedTest {
             assertTrue(catalog.`import`(source(bytes), chunks(bytes), {}, token) is Outcome.Success)
             val stale = catalog.lookupName("Lightning", PageRequest(1, first.nextCursor), token) as Outcome.Failure
             assertEquals(FailureCode.STALE_GENERATION, stale.error.code)
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
+
+    @Test fun syntheticCleanupFailureRethrowsOriginalCancellationAndRetriesRecovery() = runBlocking {
+        val name = "catalog-${UUID.randomUUID()}.db"
+        val db = open(name)
+        try {
+            val wrapped = CleanupFailureDatabase(db, 2)
+            val catalog = LocalCatalog(wrapped, TestClock(), TestIds(), CatalogImportLimits(batchSize = 1))
+            val cancel = TestCancel()
+            try {
+                catalog.`import`(source(bytes), chunks(bytes), { if (it.completedUnits >= 1) cancel.cancelled = true }, cancel)
+                fail("Expected original cancellation")
+            } catch (cancelled: CancellationException) { assertEquals("cancelled in test", cancelled.message) }
+            val fresh = TestCancel()
+            assertTrue(catalog.status(fresh) is Outcome.Failure) // First recovery still fails visibly.
+            assertFalse((catalog.status(fresh) as Outcome.Success).value.initialized) // Next retry cleans staging.
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
+    @Test fun syntheticCleanupTimeoutRethrowsOriginalCancellationAndRecovers() = runBlocking {
+        val name = "catalog-${UUID.randomUUID()}.db"
+        val db = open(name)
+        try {
+            val wrapped = CleanupFailureDatabase(db, failures = 0, slowCleanups = 1)
+            val catalog = LocalCatalog(wrapped, TestClock(), TestIds(), CatalogImportLimits(batchSize = 1))
+            val cancel = TestCancel()
+            try {
+                catalog.`import`(source(bytes), chunks(bytes), { if (it.completedUnits >= 1) cancel.cancelled = true }, cancel)
+                fail("Expected original cancellation")
+            } catch (cancelled: CancellationException) { assertEquals("cancelled in test", cancelled.message) }
+            assertFalse((catalog.status(TestCancel()) as Outcome.Success).value.initialized)
         } finally { db.close(); context.deleteDatabase(name) }
     }
 }
