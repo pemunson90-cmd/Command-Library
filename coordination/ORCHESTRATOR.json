@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "active",
-  "session_id": "claude-code-session_019gTNLDK7xZq1X8MTXvBVdA",
-  "model_family": "Claude Code",
-  "task_id": "orch-kotlin-m0-01",
-  "heartbeat_utc": "2026-10-12T14:14:47Z",
-  "expires_utc": "2026-10-12T14:59:47Z",
-  "checkpoint_id": "cp-20261012-claude-k2-26",
-  "note": "Expired Codex lease (codex-k2-catalog-20261012, expired 2026-10-12T13:54:34Z) taken over at Pat's instruction to continue from coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md. Inspected and preserved: catalog merge e5ae264 on main, shell branch agent/cc-k2-shell-01 at b1064f2 unchanged."
+  "status": "released",
+  "session_id": "marlow-k2-closeout-20261012",
+  "model_family": "GPT-5.6 Sol",
+  "task_id": "orch-kotlin-k3-offline-data-01",
+  "heartbeat_utc": "2026-10-12T16:22:46Z",
+  "expires_utc": "2026-10-12T16:22:46Z",
+  "checkpoint_id": "cp-20261012-k2-accepted-27",
+  "note": "K2 accepted after independent integration review and hosted run 38275330760 passed JVM/build, API23, API36 and API36-16KiB. Exact tested head 2e08e696 merged into main at 21bf53f; continuity 38276257988 green. K2 catalog/shell locks released. K3 task card is ready but no K3 lease is claimed by this closeout."
 }

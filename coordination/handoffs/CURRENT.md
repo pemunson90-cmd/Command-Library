@@ -1,14 +1,18 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-claude-k2-26
+Checkpoint-ID: cp-20261012-k2-accepted-27
 
-Next task: orch-kotlin-m0-01
-Next step: 3. Claude Code holds the lease. Review agent/cc-k2-shell-01 at b1064f2 (fresh-context reviewers; author is this Claude Code session), integrate it with the requested Gradle entries, create and wire :app with the real LocalCatalog, StorageDatabase and DataStoreSettingsRepository, run android-k2.yml with shell instrumentation on API 23, API 36 and API 36 16 KiB. Packet: coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md.
+Next task: orch-kotlin-k3-offline-data-01
+Next step: 1. Verify current main is `21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4` or a continuity-green descendant, claim the orchestrator lease, read `docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md` and `coordination/tasks/orch-kotlin-k3-offline-data-01.md`, then build the K3 requirement/ownership delta before application writes or product-data acquisition.
 
-Updated UTC: 2026-10-12T14:14:47Z
-Status: in_progress; lease: active.
-Verified base: 0790f5e9f22fec68e82be5b84898a8f89ec2c870.
+Updated UTC: 2026-10-12T16:22:46Z
+Status: ready; lease: released.
+Verified base: 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4.
 
-Lease takeover after Codex expiry. Catalog PR #1 merged at e5ae264 with main Android K2 run 38257616078 and Continuity 38257616194 green (per packet). Core, storage, settings and catalog integrated. Shell branch b1064f2 READY-FOR-REVIEW, not accepted. :app does not exist; no debug APK yet.
+K2 Kotlin Android foundation is accepted. Final tested head `2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c` passed hosted Android run `38275330760` on JVM/build, API 23, API 36 and API 36 16 KiB, then merged with an expected-head guard into main at `21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4`. Main continuity run `38276257988` passed. Retained debug APK SHA-256: `0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659`.
 
-Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
+The final independent review closed the import-action 48 dp touch-target issue and the reproducible hosted search-test failure caused by emulator IME/InputConnection timing. The shared test now uses Compose text semantics; product behavior and assertions were not weakened. Catalog and shell K2 locks are released.
+
+K3 is ready but has not been claimed or implemented. It is limited to the offline English catalog/rules acquisition/import, consent/source state and local search section defined by its task card. Windows and sync remain deferred.
+
+Read the task card and latest gate report before acting. Regular-chat packets: `coordination/chat-handoffs/README.md`. No unrun application/device check is a pass.

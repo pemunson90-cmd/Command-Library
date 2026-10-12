@@ -1,10 +1,13 @@
 # STATE
 
-Checkpoint: cp-20261012-claude-k2-26. Updated UTC: 2026-10-12T14:14:47Z.
+Checkpoint: cp-20261012-k2-accepted-27. Updated UTC: 2026-10-12T16:22:46Z.
 
-Stage: K2 step2 catalog importer/status/lookup; parallel Claude shell UI reserved. Status: in_progress. Next: orch-kotlin-m0-01 step3.
-Claude Code holds the lease. Review agent/cc-k2-shell-01 at b1064f2 (fresh-context reviewers; author is this Claude Code session), integrate it with the requested Gradle entries, create and wire :app with the real LocalCatalog, StorageDatabase and DataStoreSettingsRepository, run android-k2.yml with shell instrumentation on API 23, API 36 and API 36 16 KiB. Packet: coordination/handoffs/CLAUDE-CODE-CONTINUE-20261012.md.
+Stage: K2 Kotlin Android foundation accepted; K3 offline data ready. Status: ready. Next: orch-kotlin-k3-offline-data-01 step1.
 
-Lease takeover after Codex expiry. Catalog PR #1 merged at e5ae264 with main Android K2 run 38257616078 and Continuity 38257616194 green (per packet). Core, storage, settings and catalog integrated. Shell branch b1064f2 READY-FOR-REVIEW, not accepted. :app does not exist; no debug APK yet.
+K2 is accepted, not a finished-app release. Final tested head `2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c` passed hosted Android run `38275330760` on JVM/build, API 23, API 36 and API 36 16 KiB, then merged unchanged with an expected-head guard into `main` at `21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4`. Main continuity run `38276257988` passed. Retained debug APK SHA-256: `0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659`.
 
-Read CURRENT, machine state and task card.
+Independent integration review closed the 48 dp import-action touch-target issue and the reproducible hosted shell-search failure caused by emulator IME/InputConnection timing. The final shared test uses Compose text semantics instead of emulator IME injection; product behavior and assertions remain unchanged. Real `:app`, shell, storage, catalog and settings wiring are integrated. K2 catalog/shell locks and orchestrator lease are released.
+
+K3 has a ready task card but no active lease or implementation. It covers the next bounded Android offline English catalog/rules acquisition/import, consent/source state and local search section. Windows and sync remain deferred under V1_KOTLIN_EXECUTION_SPEC.md.
+
+Read CURRENT, machine state, `docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`, and `coordination/tasks/orch-kotlin-k3-offline-data-01.md` before acting.
