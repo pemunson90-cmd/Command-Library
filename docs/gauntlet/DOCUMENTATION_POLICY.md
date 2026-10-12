@@ -37,11 +37,30 @@ Avoid repeating mutable facts across multiple active documents. Prefer links ove
 
 If a current fact changes, update its authoritative source and let the checkpoint helper refresh generated mirrors. Do not manually maintain several prose copies of the same state unless the helper requires it.
 
+## Per-action continuation delta
+
+Every completed model, agent or subagent action must leave a tiny continuation delta in the smallest file the next actor will already read. This is the primary handoff mechanism between full checkpoints.
+
+For the orchestrator, update the current task card. For a delegated worker, update that worker's task handoff or task card. Do not touch global state files merely to record a local implementation step.
+
+The delta should be short and contain only:
+
+- what just changed or was learned;
+- the branch/commit or files affected when applicable;
+- verification actually run, or `not_run` with the reason;
+- the exact next action.
+
+Replace or advance a `Latest continuation delta` section instead of accumulating a second journal inside the task card. Git history preserves earlier deltas for provenance.
+
+A repository-mutating action should normally end in a branch commit that includes its code/doc change and the local continuation delta together. A read-only research/review action that materially changes the plan or evidence must also record its result before handing control onward. A no-op inspection that changes nothing does not need ceremonial prose.
+
+The next actor should read this latest delta before opening broader code or documentation. It should then load only the files, contracts and instructions named by the delta or current task step.
+
 ## Fast checkpoint policy
 
-Checkpoint a coherent, commit-worthy work unit rather than every tiny edit. Publish earlier when ownership changes, shared schema/contracts change, a risky migration is about to begin, a meaningful partial result would otherwise be lost, or tool/context/usage limits make interruption likely.
+A local continuation delta is not automatically a global checkpoint. Run the full checkpoint machinery only when a coherent commit-worthy work unit is complete or when global coordination state actually changes, including ownership/lease changes, task/step transitions, blockers, shared schema/contracts, risky migrations, acceptance evidence, or a meaningful partial result that could otherwise be lost.
 
-A checkpoint must still be enough for another model to resume without chat history. The minimum useful handoff is:
+A global checkpoint must still be enough for another model to resume without chat history. The minimum useful handoff is:
 
 - checkpoint ID and published head/base;
 - current task and exact next action;
