@@ -1,0 +1,8 @@
+component: settings
+orchestrator: claude-code
+task: cc-settings-01
+branch: agent/cc-settings-01
+base_commit: 5a8efcb3682ced3dc5d55e372ecf8fcc52c29b80
+claimed: 2026-10-12
+owned_paths: android-app/feature/settings/**
+step: 1; K2 step 2 foundation implementation per coordination/tasks/cc-settings-01.md
