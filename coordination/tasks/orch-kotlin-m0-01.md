@@ -1,6 +1,6 @@
 # Task orch-kotlin-m0-01
 
-Status: in progress, step2. Core gate compiled/reviewed/integrated; compileSdk37 tuple adjustment independently verified in Claude handoff. QA docs/vectors independently reviewed/integrated. Preserved storage schema resumed on cx-storage-01; completed settings source has narrow reviewed persistence/UTF8 corrections on cx-settings-01. Hosted adapter/runtime acceptance remains before integration. K2 is incomplete, not a finished-app release.
+Status: accepted. K2 Kotlin Android foundation completed and independently reviewed at accepted product base `21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4`; final tested head `2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c` passed hosted Android run `38275330760`. See `docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`. K2 is a foundation section, not a finished-app release.
 
 ## Preconditions and ownership
 
@@ -37,3 +37,11 @@ Retained three reports diagnosed, exact source fix985e03d on agent/cx-storage-re
 ## Verified storage recovery checkpoint
 
 Recovery985e03d independently reviewed; hosted38248782526 succeeded81 JVM tests and20 storage instrumentation tests perAPI23/API36/16KB image. Adapter integrated unchanged and storage lock released; core-common envelope reviewed/reconciled. Next step2 implement genuine-fixture bounded catalog importer/lookup/status under its scoped task/lock, then step3 real app UI. See K2-STORAGE-RUNTIME-RECOVERY.md for exact source/evidence/gotchas. K2 remains incomplete.
+
+## Final accepted closeout
+
+K2 was subsequently completed through the reviewed catalog, shell and real `:app` integration. The final hosted candidate `2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c` passed JVM/build plus connected instrumentation on API 23, API 36 and API 36 16 KiB in run `38275330760`. The retained debug APK SHA-256 is `0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659`.
+
+Independent integration review found and closed the 48 dp import-action touch target issue and a reproducible hosted search-test failure caused by emulator IME/InputConnection timing. The final test helper uses Compose text semantics rather than emulator IME injection; assertions and product behavior remain unchanged. The exact tested head was merged with an expected-head guard into `main` at `21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4`; continuity run `38276257988` is green.
+
+K2 is accepted at checkpoint `cp-20261012-k2-accepted-27`. Its catalog and shell locks are released. The next task is `orch-kotlin-k3-offline-data-01`; K3 implementation has not begun under this closeout.
