@@ -8,7 +8,7 @@ Worker handoff for `coordination/tasks/cc-m2-life-domain-01.md`. Branch `agent/c
 |---|---|---|
 | 0 | Design, plan, baseline check | done (this commit) |
 | 1 | Counter reductions + tests | done: `LifeDomainSupport.kt`, `CounterReducer.kt`, `CounterReducerTest.kt` (20 tests) |
-| 2 | Seat clock calculations + tests | pending |
+| 2 | Seat clock calculations + tests | done: `SeatClockReducer.kt`, `SeatClockReducerTest.kt` (22 tests) |
 | 3 | Random tools + tests | pending |
 | 4 | Independent adversarial review of 1-3, fixes, final checks | pending |
 
@@ -30,6 +30,7 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 
 - Baseline before code: `cd android-app && bash gradlew --no-daemon --console=plain :core:model:test :feature:life:test` BUILD SUCCESSFUL, `:core:model` 16 tests, 0 failures/errors/skips; `:feature:life:test` NO-SOURCE.
 - Section 1: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` `CounterReducerTest` 20 tests, 0 failures/errors/skips.
+- Section 2: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 42 tests (`CounterReducerTest` 20, `SeatClockReducerTest` 22), 0 failures/errors/skips.
 
 ## Contract requests for Codex
 
@@ -37,7 +38,13 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 2. Starting life has two sources: `GameSettings.initialLife` and the life `CounterDefinition.initial`. The domain rejects disagreement as `CORRUPT_DATA`. Proposed: document that the life definition's `initial` must equal `initialLife`, or drop one field.
 3. Elimination has no contract surface. SPEC G01/G09 require logged, undoable eliminate/restore, but `Seat`, `GameSnapshot` and `GameAction` have no eliminated state or action. The domain reports `LossCandidate`s only. Proposed: `GameAction.SetSeatEliminated(seatId: EntityId, eliminated: Boolean, reason: String)` plus `GameSnapshot.eliminatedSeatIds: SnapshotList<EntityId>` (or `Seat.eliminated`), so eligible-seat selection can be derived instead of caller-supplied.
 4. `GameAction.SetCounterHidden` has no commander slot, so hiding applies to every slot of that seat's counter (commander damage covers all opposing slots plus any recorded slot). Per-slot hiding would need `commanderSlotId: EntityId?` on the action. No change requested unless per-slot hiding is wanted.
+5. `SeatClockMode.SHARED` has no defined semantics in the contract, SPEC or DATA_MODEL. The domain returns `Outcome.Unavailable(UNSUPPORTED)` instead of guessing. Proposed: define SHARED (for example, one game countdown charged whenever the clock runs, stored as a single pool rather than per seat) or remove it.
+6. Clock mode has two sources: `GameSettings.clockMode` and `SeatClockState.mode`. Disagreement is rejected as `CORRUPT_DATA`. Proposed: document that they must match, or drop one.
+7. G07/PX07-031 persistent game timer has no field. `SeatClockState` stores only per-seat countdown balances. Proposed: `SeatClockState.gameElapsed: Duration` (settled at each anchor, charged whenever the clock runs).
+8. `GameAction.SwitchTurn` always advances `turnNumber`. A chess clock pass on priority without a new turn (PX07-047 "turn and priority advances") needs a separate action, for example `GameAction.PassClock(seatId: EntityId)`.
+9. `ClockAlert.acknowledgedAt` has no action that sets it. Proposed: `GameAction.AcknowledgeClockAlert(alertId: EntityId)` if acknowledgement must be durable.
+10. Integration note, no contract change: running time after the last persisted anchor is not charged after a process death, because wall time is never trusted. The future service should persist `SeatClockReducer.settle` checkpoints periodically while a clock runs, and must call `recoverAfterRestart` once per new process session before any other clock calculation.
 
 ## Latest continuation delta
 
-Section 1 complete at the commit that carries this text: counter reductions with tests, local check green as recorded above. Next action: implement section 2 (seat clock calculations) in `feature/life/.../domain/` with tests, run the task's Gradle command, commit, push, update this file.
+Section 2 complete at the commit that carries this text: seat clock calculations with tests, local check green as recorded above. Next action: implement section 3 (random tools) in `feature/life/.../domain/` with tests, run the task's Gradle command, commit, push, update this file.
