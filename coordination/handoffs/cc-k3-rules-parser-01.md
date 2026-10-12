@@ -1,9 +1,9 @@
 # Handoff cc-k3-rules-parser-01: private K3 rules TXT parser
 
-Status: READY-FOR-REVIEW, one candidate: this commit. Not accepted; root re-reviews and decides inclusion.
+Status: READY-FOR-REVIEW as a patch for main, not mergeable as is. While this round ran, root merged `4971166` into `main`, changed the parser further (`32ae241`, `e1d5e90`), wired it into the app and released `rules.lock`; `CLAUDE-PARALLEL.md` now closes this assignment. Review-round commit `df1f85d` conflicts with `main` `d5c5f31` in `RuleReferenceScanner.kt` and `RulesStructure.kt` only.
 Owner: Claude Code (external-claude-code per `coordination/locks/rules.lock`, re-verified on `main` `f20ba4a11b217a771a27e5fc1a3563231dcf7fc8`). Pat lifted the card's temporary restrictions (no subagents; F1 only), so the earlier split between an F1-only and a hardening candidate is withdrawn: review this commit. Model tier is set by the session launcher and is not selectable by the worker.
 Branch: `agent/cc-k3-rules-parser-01`. Base: `main` at `dd3abf7d2c3159d1e9b2553d5b1d2e32dfe86472`, unchanged (never merged, rebased or force-pushed). Root reviewed `209a938` / code `796c665` (`docs/verification/k3-rules-parser/REVIEW.md`). Since then: `59c6dd1` (F1), `4971166` (self-audit hardening H1 to H5), this commit (multi-agent review round, R1 to R18).
-`main` changed no owned path since `dd3abf7`, and `git merge-tree --write-tree origin/main HEAD` reports no conflict.
+Live defects on `main` `d5c5f31`: this round's tests run against main's parser sources (throwaway root, parser package only, main's own limits test kept): 75 tests, 9 failed, namely R1, R2, R3, R4, R6, R7, R8, R9, R10. R5 passes on main (root's `32ae241` fixed heading separators independently). R11 and R12 are not JVM-observable and are presumably live. Porting needs a new lock or root's own port; not started.
 Owned paths written: `android-app/feature/rules/**` and this file only.
 
 ## Changes since root's review
@@ -154,4 +154,4 @@ The K2 shell/catalog observations this handoff carried at `272f177`/`209a938` we
 
 ## Latest continuation delta
 
-Single candidate at this commit: F1 (`59c6dd1`), hardening (`4971166`) and a six-lens review round (R1 to R18, ten red-to-green regressions, own strict UTF-8 decoder, linear grammar and scanner, identifier and reference bounds). 75 synthetic tests pass with `check` and `assembleDebug`, lint clean, in the throwaway include root; base `dd3abf7` unchanged. Hosted CI, devices and genuine bytes not_run. Next (root): re-review this commit, then shared include and hosted evidence. The worker stops here.
+Review round `df1f85d` on top of `4971166` (already in `main`): R1 to R18, ten red-to-green regressions, 75 synthetic tests passing with `check` and `assembleDebug`. It conflicts with `main` `d5c5f31` in two parser files, and 9 of its 10 regressions fail on main's parser, including high-severity R4. Hosted CI, devices and genuine bytes not_run. Next: Pat or root decides whether to port these fixes onto `main` (needs a lock for `android-app/feature/rules/**`); the worker stops here.
