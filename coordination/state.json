@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-full-v1-resume-42",
-  "verified_base_head": "f4760ba2451ee369519ee6e0220ff6352fc60fc5",
+  "checkpoint_id": "cp-20261012-claude-life-handoff-44",
+  "verified_base_head": "32b532f1d30920ba2cc7f6dd45a931cdccc9ce65",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "Full Android v1 execution active; incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
-  "next_step": 2,
-  "first_action": "Finish scoped personal-source/download architecture reviews, then implement full K3 corpus/download/rulings/search",
+  "next_step": 3,
+  "first_action": "Continue K3 network/storage integration while Claude implements isolated life domain logic",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -38,6 +38,6 @@
     "genuine_rules": "Actual977752byte officialTXT SHA8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca parsed2passes4357entries2072references0unresolved0duplicates0anomalies.79pureJVMtests pass in separate model/common/rules compile. This is not Android/physical evidence.",
     "rules_schema": "Committed actualKSP2.json SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentitiesunchanged; native migration/preservation/reopen passes all3Androidlanes."
   },
-  "last_completed": "Reread gauntlet and active Kotlin plan; full audit persisted; D-24 restores complete delivery scope and supersedes mistaken partial-build pointer. K3 and M2-M9 remain incomplete.",
-  "updated_utc": "2026-10-12T21:58:55Z"
+  "last_completed": "Claude assigned cc-m2-life-domain-01 with exclusive life/domain ownership; Codex retains full-app orchestration. Complete Android v1 remains incomplete.",
+  "updated_utc": "2026-10-12T23:10:01Z"
 }
