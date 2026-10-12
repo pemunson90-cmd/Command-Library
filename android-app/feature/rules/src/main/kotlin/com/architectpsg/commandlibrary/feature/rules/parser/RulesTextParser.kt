@@ -29,12 +29,10 @@ import kotlinx.coroutines.flow.Flow
 internal class RulesTextParser(private val limits: RulesParserLimits = RulesParserLimits()) {
     private val scanner = RuleReferenceScanner(limits.maxRangeExpansion)
 
-    suspend fun index(chunks: Flow<ByteChunk>, cancel: CancelToken): RulesParseResult<RulesIndex> = attempt {
-        val identifiers = HashSet<String>()
+    suspend fun index(chunks: Flow<ByteChunk>, cancel: CancelToken): RulesParseResult<RulesIndex> = attempt(cancel) {
         val structure = RulesStructure(limits) { draft ->
-            identifiers += draft.id
             // Same bound as the parse pass, so an over-referenced entry fails before anything is emitted.
-            referenceCount(draft)
+            references(draft)
         }
         var lastLine = 0L
         val read = readUtf8Lines(chunks, limits, cancel) { line, number ->
@@ -43,7 +41,8 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
         }
         structure.finish(lastLine)
         cancel.checkpoint()
-        RulesIndex(identifiers, read.byteCount, ContentHash(SHA_256, read.sha256Hex))
+        // The recognizer's own identifier set: the index keeps no second copy.
+        RulesIndex(structure.identifiers, read.byteCount, ContentHash(SHA_256, read.sha256Hex))
     }
 
     suspend fun parse(
@@ -53,7 +52,7 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
         corpusId: GenerationId,
         cancel: CancelToken,
         onEntry: suspend (RuleEntry) -> Unit,
-    ): RulesParseResult<RulesParseSummary> = attempt {
+    ): RulesParseResult<RulesParseSummary> = attempt(cancel) {
         var ordinal = 0L
         var references = 0L
         var unresolved = 0L
@@ -102,28 +101,30 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
         )
     }
 
-    private fun referenceCount(draft: DraftEntry): Int {
-        val count = distinctReferences(draft).size
-        if (count > limits.maxReferencesPerEntry) {
-            throw RulesParseException(
-                RulesParseFailure.LimitExceeded(RulesLimit.REFERENCES_PER_ENTRY, limits.maxReferencesPerEntry.toLong(), count.toLong()),
-            )
-        }
-        return count
-    }
-
-    /** Each (written target, identifier) pair once, in first-occurrence order. */
-    private fun distinctReferences(draft: DraftEntry): List<Pair<String, String>> {
+    /**
+     * Each (written target, identifier) pair once, in first-occurrence order. The limit is checked as
+     * each pair is produced, so an over-referenced entry fails after at most one pair over the limit.
+     */
+    private fun references(draft: DraftEntry): List<Pair<String, String>> {
         val pairs = LinkedHashSet<Pair<String, String>>()
-        for (reference in scanner.scan(draft.text)) {
-            for (identifier in reference.identifiers) pairs += reference.raw to identifier
+        scanner.scanEach(draft.text) { reference ->
+            for (identifier in reference.identifiers) {
+                if (pairs.add(reference.raw to identifier) && pairs.size > limits.maxReferencesPerEntry) {
+                    throw RulesParseException(
+                        RulesParseFailure.LimitExceeded(
+                            RulesLimit.REFERENCES_PER_ENTRY,
+                            limits.maxReferencesPerEntry.toLong(),
+                            pairs.size.toLong(),
+                        ),
+                    )
+                }
+            }
         }
         return pairs.toList()
     }
 
     private fun resolve(draft: DraftEntry, index: RulesIndex, provenance: Provenance): List<RuleCrossReference> {
-        referenceCount(draft)
-        return distinctReferences(draft).map { (raw, identifier) ->
+        return references(draft).map { (raw, identifier) ->
             val resolved: Knowledge<RuleId> = if (index.contains(identifier)) {
                 Knowledge.Known(RuleId(provenance.provider, identifier))
             } else {
@@ -136,10 +137,12 @@ internal class RulesTextParser(private val limits: RulesParserLimits = RulesPars
         }
     }
 
-    private inline fun <T> attempt(block: () -> T): RulesParseResult<T> =
+    /** A cancelled caller receives CancellationException, never a typed failure, even when both happen. */
+    private suspend inline fun <T> attempt(cancel: CancelToken, block: () -> T): RulesParseResult<T> =
         try {
             RulesParseResult.Ok(block())
         } catch (failure: RulesParseException) {
+            cancel.checkpoint()
             RulesParseResult.Failed(failure.failure)
         }
 

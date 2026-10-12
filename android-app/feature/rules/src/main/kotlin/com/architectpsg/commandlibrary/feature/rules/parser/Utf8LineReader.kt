@@ -2,11 +2,6 @@ package com.architectpsg.commandlibrary.feature.rules.parser
 
 import com.architectpsg.commandlibrary.core.model.ByteChunk
 import com.architectpsg.commandlibrary.core.model.CancelToken
-import java.nio.ByteBuffer
-import java.nio.CharBuffer
-import java.nio.charset.CharsetDecoder
-import java.nio.charset.CodingErrorAction
-import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -30,6 +25,8 @@ internal suspend fun CancelToken.checkpoint() {
  * Chunks must be contiguous from sequence 0 and offset 0 and end with exactly one final chunk. A
  * leading byte order mark is removed. `\r\n`, `\n` and a lone `\r` each end a line; terminators are
  * not part of the line. The line after the last terminator is delivered when it is not empty.
+ * Decoding is done here rather than by a platform `CharsetDecoder`, so validity and the reported
+ * [RulesParseFailure.MalformedUtf8] offset are the same on the JVM and on Android.
  * Cancellation is checked for every chunk, every decode window, before and after every line
  * callback, and before the digest is returned. Throws [RulesParseException] for any failure;
  * cancellation propagates unchanged.
@@ -41,32 +38,13 @@ internal suspend fun readUtf8Lines(
     onLine: suspend (line: String, lineNumber: Long) -> Unit,
 ): ReadDigest {
     val reader = LineAssembler(limits, cancel, onLine)
-    val decoder: CharsetDecoder = StandardCharsets.UTF_8.newDecoder()
-        .onMalformedInput(CodingErrorAction.REPORT)
-        .onUnmappableCharacter(CodingErrorAction.REPORT)
+    val decoder = StrictUtf8Decoder()
     val digest = MessageDigest.getInstance("SHA-256")
     // One reusable output window, so decoding memory does not grow with the chunk size.
-    val window = CharBuffer.allocate(DECODE_WINDOW_CHARS)
+    val window = CharArray(DECODE_WINDOW_CHARS)
     var expectedSequence = 0L
     var expectedOffset = 0L
     var finalSeen = false
-    // Bytes the decoder has not consumed yet: at most one incomplete UTF-8 sequence (3 bytes).
-    var carry = ByteArray(0)
-    // Absolute offset of carry[0] in the input.
-    var carryOffset = 0L
-
-    suspend fun decode(input: ByteBuffer, inputOffset: Long, endOfInput: Boolean) {
-        while (true) {
-            cancel.checkpoint()
-            val result = decoder.decode(input, window, endOfInput)
-            if (result.isError) throw RulesParseException(RulesParseFailure.MalformedUtf8(inputOffset + input.position()))
-            window.flip()
-            reader.accept(window)
-            window.clear()
-            // Underflow: all complete sequences are consumed; an incomplete one stays in input.
-            if (!result.isOverflow) return
-        }
-    }
 
     chunks.collect { chunk ->
         cancel.checkpoint()
@@ -83,28 +61,23 @@ internal suspend fun readUtf8Lines(
         }
         val bytes = chunk.bytes.copyBytes()
         digest.update(bytes)
-        val input = if (carry.isEmpty()) {
-            ByteBuffer.wrap(bytes)
-        } else {
-            ByteBuffer.allocate(carry.size + bytes.size).also { buffer ->
-                buffer.put(carry).put(bytes)
-                buffer.flip()
+        var filled = 0
+        for (i in bytes.indices) {
+            filled = decoder.accept(bytes[i], expectedOffset + i, window, filled)
+            // A code point adds at most two chars, so flush while two slots remain.
+            if (filled > window.size - 2) {
+                cancel.checkpoint()
+                reader.accept(window, filled)
+                filled = 0
             }
         }
-        val inputOffset = carryOffset
-        decode(input, inputOffset, endOfInput = chunk.final)
-        carry = ByteArray(input.remaining()).also { input.get(it) }
-        carryOffset = inputOffset + input.position() - carry.size
+        if (filled > 0) reader.accept(window, filled)
+        if (chunk.final) decoder.finish()
         expectedSequence += 1
         expectedOffset = total
         finalSeen = chunk.final
     }
     if (!finalSeen) throw RulesParseException(RulesParseFailure.Truncated)
-    // With endOfInput = true every byte was consumed or reported; flush ends any shift state.
-    val tail = CharBuffer.allocate(1)
-    if (decoder.flush(tail).isError) throw RulesParseException(RulesParseFailure.MalformedUtf8(carryOffset))
-    tail.flip()
-    reader.accept(tail)
     reader.finish()
     cancel.checkpoint()
     return ReadDigest(expectedOffset, digest.digest().toHex())
@@ -123,6 +96,70 @@ private fun ByteArray.toHex(): String {
     return String(out)
 }
 
+/**
+ * Strict UTF-8 (RFC 3629, Unicode Table 3-7 well-formed byte sequences): rejects overlong forms,
+ * surrogates, code points above U+10FFFF, stray continuation bytes and truncated sequences. State
+ * carries across chunks, so a sequence may be split anywhere. A malformed sequence is reported at
+ * the absolute offset of its first byte.
+ */
+private class StrictUtf8Decoder {
+    private var needed = 0
+    private var codePoint = 0
+    private var lower = 0x80
+    private var upper = 0xBF
+    private var sequenceStart = 0L
+
+    /** Decodes [byte] at absolute [offset] into [out] starting at [filled]; returns the new fill. */
+    fun accept(byte: Byte, offset: Long, out: CharArray, filled: Int): Int {
+        val b = byte.toInt() and 0xFF
+        if (needed == 0) {
+            sequenceStart = offset
+            when (b) {
+                in 0x00..0x7F -> {
+                    out[filled] = b.toChar()
+                    return filled + 1
+                }
+                in 0xC2..0xDF -> begin(1, b and 0x1F, 0x80, 0xBF)
+                0xE0 -> begin(2, b and 0x0F, 0xA0, 0xBF)
+                in 0xE1..0xEC, 0xEE, 0xEF -> begin(2, b and 0x0F, 0x80, 0xBF)
+                0xED -> begin(2, b and 0x0F, 0x80, 0x9F)
+                0xF0 -> begin(3, b and 0x07, 0x90, 0xBF)
+                in 0xF1..0xF3 -> begin(3, b and 0x07, 0x80, 0xBF)
+                0xF4 -> begin(3, b and 0x07, 0x80, 0x8F)
+                else -> malformed(offset)
+            }
+            return filled
+        }
+        if (b < lower || b > upper) malformed(sequenceStart)
+        lower = 0x80
+        upper = 0xBF
+        codePoint = (codePoint shl 6) or (b and 0x3F)
+        needed -= 1
+        if (needed > 0) return filled
+        if (codePoint < 0x10000) {
+            out[filled] = codePoint.toChar()
+            return filled + 1
+        }
+        out[filled] = Character.highSurrogate(codePoint)
+        out[filled + 1] = Character.lowSurrogate(codePoint)
+        return filled + 2
+    }
+
+    /** End of input: a sequence still waiting for bytes is malformed. */
+    fun finish() {
+        if (needed > 0) malformed(sequenceStart)
+    }
+
+    private fun begin(continuationBytes: Int, bits: Int, secondLower: Int, secondUpper: Int) {
+        needed = continuationBytes
+        codePoint = bits
+        lower = secondLower
+        upper = secondUpper
+    }
+
+    private fun malformed(offset: Long): Nothing = throw RulesParseException(RulesParseFailure.MalformedUtf8(offset))
+}
+
 /** Splits decoded characters into lines, enforcing the per-line UTF-8 byte limit. */
 private class LineAssembler(
     private val limits: RulesParserLimits,
@@ -135,9 +172,9 @@ private class LineAssembler(
     private var atStart = true
     private var lastWasCarriageReturn = false
 
-    suspend fun accept(chars: CharBuffer) {
-        while (chars.hasRemaining()) {
-            val c = chars.get()
+    suspend fun accept(chars: CharArray, length: Int) {
+        for (i in 0 until length) {
+            val c = chars[i]
             if (atStart) {
                 atStart = false
                 if (c == '\uFEFF') continue

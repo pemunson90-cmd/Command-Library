@@ -36,7 +36,11 @@ internal sealed interface RulesParseFailure {
     /** The input decoded but contains no numbered rule, so it is not a rules corpus. */
     data object NoNumberedRules : RulesParseFailure
 
-    /** The bytes read by [RulesTextParser.parse] differ from the bytes the index was built from. */
+    /**
+     * The bytes read by [RulesTextParser.parse] differ from the bytes the index was built from. Reported
+     * when the parse pass reaches the end of input; changed bytes can also stop the pass earlier with
+     * another typed failure. Either way every entry the pass emitted must be discarded.
+     */
     data class SourceChanged(
         val indexedBytes: Long,
         val indexedSha256: String,

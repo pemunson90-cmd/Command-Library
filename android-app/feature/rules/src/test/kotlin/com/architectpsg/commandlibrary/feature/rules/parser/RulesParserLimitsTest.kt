@@ -21,6 +21,7 @@ class RulesParserLimitsTest {
             maxContinuationLines = RulesParserLimits.CONTINUATION_LINES_CEILING,
             maxReferencesPerEntry = RulesParserLimits.REFERENCES_PER_ENTRY_CEILING,
             maxRangeExpansion = RulesParserLimits.RANGE_EXPANSION_CEILING,
+            maxIdentifierBytes = RulesParserLimits.IDENTIFIER_BYTES_CEILING,
         )
         val defaults = RulesParserLimits()
         assertTrue(defaults.maxInputBytes <= atCeilings.maxInputBytes)
@@ -30,6 +31,7 @@ class RulesParserLimitsTest {
         assertTrue(defaults.maxContinuationLines <= atCeilings.maxContinuationLines)
         assertTrue(defaults.maxReferencesPerEntry <= atCeilings.maxReferencesPerEntry)
         assertTrue(defaults.maxRangeExpansion <= atCeilings.maxRangeExpansion)
+        assertTrue(defaults.maxIdentifierBytes <= atCeilings.maxIdentifierBytes)
         // Zero is a meaningful setting for these two: no continuation lines, no references.
         assertEquals(0, RulesParserLimits(maxContinuationLines = 0, maxReferencesPerEntry = 0).maxContinuationLines)
     }
@@ -53,6 +55,8 @@ class RulesParserLimitsTest {
             { RulesParserLimits(maxReferencesPerEntry = RulesParserLimits.REFERENCES_PER_ENTRY_CEILING + 1) },
             { RulesParserLimits(maxRangeExpansion = 0) },
             { RulesParserLimits(maxRangeExpansion = RulesParserLimits.RANGE_EXPANSION_CEILING + 1) },
+            { RulesParserLimits(maxIdentifierBytes = 0) },
+            { RulesParserLimits(maxIdentifierBytes = RulesParserLimits.IDENTIFIER_BYTES_CEILING + 1) },
         )
         for ((i, build) in rejected.withIndex()) {
             assertThrows("case $i", IllegalArgumentException::class.java) { build() }
@@ -75,6 +79,10 @@ class RulesParserLimitsTest {
             RulesParserLimits(maxReferencesPerEntry = it.toInt())
         },
         Bound(RulesLimit.RANGE_EXPANSION, "100.1. See rules 100.1a-c.\n", 3) { RulesParserLimits(maxRangeExpansion = it.toInt()) },
+        // The longest identifier, "glossary:Abcdef", is 15 bytes.
+        Bound(RulesLimit.IDENTIFIER_BYTES, "100.1. Synthetic.\n\nGlossary\n\nAbcdef\nSynthetic definition.\n", 15) {
+            RulesParserLimits(maxIdentifierBytes = it.toInt())
+        },
     )
 
     @Test

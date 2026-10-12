@@ -67,6 +67,38 @@ class RuleReferenceScannerTest {
     }
 
     @Test
+    fun referencesNeverSpanLines() {
+        // A Contents listing: "Rules" ends one line and "102." starts the next.
+        assertTrue(scan("101. The Synthetic Golden Rules\n102. Synthetic Players").isEmpty())
+        assertEquals(listOf("100.1" to listOf("100.1")), scan("See rules 100.1,\n100.2"))
+    }
+
+    @Test
+    fun aWordAfterARangeWordIsNotASubruleLetter() {
+        assertEquals(listOf("613.1d" to listOf("613.1d")), scan("Apply rule 613.1d to a synthetic copy."))
+        assertEquals(listOf("100.1a" to listOf("100.1a")), scan("rule 100.1a to a synthetic player"))
+        assertEquals(listOf("702.19b" to listOf("702.19b")), scan("rule 702.19b \u2014 a synthetic creature"))
+        // A shorthand letter that does not follow the first letter is not a range end.
+        assertEquals(listOf("702.19d" to listOf("702.19d")), scan("rule 702.19d-a"))
+    }
+
+    @Test
+    fun aChainStopsAfterOneRangeAndKeepsItsTargets() {
+        assertEquals(listOf("100.1-100.4" to listOf("100.1", "100.4")), scan("rules 100.1-100.4-100.6"))
+        assertEquals(listOf("702.19b-d" to listOf("702.19b", "702.19c", "702.19d")), scan("rules 702.19b-d-f"))
+        assertEquals(
+            listOf("100.1" to listOf("100.1"), "100.2-100.3" to listOf("100.2", "100.3")),
+            scan("rules 100.1, 100.2-100.3"),
+        )
+    }
+
+    @Test
+    fun ruleNumbersLongerThanFourDigitsAreNotTargets() {
+        assertTrue(scan("rule 100.11111a-z").isEmpty())
+        assertEquals(listOf("702.1901" to listOf("702.1901")), scan("rule 702.1901"))
+    }
+
+    @Test
     fun expansionBeyondTheLimitFails() {
         try {
             RuleReferenceScanner(maxRangeExpansion = 2).scan("rules 100.1a-c")

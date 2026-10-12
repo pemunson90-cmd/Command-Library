@@ -5,6 +5,8 @@ import com.architectpsg.commandlibrary.core.model.CancelToken
 import com.architectpsg.commandlibrary.core.model.SnapshotBytes
 import com.architectpsg.commandlibrary.feature.rules.parser.SyntheticRules.NeverCancelled
 import com.architectpsg.commandlibrary.feature.rules.parser.SyntheticRules.chunks
+import java.nio.charset.CodingErrorAction
+import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
@@ -142,6 +144,58 @@ class Utf8LineReaderTest {
             fail("Expected cancellation")
         } catch (expected: CancellationException) {
             assertEquals(listOf("one", "two"), seen)
+        }
+    }
+
+    @Test
+    fun decodingAgreesWithTheJdkStrictDecoderOnSeededInputs() = runTest {
+        // Differential check: the reader's own decoder against the JVM's REPORT-mode UTF-8 decoder,
+        // over seeded mixes of valid code points and boundary bytes, split into random chunks.
+        val random = java.util.Random(20261012L)
+        val tricky = intArrayOf(0x80, 0x8F, 0x90, 0x9F, 0xA0, 0xBF, 0xC0, 0xC1, 0xC2, 0xDF, 0xE0, 0xE1, 0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF4, 0xF5, 0xFF)
+        val codePoints = intArrayOf(0x41, 0x7F, 0x80, 0x7FF, 0x800, 0xD7FF, 0xE000, 0xFEFF, 0xFFFD, 0xFFFF, 0x10000, 0x1F0CF, 0x10FFFF)
+        val fixed = listOf(
+            byteArrayOf(0xED.toByte(), 0xA0.toByte(), 0x80.toByte()),
+            byteArrayOf(0xC0.toByte(), 0xAF.toByte()),
+            byteArrayOf(0xE0.toByte(), 0x80.toByte(), 0xAF.toByte()),
+            byteArrayOf(0xF0.toByte(), 0x80.toByte(), 0x80.toByte(), 0xAF.toByte()),
+            byteArrayOf(0xF4.toByte(), 0x90.toByte(), 0x80.toByte(), 0x80.toByte()),
+            byteArrayOf(0x61, 0xE2.toByte(), 0x82.toByte()),
+            byteArrayOf(0x61, 0xE2.toByte(), 0x41),
+        )
+        val cases = fixed + List(3_000) {
+            val out = java.io.ByteArrayOutputStream()
+            repeat(random.nextInt(12)) {
+                when (random.nextInt(4)) {
+                    0 -> out.write(tricky[random.nextInt(tricky.size)])
+                    1 -> out.write(if (random.nextBoolean()) '\n'.code else 'a'.code + random.nextInt(26))
+                    else -> {
+                        val cp = codePoints[random.nextInt(codePoints.size)]
+                        out.write(String(Character.toChars(cp)).toByteArray(Charsets.UTF_8))
+                    }
+                }
+            }
+            out.toByteArray()
+        }
+        for ((i, bytes) in cases.withIndex()) {
+            val jdk = java.nio.ByteBuffer.wrap(bytes)
+            val expected: Any = try {
+                val text = StandardCharsets.UTF_8.newDecoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .decode(jdk)
+                    .toString()
+                    .removePrefix("\uFEFF")
+                Regex("\r\n|\r|\n").split(text).let { if (it.last().isEmpty()) it.dropLast(1) else it }
+            } catch (malformed: java.nio.charset.CharacterCodingException) {
+                RulesParseFailure.MalformedUtf8(jdk.position().toLong())
+            }
+            val actual: Any = try {
+                lines(chunks(bytes, size = 1 + random.nextInt(4)))
+            } catch (failure: RulesParseException) {
+                failure.failure
+            }
+            assertEquals("case $i: ${bytes.joinToString(" ") { "%02X".format(it) }}", expected, actual)
         }
     }
 

@@ -28,6 +28,8 @@ internal class StructureStats(
  *
  * Regions, in order: front matter, an optional standalone `Contents` line and its listing, the body
  * (sections, chapters, rules, subrules, examples), a standalone `Glossary`, a standalone `Credits`.
+ * The standalone `Glossary` and `Credits` lines in the body only mark region changes and belong to
+ * no entry; every other non-blank line belongs to exactly one entry.
  * The grammar follows the structure recorded in research R-03 and is not yet checked against a
  * genuine source file.
  */
@@ -51,6 +53,8 @@ internal class RulesStructure(
     // Body position used to accept or reject heading-like lines.
     private val contentsSections = HashSet<String>()
     private var firstContentsHeading: String? = null
+    // When Contents lists a chapter first: that chapter's section, whose body heading also ends Contents.
+    private var firstContentsChapterSection: Int? = null
     private var currentSection: Int? = null
     private var lastChapter: Int? = null
     private var currentChapter: Int? = null
@@ -66,9 +70,13 @@ internal class RulesStructure(
     private val nextSuffix = HashMap<String, Int>()
     private val entriesByKind = HashMap<RuleEntryKind, Long>()
     private var entries = 0L
+    private var numberedRules = 0L
     private var duplicates = 0L
     private var anomalies = 0L
     private val firstAnomalies = ArrayList<RulesAnomaly>()
+
+    /** Every identifier emitted so far; after [finish] these are the corpus identifiers. */
+    val identifiers: Set<String> get() = emittedIdentifiers
 
     suspend fun line(text: String, lineNumber: Long) {
         when (region) {
@@ -87,7 +95,8 @@ internal class RulesStructure(
                 RulesParseFailure.Structure(lastLine, "Contents is not followed by a body that repeats its first heading"),
             )
         }
-        if ((entriesByKind[RuleEntryKind.NUMBERED] ?: 0L) == 0L) throw RulesParseException(RulesParseFailure.NoNumberedRules)
+        // Sections and chapters alone (a numbered list, say) do not make a rules corpus.
+        if (numberedRules == 0L) throw RulesParseException(RulesParseFailure.NoNumberedRules)
         return StructureStats(entriesByKind.toMap(), duplicates, anomalies, firstAnomalies.toList())
     }
 
@@ -117,7 +126,7 @@ internal class RulesStructure(
         val trimmed = text.trimEnd()
         val first = firstContentsHeading
         val bodyStarts = if (first != null) {
-            trimmed == first
+            trimmed == first || startsListedChapterSection(trimmed)
         } else {
             // A listing without section or chapter headings: the body starts at the first numbered rule.
             RULE.matches(trimmed) || SUBRULE.matches(trimmed)
@@ -133,8 +142,19 @@ internal class RulesStructure(
         }
         val section = SECTION.matches(trimmed)
         if (section) contentsSections += trimmed
-        if (first == null && (section || CHAPTER.matches(trimmed))) firstContentsHeading = trimmed
+        if (first == null) {
+            val chapter = if (section) null else CHAPTER.matchEntire(trimmed)
+            if (section || chapter != null) firstContentsHeading = trimmed
+            if (chapter != null) firstContentsChapterSection = chapter.groupValues[1].toInt() / 100
+        }
         append(text)
+    }
+
+    /** A listing of chapters only also ends at the body heading of the first chapter's section. */
+    private fun startsListedChapterSection(trimmed: String): Boolean {
+        val section = firstContentsChapterSection ?: return false
+        val match = SECTION.matchEntire(trimmed) ?: return false
+        return match.groupValues[1].toInt() == section
     }
 
     private suspend fun body(text: String, lineNumber: Long) {
@@ -174,6 +194,7 @@ internal class RulesStructure(
                         close()
                         open(RuleEntryKind.NUMBERED, match.number, match.number, match.title, text, lineNumber)
                         lastNumberedId = openId
+                        if (match.kind == Heading.Kind.RULE || match.kind == Heading.Kind.SUBRULE) numberedRules += 1
                     }
                 }
             }
@@ -294,16 +315,28 @@ internal class RulesStructure(
      * identifier already emitted (a source term may itself end in `~2`), so identifiers stay unique.
      */
     private fun uniqueIdentifier(baseId: String): String {
-        if (emittedIdentifiers.add(baseId)) return baseId
+        if (!emittedIdentifiers.contains(baseId)) return retain(baseId)
         duplicates += 1
         var suffix = nextSuffix[baseId] ?: 2
         var candidate = "$baseId~$suffix"
-        while (!emittedIdentifiers.add(candidate)) {
+        while (emittedIdentifiers.contains(candidate)) {
             suffix += 1
             candidate = "$baseId~$suffix"
         }
         nextSuffix[baseId] = suffix + 1
-        return candidate
+        return retain(candidate)
+    }
+
+    /** Identifiers are retained by the index, so each one is bounded before it is kept. */
+    private fun retain(identifier: String): String {
+        val bytes = utf8Length(identifier)
+        if (bytes > limits.maxIdentifierBytes) {
+            throw RulesParseException(
+                RulesParseFailure.LimitExceeded(RulesLimit.IDENTIFIER_BYTES, limits.maxIdentifierBytes.toLong(), bytes.toLong()),
+            )
+        }
+        emittedIdentifiers += identifier
+        return identifier
     }
 
     private fun append(text: String) {
@@ -352,10 +385,12 @@ internal class RulesStructure(
         const val GLOSSARY = "Glossary"
         const val CREDITS = "Credits"
         const val EXAMPLE = "Example:"
-        val SECTION = Regex("""([1-9])\.\s+(\S.*)""")
-        val CHAPTER = Regex("""(\d{3})\.\s+(\S.*)""")
-        val RULE = Regex("""(\d{3})\.(\d+)\.?(?:\s+.*)?""")
-        val SUBRULE = Regex("""(\d{3})\.(\d+)([a-z])\.?(?:\s+.*)?""")
+        // DOTALL so a line holding U+0085, U+2028 or U+2029 still matches; one whitespace before `.*`
+        // keeps each match linear in the line length.
+        val SECTION = Regex("""(?s)([1-9])\.\s+(\S.*)""")
+        val CHAPTER = Regex("""(?s)(\d{3})\.\s+(\S.*)""")
+        val RULE = Regex("""(?s)(\d{3})\.(\d{1,$MAX_RULE_NUMBER_DIGITS})\.?(?:\s.*)?""")
+        val SUBRULE = Regex("""(?s)(\d{3})\.(\d{1,$MAX_RULE_NUMBER_DIGITS})([a-z])\.?(?:\s.*)?""")
 
         fun utf8Length(text: String): Int {
             var bytes = 0

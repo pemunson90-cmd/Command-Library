@@ -22,6 +22,7 @@ import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.job
@@ -199,6 +200,7 @@ class RulesTextParserTest {
         """.trimIndent()
         val parsed = parseAll(text)
         assertEquals(listOf("1", "100.1"), parsed.entries.map { it.id.raw })
+        assertTrue(parsed.entry("100.1").text.endsWith("3. Synthetic section that skips two"))
         assertEquals(1L, parsed.summary.anomalies)
     }
 
@@ -324,8 +326,7 @@ class RulesTextParserTest {
     }
 
     @Test
-    fun parsePassEmitsCoreEntriesWithoutRetainingThem() = runTest {
-        // The callback receives each entry once; the parser returns only counts.
+    fun parsePassEmitsEachEntryOnceWithUniqueIdentifiers() = runTest {
         val seen = ArrayList<RuleEntry>()
         val parser = RulesTextParser()
         val index = (parser.index(chunks(CORPUS), NeverCancelled) as RulesParseResult.Ok).value
@@ -471,6 +472,116 @@ class RulesTextParserTest {
         for (size in listOf(1, 2, 3, 5, 4096)) {
             assertEquals("chunk size $size", expected, parseAll(windows, chunkSize = size).entries)
         }
+    }
+
+    @Test
+    fun cancelledCallerReceivesCancellationRatherThanATypedFailure() = runTest {
+        // An empty stream fails Truncated; a caller that has already cancelled must still see cancellation.
+        val token = SwitchToken().apply { cancelled = true }
+        try {
+            val result = RulesTextParser().index(emptyFlow(), token)
+            fail("Expected cancellation, got $result")
+        } catch (expected: CancellationException) {
+        }
+        var result: RulesParseResult<RulesIndex>? = null
+        val job = launch(start = CoroutineStart.UNDISPATCHED) {
+            coroutineContext.job.cancel()
+            result = RulesTextParser().index(emptyFlow(), NeverCancelled)
+        }
+        job.join()
+        assertTrue(job.isCancelled)
+        assertEquals(null, result)
+    }
+
+    @Test
+    fun sectionAndChapterHeadingsWithoutRulesAreNotARulesCorpus() = runTest {
+        assertEquals(RulesParseFailure.NoNumberedRules, indexFailure("1. Synthetic milk\n2. Synthetic eggs\n3. Synthetic bread\n"))
+        assertEquals(RulesParseFailure.NoNumberedRules, indexFailure("100. Synthetic General\n\n101. Synthetic Ordering\n"))
+    }
+
+    @Test
+    fun contentsListingOnlyChaptersEndsAtTheFirstBodySection() = runTest {
+        val text = """
+            Contents
+
+            100. Synthetic General
+            200. Synthetic Parts
+
+            1. Synthetic Concepts
+
+            100. Synthetic General
+
+            100.1. A synthetic rule.
+
+            2. Synthetic Parts
+
+            200. Synthetic Parts
+
+            200.1. See section 1 and section 2.
+        """.trimIndent()
+        val parsed = parseAll(text)
+        assertEquals(listOf("contents", "1", "100", "100.1", "2", "200", "200.1"), parsed.entries.map { it.id.raw })
+        assertEquals("Contents\n\n100. Synthetic General\n200. Synthetic Parts", parsed.entry("contents").text)
+        assertEquals(
+            listOf(Knowledge.Known(RuleId(PROVIDER, "1")), Knowledge.Known(RuleId(PROVIDER, "2"))),
+            parsed.entry("200.1").references.map { it.resolved },
+        )
+        assertEquals(0L, parsed.summary.anomalies)
+    }
+
+    @Test
+    fun ruleNumbersLongerThanFourDigitsAreNotHeadings() = runTest {
+        // An unbounded rule number would become an identifier retained by the index, once per example.
+        val text = """
+            100. Synthetic General
+
+            100.1. A synthetic rule.
+
+            100.11111. A synthetic line whose rule number is too long to be a heading.
+
+            Example: A synthetic example.
+        """.trimIndent()
+        val parsed = parseAll(text)
+        assertEquals(listOf("100", "100.1", "100.1#example-1"), parsed.entries.map { it.id.raw })
+        assertTrue(parsed.entry("100.1").text.endsWith("too long to be a heading."))
+    }
+
+    @Test(timeout = 20_000)
+    fun headingRecognitionIsLinearAndAcceptsLineSeparatorCharacters() = runTest {
+        // 60,000 blanks before U+0085: a backtracking heading pattern needs tens of seconds per pass here.
+        val text = "100. Synthetic General\n\n100.1" + " ".repeat(60_000) + "\u0085 synthetic tail.\n"
+        val parsed = parseAll(text, RulesParserLimits(maxLineBytes = 64 * 1024))
+        assertEquals(listOf("100", "100.1"), parsed.entries.map { it.id.raw })
+    }
+
+    @Test
+    fun referenceLimitFailsAtTheFirstPairOverTheLimit() = runTest {
+        val text = "100.1. See rules 100.1a-z, 100.2a-z and 100.3a-z.\n"
+        assertEquals(
+            RulesParseFailure.LimitExceeded(RulesLimit.REFERENCES_PER_ENTRY, 10, 11),
+            indexFailure(text, RulesParserLimits(maxReferencesPerEntry = 10)),
+        )
+    }
+
+    @Test
+    fun parsePassEmitsTheFirstEntryBeforeTheInputEnds() = runTest {
+        val parser = RulesTextParser()
+        val index = (parser.index(chunks(CORPUS), NeverCancelled) as RulesParseResult.Ok).value
+        var finalChunkSent = false
+        var firstEntryBeforeTheEnd: Boolean? = null
+        val input = flow {
+            chunks(CORPUS, size = 16).collect { chunk ->
+                if (chunk.final) finalChunkSent = true
+                emit(chunk)
+            }
+        }
+        var seen = 0
+        val summary = (parser.parse(input, index, PROVENANCE, CORPUS_ID, NeverCancelled) {
+            if (firstEntryBeforeTheEnd == null) firstEntryBeforeTheEnd = !finalChunkSent
+            seen++
+        } as RulesParseResult.Ok).value
+        assertEquals(true, firstEntryBeforeTheEnd)
+        assertEquals(seen.toLong(), summary.entries)
     }
 
     /** Lets [remaining] checks pass, then reports cancellation the way a cancelled caller would. */
