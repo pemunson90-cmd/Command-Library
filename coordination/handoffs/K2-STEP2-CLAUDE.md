@@ -25,13 +25,26 @@ Codex ran out of usage with its lease expired (2026-10-11T23:47:41Z). Pat author
 | Checkpoint | Commit | What |
 |---|---|---|
 | cp-20261012-claude-k2-14 | e9afe60 | Lease claimed; this file created. |
-| cp-20261012-claude-k2-15 | (this commit) | K1 tuple resolved and compiled in a scratch probe. Evidence: `docs/gauntlet/gates/K2-TUPLE-PROBE.md`. One binding changed: compileSdk 36 to 37 (Compose BOM 2026.09.00 AARs require it); target 36, min 23 and all library versions unchanged. Independent review requested: `docs/gauntlet/gates/K2-TUPLE-REVIEW.md` (written by a separate reviewer; if absent, the review did not finish). |
+| cp-20261012-claude-k2-15 | 5a8efcb | K1 tuple resolved and compiled in a scratch probe. Evidence: `docs/gauntlet/gates/K2-TUPLE-PROBE.md`. One binding changed: compileSdk 36 to 37 (Compose BOM 2026.09.00 AARs require it); target 36, min 23 and all library versions unchanged. Independent review requested: `docs/gauntlet/gates/K2-TUPLE-REVIEW.md` (written by a separate reviewer; if absent, the review did not finish). |
+| (no checkpoint id) | 64f828a | Cards `coordination/tasks/cc-storage-01.md`, `cc-settings-01.md`; locks `storage.lock`, `settings.lock` claimed by claude-code; version catalog and root plugins gain the probe-proven tuple (no module included on main yet). |
+| (no checkpoint id) | 01cc040 | Workflow `.github/workflows/android-k2.yml` (JVM check + APK zipalign job; emulator matrix API 23, API 36, API 36 16 KiB page size; no third-party actions). First run on main: 38188001791. |
+
+| cp-20261012-claude-k2-16 | (this commit) | Tuple review ACCEPT-WITH-CHANGES applied: lock compileSdk 37, K1 supersession note, probe doc fixes, retained logs. |
+## Delegated work in flight (Claude Code Sonnet-tier implementers)
+
+| Task | Branch | Base | Writes | Status |
+|---|---|---|---|---|
+| cc-storage-01 | `agent/cc-storage-01` | c3abc98 (prep: includes `:data:storage`) | `android-app/data/storage/**` | running; handoff `coordination/handoffs/cc-storage-01.md` on the branch |
+| cc-settings-01 | `agent/cc-settings-01` | b39a3b1 (prep: includes `:feature:settings`) | `android-app/feature/settings/**` | READY-FOR-REVIEW at worker head 1bca4a9 (3 steps). Orchestrator reproduced 35 JVM tests, 0 failures, assembleDebug pass. Main merged in at 714cd7e (hosted run 38188948294). Independent multi-lens review with adversarial verification in progress; results go to `docs/gauntlet/gates/K2-SETTINGS-REVIEW.md`. |
+
+If Claude Code stops before these finish, read each branch's handoff; continue from its Next field. Do not redo a step whose `[cc-<c>-01 step k/N]` commit exists. Neither branch contains the new workflow yet: before CI can run on them, merge `main` into the branch (merge commit, no rebase) after the worker's last push.
 
 ## Next action
 
-1. Read `docs/gauntlet/gates/K2-TUPLE-REVIEW.md`. If its verdict is ACCEPT (or ACCEPT-WITH-CHANGES with the changes made), record compileSdk 37 in `config/kotlin-android-candidate-lock.json` (android_sdk.compile, with the probe and review as evidence). If REJECT, follow its alternative and re-probe before any Android module lands.
-2. Then start card step 2 in `android-app/` (orchestrator-owned shared files: `settings.gradle.kts`, root `build.gradle.kts`, `gradle/libs.versions.toml`, `app/**`):
-   - Add catalog entries and plugins exactly as in the probe section of K2-TUPLE-PROBE.md (AGP 9.4.1 `com.android.application`/`com.android.library`, compose plugin 2.2.10, KSP 2.3.12, `androidx.room3` 3.0.3; libraries room3-runtime/compiler 3.0.3, sqlite-bundled 2.7.1, datastore-preferences 1.2.1, compose BOM 2026.09.00, activity-compose 1.13.0).
-   - Create `:data:storage` (Android library, Room3 + BundledSQLiteDriver) implementing the schema in `docs/architecture/K2-FOUNDATION-DESIGN.md` section "Storage schema version 1" against the core contracts (`Database`, `DbTransaction`, `RollbackOnlyLatch`, `CatalogLookup`, `CatalogStatus`, `CatalogImport`). Use `withWriteTransaction` and `TransactionScope.rollback(...)` (verified in Room3 3.0.3 sources); no Room2 `withTransaction`.
-   - Claim the `storage` component lock before writing `android-app/data/storage/**`.
-3. Instrumentation needs hosted CI (no KVM here). The workflow must `sdkmanager --install "platforms;android-37.0"`.
+1. Done (cp-20261012-claude-k2-16): tuple review ACCEPT-WITH-CHANGES (`docs/gauntlet/gates/K2-TUPLE-REVIEW.md`). Lock now has compileSdk 37 with the pinned `platforms;android-37.0` r2 package; K1 line marked superseded; probe doc corrected; sanitized probe logs retained in `docs/gauntlet/gates/k2-tuple-probe/`.
+2. Done: run 38188001791 on main succeeded (JVM job: 25 tests, 0 failures; emulator jobs skipped, no androidTest sources).
+3. When each worker reports READY-FOR-REVIEW: merge `main` into its branch (merge commit), push, confirm `android-k2.yml` runs green including the emulator matrix for storage; then an independent reviewer (not the author) reviews the branch against its card and K2-FOUNDATION-DESIGN.md; fix blockers; merge to main; release its lock.
+4. After storage merges: write `cc-catalog-01` (`:feature:catalog`: bounded importer, staging/activation, `CatalogLookup` with escaped FTS literal and cursor, `CatalogStatus`, genuine Scryfall fixture with provenance). It issues SQL through the storage `Database` port using the parameter rule in the storage handoff.
+5. Then `:feature:shell` and `:app` (card steps 3 and 4).
+
+Open for Pat (not blocking): settings defaults chosen by the orchestrator because none are documented: image cache 0 bytes, retain rulings off, Wi-Fi-only downloads on, budget unknown (see `coordination/tasks/cc-settings-01.md`).

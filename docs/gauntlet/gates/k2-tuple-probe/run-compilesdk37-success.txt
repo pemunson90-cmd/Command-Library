@@ -1,0 +1,92 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :probe:preBuild UP-TO-DATE
+> Task :probe:preDebugBuild UP-TO-DATE
+> Task :probe:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :probe:generateDebugResources UP-TO-DATE
+> Task :probe:packageDebugResources UP-TO-DATE
+> Task :probe:processDebugNavigationResources UP-TO-DATE
+> Task :probe:javaPreCompileDebug UP-TO-DATE
+> Task :probe:parseDebugLocalResources
+> Task :probe:checkDebugAarMetadata
+> Task :probe:mapDebugSourceSetPaths
+> Task :probe:generateDebugRFile
+> Task :probe:compileDebugNavigationResources
+> Task :probe:mergeDebugResources
+> Task :probe:createDebugCompatibleScreenManifests
+> Task :probe:extractDeepLinksDebug
+> Task :probe:processDebugMainManifest
+> Task :probe:processDebugManifest
+> Task :probe:processDebugManifestForPackage
+> Task :probe:processDebugResources
+> Task :probe:preDebugAndroidTestBuild SKIPPED
+> Task :probe:generateDebugAndroidTestResources
+> Task :probe:packageDebugAndroidTestResources
+> Task :probe:processDebugAndroidTestNavigationResources
+> Task :probe:parseDebugAndroidTestLocalResources
+> Task :probe:generateDebugAndroidTestRFile
+> Task :probe:javaPreCompileDebugAndroidTest
+> Task :probe:generateDebugAssets UP-TO-DATE
+> Task :probe:mergeDebugAssets
+> Task :probe:compressDebugAssets
+> Task :probe:generateDebugGlobalSynthetics
+> Task :probe:kspDebugKotlin
+> Task :probe:checkDebugDuplicateClasses
+> Task :probe:desugarDebugFileDependencies
+> Task :probe:compileDebugKotlin
+> Task :probe:mergeExtDexDebug
+> Task :probe:compileDebugJavaWithJavac NO-SOURCE
+> Task :probe:bundleDebugClassesToCompileJar
+> Task :probe:kspDebugAndroidTestKotlin
+> Task :probe:processDebugJavaRes
+> Task :probe:compileDebugAndroidTestKotlin
+> Task :probe:compileDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :probe:copyRoomSchemas NO-SOURCE
+> Task :probe:mergeLibDexDebug
+> Task :probe:dexBuilderDebug
+> Task :probe:mergeProjectDexDebug
+> Task :probe:mergeDebugJavaResource
+> Task :probe:mergeDebugJniLibFolders
+> Task :probe:mergeDebugNativeLibs
+> Task :probe:validateSigningDebug
+> Task :probe:writeDebugAppMetadata
+> Task :probe:writeDebugSigningConfigVersions
+> Task :probe:copyRoomSchemasToAndroidTestAssetsDebugAndroidTest
+> Task :probe:generateDebugAndroidTestAssets UP-TO-DATE
+
+> Task :probe:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so, libsqliteJni.so. Run with --info option to learn more.
+
+> Task :probe:mergeDebugAndroidTestAssets
+> Task :probe:compressDebugAndroidTestAssets
+> Task :probe:generateDebugAndroidTestGlobalSynthetics
+> Task :probe:processDebugAndroidTestJavaRes
+> Task :probe:packageDebug
+> Task :probe:createDebugApkListingFileRedirect
+> Task :probe:assembleDebug
+> Task :probe:mergeDebugAndroidTestJavaResource
+> Task :probe:checkDebugAndroidTestDuplicateClasses
+> Task :probe:desugarDebugAndroidTestFileDependencies
+> Task :probe:mergeLibDexDebugAndroidTest
+> Task :probe:checkDebugAndroidTestAarMetadata
+> Task :probe:mapDebugAndroidTestSourceSetPaths
+> Task :probe:compileDebugAndroidTestNavigationResources
+> Task :probe:mergeExtDexDebugAndroidTest
+> Task :probe:mergeDebugAndroidTestResources
+> Task :probe:mergeDebugAndroidTestManifest
+> Task :probe:processDebugAndroidTestManifest
+> Task :probe:mergeDebugAndroidTestJniLibFolders
+> Task :probe:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :probe:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :probe:validateSigningDebugAndroidTest
+> Task :probe:writeDebugAndroidTestSigningConfigVersions
+> Task :probe:processDebugAndroidTestResources
+> Task :probe:dexBuilderDebugAndroidTest
+> Task :probe:mergeProjectDexDebugAndroidTest
+> Task :probe:packageDebugAndroidTest
+> Task :probe:createDebugAndroidTestApkListingFileRedirect
+> Task :probe:assembleDebugAndroidTest
+
+BUILD SUCCESSFUL in 1m 25s
+70 actionable tasks: 66 executed, 4 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

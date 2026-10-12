@@ -14,7 +14,7 @@ Official source observations dated 2026-10-11 UTC are captured in [candidate loc
 | Room / compiler / KSP | androidx.room3 3.0.3 / 3.0.3 / 2.3.12 | Room3 namespace and FTS5 API; actual KSP generation untested |
 | SQLite bundled | 2.7.1 | FTS5 driver candidate; native AAR static 16-KiB alignment observation is not final APK/runtime proof |
 | DataStore | 1.2.1 | Source-backed, not compiled |
-| Android | min 23; compile/target 36; build-tools 36.0.0 | Candidate; K2 must inspect merged manifest/native packaging and minimum-API execution |
+| Android | min 23; compile/target 36; build-tools 36.0.0 | Candidate; K2 must inspect merged manifest/native packaging and minimum-API execution. Compile superseded by K2: compileSdk 37 (Compose BOM 2026.09.00 requires it), target 36 and min 23 unchanged; see K2-TUPLE-PROBE.md and K2-TUPLE-REVIEW.md |
 
 Latest discovered versions were not automatically selected: Gradle 9.8.1, Kotlin 2.4.21 and Room2 2.8.5 observations remain historical discovery. Room3 is a distinct namespace. Gradle's embedded Kotlin 2.3.21 printed by --version is its build-script runtime, not the application's selected Kotlin compiler.
 

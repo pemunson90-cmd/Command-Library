@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-claude-k2-15
+Checkpoint-ID: cp-20261012-codex-k2-17
 
 Next task: orch-kotlin-m0-01
-Next step: 2. K2 step 2 (tuple part of step 1): Claude Code resolved and compiled the K1 tuple in a scratch probe; compileSdk must be 37 for Compose BOM 2026.09.00; independent review requested. Read coordination/handoffs/K2-STEP2-CLAUDE.md for the exact next action.
+Next step: 2. Read Claude step2 handoff; independently review completed settings/QA branches, preserve and resume storage at its exact committed step, then build importer and UI.
 
-Updated UTC: 2026-10-12T00:19:38Z
+Updated UTC: 2026-10-12T02:56:47Z
 Status: in_progress; lease: active.
-Verified base: 575159ba13be87def464fa419d1bbcb22a48211d.
+Verified base: d3a84d1ce66800cac4dc7a3a301455bd92b0fbb8.
 
-K1 tuple compiled locally (AGP 9.4.1 built-in Kotlin 2.2.10, KSP 2.3.12, Room3 3.0.3 FTS5, sqlite-bundled 2.7.1, DataStore 1.2.1) with compileSdk 37, target 36, min 23; APK native libs 16KB aligned; JVM bundled FTS5 MATCH passes. No emulator run. Evidence docs/gauntlet/gates/K2-TUPLE-PROBE.md.
+Codex resumed from verifiedd3a84d1 after expired Claude lease; UTCdate12 recorded automatically. Preserved Claude compileSdk37 tuple evidence, hosted workflow and all worker branches/locks. Settings READY-FOR-REVIEW, storage schema step1 saved, QA branch ready. No app/emulator completion claimed.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

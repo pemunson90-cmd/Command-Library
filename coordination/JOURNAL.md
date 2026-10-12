@@ -105,3 +105,7 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T00:05:55Z | claude-code | cp-20261012-claude-k2-14 | containing commit | Claude Code took over the expired Codex lease (expired 2026-10-11T23:47:41Z) at Pat's instruction to continue K2 step 2. Core contracts accepted and integrated at 575159b; Claude QA branch agent/cc-k2-qa-01 is READY-FOR-REVIEW and unmerged (needs an independent reviewer, not its author).
 
 2026-10-12T00:19:38Z | claude-code | cp-20261012-claude-k2-15 | containing commit | K1 tuple compiled locally (AGP 9.4.1 built-in Kotlin 2.2.10, KSP 2.3.12, Room3 3.0.3 FTS5, sqlite-bundled 2.7.1, DataStore 1.2.1) with compileSdk 37, target 36, min 23; APK native libs 16KB aligned; JVM bundled FTS5 MATCH passes. No emulator run. Evidence docs/gauntlet/gates/K2-TUPLE-PROBE.md.
+
+2026-10-12T00:27:54Z | claude-code | cp-20261012-claude-k2-16 | containing commit | Tuple binding compileSdk 37 independently reviewed (ACCEPT-WITH-CHANGES) and applied to the lock. Storage and settings delegated with locks held by claude-code. android-k2.yml added (first run 38188001791 on main). No module code on main yet; no emulator test has run.
+
+2026-10-12T02:56:47Z | codex | cp-20261012-codex-k2-17 | containing commit | Codex resumed from verifiedd3a84d1 after expired Claude lease; UTCdate12 recorded automatically. Preserved Claude compileSdk37 tuple evidence, hosted workflow and all worker branches/locks. Settings READY-FOR-REVIEW, storage schema step1 saved, QA branch ready. No app/emulator completion claimed.

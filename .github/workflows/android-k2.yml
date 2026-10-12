@@ -1,0 +1,182 @@
+name: Android K2 build and emulator
+on:
+  push:
+    branches: ['main', 'agent/cc-*', 'agent/cx-*']
+    paths: ['android-app/**', '.github/workflows/android-k2.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-k2-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  SDK_PLATFORM: 'platforms;android-37.0'
+  SDK_BUILD_TOOLS: 'build-tools;36.0.0'
+jobs:
+  jvm-and-assemble:
+    if: github.repository == 'pemunson90-cmd/Command-Library'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      # actions/checkout v7.0.1; tag commit verified 2026-10-11.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: JDK 17 and SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x "$JAVA_HOME_17_X64/bin/javac"
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" --install "$SDK_PLATFORM" "$SDK_BUILD_TOOLS" > /dev/null
+          ls "$ANDROID_HOME/platforms"
+      - name: JVM tests, debug APK assembly
+        shell: bash
+        working-directory: android-app
+        run: |
+          set -euo pipefail
+          java -version
+          bash gradlew --no-daemon --console=plain projects
+          bash gradlew --no-daemon --console=plain check
+          if bash gradlew --no-daemon -q tasks --all | grep -q '^app:assembleDebug'; then
+            bash gradlew --no-daemon --console=plain :app:assembleDebug
+          fi
+      - name: Count executed JVM tests
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          reports = [p for p in pathlib.Path('android-app').glob('**/build/test-results/**/TEST-*.xml')]
+          assert reports, 'No executed JVM test reports'
+          total = failures = 0
+          for p in reports:
+              r = ET.parse(p).getroot()
+              total += int(r.get('tests', 0))
+              failures += int(r.get('failures', 0)) + int(r.get('errors', 0))
+          print('JVM test reports:', len(reports), 'tests:', total, 'failures+errors:', failures)
+          assert total > 0 and failures == 0
+          PY
+      - name: APK checksum and 16 KiB ZIP alignment
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          apks=(android-app/app/build/outputs/apk/debug/*.apk)
+          if [ ${#apks[@]} -eq 0 ]; then echo 'No :app module yet; no APK built in this run.'; exit 0; fi
+          for apk in "${apks[@]}"; do
+            sha256sum "$apk"
+            "$ANDROID_HOME/build-tools/36.0.0/zipalign" -c -P 16 -v 4 "$apk" | tail -n 1
+          done
+      - name: Retain evidence
+        if: always()
+        # actions/upload-artifact v7.0.2; official release/tag commit observed 2026-10-11.
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: android-k2-jvm-${{ github.sha }}
+          path: |
+            android-app/**/build/reports/tests/**
+            android-app/**/build/test-results/**
+            android-app/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: ignore
+          retention-days: 14
+
+  emulator:
+    if: github.repository == 'pemunson90-cmd/Command-Library'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - api: 23
+            image: 'system-images;android-23;default;x86_64'
+          - api: 36
+            image: 'system-images;android-36;default;x86_64'
+          - api: 36
+            image: 'system-images;android-36;google_apis_ps16k;x86_64'
+    steps:
+      # actions/checkout v7.0.1; tag commit verified 2026-10-11.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Skip when no instrumentation sources exist
+        id: gate
+        shell: bash
+        run: |
+          if find android-app -path '*/src/androidTest/*' -name '*.kt' | grep -q .; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo 'No androidTest sources on this commit; no emulator run.'
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Enable KVM
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+      - name: JDK 17, SDK packages, AVD
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" --install "$SDK_PLATFORM" "$SDK_BUILD_TOOLS" emulator platform-tools "${{ matrix.image }}" > /dev/null
+          echo no | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd --force -n k2 -k "${{ matrix.image }}"
+      - name: Boot emulator
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          nohup "$ANDROID_HOME/emulator/emulator" -avd k2 -no-window -no-audio -no-boot-anim -no-snapshot \
+            -gpu swiftshader_indirect -camera-back none -camera-front none -accel on > emulator.log 2>&1 &
+          ADB="$ANDROID_HOME/platform-tools/adb"
+          timeout 120 "$ADB" wait-for-device
+          timeout 900 bash -c "until [ \"\$($ADB shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')\" = '1' ]; do sleep 5; done"
+          "$ADB" shell settings put global window_animation_scale 0
+          "$ADB" shell settings put global transition_animation_scale 0
+          "$ADB" shell settings put global animator_duration_scale 0
+          echo "API: $($ADB shell getprop ro.build.version.sdk | tr -d '\r')"
+          echo "ABI: $($ADB shell getprop ro.product.cpu.abi | tr -d '\r')"
+          echo "Page size: $($ADB shell getconf PAGE_SIZE | tr -d '\r')"
+      - name: Connected instrumentation tests
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain connectedDebugAndroidTest
+      - name: Count executed instrumentation tests
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          reports = list(pathlib.Path('android-app').glob('**/build/outputs/androidTest-results/connected/**/TEST-*.xml'))
+          assert reports, 'No executed instrumentation reports'
+          total = failures = 0
+          for p in reports:
+              r = ET.parse(p).getroot()
+              total += int(r.get('tests', 0))
+              failures += int(r.get('failures', 0)) + int(r.get('errors', 0))
+          print('Instrumentation reports:', len(reports), 'tests:', total, 'failures+errors:', failures)
+          assert total > 0 and failures == 0
+          PY
+      - name: Retain evidence
+        if: always() && steps.gate.outputs.run == 'true'
+        # actions/upload-artifact v7.0.2; official release/tag commit observed 2026-10-11.
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: android-k2-emulator-api${{ matrix.api }}-${{ strategy.job-index }}-${{ github.sha }}
+          path: |
+            android-app/**/build/outputs/androidTest-results/**
+            android-app/**/build/reports/androidTests/**
+            emulator.log
+          if-no-files-found: ignore
+          retention-days: 14
