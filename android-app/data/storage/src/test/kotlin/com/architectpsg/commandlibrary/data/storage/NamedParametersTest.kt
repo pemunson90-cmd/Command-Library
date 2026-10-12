@@ -18,7 +18,7 @@ class NamedParametersTest {
     }
 
     @Test fun rejectsAmbiguousAndUnsupportedBindings() {
-        val invalid = listOf("SELECT ?", "SELECT ?12", "SELECT @value", "SELECT ${'$'}value", "SELECT :1", "SELECT :é", "SELECT :a${'$'}b", "SELECT :aé", "SELECT :a😀", "SELECT :a\u0301", "SELECT :a\u2003")
+        val invalid = listOf("SELECT ?", "SELECT ?12", "SELECT @value", "SELECT ${'$'}value", "SELECT :1", "SELECT :é", "SELECT :a${'$'}b", "SELECT :aé", "SELECT :a😀", "SELECT :a\u0301", "SELECT :a\u2003", "SELECT :a(x)", "SELECT :a()")
         invalid.forEach { sql -> assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder(sql, emptyList()) } }
         assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder("SELECT :a", emptyList()) }
         assertThrows(IllegalArgumentException::class.java) { NamedParameters.bindOrder("SELECT 1", listOf(SqlParameter("a", SqlValue.Null))) }

@@ -60,8 +60,8 @@ class StorageDatabaseTest {
             rows.single().columns.map { it.value })
     }
 
-    @Test fun unicodeParameterSuffixesAreRejectedBeforeNativeBinding() = runBlocking {
-        for (suffix in listOf("😀", "\u0301", "\u2003")) {
+    @Test fun sqliteExtendedParameterSuffixesAreRejectedBeforeNativeBinding() = runBlocking {
+        for (suffix in listOf("😀", "\u0301", "\u2003", "(x)", "()")) {
             val sql = "SELECT :a$suffix AS first_value, :a AS second_value"
             BundledSQLiteDriver().open(":memory:").use { connection ->
                 connection.prepare(sql).use { statement ->
@@ -74,6 +74,12 @@ class StorageDatabaseTest {
             }
             val refused = database.query(request(sql, "a" to SqlValue.Integer(11)), neverCancel)
             assertEquals(FailureCode.INVALID_INPUT, (refused as Outcome.Failure).error.code)
+            val rolledBack = database.transaction({ transaction ->
+                success(transaction.execute(insert("discard"), neverCancel))
+                transaction.query(request(sql, "a" to SqlValue.Integer(11)), neverCancel)
+            }, neverCancel)
+            assertEquals(FailureCode.INVALID_INPUT, (rolledBack as Outcome.Failure).error.code)
+            assertEquals(0L, count())
         }
     }
 

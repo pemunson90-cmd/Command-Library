@@ -40,7 +40,7 @@ internal object NamedParameters {
                     val start = ++i
                     require(i < sql.length && identifierStart(sql[i])) { "Use :identifier parameters" }
                     while (i < sql.length && identifierPart(sql[i])) i++
-                    require(i == sql.length || (sql[i].code < 128 && !sql[i].isLetterOrDigit() && sql[i] != '$')) {
+                    require(i == sql.length || (sql[i].code < 128 && !sql[i].isLetterOrDigit() && sql[i] != '$' && sql[i] != '(')) {
                         "Parameter identifiers must use ASCII letters, digits and underscores"
                     }
                     names += sql.substring(start, i)
