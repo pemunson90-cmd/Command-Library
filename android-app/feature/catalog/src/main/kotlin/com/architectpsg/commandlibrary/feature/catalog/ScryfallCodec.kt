@@ -66,18 +66,33 @@ internal object ScryfallCodec {
         }
     }
 
+    /** Legacy small importer requires a whole-card Oracle; bulk mapping retains printing-only records. */
     fun mapped(raw: String, provider: ProviderId, generation: GenerationId, source: ResourceUri?, date: Knowledge<UtcTimestamp>, observed: UtcTimestamp, hash: ContentHash?, notice: SourceNotice?, maxNesting: Int): Pair<CardRecord, PrintingRecord> {
+        val result = mappedSource(raw, provider, generation, source, date, observed, hash, notice, maxNesting)
+        return requireNotNull(result.first) { "Printing has no whole-card Oracle identity" } to result.second
+    }
+
+    fun mappedSource(raw: String, provider: ProviderId, generation: GenerationId, source: ResourceUri?, date: Knowledge<UtcTimestamp>, observed: UtcTimestamp, hash: ContentHash?, notice: SourceNotice?, maxNesting: Int): Pair<CardRecord?, PrintingRecord> {
         val obj = parse(raw, maxNesting)
         require(obj.string("object") == "card") { "Expected Scryfall card object" }
         require(obj.string("lang") == "en") { "Only English records are supported" }
         val provenance = Provenance(provider, source, Knowledge.Unknown("Source version not supplied", SnapshotList.empty()), date, observed, Knowledge.Unknown("Effective date not supplied", SnapshotList.empty()), generation, hash, notice)
-        val oracle = OracleId(provider, obj.required("oracle_id"))
+        val oracle = obj.string("oracle_id")?.let { OracleId(provider, it) }
+        require(oracle != null || obj.string("layout") == "reversible_card") { "Missing whole-card Oracle identity" }
         val id = CardId(provider, obj.required("id"))
-        require(oracle.raw.toByteArray(Charsets.UTF_8).size <= 128 && id.raw.toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in oracle.raw && '\u0000' !in id.raw) { "Source identity exceeds cursor limits" }
+        require((oracle == null || (oracle.raw.toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in oracle.raw)) && id.raw.toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in id.raw) { "Source identity exceeds cursor limits" }
         val language = LanguageTag.ENGLISH
         val faceObjects = obj.objects("card_faces")
         faceObjects.forEach { require(it.string("object") == "card_face") { "Invalid card face object" } }
-        val faces = faceObjects.mapIndexed { index, face ->
+        if (oracle == null) {
+            require(faceObjects.size == 2) { "Reversible printing requires two source faces" }
+            faceObjects.forEach { face ->
+                val rawOracle = face.required("oracle_id")
+                require(rawOracle.toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in rawOracle) { "Source face identity exceeds cursor limits" }
+                face.required("name")
+            }
+        }
+        val faces = if (oracle == null) emptyList() else faceObjects.mapIndexed { index, face ->
             CardFace(
                 FaceIdentity(oracle, index, face.knowledgeString("oracle_id")),
                 face.required("name"), face.knowledgeString("oracle_text"), face.knowledgeString("mana_cost"),
@@ -86,7 +101,7 @@ internal object ScryfallCodec {
         }
         val name = obj.required("name")
         require(name.toByteArray(Charsets.UTF_8).size <= 512 && normalize(name).toByteArray(Charsets.UTF_8).size <= 512 && '\u0000' !in name) { "Card name exceeds cursor limits" }
-        val card = CardRecord(
+        val card = if (oracle == null) null else CardRecord(
             oracle, name, obj.knowledgeString("oracle_text"), obj.knowledgeString("mana_cost"),
             obj.knowledgeDecimal("cmc"), obj.knowledgeColors("colors"), obj.knowledgeColors("color_identity"),
             obj.knowledgeTypeLine("type_line"), obj.stats(), obj.knowledgeStrings("keywords"),
@@ -113,7 +128,12 @@ internal object ScryfallCodec {
                 face.knowledgeString("printed_name"), face.knowledgeString("printed_text"),
                 face.knowledgeString("printed_type_line"), face.knowledgeString("flavor_text"),
                 face.knowledgeString("artist"), face.knowledgeString("illustration_id").map { ProviderIdentity(provider, "illustration", it) },
-                SnapshotList.copyOf(face.images("image_uris")), SnapshotList.empty(),
+                SnapshotList.copyOf(face.images("image_uris")),
+                if (oracle == null) SnapshotList.of(FaceRelationship(
+                    FaceRelationshipKind.OTHER, Knowledge.Known(OracleId(provider, face.required("oracle_id"))),
+                    unknown("Canonical face index not supplied"), unknown("Related printing not supplied"),
+                    Knowledge.Known(ProviderIdentity(provider, "oracle", face.required("oracle_id"))), SnapshotList.empty(),
+                )) else SnapshotList.empty(),
             )
         }
         val links = buildList {
@@ -137,7 +157,7 @@ internal object ScryfallCodec {
             }
         }
         val printing = PrintingRecord(
-            id, Knowledge.Known(oracle), obj.required("set"), obj.knowledgeString("set_name"),
+            id, if (oracle == null) unknown("Reversible printing has only face Oracle identities") else Knowledge.Known(oracle), obj.required("set"), obj.knowledgeString("set_name"),
             obj.required("collector_number"), language, obj.knowledgeString("rarity"), obj.knowledgeFinishes("finishes"),
             obj.imageUri(), SnapshotList.copyOf(obj.images("image_uris")), SnapshotList.copyOf(faceAssets),
             SnapshotList.copyOf(printingRelationships), SnapshotList.copyOf(links), SnapshotList.copyOf(vendor), provenance,

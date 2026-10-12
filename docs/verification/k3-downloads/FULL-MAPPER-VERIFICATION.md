@@ -1,0 +1,7 @@
+# Full genuine mapper verification
+
+The additive private mappedSource path accepts reversible printings without fabricating parent Oracle IDs. Whole printing oracleId remains Unknown; each of the two source face assets retains its explicit related Oracle and raw provider identity, with canonical face index Unknown. The legacy small mapper still rejects printing-only input until the separate full importer can persist and resolve memberships. No partial CatalogRepository is registered.
+
+Verification actually run: actual Kotlin catalog sources/tests compile and 22 JUnit tests pass. A private genuine full-source probe maps all 116,009 JSONL records successfully: 38,743 distinct canonical Oracle IDs, 83 reversible printings and 166 source-face Oracle relationships. Canonical representatives are stored in a disk SQLite index; each repeated Oracle reloads and maps exactly one representative for actual sameCanonicalGameData comparison. No full-corpus in-memory map is used. Process completed exit0 with JVM max heap256MiB. This is not a measured peak heap or Android import/performance result. Raw corpus, representative database and executable probe remain private scratch files, outside Git/APK/artifacts.
+
+Remaining: actual acquisition/import persistence, delayed membership resolution, complete projections/search/rulings, atomic activation and bounded cleanup, schema4 migration and Android/device evidence. A successful mapper probe does not mean a complete installed catalog or app.

@@ -60,4 +60,24 @@ class ScryfallCodecTest {
         assertTrue(printing.relationships.all { it.rawRelatedIdentity is Knowledge.Known && it.relatedOracle is Knowledge.Unknown })
         assertThrows(Exception::class.java) { map(raw.replace("\"component\":\"meld_part\"", "\"component\":\"invented\"")) }
     }
+    @Test fun reversiblePrintingRetainsFaceOraclesWithoutInventingWholeOracle() {
+        val raw = """{"object":"card","id":"reversible-print","name":"One // Two","lang":"en","set":"test","collector_number":"7","layout":"reversible_card","keywords":["Parent only"],"card_faces":[{"object":"card_face","oracle_id":"one","name":"One"},{"object":"card_face","oracle_id":"two","name":"Two"}]}"""
+        fun bulk(value: String) = ScryfallCodec.mappedSource(value, provider, generation, null,
+            Knowledge.Unknown("No date", SnapshotList.empty()), observed, null, null, 32)
+        val (card, printing) = bulk(raw)
+        assertNull(card)
+        assertTrue(printing.oracleId is Knowledge.Unknown)
+        assertEquals(listOf("one", "two"), printing.faceAssets.map {
+            (it.relationships.single().relatedOracle as Knowledge.Known).value.raw
+        })
+        assertTrue(printing.faceAssets.all { it.relationships.single().relatedFace is Knowledge.Unknown })
+        assertEquals(listOf(0, 1), printing.faceAssets.map { it.identity.index })
+        assertThrows(Exception::class.java) { map(raw) }
+        assertThrows(Exception::class.java) { bulk(raw.replace("reversible_card", "normal")) }
+        assertThrows(Exception::class.java) { bulk(raw.replace("\"oracle_id\":\"two\",", "")) }
+        val same = bulk(raw.replace("\"oracle_id\":\"two\"", "\"oracle_id\":\"one\"")).second
+        assertEquals(2, same.faceAssets.size)
+        assertEquals(1, same.faceAssets.map { it.relationships.single().relatedOracle }.distinct().size)
+    }
+
 }
