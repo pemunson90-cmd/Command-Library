@@ -12,7 +12,7 @@ import java.io.File
 
 /** What a database file says about its own schema version, read without modifying the file. */
 internal sealed interface OnDiskSchema {
-    /** No file, or a zero-length file. Room creates version 1 from scratch. */
+    /** No file, or a zero-length file. Room creates the supported schema from scratch. */
     data object Absent : OnDiskSchema
 
     /** The PRAGMA user_version stored in the file. Room writes its schema version there. */

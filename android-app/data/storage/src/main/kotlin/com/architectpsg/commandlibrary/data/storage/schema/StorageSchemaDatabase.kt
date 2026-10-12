@@ -17,6 +17,12 @@ import androidx.room3.RoomDatabase
         PrintingEntity::class,
         PrintingFaceAssetEntity::class,
         CatalogNameFtsEntity::class,
+        RulesCorpusEntity::class,
+        RulesActiveEntity::class,
+        RuleEntryEntity::class,
+        RuleReferenceEntity::class,
+        RulesImportAttemptEntity::class,
+        RulesTextFtsEntity::class,
     ],
     version = StorageSchema.VERSION,
     exportSchema = true,
@@ -25,5 +31,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 1
+    const val VERSION: Int = 2
 }
