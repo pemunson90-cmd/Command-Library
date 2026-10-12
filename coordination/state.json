@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-acquisition-integration-46",
-  "verified_base_head": "c9e2f308efb0733017f32aa1fde660f98fb76268",
+  "checkpoint_id": "cp-20261012-consent-framing-47",
+  "verified_base_head": "fc1b233d9e60a1f357ea43f3280b2719c2d89422",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "Full Android v1 execution active; incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Verify combined hosted matrix, resolve failures, then bind durable acquisition/full importer",
+  "first_action": "Verify corrected hosted acquisition infrastructure, then implement full durable runner/import",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -17,7 +17,7 @@
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
-  "worktree_mode": "Network/storage candidates integrated and independently reviewed; component code complete, acceptance pending. Claude life and isolated acquisition codec writers reserved. Root owns shared integration.",
+  "worktree_mode": "Network/storage/codec code integrated and independently reviewed; hosted acceptance pending. Claude life and full-framing source/test writers own disjoint locks; root owns integration.",
   "review_status": "Full 64-requirement/213-parity/25-screen audit complete; narrow source/download architecture review in progress.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
@@ -39,6 +39,6 @@
     "rules_schema": "Committed actualKSP2.json SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentitiesunchanged; native migration/preservation/reopen passes all3Androidlanes.",
     "k3_acquisition_schema": "Hosted38321835421 actualKSP3 SHA6bb715b72a1681998238d448756ca099e31e8a33b0d0a450a73a975035b7a265 all13legacyentitiesidentical; API23/API36 61nativeeachpass; ps16KiBstorage25passbutoneShellUIfail; JVMtestfixturecompilefailfixedpendingrerun."
   },
-  "last_completed": "Reviewed transport/schema3 candidates integrated; genuine full mapper verified; schema3 generated and legacy entities preserved. Hosted failures corrected pending rerun; isolated payload codec assigned. Full app incomplete.",
-  "updated_utc": "2026-10-12T23:33:15Z"
+  "last_completed": "Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.",
+  "updated_utc": "2026-10-12T23:44:48Z"
 }

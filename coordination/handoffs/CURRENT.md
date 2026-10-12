@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-acquisition-integration-46
+Checkpoint-ID: cp-20261012-consent-framing-47
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Verify combined hosted matrix, resolve failures, then bind durable acquisition/full importer
+Next step: 3. Verify corrected hosted acquisition infrastructure, then implement full durable runner/import
 
-Updated UTC: 2026-10-12T23:33:15Z
+Updated UTC: 2026-10-12T23:44:48Z
 Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: c9e2f308efb0733017f32aa1fde660f98fb76268.
+Verified base: fc1b233d9e60a1f357ea43f3280b2719c2d89422.
 
-Reviewed transport/schema3 candidates integrated; genuine full mapper verified; schema3 generated and legacy entities preserved. Hosted failures corrected pending rerun; isolated payload codec assigned. Full app incomplete.
+Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

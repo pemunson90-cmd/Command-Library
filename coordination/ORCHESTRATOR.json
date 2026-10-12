@@ -4,8 +4,8 @@
   "session_id": "codex-full-v1-execution-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-12T23:33:15Z",
-  "expires_utc": "2026-10-13T00:18:15Z",
-  "checkpoint_id": "cp-20261012-acquisition-integration-46",
-  "note": "Codex orchestrates full Android v1; network/storage workers resumed and Claude life-domain assigned with disjoint locks."
+  "heartbeat_utc": "2026-10-12T23:44:48Z",
+  "expires_utc": "2026-10-13T00:29:48Z",
+  "checkpoint_id": "cp-20261012-consent-framing-47",
+  "note": "Codex full-v1 orchestration; Claude life and full-framing assignments disjoint; earlier workers complete, hosted gates pending."
 }

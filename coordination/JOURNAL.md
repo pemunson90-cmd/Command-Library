@@ -337,3 +337,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T23:18:06Z | codex | cp-20261012-routing-resumed-45 | containing commit | Merged published Claude assignment and routing; resumed network/storage preserved work; canonical comparison tests pass. Full Android v1 remains incomplete.
 
 2026-10-12T23:33:15Z | codex | cp-20261012-acquisition-integration-46 | containing commit | Reviewed transport/schema3 candidates integrated; genuine full mapper verified; schema3 generated and legacy entities preserved. Hosted failures corrected pending rerun; isolated payload codec assigned. Full app incomplete.
+
+2026-10-12T23:44:48Z | codex | cp-20261012-consent-framing-47 | containing commit | Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.
