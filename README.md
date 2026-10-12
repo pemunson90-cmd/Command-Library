@@ -4,17 +4,11 @@ Personal-first, offline-first Magic: The Gathering companion for Android phones,
 
 ## Current status
 
-K2, the Kotlin Android foundation, is accepted. The repository now contains a real Android `:app` with a Compose shell, persistent Room/SQLite storage, DataStore settings, user-selected local catalog import, local status/search behavior and a hosted debug APK that passed the accepted K2 Android matrix. This is a runnable foundation, not the finished Commander Library product.
+K2, the Kotlin Android foundation, is accepted. The repository now contains a real Android `:app` with a Compose shell, persistent Room/SQLite storage, DataStore settings, user-selected local catalog import, local status/search behavior and a hosted debug APK that passed the accepted K2 Android matrix. This is a runnable foundation, not the finished Command Library product.
 
-A tested functional Android build now also provides local English rules TXT import, persistent offline rules search and reference navigation. K3 full-corpus acceptance remains open; Pat prioritizes getting this build working on his Fold7 before broader features and polish. It adds the full offline English catalog/rules acquisition or import path, durable consent/source state, atomic corpus replacement and bounded local search. Later Android stages add life tracking, decks/import, collection/pricing, analysis/validation, recommendations, AI, images/polish/performance and final hardening/signing. Windows remains version 2 and sync remains later.
+The foundation also provides local English rules TXT import, persistent rules search and reference navigation. The complete Android app remains unfinished. D-24 requires completing all retained functionality, operational in-app downloads, professional design and canonical signing before finished-app delivery. K3 full data/search/downloads is active, followed by the existing M2–M9 plan.
 
-For exact live status, evidence and the next action, use [`coordination/state.json`](coordination/state.json). K2 acceptance evidence is in [`docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`](docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md). The Android stage plan is in [`docs/gauntlet/MILESTONES.md`](docs/gauntlet/MILESTONES.md).
-
-## Install on Fold7
-
-Download the [APK bundle](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38309643911/artifacts/11774097672), extract `app-debug.apk`, and open it on the phone. Use Catalog to import an English card JSON array and Rules to import an English rules TXT. Each local file is limited to8MiB; the catalog also caps10000printing records. Search uses the installed data offline.
-
-[Build evidence and physical-device next step](docs/verification/k3-gap-execution/FUNCTIONAL-BUILD.md).
+The [full feature audit](docs/verification/full-v1-audit/FEATURE-AUDIT.md) maps all 64 requirements, 213 parity rows and 25 screens. Existing debug artifacts are internal verification evidence, not the finished app. For exact live status and next action, use [coordination/state.json](coordination/state.json); the stage plan is [MILESTONES](docs/gauntlet/MILESTONES.md).
 
 ## Continue from any model
 

@@ -15,6 +15,8 @@ kotlin { jvmToolchain(17); explicitApi() }
 dependencies {
     api(project(":core:model"))
     implementation(libs.coroutines.core)
+    implementation(libs.okhttp)
+    implementation(libs.okio)
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
 }
