@@ -21,7 +21,7 @@ class JsonLinesFramerTest {
         override val isCancelled: Boolean get() = cancelled
         override fun throwIfCancelled() { if (cancelled) throw kotlinx.coroutines.CancellationException() }
     }
-    private val defaults = JsonLinesLimits(1_000_000, 200_000, 10_000, 32)
+    private val defaults = JsonLinesLimits(1_000_000, 128 * 1024, 10_000, 32)
     private fun chunk(bytes: ByteArray, sequence: Long = 0, offset: Long = 0, final: Boolean = true) =
         ByteChunk(sequence, offset, SnapshotBytes(bytes), null, final)
 

@@ -14,10 +14,10 @@ Changed files:
 
 Tests cover a derived JSONL wrapper of the three genuine checked-in objects plus synthetic byte splits (including UTF-8), delimiters/EOF, malformed UTF-8/JSON/scalars, duplicate fields, nesting, inclusive/one-over limits, construction ceilings, chunk continuity/final, digest, callback suspension, token and coroutine cancellation, and many small records. This does not establish full-feed correctness, coverage or throughput.
 
-Verification: `git diff --cached --check` passed before code commit. JVM tests: **not_run** in this worktree; root owns focused `:feature:catalog:testDebugUnitTest` CI and evidence. No SDK/compiler or full Android matrix assumed here.
+Verification: `git diff --cached --check` passed before code commit. Root focused JVM run `38290489789` / job `114949124628` compiled source and passed eight existing tests; all nine new tests failed during setup because the test default exceeded the new constructor ceiling. Test profile corrected; repeat JVM result pending. No SDK/compiler or full Android matrix assumed in this worktree.
 
 Next integration request: run focused catalog JVM verification, review any failures and this internal parser, then evaluate actual source bytes and reviewed bulk budgets with disk-backed staging before binding any full-feed import. Keep K2 array importer and public limits intact.
 
 ## Latest continuation delta
 
-Audit follow-up: added coroutine Job cancellation checks so a live token plus a non-suspending callback cannot emit after parent cancellation; constructor now enforces 128 KiB record and 32 nesting ceilings before allocation/recursive parse. Focused tests added for both. No source or adapter activation. Await root focused JVM evidence. Verification status: diff check passed for initial commit; corrected JVM source not_run.
+Focused run `38290489789` / job `114949124628` compiled, and eight existing catalog tests passed, but all nine new tests failed at test setup: the test default requested 200,000 record bytes above the new 128 KiB ceiling. Lowered only that test default to 128 KiB; all other explicitly valid test limits were already within bounds. Over-limit constructor checks remain. Await repeat focused JVM gate; corrected source not_run. No source or adapter activation.
