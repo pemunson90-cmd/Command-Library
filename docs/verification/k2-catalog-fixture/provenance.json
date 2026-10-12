@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "observed_retrieval_utc": "2026-10-12T12:49:30+00:00",
+  "provider": "scryfall",
+  "source_date": null,
+  "source_date_reason": "Endpoint object retrieval exposes no dataset as-of date; released_at is printing release, not dataset source date.",
+  "parser_lineage": "Exact named endpoint card-object response bytes retained. JSON-array wrapper assembled locally for K2 local-file framing; no source fields modified. It is a derived array, not claimed as a downloaded upstream bulk artifact.",
+  "sources": [
+    {
+      "file": "lightning-bolt.json",
+      "source_url": "https://api.scryfall.com/cards/named?exact=Lightning%20Bolt",
+      "bytes": 5881,
+      "sha256": "e5c62f8029d332d232605077fcdd73549f7383fdc8f610da97c071b242e3d787",
+      "printing_id": "7673784e-db4b-43a1-8d55-1bb9fc1e284f",
+      "oracle_id": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "language": "en",
+      "layout": "normal"
+    },
+    {
+      "file": "lightning-bolt-lea.json",
+      "source_url": "https://api.scryfall.com/cards/named?exact=Lightning%20Bolt&set=lea",
+      "bytes": 5668,
+      "sha256": "16d5f6606b6b9bfc9ab4f372fac6b4f0dc48611e032b47b2830549e2e2718da5",
+      "printing_id": "d573ef03-4730-45aa-93dd-e45ac1dbaf4a",
+      "oracle_id": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "language": "en",
+      "layout": "normal"
+    },
+    {
+      "file": "delver.json",
+      "source_url": "https://api.scryfall.com/cards/named?exact=Delver%20of%20Secrets",
+      "bytes": 7516,
+      "sha256": "61197343aefb55ff6f778e45880f4272faad6fbcf316b38d22a2843f46a379c3",
+      "printing_id": "6904ea20-e504-47da-95a0-08739fdde260",
+      "oracle_id": "edd531b9-f615-4399-8c8c-1c5e18c4acbf",
+      "language": "en",
+      "layout": "transform"
+    }
+  ],
+  "derived_array": {
+    "file": "english-three-printings.json",
+    "bytes": 19074,
+    "sha256": "2a9c5aa1ee1201d0534e5cfb7315b856d2961bcebe4cae8d6afe505047ac85f8",
+    "records": 3,
+    "oracle_cards": 2,
+    "canonical_multifaces": 2
+  },
+  "rights_status": "Upstream Scryfall/MTG content, not synthetic and not licensed by this repository. Current redistribution terms remain unverified R-02/E01. Test evidence only; do not bundle in production app or claim redistribution permission."
+}

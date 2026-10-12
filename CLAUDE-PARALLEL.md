@@ -1,3 +1,11 @@
+# Current Claude Code parallel assignment
+
+Pat requested parallel work again on2026-10-12. This assignment supersedes the earlier completed QA-only packet below.
+
+> Work on https://github.com/pemunson90-cmd/Command-Library on branch agent/cc-k2-shell-01. Read current main README.md, CONTINUE.md, coordination/tasks/cc-k2-shell-01.md and coordination/locks/shell.lock. Codex owns orchestration, catalog implementation and app/bootstrap/shared configuration. You exclusively own android-app/feature/shell/** and coordination/handoffs/cc-k2-shell-01.md; Codex will not touch those paths until your work is committed, reviewed and merged. Use a separate checkout/worktree from the verified main head and record it. Preserve existing work; no reset/clean/force-push. Implement the task's real Compose import/status/search/settings presentation against the accepted core ports, with externalized English resources, accessible adaptive layouts and meaningful tests. No product fake adapters, no root/Gradle settings/CI/state/lock edits, no lease takeover/main merge. Request shared changes in your handoff. Commit/push useful drafts early, then a READY-FOR-REVIEW handoff with actual test evidence or not_run, entry signature, branch/commit and next action. Stop for Codex independent review/integration. No extra chat context is required.
+
+## Historical completed QA assignment
+
 # Claude Code parallel start
 
 Copy the instruction below into Claude Code. It is self-contained; the repository task card supplies the detailed scope.
