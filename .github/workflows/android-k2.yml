@@ -84,6 +84,7 @@ jobs:
             android-app/**/build/reports/tests/**
             android-app/**/build/test-results/**
             android-app/app/build/outputs/apk/debug/*.apk
+            android-app/data/storage/schemas/**/*.json
           if-no-files-found: ignore
           retention-days: 14
 

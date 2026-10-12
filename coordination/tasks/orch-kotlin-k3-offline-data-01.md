@@ -105,6 +105,15 @@ Preserve K2 small-file behavior. Implement independent private JSONL framing wit
 
 Next meaningful design boundary: additive bulk budget/coverage semantics; bounded disk-backed staging; rules/rulings/source tables and Room1 migration; truthful unknown source/version capability; snapshot-bound entry/ruling retrieval. Those public-contract/durability changes require independent review before application binding. Parser drafts have no repository/network/UI activation.
 
+## Recovery evidence and closure gates
+
+- Current recovery branch: `agent/cx-k3-execute-01`; no K3 acceptance claim.
+- `docs/verification/k3-gap-execution/CONTRACT-REVIEW.md` independently reviewed additive local rules signatures. Public KDoc corrections specify snapshot/cursor, stream lifecycle and cancellation/commit bounds before production binding.
+- `docs/verification/k3-gap-execution/SOURCE-EVIDENCE.md` owns the bounded E01/E02 current-page evidence. Genuine bytes, complete coverage and applicable personal-use/redistribution conclusions remain separate from metadata. K3 orchestrator owns closure; source-specific decisions precede network/bundled paths.
+- `docs/gauntlet/FIXTURE_POLICY.md` defines public fixture handling. Synthetic tests require no new approval. Genuine source byte publication requires existing independent source review.
+- Hosted workflow retains actual KSP schema exports with build artifacts; no generated schema identity may be fabricated.
+- M8 reference-device and provisional performance-budget evidence remains later scoped; emulator tests are not physical performance acceptance. M7 provider eligibility remains a later source-specific gate.
+
 ## Latest continuation delta
 
 User authorized execution of the six-step gap-closure plan. Read-only recovery verified main e7124b45 and existing worker branches; prior lease expired at20:35UTC. No prior source discarded. Combined candidate46b7f5b failed hosted38300460037 on all lanes due shell diagnostic compile error, not new runtime evidence. Rules main38300020157 passed all lanes. Recovery shell writer owns feature/shell only on agent/cx-k3-shell-recovery-01; storage writer owns data/storage only on agent/cx-k3-rules-storage-recovery-01. Source/fixture and additive rules contract reviews are read-only. README/queue stale status reconciled. Next repair diagnostic and run exact candidate, finish reviewed contracts/schema and genuine source validation before production activation. No K3 acceptance claim.
