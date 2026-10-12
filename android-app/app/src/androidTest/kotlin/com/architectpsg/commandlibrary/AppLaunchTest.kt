@@ -11,12 +11,16 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.core.view.WindowCompat
+import android.os.Build
 import com.architectpsg.commandlibrary.core.common.CoroutineCancelToken
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.core.model.ThemePreference
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -83,5 +87,24 @@ class AppLaunchTest {
         }
         check(saved is Outcome.Success) { "Settings read failed: $saved" }
         assertEquals(ThemePreference.DARK, saved.value.theme)
+        rule.runOnIdle {
+            val bars = WindowCompat.getInsetsController(rule.activity.window, rule.activity.window.decorView)
+            assertFalse(bars.isAppearanceLightStatusBars)
+            if (Build.VERSION.SDK_INT >= 26) assertFalse(bars.isAppearanceLightNavigationBars)
+        }
+
+        val lightOption = hasText(string(ShellR.string.settings_theme_light)) and
+            SemanticsMatcher.keyIsDefined(androidx.compose.ui.semantics.SemanticsProperties.Selected)
+        rule.onAllNodes(lightOption).onFirst().performScrollTo().performClick()
+        rule.waitUntil(20_000) {
+            rule.onAllNodes(lightOption).fetchSemanticsNodes().any {
+                it.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Selected) { false }
+            } && rule.onAllNodes(hasText(string(ShellR.string.settings_saving))).fetchSemanticsNodes().isEmpty()
+        }
+        rule.runOnIdle {
+            val bars = WindowCompat.getInsetsController(rule.activity.window, rule.activity.window.decorView)
+            assertTrue(bars.isAppearanceLightStatusBars)
+            if (Build.VERSION.SDK_INT >= 26) assertTrue(bars.isAppearanceLightNavigationBars)
+        }
     }
 }
