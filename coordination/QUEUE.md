@@ -13,6 +13,7 @@ Checkpoint-ID: cp-20261012-codex-k2-17. Next: orch-kotlin-m0-01 step2; in_progre
 | cc-k2-qa-01 | K2 parallel Claude Code QA | delegated; exclusive QA lock | user D-23; independent docs/vectors only | worker commits READY-FOR-REVIEW on agent/cc-k2-qa-01; root reviews/integrates |
 | cx-storage-01 | K2 Room3 storage | delegated; preserved schema step1 | accepted core/tuple/design + current storage lock | step2 real Database adapter, then instrumentation/review |
 | cc-settings-01 | K2 persisted settings | READY-FOR-REVIEW | accepted core/tuple; source branch714cd7e | targeted independent consent/durability/minAPI review before integration |
+| cx-settings-01 | K2 settings remediation | delegated; exclusive settings lock | independent bounded persistence/UTF8 findings | scoped fixes, restart-preservation tests and hosted review |
 | orch-toolchain-01 | historical Flutter readiness | superseded for v1 by D-20 | retained evidence only | no action |
 | orch-source-fixtures-01 | source evidence | conditional fallback only | K1 identifies an unanswered evidence need | one approved read-only official-source probe |
 | orch-m0-01 | historical Flutter M0 | superseded/ineligible | D-20 | no action |
