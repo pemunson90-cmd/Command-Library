@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-claude-k2-16
+Checkpoint-ID: cp-20261012-codex-k2-17
 
 Next task: orch-kotlin-m0-01
-Next step: 2. K2 step 2: compileSdk 37 accepted with changes and recorded in the lock; storage and settings implementers running on agent/cc-storage-01 and agent/cc-settings-01; hosted android-k2 workflow added. Read coordination/handoffs/K2-STEP2-CLAUDE.md for the exact next action.
+Next step: 2. Read Claude step2 handoff; independently review completed settings/QA branches, preserve and resume storage at its exact committed step, then build importer and UI.
 
-Updated UTC: 2026-10-12T00:27:54Z
+Updated UTC: 2026-10-12T02:56:47Z
 Status: in_progress; lease: active.
-Verified base: 575159ba13be87def464fa419d1bbcb22a48211d.
+Verified base: d3a84d1ce66800cac4dc7a3a301455bd92b0fbb8.
 
-Tuple binding compileSdk 37 independently reviewed (ACCEPT-WITH-CHANGES) and applied to the lock. Storage and settings delegated with locks held by claude-code. android-k2.yml added (first run 38188001791 on main). No module code on main yet; no emulator test has run.
+Codex resumed from verifiedd3a84d1 after expired Claude lease; UTCdate12 recorded automatically. Preserved Claude compileSdk37 tuple evidence, hosted workflow and all worker branches/locks. Settings READY-FOR-REVIEW, storage schema step1 saved, QA branch ready. No app/emulator completion claimed.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
