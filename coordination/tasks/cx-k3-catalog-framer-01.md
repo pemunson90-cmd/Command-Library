@@ -1,0 +1,13 @@
+# Task cx-k3-catalog-framer-01
+
+Status: delegated isolated internal framing work; no bulk activation/public contract change. Owner requested gpt-6-sol/medium. Branch agent/k3-catalog-framer-01, worktree /workspace/Command-Library-k3-catalog; base current main containing this task/lock. Exclusive writes android-app/feature/catalog/** and coordination/handoffs/cx-k3-catalog-framer-01.md. Do not touch Claude feature/rules or its handoff. Root owns shared Gradle/core/schema/app/CI/state.
+
+Read current K3 task Latest continuation delta/local input decision, existing JsonArrayFramer/ScryfallCodec and accepted ByteChunk/CancelToken types only. Keep K2 importer/limits behavior unchanged. Implement an internal strict-UTF8 JSONL object-record framer with explicit finite input/record/count/nesting limits, incremental exact-byte SHA256, sequence/offset/final checks, LF/CRLF and documented last-line/blank/BOM policy. Maintain a bounded line buffer and backpressured suspended record callback; no whole-input/list/map retention. Reuse existing strict JSON object validation, including duplicate/nesting guards. Input limits are internal parser safeguards, not actual source/corpus size claims; no public API change. No gzip/product acquisition/DB/activation/network/license conclusion or fake aggregate adapter. Full-feed production binding waits for reviewed bulk budgets/on-disk staging.
+
+Meaningful JVM tests: records across byte boundaries (multibyte UTF8), CRLF/LF/EOF, malformed UTF8/JSON/scalars, empty/blank policy, trailing bytes/final/sequence/offset, each inclusive bound and one-over, duplicate keys/nesting, exact input hash and cancellation/backpressure. Use authentic3 object fixture only as a derived JSONL test wrapper (original source provenance unchanged); synthetic stress can show bounded record callback behavior but never assert genuine full-feed completeness/performance.
+
+Save useful actions with one replaceable Latest continuation delta in your owned handoff. Commit/push your branch when coherent; branch name deliberately avoids full Android matrix triggers, root supplies focused JVM CI for this isolated pure parser. Don't edit shared CI/settings. No local compiler/SDK assumed; mark not_run until actual tests. Final handoff exact codeSHA/base/files/test evidence/limits and next integration request. No subagents or shared writes. Root reviews/integrates only tested source; no UI/control changes.
+
+## Latest continuation delta
+
+Private framing scope bound; K2 behavior preserved and Claude rules paths reserved. No new code/tests yet. Next implement new internal framer plus JVM cases, commit and push; root runs focused catalog JVM verification before integration.

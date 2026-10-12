@@ -1,6 +1,6 @@
 # Task orch-kotlin-k3-offline-data-01
 
-Status: in progress, step1 requirement/ownership reconciliation. K2 foundation remains accepted. No K3 application implementation or product-data acquisition has started.
+Status: in progress, local-first input paths selected; step3 private parser preparation. K2 remains accepted. Production full-corpus contracts/migration/activation are not implemented.
 
 ## Purpose
 
@@ -107,4 +107,4 @@ Next meaningful design boundary: additive bulk budget/coverage semantics; bounde
 
 ## Latest continuation delta
 
-Local-first input policy selected within K3 task authorization; metadata-only source probe by Luna confirms advertised JSONL/gzip and mixed-language default scope, with exact body/hash retained. No product data or license claim. Sol-medium inventory/support completed; external Claude rules parser remains exclusively reserved. Next delegate private catalog JSONL framing/tests independently, then draft/review bulk limits and disk-backed schema/capability bindings. Verification: metadata JSON parsed; app code unchanged so no Android matrix rerun.
+Local input decision and exact metadata probe published8b47cf9. Delegated Sol-medium private catalog JSONL framer/tests to cx-k3-catalog-framer-01 on agent/k3-catalog-framer-01; catalogue prefix locked, no K2 importer/schema/public API change. Claude rules prefix remains separately reserved. Next root adds focused JVM CI while worker implements; then review bulk limits/coverage/snapshot/migration design before production bindings. Verification: metadata parsed and ownership disjoint; new parser tests not_run.

@@ -1,0 +1,7 @@
+component: catalog
+orchestrator: codex-k3-offline-data-20261012
+owner: delegated-gpt-6-sol-medium
+task: cx-k3-catalog-framer-01
+branch: agent/k3-catalog-framer-01
+owned_paths: android-app/feature/catalog/**; coordination/handoffs/cx-k3-catalog-framer-01.md
+step: internal JSONL framer/tests only; K2 importer/schema/public contracts unchanged
