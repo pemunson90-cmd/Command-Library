@@ -8,7 +8,8 @@ This file lists runnable or conditionally runnable work. Completed and supersede
 |---|---|---|---|---|
 | orch-fold7-functional-01 | Historical internal build | superseded as delivery pointer by D-24 | debug foundation evidence retained | no finished-app delivery claim |
 | orch-kotlin-k3-offline-data-01 | K3 full offline corpus | active; incomplete | reviewed K2 foundation and D-24 complete-app execution | reviewed downloads/full-feed/rulings/search implementation and acceptance |
-| cx-k3-acquisition-codec-01 | K3 payload persistence | assigned; private unbound codec | compiled candidate acquisition contracts; no app binding before acceptance | explicit bounded payload codecs/tests |
+| cx-k3-acquisition-codec-01 | K3 payload persistence | code integrated; independently reviewed, hosted gate pending | compiled candidate acquisition contracts; no app binding before acceptance | explicit bounded payload codecs/tests |
+| cx-k3-full-framing-01 | K3 full framing | assigned; private bounded parser | existing parsers and approved full-import identity design | finite full profile and bounded batches, preserve tiny capability |
 | cc-m2-life-domain-01 | M2 domain preparation | assigned to Claude; disjoint life lock | merged core contracts; prepared life module | pure counter/clock/random logic and tests; no milestone closure |
 | orch-source-fixtures-01 | Source evidence fallback | policy gap closed; source-specific cases retained | FIXTURE_POLICY and genuine input evidence | exact rights/coverage review when a later acquisition/distribution path needs it |
 
