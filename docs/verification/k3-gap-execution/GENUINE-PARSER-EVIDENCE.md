@@ -101,3 +101,47 @@ supplied_link_count=9
 ```
 
 This establishes a genuine single-card mapping through the current mapper only. It does not establish coverage of full catalog feeds, every layout, another language, product import, rights, or Android integration.
+
+## Separate Kotlin module-boundary validation
+
+After hosted compilation exposed a cross-module smart-cast failure in `LocalRules.search(query.corpusId.value)`, the root fix at repository HEAD `0c58cfb` stores the request value in a local before the branch. To validate the Kotlin module boundary rather than compiling every source as one module, current sources were compiled independently into scratch class directories (each with its own Kotlin module metadata):
+
+1. `core/model` production sources compiled alone.
+2. `core/common` production sources compiled against the model output directory.
+3. All `feature/rules` production sources plus `RulesCodecTest.kt` and `RulesCursorTest.kt` compiled against the separate model and common output directories.
+4. `LocalRulesContractsTest.kt` compiled separately against those outputs and the rules output.
+
+The JUnit run used the three previously listed focused classes and returned:
+
+```text
+JUnit version 4.13.2
+...........
+Time: 0.172
+
+OK (11 tests)
+```
+
+The exact module compile forms were:
+
+```sh
+java -cp "$COMPILER_CP" org.jetbrains.kotlin.cli.jvm.K2JVMCompiler \
+  -no-stdlib -no-reflect -jvm-target 17 -module-name core_model \
+  -classpath "$CP" -d "$PROBE/module-check-20261012/model" $MODEL_SRC
+
+java -cp "$COMPILER_CP" org.jetbrains.kotlin.cli.jvm.K2JVMCompiler \
+  -no-stdlib -no-reflect -jvm-target 17 -module-name core_common \
+  -classpath "$PROBE/module-check-20261012/model:$CP" \
+  -d "$PROBE/module-check-20261012/common" $COMMON_SRC
+
+java -cp "$COMPILER_CP" org.jetbrains.kotlin.cli.jvm.K2JVMCompiler \
+  -no-stdlib -no-reflect -jvm-target 17 -module-name feature_rules \
+  -classpath "$PROBE/module-check-20261012/model:$PROBE/module-check-20261012/common:$CP" \
+  -d "$PROBE/module-check-20261012/rules" $RULES_SRC $RULES_TESTS
+
+java -cp "$COMPILER_CP" org.jetbrains.kotlin.cli.jvm.K2JVMCompiler \
+  -no-stdlib -no-reflect -jvm-target 17 -module-name core_model_test \
+  -classpath "$PROBE/module-check-20261012/model:$PROBE/module-check-20261012/common:$PROBE/module-check-20261012/rules:$CP" \
+  -d "$PROBE/module-check-20261012/model-test" "$LOCAL_RULES_CONTRACT_TEST"
+```
+
+This is distinct from the earlier combined compile, which reported 10 passing tests before the hosted boundary check. The strict current-source compile and test pass reported 11. This confirms the cross-module fix at `0c58cfb` for the scoped JVM sources; it remains separate from Android/Gradle integration. The execution image lacks the `jar` utility, so compiler-produced module directories were used directly as separate classpath artifacts instead of packaging JARs.
