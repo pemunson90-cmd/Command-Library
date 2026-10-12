@@ -6,6 +6,8 @@ Verdict: approve conservative fixture policy with explicit synthetic carveout. S
 
 Available evidence supports implementing explicitly selected local input, synthetic tests and official source links. It does not establish personal official-source cache/full-text transformation or public source corpus bundling rights. Preserve unresolved source-specific use cases separately from implementation correctness.
 
-Current official listing links TXT https://media.wizards.com/2026/downloads/MagicCompRules%20260925.txt . Listing observed 2026-10-12; TXT bytes/hash/version/grammar were not measured. This link alone is not source or distribution acceptance.
+Current official listing links TXT https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt . Listing observed 2026-10-12; TXT bytes/hash/version/grammar were not measured. This link alone is not source or distribution acceptance.
 
 Next: validate genuine user-selected local files when available; retain exact-byte provenance without publishing corpus payloads; finish source-specific review before network/bundled acquisition or publication claims. No K3 completion claim.
+
+Acquisition update: user explicitly requested finding genuine inputs; GENUINE-INPUT-EVIDENCE.md records actual personal local acquisition and GENUINE-PARSER-EVIDENCE.md records actual production parsing. Earlier byte/grammar gaps above are historical; public redistribution and full English-printing coverage remain distinct.
