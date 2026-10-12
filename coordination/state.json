@@ -3,18 +3,20 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-scope-29",
-  "verified_base_head": "ac6e02f0418e314791499c99f93116bb3086c92c",
+  "checkpoint_id": "cp-20261012-k3-guards-30",
+  "verified_base_head": "1abc54411e5000330f030bd97a4e618c1497a810",
   "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
-  "next_step": 2,
-  "first_action": "Select permitted local-first corpus input formats and truthful rules/rulings/version/snapshot contracts; review scaling/migration design before production bindings. External Claude exclusively implements private rules parser/tests on agent/cc-k3-rules-parser-01; do not touch its owned paths until reviewed merge.",
+  "next_step": 3,
+  "first_action": "Finish locked catalog JSONL helper and narrow post-commit cleanup FTS guard/test; require independent durability review plus full hosted matrix before merging behavior fix. Claude rules parser remains reserved/in-progress. Follow up stream-open/theme findings and review bulk core/schema design next.",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
   "blockers": [
-    "K3 production corpus binding requires verified input format/source lineage, truthful unversioned-rules and snapshot contracts, and reviewed migration/scaling design. Parser drafts may proceed independently; network terms remain unresolved."
+    "Confirmed catalog post-durable-commit cancellation cleanup can delete active FTS; narrow fix/native regression assigned under catalog lock before new corpus binding.",
+    "Shell document-open cancellation leak and status-bar theme findings from Claude handoff need scoped verification/follow-up.",
+    "Full-corpus budget/snapshot/migration/source contracts remain unbound; Claude rules parser is independent draft-only."
   ],
   "worktree_mode": "Git checkout /workspace/Command-Library. External Claude rules parser branch agent/cc-k3-rules-parser-01 is explicitly reserved; no shared/corpus activation writes delegated.",
   "review_status": "K2 final integration independently reviewed by GPT-5.6 Sol after Claude/Codex implementation. Touch-target and reproducible hosted shell-search timing blockers were corrected; final candidate passed the complete hosted matrix. K3 card published but not claimed.",
@@ -31,6 +33,6 @@
     "network_policy": "K2 product path performs no automatic product-data download. User-selected local import is explicit; Windows and sync remain out of scope. K3 must separately resolve any network acquisition source/terms before implementation.",
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters."
   },
-  "last_completed": "K3 requirement/ownership inventory audited against accepted K2; existing DataStore consent reused. Published exclusive Claude private rules-parser task/lock and instructions; no product-data acquisition, app/schema/core changes or K2 retesting. Full-corpus scaling/source/snapshot design remains next.",
-  "updated_utc": "2026-10-12T18:09:02Z"
+  "last_completed": "Local-first K3 paths/metadata and weak-agent parser work published. Root audit added structured cancellation/allocation guards. Claude rules design272f177 preserved; its confirmed late-commit cleanup index race is assigned to catalog worker with native regression and risk review, not silently dismissed by prior K2 passes.",
+  "updated_utc": "2026-10-12T18:32:54Z"
 }

@@ -4,8 +4,8 @@
   "session_id": "codex-k3-offline-data-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-12T18:09:02Z",
-  "expires_utc": "2026-10-12T18:54:02Z",
-  "checkpoint_id": "cp-20261012-k3-scope-29",
+  "heartbeat_utc": "2026-10-12T18:32:54Z",
+  "expires_utc": "2026-10-12T19:17:54Z",
+  "checkpoint_id": "cp-20261012-k3-guards-30",
   "note": "User continue resumes K3 from continuity-green6b68906; K2 accepted and all integrated work preserved. No old K2 ownership reclaimed."
 }

@@ -8,6 +8,12 @@ Meaningful JVM tests: records across byte boundaries (multibyte UTF8), CRLF/LF/E
 
 Save useful actions with one replaceable Latest continuation delta in your owned handoff. Commit/push your branch when coherent; branch name deliberately avoids full Android matrix triggers, root supplies focused JVM CI for this isolated pure parser. Don't edit shared CI/settings. No local compiler/SDK assumed; mark not_run until actual tests. Final handoff exact codeSHA/base/files/test evidence/limits and next integration request. No subagents or shared writes. Root reviews/integrates only tested source; no UI/control changes.
 
+## Authorized durability follow-up
+
+Claude rules handoff272f177 flags a concrete accepted-importer race: final activation can durably commit then return CancellationException before LocalCatalog clears its staging flag. cleanup deletes FTS by generation unconditionally while generation deletion is STAGING-only. Guard FTS deletion in the same cleanup transaction with EXISTS catalog_generation matching that id and status STAGING, preserving active/retired indexes. Do not change storage/core/contracts or pretend committed data rolled back.
+
+Add real-storage instrumentation: commit activation through a test-only Database decorator then inject a late-return CancellationException. Verify fresh status/lookup and close/reopen retain the actually active generation and index. Label the late exception timing synthetic; SQLite activation/storage is real. Existing malformed/cancel-before-commit cleanup tests must remain. Root requests independent narrow durability review and a full hosted Android matrix for this change, unlike pure framing-only JVM verification.
+
 ## Latest continuation delta
 
-Private framing scope bound; K2 behavior preserved and Claude rules paths reserved. No new code/tests yet. Next implement new internal framer plus JVM cases, commit and push; root runs focused catalog JVM verification before integration.
+Parser code581126e safety guards are compiled; focused38290489789 failed only stale test defaults (200000 >128KiB). Corrected test86dc00d rerun38291004261 pending. Root extends this owned catalog task solely for confirmed post-commit cleanup index guard and native regression. Next implement narrow fix/test, publish, then independent durability review and full matrix before integration. No Claude-owned rules/shared paths touched.
