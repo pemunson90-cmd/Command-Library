@@ -209,9 +209,10 @@ private class StorageTransaction(connection: PooledConnection) : DbTransaction {
 
     private suspend fun <T> operation(cancel: CancelToken, action: suspend (PooledConnection) -> T): Outcome<T> {
         checkCancellation(cancel)
+        val callingJob = currentCoroutineContext()[Job]
         val active = synchronized(monitor) {
             // Reject foreign/post-callback calls before inspecting or mutating the latch.
-            if (!isOwner() || connection == null) return invalid("Transaction belongs to its active callback coroutine")
+            if (callingJob !== owner || !isOwner() || connection == null) return invalid("Transaction belongs to its active callback coroutine")
             when (val status = latch.state) {
                 is DbTransactionState.RollbackOnly -> return status.status
                 DbTransactionState.Active -> checkNotNull(connection)
