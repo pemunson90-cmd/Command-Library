@@ -1,0 +1,7 @@
+component: core-model
+orchestrator: codex-k3-offline-data-20261012
+owner: delegated-gpt-6-sol-medium
+task: cx-k3-local-contracts-01
+branch: agent/k3-local-contracts-01
+owned_paths: LocalRulesContracts.kt and matching new contract tests in android-app/core/model; coordination/handoffs/cx-k3-local-contracts-01.md
+step: additive local rules import/status/snapshot-read contracts for independent review before integration
