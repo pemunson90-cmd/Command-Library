@@ -30,6 +30,7 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-20 | Kotlin Android v1; separate Flutter Windows v2; sync after Windows runs | Ruled 2026-10-11 |
 | D-21 | K1 execution release and complete-section checkpoint policy | Ruled 2026-10-11 |
 | D-22 | Fold7-first acceptance and genuine input acquisition | Ruled 2026-10-12 |
+| D-23 | Immediate functional Fold7 build before polish/spec expansion | Ruled 2026-10-12 |
 
 ## Open
 
@@ -230,3 +231,8 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 
 - Pat, 2026-10-12, answering whether genuine English inputs already exist: "you need to find them". Applied: find and acquire official English representative cards/rulings and rules TXT for personal validation; retain exact-byte provenance and keep source payloads out of public Git/artifacts. This does not authorize non-English downloads or settle public redistribution rights.
 - Pat, answering whether a separate mid-range reference device is available: "irrelevant. it needs to work on my phone. backwards compatibility is an afterthought". Applied: the Galaxy Z Fold7 is the primary Android acceptance target. The separate Snapdragon778G-class reference-device prerequisite is superseded; retained budgets are provisional engineering targets evaluated on the Fold7, not measured passes. Existing minSdk23 and compatibility checks remain unless a later technical change is needed; backward compatibility is secondary, not the release-driving hardware criterion. Physical Fold7/manual behavior still requires actual evidence and cannot be claimed from an emulator.
+
+## D-23 Immediate functional Fold7 build
+
+- Pat: "The goal is to get the app fully running and functional on my device, with no placeholders or errors. Polish, feature specifications, updates etc can be handled later."
+- Applied: prioritize an installable, tested Fold7 build with real catalog/rules import, persistent local search/status and settings; expose only working actions. Do not expand specifications or chase later feature/polish milestones before producing this functional build. No fake adapters, fabricated test results or placeholder navigation. This working-build milestone does not claim every retained v1 requirement or K3 full-corpus coverage is accepted. Physical Fold7 installation/runtime remains actual evidence, not inferred from emulators.
