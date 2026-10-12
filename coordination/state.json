@@ -3,26 +3,26 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k2-catalog-draft-23",
-  "verified_base_head": "b2b8b829cfbeeaf17a551b0d561ad0b0d4a5bcc6",
-  "stage": "K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification",
+  "checkpoint_id": "cp-20261012-k2-catalog-fixes-24",
+  "verified_base_head": "dad21a309c48502c53b8f160e76bb09751a27f64",
+  "stage": "K2 step2 catalog importer/status/lookup; parallel Claude shell UI reserved",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
   "next_step": 2,
-  "first_action": "Continue exclusive catalog taskcx-catalog-k2-01: fix four pinned parser review findings and finish staged import/status/lookup with meaningful JVM/packaged tests. Review final committed source and observe final hosted suites before integration. Claude owns shell taskcc-k2-shell-01 exclusively until reviewed merge.",
+  "first_action": "Review final committed catalog correction after6c7e29b: bounded/recoverable cleanup, API23-safe map access, mana scale bounds, normalized cursor budget, test asset context and trim. Require final-source JVM/lint/assembly and3 packaged suites before integration. Claude shell module remains exclusively reserved until reviewed merge.",
   "active_tasks": [
     "orch-kotlin-m0-01"
   ],
   "blockers": [
-    "K2 catalog importer, genuine fixture provenance, app/UI/debug artifact and final section review remain incomplete. API23 auxiliary additional-test-output collector warning persists but required storage tests/reports pass."
+    "Catalog source6c7e29b remains isolated/unaccepted: final reviewed cleanup/API23/mana exponent/cursor budget/asset fixes and actual JVM/packaged suites required. App/UI integration pending external Claude shell branch."
   ],
   "worktree_mode": "git checkout /workspace/Command-Library; isolated storage recovery /workspace/Command-Library-storage",
-  "review_status": "Core/settings/tuple/storage source accepted independently; recovery985e03d and core-common envelope Astra-high accepted. Storage required JVM/packaged suites passed before unchanged integration.",
+  "review_status": "Prior components accepted. Initial4 catalog parser defects closed in b276524; adapter recheck53238ab still blocked by enumerated corrections in K2-CATALOG-PROGRESS.md.",
   "verification": {
     "continuity": "25 local continuation/architecture/helper tests passed; architecture/continuity checks pass. Hosted recovery continuity38248782603 passed.",
     "app_build": "not_run",
     "runtime_tests": "Storage20 tests per3 emulator images pass. Catalog/importer/app/UI product runtime not_run.",
-    "hosted_ci": "38248782526 at985e03d success:81 JVM tests zero failures, check/lint/library assembly;20 instrumentation tests on eachAPI23/API36/default/API36ps16k, zero failures/errors/skips. Actual modern page sizes4096/16384.",
+    "hosted_ci": "Storage985e03d81 JVM+20x3 instrumentation accepted. Catalog f189748 run38252080667 compile fails UNICODE_CASE; latest6c7e29b run38252595070 pending, not accepted.",
     "remote_readback": "Verified published main825e7ac and recovery985e03d; final checkpoint readback performed after publication. All prior branches preserved.",
     "toolchain": "K1 hostedJDK17/Gradle9.6/SDK36observed; Claude probe+hostedSDK37 installation recorded. CurrentlocalexecutorJava21only noSDK; hostedtransportused.",
     "kotlin_compatibility": "Core JVM compiled; Claude independently reviewed actual localAGP/Compose/Room3/KSP tuple probe compile37target36min23 withretainedlogs. Product Androidruntime not accepted.",
@@ -31,6 +31,6 @@
     "network_policy": "Current environment_status connected, running, observations_current true, unrestricted enforced; no secret/outbound identity bindings. GitHub API/git transport observed.",
     "kotlin_contracts": "Corrected hosted run38182564573 succeeded at2ac4a302f6832a9ec33e2739a687b5e3905a6015 with25 executed JVM tests(model13/common12); main integrated exact unchanged core tree."
   },
-  "last_completed": "Catalog task/lock and verified genuine tiny English fixtures published, strict Gson dependency pinned. Parser draft4407ff5 independently reviewed with4 concrete fixes assigned; importer/tests underway, not accepted or integrated. Claude parallel shell instructions/lock published and its owned paths reserved. Prior storage/core/settings preserved. K2 incomplete.",
-  "updated_utc": "2026-10-12T12:54:00Z"
+  "last_completed": "Genuine catalog fixtures/parser/adapter/tests saved on isolated branch. Four original parser defects source-closed; actual draft compile failure recorded, subsequent adapter fixes and narrow rechecks underway. No catalog integration/acceptance yet. Claude assignment published; shell paths untouched. Core/storage/settings preserved. K2 incomplete.",
+  "updated_utc": "2026-10-12T13:01:55Z"
 }
