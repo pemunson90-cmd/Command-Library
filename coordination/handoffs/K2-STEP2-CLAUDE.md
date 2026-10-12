@@ -35,14 +35,14 @@ Codex ran out of usage with its lease expired (2026-10-11T23:47:41Z). Pat author
 | Task | Branch | Base | Writes | Status |
 |---|---|---|---|---|
 | cc-storage-01 | `agent/cc-storage-01` | c3abc98 (prep: includes `:data:storage`) | `android-app/data/storage/**` | running; handoff `coordination/handoffs/cc-storage-01.md` on the branch |
-| cc-settings-01 | `agent/cc-settings-01` | b39a3b1 (prep: includes `:feature:settings`) | `android-app/feature/settings/**` | running; handoff `coordination/handoffs/cc-settings-01.md` on the branch |
+| cc-settings-01 | `agent/cc-settings-01` | b39a3b1 (prep: includes `:feature:settings`) | `android-app/feature/settings/**` | READY-FOR-REVIEW at worker head 1bca4a9 (3 steps). Orchestrator reproduced 35 JVM tests, 0 failures, assembleDebug pass. Main merged in at 714cd7e (hosted run 38188948294). Independent multi-lens review with adversarial verification in progress; results go to `docs/gauntlet/gates/K2-SETTINGS-REVIEW.md`. |
 
 If Claude Code stops before these finish, read each branch's handoff; continue from its Next field. Do not redo a step whose `[cc-<c>-01 step k/N]` commit exists. Neither branch contains the new workflow yet: before CI can run on them, merge `main` into the branch (merge commit, no rebase) after the worker's last push.
 
 ## Next action
 
 1. Done (cp-20261012-claude-k2-16): tuple review ACCEPT-WITH-CHANGES (`docs/gauntlet/gates/K2-TUPLE-REVIEW.md`). Lock now has compileSdk 37 with the pinned `platforms;android-37.0` r2 package; K1 line marked superseded; probe doc corrected; sanitized probe logs retained in `docs/gauntlet/gates/k2-tuple-probe/`.
-2. Check run 38188001791 (workflow `android-k2.yml` on main). Expected: JVM job passes core `check`; emulator jobs print "No androidTest sources" and skip. Fix the workflow if not.
+2. Done: run 38188001791 on main succeeded (JVM job: 25 tests, 0 failures; emulator jobs skipped, no androidTest sources).
 3. When each worker reports READY-FOR-REVIEW: merge `main` into its branch (merge commit), push, confirm `android-k2.yml` runs green including the emulator matrix for storage; then an independent reviewer (not the author) reviews the branch against its card and K2-FOUNDATION-DESIGN.md; fix blockers; merge to main; release its lock.
 4. After storage merges: write `cc-catalog-01` (`:feature:catalog`: bounded importer, staging/activation, `CatalogLookup` with escaped FTS literal and cursor, `CatalogStatus`, genuine Scryfall fixture with provenance). It issues SQL through the storage `Database` port using the parameter rule in the storage handoff.
 5. Then `:feature:shell` and `:app` (card steps 3 and 4).
