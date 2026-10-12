@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k3-execute-38
+Checkpoint-ID: cp-20261012-k3-gap-execution-39
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Resolve expanded-layout gate and integrate reviewed catalog; implement remaining K3 bounded offline repository/search
+Next step: 3. Repair combined diagnostic build; implement reviewed K3 local corpus bindings
 
-Updated UTC: 2026-10-12T19:50:02Z
+Updated UTC: 2026-10-12T20:38:54Z
 Status: K3 active implementation and verification; lease: active.
-Verified base: 3181904fce4d141f2df6e3aa5290d3555a5dac3a.
+Verified base: e7124b45cde538cbd0bc2f50e9de5413781c3d2a.
 
-Pat requests finish; shell writer isolated, catalog preserved, root resumes implementation orchestration
+Authorized plan execution; expired lease recovered after branch inspection; existing candidates preserved; README and queue reconciled
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

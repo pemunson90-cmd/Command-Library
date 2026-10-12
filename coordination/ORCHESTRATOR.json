@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-k3-offline-data-20261012",
+  "session_id": "codex-k3-plan-execution-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-12T19:50:02Z",
-  "expires_utc": "2026-10-12T20:35:02Z",
-  "checkpoint_id": "cp-20261012-k3-execute-38",
-  "note": "User continue resumes K3 from continuity-green6b68906; K2 accepted and all integrated work preserved. No old K2 ownership reclaimed."
+  "heartbeat_utc": "2026-10-12T20:38:54Z",
+  "expires_utc": "2026-10-12T21:23:54Z",
+  "checkpoint_id": "cp-20261012-k3-gap-execution-39",
+  "note": "User authorized execute reviewed plan. Prior lease expired20:35; main and worker heads inspected, all preserved. Recovery uses isolated branches; no reset/rebase/force-push."
 }

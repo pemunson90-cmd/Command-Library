@@ -6,7 +6,7 @@ Personal-first, offline-first Magic: The Gathering companion for Android phones,
 
 K2, the Kotlin Android foundation, is accepted. The repository now contains a real Android `:app` with a Compose shell, persistent Room/SQLite storage, DataStore settings, user-selected local catalog import, local status/search behavior and a hosted debug APK that passed the accepted K2 Android matrix. This is a runnable foundation, not the finished Commander Library product.
 
-K3 is next and is ready but not started. It adds the full offline English catalog/rules acquisition or import path, durable consent/source state, atomic corpus replacement and bounded local search. Later Android stages add life tracking, decks/import, collection/pricing, analysis/validation, recommendations, AI, images/polish/performance and final hardening/signing. Windows remains version 2 and sync remains later.
+K3 is actively being implemented and verified; it is not yet accepted. It adds the full offline English catalog/rules acquisition or import path, durable consent/source state, atomic corpus replacement and bounded local search. Later Android stages add life tracking, decks/import, collection/pricing, analysis/validation, recommendations, AI, images/polish/performance and final hardening/signing. Windows remains version 2 and sync remains later.
 
 For exact live status, evidence and the next action, use [`coordination/state.json`](coordination/state.json). K2 acceptance evidence is in [`docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`](docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md). The Android stage plan is in [`docs/gauntlet/MILESTONES.md`](docs/gauntlet/MILESTONES.md).
 
