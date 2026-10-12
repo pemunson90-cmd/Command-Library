@@ -117,7 +117,10 @@
     <string name="search_field_help">Searches the catalog stored on this device. Nothing is sent online.</string>
     <string name="search_action">Search</string>
     <string name="search_problem_empty">Enter a card name.</string>
-    <string name="search_problem_too_long">Use %1$d characters or fewer.</string>
+    <plurals name="search_problem_too_long">
+        <item quantity="one">Use %1$d character or fewer.</item>
+        <item quantity="other">Use %1$d characters or fewer.</item>
+    </plurals>
     <string name="search_idle_title">Search cards by name</string>
     <string name="search_no_catalog">No catalog is installed yet. Import one in Catalog to search cards.</string>
     <string name="search_action_open_catalog">Go to Catalog</string>

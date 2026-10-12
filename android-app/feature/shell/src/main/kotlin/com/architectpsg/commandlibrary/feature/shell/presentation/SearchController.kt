@@ -8,6 +8,7 @@ import com.architectpsg.commandlibrary.core.model.CatalogLookup
 import com.architectpsg.commandlibrary.core.model.GenerationId
 import com.architectpsg.commandlibrary.core.model.OracleId
 import com.architectpsg.commandlibrary.core.model.PageRequest
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,6 +53,7 @@ internal data class SearchUiState(
 internal class SearchController(
     private val scope: CoroutineScope,
     private val lookup: CatalogLookup,
+    private val portDispatcher: CoroutineDispatcher,
     private val onStaleCursor: () -> Unit,
 ) {
     private val mutableState = MutableStateFlow(SearchUiState())
@@ -123,7 +125,7 @@ internal class SearchController(
         mutableState.update { it.copy(activeGenerationKnown = true, activeGeneration = generation) }
 
     private suspend fun load(query: String, cursor: String?, kind: SearchLoad) {
-        when (val result = callPort { lookup.lookupName(query, PageRequest(PAGE_SIZE, cursor), it) }) {
+        when (val result = callPort(portDispatcher) { lookup.lookupName(query, PageRequest(PAGE_SIZE, cursor), it) }) {
             is PortResult.Ok -> mutableState.update { current ->
                 val page = result.value
                 when {

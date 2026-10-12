@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 /**
  * All shell presentation state for one owner. Every job runs in [scope], so cancelling the scope
  * cancels a running import and pending reads. A new instance holds no remembered result: it reads
- * committed catalog status and settings from the ports.
+ * committed catalog status and settings from the ports. [ioDispatcher] runs every port call and
+ * document read, keeping parsing and storage work off the UI thread.
  */
 internal class ShellControllers(
     scope: CoroutineScope,
@@ -22,8 +23,8 @@ internal class ShellControllers(
     ioDispatcher: CoroutineDispatcher,
 ) {
     val importLimits: CatalogImportLimits = ports.importLimits
-    val status = CatalogStatusController(scope, ports.catalogStatus)
-    val search = SearchController(scope, ports.catalogLookup, onStaleCursor = status::refresh)
+    val status = CatalogStatusController(scope, ports.catalogStatus, ioDispatcher)
+    val search = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)
     val catalogImport = ImportController(
         scope = scope,
         port = ports.catalogImport,
@@ -32,7 +33,7 @@ internal class ShellControllers(
         ioDispatcher = ioDispatcher,
         onFinished = status::refresh,
     )
-    val settings = SettingsController(scope, ports.settings)
+    val settings = SettingsController(scope, ports.settings, ioDispatcher)
 
     init {
         scope.launch {

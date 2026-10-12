@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+
 package com.architectpsg.commandlibrary.feature.shell.presentation
 
 import com.architectpsg.commandlibrary.core.model.FailureCode
@@ -7,6 +9,7 @@ import com.architectpsg.commandlibrary.core.model.ThemePreference
 import com.architectpsg.commandlibrary.feature.shell.SyntheticSettings
 import com.architectpsg.commandlibrary.feature.shell.failure
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
@@ -20,7 +23,7 @@ class SettingsControllerTest {
     private val settings = SyntheticSettings()
 
     private fun TestScope.loaded(): SettingsController {
-        val controller = SettingsController(ownerScope(), settings)
+        val controller = SettingsController(ownerScope(), settings, StandardTestDispatcher(testScheduler))
         controller.load()
         advanceUntilIdle()
         return controller
@@ -28,7 +31,7 @@ class SettingsControllerTest {
 
     @Test
     fun loadsCommittedSettingsAndDefaultsToSystemTheme() = runTest {
-        val controller = SettingsController(ownerScope(), settings)
+        val controller = SettingsController(ownerScope(), settings, StandardTestDispatcher(testScheduler))
         assertEquals(ThemePreference.SYSTEM, controller.state.value.theme)
         assertTrue(controller.state.value.loading)
         controller.load()
@@ -95,7 +98,7 @@ class SettingsControllerTest {
 
     @Test
     fun selectingTheCurrentThemeOrBeforeLoadingDoesNothing() = runTest {
-        val unloaded = SettingsController(ownerScope(), settings)
+        val unloaded = SettingsController(ownerScope(), settings, StandardTestDispatcher(testScheduler))
         unloaded.selectTheme(ThemePreference.DARK)
         val controller = loaded()
         controller.selectTheme(ThemePreference.SYSTEM)

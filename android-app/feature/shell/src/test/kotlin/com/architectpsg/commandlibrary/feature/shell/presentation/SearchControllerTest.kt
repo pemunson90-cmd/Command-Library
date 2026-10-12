@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+
 package com.architectpsg.commandlibrary.feature.shell.presentation
 
 import com.architectpsg.commandlibrary.core.model.FailureCode
@@ -13,6 +15,7 @@ import com.architectpsg.commandlibrary.feature.shell.failure
 import com.architectpsg.commandlibrary.feature.shell.syntheticCard
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
@@ -28,7 +31,7 @@ class SearchControllerTest {
     private val catalog = SyntheticCatalog(names)
     private val staleSignals = AtomicInteger(0)
 
-    private fun TestScope.controller() = SearchController(ownerScope(), catalog) { staleSignals.incrementAndGet() }
+    private fun TestScope.controller() = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler)) { staleSignals.incrementAndGet() }
 
     @Test
     fun emptyAndOverlongQueriesNeverCallTheCatalog() = runTest {
@@ -192,7 +195,7 @@ class SearchControllerTest {
     @Test
     fun emptyCatalogReturnsAnHonestEmptyResult() = runTest {
         val empty = SyntheticCatalog()
-        val controller = SearchController(ownerScope(), empty) {}
+        val controller = SearchController(ownerScope(), empty, StandardTestDispatcher(testScheduler)) {}
         controller.search("anything")
         advanceUntilIdle()
         val state = controller.state.value

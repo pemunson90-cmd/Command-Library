@@ -14,7 +14,8 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasScrollToIndexAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.StateRestorationTester
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -262,6 +263,34 @@ class ShellUiTest {
         shell.text("Synthetic Existing Card").performClick()
         rule.onNodeWithTag(ShellTags.DETAIL_PANE).assertIsDisplayed()
         assertFalse("details replace results", shell.exists(ShellTags.RESULTS_PANE))
+    }
+
+    @Test
+    fun widthJustBelowExpandedStaysSinglePane() {
+        shell.show(width = 839.dp, height = 700.dp)
+        assertTrue(shell.exists(ShellTags.NAVIGATION_RAIL))
+        assertFalse(shell.exists(ShellTags.DETAIL_PANE))
+        rule.onAllNodesWithText(shell.string(R.string.detail_select_prompt)).assertCountEquals(0)
+    }
+
+    @Test
+    fun configurationChangeKeepsDestinationAndRunningImport() {
+        shell.documents.putBytes(PICKED_URI, "catalog.json", syntheticBytes(3 * DOCUMENT_CHUNK_BYTES))
+        shell.catalog.importGate = CompletableDeferred()
+        val restoration = StateRestorationTester(rule)
+        shell.showWith(restoration)
+        open(ShellDestination.CATALOG)
+        shell.text(shell.string(R.string.import_action_choose)).performScrollTo().performClick()
+        shell.waitForText(shell.string(R.string.import_running_title, "catalog.json"))
+
+        restoration.emulateSavedInstanceStateRestore()
+
+        shell.waitForText(shell.string(R.string.import_running_title, "catalog.json"))
+        shell.text(shell.string(R.string.import_action_cancel)).performScrollTo().assertHasClickAction()
+        assertFalse("import was not restarted", shell.catalog.importCancelled.get())
+        assertEquals(1, shell.catalog.importCalls.get())
+        shell.catalog.importGate!!.complete(Unit)
+        shell.waitForText(shell.string(R.string.import_succeeded_title))
     }
 
     @Test

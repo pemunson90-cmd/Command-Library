@@ -5,8 +5,10 @@ import com.architectpsg.commandlibrary.core.model.CancelToken
 import com.architectpsg.commandlibrary.core.model.FailureCode
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.core.model.UnavailableReason
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.withContext
 
 /**
  * The presentation-level reason an operation did not succeed. Screens map each value to a plain
@@ -67,20 +69,24 @@ internal fun UnavailableReason.toProblem(): Problem = when (this) {
 }
 
 /**
- * Calls a core port with a cancel token bound to the calling coroutine. Caller cancellation always
+ * Calls a core port on [dispatcher], never the UI thread: adapters may parse or hash on the calling
+ * context. The cancel token is bound to the calling coroutine. Caller cancellation always
  * propagates. A port that throws, or leaks a cancellation the caller did not request, yields
  * [Problem.UNEXPECTED] instead of silently ending the operation.
  */
-internal suspend fun <T> callPort(action: suspend (CancelToken) -> Outcome<T>): PortResult<T> {
+internal suspend fun <T> callPort(
+    dispatcher: CoroutineDispatcher,
+    action: suspend (CancelToken) -> Outcome<T>,
+): PortResult<T> = withContext(dispatcher) {
     val context = currentCoroutineContext()
     val outcome = try {
         action(CoroutineCancelToken(context))
     } catch (error: Exception) {
         // CancellationException is an Exception: it is rethrown here only when this caller was cancelled.
         context.ensureActive()
-        return PortResult.Failed(Problem.UNEXPECTED)
+        return@withContext PortResult.Failed(Problem.UNEXPECTED)
     }
-    return when (outcome) {
+    when (outcome) {
         is Outcome.Success -> PortResult.Ok(outcome.value)
         is Outcome.Failure -> PortResult.Failed(outcome.error.code.toProblem())
         is Outcome.Unavailable -> PortResult.Failed(outcome.reason.toProblem())

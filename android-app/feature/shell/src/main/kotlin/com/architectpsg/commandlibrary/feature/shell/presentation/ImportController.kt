@@ -66,9 +66,10 @@ internal sealed interface ImportUiState {
 
 /**
  * Runs one user-selected local file import at a time inside [scope]; cancelling the scope cancels
- * the import. Completion of any kind, including cancellation, triggers [onFinished] so committed
- * catalog status is read again: a cancellation that arrives after the importer's durable commit
- * cannot undo it, and only a fresh status read is authoritative.
+ * the import. Once cancellation is requested the result is reported as cancelled, whatever the
+ * importer returns afterwards. Completion of any kind triggers [onFinished] so committed catalog
+ * status is read again: a cancellation that arrives after the importer's durable commit cannot undo
+ * it, and only that fresh status read is authoritative.
  */
 internal class ImportController(
     private val scope: CoroutineScope,
@@ -138,7 +139,7 @@ internal class ImportController(
         }
         try {
             val source = importSource(ref, fileName)
-            val result = callPort { cancel -> port.import(source, stream.chunks, ::onProgress, cancel) }
+            val result = callPort(ioDispatcher) { cancel -> port.import(source, stream.chunks, ::onProgress, cancel) }
             return when (result) {
                 is PortResult.Ok -> ImportUiState.Succeeded(fileName, result.value)
                 is PortResult.Failed -> ImportUiState.Failed(

@@ -2,6 +2,7 @@ package com.architectpsg.commandlibrary.feature.shell.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.architectpsg.commandlibrary.core.model.Color
@@ -23,7 +24,7 @@ private const val MIB = 1024L * 1024L
 
 @Composable
 internal fun formatBytes(bytes: Long): String {
-    val locale = Locale.getDefault()
+    val locale = LocalLocale.current.platformLocale
     return when {
         bytes < KIB -> pluralStringResource(R.plurals.shell_size_bytes, bytes.toInt(), formatCount(bytes))
         bytes < MIB -> stringResource(R.string.shell_size_kib, oneDecimal(bytes.toDouble() / KIB, locale))
@@ -34,11 +35,12 @@ internal fun formatBytes(bytes: Long): String {
 private fun oneDecimal(value: Double, locale: Locale): String =
     DecimalFormat("0.#", DecimalFormatSymbols.getInstance(locale)).format(value)
 
-internal fun formatCount(count: Long): String = NumberFormat.getIntegerInstance(Locale.getDefault()).format(count)
+@Composable
+internal fun formatCount(count: Long): String = NumberFormat.getIntegerInstance(LocalLocale.current.platformLocale).format(count)
 
 @Composable
 internal fun formatTimestamp(timestamp: UtcTimestamp): String {
-    val format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault())
+    val format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, LocalLocale.current.platformLocale)
     format.timeZone = TimeZone.getTimeZone("UTC")
     return stringResource(R.string.shell_timestamp_utc, format.format(Date(timestamp.epochSeconds * 1000L)))
 }

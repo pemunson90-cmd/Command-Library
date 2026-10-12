@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+
 package com.architectpsg.commandlibrary.feature.shell.presentation
 
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
@@ -220,6 +222,36 @@ class ImportControllerTest {
         advanceUntilIdle()
 
         assertEquals(ImportUiState.Failed("catalog.json", ImportFailure.Rejected(Problem.UNEXPECTED)), controller.state.value)
+    }
+
+    @Test
+    fun importerThatSwallowsCancellationIsStillReportedAsCancelled() = runTest {
+        documents.putBytes(uri, "catalog.json", syntheticBytes(10))
+        val started = CompletableDeferred<Unit>()
+        val swallowing = object : com.architectpsg.commandlibrary.core.model.CatalogImport {
+            override suspend fun `import`(
+                source: com.architectpsg.commandlibrary.core.model.CatalogImportSource,
+                chunks: kotlinx.coroutines.flow.Flow<com.architectpsg.commandlibrary.core.model.ByteChunk>,
+                onProgress: (com.architectpsg.commandlibrary.core.model.JobProgress) -> Unit,
+                cancel: com.architectpsg.commandlibrary.core.model.CancelToken,
+            ): com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.CatalogImportResult> {
+                started.complete(Unit)
+                try {
+                    kotlinx.coroutines.awaitCancellation()
+                } catch (_: kotlinx.coroutines.CancellationException) {
+                    return failure(FailureCode.PERSISTENCE)
+                }
+            }
+        }
+        val controller = ImportController(ownerScope(), swallowing, documents, CatalogImportLimits(), StandardTestDispatcher(testScheduler)) {}
+        controller.start(DocumentRef(uri))
+        advanceUntilIdle()
+        assertTrue(started.isCompleted)
+
+        controller.cancel()
+        advanceUntilIdle()
+
+        assertEquals(ImportUiState.Cancelled("catalog.json"), controller.state.value)
     }
 
     @Test

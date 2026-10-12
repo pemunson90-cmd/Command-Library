@@ -6,6 +6,7 @@ import com.architectpsg.commandlibrary.core.model.SettingsRepository
 import com.architectpsg.commandlibrary.core.model.SettingsSnapshot
 import com.architectpsg.commandlibrary.core.model.SnapshotList
 import com.architectpsg.commandlibrary.core.model.ThemePreference
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +37,7 @@ internal data class SettingsUiState(
 internal class SettingsController(
     private val scope: CoroutineScope,
     private val repository: SettingsRepository,
+    private val portDispatcher: CoroutineDispatcher,
 ) {
     private val mutableState = MutableStateFlow(SettingsUiState())
     val state: StateFlow<SettingsUiState> = mutableState.asStateFlow()
@@ -45,7 +47,7 @@ internal class SettingsController(
         if (job?.isActive == true) return
         mutableState.update { it.copy(loading = true, problem = null) }
         job = scope.launch {
-            when (val result = callPort { repository.read(it) }) {
+            when (val result = callPort(portDispatcher) { repository.read(it) }) {
                 is PortResult.Ok -> mutableState.update { it.copy(snapshot = result.value, loading = false, problem = null) }
                 is PortResult.Failed -> mutableState.update { it.copy(loading = false, problem = result.problem) }
             }
@@ -60,10 +62,10 @@ internal class SettingsController(
         mutableState.update { it.copy(pendingTheme = theme, problem = null, notice = null) }
         job = scope.launch {
             val patch = SettingsPatch(SnapshotList.of(SettingChange.Theme(theme)))
-            when (val result = callPort { repository.update(patch, snapshot.revision, it) }) {
+            when (val result = callPort(portDispatcher) { repository.update(patch, snapshot.revision, it) }) {
                 is PortResult.Ok -> mutableState.update { it.copy(snapshot = result.value, pendingTheme = null) }
                 is PortResult.Failed -> if (result.problem == Problem.STALE_REVISION) {
-                    when (val latest = callPort { repository.read(it) }) {
+                    when (val latest = callPort(portDispatcher) { repository.read(it) }) {
                         is PortResult.Ok -> mutableState.update {
                             it.copy(snapshot = latest.value, pendingTheme = null, notice = SettingsNotice.CHANGED_ELSEWHERE)
                         }

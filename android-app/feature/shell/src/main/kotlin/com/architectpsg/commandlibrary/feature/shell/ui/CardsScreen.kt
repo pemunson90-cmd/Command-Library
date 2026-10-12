@@ -147,7 +147,11 @@ private fun SearchForm(controller: SearchController, state: SearchUiState) {
                 Text(
                     when (problem) {
                         QueryProblem.EMPTY -> stringResource(R.string.search_problem_empty)
-                        QueryProblem.TOO_LONG -> stringResource(R.string.search_problem_too_long, SearchController.MAX_QUERY_CODE_POINTS)
+                        QueryProblem.TOO_LONG -> pluralStringResource(
+                            R.plurals.search_problem_too_long,
+                            SearchController.MAX_QUERY_CODE_POINTS,
+                            SearchController.MAX_QUERY_CODE_POINTS,
+                        )
                         null -> stringResource(R.string.search_field_help)
                     },
                 )

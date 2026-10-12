@@ -8,12 +8,14 @@ import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.FontScale
 import androidx.compose.ui.test.ForcedSize
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
@@ -66,14 +68,21 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule) {
 
     fun plural(id: Int, count: Int, vararg args: Any): String = context.resources.getQuantityString(id, count, *args)
 
-    fun show(width: Dp = 400.dp, height: Dp = 800.dp, fontScale: Float = 1f) {
+    fun show(width: Dp = 400.dp, height: Dp = 800.dp, fontScale: Float = 1f) = host(width, height, fontScale) { rule.setContent(it) }
+
+    /** Hosts through [restoration] so a test can emulate saving and restoring UI state, as on a configuration change. */
+    fun showWith(restoration: StateRestorationTester, width: Dp = 400.dp, height: Dp = 800.dp) =
+        host(width, height, 1f) { restoration.setContent(it) }
+
+    private fun host(width: Dp, height: Dp, fontScale: Float, set: (@Composable () -> Unit) -> Unit) {
         val ownerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         scope = ownerScope
+        // Controllers live outside composition, as they do in the ViewModel.
         controllers = ShellControllers(ownerScope, ShellPorts(catalog, catalog, catalog, settings), documents, Dispatchers.IO)
         val registryOwner = object : ActivityResultRegistryOwner {
             override val activityResultRegistry: ActivityResultRegistry = picker
         }
-        rule.setContent {
+        set {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 DeviceConfigurationOverride(
                     DeviceConfigurationOverride.ForcedSize(DpSize(width, height)) then DeviceConfigurationOverride.FontScale(fontScale),

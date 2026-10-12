@@ -4,6 +4,7 @@ import com.architectpsg.commandlibrary.core.model.CatalogGeneration
 import com.architectpsg.commandlibrary.core.model.CatalogStatus
 import com.architectpsg.commandlibrary.core.model.GenerationStatus
 import com.architectpsg.commandlibrary.core.model.LocalCatalogStatus
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,7 @@ internal val LocalCatalogStatus.installed: Boolean get() = activeGenerations.isN
 internal class CatalogStatusController(
     private val scope: CoroutineScope,
     private val port: CatalogStatus,
+    private val portDispatcher: CoroutineDispatcher,
 ) {
     private val mutableState = MutableStateFlow(CatalogStatusUiState())
     val state: StateFlow<CatalogStatusUiState> = mutableState.asStateFlow()
@@ -37,7 +39,7 @@ internal class CatalogStatusController(
         job?.cancel()
         mutableState.update { it.copy(loading = true) }
         job = scope.launch {
-            when (val result = callPort { port.status(it) }) {
+            when (val result = callPort(portDispatcher) { port.status(it) }) {
                 is PortResult.Ok -> mutableState.value = CatalogStatusUiState(status = result.value, loading = false, problem = null)
                 is PortResult.Failed -> mutableState.update { it.copy(loading = false, problem = result.problem) }
             }

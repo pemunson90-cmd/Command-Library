@@ -1,8 +1,8 @@
 package com.architectpsg.commandlibrary.feature.shell.document
 
 import android.content.ContentResolver
-import android.net.Uri
 import android.provider.OpenableColumns
+import androidx.core.net.toUri
 import java.io.FileNotFoundException
 import java.io.InputStream
 
@@ -27,7 +27,7 @@ internal interface DocumentSource {
 internal class ContentResolverDocumentSource(private val resolver: ContentResolver) : DocumentSource {
     override fun describe(ref: DocumentRef): DocumentDescription {
         val columns = arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE)
-        val cursor = resolver.query(Uri.parse(ref.uri), columns, null, null, null)
+        val cursor = resolver.query(ref.uri.toUri(), columns, null, null, null)
             ?: return DocumentDescription(displayName = null, reportedBytes = null)
         cursor.use {
             if (!it.moveToFirst()) return DocumentDescription(displayName = null, reportedBytes = null)
@@ -40,5 +40,5 @@ internal class ContentResolverDocumentSource(private val resolver: ContentResolv
     }
 
     override fun open(ref: DocumentRef): InputStream =
-        resolver.openInputStream(Uri.parse(ref.uri)) ?: throw FileNotFoundException("The document provider returned no stream")
+        resolver.openInputStream(ref.uri.toUri()) ?: throw FileNotFoundException("The document provider returned no stream")
 }
