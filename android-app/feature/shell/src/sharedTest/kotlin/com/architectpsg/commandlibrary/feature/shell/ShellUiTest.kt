@@ -18,10 +18,12 @@ import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.printToString
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.architectpsg.commandlibrary.core.model.FailureCode
@@ -302,7 +304,23 @@ class ShellUiTest {
         assertTrue(shell.exists(ShellTags.NAVIGATION_RAIL))
         shell.text(shell.string(R.string.detail_select_prompt)).assertIsDisplayed()
         search("synthetic")
-        shell.waitForText("Synthetic Existing Card")
+        fun evidence(): String {
+            val requests = synchronized(shell.catalog.lookupRequests) { shell.catalog.lookupRequests.toList() }
+            return "queryInput=${shell.controllers.search.queryInput}, lookupRequests=$requests, " +
+                "state=${shell.controllers.search.state.value}, semantics=${rule.onRoot().printToString()}"
+        }
+        val afterSubmit = evidence()
+        try {
+            shell.awaitState {
+                shell.controllers.search.state.value.results.any { it.name == "Synthetic Existing Card" }
+            }
+            // At this width the result row may be below the lazy list's composed viewport.
+            scrollResultsTo("Synthetic Existing Card")
+        } catch (failure: Exception) {
+            throw AssertionError("Expanded search failed. After submit: $afterSubmit; at failure: ${evidence()}", failure)
+        }
+        assertEquals("synthetic", shell.controllers.search.queryInput)
+        assertEquals("synthetic", synchronized(shell.catalog.lookupRequests) { shell.catalog.lookupRequests.last().first })
         shell.text("Synthetic Existing Card").performClick()
         rule.onNodeWithTag(ShellTags.RESULTS_PANE).assertIsDisplayed()
         rule.onNodeWithTag(ShellTags.DETAIL_PANE).assertIsDisplayed()

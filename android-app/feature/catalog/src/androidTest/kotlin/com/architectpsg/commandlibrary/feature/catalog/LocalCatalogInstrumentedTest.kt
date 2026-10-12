@@ -58,6 +58,30 @@ class LocalCatalogInstrumentedTest {
             }, cancel)
     }
 
+    /** Simulates a late exception after real SQLite activation has returned from commit. */
+    private class LateActivationCancelDatabase(private val real: Database) : Database by real {
+        var injected = false
+            private set
+        override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> {
+            var activationWritten = false
+            val result = real.transaction({ original ->
+                action(object : DbTransaction by original {
+                    override suspend fun execute(request: SqlRequest, cancel: CancelToken): Outcome<DbWriteResult> {
+                        val write = original.execute(request, cancel)
+                        if (request.statement.startsWith("INSERT INTO catalog_active") && write is Outcome.Success)
+                            activationWritten = true
+                        return write
+                    }
+                })
+            }, cancel)
+            if (activationWritten && result is Outcome.Success && !injected) {
+                injected = true
+                throw CancellationException("synthetic late return after activation commit")
+            }
+            return result
+        }
+    }
+
     @Test fun genuineImportLookupAndReopen(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val data = bytes
@@ -83,6 +107,38 @@ class LocalCatalogInstrumentedTest {
             assertTrue(status.value.initialized)
             assertEquals(3, status.value.activeGenerations.single().counts.printings)
             assertEquals(1, (catalog.lookupName("Delver", PageRequest(10), token) as Outcome.Success).value.items.size)
+        } finally { reopened.close(); context.deleteDatabase(name) }
+    }
+
+    @Test fun syntheticLateCancellationAfterRealActivationCommitPreservesIndexAndReopen(): Unit = runBlocking {
+        val name = "catalog-${UUID.randomUUID()}.db"
+        val real = open(name)
+        val token = TestCancel()
+        var activeId: GenerationId? = null
+        try {
+            val wrapped = LateActivationCancelDatabase(real)
+            val catalog = LocalCatalog(wrapped, TestClock(), TestIds(), CatalogImportLimits(batchSize = 1))
+            try {
+                catalog.`import`(source(bytes), chunks(bytes), {}, token)
+                fail("Expected synthetic late cancellation")
+            } catch (cancelled: CancellationException) {
+                assertEquals("synthetic late return after activation commit", cancelled.message)
+            }
+            assertTrue(wrapped.injected)
+            val fresh = TestCancel()
+            val status = (catalog.status(fresh) as Outcome.Success).value
+            assertTrue(status.initialized)
+            activeId = status.activeGenerations.single().id
+            assertEquals(3, status.activeGenerations.single().counts.printings)
+            assertEquals("Lightning Bolt", (catalog.lookupName("Lightning", PageRequest(10), fresh) as Outcome.Success).value.items.single().name)
+        } finally { real.close() }
+        val reopened = open(name)
+        try {
+            val catalog = LocalCatalog(reopened, TestClock(), TestIds())
+            val status = (catalog.status(TestCancel()) as Outcome.Success).value
+            assertTrue(status.initialized)
+            assertEquals(activeId, status.activeGenerations.single().id)
+            assertEquals("Lightning Bolt", (catalog.lookupName("Lightning", PageRequest(10), TestCancel()) as Outcome.Success).value.items.single().name)
         } finally { reopened.close(); context.deleteDatabase(name) }
     }
 
