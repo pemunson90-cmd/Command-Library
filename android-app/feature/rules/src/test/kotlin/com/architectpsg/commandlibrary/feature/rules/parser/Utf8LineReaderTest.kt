@@ -116,6 +116,14 @@ class Utf8LineReaderTest {
     }
 
     @Test
+    fun oneLargeChunkDecodesInBoundedWindowsWithoutLosingCharacters() = runTest {
+        // 5,000 repeats of a 2-byte character and a 4-byte surrogate pair: 15,000 chars, 30,000 bytes, one chunk.
+        val line = "\u00E9\uD83C\uDCCF".repeat(5_000)
+        val limits = RulesParserLimits(maxLineBytes = 32 * 1024)
+        assertEquals(listOf(line, "next"), lines(chunks("$line\nnext\n", size = 1 shl 20), limits))
+    }
+
+    @Test
     fun tokenCancelledByTheLastUnterminatedLineCallbackThrowsInsteadOfReturningADigest() = runTest {
         // "two" has no terminator, so it is delivered from the end-of-input path of one final chunk.
         val token = object : CancelToken {

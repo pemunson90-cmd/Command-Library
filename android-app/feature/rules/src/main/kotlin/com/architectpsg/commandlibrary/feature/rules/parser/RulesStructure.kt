@@ -50,7 +50,7 @@ internal class RulesStructure(
 
     // Body position used to accept or reject heading-like lines.
     private val contentsSections = HashSet<String>()
-    private var firstContentsSection: String? = null
+    private var firstContentsHeading: String? = null
     private var currentSection: Int? = null
     private var lastChapter: Int? = null
     private var currentChapter: Int? = null
@@ -61,7 +61,9 @@ internal class RulesStructure(
     private var frontBlocks = 0
     private var creditBlocks = 0
 
-    private val seenIdentifiers = HashMap<String, Int>()
+    // Every identifier emitted so far, and the next suffix to try for each repeated base identifier.
+    private val emittedIdentifiers = HashSet<String>()
+    private val nextSuffix = HashMap<String, Int>()
     private val entriesByKind = HashMap<RuleEntryKind, Long>()
     private var entries = 0L
     private var duplicates = 0L
@@ -82,7 +84,7 @@ internal class RulesStructure(
         close()
         if (region == Region.CONTENTS) {
             throw RulesParseException(
-                RulesParseFailure.Structure(lastLine, "Contents is not followed by a body that repeats its first section heading"),
+                RulesParseFailure.Structure(lastLine, "Contents is not followed by a body that repeats its first heading"),
             )
         }
         if ((entriesByKind[RuleEntryKind.NUMBERED] ?: 0L) == 0L) throw RulesParseException(RulesParseFailure.NoNumberedRules)
@@ -107,32 +109,31 @@ internal class RulesStructure(
     }
 
     /**
-     * Contents repeats body headings. The body starts when the first section heading listed in
-     * Contents appears a second time, so listed headings never become entries of their own and the
-     * body headings alone own their identifiers.
+     * Contents repeats body headings. The body starts when the first section or chapter heading
+     * listed in Contents appears a second time, so listed headings never become entries of their own
+     * and the body headings alone own their identifiers.
      */
     private suspend fun contents(text: String, lineNumber: Long) {
         val trimmed = text.trimEnd()
-        val first = firstContentsSection
+        val first = firstContentsHeading
         val bodyStarts = if (first != null) {
             trimmed == first
         } else {
-            // A listing without section headings: the body starts at the first numbered rule.
+            // A listing without section or chapter headings: the body starts at the first numbered rule.
             RULE.matches(trimmed) || SUBRULE.matches(trimmed)
         }
         if (bodyStarts) {
             if (first == null) {
-                anomaly(lineNumber, "Contents lists no section headings; the body starts at the first numbered rule")
+                anomaly(lineNumber, "Contents lists no section or chapter headings; the body starts at the first numbered rule")
             }
             close()
             region = Region.BODY
             body(text, lineNumber)
             return
         }
-        if (SECTION.matches(trimmed)) {
-            contentsSections += trimmed
-            if (first == null) firstContentsSection = trimmed
-        }
+        val section = SECTION.matches(trimmed)
+        if (section) contentsSections += trimmed
+        if (first == null && (section || CHAPTER.matches(trimmed))) firstContentsHeading = trimmed
         append(text)
     }
 
@@ -278,17 +279,31 @@ internal class RulesStructure(
     }
 
     private suspend fun open(kind: RuleEntryKind, baseId: String, number: String?, title: String?, firstText: String, lineNumber: Long) {
-        val seen = seenIdentifiers[baseId] ?: 0
-        seenIdentifiers[baseId] = seen + 1
-        if (seen > 0) duplicates += 1
         openKind = kind
-        openId = if (seen == 0) baseId else "$baseId~${seen + 1}"
+        openId = uniqueIdentifier(baseId)
         openNumber = number
         openTitle = title
         openFirstLine = lineNumber
         openLines.clear()
         openBytes = 0
         appendLine(firstText, continuation = false)
+    }
+
+    /**
+     * [baseId] the first time; later repeats become `<baseId>~2`, `~3` and so on, skipping any
+     * identifier already emitted (a source term may itself end in `~2`), so identifiers stay unique.
+     */
+    private fun uniqueIdentifier(baseId: String): String {
+        if (emittedIdentifiers.add(baseId)) return baseId
+        duplicates += 1
+        var suffix = nextSuffix[baseId] ?: 2
+        var candidate = "$baseId~$suffix"
+        while (!emittedIdentifiers.add(candidate)) {
+            suffix += 1
+            candidate = "$baseId~$suffix"
+        }
+        nextSuffix[baseId] = suffix + 1
+        return candidate
     }
 
     private fun append(text: String) {

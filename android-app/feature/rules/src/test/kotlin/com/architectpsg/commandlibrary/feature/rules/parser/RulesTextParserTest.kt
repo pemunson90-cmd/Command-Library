@@ -415,6 +415,64 @@ class RulesTextParserTest {
         }
     }
 
+    @Test
+    fun generatedDuplicateIdentifiersNeverCollideWithSourceIdentifiers() = runTest {
+        val text = """
+            100.1. Synthetic rule.
+
+            Glossary
+
+            Synthetic Term
+            First synthetic definition.
+
+            Synthetic Term
+            Second synthetic definition.
+
+            Synthetic Term~2
+            A synthetic term whose own name equals a generated identifier.
+        """.trimIndent()
+        val parsed = parseAll(text)
+        val ids = parsed.entries.map { it.id.raw }
+        assertEquals(
+            listOf("100.1", "glossary:Synthetic Term", "glossary:Synthetic Term~2", "glossary:Synthetic Term~2~2"),
+            ids,
+        )
+        assertEquals(Knowledge.Known("Synthetic Term~2"), parsed.entry("glossary:Synthetic Term~2~2").title)
+        assertEquals(2L, parsed.summary.duplicateIdentifiers)
+    }
+
+    @Test
+    fun contentsListingOnlyChaptersKeepsTheBodyChapterEntries() = runTest {
+        val text = """
+            Contents
+
+            100. Synthetic General
+            101. Synthetic Ordering
+
+            100. Synthetic General
+
+            100.1. A synthetic rule.
+
+            101. Synthetic Ordering
+
+            101.1. Another synthetic rule. See rule 100.
+        """.trimIndent()
+        val parsed = parseAll(text)
+        assertEquals(listOf("contents", "100", "100.1", "101", "101.1"), parsed.entries.map { it.id.raw })
+        assertEquals("Contents\n\n100. Synthetic General\n101. Synthetic Ordering", parsed.entry("contents").text)
+        assertEquals(Knowledge.Known(RuleId(PROVIDER, "100")), parsed.entry("101.1").references.single().resolved)
+        assertEquals(0L, parsed.summary.anomalies)
+    }
+
+    @Test
+    fun crlfAndByteOrderMarkGiveTheSameEntriesAtEveryChunkSize() = runTest {
+        val expected = parseAll(CORPUS).entries
+        val windows = "\uFEFF" + CORPUS.replace("\n", "\r\n")
+        for (size in listOf(1, 2, 3, 5, 4096)) {
+            assertEquals("chunk size $size", expected, parseAll(windows, chunkSize = size).entries)
+        }
+    }
+
     /** Lets [remaining] checks pass, then reports cancellation the way a cancelled caller would. */
     private class CountdownToken(private var remaining: Int) : CancelToken {
         override val isCancelled: Boolean get() = remaining <= 0
