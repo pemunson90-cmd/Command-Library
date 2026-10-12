@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -156,7 +157,9 @@ private fun ImportSection(
             is ImportUiState.Succeeded -> ImportSucceeded(state, onPickFile, onDismiss)
             is ImportUiState.Failed -> ImportFailed(state, limits, onPickFile, onDismiss)
             is ImportUiState.Cancelled -> ImportCancelled(state, onPickFile, onDismiss)
-            ImportUiState.Idle -> Button(onClick = onPickFile) { Text(stringResource(R.string.import_action_choose)) }
+            ImportUiState.Idle -> Button(onClick = onPickFile, modifier = Modifier.heightIn(min = 48.dp)) {
+                Text(stringResource(R.string.import_action_choose))
+            }
         }
         if (pickerUnavailable) {
             MessageBlock(title = null, body = listOf(stringResource(R.string.import_picker_unavailable)), tone = MessageTone.ERROR)
@@ -215,7 +218,11 @@ private fun ImportProgress(state: ImportUiState.Running, onCancel: () -> Unit) {
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
-        OutlinedButton(onClick = onCancel, enabled = !state.cancelling) {
+        OutlinedButton(
+            onClick = onCancel,
+            enabled = !state.cancelling,
+            modifier = Modifier.heightIn(min = 48.dp),
+        ) {
             Text(stringResource(if (state.cancelling) R.string.import_cancelling else R.string.import_action_cancel))
         }
     }
@@ -240,8 +247,12 @@ private fun ImportSucceeded(state: ImportUiState.Succeeded, onPickFile: () -> Un
         body = listOf(stringResource(R.string.import_succeeded_body, state.fileName)),
         tone = MessageTone.INFO,
     ) {
-        Button(onClick = onPickFile) { Text(stringResource(R.string.import_action_choose)) }
-        TextButton(onClick = onDismiss) { Text(stringResource(R.string.shell_action_dismiss)) }
+        Button(onClick = onPickFile, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.import_action_choose))
+        }
+        TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.shell_action_dismiss))
+        }
     }
     DetailField(stringResource(R.string.catalog_field_cards), formatCount(result.counts.oracleCards))
     DetailField(stringResource(R.string.catalog_field_printings), formatCount(result.counts.printings))
@@ -289,8 +300,12 @@ private fun ImportFailed(state: ImportUiState.Failed, limits: CatalogImportLimit
         body = listOf(reason, stringResource(R.string.import_failed_unchanged)),
         tone = MessageTone.ERROR,
     ) {
-        Button(onClick = onPickFile) { Text(stringResource(R.string.import_action_choose)) }
-        TextButton(onClick = onDismiss) { Text(stringResource(R.string.shell_action_dismiss)) }
+        Button(onClick = onPickFile, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.import_action_choose))
+        }
+        TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.shell_action_dismiss))
+        }
     }
 }
 
@@ -301,7 +316,11 @@ private fun ImportCancelled(state: ImportUiState.Cancelled, onPickFile: () -> Un
         body = listOf(stringResource(R.string.import_cancelled_body, state.fileName ?: stringResource(R.string.import_unnamed_file))),
         tone = MessageTone.INFO,
     ) {
-        Button(onClick = onPickFile) { Text(stringResource(R.string.import_action_choose)) }
-        TextButton(onClick = onDismiss) { Text(stringResource(R.string.shell_action_dismiss)) }
+        Button(onClick = onPickFile, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.import_action_choose))
+        }
+        TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.shell_action_dismiss))
+        }
     }
 }
