@@ -3,34 +3,32 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k2-fixes-18",
-  "verified_base_head": "2faa71edaa18a53abda54f7f50bdc450a41cdb89",
+  "checkpoint_id": "cp-20261012-k2-settings-19",
+  "verified_base_head": "406c9ab641b3390d6da308dcd07e9c7609fc8d4d",
   "stage": "K2 step2 preserved Claude adapters; targeted fixes and hosted runtime verification",
   "status": "in_progress",
   "next_task": "orch-kotlin-m0-01",
   "next_step": 2,
-  "first_action": "Rerun updated CI on corrected settings/storage branches, finish bounded storage fixes and independent recheck, then integrate accepted adapters and implement local importer/UI; use K2 progress and latest worker handoffs.",
-  "active_tasks": [
-    "orch-kotlin-m0-01"
-  ],
+  "first_action": "Read storage review: source080cd391 accepted conditionally; inspect run38200190935, resolve actual failures and verify all three packaged suites before integration. Then reconcile core-common envelope and implement bounded catalog/importer/app under exclusive task cards.",
+  "active_tasks": [],
   "blockers": [
-    "Storage acceptance blocked by four actual SQL binding/rollback/read-only/scope defects and emulator startup failure; source and CI fixes in progress. No missing user permission."
+    "Storage source review accepted at080cd391; all three packaged runtime suites pending. K2 catalog/importer, genuine fixture, app/UI and runtime acceptance remain incomplete. No missing user permission."
   ],
   "worktree_mode": "git_checkout: /workspace/Command-Library-kotlin; preserved prior snapshot at /workspace/Command-Library",
-  "review_status": "QA docs independently accepted/integrated; settings corrected40853c9 accepted at source with68 JVM/lint pass, explicit assembly pending; storagef96f333 independentreviewfour boundedfixes pending; accepted core/tuple not re-audited.",
+  "review_status": "Settings accepted/integrated at4f20764; independent narrow storage review closesS1-S4 at080cd391, conditional on all packaged runtime suites. Core/tuple remain accepted.",
   "verification": {
     "continuity": "24 local continuation/architecture/helper tests pass, including correct cross-model actor/date events; branch continuity passes observed.",
     "app_build": "not_run",
     "runtime_tests": "not_run",
-    "hosted_ci": "Settings40853c9 run38198608594:68 JVM tests/lint passed,noapp/noemulator; storagef96f333 run38198744105 JVM/lintpassed butall3 emulatorbootfailed UnknownAVD beforetests. CIboot/assemblyfix next.",
+    "hosted_ci": "Settings run38199662988 success at4f20764:68 JVM tests, fatal API lint, actual library assembly. Storage run38200190935 at080cd391 JVM/assembly success; API23/API36/API36-16k emulator jobs pending.",
     "remote_readback": "Verified main d3a84d1 Claudehandoff, workerbranches09ea4cc/714cd7e/836e6df; allpreserved. Rootresumelease claimedcp17; newcheckpoint readback pending.",
     "toolchain": "K1 hostedJDK17/Gradle9.6/SDK36observed; Claude probe+hostedSDK37 installation recorded. CurrentlocalexecutorJava21only noSDK; hostedtransportused.",
     "kotlin_compatibility": "Core JVM compiled; Claude independently reviewed actual localAGP/Compose/Room3/KSP tuple probe compile37target36min23 withretainedlogs. Product Androidruntime not accepted.",
     "k1_environment": "Java runtime 21.0.12 only; javac/Gradle/kotlinc/sdkmanager/adb absent; no local build performed",
     "k1_source_metadata": "Selected source-backed tuple in candidate lock, K1 Android/FTS5 notes and report; compatibility not_run.",
-    "network_policy": "Currentcloudstatusreportedoffline; enforced unrestricted policy inspected. GitHubconnector andactualgitfetch/push succeeded; no secret/outbound identity binding.",
+    "network_policy": "Current environment_status connected, running, observations_current true, unrestricted enforced; no secret/outbound identity bindings. GitHub API/git transport observed.",
     "kotlin_contracts": "Corrected hosted run38182564573 succeeded at2ac4a302f6832a9ec33e2739a687b5e3905a6015 with25 executed JVM tests(model13/common12); main integrated exact unchanged core tree."
   },
-  "last_completed": "K2 incomplete checkpoint: preserved Claude source/tuple/worker notes; QA independently integrated. Settings persistence/UTF8 fixes source-reviewed with68 JVM/lint pass; explicit libraryassembly pending. Storage actualJVM/lint pass butSQL correctness reviewfound4 fixes and all emulatorbootsfailed UnknownAVD; sourcefixes and sharedAVDpath correction underway. Cross-model actor/date checkpoint helper corrected and reviewed; no app/runtime success claim.",
-  "updated_utc": "2026-10-12T03:23:55Z"
+  "last_completed": "Settings component integrated unchanged from tested4f20764:68 JVM tests, fatal API lint and library assembly passed; settings lock released. Storage080cd391 independent source recheck closesS1-S4; JVM/assembly passed, three emulator suites pending. K2 incomplete: no app, importer, genuine fixture or product runtime acceptance yet. Preserve branches and resume exact pending evidence without broad audit.",
+  "updated_utc": "2026-10-12T03:37:50Z"
 }

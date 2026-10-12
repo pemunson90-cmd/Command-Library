@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-k2-fixes-18
+Checkpoint-ID: cp-20261012-k2-settings-19
 
 Next task: orch-kotlin-m0-01
-Next step: 2. Rerun updated CI on corrected settings/storage branches, finish bounded storage fixes and independent recheck, then integrate accepted adapters and implement local importer/UI; use K2 progress and latest worker handoffs.
+Next step: 2. Read storage review: source080cd391 accepted conditionally; inspect run38200190935, resolve actual failures and verify all three packaged suites before integration. Then reconcile core-common envelope and implement bounded catalog/importer/app under exclusive task cards.
 
-Updated UTC: 2026-10-12T03:23:55Z
-Status: in_progress; lease: active.
-Verified base: 2faa71edaa18a53abda54f7f50bdc450a41cdb89.
+Updated UTC: 2026-10-12T03:37:50Z
+Status: in_progress; lease: released.
+Verified base: 406c9ab641b3390d6da308dcd07e9c7609fc8d4d.
 
-K2 incomplete checkpoint: preserved Claude source/tuple/worker notes; QA independently integrated. Settings persistence/UTF8 fixes source-reviewed with68 JVM/lint pass; explicit libraryassembly pending. Storage actualJVM/lint pass butSQL correctness reviewfound4 fixes and all emulatorbootsfailed UnknownAVD; sourcefixes and sharedAVDpath correction underway. Cross-model actor/date checkpoint helper corrected and reviewed; no app/runtime success claim.
+Settings component integrated unchanged from tested4f20764:68 JVM tests, fatal API lint and library assembly passed; settings lock released. Storage080cd391 independent source recheck closesS1-S4; JVM/assembly passed, three emulator suites pending. K2 incomplete: no app, importer, genuine fixture or product runtime acceptance yet. Preserve branches and resume exact pending evidence without broad audit.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

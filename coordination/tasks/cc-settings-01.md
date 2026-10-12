@@ -1,6 +1,6 @@
 # Task cc-settings-01
 
-Status: original implementation READY-FOR-REVIEW, preserved. Independent review requested bounded fixes; cx-settings-01 now holds the settings lock. Do not write this component while that lock is active. Parent: orch-kotlin-m0-01 step2.
+Status: completed and integrated with reviewed remediation; tested source4f20764, hosted run38199662988. Settings lock released. K2 app/runtime integration remains pending.
 
 ## Ownership
 

@@ -1,6 +1,6 @@
 # K2 foundation progress
 
-Status: in progress, incomplete. No app or complete section release exists. Resume from CURRENT/state, not this report's historical next sentence.
+Status: K2 in progress, incomplete. Settings implementation is integrated and independently verified at component level; no app or K2 section release exists. Resume from CURRENT/state, not this report's historical next sentence.
 
 ## Contract and design work
 
@@ -35,3 +35,11 @@ Observed [first pure Kotlin compile run38182145326](https://github.com/pemunson9
 The independent Astra actual-contract/design review found four blockers before consumers: printing-specific face assets/canonical equality; unresolved related printing/raw identities; storage headroom101 for a100-row page; irreversible rollback semantics for typed transaction failures/validation abort. The author corrected these in9681aec and added real canonical comparison/rollback guards. Root design includes printing-face storage, canonical game-field equality,101-row bound and rollback-only/abort protocol. Independent targeted Astra recheck accepted the corrections; [corrected hosted compile38182564573](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38182564573) succeeded at `2ac4a302f6832a9ec33e2739a687b5e3905a6015`. Decoded job114598061547 logs show25 executed tests: model13/common12. Hosted continuity38182564583 also passed. Root integrated exact unchanged core files and verified them against the tested source tree. Core component lock is released; actual foundation consumers may now start under their own cards/locks. This proves no Android/Room/FTS runtime result.
 
 Actual all-port compile, meaningful JVM results and independent design/contract review; real Room3/storage/import/settings/Compose implementation; authentic fixture provenance; packaged FTS5/transaction/persistence tests; emulator install/launch/adaptive checks; debug artifact/checksum/native alignment; final independent implementation review. All app, Room/FTS runtime, device and signing evidence remain unrun. Record exact diagnostics and correct affected candidates when observations require it; no guessed success or silently skipped checks.
+
+### Latest bounded integration — 2026-10-12 UTC
+
+Settings merged unchanged from tested4f20764; run38199662988 closed43 settings +25 core JVM tests, fatal API lint and real library assembly. Its component lock is released; product defaults, Context runtime and backup obligations above remain. Storage source080cd391 corrects the final Tcl-style named-parameter suffix and is under narrow independent recheck. Run38200190935 has passed JVM/assembly; all three emulator jobs remain in progress. Superseded runs38199950465 and38199909902 were cancelled, not passes. Do not integrate storage until final-source review and all required packaged tests are observed.
+
+Before K2 closure reconcile registry/checker core dependency mapping: physical adapters depend on both :core:model and :core:common, while conceptual core currently maps only model. Preserve20-component DAG; review a narrow machine-envelope correction. Catalog/importer, genuine English fixture, app/UI and runtime acceptance still required.
+
+Final narrow storage recheck accepts080cd391 at source: S1–S4 closed. Runtime conditions remain pending and storage is not integrated.

@@ -1,8 +1,0 @@
-component: settings
-orchestrator: codex
-task: cx-settings-01
-branch: agent/cx-settings-01
-base_commit: 714cd7e92ba3cf6a4abf2dd55802d2230e09e28b
-claimed: 2026-10-12
-owned_paths: android-app/feature/settings/**
-step: narrow remediation of independently reviewed persistence/UTF8 defects; original completed Claude source preserved
