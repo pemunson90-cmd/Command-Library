@@ -51,6 +51,15 @@ class StorageDatabaseTest {
         assertEquals(2L, count())
     }
 
+    @Test fun repeatedNamedParametersUseActualSqliteIndexes() = runBlocking {
+        val rows = success(database.query(request(
+            "SELECT :second AS first_value, :first AS second_value, :second AS repeated_value, ':ignored' AS literal_value /* :comment */",
+            "first" to SqlValue.Integer(7), "second" to SqlValue.Text("bound"),
+        ), neverCancel))
+        assertEquals(listOf(SqlValue.Text("bound"), SqlValue.Integer(7), SqlValue.Text("bound"), SqlValue.Text(":ignored")),
+            rows.single().columns.map { it.value })
+    }
+
     @Test fun ignoredQueryFailureRollsBackEarlierWrite() = runBlocking {
         val outcome = database.transaction({ transaction ->
             success(transaction.execute(insert("discard"), neverCancel))
