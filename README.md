@@ -1,33 +1,37 @@
 # Command Library
 
-Personal-first, offline-first Magic companion for Android phones, foldables and tablets; Windows is version 2 (D-19). Kotlin Android version 1; Flutter Windows is a separate version-2 implementation; sync only after Windows runs; Full English by default; extra-language downloads require user approval. Repository: https://github.com/pemunson90-cmd/Command-Library, integration branch main.
+Personal-first, offline-first Magic: The Gathering companion for Android phones, foldables and tablets. Android version 1 is Kotlin. Windows is a separate Flutter version 2 after Android v1 is accepted, and Android/Windows sync is deferred until both offline apps run. English is the default dataset; non-English downloads require explicit user approval.
+
+## Current status
+
+K2, the Kotlin Android foundation, is accepted. The repository now contains a real Android `:app` with a Compose shell, persistent Room/SQLite storage, DataStore settings, user-selected local catalog import, local status/search behavior and a hosted debug APK that passed the accepted K2 Android matrix. This is a runnable foundation, not the finished Commander Library product.
+
+K3 is next and is ready but not started. It adds the full offline English catalog/rules acquisition or import path, durable consent/source state, atomic corpus replacement and bounded local search. Later Android stages add life tracking, decks/import, collection/pricing, analysis/validation, recommendations, AI, images/polish/performance and final hardening/signing. Windows remains version 2 and sync remains later.
+
+For exact live status, evidence and the next action, use [`coordination/state.json`](coordination/state.json). K2 acceptance evidence is in [`docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md`](docs/gauntlet/gates/K2-FINAL-ACCEPTANCE.md). The Android stage plan is in [`docs/gauntlet/MILESTONES.md`](docs/gauntlet/MILESTONES.md).
 
 ## Continue from any model
 
-If Pat says **continue**, start here. Codex, GPT, Claude and Claude Code use the same files and take sequential turns. No chat history is required.
+Codex, GPT, Claude and Claude Code all use the same continuation path. Chat history is optional.
 
-1. Read [CONTINUE.md](CONTINUE.md), [current state](docs/gauntlet/STATE.md), [machine state](coordination/state.json) and [current handoff](coordination/handoffs/CURRENT.md).
-2. Read only the next task card named there, its component architecture, relevant decisions and dependency contracts.
-3. Verify current GitHub main and local checkout/snapshot; claim the single orchestrator lease before changing shared files.
-4. Complete the next eligible bounded step, verify it, update task/handoff/state/journal, commit and push. Print the checkpoint link.
-5. Leave the next exact action and stop at a clean checkpoint after a reasonable work chunk. The next model repeats these steps.
+Normal resume is intentionally small:
 
-[Execution queue](coordination/QUEUE.md) · [Authoritative decisions](docs/gauntlet/DECISIONS.md) · [Stage plan](docs/gauntlet/MILESTONES.md) · [Spec](docs/gauntlet/SPEC.md) · [Coverage](docs/gauntlet/COVERAGE.md)
+1. Verify current `main`.
+2. Read [`CONTINUE.md`](CONTINUE.md) if unfamiliar with the protocol.
+3. Read [`coordination/state.json`](coordination/state.json), [`coordination/ORCHESTRATOR.json`](coordination/ORCHESTRATOR.json), and the task card named by `state.next_task`.
+4. Read only the decisions, contracts, architecture or gate evidence linked by that task.
+5. Claim the lease before shared writes, complete a coherent bounded work unit, run the required verification, then publish a resumable checkpoint.
 
-## Current facts
+[`coordination/handoffs/CURRENT.md`](coordination/handoffs/CURRENT.md), [`docs/gauntlet/STATE.md`](docs/gauntlet/STATE.md), the journal and event logs are mirrors/audit history. They are primarily for human inspection, mismatch recovery and takeover investigation, not mandatory rereads every session.
 
-Gate 2 specification independently reviewed. Kotlin source-backed candidate and hosted build capability are recorded in the K1 report; actual app compilation/runtime/device checks remain unperformed. See state for the live pointer, never this summary alone. No application build or usable binary is claimed.
+The documentation authority and efficiency rules are in [`docs/gauntlet/DOCUMENTATION_POLICY.md`](docs/gauntlet/DOCUMENTATION_POLICY.md). The runnable queue is [`coordination/QUEUE.md`](coordination/QUEUE.md). Durable product rulings are [`docs/gauntlet/DECISIONS.md`](docs/gauntlet/DECISIONS.md).
 
-User's latest continuation mandate supersedes old Codex-only and mandatory-chat-at-every-technical-gate instructions. Routine reviewed stages may advance under [D-17](docs/gauntlet/DECISIONS.md); material product changes, destructive actions, new costs and unresolved actual permission barriers still need a recorded decision. Previously proposed performance numbers remain targets, not measured results.
+## Execution rules that matter
 
-## Tool entry points
+Pat's recorded rulings control conflicts. Never claim an unrun build, test, device check or source result. Keep secrets and signing material out of git and logs. Do not introduce fake production adapters or placeholder success paths. Shared state has one orchestrator lease-holder at a time, with component locks only when parallel writers are actually active.
 
-[AGENTS.md](AGENTS.md) for Codex/agents, [CLAUDE.md](CLAUDE.md) for Claude Code, this README for general GPT/Claude. All point to the same continuation policy. Historical GAUNTLET editions and prior reports remain intact; latest user decisions control conflicts.
+Independent review is used where risk justifies it: architecture/public contracts, source-license conclusions, database durability or migration semantics, credentials/security, destructive behavior and final section acceptance. Routine isolated work still needs tests, but not duplicate review paperwork for every small edit.
 
-GitHub is the durable source. A local snapshot or downloadable handoff is convenience, not a separate branch of truth. A read-only model can audit and prepare a patch, but must label unpublished work and cannot claim a push it did not perform. Repository access is needed to update shared checkpoints.
+GitHub is the source of record. Build/test/package through GitHub Actions where required; Pat does not need a development machine. Unknown evidence stays unknown rather than becoming a pass.
 
-Use the weakest capable model and defer standalone research to [regular-chat handoff packets](coordination/chat-handoffs/README.md). Each packet supplies context, source/evidence IDs, output format and executor verification boundaries; no chat explanation is needed. Cloud retains repository integration and actual build/test/byte verification. [Checkpoint helper](scripts/checkpoint.py) keeps UTC dates and all live resume pointers synchronized.
-
-## Security and deliveries
-
-Never commit/log signing sheets, keys or credentials. Existing ANDROID_SIGNING secret and permanent certificate are described without values in DECISIONS. Build/test/package through GitHub Actions; Pat need not own a development machine. Verified install/device evidence must be recorded honestly; unknown is never a pass.
+Tool-specific entry files are [`AGENTS.md`](AGENTS.md) and [`CLAUDE.md`](CLAUDE.md). They point back to the same protocol instead of maintaining competing copies.
