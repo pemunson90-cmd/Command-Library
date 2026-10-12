@@ -92,6 +92,7 @@ public class DataStoreSettingsRepository private constructor(
             } else {
                 working.copy(revision = nextRevision(expected, current.revision), updatedAt = now)
             }
+            if (result != current) SettingsStoreCodec.validateCandidate(result)
             // Last chance to abort: past this line DataStore writes the result.
             cancel.throwIfCancelled()
             result
@@ -123,6 +124,7 @@ public class DataStoreSettingsRepository private constructor(
                     consents = current.consents + StoredConsent(installationId, record),
                 )
             }
+            if (result != current) SettingsStoreCodec.validateCandidate(result)
             // Last chance to abort: past this line DataStore writes the result.
             cancel.throwIfCancelled()
             result
@@ -164,6 +166,9 @@ public class DataStoreSettingsRepository private constructor(
         }
         if (causes.any { it is CorruptSettingsStoreException }) {
             return failure(FailureCode.CORRUPT_DATA, "The settings store is damaged and was not modified")
+        }
+        if (causes.any { it is InvalidSettingsValueException }) {
+            return failure(FailureCode.INVALID_INPUT, "Settings value cannot be stored faithfully within the size limit")
         }
         if (causes.any { it is IOException }) {
             return failure(FailureCode.PERSISTENCE, "The settings store could not be read or written")

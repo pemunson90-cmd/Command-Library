@@ -10,6 +10,10 @@ android {
         minSdk = 23
     }
 
+    lint {
+        fatal += "NewApi"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

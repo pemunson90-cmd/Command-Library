@@ -21,10 +21,18 @@ import com.architectpsg.commandlibrary.core.model.UtcTimestamp
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.IOException
+import java.io.OutputStream
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.nio.ByteBuffer
+import java.nio.CharBuffer
+import java.nio.charset.CharacterCodingException
+import java.nio.charset.CodingErrorAction
 import java.util.zip.CRC32
+import java.util.zip.CheckedOutputStream
+
+/** A prospective state cannot be represented faithfully within the store limit. */
+internal class InvalidSettingsValueException(message: String, cause: Throwable? = null) : IOException(message, cause)
 
 /** Stored bytes are not a valid settings store of any version this build knows how to read. */
 internal class CorruptSettingsStoreException(message: String, cause: Throwable? = null) : IOException(message, cause)
@@ -54,6 +62,10 @@ internal data class StoredSettings(
         /**
          * State of a store that has never been written. Revision 0 with the epoch as updatedAt means
          * "never updated": no clock reading is fabricated for a write that did not happen.
+         * Cache zero/rulings off is a TEMPORARY K2 operational state while those services are absent.
+         * Before consumers ship, SPEC A03/A05/K01 require retained rulings and online-on-view art
+         * with bounded caching. A versioned transition must preserve explicit user choices and must
+         * not interpret this foundation zero as an opt-out. Unsupported controls must stay unwired.
          */
         val INITIAL: StoredSettings = StoredSettings(
             revision = Revision(0),
@@ -89,18 +101,32 @@ internal object SettingsStoreCodec {
 
     fun encode(state: StoredSettings): ByteArray {
         val bytes = ByteArrayOutputStream()
-        val out = DataOutputStream(bytes)
+        writeStore(state, bytes)
+        return bytes.toByteArray()
+    }
+
+    /** Same serialization as a write, without allocating a candidate-sized byte array. */
+    fun validateCandidate(state: StoredSettings) {
+        writeStore(state, object : OutputStream() {
+            override fun write(value: Int) = Unit
+            override fun write(bytes: ByteArray, offset: Int, length: Int) = Unit
+        })
+    }
+
+    private fun writeStore(state: StoredSettings, destination: OutputStream) {
+        val bounded = BoundedOutputStream(destination, MAX_STORE_BYTES)
+        val checksum = CRC32()
+        val out = DataOutputStream(CheckedOutputStream(bounded, checksum))
         out.write(MAGIC)
         out.writeInt(SUPPORTED_VERSION)
         writeBody(out, state)
         out.flush()
-        val checksum = CRC32().also { it.update(bytes.toByteArray()) }.value.toInt()
-        out.writeInt(checksum)
-        out.flush()
-        return bytes.toByteArray()
+        // The trailer counts toward the same limit, but is not included in its own checksum.
+        DataOutputStream(bounded).writeInt(checksum.value.toInt())
     }
 
     fun decode(bytes: ByteArray): StoredSettings {
+        if (bytes.size > MAX_STORE_BYTES) throw CorruptSettingsStoreException("Settings store exceeds the size limit")
         if (bytes.size < HEADER_BYTES) throw CorruptSettingsStoreException("Settings store is truncated")
         if (!bytes.copyOfRange(0, MAGIC.size).contentEquals(MAGIC)) {
             throw CorruptSettingsStoreException("Settings store header is not recognized")
@@ -279,9 +305,38 @@ internal object SettingsStoreCodec {
     private fun readTimestamp(input: Reader): UtcTimestamp = UtcTimestamp(input.long(), input.int())
 
     private fun writeString(out: DataOutputStream, value: String) {
-        val encoded = value.toByteArray(Charsets.UTF_8)
-        out.writeInt(encoded.size)
-        out.write(encoded)
+        // Valid UTF-8 requires at least as many bytes as UTF-16 code units. Reject huge input before
+        // walking it; stream the encoder in fixed chunks rather than allocate value-sized buffers.
+        if (value.length > MAX_STORE_BYTES) throw InvalidSettingsValueException("Settings string exceeds the size limit")
+        var length = 0
+        encodeString(value) { _, count ->
+            if (count > MAX_STORE_BYTES - length) throw InvalidSettingsValueException("Settings string exceeds the size limit")
+            length += count
+        }
+        out.writeInt(length)
+        encodeString(value) { bytes, count -> out.write(bytes, 0, count) }
+    }
+
+    private fun encodeString(value: String, consume: (ByteArray, Int) -> Unit) {
+        val encoder = Charsets.UTF_8.newEncoder()
+            .onMalformedInput(CodingErrorAction.REPORT)
+            .onUnmappableCharacter(CodingErrorAction.REPORT)
+        val input = CharBuffer.wrap(value)
+        val chunk = ByteBuffer.allocate(8192)
+        try {
+            while (true) {
+                val result = encoder.encode(input, chunk, true)
+                if (result.isError) result.throwException()
+                consume(chunk.array(), chunk.position())
+                chunk.clear()
+                if (result.isUnderflow) break
+            }
+            val result = encoder.flush(chunk)
+            if (result.isError) result.throwException()
+            consume(chunk.array(), chunk.position())
+        } catch (failure: CharacterCodingException) {
+            throw InvalidSettingsValueException("Settings string is not valid Unicode", failure)
+        }
     }
 
     private inline fun <T : Any> writeOptional(out: DataOutputStream, value: T?, write: (T) -> Unit) {
@@ -326,7 +381,14 @@ internal object SettingsStoreCodec {
             if (length < 0 || length > buffer.remaining()) throw CorruptSettingsStoreException("Invalid string length")
             val raw = ByteArray(length)
             buffer.get(raw)
-            return String(raw, Charsets.UTF_8)
+            try {
+                return Charsets.UTF_8.newDecoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .decode(ByteBuffer.wrap(raw)).toString()
+            } catch (failure: CharacterCodingException) {
+                throw CorruptSettingsStoreException("Settings string is not valid UTF-8", failure)
+            }
         }
 
         inline fun <reified E : Enum<E>> enum(): E {
@@ -340,5 +402,26 @@ internal object SettingsStoreCodec {
         private fun need(bytes: Int) {
             if (buffer.remaining() < bytes) throw CorruptSettingsStoreException("Settings store is truncated")
         }
+    }
+}
+
+/** Never forwards a write that would cross the complete encoded-store limit. */
+internal class BoundedOutputStream(private val destination: OutputStream, private val limit: Int) : OutputStream() {
+    private var count = 0
+
+    override fun write(value: Int) {
+        reserve(1)
+        destination.write(value)
+    }
+
+    override fun write(bytes: ByteArray, offset: Int, length: Int) {
+        require(offset >= 0 && length >= 0 && offset <= bytes.size - length)
+        reserve(length)
+        destination.write(bytes, offset, length)
+    }
+
+    private fun reserve(length: Int) {
+        if (length > limit - count) throw InvalidSettingsValueException("Settings store exceeds the size limit")
+        count += length
     }
 }
