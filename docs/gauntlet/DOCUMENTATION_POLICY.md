@@ -6,10 +6,10 @@ Status: active. This file defines how current project documentation stays small,
 
 Normal resume should begin from only these live sources:
 
-1. `coordination/state.json` — authoritative current checkpoint, stage, next task, next step, blockers and verification summary.
-2. `coordination/ORCHESTRATOR.json` — authoritative lease/owner status.
-3. `coordination/tasks/<state.next_task>.md` — authoritative bounded task scope, dependencies, execution steps and acceptance evidence.
-4. `coordination/QUEUE.md` — runnable tasks and blocked alternatives only.
+1. `coordination/state.json` - authoritative current checkpoint, stage, next task, next step, blockers and verification summary.
+2. `coordination/ORCHESTRATOR.json` - authoritative lease/owner status.
+3. `coordination/tasks/<state.next_task>.md` - authoritative bounded task scope, dependencies, execution steps and acceptance evidence.
+4. `coordination/QUEUE.md` - runnable tasks and blocked alternatives only.
 
 Read task-linked architecture, decisions, contracts, gate reports or research only when the current task names them or the work touches that area. Do not reread the whole project corpus on every resume.
 
