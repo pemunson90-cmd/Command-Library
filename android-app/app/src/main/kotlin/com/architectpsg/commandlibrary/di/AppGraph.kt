@@ -1,0 +1,44 @@
+package com.architectpsg.commandlibrary.di
+
+import android.content.Context
+import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
+import com.architectpsg.commandlibrary.core.model.Outcome
+import com.architectpsg.commandlibrary.data.storage.StorageDatabase
+import com.architectpsg.commandlibrary.feature.catalog.LocalCatalog
+import com.architectpsg.commandlibrary.feature.settings.DataStoreSettingsRepository
+import com.architectpsg.commandlibrary.feature.shell.ShellPorts
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+/**
+ * Process-wide composition root. It creates each real adapter once: one settings repository for
+ * its store file, one catalog over one opened database, and one set of import limits shared by the
+ * catalog importer and the shell so the disclosed limits are the enforced ones.
+ */
+internal class AppGraph(context: Context) {
+    private val appContext = context.applicationContext
+    private val limits = CatalogImportLimits()
+    private val settings = DataStoreSettingsRepository.create(appContext)
+    private val mutex = Mutex()
+    private var ready: ShellPorts? = null
+
+    /** Opens the catalog database on first success and keeps those ports; a failed open is retried on the next call. */
+    suspend fun ports(): Outcome<ShellPorts> = mutex.withLock {
+        ready?.let { return@withLock Outcome.Success(it) }
+        when (val opened = StorageDatabase.open(appContext, DATABASE_FILE)) {
+            is Outcome.Success -> {
+                val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
+                val ports = ShellPorts(catalog, catalog, catalog, settings, limits)
+                ready = ports
+                Outcome.Success(ports)
+            }
+            is Outcome.Failure -> opened
+            is Outcome.Unavailable -> opened
+            is Outcome.Unknown -> opened
+        }
+    }
+
+    internal companion object {
+        const val DATABASE_FILE: String = "command_library.db"
+    }
+}

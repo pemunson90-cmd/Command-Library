@@ -169,15 +169,34 @@ jobs:
         run: |
           python3 - <<'PY'
           import pathlib, xml.etree.ElementTree as ET
-          reports = list(pathlib.Path('android-app').glob('**/build/outputs/androidTest-results/connected/**/TEST-*.xml'))
-          assert reports, 'No executed instrumentation reports'
+          root = pathlib.Path('android-app')
+          # A module must report connected results when it has instrumentation sources, either
+          # src/androidTest or a src/sharedTest directory its build adds to the androidTest source set.
+          required = []
+          for build in sorted(root.glob('**/build.gradle.kts')):
+              module = build.parent
+              if module == root or 'build' in module.relative_to(root).parts:
+                  continue
+              own = any((module / 'src/androidTest').rglob('*.kt'))
+              shared = any((module / 'src/sharedTest').rglob('*.kt')) and 'getByName("androidTest")' in build.read_text()
+              if own or shared:
+                  required.append(module)
+          assert required, 'No module has instrumentation sources'
           total = failures = 0
-          for p in reports:
-              r = ET.parse(p).getroot()
-              total += int(r.get('tests', 0))
-              failures += int(r.get('failures', 0)) + int(r.get('errors', 0))
-          print('Instrumentation reports:', len(reports), 'tests:', total, 'failures+errors:', failures)
-          assert total > 0 and failures == 0
+          for module in required:
+              reports = list(module.glob('build/outputs/androidTest-results/connected/**/TEST-*.xml'))
+              tests = fails = 0
+              for p in reports:
+                  r = ET.parse(p).getroot()
+                  tests += int(r.get('tests', 0))
+                  fails += int(r.get('failures', 0)) + int(r.get('errors', 0))
+              name = ':' + ':'.join(module.relative_to(root).parts)
+              print(f'{name}: reports {len(reports)} tests {tests} failures+errors {fails}')
+              assert reports and tests > 0, f'{name} has instrumentation sources but no executed connected tests'
+              total += tests
+              failures += fails
+          print('Instrumentation total tests:', total, 'failures+errors:', failures)
+          assert failures == 0
           PY
       - name: Retain evidence
         if: always() && steps.gate.outputs.run == 'true'
