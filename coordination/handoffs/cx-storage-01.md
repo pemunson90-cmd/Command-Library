@@ -17,12 +17,13 @@ Capabilities probe the real bundled engine/schema/foreign_keys, read MAX_VARIABL
 
 ## Evidence
 
-- Adapter draft published at f291896; remote branch read-back matched.
+- Adapter draft published at f291896; instrumentation at b556c28 and actual repeated-name SQLite binding test at f96f3332bdcd3f19eef7a9006c3b5c53ac05f186. Remote branch read-back matched f96f333.
 - git diff --check: passed on draft and instrumentation before checkpoint.
 - Placeholder scan: no matches in storage module.
 - Local Gradle/JVM/Android checks: not_run; selected executor only has Java21 runtime, no JDK17/compiler or Android SDK. Prior schema checks remain the original handoff's evidence, not this draft's tests.
 - Pure parser/row-bound/latch tests added, not_run.
-- Android StorageDatabaseTest now has15 tests covering actual bound FTS punctuation/quotes/keywords, injection as data, ignored query failure, missing parameter/manual COMMIT rejection, abort/caught abort, returned three typed statuses/first-status precedence, thrown exception/FK enforcement, caller-token and structured cancellation,101 row bound and copied values, committed reopen/late token, escaped scope/closed guard, newer schema and corrupt bytes, repeated real capabilities. All not_run locally.
+- Android StorageDatabaseTest now has15 tests covering actual bound FTS punctuation/quotes/keywords, injection as data, repeated-name actual SQLite binding order, ignored query failure, missing parameter/manual COMMIT rejection, abort/caught abort, returned three typed statuses/first-status precedence, thrown exception/FK enforcement, caller-token and structured cancellation,101 row bound and copied values, committed reopen/late token, escaped scope/closed guard, newer schema and corrupt bytes, repeated real capabilities. All not_run locally.
+- Root observed hosted run38198689827 for b556c28 running at handoff time. Result unknown; f96f333 latest source acceptance not_run. Root owns collecting hosted diagnostics and final independent review.
 
 ## Next
 
