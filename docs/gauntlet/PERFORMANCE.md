@@ -4,6 +4,8 @@ These numbers are acceptance targets for Pat's Gate 2 ruling, not measurements. 
 
 ## Reference targets and method
 
+D-22 (2026-10-12) supersedes the historical mid-range-device prerequisite below: Pat's Galaxy Z Fold7 is the primary Android acceptance target, backward compatibility is secondary. Budgets remain provisional engineering targets, not measured results. Record actual Fold7 evidence; emulator measurements cannot establish physical-device acceptance.
+
 Android reference class (version 1 profiling target): ARM64, Android14+, 6GB physical RAM, Snapdragon778G-class CPU/storage, 60Hz display; a real device matching this class or slower must be identified in the result. Pat owns a Samsung Galaxy Z Fold7, available for manual physical-foldable evidence (postures, hinge, TalkBack); it is not the mid-range reference. Windows reference (v2, D-19): Windows11 x64, 4-core Intel i5-8250U-class,8GB RAM, SSD,60Hz. ARM64 Windows (v2, D-19) is optional future support until separately packaged/tested, not implied by x64.
 
 Record actual model/OS/CPU/RAM/free disk, thermal/battery/power state, package build SHA, Kotlin/Compose/Room/bundled SQLite versions/config (Windows Flutter engine details are v2 only), corpus checksum/record counts/languages and enabled packs/model. Room/SQLite versions and FTS5 packaging remain candidates until compile/runtime proof. No fabricated machine equivalence. For latency measure at least30 samples, report median/p95/max; startup20 fresh-process samples. Disclose warm versus cold cache and instrumentation. Keep raw CSV/trace in CI artifacts and summarized evidence in milestone report.

@@ -58,6 +58,134 @@ class LocalCatalogInstrumentedTest {
             }, cancel)
     }
 
+    /** Simulates a late exception after real SQLite activation has returned from commit. */
+    private class LateActivationCancelDatabase(private val real: Database) : Database by real {
+        var injected = false
+            private set
+        override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> {
+            var activationWritten = false
+            val result = real.transaction({ original ->
+                action(object : DbTransaction by original {
+                    override suspend fun execute(request: SqlRequest, cancel: CancelToken): Outcome<DbWriteResult> {
+                        val write = original.execute(request, cancel)
+                        if (request.statement.startsWith("INSERT INTO catalog_active") && write is Outcome.Success)
+                            activationWritten = true
+                        return write
+                    }
+                })
+            }, cancel)
+            if (activationWritten && result is Outcome.Success && !injected) {
+                injected = true
+                throw CancellationException("synthetic late return after activation commit")
+            }
+            return result
+        }
+    }
+
+    /** Cancels after a real first printing write, before its batch can commit. */
+    private class MidBatchCancelDatabase(private val real: Database, private val token: TestCancel) : Database by real {
+        var injected = false
+            private set
+        override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> =
+            real.transaction({ original ->
+                action(object : DbTransaction by original {
+                    override suspend fun execute(request: SqlRequest, cancel: CancelToken): Outcome<DbWriteResult> {
+                        val result = original.execute(request, cancel)
+                        if (!injected && request.statement.startsWith("INSERT INTO printing(") && result is Outcome.Success) {
+                            injected = true
+                            token.cancelled = true
+                        }
+                        return result
+                    }
+                })
+            }, cancel)
+    }
+
+    private suspend fun count(db: Database, table: String): Long {
+        val request = SqlRequest("SELECT count(*) AS total FROM $table", SnapshotList.empty(), 1)
+        val row = (db.query(request, TestCancel()) as Outcome.Success).value.single()
+        return (row.columns.single().value as SqlValue.Integer).value
+    }
+
+    @Test fun syntheticDiskIdentityChecksRejectWithinAndAcrossBatchAndPreserveActiveIndex(): Unit = runBlocking {
+        for (batchSize in listOf(1, 128)) {
+            val name = "catalog-${UUID.randomUUID()}.db"
+            val db = open(name)
+            try {
+                val catalog = LocalCatalog(db, TestClock(), TestIds(), CatalogImportLimits(batchSize = batchSize))
+                val active = (catalog.`import`(source(bytes), chunks(bytes), {}, TestCancel()) as Outcome.Success).value.generation.id
+                val original = JSONArray(bytes.toString(Charsets.UTF_8))
+                // Nonadjacent repetition catches disk lookup after an intervening canonical card.
+                val duplicate = JSONArray().put(original.getJSONObject(0)).put(original.getJSONObject(2)).put(original.getJSONObject(0))
+                val duplicateBytes = duplicate.toString().toByteArray(Charsets.UTF_8)
+                val failed = catalog.`import`(source(duplicateBytes), chunks(duplicateBytes), {}, TestCancel()) as Outcome.Failure
+                assertEquals(FailureCode.INVALID_INPUT, failed.error.code)
+                assertEquals("Duplicate printing identity", failed.error.message)
+
+                val conflicting = org.json.JSONObject(original.getJSONObject(0).toString())
+                conflicting.put("id", UUID.randomUUID().toString())
+                conflicting.put("oracle_text", "Synthetic conflicting game text")
+                val conflictBytes = JSONArray().put(original.getJSONObject(0)).put(original.getJSONObject(2)).put(conflicting).toString().toByteArray(Charsets.UTF_8)
+                val conflict = catalog.`import`(source(conflictBytes), chunks(conflictBytes), {}, TestCancel()) as Outcome.Failure
+                assertEquals(FailureCode.INVALID_INPUT, conflict.error.code)
+                assertEquals("Canonical game data conflict", conflict.error.message)
+                assertEquals(active, (catalog.status(TestCancel()) as Outcome.Success).value.activeGenerations.single().id)
+                assertEquals(1, (catalog.lookupName("Lightning", PageRequest(10), TestCancel()) as Outcome.Success).value.items.size)
+                assertEquals(1L, count(db, "catalog_generation"))
+                assertEquals(2L, count(db, "catalog_name_fts"))
+            } finally { db.close(); context.deleteDatabase(name) }
+        }
+    }
+
+    @Test fun syntheticDiskCanonicalEqualityAcceptsPrintingMetadataAndNumericScaleWithOneIndexRow(): Unit = runBlocking {
+        for (batchSize in listOf(1, 128)) {
+            val name = "catalog-${UUID.randomUUID()}.db"
+            val db = open(name)
+            try {
+                val original = JSONArray(bytes.toString(Charsets.UTF_8)).getJSONObject(0)
+                val variant = org.json.JSONObject(original.toString())
+                variant.put("id", UUID.randomUUID().toString())
+                variant.put("set", "syn")
+                variant.put("collector_number", "synthetic")
+                variant.put("cmc", 1.00)
+                variant.put("image_uris", org.json.JSONObject().put("normal", "https://example.invalid/synthetic.jpg"))
+                // Force a distinct decimal spelling; canonical equality compares numeric value.
+                val variantJson = variant.toString().replace(Regex("\"cmc\":1(?:\\.0+)?(?=[,}])"), "\"cmc\":1.00")
+                assertTrue(variantJson.contains("\"cmc\":1.00"))
+                val data = "[$original,$variantJson]".toByteArray(Charsets.UTF_8)
+                val catalog = LocalCatalog(db, TestClock(), TestIds(), CatalogImportLimits(batchSize = batchSize))
+                val imported = catalog.`import`(source(data), chunks(data), {}, TestCancel()) as Outcome.Success
+                assertEquals(1L, imported.value.counts.oracleCards)
+                assertEquals(2L, imported.value.counts.printings)
+                assertEquals(1L, count(db, "catalog_name_fts"))
+                assertEquals(2L, count(db, "printing"))
+                assertEquals(1, (catalog.lookupName("Lightning", PageRequest(10), TestCancel()) as Outcome.Success).value.items.size)
+            } finally { db.close(); context.deleteDatabase(name) }
+        }
+    }
+
+    @Test fun syntheticCancellationInsideRealBatchRollsBackAndPreservesPriorIndex(): Unit = runBlocking {
+        val name = "catalog-${UUID.randomUUID()}.db"
+        val db = open(name)
+        try {
+            val activeCatalog = LocalCatalog(db, TestClock(), TestIds())
+            val active = (activeCatalog.`import`(source(bytes), chunks(bytes), {}, TestCancel()) as Outcome.Success).value.generation.id
+            val token = TestCancel()
+            val wrapped = MidBatchCancelDatabase(db, token)
+            val catalog = LocalCatalog(wrapped, TestClock(), TestIds())
+            try {
+                catalog.`import`(source(bytes), chunks(bytes), {}, token)
+                fail("Expected cancellation inside batch")
+            } catch (_: CancellationException) { }
+            assertTrue(wrapped.injected)
+            assertEquals(active, (catalog.status(TestCancel()) as Outcome.Success).value.activeGenerations.single().id)
+            assertEquals(1L, count(db, "catalog_generation"))
+            assertEquals(3L, count(db, "printing"))
+            assertEquals(2L, count(db, "catalog_name_fts"))
+            assertEquals("Lightning Bolt", (catalog.lookupName("Lightning", PageRequest(10), TestCancel()) as Outcome.Success).value.items.single().name)
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
+
     @Test fun genuineImportLookupAndReopen(): Unit = runBlocking {
         val name = "catalog-${UUID.randomUUID()}.db"
         val data = bytes
@@ -83,6 +211,38 @@ class LocalCatalogInstrumentedTest {
             assertTrue(status.value.initialized)
             assertEquals(3, status.value.activeGenerations.single().counts.printings)
             assertEquals(1, (catalog.lookupName("Delver", PageRequest(10), token) as Outcome.Success).value.items.size)
+        } finally { reopened.close(); context.deleteDatabase(name) }
+    }
+
+    @Test fun syntheticLateCancellationAfterRealActivationCommitPreservesIndexAndReopen(): Unit = runBlocking {
+        val name = "catalog-${UUID.randomUUID()}.db"
+        val real = open(name)
+        val token = TestCancel()
+        var activeId: GenerationId? = null
+        try {
+            val wrapped = LateActivationCancelDatabase(real)
+            val catalog = LocalCatalog(wrapped, TestClock(), TestIds(), CatalogImportLimits(batchSize = 1))
+            try {
+                catalog.`import`(source(bytes), chunks(bytes), {}, token)
+                fail("Expected synthetic late cancellation")
+            } catch (cancelled: CancellationException) {
+                assertEquals("synthetic late return after activation commit", cancelled.message)
+            }
+            assertTrue(wrapped.injected)
+            val fresh = TestCancel()
+            val status = (catalog.status(fresh) as Outcome.Success).value
+            assertTrue(status.initialized)
+            activeId = status.activeGenerations.single().id
+            assertEquals(3, status.activeGenerations.single().counts.printings)
+            assertEquals("Lightning Bolt", (catalog.lookupName("Lightning", PageRequest(10), fresh) as Outcome.Success).value.items.single().name)
+        } finally { real.close() }
+        val reopened = open(name)
+        try {
+            val catalog = LocalCatalog(reopened, TestClock(), TestIds())
+            val status = (catalog.status(TestCancel()) as Outcome.Success).value
+            assertTrue(status.initialized)
+            assertEquals(activeId, status.activeGenerations.single().id)
+            assertEquals("Lightning Bolt", (catalog.lookupName("Lightning", PageRequest(10), TestCancel()) as Outcome.Success).value.items.single().name)
         } finally { reopened.close(); context.deleteDatabase(name) }
     }
 

@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-k3-execute-38. Updated UTC: 2026-10-12T19:50:02Z.
+Checkpoint: cp-20261012-fold7-functional-40. Updated UTC: 2026-10-12T21:16:55Z.
 
-Stage: K3 offline catalog/rules/search requirement and ownership reconciliation. Status: K3 active implementation and verification. Next: orch-kotlin-k3-offline-data-01 step3.
-Resolve expanded-layout gate and integrate reviewed catalog; implement remaining K3 bounded offline repository/search
+Stage: Fold7 functional Android build verification. Status: Functional Fold7 build awaiting Android verification. Next: orch-fold7-functional-01 step1.
+Verify exact final Android matrix and produce working Fold7 APK
 
-Pat requests finish; shell writer isolated, catalog preserved, root resumes implementation orchestration
+Functional Fold7 target controls; all workers complete; genuine parser79tests pass; actual schema export preserved; native verification pending
 
 Read CURRENT, machine state and task card.

@@ -1,5 +1,8 @@
 package com.architectpsg.commandlibrary.feature.shell.ui
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -7,9 +10,12 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import com.architectpsg.commandlibrary.core.model.ThemePreference
 
 /** DESIGN_SYSTEM tokens: canvas, surface, text, secondary, accent, onAccent, error, outline. */
@@ -96,9 +102,31 @@ internal fun ThemePreference.isDark(systemDark: Boolean): Boolean = when (this) 
 @Composable
 internal fun ShellTheme(preference: ThemePreference, content: @Composable () -> Unit) {
     val dark = preference.isDark(isSystemInDarkTheme())
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            view.context.hostActivity()?.let { activity ->
+                WindowCompat.getInsetsController(activity.window, view).apply {
+                    isAppearanceLightStatusBars = !dark
+                    isAppearanceLightNavigationBars = !dark
+                }
+            }
+        }
+    }
     MaterialTheme(
         colorScheme = if (dark) ShellDarkColors else ShellLightColors,
         typography = ShellTypography,
         content = content,
     )
+}
+
+private fun Context.hostActivity(): Activity? {
+    var candidate: Context = this
+    while (candidate is ContextWrapper) {
+        if (candidate is Activity) return candidate
+        val base = candidate.baseContext
+        if (base === candidate) return null
+        candidate = base
+    }
+    return candidate as? Activity
 }

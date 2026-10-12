@@ -74,6 +74,14 @@ jobs:
             sha256sum "$apk"
             "$ANDROID_HOME/build-tools/36.0.0/zipalign" -c -P 16 -v 4 "$apk" | tail -n 1
           done
+      - name: Retain installable APK
+        if: success()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: command-library-fold7-apk-${{ github.sha }}
+          path: android-app/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
       - name: Retain evidence
         if: always()
         # actions/upload-artifact v7.0.2; official release/tag commit observed 2026-10-11.
@@ -84,6 +92,7 @@ jobs:
             android-app/**/build/reports/tests/**
             android-app/**/build/test-results/**
             android-app/app/build/outputs/apk/debug/*.apk
+            android-app/data/storage/schemas/**/*.json
           if-no-files-found: ignore
           retention-days: 14
 
@@ -164,7 +173,7 @@ jobs:
         working-directory: android-app
         run: bash gradlew --no-daemon --console=plain connectedDebugAndroidTest
       - name: Count executed instrumentation tests
-        if: steps.gate.outputs.run == 'true'
+        if: always() && steps.gate.outputs.run == 'true'
         shell: bash
         run: |
           python3 - <<'PY'
@@ -190,6 +199,12 @@ jobs:
                   r = ET.parse(p).getroot()
                   tests += int(r.get('tests', 0))
                   fails += int(r.get('failures', 0)) + int(r.get('errors', 0))
+                  for case in r.iter('testcase'):
+                      for kind in ('failure', 'error'):
+                          issue = case.find(kind)
+                          if issue is not None:
+                              print('FAILED CASE:', case.get('classname'), case.get('name'))
+                              print((issue.get('message', '') + '\n' + (issue.text or ''))[:4000])
               name = ':' + ':'.join(module.relative_to(root).parts)
               print(f'{name}: reports {len(reports)} tests {tests} failures+errors {fails}')
               assert reports and tests > 0, f'{name} has instrumentation sources but no executed connected tests'

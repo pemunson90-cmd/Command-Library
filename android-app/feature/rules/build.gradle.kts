@@ -7,6 +7,7 @@ android {
     compileSdk = 37
     defaultConfig {
         minSdk = 23
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     lint { fatal += "NewApi" }
     compileOptions {
@@ -24,6 +25,10 @@ dependencies {
     api(project(":core:model"))
     implementation(project(":core:common"))
     implementation(libs.coroutines.core)
+    implementation(libs.gson)
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
+    androidTestImplementation(project(":data:storage"))
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
 }

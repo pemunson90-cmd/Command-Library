@@ -3,24 +3,23 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261012-k3-execute-38",
-  "verified_base_head": "3181904fce4d141f2df6e3aa5290d3555a5dac3a",
-  "stage": "K3 offline catalog/rules/search requirement and ownership reconciliation",
-  "status": "K3 active implementation and verification",
-  "next_task": "orch-kotlin-k3-offline-data-01",
-  "next_step": 3,
-  "first_action": "Resolve expanded-layout gate and integrate reviewed catalog; implement remaining K3 bounded offline repository/search",
+  "checkpoint_id": "cp-20261012-fold7-functional-40",
+  "verified_base_head": "e7124b45cde538cbd0bc2f50e9de5413781c3d2a",
+  "stage": "Fold7 functional Android build verification",
+  "status": "Functional Fold7 build awaiting Android verification",
+  "next_task": "orch-fold7-functional-01",
+  "next_step": 1,
+  "first_action": "Verify exact final Android matrix and produce working Fold7 APK",
   "active_tasks": [
-    "orch-kotlin-k3-offline-data-01"
+    "orch-fold7-functional-01"
   ],
   "blockers": [
-    "Catalog01e0c40 quarantined/unmerged: attempt2 reproduces shell expanded-width20s timeout; catalog6 native tests pass. Targeted state/semantics diagnostics required, no blind retry.",
-    "Private rules parser assignment complete and hosted verified; genuine CR byte/grammar/source/production binding remain gated.",
-    "Confirmed systembar icon/in-app-theme mismatch remains queued; shell open leak is fixed and verified.",
-    "Full-corpus budget/snapshot/migration/source contracts remain unbound; private parsers do not constitute K3 acceptance."
+    "Final combined Android native/UI/migration matrix pending; prior app UI failure requires new diagnostics, not a fabricated pass.",
+    "Physical Fold7 installation/runtime not yet available to this executor; user device is primary under D-22.",
+    "Full English printing/rulings/bulk coverage retained for later under D-23; current small catalog import is not a complete dataset."
   ],
-  "worktree_mode": "Git checkout /workspace/Command-Library. External Claude rules parser branch agent/cc-k3-rules-parser-01 is explicitly reserved; no shared/corpus activation writes delegated.",
-  "review_status": "K2 historical acceptance retained. Private K3 rules hardened4971166 independently reviewed and hosted verified/merged unchanged. Catalog cleanuped26b326 source accepted and native regression passes, but candidate remains quarantined due repeated16KiB shell UI gate failure.",
+  "worktree_mode": "Root isolated /workspace/scratch/Command-Library branch agent/cx-k3-execute-01, PR7. All worker branches preserved; no active component writers.",
+  "review_status": "Local rules contracts, migration, disk identity and repository/UI source reviewed; genuine parser Unicode/range defects corrected. Native functional-build acceptance pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -35,8 +34,11 @@
     "kotlin_contracts": "Corrected twenty-component contract inventory remained accepted and compiled; K2 instantiates only its working foundation subset and does not register fake-success future adapters.",
     "k3_shell": "Merged source3ffbb1f unchanged at9d7e0fd; focused38292178104 passed68 tests (14 ImportController),0 failures/errors/skips; continuity38292178108 passed. Main postmerge Android matrix remains separate ongoing continuity verification. Main postmerge full matrix38292576595 passed exactffc5cc0 on all4 lanes.",
     "k3_catalog": "Parser86dc00d focused38291004261 passed. Cleanuped26b326 independent source accepted. Matrix38292134079 JVM/API23/API36 passed;16KiB catalog6 tests passed but shell1/17 failed20s timeout. Exact-SHA failed-lane rerun requested; no code edits. Evidence docs/verification/k3-catalog-cleanup/MATRIX-TRIAGE.md.",
-    "k3_rules": "Reviewed4971166 merged unchanged at8a9b7a502b032ada6561e3765b9cbf9779b2b05d after candidate9f88015 hosted38299615365 passed check/lint/assemble and63 tests0 failures/errors/skips across5 suites. Continuity38299615489 passed. No genuine corpus/production activation claim."
+    "k3_rules": "Reviewed4971166 merged unchanged at8a9b7a502b032ada6561e3765b9cbf9779b2b05d after candidate9f88015 hosted38299615365 passed check/lint/assemble and63 tests0 failures/errors/skips across5 suites. Continuity38299615489 passed. No genuine corpus/production activation claim.",
+    "functional_build": "Previous candidate5c23611 check/assemble passed; native app failure not accepted. Corrected combined candidate is being prepared for exact hosted matrix.",
+    "genuine_rules": "Actual977752byte officialTXT SHA8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca parsed2passes4357entries2072references0unresolved0duplicates0anomalies.79pureJVMtests pass in separate model/common/rules compile. This is not Android/physical evidence.",
+    "rules_schema": "Actual KSP2.json from hosted38307822890 at5c23611: SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentities unchanged; native migration pending."
   },
-  "last_completed": "Pat requests finish; shell writer isolated, catalog preserved, root resumes implementation orchestration",
-  "updated_utc": "2026-10-12T19:50:02Z"
+  "last_completed": "Functional Fold7 target controls; all workers complete; genuine parser79tests pass; actual schema export preserved; native verification pending",
+  "updated_utc": "2026-10-12T21:16:55Z"
 }

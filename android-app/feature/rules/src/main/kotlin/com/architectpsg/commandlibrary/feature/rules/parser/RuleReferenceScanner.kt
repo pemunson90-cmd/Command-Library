@@ -10,7 +10,9 @@ internal class ScannedReference(val raw: String, val identifiers: List<String>)
  * Finds contextual cross-references: `rule`, `rules`, `section` or `sections` followed by one or
  * more targets. Targets are joined by commas, `and`, `or`, or a range (`-`, en dash, em dash,
  * `through`, `to`). A letter range on one rule such as `702.19b-d` or `702.19b-702.19d` expands to
- * every letter. Other ranges keep only their two ends. Bare numbers without a keyword are not
+ * the numbered subrules, skipping intermediate l/o letters. Explicit endpoints remain targets,
+ * including l/o, so malformed explicit references are not silently removed. Other ranges keep
+ * only their two ends. Bare numbers without a keyword are not
  * references.
  */
 internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
@@ -66,13 +68,15 @@ internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
         if (rule == null || first == null || last == null || to.rule != rule || last < first) {
             return ScannedReference(raw, listOf(from.identifier, to.identifier))
         }
-        val count = last - first + 1
+        // CR subrule numbering omits l and o; keep either when the source names it as an endpoint.
+        val identifiers = (first..last).filter { it == first || it == last || (it != 'l' && it != 'o') }.map { "$rule$it" }
+        val count = identifiers.size
         if (count > maxRangeExpansion) {
             throw RulesParseException(
                 RulesParseFailure.LimitExceeded(RulesLimit.RANGE_EXPANSION, maxRangeExpansion.toLong(), count.toLong()),
             )
         }
-        return ScannedReference(raw, (first..last).map { "$rule$it" })
+        return ScannedReference(raw, identifiers)
     }
 
     private fun target(text: String, at: Int, section: Boolean): Target? {
