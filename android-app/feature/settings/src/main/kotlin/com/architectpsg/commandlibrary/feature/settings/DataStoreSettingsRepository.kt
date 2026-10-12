@@ -87,11 +87,14 @@ public class DataStoreSettingsRepository private constructor(
             reject(requireCurrentRevision(expected, current.revision))
             val now = clock.utcNow()
             val working = applyChanges(current, installationId, patch.changes, now)
-            if (working == current) {
+            val result = if (working == current) {
                 current
             } else {
                 working.copy(revision = nextRevision(expected, current.revision), updatedAt = now)
             }
+            // Last chance to abort: past this line DataStore writes the result.
+            cancel.throwIfCancelled()
+            result
         }
         committed.toSnapshot(installationId)
     }
@@ -100,7 +103,7 @@ public class DataStoreSettingsRepository private constructor(
         val installationId = installation.get()
         val committed = store.updateData { current ->
             cancel.throwIfCancelled()
-            if (current.effectiveConsentPermitting(installationId, intent) != null) {
+            val result = if (current.effectiveConsentPermitting(installationId, intent) != null) {
                 current
             } else {
                 val now = clock.utcNow()
@@ -120,6 +123,9 @@ public class DataStoreSettingsRepository private constructor(
                     consents = current.consents + StoredConsent(installationId, record),
                 )
             }
+            // Last chance to abort: past this line DataStore writes the result.
+            cancel.throwIfCancelled()
+            result
         }
         checkNotNull(committed.effectiveConsentPermitting(installationId, intent)) {
             "Committed settings do not contain the approved consent"
@@ -144,20 +150,30 @@ public class DataStoreSettingsRepository private constructor(
             Outcome.Failure(failure(FailureCode.PERSISTENCE, "Settings repository is closed"))
         }
 
-    private fun classify(error: Exception): DomainFailure = when (error) {
-        is SettingsRejection -> error.failure
-        is UnsupportedSettingsStoreVersionException -> DomainFailure(
-            FailureCode.CORRUPT_DATA,
-            "The settings store was written by a newer version of the app (store version " +
-                "${error.foundVersion}, supported ${error.supportedVersion}); it was not modified",
-            SnapshotList.of(Evidence("stored-version=${error.foundVersion} supported-version=${error.supportedVersion}", null, null)),
-        )
-        is CorruptSettingsStoreException -> failure(FailureCode.CORRUPT_DATA, "The settings store is damaged and was not modified")
-        is IOException -> failure(FailureCode.PERSISTENCE, "The settings store could not be read or written")
-        else -> failure(FailureCode.INTERNAL, "Settings operation failed unexpectedly (${error::class.java.simpleName})")
+    private fun classify(error: Exception): DomainFailure {
+        // DataStore may wrap what a serializer or transform threw, so look through the cause chain.
+        val causes = generateSequence<Throwable>(error) { it.cause }.take(MAX_CAUSE_DEPTH).toList()
+        causes.filterIsInstance<SettingsRejection>().firstOrNull()?.let { return it.failure }
+        causes.filterIsInstance<UnsupportedSettingsStoreVersionException>().firstOrNull()?.let { newer ->
+            return DomainFailure(
+                FailureCode.CORRUPT_DATA,
+                "The settings store was written by a newer version of the app (store version " +
+                    "${newer.foundVersion}, supported ${newer.supportedVersion}); it was not modified",
+                SnapshotList.of(Evidence("stored-version=${newer.foundVersion} supported-version=${newer.supportedVersion}", null, null)),
+            )
+        }
+        if (causes.any { it is CorruptSettingsStoreException }) {
+            return failure(FailureCode.CORRUPT_DATA, "The settings store is damaged and was not modified")
+        }
+        if (causes.any { it is IOException }) {
+            return failure(FailureCode.PERSISTENCE, "The settings store could not be read or written")
+        }
+        return failure(FailureCode.INTERNAL, "Settings operation failed unexpectedly (${error::class.java.simpleName})")
     }
 
     public companion object {
+        private const val MAX_CAUSE_DEPTH = 8
+
         /** Path of the store below `Context.filesDir`. Back up or exclude it through the app's backup rules. */
         public const val STORE_PATH_UNDER_FILES_DIR: String = "datastore/command_library_settings.bin"
 
