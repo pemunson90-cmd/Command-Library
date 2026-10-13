@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
  * Signal admission checks cannot cancel subsequent reads: readers check coroutine/token themselves.
  * Rebinding after recreation reruns durable completion/hash validation; installed data does not
  * depend on reopening an expired locator. This does not cover outer importer acknowledgement.
+ * A normal callback result survives late cancellation; its commit/cancellation policy is callback-owned.
  */
 internal class AndroidVerifiedArtifactLocator(context: Context, private val engine: LocalAcquisition) {
     private val application = context.applicationContext
@@ -36,9 +37,7 @@ internal class AndroidVerifiedArtifactLocator(context: Context, private val engi
         val lease = ArtifactLocatorRegistry.register(application.filesDir, info.authority, file, artifact.bytes)
         var primary: Throwable? = null
         try {
-            action(ResourceUri(lease.uri.toString()), artifact, chunks).also {
-                currentCoroutineContext().ensureActive(); cancel.throwIfCancelled()
-            }
+            action(ResourceUri(lease.uri.toString()), artifact, chunks)
         } catch (error: Throwable) { primary = error; throw error }
         finally {
             try { ArtifactLocatorRegistry.close(lease) }
