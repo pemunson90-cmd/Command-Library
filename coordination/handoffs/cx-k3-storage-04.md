@@ -1,0 +1,36 @@
+# cx-k3-storage-04 schema4 handoff
+
+## Latest continuation delta
+
+Branch `agent/cx-k3-storage-04`, worktree `/workspace/scratch/Command-Library-storage-04`, actual starting head `427e70c`. The reservation lock names ancestor `4cddb8c`; task/design reservation `427e70c` was already present when work began. This handoff accompanies the implementation commit; branch history supplies its exact head. Only the nine paths enumerated in `storage-schema4.lock` were edited. No shared registry/version, schema export, configuration, importer, engine, life, other worktree or coordination-state edits.
+
+Implemented the reviewed five provenance columns: catalog `input_kind`, `artifact_job_id`, nullable `source_payload`; rules `input_kind`, `artifact_job_id`, preserving its existing non-null `source_payload`. Both input-kind columns use identical Room/SQL `TEXT NOT NULL DEFAULT 'USER_CONTENT_URI'`. Legacy content URI and payload definitions/bytes remain intact. Artifact IDs are provenance without acquisition foreign keys.
+
+Added `PrintingOracleMembershipEntity` in `PrintingMembershipTables.kt`, table `printing_oracle_membership`, PK `(generation_id,printing_provider,printing_id,source_slot)`, printing CASCADE FK, Oracle NO ACTION FK, and lookup index `index_printing_oracle_membership_lookup` on the six reviewed lookup columns. Slot -1/WHOLE backfill is restricted to complete legacy Oracle triples; all-null triples create no relation. Kind/slot validation, source-payload decoding and bounded after-EOF resolution remain importer obligations, not new SQL constraints.
+
+`Migration3To4` explicitly aborts partial Oracle triples and complete triples whose source-qualified same-generation canonical target is missing, before any DDL. The second preflight matters because Room3's `BaseRoomConnectionManager.configureDatabase` migrates before `onOpen` enables foreign keys: an INSERT alone cannot reject a dangling legacy relation on every migration connection. Actual-code regression probe with `foreign_keys=OFF` first failed (`Dangling target was ignored`), then passed after the explicit target-existence preflight. Both checks use `SELECT ... LIMIT 1`; canonical lookup uses the existing Oracle primary key. No rows are ignored, repaired, guessed or destructively removed. Plain WHOLE backfill runs after the five ALTERs and new table/index inside Room's transaction.
+
+Native fixtures authored in `FullCatalogMigrationTest` (all remain Android `not_run`):
+
+- `actualV3PreservesEveryLegacyColumnAndBackfillsOnlyWholeRelations`: seeds all 16 entities from committed real KSP `3.json` DDL/index/setup/identity; compares every old column value and definition, all unchanged DDL, rules-source UTF-8 bytes including NUL, acquisition rows, FTS, active pointers/defaults; tests complete and printing-only backfill plus reopen/integrity.
+- `everyPartialLegacyOracleTripleAbortsWithoutPublishingSchema4AndCanRetry`: all six partial-null patterns, repeated failed actual opens, exact v3 version/identity/DDL/row preservation, then explicit correction of the synthetic source fixture and successful retry.
+- `interruptedColumnAddsRollBackAndActualOpenRetries`: cancellation injected after two ALTERs, explicit rollback preserves all v3 state, then actual Room open retries. This is a transaction interruption case, not device power-loss evidence.
+- `danglingCompleteLegacyRelationAbortsBeforeForeignKeysAreEnabled`: deliberately seeds a dangling complete relation with FK enforcement off; actual open must fail without new schema/data publication, then corrects only the synthetic fixture and retries.
+- `lateRepeatedFaceTargetsKeepSourceOrdinalsAndSourceQualifiedForeignKeys`: printing arrives before targets; missing target rejects insertion, later targets permit repeated FACE slots0/1 and original slot7 independent of canonical face index0; DISTINCT printing lookup, source provider/language/generation/printing FK checks, duplicate slot rejection, exact FK/index shape, Oracle deletion restriction, printing cascades, and installed catalog/rules/pointers/memberships surviving job/artifact deletion.
+
+Existing rules/native tests now assert 1→2→3→4 and whole backfill. Acquisition tests retain all old column/payload/FK/checkpoint/CAS/recovery assertions; their DDL comparison removes only the exact five intentional additions before comparing old SQL, excluding only new membership DDL. Generic storage latest-version assertions now expect4 and newer-file refusal uses5.
+
+Verification actually run:
+
+- `git diff --check`: pass.
+- `python3 /tmp/k3-storage-compile/compile.py` from this worktree: direct Kotlin2.2.10 `K2JVMCompiler`, JVM target17, all32 core/model + core/common + storage main + storage androidTest sources compile with exit0/no diagnostics. Real Room3 runtime/common3.0.3, SQLite/bundled2.7.1, Android API/test, coroutine/JUnit/org.json artifacts; no platform stubs or generated implementation. This is static compatibility, not Gradle/KSP/native evidence.
+- `python3 /tmp/k3-storage-04-jvm/run.py`: exit0. Compiles and executes the actual `Migration1To2`, `Migration2To3`, `Migration3To4` source with real bundled SQLite JVM2.7.1. Covers all16 real-schema3 synthetic rows/old definitions/unchanged DDL/defaults/FTS; complete/all-null backfill; every partial mask abort/rollback/retry; dangling canonical target with FK enforcement off; interrupted ALTER rollback/retry; late/repeated qualified targets; DISTINCT/index query plan; PK/FK/cascade rejection; installed data surviving acquisition deletion; real 1→2→3→4 SQL chain. This does not run Android, `StorageDatabase.open`, Room validation or KSP.
+- Supplemental private Python/SQLite checks: expected baseline red for missing provenance/membership on schema3, then pass for exact new entity column/PK shapes, five column types/nullability/defaults and Room annotations, and preservation of the older acquisition fixture's DDL assertion after removing only approved additions. Initial private JVM fixture harness needed optional Gson `notNull` handling (KSP omits false); corrected harness only, native fixture already uses `optBoolean`.
+- `not_run`: Android Gradle build/test tasks, actual KSP4 export, connected instrumentation, device/physical crash durability. No local Android SDK. Private probe scripts/logs/artifacts are under `/tmp/k3-storage-04-jvm` and `/tmp/k3-storage-compile`; they are supplemental, not durable acceptance exports.
+
+Exact root next action:
+
+1. Register `PrintingOracleMembershipEntity::class` in `StorageSchemaDatabase.kt`; set `StorageSchema.VERSION=4`.
+2. Import `Migration3To4` in `StorageDatabase.kt`; register `.addMigrations(Migration1To2, Migration2To3, Migration3To4)` without destructive fallback.
+3. Generate and commit actual KSP `schemas/...StorageSchemaDatabase/4.json` (17 entities), confirming only the five approved legacy columns plus membership entity/index/FKs changed; never invent its identity/export.
+4. Run storage instrumentation on hosted API23/API36/API36-16KiB and independently review migration/durability evidence. Root importer/codec work must enforce input-origin/job metadata, kind/slot consistency and same-generation after-EOF membership resolution before activation; these storage primitives do not establish full-import/K3/full-app acceptance.
