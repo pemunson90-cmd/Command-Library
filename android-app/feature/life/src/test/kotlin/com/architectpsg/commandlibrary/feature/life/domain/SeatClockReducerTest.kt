@@ -24,6 +24,7 @@ import com.architectpsg.commandlibrary.feature.life.domain.LifeFixtures.seatB
 import com.architectpsg.commandlibrary.feature.life.domain.LifeFixtures.seatC
 import com.architectpsg.commandlibrary.feature.life.domain.SeatClockReducer.zeroAlertId
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import org.junit.Assert.assertEquals
@@ -148,7 +149,7 @@ class SeatClockReducerTest {
     @Test fun alertPolicyFiresOncePerTransitionAndKeepsCountingOvertime() {
         val crossed = SeatClockReducer.settle(clockGame(aRemaining = 10.seconds), reading(115)).success()
         assertEquals((-5).seconds, crossed.snapshot.remaining(seatA))
-        val alert = ClockAlert(zeroAlertId(seatA, 1), gameId, seatA, UtcTimestamp(50_115), null)
+        val alert = ClockAlert(zeroAlertId(seatA, 1, 1), gameId, seatA, UtcTimestamp(50_115), null)
         assertEquals(listOf(alert), crossed.alerts)
         assertEquals(listOf(alert.id), crossed.snapshot.clock.firedAlertIds)
         assertFalse(crossed.snapshot.clock.paused)
@@ -192,7 +193,7 @@ class SeatClockReducerTest {
         assertEquals(3L, toA.turnNumber)
         val late = SeatClockReducer.settle(toA, reading(200)).success()
         assertEquals((-10).seconds, late.snapshot.remaining(seatA))
-        assertEquals(listOf(zeroAlertId(seatA, 1), zeroAlertId(seatA, 3)), late.snapshot.clock.firedAlertIds)
+        assertEquals(listOf(zeroAlertId(seatA, 1, 1), zeroAlertId(seatA, 3, 1)), late.snapshot.clock.firedAlertIds)
     }
 
     @Test fun oneSeatPerTurnGameAdvancesItsOwnTurn() {
@@ -238,6 +239,7 @@ class SeatClockReducerTest {
         val keepUndone = SeatClockReducer.undo(keep, keepPaused, reading(190)).success().snapshot
         assertFalse(keepUndone.clock.paused)
         assertEquals(9.minutes + 30.seconds, keepUndone.remaining(seatA))
+        assertEquals(9.minutes + 20.seconds, SeatClockReducer.settle(keepUndone, reading(200)).success().snapshot.remaining(seatA))
         val restore = clockGame(undo = ClockUndoPolicy.RESTORE_TIME)
         val restorePaused = SeatClockReducer.setPaused(restore, true, reading(130)).success().snapshot
         val restoreUndone = SeatClockReducer.undo(restore, restorePaused, reading(190)).success().snapshot
@@ -245,21 +247,147 @@ class SeatClockReducerTest {
         assertEquals(8.minutes + 30.seconds, restoreUndone.remaining(seatA))
     }
 
-    @Test fun restoredTimeCannotRefireAnAlertForTheSameTransition() {
+    @Test fun redoneTurnFiresAFreshAlertWhileTheUndoItselfFiresNothing() {
         val before = clockGame(aRemaining = 20.seconds, bRemaining = 5.seconds, undo = ClockUndoPolicy.RESTORE_TIME)
         val switched = SeatClockReducer.switchTurn(before, seatB, reading(105)).success().snapshot
         val crossed = SeatClockReducer.settle(switched, reading(115)).success()
-        assertEquals(listOf(zeroAlertId(seatB, 2)), crossed.alerts.map { it.id })
+        assertEquals(listOf(zeroAlertId(seatB, 2, 1)), crossed.alerts.map { it.id })
         val undone = SeatClockReducer.undo(before, crossed.snapshot, reading(116)).success()
         assertTrue(undone.alerts.isEmpty())
         assertEquals(4.seconds, undone.snapshot.remaining(seatA))
         assertEquals(5.seconds, undone.snapshot.remaining(seatB))
-        assertEquals(listOf(zeroAlertId(seatB, 2)), undone.snapshot.clock.firedAlertIds)
+        assertEquals(listOf(zeroAlertId(seatB, 2, 1)), undone.snapshot.clock.firedAlertIds)
         val again = SeatClockReducer.switchTurn(undone.snapshot, seatB, reading(117)).success().snapshot
         val recrossed = SeatClockReducer.settle(again, reading(125)).success()
         assertEquals((-3).seconds, recrossed.snapshot.remaining(seatB))
-        assertTrue(recrossed.alerts.isEmpty())
-        assertEquals(listOf(zeroAlertId(seatB, 2)), recrossed.snapshot.clock.firedAlertIds)
+        assertEquals(listOf(zeroAlertId(seatB, 2, 2)), recrossed.alerts.map { it.id })
+        assertEquals(listOf(zeroAlertId(seatB, 2, 1), zeroAlertId(seatB, 2, 2)), recrossed.snapshot.clock.firedAlertIds)
+    }
+
+    @Test fun redoneTurnTimeoutIsReportedAgainUnderEliminate() {
+        val before = clockGame(aRemaining = 20.seconds, bRemaining = 5.seconds, zero = ClockZeroPolicy.ELIMINATE, undo = ClockUndoPolicy.RESTORE_TIME)
+        val crossed = SeatClockReducer.settle(SeatClockReducer.switchTurn(before, seatB, reading(105)).success().snapshot, reading(115)).success()
+        assertEquals(listOf(seatB), crossed.timedOutSeats)
+        val undone = SeatClockReducer.undo(before, crossed.snapshot, reading(116)).success()
+        assertTrue(undone.timedOutSeats.isEmpty())
+        val again = SeatClockReducer.switchTurn(undone.snapshot, seatB, reading(117)).success().snapshot
+        val recrossed = SeatClockReducer.settle(again, reading(125)).success()
+        assertEquals(listOf(seatB), recrossed.timedOutSeats)
+        assertEquals(Duration.ZERO, recrossed.snapshot.remaining(seatB))
+        assertTrue(recrossed.snapshot.clock.paused)
+    }
+
+    @Test fun undoReplayOfAnAlreadyFiredTransitionFiresAndReportsNothing() {
+        val alerting = clockGame(aRemaining = 10.seconds, undo = ClockUndoPolicy.RESTORE_TIME)
+        val crossedAtSwitch = SeatClockReducer.switchTurn(alerting, seatB, reading(115)).success()
+        assertEquals(listOf(zeroAlertId(seatA, 1, 1)), crossedAtSwitch.alerts.map { it.id })
+        assertEquals((-5).seconds, crossedAtSwitch.snapshot.remaining(seatA))
+        val replayed = SeatClockReducer.undo(alerting, crossedAtSwitch.snapshot, reading(120)).success()
+        assertTrue(replayed.alerts.isEmpty())
+        assertEquals((-10).seconds, replayed.snapshot.remaining(seatA))
+        assertEquals(listOf(zeroAlertId(seatA, 1, 1)), replayed.snapshot.clock.firedAlertIds)
+        val eliminating = clockGame(aRemaining = 10.seconds, zero = ClockZeroPolicy.ELIMINATE, undo = ClockUndoPolicy.RESTORE_TIME)
+        val timedOut = SeatClockReducer.switchTurn(eliminating, seatB, reading(115)).success()
+        assertEquals(listOf(seatA), timedOut.timedOutSeats)
+        val replayedTimeout = SeatClockReducer.undo(eliminating, timedOut.snapshot, reading(120)).success()
+        assertTrue(replayedTimeout.timedOutSeats.isEmpty())
+        assertTrue(replayedTimeout.alerts.isEmpty())
+    }
+
+    @Test fun restoredTimelineThatNewlyCrossesZeroFiresAndReports() {
+        val before = clockGame(aRemaining = 10.seconds, zero = ClockZeroPolicy.ELIMINATE, undo = ClockUndoPolicy.RESTORE_TIME)
+        val paused = SeatClockReducer.setPaused(before, true, reading(105)).success()
+        assertTrue(paused.alerts.isEmpty())
+        val undone = SeatClockReducer.undo(before, paused.snapshot, reading(120)).success()
+        assertEquals(listOf(zeroAlertId(seatA, 1, 1)), undone.alerts.map { it.id })
+        assertEquals(listOf(seatA), undone.timedOutSeats)
+        assertEquals(Duration.ZERO, undone.snapshot.remaining(seatA))
+        assertTrue(undone.snapshot.clock.paused)
+    }
+
+    @Test fun aSeatAlreadyAtZeroNeitherRefiresNorRunsBelowZeroUnderClampingPolicies() {
+        val toB = SeatClockReducer.switchTurn(clockGame(aRemaining = 10.seconds), seatB, reading(110)).success()
+        assertEquals(Duration.ZERO, toB.snapshot.remaining(seatA))
+        assertEquals(listOf(zeroAlertId(seatA, 1, 1)), toB.alerts.map { it.id })
+        val toA = SeatClockReducer.switchTurn(toB.snapshot, seatA, reading(120)).success().snapshot
+        val overtime = SeatClockReducer.settle(toA, reading(125)).success()
+        assertTrue(overtime.alerts.isEmpty())
+        assertEquals((-5).seconds, overtime.snapshot.remaining(seatA))
+        for (policy in listOf(ClockZeroPolicy.PAUSE, ClockZeroPolicy.ELIMINATE)) {
+            val stopped = SeatClockReducer.settle(clockGame(aRemaining = 10.seconds, zero = policy), reading(115)).success().snapshot
+            val resumed = SeatClockReducer.setPaused(stopped, false, reading(120)).success().snapshot
+            assertEquals(Duration.ZERO, SeatClockReducer.observe(resumed, reading(130)).success().seats.first().remaining)
+            val held = SeatClockReducer.settle(resumed, reading(150)).success()
+            assertEquals(Duration.ZERO, held.snapshot.remaining(seatA))
+            assertTrue(held.snapshot.clock.paused)
+            assertTrue(held.alerts.isEmpty())
+            assertTrue(held.timedOutSeats.isEmpty())
+        }
+    }
+
+    @Test fun zeroCrossingInsideASwitchUsesTheOutgoingTurn() {
+        val switched = SeatClockReducer.switchTurn(clockGame(aRemaining = 10.seconds), seatB, reading(115)).success()
+        assertEquals(listOf(zeroAlertId(seatA, 1, 1)), switched.alerts.map { it.id })
+        assertEquals((-5).seconds, switched.snapshot.remaining(seatA))
+        assertEquals(2L, switched.snapshot.turnNumber)
+    }
+
+    @Test fun restoreTimeUndoAfterARestartKeepsDurableChargeAndStaysPaused() {
+        val before = clockGame(undo = ClockUndoPolicy.RESTORE_TIME)
+        val current = SeatClockReducer.switchTurn(before, seatB, reading(130)).success().snapshot
+        val recovered = SeatClockReducer.recoverAfterRestart(current, reading(5, process2)).success().snapshot
+        val undone = SeatClockReducer.undo(before, recovered, reading(10, process2)).success().snapshot
+        assertEquals(1L, undone.turnNumber)
+        assertEquals(seatA, undone.clock.activeSeat)
+        assertTrue(undone.clock.paused)
+        assertEquals(ClockAnchor(UtcTimestamp(50_010), 10.seconds, process2), undone.clock.anchor)
+        assertEquals(9.minutes + 30.seconds, undone.remaining(seatA))
+        assertEquals(10.minutes, undone.remaining(seatB))
+    }
+
+    @Test fun keepElapsedUndoAfterARestartKeepsTheRecoveryPause() {
+        val before = clockGame(undo = ClockUndoPolicy.KEEP_ELAPSED)
+        val current = SeatClockReducer.switchTurn(before, seatB, reading(130)).success().snapshot
+        val recovered = SeatClockReducer.recoverAfterRestart(current, reading(5, process2)).success().snapshot
+        val undone = SeatClockReducer.undo(before, recovered, reading(10, process2)).success().snapshot
+        assertTrue(undone.clock.paused)
+        assertEquals(seatA, undone.clock.activeSeat)
+        assertEquals(9.minutes + 30.seconds, SeatClockReducer.settle(undone, reading(70, process2)).success().snapshot.remaining(seatA))
+    }
+
+    @Test fun perTurnKeepElapsedUndoRevertsTheRefill() {
+        val solo = LifeFixtures.snapshot(
+            seats = SnapshotList.of(LifeFixtures.seat(seatA, 0)),
+            clock = SeatClockState(SeatClockMode.PER_TURN, SnapshotList.of(SeatTime(seatA, 30.seconds, 10.seconds)), seatA, ClockAnchor(UtcTimestamp(1), 100.seconds, process1), false, ClockZeroPolicy.ALERT, ClockUndoPolicy.KEEP_ELAPSED, SnapshotList.empty()),
+            activeSeatId = seatA,
+            turnNumber = 1,
+        )
+        val next = SeatClockReducer.switchTurn(solo, seatA, reading(100)).success().snapshot
+        assertEquals(30.seconds, next.remaining(seatA))
+        val undone = SeatClockReducer.undo(solo, next, reading(101)).success().snapshot
+        assertEquals(1L, undone.turnNumber)
+        assertEquals(9.seconds, undone.remaining(seatA))
+    }
+
+    @Test fun nonFiniteReadingsAreRejectedBeforeAnyChange() {
+        val infinite = ClockReading(Duration.INFINITE, UtcTimestamp(1), process1)
+        val paused = clockGame(paused = true)
+        SeatClockReducer.setPaused(paused, false, infinite).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.switchTurn(paused, seatB, infinite).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.recoverAfterRestart(clockGame(), ClockReading(Duration.INFINITE, UtcTimestamp(1), process2)).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.observe(paused, infinite).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.settle(LifeFixtures.snapshot(), infinite).failure(FailureCode.INVALID_INPUT)
+        val keep = clockGame(undo = ClockUndoPolicy.KEEP_ELAPSED)
+        val keepPaused = SeatClockReducer.setPaused(keep, true, reading(130)).success().snapshot
+        SeatClockReducer.undo(keep, keepPaused, infinite).failure(FailureCode.INVALID_INPUT)
+    }
+
+    @Test fun observeRejectsArithmeticThatSettleWouldReject() {
+        val huge = (100L * 365 * 1_000_000).days
+        val game = clockGame(aRemaining = -huge)
+        val reading = ClockReading(huge + 100.seconds, UtcTimestamp(1), process1)
+        SeatClockReducer.settle(game, reading).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.observe(game, reading).failure(FailureCode.INVALID_INPUT)
     }
 
     @Test fun undoRejectsMismatchedSnapshots() {
@@ -268,6 +396,11 @@ class SeatClockReducerTest {
         SeatClockReducer.undo(before.copy(id = GameId(LifeFixtures.provider, "game-2")), current, reading(140)).failure(FailureCode.INVALID_INPUT)
         val perTurn = clockGame(mode = SeatClockMode.PER_TURN)
         SeatClockReducer.undo(perTurn, current, reading(140)).failure(FailureCode.INVALID_INPUT)
+        val threeSeats = current.copy(
+            seats = SnapshotList.copyOf(current.seats + LifeFixtures.seat(seatC, 2)),
+            clock = current.clock.copy(seats = SnapshotList.copyOf(current.clock.seats + SeatTime(seatC, 10.minutes, 10.minutes))),
+        )
+        SeatClockReducer.undo(before, threeSeats, reading(140)).failure(FailureCode.INVALID_INPUT)
     }
 
     @Test fun observeIsReadOnlyAndReportsPendingZero() {
@@ -282,6 +415,10 @@ class SeatClockReducerTest {
         assertNull(pending.untilZero)
         assertTrue(input.clock.firedAlertIds.isEmpty())
         assertEquals((-10).seconds, SeatClockReducer.observe(input, reading(140)).success().seats.first().remaining)
+        val settledOvertime = SeatClockReducer.settle(clockGame(aRemaining = 10.seconds), reading(115)).success().snapshot
+        val afterSettle = SeatClockReducer.observe(settledOvertime, reading(120)).success()
+        assertFalse(afterSettle.zeroPending)
+        assertEquals((-10).seconds, afterSettle.seats.first().remaining)
     }
 
     @Test fun noClockModeTracksTurnsOnly() {
@@ -311,12 +448,16 @@ class SeatClockReducerTest {
         SeatClockReducer.settle(good.copy(clock = good.clock.copy(anchor = null)), reading(110)).failure(FailureCode.CORRUPT_DATA)
         SeatClockReducer.settle(good.copy(clock = good.clock.copy(activeSeat = null)), reading(110)).failure(FailureCode.CORRUPT_DATA)
         SeatClockReducer.settle(good.copy(clock = good.clock.copy(activeSeat = seatC)), reading(110)).failure(FailureCode.CORRUPT_DATA)
+        SeatClockReducer.settle(good.copy(clock = good.clock.copy(anchor = ClockAnchor(UtcTimestamp(1), Duration.INFINITE, process1))), reading(110)).failure(FailureCode.CORRUPT_DATA)
+        SeatClockReducer.settle(good.copy(status = GameStatus.COMPLETED), reading(110)).failure(FailureCode.CORRUPT_DATA)
+        val pausedDone = clockGame(paused = true).copy(status = GameStatus.COMPLETED)
+        assertEquals(pausedDone, SeatClockReducer.settle(pausedDone, reading(110)).success().snapshot)
     }
 
     @Test fun completedGamesUnknownSeatsAndExhaustedTurnsAreRejected() {
-        val done = clockGame().copy(status = GameStatus.COMPLETED)
+        val done = clockGame(paused = true).copy(status = GameStatus.COMPLETED)
         SeatClockReducer.switchTurn(done, seatB, reading(110)).failure(FailureCode.INVALID_INPUT)
-        SeatClockReducer.setPaused(done, true, reading(110)).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.setPaused(done, false, reading(110)).failure(FailureCode.INVALID_INPUT)
         SeatClockReducer.switchTurn(clockGame(), seatC, reading(110)).failure(FailureCode.INVALID_INPUT)
         SeatClockReducer.switchTurn(clockGame().copy(turnNumber = Long.MAX_VALUE), seatB, reading(110)).failure(FailureCode.INVALID_INPUT)
         SeatClockReducer.reduce(clockGame(), GameAction.RenameSeat(seatA, "Renamed"), reading(110)).failure(FailureCode.INVALID_INPUT)

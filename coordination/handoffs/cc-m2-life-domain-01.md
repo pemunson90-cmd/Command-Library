@@ -12,7 +12,7 @@ Worker handoff for `coordination/tasks/cc-m2-life-domain-01.md`. Branch `agent/c
 | 3 | Random tools + tests | done: `RandomTools.kt`, `RandomToolsTest.kt` (12 tests) |
 | 4a | Independent adversarial review of 1-3 | done: 8-agent review (3 readers, 1 mutation tester, 4 probe-test verifiers); 36 findings, 28 confirmed, 8 refuted |
 | 4b | Fix confirmed counter and random findings + tests | done: nested groups rejected, implicit states in loss assessment, randomize checks status before drawing; 5 counter tests added, randomizer test strengthened |
-| 4c | Fix confirmed clock findings + tests | pending |
+| 4c | Fix confirmed clock findings + tests | done: readings validated at every entry, clamp whenever the policy clamps, unique alert occurrence IDs with timeouts on every real crossing, RESTORE_TIME undo across restart from durable balances, recovery pause kept by KEEP_ELAPSED undo, PER_TURN refill reverted, completed-running and non-finite anchors are corrupt, `observe` rejects non-finite time; 10 clock tests added, 4 extended |
 | 4d | Correct handoff statements, final checks | pending |
 
 Each section is committed and pushed with this file updated before the next starts.
@@ -50,6 +50,8 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 - Section 2: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 42 tests (`CounterReducerTest` 20, `SeatClockReducerTest` 22), 0 failures/errors/skips.
 - Section 3: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 54 tests (`CounterReducerTest` 20, `SeatClockReducerTest` 22, `RandomToolsTest` 12), 0 failures/errors/skips.
 - Section 4b: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 59 tests (`CounterReducerTest` 25, `SeatClockReducerTest` 22, `RandomToolsTest` 12), 0 failures/errors/skips.
+- Section 4b fix check: reverting each 4b fix one at a time (nested-group rejection, implicit loss keys, randomize status-first, hide of recorded own slot) makes `:feature:life:test` fail every time; source restored from git after each.
+- Section 4c: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 69 tests (`CounterReducerTest` 25, `SeatClockReducerTest` 32, `RandomToolsTest` 12), 0 failures/errors/skips.
 
 ## Contract requests for Codex
 
@@ -67,4 +69,4 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 
 ## Latest continuation delta
 
-Section 4b complete on `origin/agent/cc-m2-life-domain-01` (parent of this commit: `7a37750`): counter C1/C3/T1-T3 and random R1 fixed and tested, local check green as recorded above. Next action: 4c, fix clock C1-C7, C9, C10 and add the C12/M10/M25-M28 tests, run the task's Gradle command, commit, push, update this file; then 4d handoff corrections.
+Section 4c complete on `origin/agent/cc-m2-life-domain-01` (parent of this commit: `f16e742`): clock findings fixed and tested, local check green as recorded above. Next action: 4d, revert-check the clock fixes against the new tests, correct the handoff design text (commander damage scope, RESTORE_TIME wording, alert IDs, provenance `354c1a0`, `LifeFixtures.kt`), add the G03 own-slot contract note, rerun the task's Gradle command, commit, push, and finish with the final summary.
