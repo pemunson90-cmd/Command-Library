@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "verified_utc": "2026-10-13",
-  "status": "candidate_recommendation; independent review and hosted graph/runtime checks pending",
+  "status": "test-only candidates; original hosted graphics probes failed2/4; native graphics harness candidate awaiting hosted rerun and independent review",
   "scope": "Task1 D26v1.1; image/CSV compatibility only; no production source, DI, model or runtime-engine changes",
   "toolchain": {
     "compiler": "Kotlin K2 2.2.10",
@@ -187,7 +187,7 @@
         "minAndroidGradlePluginVersion": "1.0.0",
         "coreLibraryDesugaringEnabled": false
       },
-      "test_result": "complete owned source K2 compile exit0; actual plain JVM DiskCache JUnit1/1; 4 Android runtime tests not_run",
+      "test_result": "original source K2 compile0; plain JVM cache1/1. Hosted c540a3a Android runtime2/4 (decode assertions failed); revised native graphics source compiles, runtime not_run.",
       "network_policy": "No network module requested; serviceLoaderEnabled(false) on every probe loader prevents ambient service fetchers. No app consent transport exists in these probes. A future fetcher requires separately guarded app transport."
     }
   ],
@@ -244,8 +244,8 @@
     "fixture": "1x1 RGBA PNG generated with Python struct/zlib; valid IHDR/IDAT/IEND CRCs; no image model/tool involved"
   },
   "not_run": [
+    "Revised @GraphicsMode(NATIVE) Android runtime probe rerun; original hosted run38341796969 executed4 with2 assertion failures",
     "Gradle variant/dependency resolution and full module/app build against AGP9.4.1",
-    "Android/Robolectric local decode, malformed decode, no-HTTPS fetcher and request cancellation runtime tests (4)",
     "Compose rendering/instrumentation/device/fold tests",
     "Complete resolved-transitive native packaging/16KiB scan",
     "Room3.0.3/SQLite2.7.1/DataStore1.2.1 coexistence graph/build checks"
@@ -282,5 +282,41 @@
     ],
     "gate": "Keep compiler/stdlib2.2.10 and accepted graph pins. Inspect resolved Android/Compose/coroutines/okio graph; no hidden downgrade or upgrade. Run4 real Android runtime tests before production dependency acceptance. Room/SQLite/DataStore pins untouched; neither candidate declares these dependencies. Preserve source license/NOTICE obligations; artwork rights remain separate.",
     "integration_commit": "2235e5e30c27e3a2320801117024759874180ad0 (root-owned; cherry-picked990975f)"
+  },
+  "hosted_runtime_followup": {
+    "original_source_sha": "c540a3a18e76e9930711313d55a8c14e6492b183",
+    "run_url": "https://github.com/pemunson90-cmd/Command-Library/actions/runs/38341796969",
+    "jvm_job": "115114220595",
+    "xml_sha256": "92bd7f23c594175151e44ceee5d5f2be9fcae4edd7c16898f55393bed49d6c06",
+    "original_result": {
+      "tests": 4,
+      "failures": 2,
+      "skipped": 0,
+      "passed": [
+        "cancellingSuspendedLocalRequestPropagatesWithoutSuccess",
+        "externalHttpsHasNoFetcherWhenServiceLoadingIsDisabled"
+      ],
+      "failed": [
+        "localPngDecodesWithoutNetworkComponents: assert SuccessResult line78",
+        "malformedLocalImageReturnsError: assert ErrorResult line94"
+      ],
+      "diagnostic_limit": "Original assertions omitted actual ImageResult and ErrorResult cause; XML cannot establish original PNG failure cause. No library rejection or production acceptance inferred."
+    },
+    "investigation": {
+      "coil_source": "Published coil-core-android3.3.0 source jar: addAndroidComponents selects StaticImageDecoder whenSDK>=29; addJvmComponents includes FileMapper regardless of service loader setting. Disabling service discovery does not disable these bundled defaults.",
+      "robolectric_source_jar": "https://repo.maven.apache.org/maven2/org/robolectric/shadows-framework/4.17/shadows-framework-4.17-sources.jar",
+      "robolectric_source_sha256": "87a6d266e0c1989ef05e6befb88894f8d4860d7345e564b488deee98d5b68d12",
+      "robolectric_runner_sources_sha256": "a105187a27bbc85c67decc24e18f25246e6689bfa9768a00aaba866d5640f0e0",
+      "source_facts": [
+        "GraphicsModeConfigurer defaults to Mode.LEGACY; shell properties specify SDK only, original class had no graphics mode annotation.",
+        "Legacy ShadowImageDecoder ImgStream uses10x10/image-unknown when ImageUtil image info is null. ShadowBitmapFactory defaults allowInvalidImageData=true. This can return dummy success for malformed bytes.",
+        "Legacy ShadowImageDecoder ImageDecoder_nCreateFd throws UnsupportedOperationException and its annotated file descriptor overloads are limited toSDK30; SDK35 modern native binding path is not equivalent to actual native codecs.",
+        "GraphicsShadowPicker selects ShadowNativeImageDecoder for Mode.NATIVE; native implementation invokes real native ImageDecoderNatives / ImageDecoderReflector."
+      ],
+      "hypothesis": "Original opposite decode assertions arise from legacy graphics emulation rather than library/API incompatibility. Original PNG ErrorResult cause unknown. Native harness must prove valid-success/malformed-error outcomes on hosted run before confirming fix."
+    },
+    "candidate_change": "Class-local @GraphicsMode(NATIVE) and bounded actual result/error cause diagnostics only. Success/error/dimension/no-fetcher/cancellation assertions retained. Shared config/dependency graph unchanged.",
+    "candidate_local_checks": "K2 compile0, plain JVM cache1/1; four revised Android runtime cases not_run locally.",
+    "hosted_next": "Root review, run exact published candidate once using existing hosted pipeline, inspect result/cause stdout and all four runtime assertions. If decode still fails, investigate actual cause rather than weaken assertions."
   }
 }
