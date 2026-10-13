@@ -33,13 +33,16 @@ jobs:
           yes | "$SDKM" --licenses > /dev/null || true
           "$SDKM" --install "$SDK_PLATFORM" "$SDK_BUILD_TOOLS" > /dev/null
           ls "$ANDROID_HOME/platforms"
+      - name: Compile Android test APKs before execution
+        shell: bash
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain assembleDebugAndroidTest
       - name: JVM tests, debug APK assembly
         shell: bash
         working-directory: android-app
         run: |
           set -euo pipefail
           java -version
-          bash gradlew --no-daemon --console=plain projects
           bash gradlew --no-daemon --console=plain check
           if [ -f app/build.gradle.kts ]; then
             bash gradlew --no-daemon --console=plain :app:assembleDebug
@@ -97,6 +100,8 @@ jobs:
           retention-days: 14
 
   emulator:
+    # Syntax/API failures stop here before provisioning three emulator machines.
+    needs: jvm-and-assemble
     if: github.repository == 'pemunson90-cmd/Command-Library'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
