@@ -53,7 +53,7 @@ Names are retained from each `ARCHITECT.md` public sketch plus the shared type i
 | brackets | `BracketService` | `BracketData`, `BracketAssessment`, `BracketTarget`, `IntentAnswers`, `ChangeConstraints`, `DeckSnapshot` |
 | recommendations | `RecommendationEngine` | `RecommendationRequest`, `RecommendationPage`, `RecommendationContext`, `CardChange`, `UpgradePlan` |
 | transfer | `TransferService` | `TransferInput`, `ImportProfile`, `ImportRow`, `ImportPreview`, `ExportRequest`, `ByteArtifact`, `RestorePreview`, versioned interchange records |
-| life | `GameService` | `GameId`, `GameSnapshot`, `GameAction`, `VariantDefinition`, `VariantCard`, `VariantState`, `Revision` |
+| life | `GameService`, `PersistedGameService`, `PlayerProfileRepository` | `GameId`, `GameSnapshot`, `GameAction`, `VariantDefinition`, `VariantCard`, `VariantState`, `Revision` |
 | inference | `LocalInference` | `ModelSelection`, `ModelSession`, `RuntimeProfile`, `GenerationRequest`, `TokenChunk` |
 | ai | `DeckLab` | `DeckContext`, `LabMode`, `LabRequest`, `LabEvent`, `PromptTemplate`, `PromptArtifact`, `ProviderProfile`, `ModelPage`, `ValidatedReply` |
 | links | `CardLinks` | `ResolvedLink`, `LinkPreferences`, `LinkTokenValues`, `CardRecord`, `PrintingRecord` |
@@ -74,3 +74,9 @@ K2 acceptance requires hosted Kotlin compile/API smoke evidence for all twenty p
 `AcquisitionContracts.kt` declares the separately reviewed `DownloadService` and caller-owned `DownloadRunner`, `DownloadPlan`, finite acquisition limits/states and `VerifiedArtifact` provenance. Acquisition completion is not installed-catalog success. These capabilities preserve the future aggregate ports; no partially implemented CatalogRepository is registered. Implementation and binding require the acquisition reviews, durable consent/job/file protocols and actual acceptance evidence tracked by the K3 task.
 
 `core:common` supplies the platform-free `ConsentCoordinator` utility. Every settings consent writer and acquisition dispatch/commit path must share the application's instance. Read remains callable inside the guard; writers hold it until DataStore acknowledgment settles, including cancellation during an irreversible write. Hold only bounded checks/dispatch/commit handoffs, never transfers or callbacks to another consent-writing method. This utility changes no source permission or user-consent requirement.
+
+## Reviewed M2 additive model surface
+
+The life model now has explicit counter roles and presentation/participation/timing/alert state, complete new-game/profile input boundaries, history query DTOs and the stronger declaration-only `PersistedGameService`/`PlayerProfileRepository` ports. Legacy `GameService` signatures and snapshot constructors remain compatible with absent metadata; they do not certify imported/persisted completeness. Optional `ProfileExchange.lifeSetup` agrees exactly with its duplicated fields. Random/event provenance and action declarations are also implemented and source-reviewed; their actual handlers, lineage and replay remain following gates.
+
+Actual implementations, handlers, codecs/import repair, schema5-to6 and DI/UI registration remain separate gates. No aggregate gets fake default bodies. Use [the life design](../superpowers/specs/2026-10-13-life-persistence-contract-design.md), the live root task and [model evidence](../verification/m2-life/STATE-CONTRACTS-20261013.md) for scope and results; declarations do not make the life feature operational.

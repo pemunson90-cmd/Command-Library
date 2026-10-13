@@ -1,0 +1,11 @@
+{
+  "component": "shared-countdown-tests",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "Claude Code; chat-only bounded tests assignment, root owns implementation and builds",
+  "status": "active",
+  "branch": "agent/cx-native-20261013",
+  "base_commit": "464d8757e909ab45cd8f3b6a43fee22cfa0e6037",
+  "owned_paths": [
+    "android-app/feature/life/src/test/kotlin/com/architectpsg/commandlibrary/feature/life/domain/SharedCountdownMathTest.kt"
+  ]
+}

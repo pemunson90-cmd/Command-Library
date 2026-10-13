@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-native-pass-life-inputs-82. Updated UTC: 2026-10-13T21:02:11Z.
+Checkpoint: cp-20261013-life-event-codec-ready-83. Updated UTC: 2026-10-13T22:30:27Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: K3 and life persistence preparation active; continuous local-first execution. Next: orch-kotlin-k3-offline-data-01 step3.
-Implement bounded reviewed action/random/provenance contracts, then codec/schema5-to6/real persisted service; avoid unrelated emulator reruns.
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: K3/life persistence preparation active; continuous local-first execution. Next: orch-kotlin-k3-offline-data-01 step3.
+Implement bounded private life codec primitives/profile/snapshot/archive, then schema5-to6 and transactional service; preserve Claude-owned tests file.
 
-CorrectedoneAPI36 native38465889103 exact341b719 actual3network+32storage passed, independently extracted. Reviewed creation/profile/history-port units have meaningfulRED then54model+81lifeGREEN; declarations only, no persistence/UI. CI triggers scoped actualwire dependencies with unchanged gates/manualdispatch; oldpublicbranch docs redirectd92ec31, all localcommits preserved; no active Claude task.
+Fourmodelunits reviewed and coherent60XML615JVM/check/lint/testAPKs/debugassembly passed4m57s; actual35native341b719 retained. Privatecodec architectureAstraAPPROVE, primitive/countgoldens/source bounds stillnext. Claude chat-only shared-countdown tests file reserved; no competing root takeover, sameactor lease refreshed.
 
 Read CURRENT, machine state and task card.

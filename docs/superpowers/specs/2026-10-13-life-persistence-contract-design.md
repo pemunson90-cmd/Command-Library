@@ -1,6 +1,6 @@
 # Life persistence contract design
 
-2026-10-13. **First state-contract unit architecture-approved; later service/schema/codec packets remain review-gated.** No product implementation, migration, build or runtime verification is represented by this document. Root owns public contracts, schema, configuration and DI. The user approved the overall execution plan; this draft prepares the next technical review, not another product-permission request.
+2026-10-13. **Bounded model units architecture/source-approved; service/schema/codec implementation remains review-gated.** No product implementation, migration, build or runtime verification is represented by this document. Root owns public contracts, schema, configuration and DI. The user approved the overall execution plan; this draft prepares the next technical review, not another product-permission request.
 
 ## Intent and authority
 
@@ -109,14 +109,14 @@ Settle uses same-session monotonic deltas for both elapsed and countdown state. 
 ```kotlin
 sealed interface RandomRequest {
     data class Dice(val requestId: EntityId, val requested: Long, val sides: Int) : RandomRequest
-    data class ContinueDice(val requestId: EntityId, val batchIndex: Int) : RandomRequest
+    data class ContinueDice(val requestId: EntityId, val batchIndex: Long) : RandomRequest
     data class Coin(val requestId: EntityId) : RandomRequest
     data class SeatPick(val requestId: EntityId, val asker: EntityId?, val opponentsOnly: Boolean) : RandomRequest
     data class SeatOrder(val requestId: EntityId) : RandomRequest
 }
 sealed interface RecordedRandomValue {
     data class Dice(val sides: Int, val faces: SnapshotList<Int>, val sum: Long,
-        val requested: Long, val batchIndex: Int, val remaining: Long) : RecordedRandomValue
+        val requested: Long, val batchIndex: Long, val remaining: Long) : RecordedRandomValue
     data class Coin(val heads: Boolean) : RecordedRandomValue
     data class SeatPick(val selected: EntityId?, val eligible: SnapshotList<EntityId>) : RecordedRandomValue
     data class SeatOrder(val seatIds: SnapshotList<EntityId>) : RecordedRandomValue
@@ -203,3 +203,5 @@ Dispatch transaction checks expected revision, settles timing, reduces validated
 No additional product decision is inferred from the reference screenshots. These are concrete engineering review choices; none authorizes silently dropping a retained requirement.
 
 Current implementation pointer: `coordination/tasks/cx-m2-life-state-contracts-01.md`. Independent Astra approved the first state-only model design after the four root technical choices. Exact-source review is separate; no service, codec, schema6, exchange or UI acceptance follows from declarations. Later packets retain all obligations above.
+
+Numeric refinement2026-10-13: random continuation/record batch indices use Long, matching the accepted Long request count. An Int index would silently prevent sufficiently large requests from completing. Independent Astra approved overflow-safe local batch plausibility validation; actual next-index CAS/draw replay and practical runtime capacity remain service gates.

@@ -8,11 +8,12 @@ import com.architectpsg.commandlibrary.core.model.GameSnapshot
 import com.architectpsg.commandlibrary.core.model.GameStatus
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.core.model.RandomSource
+import com.architectpsg.commandlibrary.core.model.RecordedRandomValue
 import com.architectpsg.commandlibrary.core.model.SnapshotList
 import com.architectpsg.commandlibrary.core.model.UtcTimestamp
 
 /** SPEC G06 responsiveness cap for one roll; larger requests are split by [RandomTools.rollBatch]. */
-internal const val MAX_DICE_PER_ROLL: Int = 10_000
+internal const val MAX_DICE_PER_ROLL: Int = RecordedRandomValue.Dice.MAX_FACES
 
 internal data class DiceRoll(val sides: Int, val values: SnapshotList<Int>, val sum: Long)
 
@@ -95,8 +96,7 @@ internal object RandomTools {
     }
 
     /**
-     * Picks one seat from [eligible], which the caller derives (for example, excluding eliminated seats; the core
-     * snapshot has no eliminated-seat field). The draw uses table order, so the caller's list order cannot bias a seeded run.
+     * Picks one seat from [eligible], which the caller derives (for example, excluding eliminated seats). The draw uses table order, so the caller's list order cannot bias a seeded run.
      */
     fun selectSeat(snapshot: GameSnapshot, random: RandomSource, eligible: SnapshotList<EntityId>, at: UtcTimestamp): Outcome<SeatSelection> {
         val seats = SeatIndex.of(snapshot).valueOr { return it }

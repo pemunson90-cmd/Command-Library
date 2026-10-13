@@ -1,0 +1,9 @@
+# Action/random/provenance contracts — 2026-10-13
+
+Independent Astra approved design and exact source: GameEventContracts.kt SHA25639c311716f69ef57ca9c80b952ad9d8101cf5c53642c99c8f0103513508ece18; GameContracts.kt dbd162990abf1ee895f1bc4dfe89501cf770c16fdea2b4e2830f7c1bee7b4bed; TransferContracts.kt02c425fc952f31fb9a8351bbe00db6cb7a27d6713642a96b4cd84208af566b55; RandomTools.kt6d57da3b0a5d484fb8539e606b6b800eea22651091108d57bbe74633abe413b7. Frozen13method testSHA4b8ec14c625b6542b61ff7b8d55f6f97bb3fece6759b8ef5ec64e6d4c6e29827. Reviewer builds/tests not_run.
+
+The unit adds approved action declarations, recorded random values, immutable original-action provenance/checkpoints/archive envelopes and legacy-empty random/outcome/archive defaults. Local checks guard finite observations, selected/eligible coherence, exact bounded face sums, plausible prior1–10000dice batches, revision overflow and archive aliases. Long batch indices preserve Long request representability; exact draw continuity and practical capacity are not established. RandomTools shares the unchanged10000face cap; existing reducer unsupported-action behavior remains.
+
+Root API-absence compile RED24s is separate from declaration-only behavior RED:13cases executed/12invalid-input methods failed28s. Implemented checks then67model+81life GREEN31s. One coherent accumulated-contract build passed4m57s:60XML615JVMcases zero failure/error/skip, check/lint/allinstrumentationAPKs/debugassembly. Actual network/storage35native341b719 evidence is separate, predating these unconsumed declarations. No device/UI/replay/persistence acceptance is claimed.
+
+Next approved privatecodec primitives/profile/snapshot/archive units, then schema5-to6/transactionalservice. Model structure is not actual action handling, event lineage, candidate confirmation, source/art authority or persisted completeness.

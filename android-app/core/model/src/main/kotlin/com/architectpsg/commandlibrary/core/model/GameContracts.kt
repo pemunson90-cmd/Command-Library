@@ -128,6 +128,26 @@ public data class GameSettings(
     public val alertPreferences: GameAlertPreferences = GameAlertPreferences(),
 ) { init { require(adjustmentStep > 0) { "Adjustment step must be positive" } } }
 public sealed interface GameAction {
+    public data class SetCounter(public val seatId: EntityId, public val definitionId: EntityId, public val commanderSlotId: EntityId?, public val value: Int) : GameAction
+    public data class SetAdjustmentStep(public val step: Int) : GameAction { init { require(step > 0) { "Adjustment step must be positive" } } }
+    public data class SetCommanderLifeDeduction(public val enabled: Boolean) : GameAction
+    public data class UpdateCounterDefinition(public val definition: CounterDefinition) : GameAction
+    public data class AddCounterDefinition(public val definition: CounterDefinition) : GameAction
+    public data class EliminateSeat(public val seatId: EntityId, public val kind: SeatExitKind, public val reason: String, public val evidence: LossEvidence?) : GameAction
+    public data class RestoreSeat(public val seatId: EntityId, public val reason: String) : GameAction
+    public data class SetMonarch(public val seatId: EntityId?) : GameAction
+    public data class SetInitiative(public val seatId: EntityId?, public val note: String) : GameAction
+    public data class SetDayNight(public val state: DayNightState) : GameAction
+    public data class SetBlessing(public val seatId: EntityId, public val blessed: Boolean) : GameAction
+    public data class SetSeatAppearance(public val seatId: EntityId, public val appearance: SeatAppearance) : GameAction
+    public data class SetGamePresentation(public val presentation: GamePresentation) : GameAction
+    public data class FinishWithOutcomes(public val seatResults: SnapshotList<SeatResult>, public val reason: String) : GameAction
+    public data class DismissLossCandidate(public val candidate: LossEvidence, public val seatId: EntityId, public val reason: String) : GameAction
+    public data class PassClock(public val seatId: EntityId) : GameAction
+    public data class SetElapsedPaused(public val paused: Boolean) : GameAction
+    public data class AcknowledgeGameAlert(public val alertId: EntityId) : GameAction
+    public data class SetAlertPreferences(public val preferences: GameAlertPreferences) : GameAction
+    public data class RequestRandom(public val request: RandomRequest) : GameAction
     public data class AdjustCounter(public val seatId: EntityId, public val definitionId: EntityId, public val commanderSlotId: EntityId?, public val delta: Int) : GameAction
     public data class SetCounterHidden(public val seatId: EntityId, public val definitionId: EntityId, public val hidden: Boolean) : GameAction
     public data class RenameSeat(public val seatId: EntityId, public val name: String) : GameAction
@@ -147,6 +167,7 @@ public data class GameEvent(
     public val at: UtcTimestamp,
     public val undoOfEventId: Knowledge<Long>,
     public val revision: Revision,
+    public val randomResults: SnapshotList<RecordedRandomResult> = SnapshotList.empty(),
 ) { init { require(id >= 0) } }
 public data class GameResult(
     public val id: EntityId,
@@ -156,6 +177,7 @@ public data class GameResult(
     public val reason: String,
     public val revision: Revision,
     public val retracted: Boolean,
+    public val seatResults: SnapshotList<SeatResult> = SnapshotList.empty(),
 )
 public data class GameSnapshot(
     public val id: GameId,

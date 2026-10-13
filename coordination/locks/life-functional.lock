@@ -1,13 +1,14 @@
 {
   "component": "life",
-  "orchestrator": "codex-full-v1-execution-20261012",
+  "orchestrator": "codex-local-resume-20261013",
   "agent_task": "cx-m2-life-functional-01",
-  "branch": "agent/cx-m2-life-functional-01",
+  "branch": "agent/cx-native-20261013",
   "base_commit": "bebf6f0dd223567098be5ca1c928610952e828c3",
-  "owner": "Codex orchestrator; contract phase first, no component worker active",
+  "owner": "root; model/codec/service preparation, CC owns only separately locked shared-countdown test file",
   "owned_paths": [
     "android-app/feature/life/**",
     "coordination/tasks/cx-m2-life-functional-01.md",
     "coordination/handoffs/cx-m2-life-functional-01.md"
-  ]
+  ],
+  "status": "reserved"
 }

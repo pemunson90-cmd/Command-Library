@@ -60,7 +60,7 @@ internal data class ClockView(
 /**
  * Seat clock calculations for [SeatClockMode.CHESS] (per-seat bank) and [SeatClockMode.PER_TURN] (each turn starts
  * from the seat's initial time). Only the active seat is charged, by monotonic delta within one process session.
- * [SeatClockMode.SHARED] has no defined semantics in the core contract and is reported as unsupported.
+ * [SeatClockMode.SHARED] is not yet implemented by this reducer and is reported as unsupported.
  */
 internal object SeatClockReducer {
     fun reduce(snapshot: GameSnapshot, action: GameAction, reading: ClockReading): Outcome<ClockReduction> = when (action) {

@@ -109,6 +109,7 @@ public data class GameExchange(
     public val events: SnapshotList<GameEvent>,
     public val result: Knowledge<GameResult>,
     public val variantDefinitions: SnapshotList<VariantDefinition>,
+    public val actionArchives: SnapshotList<GameEventArchive> = SnapshotList.empty(),
 )
 public data class SharePrivacy(
     public val includeNotes: Boolean,
