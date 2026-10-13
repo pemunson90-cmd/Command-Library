@@ -18,7 +18,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** Real committed schema-4 file, migrated through schema5 to the current schema via StorageDatabase.open. */
+/**
+ * Real committed schema-4 file, migrated through schema5 to current via StorageDatabase.open.
+ * The schema6 gate also checks Room's automatic validation of all six additive life tables.
+ */
 @RunWith(AndroidJUnit4::class)
 class OriginCooldownMigrationTest {
     private lateinit var context: Context
