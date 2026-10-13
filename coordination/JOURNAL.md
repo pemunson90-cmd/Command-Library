@@ -361,3 +361,7 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T02:52:29Z | codex | cp-20261013-reuse-plan-57 | containing commit | User paused implementation for four low-cost research streams and requested a concrete reuse/professional-release plan; same orchestrator resumes planning after own expired lease, clean published branch and unchanged main verified
 
 2026-10-13T02:54:27Z | codex | cp-20261013-reuse-plan-ready-58 | containing commit | Research-first plan complete:13work packages, existing full spec retained, targeted open-source reuse, early visual checkpoint, capability trials and actual Fold7/canonical release gates; no implementation resumed
+
+2026-10-13T03:11:24Z | codex | cp-20261013-release-approved-59 | containing commit | Pat approved research-based release plan and explicitly moved on-device AI engines to v1.1; normal v1 functional/professional release no longer depends on runtime/model engines
+
+2026-10-13T03:14:26Z | codex | cp-20261013-reuse-trials-60 | containing commit | D26 scope applied to canonical decisions/milestones/plan, approved execution preflight ledger created; bounded Sol-medium compatibility task assigned with disjoint lock, no model work

@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Preserve Pat's established routing: smallest capable workers, bounded independent review, maximum three component writers. This is a master release plan with a detailed first execution batch; later subsystems receive separate bounded plans before implementation.
 
+**Approval:** Pat approved execution on2026-10-13, with D26 moving on-device AI engines and dependent model management to v1.1; they cannot block functional v1 release.
+
 **Goal:** Complete every retained Android-v1 feature as a cohesive, professional application on Pat's Fold7, reusing suitable open-source components and delivering only after canonical signing and actual device verification.
 
 **Architecture:** Keep the accepted Kotlin/Compose/core-port/Room3 architecture and reviewed counter, clock, acquisition and bounded-import logic. Adopt compatible libraries for commodity capabilities, adapt licensed presentation patterns into one app-owned design system, and finish complete persisted user journeys. External applications are references rather than replacement architectures.
@@ -12,10 +14,10 @@
 
 ## Global Constraints
 
-- Scope remains all64 requirements,194 retained parity rows,19 approved skips and25 screens. Contracts/test counts are not completed features. G14 profile/game transport is included with life/transfer obligations.
+- Preserve the64-requirement/194-retained-parity/25-screen inventory and19 previously approved skips as traceability. D26 additionally assigns H03/S25 and on-device-only clauses to v1.1; they are approved deferrals, not implemented v1 features. G14 profile/game transport remains required.
 - Android v1 first; Windows v2 and later sync remain deferred. Fold7 is primary; older-device performance is secondary under Pat's ruling. Do not lower existing minSdk23 or silently cut Android input/adaptive requirements.
 - No production placeholders, fake-success adapters, inert release controls or invented source/test/device evidence. Synthetic fixtures belong to tests/previews and cannot appear as real user data.
-- Every required catalog/rules/rulings/art/variant/bracket/enrichment/model/language resource has an operational in-app download/update path at its consumer's acceptance. Optional means user-enabled, not omitted.
+- Every required catalog/rules/rulings/art/variant/bracket/enrichment/language resource has an operational in-app download/update path at its consumer's acceptance. Optional means user-enabled, not omitted.
 - English default and explicit language/resource consent remain binding. Scryfall Default Cards includes original-language fallbacks; no English-only approval is inferred for that mixed file.
 - Retain license/copyright/NOTICE obligations for reused code. Artwork, trademarks and model-weight rights are separate. No GPL/MPL code copy without a concrete license-fit decision.
 - Coil loads local/managed artifacts or a reviewed guarded fetch path. Installing a default network loader must not bypass source/consent policy.
@@ -39,8 +41,8 @@
 | kotlin-csv, Apache-2.0 | Streaming CSV syntax | Trial bounded parsing; app-owned vendor mappings/unknown-row resolution/loss previews remain required. |
 | TvManiac, NIA, Jetcaster/Jetsnack, Apache-2.0 | Visual hierarchy, components, state handling and adaptive panes | Adapt selected code/patterns with notices; retain current architecture/toolchain. Mock domain behavior and third-party media are excluded. |
 | OneTwo/SpellCounter, MIT | Seat/timer/lifecycle/profile behavior comparisons | Close requirement gaps; preserve reviewed counter/clock/RNG logic and add durable event service. |
-| llama.cpp, MIT | Kotlin/JNI GGUF runtime candidate | Trial native packaging, explicit cancellation and Fold7 performance; preserve required model formats. |
-| LiteRT-LM, Apache-2.0 | Alternate supported model/runtime path | Compare when its .litertlm format fits a required catalog; not a GGUF replacement. |
+| llama.cpp, MIT | v1.1 Kotlin/JNI GGUF runtime candidate | Deferred by D26; no v1 build, dependency trial or performance gate. |
+| LiteRT-LM, Apache-2.0 | v1.1 alternate supported model/runtime path | Deferred by D26; no v1 format/runtime selection gate. |
 | OpenAI-Kotlin, MIT | Provider streaming/API reference or compatible client | Verify required dialect/API coverage, transport/consent and cancellation before adding a second HTTP stack. |
 | ManaVault/MTG Desktop Companion/Forge/Cockatrice | Deck/import/collection/format behavior research | Use researched formats/ideas; copying covered source requires its actual license obligations. |
 | Fetch/Ketch/OkDownload | Transfer implementation comparison | No engine replacement is scheduled: current consent/provenance/recovery semantics must not be lost. |
@@ -70,7 +72,7 @@ Tasks1/2 prepare reuse and visual identity. Task3 and Task6 are independent afte
 **Interfaces:** consumes current toolchain pins and researched license/source references; produces a decision entry per candidate with exact artifact/version/sourceSHA/license, actual commands/results, native libraries, fit/rejection reason and intended module. These are compatibility trials, not new app service contracts.
 
 - [ ] Check stable release metadata/licenses/dependency requirements; record precise candidate pins and required notices. Never use a moving branch as a production dependency.
-- [ ] Test image decode success/failure/cancel using a controlled test image, ordinary cache eviction and a separate protected-pack file. Test CSV quoted comma/newline, UTF8, truncated quote, oversized field/row and cancellation with expected retained row identity.
+- [ ] Test image decode success/failure/cancel using a controlled test image, ordinary cache eviction and a separate protected-pack file. Test CSV quoted comma/newline, UTF8, truncated quote, oversized field/row and cancellation with expected retained row identity. On-device/native-model trials are excluded from this v1 batch by D26.
 - [ ] Run candidate focused checks and actual Android resolution/assembly; if native code is present verify ABIs/16KiB packaging. Document unrun physical checks separately.
 - [ ] Accept only candidates compatible with approved architecture/pins and full requirements. Reject or select an older compatible stable release when evidence requires it; do not downgrade the app's core stack to fit a sample.
 - [ ] Commit only accepted dependency changes, tests and decision evidence; remove throwaway trials from the integration diff and retain reproducible failure evidence.
@@ -145,7 +147,7 @@ Each row requires an exact owned task/lock, accepted consumes/produces signature
 | 8 | M4: `CollectionRepository`, `PricingService` | Exact owned lots/printing/finish/location, allocations, real unknown-aware price sources/native units/policy, printing optimizer and undo/restore. S12/S14 plus deck integration. |
 | 9 | M5: `DeckAnalysis`, `DeckValidator`, `BracketService`, link contracts | Complete probability/opening-hand/manual goldfish, deterministic all-format validation, versioned brackets/Game Changers/combos, interactions and real approved links with evidence/intent/unknown distinctions. All required datasets download/update in-app. S09/S10/S15 and consumer surfaces. |
 | 10 | M6: `RecommendationEngine` | Offline roles/overrides/budget/legality-aware explanations and versioned patch previews; apply/undo through real deck transactions. S13. |
-| 11 | M7: `DeckLab`, `SecretVault`, `LocalInference`, `TransferService` | All specified modes/providers/dialects plus prompt export/pasteback, LAN/local, real streaming/tool limits/cancel/history, credential vault, licensed model downloads/load/unload/selection and backup restore. Trial llama.cpp/LiteRT-LM against required formats and actual Fold7; do not silently replace GGUF with a different format. S16/S24/S25/S17. |
+| 11 | M7 v1: `DeckLab`, `SecretVault`, `TransferService` | All specified prompt/cloud/custom/LAN modes/dialects, prompt export/pasteback, real streaming/tool limits/cancel/history, credential vault and backup restore. S16/S24/S17 operate without `LocalInference`. H03/S25/native runtime and dependent model management are v1.1 under D26, not v1 blockers. |
 | 12 | M8: image/pack capabilities and all screen contracts | Managed optional image packs separate from Coil cache, on-view art and bounded quotas; consistent visual system across all25 screens, adaptive inputs/TalkBack/large text, measured responsiveness/full-corpus performance. Accessibility and visual quality begin with each feature, not here for the first time. |
 | 13 | M9: all retained contracts/acceptance rows | Whole-app regression, destructive-data/restore/security/privacy/license audit, personal canonical release package and install/update proof on Fold7. Read signing certificate from actual APK; no secret logs or debug-package substitution. |
 
@@ -153,9 +155,9 @@ Each row requires an exact owned task/lock, accepted consumes/produces signature
 
 - A user journey is complete only when real UI → real operation → persisted outcome → restart/undo/recovery all work where required. A test-only primitive or available port declaration remains partial.
 - Maintain a current acceptance delta from the historical full audit: completed/partial/absent with exact implementation and verification evidence. Preserve the historical baseline; never overwrite it with optimistic estimates.
-- Release only after every retained requirement/parity/screen row is satisfied, required download/update paths work, Pat's actual Fold7 flows pass, and the actual APK matches the canonical certificate. Visual refinement feedback is assessed from rendered screens; it does not waive functionality.
+- Release only after every retained v1 requirement/parity/screen row is satisfied (D26 engine/S25 clauses explicitly tracked for v1.1), required download/update paths work, Pat's actual Fold7 flows pass, and the actual APK matches the canonical certificate. Visual refinement feedback is assessed from rendered screens; it does not waive functionality.
 - Preserve existing source reviews and hosted evidence; fresh compatibility/native/device work in this plan is not_run until performed. This plan makes no model-speed, device-performance or delivery-date promise.
 
 ## Latest continuation delta
 
-Planning-only response to Pat's research-first instruction. Four Luna medium research agents plus root checked candidates and pinned examples/licenses outside the app; structured findings are archived under verification/reuse-research. No dependency/product code has been changed for reuse. Plan self-review covers all retained milestone groups, all14 life dispositions, downloads/consent, professional UI, license boundaries and canonical/device acceptance. Next execution: Task1 exact compatibility decisions and Task2 visual foundation, then Tasks3/4/5 and independent Task6 according to accepted interfaces/locks. Existing worker-routing preference is preserved; no implementation was resumed in this planning turn.
+Pat approved execution with D26: on-device AI engines and dependent model management belong to v1.1 and do not block v1. Four Luna medium research agents plus root checked candidates and pinned examples/licenses outside the app; structured findings are archived under verification/reuse-research. No dependency/product code has been changed for reuse. Plan self-review covers all retained milestone groups, all14 life dispositions, downloads/consent, professional UI, license boundaries and canonical/device acceptance. Next execution: Task1 exact compatibility decisions and Task2 visual foundation, then Tasks3/4/5 and independent Task6 according to accepted interfaces/locks. Existing worker-routing preference is preserved; implementation resumes with the compatibility/visual batch and no local-engine task.
