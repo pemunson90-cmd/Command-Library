@@ -1,14 +1,12 @@
 package com.architectpsg.commandlibrary.feature.catalog
 
 import com.architectpsg.commandlibrary.core.model.*
-import kotlinx.coroutines.sync.withLock
 
 /** Bounded resumable reclamation. Retired/active generations and user identities are never eligible. */
 internal class CatalogGenerationCleanup(private val database: Database, private val pageSize: Int = 100) {
     init { require(pageSize in 1..100) }
     suspend fun recover(cancel: CancelToken, maxTransactions: Int = 32): Outcome<Boolean> {
-        val owner = Any()
-        return CatalogImportOwnership.mutex.withLock(owner) {
+        return withCatalogImportOwner(cancel) { owner ->
             bulkAttempt {
                 require(maxTransactions in 1..10_000)
                 val request = bulkSql("SELECT generation_id FROM catalog_generation WHERE status IN ('STAGING','VALIDATED','FAILED') AND NOT EXISTS (SELECT 1 FROM catalog_active a WHERE a.generation_id=catalog_generation.generation_id) ORDER BY generation_id LIMIT 1", 1)

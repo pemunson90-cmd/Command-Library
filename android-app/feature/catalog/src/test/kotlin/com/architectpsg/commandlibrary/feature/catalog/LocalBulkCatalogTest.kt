@@ -6,7 +6,7 @@ import com.architectpsg.commandlibrary.core.model.*
 import com.google.gson.JsonParser
 import java.io.File
 import java.security.MessageDigest
-import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -132,6 +132,50 @@ class LocalBulkCatalogTest {
         }
     }
 
+    @Test fun originalJobCancellationInsideActivationPreservesPriorPointer() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            val prior=db.install(listOf(bulkRecord("old","old-o"))).installed.generation.id.value
+            var observed: Outcome<CatalogBulkImportResult>?=null
+            val child=launch(start=CoroutineStart.LAZY) {
+                val caller=currentCoroutineContext()[Job]!!
+                db.beforeActivation={ caller.cancel(CancellationException("precommit")) }
+                observed=db.importer().`import`(bulkSelected(),bulkChunks(bulkRecord("new","new-o")),{},BULK_NO_CANCEL)
+            }
+            child.start(); child.join()
+            assertEquals(prior,db.active()); assertNull(observed)
+        }
+    }
+    @Test fun tokenOnlyCancelledImportWaiterStopsWhileOwnerStillHeld() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            val owner=Any(); CatalogImportOwnership.mutex.lock(owner)
+            try {
+                val token=BulkMutableCancel()
+                val child=launch(start=CoroutineStart.UNDISPATCHED) { db.importer().`import`(bulkSelected(),bulkChunks(bulkRecord("a","o")),{},token) }
+                token.cancelled=true
+                try { delay(250); assertTrue("Token waiter must stop before owner release",child.isCompleted); assertEquals(0L,db.count("catalog_generation")) }
+                finally { child.cancel(); child.join() }
+            } finally { CatalogImportOwnership.mutex.unlock(owner) }
+        }
+    }
+    @Test fun actualCommitThenCancelledAcknowledgementRecoversDurableSuccess() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            db.install(listOf(bulkRecord("old","old-o")))
+            db.cancelAfterActivationCommit=true
+            val result=db.importer().`import`(bulkSelected(),bulkChunks(bulkRecord("new","new-o")),{},BULK_NO_CANCEL).bulkValue()
+            assertEquals(result.installed.generation.id.value,db.active())
+            assertTrue(LocalCatalogIdentities(db).printing(CardId(ProviderId("scryfall"),"new"),BULK_NO_CANCEL) is Outcome.Success)
+        }
+    }
+    @Test fun inconclusiveCancelledCommitAcknowledgementNeverDeletesPossiblyActiveData() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            db.install(listOf(bulkRecord("old","old-o")))
+            db.cancelAfterActivationCommit=true; db.failActivationAcknowledgement=true
+            try { db.importer().`import`(bulkSelected(),bulkChunks(bulkRecord("new","new-o")),{},BULK_NO_CANCEL); fail() } catch(_: CancellationException) {}
+            assertNotNull(db.active()); assertEquals(1L,db.rows("SELECT count(*) AS n FROM printing WHERE printing_id='new'").single().bulkLong("n"))
+            assertEquals(0L,db.rows("SELECT count(*) AS n FROM catalog_generation WHERE status='FAILED'").single().bulkLong("n"))
+        }
+    }
+
     @Test fun pointerChangeAndZeroCasRollbackPreserveOriginal() = runBlocking {
         for (zero in listOf(false,true)) BulkSqlTestDatabase().use { db ->
             val old=db.install(listOf(bulkRecord("old","old-o")))
@@ -165,6 +209,8 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
     var beforeActivation: (() -> Unit)?=null
     var zeroPointerWrite=false
     var failCleanup=false
+    var cancelAfterActivationCommit=false
+    var failActivationAcknowledgement=false
     private var serial=0
     init {
         exec("PRAGMA foreign_keys=ON")
@@ -195,7 +241,7 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
         require(names.toSet()==r.parameters.map { it.name }.toSet())
         for((i,name) in names.withIndex()) when(val v=r.parameters.single { it.name==name }.value) { SqlValue.Null -> s.bindNull(i+1); is SqlValue.Text -> s.bindText(i+1,v.value); is SqlValue.Integer -> s.bindLong(i+1,v.value); else -> error("Unused type") }
     }
-    override suspend fun query(request: SqlRequest,cancel: CancelToken): Outcome<SnapshotList<RowData>> { cancel.throwIfCancelled(); return try { Outcome.Success(queryRaw(request)) } catch (_: Exception) { Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL query failed")) } }
+    override suspend fun query(request: SqlRequest,cancel: CancelToken): Outcome<SnapshotList<RowData>> { cancel.throwIfCancelled(); return try { if(failActivationAcknowledgement && request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) error("Injected acknowledgement failure"); Outcome.Success(queryRaw(request)) } catch (_: Exception) { Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL query failed")) } }
     override suspend fun <T> transaction(action: suspend (DbTransaction)->T,cancel: CancelToken): Outcome<T> {
         cancel.throwIfCancelled(); exec("BEGIN IMMEDIATE")
         val tx=object : DbTransaction {
@@ -212,8 +258,11 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
                 } catch (_: Exception) { val e=Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL write failed")); state=DbTransactionState.RollbackOnly(e); e }
             }
         }
-        try { val value=action(tx); cancel.throwIfCancelled(); if(tx.state is DbTransactionState.RollbackOnly) { exec("ROLLBACK"); return (tx.state as DbTransactionState.RollbackOnly).status }; exec("COMMIT"); afterCommit?.invoke(); return Outcome.Success(value) }
-        catch(e: CancellationException) { exec("ROLLBACK"); throw e }
+        var committed=false
+        var activation=false
+        try { val value=action(tx); cancel.throwIfCancelled(); if(tx.state is DbTransactionState.RollbackOnly) { exec("ROLLBACK"); return (tx.state as DbTransactionState.RollbackOnly).status }; activation=queryRaw(bulkSql("SELECT count(*) AS n FROM catalog_generation WHERE status='ACTIVE' AND activated_at_epoch_seconds IS NOT NULL")).single().bulkLong("n")>0 && queryRaw(bulkSql("SELECT count(*) AS n FROM catalog_generation WHERE status='STAGING'")).single().bulkLong("n")==0L
+        exec("COMMIT"); committed=true; afterCommit?.invoke(); if(cancelAfterActivationCommit && activation) { cancelAfterActivationCommit=false; throw CancellationException("Cancelled commit acknowledgement") }; return Outcome.Success(value) }
+        catch(e: CancellationException) { if(!committed) exec("ROLLBACK"); throw e }
         catch(e: TransactionAbort) { exec("ROLLBACK"); return Outcome.Failure(e.failure) }
         catch(e: BulkFailure) { exec("ROLLBACK"); return e.outcome }
         catch(_: Exception) { exec("ROLLBACK"); return Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL transaction failed")) }

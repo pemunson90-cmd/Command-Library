@@ -1,7 +1,7 @@
 package com.architectpsg.commandlibrary.feature.catalog
 
 import com.architectpsg.commandlibrary.core.model.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -50,6 +50,19 @@ class CatalogGenerationCleanupTest {
             try {
                 assertTrue(CatalogGenerationCleanup(db).reclaimOwned(generation,BULK_NO_CANCEL,Any()) is Outcome.Failure)
                 assertEquals(1L,db.count("printing"))
+            } finally { CatalogImportOwnership.mutex.unlock(owner) }
+        }
+    }
+
+    @Test fun tokenOnlyCancelledRecoveryWaiterStopsWhileOwnerStillHeld() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            val owner=Any(); CatalogImportOwnership.mutex.lock(owner)
+            try {
+                val token=BulkMutableCancel()
+                val child=launch(start=CoroutineStart.UNDISPATCHED) { CatalogGenerationCleanup(db).recover(token) }
+                token.cancelled=true
+                try { delay(250); assertTrue("Recovery waiter must stop before owner release",child.isCompleted) }
+                finally { child.cancel(); child.join() }
             } finally { CatalogImportOwnership.mutex.unlock(owner) }
         }
     }

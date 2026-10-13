@@ -59,6 +59,14 @@ class LocalCatalogIdentitiesTest {
         }
     }
 
+    @Test fun outOfRangeSqlTimestampCannotWrapIntoValidProvenance() = runBlocking {
+        for(field in listOf("observed_at_nano","activated_at_nano","source_date_nano")) for(nano in listOf(-1L,1000000000L,4294967296L,Long.MAX_VALUE)) BulkSqlTestDatabase().use { db ->
+            db.install(listOf(bulkRecord("a","o"))); db.exec("UPDATE catalog_generation SET $field=$nano")
+            val result=LocalCatalogIdentities(db).printing(CardId(ProviderId("scryfall"),"a"),BULK_NO_CANCEL)
+            assertTrue(result is Outcome.Failure); assertEquals(FailureCode.CORRUPT_DATA,(result as Outcome.Failure).error.code)
+        }
+    }
+
     @Test fun fullSourceProofAndAcquisitionVersionSurviveWithoutArtifact() = runBlocking {
         BulkSqlTestDatabase().use { db ->
             val raw=bulkRecord("a","o"); val original=bulkAcquired(raw); val artifact=original.verifiedArtifact!!.copy(provenance=original.verifiedArtifact!!.provenance.copy(sourceVersion=Knowledge.Known("source-v")))
