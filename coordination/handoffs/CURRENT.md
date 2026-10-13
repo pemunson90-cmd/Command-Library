@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-bulk-route-52
+Checkpoint-ID: cp-20261013-life-integrated-56
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Run schema4/wire hosted gate; engine fixes and full bulk importer execute in separate worktrees
+Next step: 3. Implement guarded K3 platform/drainer bindings; next life contracts task active under newlock
 
-Updated UTC: 2026-10-13T00:42:04Z
+Updated UTC: 2026-10-13T01:51:50Z
 Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: 0dcac576c0964f59b0fcc1767a0e9859333ecdb4.
+Verified base: bebf6f0dd223567098be5ca1c928610952e828c3.
 
-Schema4 source independentlyaccepted/integrated with rootregistry staticcompilepass; wireguard36tests+reviewpass; fullbulk third writer assigned with merged core contracts; engine regression fixes ongoing
+PR17 expectedhead6fa6043 mergedmain3cc82c25 after428JVM/66nativeeach pass; oldlife lock released/newfunctional task assigned. Bulk/settings source reviewed and integrated,172 combined JVM and56 DataStore tests pass; bindings pending
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -3,22 +3,23 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-bulk-route-52",
-  "verified_base_head": "0dcac576c0964f59b0fcc1767a0e9859333ecdb4",
+  "checkpoint_id": "cp-20261013-life-integrated-56",
+  "verified_base_head": "bebf6f0dd223567098be5ca1c928610952e828c3",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "Full Android v1 execution active; incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Run schema4/wire hosted gate; engine fixes and full bulk importer execute in separate worktrees",
+  "first_action": "Implement guarded K3 platform/drainer bindings; next life contracts task active under newlock",
   "active_tasks": [
-    "orch-kotlin-k3-offline-data-01"
+    "orch-kotlin-k3-offline-data-01",
+    "cx-m2-life-functional-01"
   ],
   "blockers": [
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
-  "worktree_mode": "Root owns shared contracts/registry/platform binding; engine fixes and full bulk importer are disjoint active workers; external Claude life domain reserved, actual progress unknown. Schema4 source accepted/integrated, lock released; KSP/native pending.",
-  "review_status": "Full retained audit unchanged. Full contract/framing hosted accepted; source codec/wire guard/schema4 source independently approved. Engine review changes required; final runtime/binding gates pending.",
+  "worktree_mode": "Root K3 platform/drainer integration and new root-owned life contract phase; component workers finished and their old locks released.",
+  "review_status": "Life private domain independently approved and merged after exact focused/fullmatrix gates. Bulk b6e74819 and settings d4d30f8 source approved/integrated; actual platform/drainer/service/UI gates pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -39,8 +40,12 @@
     "rules_schema": "Committed actualKSP2.json SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentitiesunchanged; native migration/preservation/reopen passes all3Androidlanes.",
     "k3_acquisition_schema": "Hosted38321835421 actualKSP3 SHA6bb715b72a1681998238d448756ca099e31e8a33b0d0a450a73a975035b7a265 all13legacyentitiesidentical; API23/API36 61nativeeachpass; ps16KiBstorage25passbutoneShellUIfail; JVMtestfixturecompilefailfixedpendingrerun.",
     "k3_acquisition_infrastructure": "Acceptedmain67713d29aa5dec03d9a91ab3eb4239b020ab8ffa: exacte24a958 hosted38323540680 all4lanespass316JVM/61nativeeach. Candidate71acd14 Androidtreeidentical795b94b. Debugbuildonly; fullK3notaccepted.",
-    "k3_full_contracts": "PR14 expected3e32f214 mergedmaina4a57e4; exacthosted38327108153 all4lanes337JVM/61nativeeach0failures+errors; treeequal. Declarations/framingonly, no fullinstallation."
+    "k3_full_contracts": "PR14 expected3e32f214 mergedmaina4a57e4; exacthosted38327108153 all4lanes337JVM/61nativeeach0failures+errors; treeequal. Declarations/framingonly, no fullinstallation.",
+    "k3_schema4_wire": "Exact44d02c9 hosted38328542087 all4lanes success:347 JVM,66native per API23/API36/API36-16KiB lane; actualKSP4 export committed in next checkpoint, SHA6f1f94a2c2653635e70784a77b933bbcc2a7b23b636e9d26b7abb830afa0dcec.",
+    "life_original": "Exactc4a27190 hosted38331874820 command success,16model+69life,0failures/errors/skips. Two independent undo defects prevent acceptance; revisedce97e47e hosted38333007130 pending.",
+    "life_corrected": "PR17 expected6fa6043 mergedmain3cc82c25; focused38333232421 21model+81life0failures/errors/skips; matrix38333213528 428JVM/66nativeeach0failures/errors, actual16KiBpage16384. MergedAndroidtree identical to tested integration.",
+    "k3_merged_source": "Bulk b6e74819 independently91tests+original3probes+boundedackprobe pass, integrated15e80ab. Actual combined root model/common/catalog strict production compile and172JVMtests pass underXmx256m; harness nonexistent resources warnings only. Settings d4d30f8 independently56actualDataStore tests pass, integratede3be616; platformconfiguredartifact checks pending."
   },
-  "last_completed": "Schema4 source independentlyaccepted/integrated with rootregistry staticcompilepass; wireguard36tests+reviewpass; fullbulk third writer assigned with merged core contracts; engine regression fixes ongoing",
-  "updated_utc": "2026-10-13T00:42:04Z"
+  "last_completed": "Life domain integrated and correction lock released; next functional task/lock assigned. Bulk/settings source accepted; bindings and complete app remain incomplete.",
+  "updated_utc": "2026-10-13T01:51:50Z"
 }
