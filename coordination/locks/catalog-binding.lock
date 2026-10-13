@@ -1,0 +1,11 @@
+{
+  "component": "catalog-android-verified-input-binding",
+  "orchestrator": "codex-local-resume-20261013",
+  "agent_task": "cx-k3-catalog-binding-01",
+  "owner": "Sol high; only new binder/new native test/handoff",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/AndroidCatalogVerifiedInputBinding.kt",
+    "android-app/feature/catalog/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/catalog/AndroidCatalogVerifiedInputBindingTest.kt",
+    "coordination/handoffs/cx-k3-catalog-binding-01.md"
+  ]
+}
