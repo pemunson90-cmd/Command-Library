@@ -28,4 +28,6 @@ Plan: docs/superpowers/plans/2026-10-13-research-based-professional-release.md. 
 
 ## Task progress
 
-Task1: assigned cx-reuse-compatibility-01 after scope commit; no compatibility result yet. Task2 and remaining tasks pending. Runtime/model work approved-deferred v1.1. No product capability acceptance inferred from planning/research.
+Task1: assigned cx-reuse-compatibility-01 after scope commit; no compatibility result yet. Task2 assigned cx-professional-visual-foundation-01, existing Compose primitives only with disjoint owned files. Later tasks pending. Runtime/model work approved-deferred v1.1. No product capability acceptance inferred from planning/research.
+
+Execution routing: approved parallel root policy overrides generic skill serial-worker default for these explicitly disjoint packages. Task2 cannot consume pending Coil APIs; it uses existing Compose and requests root binding only after Task1 acceptance.

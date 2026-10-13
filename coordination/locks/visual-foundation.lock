@@ -1,0 +1,18 @@
+{
+  "component": "shell-visual-foundation",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cx-professional-visual-foundation-01",
+  "branch": "agent/cx-professional-visual-foundation-01",
+  "owned_paths": [
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/ShellTheme.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/Components.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/CardsScreen.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/CardDetail.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/CardArtworkFrame.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/FeatureScaffold.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/life/LifeTable.kt",
+    "android-app/feature/shell/src/main/res/values/strings.xml",
+    "android-app/feature/shell/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/VisualSystemAcceptanceTest.kt",
+    "coordination/handoffs/cx-professional-visual-foundation-01.md"
+  ]
+}

@@ -365,3 +365,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T03:11:24Z | codex | cp-20261013-release-approved-59 | containing commit | Pat approved research-based release plan and explicitly moved on-device AI engines to v1.1; normal v1 functional/professional release no longer depends on runtime/model engines
 
 2026-10-13T03:14:26Z | codex | cp-20261013-reuse-trials-60 | containing commit | D26 scope applied to canonical decisions/milestones/plan, approved execution preflight ledger created; bounded Sol-medium compatibility task assigned with disjoint lock, no model work
+
+2026-10-13T03:18:25Z | codex | cp-20261013-visual-trials-61 | containing commit | D26 applied; Sol-medium CSV/Coil metadata probes found newer release toolchain mismatches, exact trials underway; independent visual component worker assigned existing Compose only, no fake game binding
