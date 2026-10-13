@@ -8,7 +8,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 /** Trusted adapter holds the immutable completed artifact/URI binding through the entire block. */
@@ -25,10 +25,11 @@ internal class LocalBulkCatalog(
 ) : CatalogBulkImport {
     override suspend fun `import`(source: CatalogBulkImportSource, chunks: Flow<ByteChunk>, onProgress: (JobProgress) -> Unit,
         cancel: CancelToken): Outcome<CatalogBulkImportResult> {
-        val owner = Any()
-        return CatalogImportOwnership.mutex.withLock(owner) {
+        return withCatalogImportOwner(cancel) { owner ->
         var committed: CatalogBulkImportResult? = null
         var staged: GenerationId? = null
+        var activationCandidate: CatalogBulkImportResult? = null
+        var activationEnvelope: String? = null
         try {
             require(source.contentUri.value.toByteArray(Charsets.UTF_8).size <= 4096)
             require(source.displayName.toByteArray(Charsets.UTF_8).size <= 512)
@@ -118,10 +119,10 @@ internal class LocalBulkCatalog(
                     proof.decodedBytes, proof.decodedHash, memberships, source.verifiedArtifact?.let { Knowledge.Known(it) } ?: Knowledge.Absent("Selected input"))
                 val envelope = BulkSourceEnvelope.encode(source, proof, memberships, consentId)
                 cancel.throwIfCancelled(); currentCoroutineContext().ensureActive()
-                // Commit acknowledgement is handled inside NonCancellable: cancellation after COMMIT
-                // cannot erase activation or turn installed success into an escaped cancellation.
-                withContext(NonCancellable) {
-                    database.transaction({ tx ->
+                // The adapter checks the original caller before shielding its actual COMMIT.
+                // Only an ambiguous acknowledgement is reconciled in NonCancellable below.
+                activationCandidate = result; activationEnvelope = envelope
+                database.transaction({ tx ->
                         val current = tx.bulkRead(bulkSql("SELECT generation_id FROM catalog_active WHERE dataset_key=:key", 1, "key" to BULK_DATASET), cancel).firstOrNull()?.bulkText("generation_id")
                         if (current != prior) tx.abort(bulkError(FailureCode.STALE_GENERATION, "Active catalog changed"))
                         if (tx.bulkWrite("UPDATE catalog_generation SET status='ACTIVE',content_sha256=:hash,observed_bytes=:bytes,oracle_count=:oracles,face_count=:faces,printing_count=:printings,source_payload=:payload,activated_at_epoch_seconds=:at,activated_at_nano=:nano WHERE generation_id=:g AND status='STAGING'", cancel,
@@ -130,15 +131,29 @@ internal class LocalBulkCatalog(
                         val changed = if (prior == null) tx.bulkWrite("INSERT INTO catalog_active(dataset_key,generation_id) SELECT :key,:g WHERE NOT EXISTS (SELECT 1 FROM catalog_active WHERE dataset_key=:key)", cancel, "key" to BULK_DATASET, "g" to generation.value)
                             else tx.bulkWrite("UPDATE catalog_active SET generation_id=:g WHERE dataset_key=:key AND generation_id=:prior", cancel, "g" to generation.value, "key" to BULK_DATASET, "prior" to prior)
                         if (changed != 1L) tx.abort(bulkError(FailureCode.STALE_GENERATION, "Active catalog pointer changed"))
+                        cancel.throwIfCancelled(); currentCoroutineContext().ensureActive()
                     }, cancel).bulkValue()
-                    committed = result; staged = null
-                }
+                committed = result; staged = null
                 return result
             }
             if (source.inputKind == SourceInputKind.VERIFIED_ARTIFACT) verifiedInput.withPinnedInput(source, cancel) { input, consentId -> consume(input, consentId) } else consume(chunks, null)
             Outcome.Success(requireNotNull(committed))
         } catch (e: Exception) {
-            committed?.let { return@withLock Outcome.Success(it) }
+            committed?.let { return@withCatalogImportOwner Outcome.Success(it) }
+            activationCandidate?.let { candidate ->
+                val acknowledgement = withContext(NonCancellable) {
+                    activationAcknowledgement(candidate, requireNotNull(activationEnvelope))
+                }
+                when (acknowledgement) {
+                    ActivationAcknowledgement.INSTALLED -> return@withCatalogImportOwner Outcome.Success(candidate)
+                    ActivationAcknowledgement.ROLLED_BACK -> Unit
+                    ActivationAcknowledgement.INCONCLUSIVE -> {
+                        // No cleanup when an ACTIVE generation or unacknowledged COMMIT is possible.
+                        if (e is CancellationException) throw e
+                        return@withCatalogImportOwner Outcome.Unknown("Catalog activation acknowledgement unavailable", SnapshotList.empty())
+                    }
+                }
+            }
             staged?.let { id -> withContext(NonCancellable) { CatalogGenerationCleanup(database).reclaimOwned(id, BULK_NO_CANCEL, owner) } }
             if (e is CancellationException) throw e
             when (e) {
@@ -149,6 +164,29 @@ internal class LocalBulkCatalog(
         }
     }
 
+    }
+
+    private suspend fun activationAcknowledgement(candidate: CatalogBulkImportResult, envelope: String): ActivationAcknowledgement {
+        val generation = candidate.installed.generation.id.value
+        val rows = try { when (val result = database.query(bulkSql("SELECT g.*,(SELECT generation_id FROM catalog_active WHERE dataset_key=:key) AS active_generation FROM catalog_generation g WHERE g.generation_id=:g", 1,
+                "key" to BULK_DATASET, "g" to generation), BULK_NO_CANCEL)) {
+            is Outcome.Success -> result.value
+            else -> return ActivationAcknowledgement.INCONCLUSIVE
+        } } catch (_: Exception) { return ActivationAcknowledgement.INCONCLUSIVE }
+        val row = rows.singleOrNull() ?: return ActivationAcknowledgement.INCONCLUSIVE
+        return try {
+            val pointer = row.bulkOptionalText("active_generation")
+            if (pointer != generation && row.bulkText("status") in setOf("STAGING", "FAILED")) ActivationAcknowledgement.ROLLED_BACK
+            else {
+                val installed = row.bulkInstalledSource()
+                val expected = candidate.installed
+                require(pointer == generation && installed.generation == expected.generation.id && installed.source == BulkSourceEnvelope.decode(envelope).source)
+                require(row.bulkText("source_payload") == envelope && installed.hash == expected.verification.computedChecksum && row.bulkLong("observed_bytes") == expected.verification.observedBytes)
+                require(row.bulkLong("oracle_count") == expected.counts.oracleCards && row.bulkLong("printing_count") == expected.counts.printings && row.bulkLong("face_count") == expected.counts.faces)
+                require(row.bulkTimestamp("activated_at") == expected.activatedAt && installed.observed == expected.provenance.fetchedAt)
+                ActivationAcknowledgement.INSTALLED
+            }
+        } catch (_: Exception) { ActivationAcknowledgement.INCONCLUSIVE }
     }
 
     private suspend fun resolveMemberships(source: CatalogBulkImportSource, generation: GenerationId, observed: UtcTimestamp, cancel: CancelToken): Long {
@@ -176,6 +214,22 @@ internal class LocalBulkCatalog(
         }
         return count
     }
+}
+
+private enum class ActivationAcknowledgement { INSTALLED, ROLLED_BACK, INCONCLUSIVE }
+
+/** Fresh owner tokens, no leaked lock, and token-only wait cancellation observed at most25ms apart. */
+internal suspend fun <T> withCatalogImportOwner(cancel: CancelToken, action: suspend (Any) -> T): T {
+    val owner = Any()
+    while (true) {
+        currentCoroutineContext().ensureActive(); cancel.throwIfCancelled()
+        if (CatalogImportOwnership.mutex.tryLock(owner)) break
+        delay(25)
+    }
+    try {
+        currentCoroutineContext().ensureActive(); cancel.throwIfCancelled()
+        return action(owner)
+    } finally { CatalogImportOwnership.mutex.unlock(owner) }
 }
 
 internal const val BULK_DATASET = "scryfall:en"

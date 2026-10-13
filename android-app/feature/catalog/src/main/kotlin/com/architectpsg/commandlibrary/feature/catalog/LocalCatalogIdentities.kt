@@ -97,6 +97,11 @@ internal class LocalCatalogIdentities(private val database: Database) : CatalogP
 internal data class BulkInstalledSource(val source: CatalogBulkImportSource, val generation: GenerationId, val observed: UtcTimestamp, val hash: ContentHash)
 internal fun RowData.bulkInstalledSource(): BulkInstalledSource {
     require(bulkText("status") == "ACTIVE" && bulkText("language_scope") == "en" && bulkLong("payload_schema_version") == ScryfallCodec.VERSION.toLong() && bulkText("parser_version") == ScryfallCodec.PARSER && bulkText("format") == ScryfallCodec.FORMAT)
+    require(bulkLong("observed_bytes") in 1..2147483648L)
+    require(bulkText("generation_id").toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in bulkText("generation_id"))
+    require(bulkLong("printing_count") in 1..500_000L && bulkLong("oracle_count") in 0..bulkLong("printing_count") && bulkLong("face_count") in 0..2147483648L)
+    bulkTimestamp("activated_at")
+    bulkOptionalLong("source_date_nano")?.let { require(it in 0..999_999_999L) }
     val hash = ContentHash("SHA-256", bulkText("content_sha256")); require(hash.hex.length == 64)
     val payload = bulkOptionalText("source_payload")
     val source = if (payload != null) {
@@ -113,7 +118,7 @@ internal fun RowData.bulkInstalledSource(): BulkInstalledSource {
     require(source.sourceDate.bulkKnown()?.epochSeconds == bulkOptionalLong("source_date_epoch_seconds") && source.sourceDate.bulkKnown()?.nanoAdjustment?.toLong() == bulkOptionalLong("source_date_nano"))
     require(source.verifiedArtifact?.provenance?.sourceVersion?.bulkKnown() == bulkOptionalText("source_version"))
     require(source.sourceDate == SourceMetadataCodec.sourceDate(bulkOptionalText("notice_payload")) && source.notice.bulkKnown() == SourceMetadataCodec.notice(bulkOptionalText("notice_payload")))
-    return BulkInstalledSource(source, GenerationId(bulkText("generation_id")), UtcTimestamp(bulkLong("observed_at_epoch_seconds"), bulkLong("observed_at_nano").toInt()), hash)
+    return BulkInstalledSource(source, GenerationId(bulkText("generation_id")), bulkTimestamp("observed_at"), hash)
 }
 private data class IdentityCursor(val generation: String, val query: String, val provider: String, val printing: String)
 private fun identityQuery(id: OracleId): String = MessageDigest.getInstance("SHA-256").digest("${id.source.value.length}:${id.source.value}${id.raw.length}:${id.raw}".toByteArray(Charsets.UTF_8)).hex()
@@ -125,4 +130,11 @@ private fun decodeIdentityCursor(value: String): IdentityCursor {
     require(parts.size == 5 && parts[0] == "1" && parts.drop(1).all { it.isNotBlank() } && parts[2].matches(Regex("[0-9a-f]{64}")))
     require(parts.filterIndexed { i,_ -> i in listOf(1,3,4) }.all { it.toByteArray(Charsets.UTF_8).size <= 128 })
     return IdentityCursor(parts[1],parts[2],parts[3],parts[4])
+}
+
+/** Validate SQL's full64-bit value before narrowing: wrapped corrupt nanos must never look valid. */
+internal fun RowData.bulkTimestamp(prefix: String): UtcTimestamp {
+    val nano = bulkLong("${prefix}_nano")
+    require(nano in 0..999_999_999L)
+    return UtcTimestamp(bulkLong("${prefix}_epoch_seconds"), nano.toInt())
 }
