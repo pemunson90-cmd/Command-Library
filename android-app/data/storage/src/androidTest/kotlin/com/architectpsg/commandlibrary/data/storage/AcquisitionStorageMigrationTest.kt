@@ -42,7 +42,7 @@ class AcquisitionStorageMigrationTest {
     @Test fun actualV2MigrationPreservesLegacyDataAndDurableAcquisitionRows() = runBlocking {
         val fixture = createV2()
         reopen()
-        assertEquals(3, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyUnchanged(fixture)
 
         write(job("paused"), job("completed"), job("unrelated"))
@@ -160,9 +160,9 @@ class AcquisitionStorageMigrationTest {
                 assertTrue(it.step()); assertEquals(fixture.schema.getString("identityHash"), it.getText(0))
             }
         }
-        // Real Room open must still discover and complete 2->3 after the aborted DDL transaction.
+        // Real Room open must still complete 2->3->4 after the aborted acquisition DDL transaction.
         reopen()
-        assertEquals(3, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
         assertAcquisitionSchema()
         assertLegacyUnchanged(fixture)
         reopen()
@@ -317,7 +317,18 @@ class AcquisitionStorageMigrationTest {
                 "SELECT ${columns.joinToString(",") { "`$it`" }} FROM `$table`",
             ))
         }
-        assertEquals("All legacy table/index/FTS DDL", fixture.ddl, rows(legacyDdlQuery))
+        // Schema4 changes exactly the listed provenance columns; preserve every prior DDL byte.
+        val restoredDdl = rows(legacyDdlQuery).map { row ->
+            val table = (row[1] as SqlValue.Text).value
+            if (row[0] == SqlValue.Text("table") && table in setOf("catalog_generation", "rules_corpus")) {
+                var ddl = (row[3] as SqlValue.Text).value
+                ddl = ddl.replace(Regex(",\\s*`input_kind` TEXT NOT NULL DEFAULT 'USER_CONTENT_URI'"), "")
+                    .replace(Regex(",\\s*`artifact_job_id` TEXT"), "")
+                if (table == "catalog_generation") ddl = ddl.replace(Regex(",\\s*`source_payload` TEXT"), "")
+                row.take(3) + SqlValue.Text(ddl)
+            } else row
+        }
+        assertEquals("All legacy DDL after removing only schema4 additions", fixture.ddl, restoredDdl)
         val attempt = fixture.rows.getValue("rules_import_attempt")[3] as SqlValue.Text
         assertEquals(listOf(SqlValue.Blob(SnapshotBytes(attempt.value.toByteArray(Charsets.UTF_8)))), values(
             "SELECT CAST(attempt_payload AS BLOB) AS payload_bytes FROM rules_import_attempt",
@@ -400,5 +411,5 @@ class AcquisitionStorageMigrationTest {
         return (outcome as Outcome.Success).value
     }
 
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'acquisition_%' AND name NOT LIKE 'index_acquisition_%' AND name NOT LIKE 'sqlite_autoindex_acquisition_%' AND name != 'room_master_table' ORDER BY type,name"
+    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'acquisition_%' AND name NOT LIKE 'index_acquisition_%' AND name NOT LIKE 'sqlite_autoindex_acquisition_%' AND name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' ORDER BY type,name"
 }

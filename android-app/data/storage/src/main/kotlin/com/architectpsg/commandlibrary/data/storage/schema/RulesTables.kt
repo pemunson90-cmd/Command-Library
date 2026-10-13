@@ -42,6 +42,9 @@ internal data class RulesCorpusEntity(
     @ColumnInfo(name = "payload_schema_version") val payloadSchemaVersion: Int,
     @ColumnInfo(name = "activated_at_epoch_seconds") val activatedAtEpochSeconds: Long?,
     @ColumnInfo(name = "activated_at_nano") val activatedAtNano: Int?,
+    @ColumnInfo(name = "input_kind", defaultValue = "'USER_CONTENT_URI'") val inputKind: String = "USER_CONTENT_URI",
+    /** Provenance only; independent of acquisition job/artifact retention. */
+    @ColumnInfo(name = "artifact_job_id") val artifactJobId: String? = null,
 )
 
 /** The repository writes singleton_id = 1; replacing its pointer is an atomic transaction. */
