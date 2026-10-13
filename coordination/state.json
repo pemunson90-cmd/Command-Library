@@ -3,23 +3,24 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-native-firstbatch-63",
-  "verified_base_head": "0446f142e87a16e709ea28eee04566534b211cc0",
+  "checkpoint_id": "cp-20261013-private-locator-64",
+  "verified_base_head": "d9f41325f33c84d54709272cab74a2b58760ab80",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
-  "status": "Functional Android v1 execution active; first-batch native/render acceptance pending",
+  "status": "Functional Android v1 active; native visuals pending and private locator packet approved",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Run one coherent compiled first-batch matrix; verify four real Android image cases and36 retained visual captures, inspect renders, then finish reviewed guarded download binding.",
+  "first_action": "Inspect first-batch native tests/screenshots; execute reviewed provider-only packet under disjoint lock, settle profile and import acknowledgement separately before Android facade.",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01",
     "cx-reuse-compatibility-01",
-    "cx-professional-visual-foundation-01"
+    "cx-professional-visual-foundation-01",
+    "cx-artifact-locator-01"
   ],
   "blockers": [
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
-  "worktree_mode": "Root integrates reviewed first-batch candidates, locks retained through native acceptance; component source workers finished. Task3 source-backed design work is read-only; no life worker or local-engine task.",
+  "worktree_mode": "Root first-batch hosted integration; prior component source workers finished and locks reserved through acceptance. One disjoint Sol-high private locator writer authorized; no facade/public contract/schema/bulk importer writer. On-device engines v1.1.",
   "review_status": "0446f14 corrected visual/Coil native-source/CI preflight independently approved. Collector2a35ac4 source approved;30script tests pass. Actual first-batch matrix and36capture inspection pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
@@ -45,8 +46,9 @@
     "k3_schema4_wire": "Exact44d02c9 hosted38328542087 all4lanes success:347 JVM,66native per API23/API36/API36-16KiB lane; actualKSP4 export committed in next checkpoint, SHA6f1f94a2c2653635e70784a77b933bbcc2a7b23b636e9d26b7abb830afa0dcec.",
     "life_original": "Exactc4a27190 hosted38331874820 command success,16model+69life,0failures/errors/skips. Two independent undo defects prevent acceptance; revisedce97e47e hosted38333007130 pending.",
     "life_corrected": "PR17 expected6fa6043 mergedmain3cc82c25; focused38333232421 21model+81life0failures/errors/skips; matrix38333213528 428JVM/66nativeeach0failures/errors, actual16KiBpage16384. MergedAndroidtree identical to tested integration.",
-    "k3_merged_source": "Bulk b6e74819 independently91tests+original3probes+boundedackprobe pass, integrated15e80ab. Actual combined root model/common/catalog strict production compile and172JVMtests pass underXmx256m; harness nonexistent resources warnings only. Settings d4d30f8 independently56actualDataStore tests pass, integratede3be616; platformconfiguredartifact checks pending."
+    "k3_merged_source": "Bulk b6e74819 independently91tests+original3probes+boundedackprobe pass, integrated15e80ab. Actual combined root model/common/catalog strict production compile and172JVMtests pass underXmx256m; harness nonexistent resources warnings only. Settings d4d30f8 independently56actualDataStore tests pass, integratede3be616; platformconfiguredartifact checks pending.",
+    "firstbatch_jvm": "Exactd9f4132 hosted38345526072 job115125940772: all Android test APKs compiled,522JVMtests0failures/errors, debugAPK and16KiBZIPalignment pass. Three native lanes/render evidence ongoing; no full-v1 acceptance."
   },
-  "last_completed": "Research-first brief and cheap compilation gate recorded per Pat. Test-only image source moved off proven unsupported Robolectric codec to actual Android; original assertions retained and source reviewed. Corrected visual source0446f14 and collector reviewed; actual hosted acceptance pending. Task3 source-backed private-provider factory proposal read-only underway.",
-  "updated_utc": "2026-10-13T04:14:56Z"
+  "last_completed": "Exactd9f4132 compile and522JVMtests passed, native38345526072 ongoing. Source-backed Android binding review narrowed next work to provider/locator; task cx-artifact-locator-01 approved, one writer granted. Broader facade/profile/acknowledgement remain blocked; no new product port or full-v1 acceptance.",
+  "updated_utc": "2026-10-13T04:33:14Z"
 }

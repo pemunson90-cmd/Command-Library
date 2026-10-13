@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-native-firstbatch-63. Updated UTC: 2026-10-13T04:14:56Z.
+Checkpoint: cp-20261013-private-locator-64. Updated UTC: 2026-10-13T04:33:14Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Functional Android v1 execution active; first-batch native/render acceptance pending. Next: orch-kotlin-k3-offline-data-01 step3.
-Run one coherent compiled first-batch matrix; verify four real Android image cases and36 retained visual captures, inspect renders, then finish reviewed guarded download binding.
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Functional Android v1 active; native visuals pending and private locator packet approved. Next: orch-kotlin-k3-offline-data-01 step3.
+Inspect first-batch native tests/screenshots; execute reviewed provider-only packet under disjoint lock, settle profile and import acknowledgement separately before Android facade.
 
-Research-first brief and cheap compilation gate recorded per Pat. Test-only image source moved off proven unsupported Robolectric codec to actual Android; original assertions retained and source reviewed. Corrected visual source0446f14 and collector reviewed; actual hosted acceptance pending. Task3 source-backed private-provider factory proposal read-only underway.
+Exactd9f4132 compile and522JVMtests passed, native38345526072 ongoing. Source-backed Android binding review narrowed next work to provider/locator; task cx-artifact-locator-01 approved, one writer granted. Broader facade/profile/acknowledgement remain blocked; no new product port or full-v1 acceptance.
 
 Read CURRENT, machine state and task card.

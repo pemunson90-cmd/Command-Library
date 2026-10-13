@@ -1,0 +1,12 @@
+{
+  "component": "catalog-artifact-locator",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cx-artifact-locator-01",
+  "branch": "agent/cx-artifact-locator-01",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/AcquisitionArtifactProvider.kt",
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/AndroidVerifiedArtifactLocator.kt",
+    "android-app/feature/catalog/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/catalog/AndroidArtifactLocatorTest.kt",
+    "coordination/handoffs/cx-artifact-locator-01.md"
+  ]
+}
