@@ -1,0 +1,9 @@
+APPROVE owned source exact `b6e74819b5b1dc09dd10bb5a13b8befe11495c24`; clean worktree, no remaining blocker from this review; root integration/platform acceptance remain separate.
+Independently fresh-compiled actual non-Android catalog/core sources and tests; all91 JVM tests passed6.674s under-Xmx256m; `/workspace/scratch/k3-full-bulk-final-tests.txt`.
+Unchanged original three independent probes passed3/3 in2.573s: precommit caller cancellation preserves prior pointer, token-only import/recovery stop while owner remains held, corrupt64-bit nanoseconds fail closed.
+Unchanged suspended-ack probe now reports completedAfter1100ms=true, activeChanged=true, returned=null before manual acknowledgement release; `/workspace/scratch/k3-full-bulk-final-probes.txt`.
+The500ms cancellable timeout is inside NonCancellable; expiry selects INCONCLUSIVE, propagates original cancellation/typed uncertainty, performs no potentially-active cleanup, and releases owner in finally; added real-SQL regression asserts owner release and retained committed rows.
+Confirmed commit acknowledgement validates exact generation/pointer/envelope/raw verification/counts/timestamps; proven commit returns Success, definite rollback permits bounded cleanup, ambiguous storage response remains inconclusive.
+All original reviewed raw/decoded/gzip/EOF/batch/membership/CAS/lookup/cleanup paths remain unchanged by this final timeout delta; no corpus mapper or ordinary successful-import path changed.
+Prior worker genuine116009printings/38743Oracles/116092memberships and114-call recovery evidence remains applicable as explicitly prior-run evidence; no new full-corpus/device performance run claimed.
+Root must separately bind durable completed artifact/real URI/exact consent/pinned authoritative flow and integrate reviewed shared parser/metadata hardening; no Android/Room/KSP/native/provider/physical/ENOSPC/full-app acceptance is implied.

@@ -16,8 +16,8 @@ Read CONTINUE.md, docs/architecture/life/ARCHITECT.md, KOTLIN_CONTRACTS.md, KOTL
 
 ## Ownership
 
-New life.lock is owned by root for this task: feature/life production and tests plus this task/handoff. Shared core/storage/app/CI changes remain orchestrator-owned, never implicitly delegated. Split narrower writer locks/paths before delegation; preserve original branches. Maximum three component writers, no overlapping writes.
+New life-functional.lock is owned by root for this task: feature/life production and tests plus this task/handoff. Shared core/storage/app/CI changes remain orchestrator-owned, never implicitly delegated. Split narrower writer locks/paths before delegation; preserve original branches. Maximum three component writers, no overlapping writes.
 
 ## Latest continuation delta
 
-Prepared as the next life task while PR17 integration verification runs. No service/storage/UI implementation is claimed. Exact next action after PR17 acceptance: release correction lock, install this new root-owned lock, draft concrete contract patch for independent review, then issue bounded service/UI packets.
+Active root-owned next life task after PR17 merged at main3cc82c25. Correction life.lock released; new life-functional.lock excludes other components. Full integration matrix428JVM/66nativeeach passed; exact life tree matches reviewed ce97e47e. No service/storage/UI implementation claimed. Exact next action: draft concrete contract patch for independent review, then issue bounded service/UI packets only after contracts/schema acceptance.

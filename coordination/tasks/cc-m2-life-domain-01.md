@@ -1,6 +1,6 @@
 # Claude: isolated life domain implementation
 
-Task: cc-m2-life-domain-01. Parent: orch-kotlin-k3-offline-data-01. Status: assigned by Codex at Pat's explicit request. This prepares M2; it does not close M2, K3 or full-app acceptance.
+Task: cc-m2-life-domain-01. Parent: orch-kotlin-k3-offline-data-01. Status: completed and integrated by Codex at Pat's explicit request. This prepares M2; it does not close M2, K3 or full-app acceptance.
 
 Use branch `agent/cc-m2-life-domain-01` in a separate worktree. Its prepared commit is `9ce1a488902d18b1a670ecef08c024466c841249`; the life JVM module and settings inclusion already exist there. Merge this documentation assignment branch into your worktree before coding. Do not take over the orchestrator lease or resume the completed rules-parser assignment.
 
@@ -29,3 +29,7 @@ If a public type is missing, document the exact proposed contract addition and f
 Add meaningful deterministic tests for atomic invalid operations, bounds/overflow, hidden values, partner identity, clock pause/switch/zero/restart/undo and wall-clock changes, plus random bounds/count/sums/eligible IDs. Fixtures must be synthetic.
 
 Run `cd android-app && bash gradlew --no-daemon --console=plain :core:model:test :feature:life:test`. If environment bootstrap prevents execution, report the precise limitation and request hosted verification; never report an unrun check as passed. Commit and push coherent code/test steps on your branch. Maintain your owned handoff with latest commit, actual checks, missing contract requests and exact next action. Return at most ten lines with branch, commit and evidence. Codex handles independent review, integration and complete-app acceptance.
+
+## Latest continuation delta
+
+Original c4a2719 independently reviewed and hosted85tests passed, but two undo defects reproduced. Corrected ce97e47e independently approved and hosted97tests passed. PR17 integrated all four domain files/tests and corrections unchanged at main3cc82c25 after full matrix428JVM/66nativeeach passed. All14 dispositions recorded in docs/verification/m2-life/CONTRACT-DISPOSITIONS.md, including PatD25. Old life.lock released; next task cx-m2-life-functional-01 owns a new life-functional.lock. No GameService/UI/full-life acceptance claim.
