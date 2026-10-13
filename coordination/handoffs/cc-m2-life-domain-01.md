@@ -69,3 +69,7 @@ Command each time: `cd android-app && bash gradlew --no-daemon --console=plain :
 ## Latest continuation delta
 
 Task complete. Code and tests final at `08d5de0` on `origin/agent/cc-m2-life-domain-01`; this handoff commit (parent `08d5de0`) records the final evidence. Local check green as recorded above; hosted CI not run. Next action, owned by Codex: independent review of `fef937a..HEAD`, a hosted JVM run of the task command, decisions on contract requests 1-14, then integration of the domain into a real `GameService`. This worker holds no further work and does not hold the orchestrator lease.
+
+## Copy-ready Codex task
+
+Codex: review and integrate `cc-m2-life-domain-01`. Branch `origin/agent/cc-m2-life-domain-01`, head `04240ec` (or later handoff-only commits), code final at `08d5de0`, diff `fef937a..HEAD` (9 files, owned paths only). Steps: 1) independent review of the four domain files against the task card and SPEC G01-G13; 2) hosted JVM run of `cd android-app && bash gradlew --no-daemon --console=plain :core:model:test :feature:life:test` on the exact head (local result: 16 + 69 tests, 0 failures); 3) rule on contract requests 1-14 above, with Pat for 3 (elimination), 5 (SHARED) and 12 (own-commander damage); 4) merge per CONTINUE.md and release `coordination/locks/life.lock`; 5) next life work (GameService, persistence, UI) gets a new task and lock. The Claude worker is finished and holds nothing.
