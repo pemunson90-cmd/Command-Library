@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "verified_utc": "2026-10-13",
+  "status": "candidate_recommendation; independent review and hosted graph/runtime checks pending",
+  "scope": "Task1 D26v1.1; image/CSV compatibility only; no production source, DI, model or runtime-engine changes",
+  "toolchain": {
+    "compiler": "Kotlin K2 2.2.10",
+    "stdlib_runtime": "2.2.10",
+    "jvm_target": 17,
+    "junit": "4.13.2",
+    "coroutines": "1.10.2",
+    "okio": "3.18.1",
+    "android_compile_reference": "org.robolectric:android-all:15-robolectric-12650502 (published real Android classes)",
+    "robolectric": "4.17 (compile only, runner not executed)",
+    "local_android_sdk": false
+  },
+  "recommendations": [
+    {
+      "library": "kotlin-csv",
+      "candidate": "com.jsoizo:kotlin-csv-jvm:1.10.0",
+      "fit": "strict quoted/BOM/lazy JVM CSV primitive; bounded input/field/row and cooperative cancellation must be enforced by application; no vendor mapping or importer implementation",
+      "source_tag": "https://github.com/jsoizo/kotlin-csv/tree/1.10.0",
+      "source_sha": "19c28835a7bde791c808fe8a7b05818122e0e28d",
+      "source_sha_evidence": "git ls-remote refs/tags/1.10.0; source jar checksum separately recorded; source build attestation not established",
+      "license": "Apache-2.0",
+      "license_url": "https://github.com/jsoizo/kotlin-csv/blob/19c28835a7bde791c808fe8a7b05818122e0e28d/LICENSE",
+      "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "artifacts": [
+        {
+          "coordinate": "com.jsoizo:kotlin-csv-jvm:1.10.0",
+          "artifact_url": "https://repo.maven.apache.org/maven2/com/jsoizo/kotlin-csv-jvm/1.10.0/kotlin-csv-jvm-1.10.0.jar",
+          "artifact_sha256": "b50dd087eeae97120d79c261ae063046c2407c1747e4ceeceffa735ad8f61df3",
+          "pom_sha256": "93e74ca14dd0288763442be54e379308b25dea2c5584cdf9d38d3a3c134406e8",
+          "module_sha256": "32aa31734a43967778cfe7a2107c3a105a06a8e2149df283b156b4474850072c",
+          "sources_sha256": "744a56878bbbe7ab5319700768cfd460a24cb97cff99fdd427334115b168e385",
+          "published_direct_dependencies": [
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib-jdk8",
+              "version": "1.7.21",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib-common",
+              "version": "1.7.21",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlinx",
+              "artifactId": "kotlinx-coroutines-core-jvm",
+              "version": "1.5.2",
+              "scope": "runtime"
+            }
+          ],
+          "dependency_management": {},
+          "native_entries": []
+        }
+      ],
+      "test_result": "pinned K2 compile exit0; actual JUnit8/8",
+      "limits": "No built-in field/row/all-input cap. Test-only helper pre-caps raw String at64 UTF-16 code units then validates field16/row4 defaults; does not establish streaming byte bounds. open(InputStream) closes input and uses buffered read-ahead. Caller ensureActive before next row is required; no built-in Job cancellation."
+    },
+    {
+      "library": "Coil",
+      "candidate": "io.coil-kt.coil3:coil-core:3.3.0 + coil-compose-core:3.3.0",
+      "fit": "local image decode/display and ephemeral cache only; retained packs remain separately app-owned",
+      "source_tag": "https://github.com/coil-kt/coil/tree/3.3.0",
+      "source_sha": "1731511f0c12ef556db7822a91b6ea03fa3f95a1",
+      "source_sha_evidence": "git ls-remote refs/tags/3.3.0; source jar checksum separately recorded; source build attestation not established",
+      "license": "Apache-2.0",
+      "license_url": "https://github.com/coil-kt/coil/blob/1731511f0c12ef556db7822a91b6ea03fa3f95a1/LICENSE.txt",
+      "license_sha256": "5ade6484903351f6661e791504c50ad1a24cab3a75950c1b2a7be3eb336b6ba9",
+      "artifacts": [
+        {
+          "coordinate": "io.coil-kt.coil3:coil-core-android:3.3.0",
+          "artifact_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar",
+          "artifact_sha256": "b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b",
+          "pom_sha256": "cd627afd3e4d4a60f04c7a782168d57fee470c6ae7aa87408f1a644f4172516f",
+          "module_sha256": "6c0e4b79037245dfb370b68817a613718eb15ca2c66d373cd1ba2ad1db8d73cd",
+          "sources_sha256": "58bf55460e62be9608819ec72ced3138cedba6d05216e0136048e05a970cd23d",
+          "published_direct_dependencies": [
+            {
+              "groupId": "androidx.lifecycle",
+              "artifactId": "lifecycle-runtime-android",
+              "version": "2.8.7",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlinx",
+              "artifactId": "kotlinx-coroutines-core-jvm",
+              "version": "1.10.2",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib",
+              "version": null,
+              "scope": "compile"
+            },
+            {
+              "groupId": "com.squareup.okio",
+              "artifactId": "okio-jvm",
+              "version": "3.15.0",
+              "scope": "compile"
+            },
+            {
+              "groupId": "androidx.annotation",
+              "artifactId": "annotation-jvm",
+              "version": "1.9.1",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "androidx.appcompat",
+              "artifactId": "appcompat-resources",
+              "version": "1.7.1",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "androidx.core",
+              "artifactId": "core-ktx",
+              "version": "1.15.0",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "androidx.exifinterface",
+              "artifactId": "exifinterface",
+              "version": "1.4.1",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "androidx.profileinstaller",
+              "artifactId": "profileinstaller",
+              "version": "1.4.1",
+              "scope": "runtime"
+            },
+            {
+              "groupId": "org.jetbrains.kotlinx",
+              "artifactId": "kotlinx-coroutines-android",
+              "version": "1.10.2",
+              "scope": "runtime"
+            }
+          ],
+          "dependency_management": {
+            "kotlin-stdlib": "2.2.0"
+          },
+          "native_entries": []
+        },
+        {
+          "coordinate": "io.coil-kt.coil3:coil-compose-core-android:3.3.0",
+          "artifact_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-compose-core-android/3.3.0/coil-compose-core-android-3.3.0.aar",
+          "artifact_sha256": "e2090a3e00e7278cc6245f9bf2a5613af392f0e30fc8b4477d2f594da5fded3e",
+          "pom_sha256": "5069d8aa813320fd27827eb705275f657639fc3588c17cea041e1e07c70e810b",
+          "module_sha256": "3f607513ca29f1b09140d2997a526be71d3078013915d8c30de7a8eeb164c217",
+          "sources_sha256": "3c8628ffcd154c6449fb5eb7732007eac73817f23f5d8da623f03d6a4f813765",
+          "published_direct_dependencies": [
+            {
+              "groupId": "io.coil-kt.coil3",
+              "artifactId": "coil-core-android",
+              "version": "3.3.0",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.compose.foundation",
+              "artifactId": "foundation",
+              "version": "1.8.2",
+              "scope": "compile"
+            },
+            {
+              "groupId": "org.jetbrains.kotlin",
+              "artifactId": "kotlin-stdlib",
+              "version": "2.2.0",
+              "scope": "compile"
+            },
+            {
+              "groupId": "com.google.accompanist",
+              "artifactId": "accompanist-drawablepainter",
+              "version": "0.37.3",
+              "scope": "runtime"
+            }
+          ],
+          "dependency_management": {},
+          "native_entries": []
+        }
+      ],
+      "aar_metadata": {
+        "minCompileSdk": 1,
+        "minAndroidGradlePluginVersion": "1.0.0",
+        "coreLibraryDesugaringEnabled": false
+      },
+      "test_result": "complete owned source K2 compile exit0; actual plain JVM DiskCache JUnit1/1; 4 Android runtime tests not_run",
+      "network_policy": "No network module requested; serviceLoaderEnabled(false) on every probe loader prevents ambient service fetchers. No app consent transport exists in these probes. A future fetcher requires separately guarded app transport."
+    }
+  ],
+  "rejected_or_deferred": [
+    {
+      "candidate": "io.coil-kt.coil3:3.6.3",
+      "decision": "rejected for current graph",
+      "source_sha": "29cae3b4212ebea927b15da5bf2ad79fbb6f5c99",
+      "published_stdlib": "2.4.10",
+      "published_compose_foundation": "org.jetbrains.compose.foundation:foundation-android:1.12.0",
+      "result": "K2 2.2.10 with published stdlib2.4.10 exits1: metadata2.4.0 expected2.2.0",
+      "compiler_output": "scratch/reuse-compatibility-probe/latest/2.4.10/kotlin-stdlib-2.4.10.jar!/META-INF/kotlin-stdlib-jdk7.kotlin_module: error: module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.4.0, expected version is 2.2.0.\nscratch/reuse-compatibility-probe/latest/2.4.10/kotlin-stdlib-2.4.10.jar!/META-INF/kotlin-stdlib-jdk8.kotlin_module: error: module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.4.0, expected version is 2.2.0.\nscratch/reuse-compatibility-probe/latest/2.4.10/kotlin-stdlib-2.4.10.jar!/META-INF/kotlin-stdlib.kotlin_module: error: module was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.4.0, expected version is 2.2.0.\n",
+      "artifact_sha256": "5218a816859f7f6d0f5681adff25b0259c5e699e6cb1396adbd6b32c94b12714",
+      "compose_artifact_sha256": "3ce609751d74d63280f47d8b32199898ee98ed9567de71f36d75626b0cd660d4",
+      "license": "Apache-2.0 (published POM)"
+    },
+    {
+      "candidate": "Coil3.5.0",
+      "decision": "metadata-screened; no full compiler trial",
+      "reason": "published stdlib2.4.0 and foundation1.11.1 upgrades current graph"
+    },
+    {
+      "candidate": "Coil3.4.0",
+      "decision": "metadata-screened; no full compiler trial",
+      "reason": "published stdlib2.3.10 and foundation1.9.3 upgrades current graph"
+    },
+    {
+      "candidate": "com.jsoizo:kotlin-csv-jvm:2.0.0",
+      "decision": "deferred; older version meets required probes without runtime pin change",
+      "source_sha": "4751cb0aca048502ff4f66293d055b0181c70a04",
+      "artifact_sha256": "3965b4088858594071ca38fea4b104e3bcd0eec74bc68b6a5571467108314dde",
+      "published_dependencies": [
+        "org.jetbrains.kotlin:kotlin-stdlib:2.3.21",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2",
+        "org.jetbrains.kotlinx:kotlinx-io-core-jvm:0.9.0"
+      ],
+      "comparison": "K2 compile with2.3.21 succeeds. Pinned2.2.10 narrow runtime comparison8/8 succeeds, but overriding published requirement is not recommended. Package/API changed to com.jsoizo.kotlincsv. Legacy com.github.doyaaaaaken:2.0.0 URL returned404.",
+      "license": "Apache-2.0 (published POM)"
+    }
+  ],
+  "evidence": {
+    "scratch": "/workspace/scratch/reuse-compatibility-probe",
+    "commands": [
+      "python3 /workspace/scratch/reuse-compatibility-probe/run-csv.py",
+      "python3 /workspace/scratch/reuse-compatibility-probe/run-coil.py"
+    ],
+    "csv_green_output": "\ncompiler_exit 0\nJUnit version 4.13.2\n........\nTime: 0.061\n\nOK (8 tests)\n\n\n",
+    "coil_green_output": "\ncompiler_exit 0\nJUnit version 4.13.2\n.\nTime: 0.209\n\nOK (1 test)\n\n\n",
+    "red_evidence": {
+      "initial_csv1": "6/8;2 errors because expected CSVParseFormatException but actual MalformedCSVException. Corrected specific API expectation; no library fix.",
+      "guard_mutation": "JUnit version 4.13.2\n..E......E\nTime: 0.065\nThere were 2 failures:\n1) libraryHasNoFieldBoundButTestOnlyBoundaryRejectsOversize(com.architectpsg.commandlibrary.core.common.compatibility.CsvCompatibilityProbeTest)\njava.lang.AssertionError: expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown\n\tat org.junit.Assert.assertThrows(Assert.java:1028)\n\tat org.junit.Assert.assertThrows(Assert.java:981)\n\tat com.architectpsg.commandlibrary.core.common.compatibility.CsvCompatibilityProbeTest.libraryHasNoFieldBoundButTestOnlyBoundaryRejectsOversize(CsvCompatibilityProbeTest.kt:73)\n2) rowAndInputBoundsRejectInsteadOfSilentlyTruncating(com.architectpsg.commandlibrary.core.common.compatibility.CsvCompatibilityProbeTest)\njava.lang.AssertionError: expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown\n\tat org.junit.Assert.assertThrows(Assert.java:1028)\n\tat org.junit.Assert.assertThrows(Assert.java:981)\n\tat com.architectpsg.commandlibrary.core.common.compatibility.CsvCompatibilityProbeTest.rowAndInputBoundsRejectInsteadOfSilentlyTruncating(CsvCompatibilityProbeTest.kt:79)\n\nFAILURES!!!\nTests run: 8,  Failures: 2\n\n",
+      "interpretation": "Scratch-only removal of test-boundary require guards makes2 assertions fail; owned source remains guarded. This validates only helper assertion sensitivity, not production import limits."
+    },
+    "fixture": "1x1 RGBA PNG generated with Python struct/zlib; valid IHDR/IDAT/IEND CRCs; no image model/tool involved"
+  },
+  "not_run": [
+    "Gradle variant/dependency resolution and full module/app build against AGP9.4.1",
+    "Android/Robolectric local decode, malformed decode, no-HTTPS fetcher and request cancellation runtime tests (4)",
+    "Compose rendering/instrumentation/device/fold tests",
+    "Complete resolved-transitive native packaging/16KiB scan",
+    "Room3.0.3/SQLite2.7.1/DataStore1.2.1 coexistence graph/build checks"
+  ],
+  "root_integration_request": {
+    "aliases": {
+      "kotlin-csv-compatibility": {
+        "module": "com.jsoizo:kotlin-csv-jvm",
+        "version": "1.10.0"
+      },
+      "coil-core-compatibility": {
+        "module": "io.coil-kt.coil3:coil-core",
+        "version": "3.3.0"
+      },
+      "coil-compose-core-compatibility": {
+        "module": "io.coil-kt.coil3:coil-compose-core",
+        "version": "3.3.0"
+      }
+    },
+    "testImplementation": {
+      "core/common": [
+        "libs.kotlin.csv.compatibility"
+      ],
+      "feature/shell": [
+        "libs.coil.core.compatibility",
+        "libs.coil.compose.core.compatibility"
+      ]
+    },
+    "network_modules": [],
+    "hosted_commands": [
+      "./gradlew :core:common:test --tests \"*CsvCompatibilityProbeTest\"",
+      "./gradlew :feature:shell:testDebugUnitTest --tests \"*Coil*CompatibilityProbeTest\"",
+      "./gradlew :feature:shell:dependencies --configuration debugUnitTestRuntimeClasspath"
+    ],
+    "gate": "Keep compiler/stdlib2.2.10 and accepted graph pins. Inspect resolved Android/Compose/coroutines/okio graph; no hidden downgrade or upgrade. Run4 real Android runtime tests before production dependency acceptance. Room/SQLite/DataStore pins untouched; neither candidate declares these dependencies. Preserve source license/NOTICE obligations; artwork rights remain separate.",
+    "integration_commit": "2235e5e30c27e3a2320801117024759874180ad0 (root-owned; cherry-picked990975f)"
+  }
+}
