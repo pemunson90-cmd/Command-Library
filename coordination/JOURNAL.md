@@ -367,3 +367,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T03:14:26Z | codex | cp-20261013-reuse-trials-60 | containing commit | D26 scope applied to canonical decisions/milestones/plan, approved execution preflight ledger created; bounded Sol-medium compatibility task assigned with disjoint lock, no model work
 
 2026-10-13T03:18:25Z | codex | cp-20261013-visual-trials-61 | containing commit | D26 applied; Sol-medium CSV/Coil metadata probes found newer release toolchain mismatches, exact trials underway; independent visual component worker assigned existing Compose only, no fake game binding
+
+2026-10-13T03:50:29Z | codex | cp-20261013-visual-captures-62 | containing commit | D26 on-device engines remain v1.1. Test-only image native harness independently approved, exact9907eaa hosted38343151548 ongoing. Visual7426 blocked and corrective worker active. Root screenshot collector2a35ac4 independently approved;30 script tests pass; no rendered UI/full-v1 acceptance.
