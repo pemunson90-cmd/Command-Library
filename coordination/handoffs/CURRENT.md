@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-native-visual-binder-71
+Checkpoint-ID: cp-20261013-claude-audit-complete-72
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Root reviewed factory/sole guardedAppGraph composition using existing research and separate binder a83d8db; cheaplocalchecks then one coherent nativecandidate including collector correction and binder fixtures.
+Next step: 3. Review bounded429 transport/engine behavior before guardedfactory; preserve explicitresume, exactwireauthority and cumulativebudgets; integrate reviewedbinder/parser/collector only in next coherentnativecandidate.
 
-Updated UTC: 2026-10-13T17:30:57Z
-Status: Native120/lane passed; API23capturefix locally verified, binder preserved unregistered; visual/fullv1 incomplete; lease: active.
-Verified base: 57dd9acdd3bd320546a50fdbf2020a09a2f82fff.
+Updated UTC: 2026-10-13T17:55:53Z
+Status: Claude audit completed/reviewed; parser defect fixed/verified separately; guarded download integration pending; lease: active.
+Verified base: be2bebdc3866d1f9633f670fde9d42a2ca3d7c0f.
 
-Published b4ca034 actual120native tests/lane zero failures/errors/skips; modern36PNGs/lane validated anddefault inspected. API23collector failure traced to logcat markers; localfix57dd9ac/31scripttests. Binder a83d8db separatelypublished/sourceapproved, focusedcompilelintJVMpass/native4not_run. No release/visual claim.
+Claude6c9715b evidence preserved8783229; Solmedium finished auditbe2bebd, Astra-high APPROVE. Actual parserRED then correction3ed7237 separatelypublished:87JVM0failure/error/skip,lint/testAPKpass; source re-reviewAPPROVE, native/fullcorpusnot_run. Previousnative120/lane andvisual/API23capturelimitations retained.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
