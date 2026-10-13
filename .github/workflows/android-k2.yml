@@ -213,6 +213,9 @@ jobs:
           print('Instrumentation total tests:', total, 'failures+errors:', failures)
           assert failures == 0
           PY
+      - name: Collect synthetic visual captures
+        if: always() && steps.gate.outputs.run == 'true'
+        run: python3 scripts/collect_visual_captures.py --adb "$ANDROID_HOME/platform-tools/adb"
       - name: Retain evidence
         if: always() && steps.gate.outputs.run == 'true'
         # actions/upload-artifact v7.0.2; official release/tag commit observed 2026-10-11.
@@ -222,6 +225,7 @@ jobs:
           path: |
             android-app/**/build/outputs/androidTest-results/**
             android-app/**/build/reports/androidTests/**
+            visual-captures/**
             emulator.log
           if-no-files-found: ignore
           retention-days: 14
