@@ -60,6 +60,9 @@ dependencies {
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.robolectric)
+    // Compatibility trials only; no production/network image loader is bound here.
+    testImplementation(libs.coil.core.compatibility)
+    testImplementation(libs.coil.compose.core.compatibility)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
