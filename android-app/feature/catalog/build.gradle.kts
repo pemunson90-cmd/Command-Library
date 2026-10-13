@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.gson)
     testImplementation(libs.junit)
+    testImplementation(libs.sqlite.bundled.jvm)
     testImplementation(libs.coroutines.test)
     androidTestImplementation(project(":data:storage"))
     androidTestImplementation(libs.androidx.test.ext.junit)
