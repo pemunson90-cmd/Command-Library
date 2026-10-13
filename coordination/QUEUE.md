@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-life-event-codec-ready-83. Next: orch-kotlin-k3-offline-data-01 step3; K3/life persistence preparation active; continuous local-first execution.
+Checkpoint-ID: cp-20261013-life-wire-primitives-84. Next: orch-kotlin-k3-offline-data-01 step3; K3/life codec implementation active; continuous local-first execution.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

@@ -1,0 +1,9 @@
+# Life private wire primitives — bounded unit 5
+
+Authority: independently approved privatecodec design docs/superpowers/specs/2026-10-13-life-payload-codec-design.md. Root-owned pure-JVM payload primitives only: LifeWirePrimitives.kt and tests; no model/profile/snapshot/archive body serializer, list/tag registry, schema, service or UI. Independent configuredAstra-high source review required. Claude-owned sharedcountdown testfile stays separate.
+
+Frame is fixed CLLP/kind/version/declaredbody length,11bytes plus exactbody. Profile/snapshot4MiB andarchive16MiB caps includeheader. Strictbooleans, exactsignedInteger/UTC widths, bounded strictUTF8 (no surrogate replacement), owned readerbytes and bounded output capacity beforegrowth. Duration uses signedtruncated seconds/nanos and exactcanonical reconstruction, preservingnanoseconds/lastfinite±boundaries. Malformed framing precedesunsupportedwireversion; narrowknownencodingexceptionsonly, no blanketfatal/cancellation catches. No list allocation or cumulative budget is implemented/claimed inthisfirstpacket; profileunit mustpin widths/budget beforeadding listreaders.
+
+## Latest continuation delta
+
+Complete and finalsource configuredAstra-high APPROVE. SourceSHA8062a279015208aff25d45dda26df32cf1afe591b83f77794e69516ffe3ca7db/tests e567212a7015d11f04b3a346c1532b8b7d5657e4a39eda933e6b82fbb57baf1f. ActualAPIabsenceRED29s, initialunvalidatedserializationbehaviorRED7/7fail26s; guardedGREEN thenframingclassificationregressionRED1/1fail18s; finalunfiltered67model+90life0failure/error/skip17s. Source/persistence registration remainsabsent. Evidence WIRE-PRIMITIVES-20261013.md. Next boundedprofilecodec/card/appearance/knowledgefields with explicitlistwidths/budget/goldens, then snapshot/archive/schema6/realservice. Do not repeat finishedunit or unrelatedAndroid/native builds.

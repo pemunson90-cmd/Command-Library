@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-life-event-codec-ready-83
+Checkpoint-ID: cp-20261013-life-wire-primitives-84
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Implement bounded private life codec primitives/profile/snapshot/archive, then schema5-to6 and transactional service; preserve Claude-owned tests file.
+Next step: 3. Pin and implement private profile codec with list widths/budget and v1 goldens, then snapshot/archive/schema/service; preserve Claude test ownership.
 
-Updated UTC: 2026-10-13T22:30:27Z
-Status: K3/life persistence preparation active; continuous local-first execution; lease: active.
-Verified base: 464d8757e909ab45cd8f3b6a43fee22cfa0e6037.
+Updated UTC: 2026-10-13T22:43:37Z
+Status: K3/life codec implementation active; continuous local-first execution; lease: active.
+Verified base: 71e8cc1f25acdce98a67947ec84c79ee020acd28.
 
-Fourmodelunits reviewed and coherent60XML615JVM/check/lint/testAPKs/debugassembly passed4m57s; actual35native341b719 retained. Privatecodec architectureAstraAPPROVE, primitive/countgoldens/source bounds stillnext. Claude chat-only shared-countdown tests file reserved; no competing root takeover, sameactor lease refreshed.
+Privatewire primitives configuredAstra-high approved, meaningfulRED then67model+90lifeGREEN17s with0failure/error/skip. Fourmodelunits/coherent615JVM and35native priorresults retainedseparately. No lists/modelcodec/persistence/UI registration; nextboundedprofilecodec. Claude chat-only testfile remainsreserved.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

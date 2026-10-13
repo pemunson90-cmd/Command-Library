@@ -1,0 +1,9 @@
+# Private life wire primitives — 2026-10-13
+
+Final independently configuredAstra-high source APPROVE: LifeWirePrimitives.kt SHA256 `8062a279015208aff25d45dda26df32cf1afe591b83f77794e69516ffe3ca7db`; tests `e567212a7015d11f04b3a346c1532b8b7d5657e4a39eda933e6b82fbb57baf1f`. Reviewer spawned with model=gpt-6-astra, reasoning_effort=high, fork_turns=none. Review was static; reviewer builds/tests not_run.
+
+Root actual API-absence compile RED29s is distinct from initial serialization behavior RED7/7failed26s. Added bounded checks and strict encoding; eight edge methods passed including final finite duration±boundaries and byte ownership. Added a framing-classification regression, observed1/1failure18s, then required complete valid framing before classifying newer version. Final `:core:model:test :feature:life:test`17s:67model+90life cases, zero failure/error/skip; nine primitive methods included. The initial testfile was briefly created under a duplicated android-app directory, moved to the real module before the API-absence compiler read it; no unused shadow tree remains.
+
+The primitive layer pins big-endian11byte framing and exact end/length checks, header-inclusive4MiB/16MiB caps, capacity checks before outputgrowth, byte-capped strictUTF8, canonical booleans and finite signedDuration/UTC representations. Malformed data and unsupported versions remain distinct. It owns readerbytes and exposes no source/path/lineage authority. No catch swallows cancellation/fatal errors.
+
+Scope excludes list/cumulative-element budgets, model field/tag codecs, embedded snapshot accounting, storedBLOB preflight, transactions, retention, actualreplay and registration. Those are subsequent gates. Prior coherent615JVM/lint/APKbuild and actual35native341b719 results are separate exact-source evidence; no newwhole-app or native run is claimed for these unregistered pure primitives.
