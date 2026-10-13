@@ -29,8 +29,19 @@ internal data class JsonLinesLimits(
  * The byte limit includes delimiters. The record limit excludes a CRLF delimiter.
  * A suspended callback stops byte consumption; only the current bounded record is retained.
  */
-internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val cancel: CancelToken) {
-    private val line = ByteArray(limits.maxRecordBytes)
+internal class JsonLinesFramer private constructor(
+    private val maxInputBytes: Long,
+    private val maxRecordBytes: Int,
+    private val maxRecords: Long,
+    private val maxNesting: Int,
+    private val cancel: CancelToken,
+    private val maxChunkBytes: Int,
+) {
+    constructor(limits: JsonLinesLimits, cancel: CancelToken) : this(limits.maxInputBytes,
+        limits.maxRecordBytes, limits.maxRecords, limits.maxNesting, cancel, Int.MAX_VALUE)
+    constructor(limits: FullFeedFramingLimits, cancel: CancelToken) : this(limits.maxInputBytes,
+        limits.maxRecordBytes, limits.maxRecords.toLong(), limits.maxNesting, cancel, FullFeedFramingLimits.MAX_CHUNK_BYTES)
+    private val line = ByteArray(maxRecordBytes)
     private var length = 0
     private var pendingCr = false
     private var sequence = 0L
@@ -51,8 +62,9 @@ internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val 
             "Noncontiguous or repeated byte chunk"
         }
         require(sequence < Long.MAX_VALUE) { "Chunk sequence exceeds limit" }
+        require(chunk.bytes.size <= maxChunkBytes) { "Chunk exceeds byte limit" }
         val bytes = chunk.bytes.copyBytes()
-        require(bytes.size.toLong() <= limits.maxInputBytes - offset) { "Input exceeds byte limit" }
+        require(bytes.size.toLong() <= maxInputBytes - offset) { "Input exceeds byte limit" }
         for (byte in bytes) {
             currentCoroutineContext().ensureActive()
             cancel.throwIfCancelled()
@@ -92,13 +104,14 @@ internal class JsonLinesFramer(private val limits: JsonLinesLimits, private val 
         currentCoroutineContext().ensureActive()
         cancel.throwIfCancelled()
         require(length > 0) { "Blank JSONL line" }
-        require(count < limits.maxRecords) { "Record count exceeds limit" }
+        require(count < maxRecords) { "Record count exceeds limit" }
         val decoder = StandardCharsets.UTF_8.newDecoder()
             .onMalformedInput(CodingErrorAction.REPORT)
             .onUnmappableCharacter(CodingErrorAction.REPORT)
         val raw = decoder.decode(ByteBuffer.wrap(line, 0, length)).toString()
         require(!raw.startsWith('\uFEFF')) { "UTF-8 BOM is not accepted" }
-        ScryfallCodec.parse(raw, limits.maxNesting)
+        try { ScryfallCodec.parse(raw, maxNesting) }
+        catch (_: Exception) { throw IllegalArgumentException("Invalid JSON record") }
         currentCoroutineContext().ensureActive()
         cancel.throwIfCancelled()
         onRecord(raw)
