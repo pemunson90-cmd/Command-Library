@@ -28,14 +28,18 @@
 
 Files: create life/codec/LifeBinary.kt, LifeStateWires.kt, LifePayloadCodec.kt; tests LifePayloadCodecTest.kt.
 
-- [ ] Write API-absence/behavior tests for duration extremes, metadata-rich roundtrip, strict UTF8/root/version/EOF and string/definition budgets.
-- [ ] Run tests RED; implement bounded framing and explicit snapshot/profile codecs.
-- [ ] Run storage/model/life JVM checks GREEN.
+- [x] Write API-absence/behavior tests for duration extremes, metadata-rich roundtrip, strict UTF8/root/version/EOF and string/definition budgets.
+- [x] Run tests RED; implement bounded framing and explicit snapshot/profile codecs.
+- [x] Run storage/model/life JVM checks GREEN.
 
 ### Task 2: Event/archive/checkpoint roots
 
 Files: create life/codec/LifeEventWires.kt; extend facade and tests.
 
-- [ ] Test all action/random/provenance branches, flat groups and independent archived snapshot budgets RED.
-- [ ] Implement explicit event/request/result codecs; frame before/after snapshots independently; preserve reading/checkpoint lineage.
-- [ ] Run affected whole-app checks; request independent source review, resolve findings, publish evidence and truthful continuation checkpoint.
+- [x] Test all action/random/provenance branches, flat groups and independent archived snapshot budgets RED.
+- [x] Implement explicit event/request/result codecs; frame before/after snapshots independently; preserve reading/checkpoint lineage.
+- [x] Run affected whole-app checks; request independent source review, resolve findings, publish evidence and truthful continuation checkpoint.
+
+## Execution ledger
+
+Independent design/source approved. All supported root/metadata codecs implemented; actual13newtests and whole627JVM/check/debugassembly/alignment pass locally. Inherited hosted run cancelled and recovery-push jobs skipped after reviewed condition fix. Schema/service remain separate.

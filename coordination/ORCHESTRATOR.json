@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-13T22:24:01Z",
-  "expires_utc": "2026-10-13T23:09:01Z",
-  "checkpoint_id": "cp-20261013-recovered-random-provenance-84",
+  "heartbeat_utc": "2026-10-13T22:44:08Z",
+  "expires_utc": "2026-10-13T23:29:08Z",
+  "checkpoint_id": "cp-20261013-recovered-life-codec-85",
   "note": "User authorized recovery from unresponsive thread 01a13607-410d-761d-9745-7b7acdd9f0e7. Old remote head still464d875; heartbeat21:02 expired21:47. No access to old unpushed work; old branch preserved, recovery isolated."
 }

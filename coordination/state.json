@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-recovered-random-provenance-84",
-  "verified_base_head": "8112922d2ae0e46a72097a6349ae0aa10cbb6fa0",
+  "checkpoint_id": "cp-20261013-recovered-life-codec-85",
+  "verified_base_head": "910251cd7b1d4352f488d94356b7e6a53566bb61",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
-  "status": "Recovery continuous implementation; Android v1 incomplete",
+  "status": "Local-first continuous implementation; Android v1 incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Implement reviewed typed life payload codec with independent snapshot/archive limits; then schema6 and real transactional service.",
+  "first_action": "Implement additive5to6life tables with local actualKSP/SQLite evidence and review; then checked adapters/persisted service.",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -58,9 +58,10 @@
     "life_state_contracts": "ExactsourceAstraAPPROVE. DeclarationonlybehaviorRED11/6fail then32model+81life GREEN; wholecoherent57XML580JVM0failure/error/skip, check/lint/alltestAPKs/debugassembly pass3min. State declarations only; no service/codec/schema6/UI.",
     "life_creation_contract": "ExactsourceAstraAPPROVE; APIabsence16s/behaviorRED12-8fail17s then44model+81lifeGREEN19s. Immutable new-input checks only, no service/import/persistence.",
     "life_profile_contract": "ExactsourceAstraAPPROVE; APIabsence29s/behaviorRED10-6fail59s then54model+81lifeGREEN51s. Typedport declarations, input/default/exchangechecks only; no service/codec/schema6/UI.",
-    "life_random_provenance": "Independent recovery design/exactsource approved. APIabsence RED50s; declarationbehavior RED66model11fail; GREEN66model+81life0failure/error/skip72s. Model packet only; no codec/schema6/service/UI."
+    "life_random_provenance": "Independent recovery design/exactsource approved. APIabsence RED50s; declarationbehavior RED66model11fail; GREEN66model+81life0failure/error/skip72s. Model packet only; no codec/schema6/service/UI.",
+    "life_payload_codec": "Design/exactsource approved; local APIabsenceRED82s, firstGREEN100s; final63XML627JVM0failure/error/skip, check/lint/debugassemble9m3s, APK9fe70edf16KiBZIPalignmentpassed.13codec tests include separatearchive>4MiBcombined. No schema6/service/native/physical claim."
   },
-  "last_completed": "Recovered random/provenance model packet source-approved; actual66model+81life tests pass0fail/error/skip. Codec design reconstructed/reviewed, no codec/schema/service implementation acceptance.",
-  "updated_utc": "2026-10-13T22:24:01Z",
+  "last_completed": "Recovered typed life codec source approved; actuallocal627JVM0failure/error/skip, wholecheck/debugassembly and16KiBZIPalignment pass. Local-first guidance persisted; unintended hosted run cancelled, recovery jobs skipped. Schema6 pending.",
+  "updated_utc": "2026-10-13T22:44:08Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-recovered-random-provenance-84
+Checkpoint-ID: cp-20261013-recovered-life-codec-85
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Implement reviewed typed life payload codec with independent snapshot/archive limits; then schema6 and real transactional service.
+Next step: 3. Implement additive5to6life tables with local actualKSP/SQLite evidence and review; then checked adapters/persisted service.
 
-Updated UTC: 2026-10-13T22:24:01Z
-Status: Recovery continuous implementation; Android v1 incomplete; lease: active.
-Verified base: 8112922d2ae0e46a72097a6349ae0aa10cbb6fa0.
+Updated UTC: 2026-10-13T22:44:08Z
+Status: Local-first continuous implementation; Android v1 incomplete; lease: active.
+Verified base: 910251cd7b1d4352f488d94356b7e6a53566bb61.
 
-Recovered random/provenance model packet source-approved; actual66model+81life tests pass0fail/error/skip. Codec design reconstructed/reviewed, no codec/schema/service implementation acceptance.
+Recovered typed life codec source approved; actuallocal627JVM0failure/error/skip, wholecheck/debugassembly and16KiBZIPalignment pass. Local-first guidance persisted; unintended hosted run cancelled, recovery jobs skipped. Schema6 pending.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
