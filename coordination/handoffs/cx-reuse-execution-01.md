@@ -28,6 +28,8 @@ Plan: docs/superpowers/plans/2026-10-13-research-based-professional-release.md. 
 
 ## Task progress
 
-Task1: assigned cx-reuse-compatibility-01 after scope commit; no compatibility result yet. Task2 assigned cx-professional-visual-foundation-01, existing Compose primitives only with disjoint owned files. Later tasks pending. Runtime/model work approved-deferred v1.1. No product capability acceptance inferred from planning/research.
+Task1: CSV8/8 and real Coil cache1/1 pass with selected compatible test-only pins. Unsupported Robolectric SDK35 file codec is proven from actual failure/upstream source; four unchanged image checks moved to Android instrumentation, source compile/review passed, actual native gate pending. Task2 corrective source reviewed; exact Compose API fixed bounds-test compilation, actual36 captures/native gates pending. Root collector and CI prerequisite compile reviewed. Task3 bounded source-backed Android factory/provider design review underway, no new production binding. Later tasks pending; on-device engine/model work approved-deferred v1.1. No full product acceptance inferred from source reviews.
 
 Execution routing: approved parallel root policy overrides generic skill serial-worker default for these explicitly disjoint packages. Task2 cannot consume pending Coil APIs; it uses existing Compose and requests root binding only after Task1 acceptance.
+
+Each next task uses the short source-backed brief and cheap-first verification order in docs/verification/reuse-research/EXECUTION-PREFLIGHT.md, per Pat's2026-10-13 efficiency request. Reuse existing source findings; narrow research only for missing version/runtime/API facts.
