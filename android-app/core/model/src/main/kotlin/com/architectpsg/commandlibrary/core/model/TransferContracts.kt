@@ -93,7 +93,16 @@ public data class ProfileExchange(
     public val counterDefinitions: SnapshotList<CounterDefinition>,
     public val art: SnapshotList<LocalArtReference>,
     public val preferences: RestorableSettings,
-)
+    public val lifeSetup: PlayerProfileDraft? = null,
+) {
+    init {
+        lifeSetup?.let { setup ->
+            require(name == setup.name && preferredLife == setup.preferredLife && counterDefinitions == setup.counterDefinitions) {
+                "Profile exchange fields must agree with its explicit life setup"
+            }
+        }
+    }
+}
 public data class GameExchange(
     public val version: InterchangeVersion,
     public val snapshot: GameSnapshot,

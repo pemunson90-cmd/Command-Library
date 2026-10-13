@@ -9,16 +9,19 @@ on:
       - 'android-app/feature/catalog/**'
       - 'android-app/feature/settings/**'
       - 'android-app/core/common/**'
-      - 'android-app/core/model/src/main/**'
-      - '!android-app/core/model/src/main/**/GameContracts.kt'
-      - '!android-app/core/model/src/main/**/LifeStateContracts.kt'
+      - 'android-app/core/model/src/main/**/AcquisitionContracts.kt'
+      - 'android-app/core/model/src/main/**/InfrastructureContracts.kt'
+      - 'android-app/core/model/src/main/**/CatalogContracts.kt'
+      - 'android-app/core/model/src/main/**/FullCatalogContracts.kt'
+      - 'android-app/core/model/src/main/**/LocalCatalogContracts.kt'
+      - 'android-app/core/model/src/main/**/Values.kt'
       - 'android-app/core/model/build.gradle.kts'
       - 'android-app/build.gradle.kts'
       - 'android-app/settings.gradle.kts'
       - 'android-app/gradle/**'
       - 'android-app/gradle.properties'
       - 'android-app/gradlew*'
-      - '.github/workflows/android-native-focused.yml'
+    # Workflow-only edits receive static review; dispatch manually when execution steps/gates change.
   workflow_dispatch:
 permissions:
   contents: read

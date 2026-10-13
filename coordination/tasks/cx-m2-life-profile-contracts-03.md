@@ -1,0 +1,17 @@
+# Life profile/history/ports — bounded model unit 3
+
+Approved larger life persistence design, D25. This is declarations and local input invariants, not service/codec/schema6/UI acceptance. Root owns core/model source and ProfileExchange append. No research or product decision is missing.
+
+Add LifePersistenceContracts.kt with PlayerProfileDraft(name:String, preferredLife:Int, counterDefinitions:SnapshotList<CounterDefinition>, appearance:SeatAppearance, commanders:SnapshotList<CommanderSlot>, adjustmentStep:Int=1), PlayerProfileSnapshot(id:EntityId,revision:Revision,value:PlayerProfileDraft). Draft constructor validates positive step, unique commander-slot IDs, unique counter IDs, exactlyone explicitLIFE and atmostone each commander role, LIFEinitial==preferredLife; no label inference, positive-life restriction, fixed commander count or art availability. Same immutable structural boundary as GameCreation; operational failures remain typed service work. Existing legacy profileexchange remains constructible with absent newsetup.
+
+Add GameHistoryFilter(playerName:String?=null,deckId:DeckId?=null,deckName:String?=null,fromInclusive:UtcTimestamp?=null,untilExclusive:UtcTimestamp?=null). Reject only inverted known bounds using seconds+nanos lexicographic comparison (no overflow subtraction); equalbounds allowed to yield empty query. No undocumented name trimming/filter interpretation. Add GameHistoryEntry per approveddesign and GameHistoryPage(games:Page<GameHistoryEntry>,totalMatches:Long) requiring total>=0 and >=returned page itemcount. Actual AND/name matching/stablecursor/read-snapshot queries follow in service.
+
+Declare PlayerProfileRepository methods/create/read/update/list/delete and PersistedGameService:GameService methods/create/read/revisioncheckedundo/events/history/observe exactly as approvedspec. No defaultfake/unsupported bodies, registration or testreflection mirroring signatures. Old GameService signatures unchanged; future implementations must satisfy compatibility semantics.
+
+Append ProfileExchange lifeSetup:PlayerProfileDraft?=null. If supplied, constructor requires legacy name/preferredLife/counterDefinitions exactly equal setup equivalents; otherwise legacyconstructors untouched. Do not drop original app RestorableSettings/art. Exchange codecs/repair/reference checking are following gates, not accomplished by DTO.
+
+Tests-only bounded writer: one LifePersistenceContractsTest.kt + handoff,12min total, no builds/production/delegation/config. Cover profilevalidnegative/custom/partnerprefs and invalidstep/role/IDs/initial; UTCinversionnanoboundary/Longextremes/equal/null; page totalcounts; legacyexchangeabsence and each new duplicate-field mismatch. Reuse actual modeltypes/fixtures. Root checks APIabsence then meaningfuldeclaration-onlybehaviorRED, invariantsGREEN, exactsourceAstrareview.
+
+## Latest continuation delta
+
+Design and exactsourceAstraAPPROVE; root source/default/localinvariant unit complete. APIabsenceRED29s; meaningfuldeclarationonly behaviorRED10/6fail59s;54model+81lifeGREEN51s,0failure/error/skip. Evidence docs/verification/m2-life/PROFILE-HISTORY-CONTRACTS-20261013.md. No repository/service implementation/registration, codec, schema6 or UI. Constructor structuralconstraints don't certify persisted/imported state. Workercomplete/frozen; lockreservedroot. Next: action/random/provenance contract packet, then reviewed codec/schema/realtransaction work. Existing corrected oneAPI36 native38465889103/341b719 actual35/35passed, no need repeat it for unconsumed declarations.

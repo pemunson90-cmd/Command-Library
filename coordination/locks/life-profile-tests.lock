@@ -1,0 +1,10 @@
+{
+  "component": "life-profile-contract-tests",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "root; tests-only writer completed/frozen, no live writer",
+  "status": "reserved",
+  "owned_paths": [
+    "android-app/core/model/src/test/kotlin/com/architectpsg/commandlibrary/core/model/LifePersistenceContractsTest.kt",
+    "coordination/handoffs/cx-m2-life-profile-contracts-03.md"
+  ]
+}
