@@ -9,6 +9,8 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withContext
 
 /** Trusted adapter holds the immutable completed artifact/URI binding through the entire block. */
@@ -142,7 +144,11 @@ internal class LocalBulkCatalog(
             committed?.let { return@withCatalogImportOwner Outcome.Success(it) }
             activationCandidate?.let { candidate ->
                 val acknowledgement = withContext(NonCancellable) {
-                    activationAcknowledgement(candidate, requireNotNull(activationEnvelope))
+                    try {
+                        withTimeout(ACTIVATION_ACK_TIMEOUT_MILLIS) {
+                            activationAcknowledgement(candidate, requireNotNull(activationEnvelope))
+                        }
+                    } catch (_: TimeoutCancellationException) { ActivationAcknowledgement.INCONCLUSIVE }
                 }
                 when (acknowledgement) {
                     ActivationAcknowledgement.INSTALLED -> return@withCatalogImportOwner Outcome.Success(candidate)
@@ -216,6 +222,7 @@ internal class LocalBulkCatalog(
     }
 }
 
+private const val ACTIVATION_ACK_TIMEOUT_MILLIS = 500L
 private enum class ActivationAcknowledgement { INSTALLED, ROLLED_BACK, INCONCLUSIVE }
 
 /** Fresh owner tokens, no leaked lock, and token-only wait cancellation observed at most25ms apart. */
