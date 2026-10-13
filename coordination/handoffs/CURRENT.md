@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-life-integrated-56
+Checkpoint-ID: cp-20261013-reuse-plan-ready-58
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Implement guarded K3 platform/drainer bindings; next life contracts task active under newlock
+Next step: 3. Read research-based professional release plan and findings; on execution start Tasks1/2 before guarded data bindings and life service
 
-Updated UTC: 2026-10-13T01:51:50Z
-Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: bebf6f0dd223567098be5ca1c928610952e828c3.
+Updated UTC: 2026-10-13T02:54:27Z
+Status: Full Android v1 incomplete; research-based execution plan ready; lease: released.
+Verified base: 03fb28e0d0657277c3bbc3236cca9278b3e81f57.
 
-PR17 expectedhead6fa6043 mergedmain3cc82c25 after428JVM/66nativeeach pass; oldlife lock released/newfunctional task assigned. Bulk/settings source reviewed and integrated,172 combined JVM and56 DataStore tests pass; bindings pending
+Research-first plan complete:13work packages, existing full spec retained, targeted open-source reuse, early visual checkpoint, capability trials and actual Fold7/canonical release gates; no implementation resumed
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

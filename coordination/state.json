@@ -3,17 +3,14 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-life-integrated-56",
-  "verified_base_head": "bebf6f0dd223567098be5ca1c928610952e828c3",
+  "checkpoint_id": "cp-20261013-reuse-plan-ready-58",
+  "verified_base_head": "03fb28e0d0657277c3bbc3236cca9278b3e81f57",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
-  "status": "Full Android v1 execution active; incomplete",
+  "status": "Full Android v1 incomplete; research-based execution plan ready",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Implement guarded K3 platform/drainer bindings; next life contracts task active under newlock",
-  "active_tasks": [
-    "orch-kotlin-k3-offline-data-01",
-    "cx-m2-life-functional-01"
-  ],
+  "first_action": "Read research-based professional release plan and findings; on execution start Tasks1/2 before guarded data bindings and life service",
+  "active_tasks": [],
   "blockers": [
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
@@ -46,6 +43,6 @@
     "life_corrected": "PR17 expected6fa6043 mergedmain3cc82c25; focused38333232421 21model+81life0failures/errors/skips; matrix38333213528 428JVM/66nativeeach0failures/errors, actual16KiBpage16384. MergedAndroidtree identical to tested integration.",
     "k3_merged_source": "Bulk b6e74819 independently91tests+original3probes+boundedackprobe pass, integrated15e80ab. Actual combined root model/common/catalog strict production compile and172JVMtests pass underXmx256m; harness nonexistent resources warnings only. Settings d4d30f8 independently56actualDataStore tests pass, integratede3be616; platformconfiguredartifact checks pending."
   },
-  "last_completed": "Life domain integrated and correction lock released; next functional task/lock assigned. Bulk/settings source accepted; bindings and complete app remain incomplete.",
-  "updated_utc": "2026-10-13T01:51:50Z"
+  "last_completed": "Research-first plan complete:13work packages, existing full spec retained, targeted open-source reuse, early visual checkpoint, capability trials and actual Fold7/canonical release gates; no implementation resumed",
+  "updated_utc": "2026-10-13T02:54:27Z"
 }

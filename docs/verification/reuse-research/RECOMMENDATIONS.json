@@ -1,0 +1,143 @@
+{
+  "date": "2026-10-13",
+  "status": "Research only; no product source/dependencies modified, no candidates integrated or built in app",
+  "agents": "Four gpt-6-luna medium researchers with isolated narrow packets; root checked primary sources and selected pinned snapshots",
+  "exa_search_result_slots": 80,
+  "scope": "Professional native Android full-spec release; no features deferred by library selection",
+  "candidates": [
+    {
+      "name": "Coil 3",
+      "repo": "https://github.com/coil-kt/coil",
+      "license": "Apache-2.0",
+      "commit": "b15c5bb7ec204432936e4e9f20bdfb3cb1d57c6e",
+      "decision": "Compatibility-test library for image decoding/display and ephemeral cache; separate durable packs",
+      "reason": "Actual DiskCache is LRU; offline packs need app-owned retention/index/quota"
+    },
+    {
+      "name": "TvManiac",
+      "repo": "https://github.com/thomaskioko/tv-maniac",
+      "license": "Apache-2.0",
+      "commit": "113d2e28148022dea936c984ac1e8772ac7a7dea",
+      "decision": "Adapt visual hierarchy and card/detail patterns; do not import application architecture",
+      "reason": "KMP/SQLDelight/Decompose/Metro stack differs; shipping status is README claim, not independently verified release; artwork rights separate"
+    },
+    {
+      "name": "Now in Android",
+      "repo": "https://github.com/android/nowinandroid",
+      "license": "Apache-2.0",
+      "commit": "a49ed253d75e61a2b6ab80a8da677b57437b08eb",
+      "decision": "Adapt design tokens, lifecycle-aware states, offline flow patterns",
+      "reason": "Reference application; existing Kotlin/Room3 dependencies should not be replaced by its stack"
+    },
+    {
+      "name": "Jetcaster and Jetsnack",
+      "repo": "https://github.com/android/compose-samples",
+      "license": "Apache-2.0",
+      "commit": "5a390e4a9d3c4e5b30e942041bde93582c4d9492",
+      "decision": "Adapt foldable/pane/media-detail and selected visual-motion patterns only",
+      "reason": "Samples include mocked domain behavior; never ship mock player/data adapters in this app"
+    },
+    {
+      "name": "OneTwo",
+      "repo": "https://github.com/ndleyton/OneTwo",
+      "license": "MIT",
+      "commit": "a87a7ef2612d0b7a8d30eacf15e19f3301bf6617",
+      "decision": "Compare life timer/lifecycle/restoration and seat interaction gaps",
+      "reason": "Actual native Java source inspected; partner separation/full grouped event/results parity not established; retain reviewed domain"
+    },
+    {
+      "name": "SpellCounter",
+      "repo": "https://github.com/seanKenkeremath/SpellCounter",
+      "license": "MIT",
+      "commit": "374c25f1a7d13a4a3e00af0831e059c9d142902e",
+      "decision": "Reference native seat layouts, counter/profile persistence",
+      "reason": "Older LiveData/Hilt architecture; no full required commander/event/results coverage established"
+    },
+    {
+      "name": "kotlin-csv",
+      "repo": "https://github.com/doyaaaaaken/kotlin-csv",
+      "license": "Apache-2.0",
+      "commit": "ba44dab2490fd1c1ca371562910a232563943361",
+      "decision": "Compatibility-test bounded CSV reader for import/export",
+      "reason": "Parses CSV only; vendor schema mapping, previews, unknown identities and loss handling remain required"
+    },
+    {
+      "name": "llama.cpp",
+      "repo": "https://github.com/ggml-org/llama.cpp",
+      "license": "MIT",
+      "commit": "cbe28bb3cb0758f0c566a9a3561766821aeb0748",
+      "decision": "Prototype official Android Kotlin/JNI path for required GGUF models",
+      "reason": "Cooperative explicit stop needed beyond Flow cancellation; native ABI/16KiB and physical Fold7 memory/performance must be tested; model licenses separate"
+    },
+    {
+      "name": "LiteRT-LM",
+      "repo": "https://github.com/google-ai-edge/LiteRT-LM",
+      "license": "Apache-2.0",
+      "commit": "0ae5873f5a0c2c08c9afb28a54011bfda351ec39",
+      "decision": "Compare Android runtime for supported .litertlm models",
+      "reason": "Not a GGUF replacement; verify native packaging and physical-device results"
+    },
+    {
+      "name": "OpenAI-Kotlin",
+      "repo": "https://github.com/aallam/openai-kotlin",
+      "license": "MIT",
+      "commit": "9574ca39226e4a6bf2cddbf4cd88a0f79fac0665",
+      "decision": "Evaluate API/stream reference; adopt client only if current required API and shared transport policies fit",
+      "reason": "Not universal multi-provider adapter; Ktor/transport duplication and cancellation must be checked"
+    },
+    {
+      "name": "ManaVault",
+      "repo": "https://github.com/cfbender/manavault",
+      "license": "MPL-2.0",
+      "commit": "820090d313353f256f3bd5bdd6add764e1d0d51c",
+      "decision": "Reference deck/printing/import-preview behavior; copying requires file-level license review",
+      "reason": "Browser/TypeScript architecture and non-authoritative bracket estimates are not Android drop-in behavior"
+    },
+    {
+      "name": "MTG Desktop Companion",
+      "repo": "https://github.com/nicho92/MtgDesktopCompanion",
+      "license": "Apache-2.0",
+      "commit": "0c774b4b0bbe18dcff637404d0d0ed34d90bc435",
+      "decision": "Reference provider and import/export adapter boundaries",
+      "reason": "Desktop Swing architecture; substantial Android adaptation"
+    },
+    {
+      "name": "Fetch",
+      "repo": "https://github.com/tonyofrancis/Fetch",
+      "license": "Apache-2.0",
+      "commit": "11c2c45f6be1cfe034fb2b32dea7c14660ff6961",
+      "decision": "Reference lifecycle/concurrency only; retain reviewed existing engine",
+      "reason": "2024 latest commit is not proof of active maintenance; replacement duplicates consent/provenance and recovery semantics"
+    },
+    {
+      "name": "Ketch",
+      "repo": "https://github.com/linroid/Ketch",
+      "license": "Apache-2.0",
+      "commit": "4ab6d7201fd09c48a6fc066caf7715628afbdaa0",
+      "decision": "Reference only; do not select production dependency now",
+      "reason": "Active release-candidate development and duplicate engine/store ownership"
+    },
+    {
+      "name": "Forge/Cockatrice",
+      "repo": "https://github.com/Card-Forge/forge",
+      "license": "GPL-3.0 / GPL-2.0 respectively",
+      "decision": "Behavior/format research; no code copied",
+      "reason": "Different platforms and GPL distribution obligations require separate deliberate licensing decision"
+    }
+  ],
+  "official_guidance": [
+    "https://developer.android.com/develop/ui/compose/designsystems/custom",
+    "https://developer.android.com/docs/quality-guidelines/adaptive-app-quality",
+    "https://developer.android.com/develop/background-work/background-tasks/data-transfer-options",
+    "https://developer.android.com/guide/practices/page-sizes",
+    "https://scryfall.com/docs/api/bulk-data"
+  ],
+  "verified_constraints": [
+    "Default Cards includes English OR original language when English unavailable; not strictly English-only. Do not infer approval for fallback languages or replace English acquisition route without consent/source review.",
+    "Use UIDT for qualifying user-initiated long visible transfers on supported Android; WorkManager for deferrable work. Keep durable engine/consent state authoritative.",
+    "Code licenses do not license movie/card artwork or model weights. Preserve copyright/license/NOTICE obligations for adapted source.",
+    "Adopt stable components after focused compatibility probes against accepted pins; adapt patterns without importing whole app stacks.",
+    "Define custom visual system and first complete user journeys before producing all screens; test fold state, preserved selection, large text and failures."
+  ],
+  "next_action": "Report shortlist before implementation. Then align selected references to existing feature acceptance rows, run bounded integration probes, and update concrete implementation packets; no automatic installs/rewrite/scope cuts."
+}
