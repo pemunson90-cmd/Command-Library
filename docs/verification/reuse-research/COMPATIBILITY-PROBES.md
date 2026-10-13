@@ -73,3 +73,9 @@ Root's next filtered API35 emulator/device command:
 ```
 
 The source check references actual `android-all:15-robolectric-12650502` and published AndroidX classes; it does not prove AGP instrumentation packaging or device codec behavior. The four cases remain a pending acceptance gate.
+
+## Pending actual Compose smoke fixture
+
+Root reports all four Android codec/network/cancellation cases passed exactd9 hosted38345526072 on API23/API36/API36-16KiB. That gate does not establish Coil3.3 `AsyncImage` rendering with the current Compose BOM1.12.1. One focused `CoilComposeCompatibilityProbeTest` now mounts the published `AsyncImage` API through the existing Compose content rule: real local-file PNG/default codec, service discovery disabled, actual successful callback with1x1 image dimensions, accessible image displayed with nonempty bounds. It removes the painter before shutting down the loader and deleting its source file. No main-dispatcher replacement or screenshot capture is involved. Published API source URL/entry/hash are in JSON.
+
+Actual Compose compiler/AGP build and device execution are **not_run locally**; importing the composable without its compiler plugin would not prove its ABI. Root must independently review and run this single class with the provider/UI hosted batch before production Coil binding.

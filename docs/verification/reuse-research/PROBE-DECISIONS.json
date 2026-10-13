@@ -361,5 +361,22 @@
       "device_result": "not_run",
       "hosted_command": "./gradlew :feature:shell:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.architectpsg.commandlibrary.feature.shell.compatibility.CoilCompatibilityProbeTest"
     }
+  },
+  "compose_rendering_followup": {
+    "status": "test fixture authored; actual Compose compiler/AGP/device verification not_run locally",
+    "source_path": "android-app/feature/shell/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/shell/compatibility/CoilComposeCompatibilityProbeTest.kt",
+    "scope": "One real Compose content-rule smoke test on current application BOM: AsyncImage with actual local PNG file/default codec, explicit serviceLoaderEnabled(false) loader, successful callback/image1x1, accessible image displayed with nonempty bounds; dispose painter before loader/file cleanup. No dispatcher replacement, network artifacts, screenshots or production binding.",
+    "published_api_source_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-compose-core-android/3.3.0/coil-compose-core-android-3.3.0-sources.jar",
+    "published_api_source_sha256": "3c8628ffcd154c6449fb5eb7732007eac73817f23f5d8da623f03d6a4f813765",
+    "async_image_source_entry": "commonMain/coil3/compose/AsyncImage.kt",
+    "async_image_entry_sha256": "03f7ce28bad5a938c28251ec33e039681d34efd481103ee96f82b34f26624580",
+    "api_verified": "Published overload takes model/contentDescription/imageLoader/modifier/onSuccess/onError; callbacks expose AsyncImagePainter.State.Success.result and State.Error.result. Source read before fixture authoring.",
+    "hosted_previous_runtime": "Root reports all4 existing Android CoilCompatibilityProbeTest cases passed exactd9 run38345526072 in API23/API36/API36-16KiB; this is not Compose rendering evidence.",
+    "local_actual_checks": "git diff --check and finite structural/PNG CRC checks; no Compose compile claimed",
+    "not_run": [
+      "Actual Compose compiler plugin/AGP instrumentation build",
+      "CoilComposeCompatibilityProbeTest on Android device/emulator"
+    ],
+    "root_next": "Review and include exact class in provider/UI hosted batch; actual hosted compile and API23/API36/API36-16KiB test outcomes required before production Coil binding."
   }
 }
