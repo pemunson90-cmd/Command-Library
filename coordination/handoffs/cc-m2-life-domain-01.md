@@ -10,7 +10,10 @@ Worker handoff for `coordination/tasks/cc-m2-life-domain-01.md`. Branch `agent/c
 | 1 | Counter reductions + tests | done: `LifeDomainSupport.kt`, `CounterReducer.kt`, `CounterReducerTest.kt` (20 tests) |
 | 2 | Seat clock calculations + tests | done: `SeatClockReducer.kt`, `SeatClockReducerTest.kt` (22 tests) |
 | 3 | Random tools + tests | done: `RandomTools.kt`, `RandomToolsTest.kt` (12 tests) |
-| 4 | Independent adversarial review of 1-3, fixes, final checks | pending |
+| 4a | Independent adversarial review of 1-3 | done: 8-agent review (3 readers, 1 mutation tester, 4 probe-test verifiers); 36 findings, 28 confirmed, 8 refuted |
+| 4b | Fix confirmed counter and random findings + tests | pending |
+| 4c | Fix confirmed clock findings + tests | pending |
+| 4d | Correct handoff statements, final checks | pending |
 
 Each section is committed and pushed with this file updated before the next starts.
 
@@ -23,6 +26,20 @@ Counters: definitions are identified by explicit role bindings (`life`, optional
 Clocks: time enters only as an explicit reading (monotonic `Duration`, wall `UtcTimestamp`, process session `EntityId`). Only the active seat is charged, using monotonic deltas within one session; wall time is recorded, never used to compute elapsed. A running anchor from another session is rejected until an explicit restart recovery pauses and re-anchors with durable balances unchanged. Zero transition fires one `ClockAlert` per transition with a deterministic ID; `firedAlertIds` blocks refiring. Undo takes the pre-action clock state: `RESTORE_TIME` restores those balances, `KEEP_ELAPSED` keeps settled balances and reverts only active seat, pause flag and turn.
 
 Random: `RandomSource` is injected; results outside `0 until bound` are a typed failure. Dice count `1..10000`, sides `>= 1`, `Long` sum; larger requests are split into batches without dropping the remainder. Coin, Fisher-Yates shuffle, seat randomizer producing `ReorderSeats` with seat data attached, and seat selection from explicitly supplied eligible IDs (none eligible is a typed result). No fixed production RNG.
+
+## Section 4 review: confirmed findings and planned fixes
+
+Verifiers confirmed each item with a probe test on `9ffc840` unless noted. IDs are the review's own.
+
+Counters (4b): C1 a deeply nested `Group` recurses until `StackOverflowError`; reject nested groups. C3 loss assessment ignores absent states whose `definition.initial` already meets the loss policy, so hiding changes the assessment; evaluate implicit states too. T1/M23 no test for a fresh (absent) counter becoming newly lethal. T2/M24 no test hiding commander damage that already has an own-slot state. T3 no test for partner-slot tax hiding, slot-scoped no-op hide, or mixed-sibling inheritance.
+
+Random (4b): R1 `randomizeSeats` consumes draws before rejecting a completed game; check status first.
+
+Clocks (4c): C1 under PAUSE/ELIMINATE a seat already at zero is charged into negative time after resume or switch-back; clamp whenever the policy clamps, not only on the crossing. C2 (also compliance C1) RESTORE_TIME undo fails after a restart because `before` carries the old session anchor; reconstruct from durable balances, never refunding charged time, and come back paused. C3 alert ID `(seat, turn)` is reused by an undone-then-redone turn, so a real new timeout is silenced and ELIMINATE reports nothing; give each firing a unique occurrence ID and report timeouts on every real crossing, keeping undo-replay dedupe. C4 infinite monotonic readings are stored by resume/undo/switch, wedging the clock; validate the reading at every entry point. C5 KEEP_ELAPSED undo after a restart restarts a clock recovery paused; keep a pause made in another session. C6 PER_TURN KEEP_ELAPSED undo keeps the turn refill; revert it. C7 a completed game with a running clock keeps charging; report it as corrupt. C9 non-finite anchor is reported as bad input; report it as corrupt. C10 `observe` returns `-Infinity` where `settle` rejects; reject in both. C12/M10/M25/M26/M27/M28 untested: re-crossing from exactly zero, undo replay alert and timeout dedupe, `zeroPending` after settled overtime, undo across a seat change, re-anchor after KEEP_ELAPSED undo, zero crossing inside `switchTurn`.
+
+Handoff (4d): commander damage text must say any slot in the game (code and CR 903.10a), RESTORE_TIME text must say it continues the pre-action timeline, provenance hash for the assignment branch is `354c1a0`, `LifeFixtures.kt` belongs in the section 1 file list, deltas must name commits.
+
+Refuted (no change): role-binding error codes, failure precedence on doubly bad inputs, groups with hide steps, output ordering, active-seat field cross-check, SHARED blocking turn counting, opponent duplicate handling, batch total overflow.
 
 ## Verification
 
@@ -49,4 +66,4 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 
 ## Latest continuation delta
 
-Section 3 complete at the commit that carries this text: random tools with tests, local check green as recorded above. Next action: section 4, independent adversarial review of the three domain files and tests (correctness against the task card and SPEC G01-G13, atomicity, clock/time edge cases, test strength including mutation probes), fix confirmed findings, rerun the task's Gradle command, commit, push, update this file.
+Section 4a complete on `origin/agent/cc-m2-life-domain-01` (parent of this commit: `9ffc840`): review results recorded above, no code changed. Next action: 4b, fix counter C1/C3 and random R1 with the listed tests, run the task's Gradle command, commit, push, update this file; then 4c clock fixes; then 4d handoff corrections.
