@@ -343,3 +343,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T00:14:45Z | codex | cp-20261013-download-engine-48 | containing commit | Infrastructure accepted exact tested main; full genuine framing and58puretests pass. Download engine assigned; Claude life disjoint; full Android v1 remains incomplete.
 
 2026-10-13T00:24:09Z | codex | cp-20261013-full-contracts-49 | containing commit | Reconciled active engine and accepted main; independently reviewed full catalog contracts freshly compile with 21 passing JVM tests; schema4 review pending
+
+2026-10-13T00:24:47Z | codex | cp-20261013-schema4-route-50 | containing commit | Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing

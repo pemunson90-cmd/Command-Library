@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-full-contracts-49. Updated UTC: 2026-10-13T00:24:09Z.
+Checkpoint: cp-20261013-schema4-route-50. Updated UTC: 2026-10-13T00:24:47Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Full Android v1 execution active; incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
-Review schema4 design then assign isolated migration implementation; finish durable download engine and full importer
+Complete engine and reviewed schema4 workers; root prepares strict bulk source binding
 
-Reconciled active engine and accepted main; independently reviewed full catalog contracts freshly compile with 21 passing JVM tests; schema4 review pending
+Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing
 
 Read CURRENT, machine state and task card.
