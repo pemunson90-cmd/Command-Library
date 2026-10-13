@@ -15,6 +15,7 @@ import androidx.room3.RoomDatabase
         OracleCardEntity::class,
         CardFaceEntity::class,
         PrintingEntity::class,
+        PrintingOracleMembershipEntity::class,
         PrintingFaceAssetEntity::class,
         CatalogNameFtsEntity::class,
         RulesCorpusEntity::class,
@@ -34,5 +35,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 3
+    const val VERSION: Int = 4
 }

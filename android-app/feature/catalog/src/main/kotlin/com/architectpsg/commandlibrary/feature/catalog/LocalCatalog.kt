@@ -12,7 +12,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -24,7 +23,6 @@ public class LocalCatalog(
     private val ids: IdSource,
     private val limits: CatalogImportLimits = CatalogImportLimits(),
 ) : CatalogImport, CatalogLookup, CatalogStatus {
-    private companion object { val importMutex = Mutex() }
     @Volatile private var initialized = false
     private val dataset = "scryfall:en"
     private val cleanupCancel = object : CancelToken {
@@ -81,7 +79,7 @@ public class LocalCatalog(
         } catch (failure: Exception) { corrupt(failure) }
     }
 
-    override suspend fun `import`(source: CatalogImportSource, chunks: Flow<ByteChunk>, onProgress: (JobProgress) -> Unit, cancel: CancelToken): Outcome<CatalogImportResult> = importMutex.withLock {
+    override suspend fun `import`(source: CatalogImportSource, chunks: Flow<ByteChunk>, onProgress: (JobProgress) -> Unit, cancel: CancelToken): Outcome<CatalogImportResult> = CatalogImportOwnership.mutex.withLock {
         when (val ready = initializeLocked(cancel)) { is Outcome.Success -> Unit; else -> return@withLock ready.nonSuccess() }
         if (source.provider.value != "scryfall" || source.language != LanguageTag.ENGLISH) return@withLock invalid("Only English Scryfall input is supported")
         if (!source.contentUri.value.startsWith("content://") || source.displayName.isBlank() || source.displayName.toByteArray(Charsets.UTF_8).size > 512)
@@ -192,7 +190,7 @@ public class LocalCatalog(
     }
 
     private suspend fun initialize(cancel: CancelToken): Outcome<Unit> = if (initialized) Outcome.Success(Unit)
-        else importMutex.withLock { initializeLocked(cancel) }
+        else CatalogImportOwnership.mutex.withLock { initializeLocked(cancel) }
     private suspend fun initializeLocked(cancel: CancelToken): Outcome<Unit> {
         if (initialized) return Outcome.Success(Unit)
         while (true) {
@@ -280,7 +278,7 @@ private fun decodeCursor(value: String): Cursor {
 }
 private fun digest(value: String): String = MessageDigest.getInstance("SHA-256").digest(value.toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
 
-private suspend fun DbTransaction.insertCard(generation: GenerationId, card: CardRecord, raw: String, cancel: CancelToken) {
+internal suspend fun DbTransaction.insertCard(generation: GenerationId, card: CardRecord, raw: String, cancel: CancelToken) {
     write("""INSERT INTO oracle_card(generation_id,provider,oracle_id,language,name,original_text,normalized_name,normalized_search_text,canonical_digest,record_payload) VALUES(:generation,:provider,:oracle,'en',:name,:text,:normalized,:search,:digest,:payload)""", cancel,
         "generation" to generation.value, "provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw,
         "name" to card.name, "text" to card.originalText.knownOrNull(), "normalized" to ScryfallCodec.normalize(card.name),
@@ -292,7 +290,7 @@ private suspend fun DbTransaction.insertCard(generation: GenerationId, card: Car
         "name" to card.name, "text" to (card.originalText.knownOrNull() ?: card.faces.joinToString(" ") { it.text.knownOrNull() ?: "" }),
         "generation" to generation.value, "provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw)
 }
-private fun canonicalDigest(card: CardRecord): String {
+internal fun canonicalDigest(card: CardRecord): String {
     val fields = buildList {
         add(card.oracleId.source.value); add(card.oracleId.raw); add(card.language.value); add(card.name)
         fun <T> known(value: Knowledge<T>, render: (T) -> String = { it.toString() }): String = when (value) {
@@ -321,7 +319,7 @@ private fun canonicalDigest(card: CardRecord): String {
     val bytes = fields.joinToString("") { "${it.length}:$it" }.toByteArray(Charsets.UTF_8)
     return MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 }
-private suspend fun DbTransaction.insertPrinting(generation: GenerationId, printing: PrintingRecord, raw: String, cancel: CancelToken) {
+internal suspend fun DbTransaction.insertPrinting(generation: GenerationId, printing: PrintingRecord, raw: String, cancel: CancelToken) {
     val oracle = printing.oracleId.knownOrNull()
     write("""INSERT INTO printing(generation_id,provider,printing_id,oracle_provider,oracle_id,oracle_language,set_code,set_name,collector_number,language,rarity,finishes,image_uri,metadata_payload) VALUES(:generation,:provider,:printing,:oracle_provider,:oracle,:oracle_language,:set,:set_name,:collector,:language,:rarity,:finishes,:image,:payload)""", cancel,
         "generation" to generation.value, "provider" to printing.id.source.value, "printing" to printing.id.raw,
