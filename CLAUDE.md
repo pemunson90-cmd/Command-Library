@@ -1,5 +1,7 @@
 # Command Library Claude entrypoint
 
+> **Historical continuation branch — do not resume its task directions.** Active unfinished work moved to [`agent/cx-native-20261013`](https://github.com/pemunson90-cmd/Command-Library/tree/agent/cx-native-20261013), published at `341b7194df68e285cf4bef159da4d4e66c4e34a5` when this redirect was written. Fetch/read that branch's latest `coordination/state.json`, lease and task before continuing; preserve dirty or unpublished work. This branch's code, machine pointers and old lease are retained historical evidence. See [HANDOFF-REDIRECT.md](HANDOFF-REDIRECT.md).
+
 Command Library is a Magic: The Gathering companion app. Android version 1 is Kotlin for phones, foldables and tablets. Windows is a separate Flutter version 2 after Android v1 is accepted. Sync is later.
 
 Do not maintain a separate Claude execution protocol here. The active cross-model protocol is `CONTINUE.md`, and documentation authority is defined by `docs/gauntlet/DOCUMENTATION_POLICY.md`.

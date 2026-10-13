@@ -1,5 +1,7 @@
 # Command Library
 
+> **Historical continuation branch — do not resume its task directions.** Active unfinished work moved to [`agent/cx-native-20261013`](https://github.com/pemunson90-cmd/Command-Library/tree/agent/cx-native-20261013), published at `341b7194df68e285cf4bef159da4d4e66c4e34a5` when this redirect was written. Fetch/read that branch's latest `coordination/state.json`, lease and task before continuing; preserve dirty or unpublished work. This branch's code, machine pointers and old lease are retained historical evidence. See [HANDOFF-REDIRECT.md](HANDOFF-REDIRECT.md).
+
 Personal-first, offline-first Magic: The Gathering companion for Android phones, foldables and tablets. Android version 1 is Kotlin. Windows is a separate Flutter version 2 after Android v1 is accepted, and Android/Windows sync is deferred until both offline apps run. English is the default dataset; non-English downloads require explicit user approval.
 
 ## Current status
