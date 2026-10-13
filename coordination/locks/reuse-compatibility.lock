@@ -6,6 +6,7 @@
   "owned_paths": [
     "android-app/core/common/src/test/kotlin/com/architectpsg/commandlibrary/core/common/compatibility/CsvCompatibilityProbeTest.kt",
     "android-app/feature/shell/src/test/kotlin/com/architectpsg/commandlibrary/feature/shell/compatibility/CoilCompatibilityProbeTest.kt",
+    "android-app/feature/shell/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/shell/compatibility/CoilCompatibilityProbeTest.kt",
     "docs/verification/reuse-research/PROBE-DECISIONS.json",
     "docs/verification/reuse-research/COMPATIBILITY-PROBES.md",
     "coordination/handoffs/cx-reuse-compatibility-01.md"

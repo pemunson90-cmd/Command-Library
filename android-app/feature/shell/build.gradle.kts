@@ -69,6 +69,9 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.coroutines.test)
+    // Real Android codec probes; no production or automatic network image loader.
+    androidTestImplementation(libs.coil.core.compatibility)
+    androidTestImplementation(libs.coil.compose.core.compatibility)
 
     debugImplementation(libs.compose.ui.test.manifest)
 }
