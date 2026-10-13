@@ -18,12 +18,15 @@ internal object ScryfallCodec {
     fun parse(raw: String, maxNesting: Int): JsonObject {
         val reader = JsonReader(StringReader(raw))
         reader.strictness = Strictness.STRICT
-        val parsed = read(reader, 0, maxNesting)
+        val parsed = read(reader, 0, maxNesting, NodeBudget())
         require(reader.peek() == JsonToken.END_DOCUMENT && parsed is JsonObject) { "Expected one JSON object" }
         return parsed
     }
 
-    private fun read(reader: JsonReader, depth: Int, limit: Int): JsonElement {
+    private class NodeBudget { var remaining: Int = 200_000 }
+
+    private fun read(reader: JsonReader, depth: Int, limit: Int, nodes: NodeBudget): JsonElement {
+        require(nodes.remaining-- > 0) { "JSON structure exceeds node limit" }
         require(depth <= limit) { "JSON nesting exceeds limit" }
         return when (reader.peek()) {
             JsonToken.BEGIN_OBJECT -> {
@@ -31,8 +34,8 @@ internal object ScryfallCodec {
                 reader.beginObject()
                 while (reader.hasNext()) {
                     val key = reader.nextName().also(::requireValidUnicode)
-                    require(!value.has(key)) { "Duplicate JSON field: $key" }
-                    value.add(key, read(reader, depth + 1, limit))
+                    require(!value.has(key)) { "Duplicate JSON field" }
+                    value.add(key, read(reader, depth + 1, limit, nodes))
                 }
                 reader.endObject()
                 value
@@ -40,12 +43,18 @@ internal object ScryfallCodec {
             JsonToken.BEGIN_ARRAY -> {
                 val value = JsonArray()
                 reader.beginArray()
-                while (reader.hasNext()) value.add(read(reader, depth + 1, limit))
+                while (reader.hasNext()) value.add(read(reader, depth + 1, limit, nodes))
                 reader.endArray()
                 value
             }
             JsonToken.STRING -> JsonPrimitive(reader.nextString().also(::requireValidUnicode))
-            JsonToken.NUMBER -> JsonPrimitive(BigDecimal(reader.nextString()))
+            JsonToken.NUMBER -> {
+                val token = reader.nextString()
+                require(token.length <= 1024) { "JSON number exceeds token limit" }
+                val number = BigDecimal(token)
+                require(number.scale() in -1024..1024) { "JSON number exceeds scale limit" }
+                JsonPrimitive(number)
+            }
             JsonToken.BOOLEAN -> JsonPrimitive(reader.nextBoolean())
             JsonToken.NULL -> { reader.nextNull(); JsonNull.INSTANCE }
             else -> error("Unexpected JSON token")
