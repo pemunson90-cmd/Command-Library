@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-schema4-route-50",
-  "verified_base_head": "427e70c8c28a31cb98e8445a464b129496a02161",
+  "checkpoint_id": "cp-20261013-contract-accept-51",
+  "verified_base_head": "d1715c1c3af3e5792b79667174e307c81092357c",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "Full Android v1 execution active; incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Complete engine and reviewed schema4 workers; root prepares strict bulk source binding",
+  "first_action": "Fix reviewed engine/wire races; integrate reviewed schema4 and full importer/platform controls",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -38,8 +38,9 @@
     "genuine_rules": "Actual977752byte officialTXT SHA8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca parsed2passes4357entries2072references0unresolved0duplicates0anomalies.79pureJVMtests pass in separate model/common/rules compile. This is not Android/physical evidence.",
     "rules_schema": "Committed actualKSP2.json SHA88066668f9bf27ec3c4923766f1c18ef696764e8bc54e66ae37a41a1600e99ae; all7legacyentitiesunchanged; native migration/preservation/reopen passes all3Androidlanes.",
     "k3_acquisition_schema": "Hosted38321835421 actualKSP3 SHA6bb715b72a1681998238d448756ca099e31e8a33b0d0a450a73a975035b7a265 all13legacyentitiesidentical; API23/API36 61nativeeachpass; ps16KiBstorage25passbutoneShellUIfail; JVMtestfixturecompilefailfixedpendingrerun.",
-    "k3_acquisition_infrastructure": "Acceptedmain67713d29aa5dec03d9a91ab3eb4239b020ab8ffa: exacte24a958 hosted38323540680 all4lanespass316JVM/61nativeeach. Candidate71acd14 Androidtreeidentical795b94b. Debugbuildonly; fullK3notaccepted."
+    "k3_acquisition_infrastructure": "Acceptedmain67713d29aa5dec03d9a91ab3eb4239b020ab8ffa: exacte24a958 hosted38323540680 all4lanespass316JVM/61nativeeach. Candidate71acd14 Androidtreeidentical795b94b. Debugbuildonly; fullK3notaccepted.",
+    "k3_full_contracts": "PR14 expected3e32f214 mergedmaina4a57e4; exacthosted38327108153 all4lanes337JVM/61nativeeach0failures+errors; treeequal. Declarations/framingonly, no fullinstallation."
   },
-  "last_completed": "Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing",
-  "updated_utc": "2026-10-13T00:24:47Z"
+  "last_completed": "PR14 exact3e32f214 acceptedmaina4a57e4 all4hostedlanes337JVM/61nativeeach; download engine review reproduces issues being fixed; no fullapp acceptance",
+  "updated_utc": "2026-10-13T00:38:19Z"
 }

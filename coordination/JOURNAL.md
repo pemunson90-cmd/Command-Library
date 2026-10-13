@@ -345,3 +345,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T00:24:09Z | codex | cp-20261013-full-contracts-49 | containing commit | Reconciled active engine and accepted main; independently reviewed full catalog contracts freshly compile with 21 passing JVM tests; schema4 review pending
 
 2026-10-13T00:24:47Z | codex | cp-20261013-schema4-route-50 | containing commit | Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing
+
+2026-10-13T00:38:19Z | codex | cp-20261013-contract-accept-51 | containing commit | PR14 exact3e32f214 acceptedmaina4a57e4 all4hostedlanes337JVM/61nativeeach; download engine review reproduces issues being fixed; no fullapp acceptance

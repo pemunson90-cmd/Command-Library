@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-schema4-route-50
+Checkpoint-ID: cp-20261013-contract-accept-51
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Complete engine and reviewed schema4 workers; root prepares strict bulk source binding
+Next step: 3. Fix reviewed engine/wire races; integrate reviewed schema4 and full importer/platform controls
 
-Updated UTC: 2026-10-13T00:24:47Z
+Updated UTC: 2026-10-13T00:38:19Z
 Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: 427e70c8c28a31cb98e8445a464b129496a02161.
+Verified base: d1715c1c3af3e5792b79667174e307c81092357c.
 
-Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing
+PR14 exact3e32f214 acceptedmaina4a57e4 all4hostedlanes337JVM/61nativeeach; download engine review reproduces issues being fixed; no fullapp acceptance
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
