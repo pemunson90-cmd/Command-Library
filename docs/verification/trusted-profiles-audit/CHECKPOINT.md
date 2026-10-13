@@ -1,4 +1,6 @@
-# Trusted resource profiles audit: checkpoint
+# Trusted resource profiles audit: original Claude checkpoint
+
+Codex completion: see [TRUSTED-PROFILES-REPORT.md](TRUSTED-PROFILES-REPORT.md) and [REVIEW-NOTES.md](REVIEW-NOTES.md). The running/not-started statuses below are preserved historical state, not the current queue. Do not rerun archived workflow scripts.
 
 Read-only implementation-readiness audit requested by Pat through the Claude Code packet `coordination/handoffs/environment-transition-2026-10-13/CLAUDE-CODE.md` on `agent/cx-full-v1-resume-01` (315747d). Scope: three user-downloadable profiles (strict English cards, Scryfall rulings, Wizards Comprehensive Rules TXT) matched to the actual Kotlin contracts. This is evidence for Codex, not permission to implement and not a runtime or acceptance claim. No production code, CI, schema, contracts, navigation, shared coordination or locks were touched. Everything here is new files under this directory on session branch `ccr-d1e9ac59-b90cv2`.
 
