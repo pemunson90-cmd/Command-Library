@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-factory-native-running-77
+Checkpoint-ID: cp-20261013-continuous-resume-78
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Inspect existing Android run38454916688 at2c6f3e3; do not duplicate native matrix
+Next step: 3. Continue local production safeguards while existing native38454916688 runs; batch hosted device checks only
 
-Updated UTC: 2026-10-13T19:27:32Z
-Status: Published coherent candidate; existing native run in progress; lease: released.
-Verified base: 2c6f3e3866e0d2f7674c307447f64e17553e5413.
+Updated UTC: 2026-10-13T19:31:31Z
+Status: Continuous local execution active; existing native result pending; lease: active.
+Verified base: 3a620f6c0108dccc1c9e5eff0cd10d8ce1e993a0.
 
-Published source-approved guarded factory and429/binder/parser coherent candidate2c6f3e3866e0d2f7674c307447f64e17553e5413. Local553JVM/alltestAPK/check/lint/debugassembly/16KiB ZIPalignment and31script/continuity passed. Android38454916688 in_progress; Continuity38454916867 success. Native newfixture/capture acceptance pending; factory unregistered and production/fullv1 incomplete. Life contract gap preflight saved.
+Pat explicitly requires continuous work/checkpointing, stop only for missing research/questions, local-first and GitHub only necessary. Existing reviewed2c6f3e3 native candidate alreadyrunning; no duplicate run. Root reclaimed released lease; read-only CI worker checks evidence while root prepares durable429/admission packet locally.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
