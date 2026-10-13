@@ -1,5 +1,5 @@
 # Latest continuation delta
-Branch: agent/cx-professional-visual-foundation-01; source SHA: 8ced28620ef98d15e073cf2b8c59150d80a2b0c7 (base 12fea59).
+Branch: agent/cx-professional-visual-foundation-01; source SHA: e17d4b45e11c3e68bfbc0dd76d5afadb7db548cc (base 12fea59).
 Changed: owned card/detail/shared panels, read-only badges, art-content slot with required attribution/truthful fallback, typography and externalized strings; no borrowed source/assets/dependencies.
 LifeTable consumes GameSnapshot + explicit lifeDefinitionId + GameAction/undo/log callbacks; stateless, no service or runtime destination; no engine/model changes.
 Actual checks: git diff --check PASS; exact locked-path ownership + XML uniqueness + externalized UI copy/resource-reference checks PASS.
