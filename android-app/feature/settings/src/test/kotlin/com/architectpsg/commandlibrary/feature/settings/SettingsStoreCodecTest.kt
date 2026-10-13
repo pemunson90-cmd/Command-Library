@@ -66,6 +66,50 @@ class SettingsStoreCodecTest {
         ),
     )
 
+
+    @Test fun schemaOnePreservesEveryLegacyFieldWithoutInferringRemoval() {
+        val bytes = SettingsStoreCodec.encode(fullState)
+        // Version 1 has identical fields, omitting only each new final Boolean.
+        val secondInstallation = fullState.consents[1].installationId.toByteArray()
+        val secondStart = (0..bytes.size - secondInstallation.size).first { offset ->
+            secondInstallation.indices.all { bytes[offset + it] == secondInstallation[it] }
+        } - 4
+        val legacy = bytes.filterIndexed { index, _ -> index != secondStart - 1 && index != bytes.size - 5 }.toByteArray()
+        ByteBuffer.wrap(legacy, 4, 4).putInt(1)
+        assertEquals(fullState, SettingsStoreCodec.decode(reChecksum(legacy)))
+        assertTrue(SettingsStoreCodec.decode(legacy).consents.none { it.pendingDataRemoval })
+    }
+
+    @Test fun schemaTwoPreservesPendingFlagAndRejectsInvalidBooleanOrUnrevokedRequest() {
+        val pending = fullState.copy(consents = listOf(fullState.consents[0].copy(pendingDataRemoval = true)))
+        assertEquals(pending, SettingsStoreCodec.decode(SettingsStoreCodec.encode(pending)))
+        val bytes = SettingsStoreCodec.encode(pending)
+        bytes[bytes.size - 5] = 2
+        assertCorrupt(reChecksum(bytes))
+        val active = fullState.copy(consents = listOf(fullState.consents[1]))
+        val invalid = SettingsStoreCodec.encode(active)
+        invalid[invalid.size - 5] = 1
+        assertCorrupt(reChecksum(invalid))
+        try {
+            SettingsStoreCodec.validateCandidate(active.copy(consents = listOf(active.consents.single().copy(pendingDataRemoval = true))))
+            fail("expected invalid candidate")
+        } catch (expected: InvalidSettingsValueException) { /* write validation is fail closed too */ }
+    }
+
+    @Test fun schemaTwoSizeLimitIncludesPendingFlagAndChecksum() {
+        val pending = fullState.copy(consents = listOf(fullState.consents[0].copy(pendingDataRemoval = true)),
+            budget = Knowledge.Unknown("x", SnapshotList.empty()))
+        val overhead = SettingsStoreCodec.encode(pending).size - 1
+        val fits = pending.copy(budget = Knowledge.Unknown("x".repeat(SettingsStoreCodec.MAX_STORE_BYTES - overhead), SnapshotList.empty()))
+        val bytes = SettingsStoreCodec.encode(fits)
+        assertEquals(SettingsStoreCodec.MAX_STORE_BYTES, bytes.size)
+        assertEquals(fits, SettingsStoreCodec.decode(bytes))
+        try {
+            SettingsStoreCodec.validateCandidate(fits.copy(budget = Knowledge.Unknown("x".repeat(SettingsStoreCodec.MAX_STORE_BYTES - overhead + 1), SnapshotList.empty())))
+            fail("expected size rejection")
+        } catch (expected: InvalidSettingsValueException) { }
+    }
+
     private fun reChecksum(bytes: ByteArray): ByteArray {
         val crc = CRC32().also { it.update(bytes, 0, bytes.size - 4) }.value.toInt()
         ByteBuffer.wrap(bytes, bytes.size - 4, 4).putInt(crc)
@@ -82,11 +126,11 @@ class SettingsStoreCodecTest {
     }
 
     @Test
-    fun theHeaderIsMagicThenSchemaVersionOne() {
+    fun theHeaderIsMagicThenSchemaVersionTwo() {
         val bytes = SettingsStoreCodec.encode(StoredSettings.INITIAL)
         assertEquals("CLSS", String(bytes, 0, 4, Charsets.US_ASCII))
-        assertEquals(1, ByteBuffer.wrap(bytes, 4, 4).int)
-        assertEquals(1, SettingsStoreCodec.SUPPORTED_VERSION)
+        assertEquals(2, ByteBuffer.wrap(bytes, 4, 4).int)
+        assertEquals(2, SettingsStoreCodec.SUPPORTED_VERSION)
     }
 
     @Test
@@ -125,7 +169,7 @@ class SettingsStoreCodecTest {
             fail("expected UnsupportedSettingsStoreVersionException")
         } catch (unsupported: UnsupportedSettingsStoreVersionException) {
             assertEquals(7, unsupported.foundVersion)
-            assertEquals(1, unsupported.supportedVersion)
+            assertEquals(2, unsupported.supportedVersion)
         }
     }
 
