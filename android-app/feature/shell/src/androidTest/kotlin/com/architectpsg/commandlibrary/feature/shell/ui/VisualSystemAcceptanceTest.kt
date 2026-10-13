@@ -125,8 +125,8 @@ class VisualSystemAcceptanceTest(private val width: Int, private val height: Int
         assertTrue("target inside root horizontally: $full / $root", full.left.value * pixelsPerDp >= root.left - 1f && full.right.value * pixelsPerDp <= root.right + 1f)
         assertTrue("target inside root vertically: $full / $root", full.top.value * pixelsPerDp >= root.top - 1f && full.bottom.value * pixelsPerDp <= root.bottom + 1f)
         val visible = node.boundsInRoot
-        assertEquals("unclipped target width", full.width.value * pixelsPerDp, visible.width, 1f)
-        assertEquals("unclipped target height", full.height.value * pixelsPerDp, visible.height, 1f)
+        assertEquals("unclipped target width", (full.right - full.left).value * pixelsPerDp, visible.width, 1f)
+        assertEquals("unclipped target height", (full.bottom - full.top).value * pixelsPerDp, visible.height, 1f)
         return this
     }
 
