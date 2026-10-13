@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-factory-source-approved-76. Next: orch-kotlin-k3-offline-data-01 step3; Factory source approved and locally verified; native candidate pending.
+Checkpoint-ID: cp-20261013-factory-native-running-77. Next: orch-kotlin-k3-offline-data-01 step3; Published coherent candidate; existing native run in progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

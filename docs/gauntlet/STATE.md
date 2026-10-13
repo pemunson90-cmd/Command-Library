@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-factory-source-approved-76. Updated UTC: 2026-10-13T19:26:52Z.
+Checkpoint: cp-20261013-factory-native-running-77. Updated UTC: 2026-10-13T19:27:32Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Factory source approved and locally verified; native candidate pending. Next: orch-kotlin-k3-offline-data-01 step3.
-Publish one coherent native candidate; verify new factory/binder fixtures and API23 captures
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Published coherent candidate; existing native run in progress. Next: orch-kotlin-k3-offline-data-01 step3.
+Inspect existing Android run38454916688 at2c6f3e3; do not duplicate native matrix
 
-Astra exact-source approved guarded factory;553 local JVM/check/lint/alltestAPK/debugassembly and16KiB ZIPalignment pass;31script/continuity pass. Factory unregistered, five native methods and four binder methods not_run; lifecycle result-delivery cleanup source-reviewed, exact boundary not independently runtime-tested. Life service gap preflight saved. Production/fullv1 remain incomplete.
+Published source-approved guarded factory and429/binder/parser coherent candidate2c6f3e3866e0d2f7674c307447f64e17553e5413. Local553JVM/alltestAPK/check/lint/debugassembly/16KiB ZIPalignment and31script/continuity passed. Android38454916688 in_progress; Continuity38454916867 success. Native newfixture/capture acceptance pending; factory unregistered and production/fullv1 incomplete. Life contract gap preflight saved.
 
 Read CURRENT, machine state and task card.
