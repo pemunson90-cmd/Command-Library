@@ -45,19 +45,40 @@ class LocalAcquisitionTest {
         }
         val requests = mutableListOf<RequestSpec>()
         val starts = mutableListOf<Long>()
+        val wireEnqueues = mutableListOf<Pair<RequestSpec, ResourceUri>>()
+        val wireStarts = mutableListOf<Long>()
+        val endpointCalls = mutableListOf<ResourceUri>()
+        var guardedWire = false
+        var wireHops: (RequestSpec) -> List<ResourceUri> = { listOf(it.request.uri) }
+        var beforeWire: suspend (RequestSpec, ResourceUri) -> Unit = { _, _ -> }
         var response: (RequestSpec) -> Flow<Outcome<ByteChunk>> = { spec -> flowOf(Outcome.Success(chunk("abcdef", metadata = metadata(spec, length = 6)))) }
-        val network = object : NetworkClient {
+        val network: NetworkClient = object : NetworkClient {
             override suspend fun send(request: RequestSpec, cancel: CancelToken): Outcome<ByteResponse> = error("stream required")
             override fun stream(request: RequestSpec, cancel: CancelToken): Flow<Outcome<ByteChunk>> = flow {
                 requests += request; starts += scope.testScheduler.currentTime
+                if (guardedWire) {
+                    try {
+                        for (hop in wireHops(request)) {
+                            beforeWire(request, hop)
+                            engine.authorizeWireDispatch(request, hop, cancel) {
+                                wireEnqueues += request to hop; wireStarts += scope.testScheduler.currentTime
+                            }
+                        }
+                    } catch (e: CancellationException) { throw e }
+                    catch (_: Exception) {
+                        // Match the transport's deliberate callback-error scrubbing.
+                        emit(Outcome.Failure(DomainFailure(FailureCode.TRANSPORT, "Synthetic denied wire dispatch", SnapshotList.empty())))
+                        return@flow
+                    }
+                }
                 emitAll(response(request))
             }
             override suspend fun close() = Unit
         }
         val files = DurableArtifactFiles(directory, { file -> when { Files.isSymbolicLink(file.toPath()) -> ArtifactEntryKind.SYMLINK; !file.exists() -> ArtifactEntryKind.MISSING; file.isFile -> ArtifactEntryKind.REGULAR; else -> ArtifactEntryKind.OTHER } }, directorySync)
-        val engine = LocalAcquisition(database, network, settings, gate, clock, object : IdSource { override fun nextId() = "synthetic-${++serial}" }, files,
+        val engine: LocalAcquisition = LocalAcquisition(database, network, settings, gate, clock, object : IdSource { override fun nextId() = "synthetic-${++serial}" }, files,
             { if (allowed) Outcome.Success(Unit) else Outcome.Failure(DomainFailure(FailureCode.INVALID_INPUT, "Synthetic rejected profile", SnapshotList.empty())) },
-            { _, uri -> EndpointProfile(EntityId("synthetic"), Origin("https", java.net.URI(uri.value).host, 443), SnapshotList.empty(), null, 1,
+            { _, uri -> endpointCalls += uri; EndpointProfile(EntityId("synthetic"), Origin("https", java.net.URI(uri.value).host, 443), SnapshotList.empty(), null, 1,
                 RetryPolicy(1, Duration.ZERO, Duration.ZERO, true)) }, { live })
         val limits = AcquisitionLimits("synthetic-v1", 100000, 30000, 30000, 350, 2, 15000, 128, 65536, 32)
         fun request(expected: Knowledge<Long> = Knowledge.Known(6L), sha: Knowledge<ContentHash> = Knowledge.Absent("Synthetic unavailable"), search: Boolean = false): AcquisitionRequest {
@@ -352,6 +373,290 @@ class LocalAcquisitionTest {
         }
     }
 
+    @Test fun physicalDispatchRejectsEqualForgedAndReleasedSpecsButAcceptsRegisteredIdentity() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            var forgedDenied = false; var forgedEnqueue = false
+            f.beforeWire = { spec, actual ->
+                try { f.engine.authorizeWireDispatch(spec.copy(), actual, token) { forgedEnqueue = true } }
+                catch (_: Exception) { forgedDenied = true }
+            }
+            val q = f.queued(); assertEquals(AcquisitionState.COMPLETED, value(f.engine.run(q.plan.jobId, token)).state)
+            assertTrue(forgedDenied); assertFalse(forgedEnqueue); assertEquals(1, f.wireEnqueues.size)
+            val exactSpec = f.requests.single()
+            assertTrue(exactSpec === f.wireEnqueues.single().first)
+            var releasedEnqueue = false; var releasedDenied = false
+            try { f.engine.authorizeWireDispatch(exactSpec, exactSpec.request.uri, token) { releasedEnqueue = true } }
+            catch (_: Exception) { releasedDenied = true }
+            assertTrue(releasedDenied); assertFalse(releasedEnqueue)
+        }
+    }
+    @Test fun physicalDispatchChecksCurrentOwnerAttemptRevisionConsentAndRunningState() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            val q = f.queued(); val replacement = value(f.settings.approve(q.plan.request.intent, token))
+            var denied = 0; var wrongEnqueues = 0
+            f.beforeWire = { spec, actual ->
+                val row = f.row(q.plan.jobId)
+                val original = row.toMap()
+                val variations = listOf(
+                    mapOf("owner_token" to SqlValue.Text("synthetic-replacement-owner")),
+                    mapOf("attempt" to SqlValue.Integer(2)),
+                    mapOf("revision" to SqlValue.Integer((row.getValue("revision") as SqlValue.Integer).value + 1)),
+                    mapOf("consent_id" to SqlValue.Text(replacement.id.value)),
+                    mapOf("state" to SqlValue.Text("PAUSED"), "owner_token" to SqlValue.Null))
+                for (variation in variations) {
+                    row.putAll(variation)
+                    try { f.engine.authorizeWireDispatch(spec, actual, token) { wrongEnqueues++ } }
+                    catch (_: Exception) { denied++ }
+                    finally { row.clear(); row.putAll(original) }
+                }
+            }
+            assertEquals(AcquisitionState.COMPLETED, value(f.engine.run(q.plan.jobId, token)).state)
+            assertEquals(5, denied); assertEquals(0, wrongEnqueues); assertEquals(1, f.wireEnqueues.size)
+        }
+    }
+    @Test fun revocationDuringDelayedPhysicalSlotPreventsEnqueueAndReportsWaitingConsent() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            val waiting = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
+            f.beforeWire = { _, _ -> waiting.complete(Unit); release.await() }
+            val q = f.queued(); val runner = async { f.engine.run(q.plan.jobId, token) }
+            waiting.await()
+            value(f.settings.update(SettingsPatch(SnapshotList.empty()), f.state.revision, token))
+            release.complete(Unit)
+            assertEquals(AcquisitionState.WAITING_CONSENT, value(runner.await()).state)
+            assertTrue(f.wireEnqueues.isEmpty()); assertEquals(6L, value(f.engine.status(q.plan.jobId, token)).transferredBytes)
+        }
+    }
+    @Test fun actualRedirectHopIsRevalidatedAndRevocationPreventsItsEnqueue() = runTest {
+        for (revoke in listOf(false, true)) Fixture(this).use { f ->
+            val mirror = ResourceUri("https://mirror.invalid/synthetic.txt")
+            val request = f.request().let { it.copy(source = (it.source as AcquisitionSource.RemoteFile).copy(allowedRedirectOrigins = SnapshotList.of(Origin("https", "mirror.invalid", 443)))) }
+            f.guardedWire = true; f.wireHops = { listOf(it.request.uri, mirror) }
+            val waiting = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
+            f.beforeWire = { _, actual -> if (revoke && actual == mirror) { waiting.complete(Unit); release.await() } }
+            f.response = { spec -> flowOf(Outcome.Success(chunk("abcdef", metadata = f.metadata(spec, length = 6).copy(finalUri = mirror)))) }
+            val q = f.queued(request); val runner = async { f.engine.run(q.plan.jobId, token) }
+            if (revoke) { waiting.await(); value(f.settings.update(SettingsPatch(SnapshotList.empty()), f.state.revision, token)); release.complete(Unit) }
+            val result = value(runner.await())
+            if (revoke) { assertEquals(AcquisitionState.WAITING_CONSENT, result.state); assertEquals(1, f.wireEnqueues.size) }
+            else {
+                assertEquals(AcquisitionState.COMPLETED, result.state); assertEquals(2, f.wireEnqueues.size)
+                assertEquals(mirror, f.endpointCalls.last()); assertEquals(mirror, (result.artifact as Knowledge.Known).value.provenance.finalUri)
+            }
+        }
+    }
+    @Test fun unapprovedPhysicalTargetFailsWithoutAnyEnqueue() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true; f.wireHops = { listOf(ResourceUri("https://unapproved.invalid/synthetic.txt")) }
+            val q = f.queued(); assertEquals(AcquisitionState.FAILED, value(f.engine.run(q.plan.jobId, token)).state)
+            assertTrue(f.wireEnqueues.isEmpty())
+        }
+    }
+    @Test fun physicalEnglishStartsStay600msApartAfterAnOriginSlotDelay() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            f.beforeWire = { _, _ -> if (f.wireEnqueues.isEmpty()) delay(500) }
+            f.response = { spec -> flowOf(Outcome.Success(chunk(page(1, 1), metadata = f.metadata(spec)))) }
+            val first = f.queued(f.request(search = true)); val second = f.queued(f.request(search = true))
+            assertEquals(AcquisitionState.COMPLETED, value(f.engine.run(first.plan.jobId, token)).state)
+            assertEquals(AcquisitionState.COMPLETED, value(f.engine.run(second.plan.jobId, token)).state)
+            assertEquals(500L, f.wireStarts.first()); assertTrue(f.wireStarts[1] - f.wireStarts[0] >= 600)
+        }
+    }
+
+    @Test fun coroutineCancellationEndsArtifactPinWaitWithoutDisturbingPinnedReader() = runTest {
+        Fixture(this).use { f ->
+            val q = f.queued(); value(f.engine.run(q.plan.jobId, token))
+            val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
+            val pin = async { f.engine.withVerifiedArtifact(q.plan.jobId, token) { _, bytes -> entered.complete(Unit); release.await(); bytes.toList().last().final } }
+            entered.await()
+            val reader = async { f.engine.openArtifact(q.plan.jobId, token).toList() }
+            runCurrent(); reader.cancel(); runCurrent()
+            assertTrue(reader.isCompleted && reader.isCancelled); assertFalse(pin.isCompleted)
+            release.complete(Unit); assertTrue(pin.await())
+            assertTrue(f.engine.openArtifact(q.plan.jobId, token).toList().last().final)
+        }
+    }
+    @Test fun tokenCancellationCanWithdrawJoinWaitWhileWriterKeepsItsFileFence() = runTest {
+        Fixture(this).use { f ->
+            val settling = CompletableDeferred<Unit>(); val settled = CompletableDeferred<Unit>()
+            f.response = { spec -> flow {
+                try { emit(Outcome.Success(chunk("abc", metadata = f.metadata(spec, length = 6), final = false))); awaitCancellation() }
+                finally { withContext(NonCancellable) { settling.complete(Unit); settled.await() } }
+            } }
+            val q = f.queued(); val runner = async { f.engine.run(q.plan.jobId, token) }; runCurrent()
+            var cancelled = false
+            val stop = object : CancelToken { override val isCancelled get() = cancelled; override fun throwIfCancelled() { if (cancelled) throw CancellationException() } }
+            val pause = async { f.engine.pause(q.plan.jobId, value(f.engine.status(q.plan.jobId, token)).revision, stop) }
+            settling.await(); cancelled = true; advanceTimeBy(101); runCurrent()
+            val waitEndedBeforeWriter = pause.isCompleted && pause.isCancelled && !runner.isCompleted
+            assertEquals(AcquisitionState.RUNNING, value(f.engine.status(q.plan.jobId, token)).state)
+            settled.complete(Unit)
+            try { pause.await(); fail("Token cancelled") } catch (_: CancellationException) { }
+            try { runner.await(); fail("Runner cancelled") } catch (_: CancellationException) { }
+            assertTrue("A waiting caller can withdraw without publishing pause before writer settlement", waitEndedBeforeWriter)
+            assertEquals(AcquisitionState.INTERRUPTED, value(f.engine.status(q.plan.jobId, token)).state)
+        }
+    }
+    @Test fun missingAndShortPartialJobsFailDurablyWithoutAbortingLaterRecoveryJobs() = runTest {
+        Fixture(this).use { f ->
+            val healthy = f.queued()
+            val missing = f.queued(); val short = f.queued()
+            f.response = { spec -> flow { emit(Outcome.Success(chunk("abc", metadata = f.metadata(spec, length = 6), final = false))); awaitCancellation() } }
+            val writers = listOf(missing, short).map { q -> async { f.engine.run(q.plan.jobId, token) } }
+            runCurrent()
+            for (q in listOf(missing, short)) value(f.engine.pause(q.plan.jobId, value(f.engine.status(q.plan.jobId, token)).revision, token))
+            for (writer in writers) try { writer.await(); fail("Paused writer") } catch (_: CancellationException) { }
+            fun partial(q: AcquisitionSnapshot) = File(f.directory, (f.row(q.plan.jobId).getValue("partial_key") as SqlValue.Text).value + "-a1")
+            assertTrue(partial(missing).delete()); partial(short).writeText("ab")
+            value(f.engine.recover(token))
+            for (q in listOf(missing, short)) {
+                val failed = value(f.engine.status(q.plan.jobId, token))
+                assertEquals(AcquisitionState.FAILED, failed.state); assertEquals(FailureCode.CORRUPT_DATA, failed.failure?.code)
+                assertEquals(3L, failed.durableArtifactBytes); assertEquals(6L, failed.transferredBytes)
+            }
+            assertEquals(AcquisitionState.INTERRUPTED, value(f.engine.status(healthy.plan.jobId, token)).state)
+            f.response = { spec -> flowOf(Outcome.Success(chunk("abcdef", metadata = f.metadata(spec, length = 6)))) }
+            val failed = value(f.engine.status(missing.plan.jobId, token))
+            value(f.engine.resume(missing.plan.jobId, failed.revision, missing.consentId!!, token))
+            val done = value(f.engine.run(missing.plan.jobId, token))
+            assertEquals(AcquisitionState.COMPLETED, done.state); assertEquals(2, done.attempt); assertEquals(12L, done.transferredBytes)
+        }
+    }
+
+    @Test fun committedRemovalSurvivesCancellationBeforeUnlinkAndRecoveryFinishesIt() = runTest {
+        Fixture(this).use { f ->
+            val q = f.queued(); value(f.engine.run(q.plan.jobId, token))
+            f.database.onRemovalCommit = { currentCoroutineContext().cancel() }
+            val remover = async { f.engine.removeArtifacts(q.consentId!!, token) }
+            try { remover.await(); fail("Synthetic process interruption") } catch (_: CancellationException) { }
+            assertEquals(AcquisitionState.CANCELLED, value(f.engine.status(q.plan.jobId, token)).state)
+            assertEquals(SqlValue.Text("removal-pending-v1"), f.row(q.plan.jobId)["failure_payload"])
+            assertTrue(f.directory.listFiles()!!.any { it.name.endsWith("-verified") })
+            assertTrue(f.database.artifacts.isEmpty())
+            f.database.onRemovalCommit = null
+            value(f.engine.recover(token))
+            assertTrue(f.directory.listFiles()!!.isEmpty())
+            assertEquals(SqlValue.Null, f.row(q.plan.jobId)["failure_payload"])
+            assertEquals(AcquisitionState.CANCELLED, value(f.engine.status(q.plan.jobId, token)).state)
+        }
+    }
+    @Test fun unlinkDirectorySyncFailureRetainsRemovalMarkerUntilDurableRecoveryBarrier() = runTest {
+        var failNextSync = false
+        var syncs = 0
+        Fixture(this) { syncs++; if (failNextSync) { failNextSync = false; throw IOException("Synthetic unlink directory sync failure") } }.use { f ->
+            val q = f.queued(); value(f.engine.run(q.plan.jobId, token))
+            failNextSync = true
+            assertTrue(f.engine.removeArtifacts(q.consentId!!, token) is Outcome.Failure)
+            assertEquals(SqlValue.Text("removal-pending-v1"), f.row(q.plan.jobId)["failure_payload"])
+            assertTrue(f.directory.listFiles()!!.isEmpty()) // Unlink happened; durability was not established.
+            val before = syncs
+            value(f.engine.recover(token))
+            assertTrue(syncs >= before + 2)
+            assertEquals(SqlValue.Null, f.row(q.plan.jobId)["failure_payload"])
+            assertEquals(AcquisitionState.CANCELLED, value(f.engine.status(q.plan.jobId, token)).state)
+        }
+    }
+    @Test fun removalRevalidatesConsentMembershipAfterItsLiveListing() = runTest {
+        Fixture(this).use { f ->
+            val q = f.queued(); value(f.engine.run(q.plan.jobId, token))
+            val newConsent = value(f.settings.approve(q.plan.request.intent, token))
+            // Test seam models a consent writer winning after list's read, before per-job exclusion.
+            f.database.afterListing = { f.row(q.plan.jobId)["consent_id"] = SqlValue.Text(newConsent.id.value) }
+            value(f.engine.removeArtifacts(q.consentId!!, token))
+            assertEquals(AcquisitionState.COMPLETED, value(f.engine.status(q.plan.jobId, token)).state)
+            assertEquals(newConsent.id, value(f.engine.status(q.plan.jobId, token)).consentId)
+            assertTrue(f.directory.listFiles()!!.any { it.name.endsWith("-verified") })
+        }
+    }
+
+    @Test fun tokenOnlyCancellationEndsAllArtifactPinWaitsWithoutReleasingExistingPin() = runTest {
+        Fixture(this).use { f ->
+            val q = f.queued(); value(f.engine.run(q.plan.jobId, token))
+            val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
+            val pin = async { f.engine.withVerifiedArtifact(q.plan.jobId, token) { _, bytes -> entered.complete(Unit); release.await(); bytes.toList().last().final } }
+            entered.await()
+            var cancelled = false
+            val stop = object : CancelToken {
+                override val isCancelled get() = cancelled
+                override fun throwIfCancelled() { if (cancelled) throw CancellationException("Synthetic token cancellation") }
+            }
+            val publicReader = async { f.engine.openArtifact(q.plan.jobId, stop).toList() }
+            val importer = async { f.engine.withVerifiedArtifact(q.plan.jobId, stop) { _, bytes -> bytes.toList() } }
+            val provider = async { f.engine.withArtifactFile(q.plan.jobId, stop) { _, _, bytes -> bytes.toList() } }
+            runCurrent(); cancelled = true; advanceTimeBy(101); runCurrent()
+            val allEndedBeforeRelease = listOf(publicReader, importer, provider).all { it.isCompleted && it.isCancelled }
+            val originalPinUnaffected = !pin.isCompleted
+            release.complete(Unit)
+            assertTrue(pin.await())
+            for (reader in listOf(publicReader, importer, provider)) try { reader.await(); fail("Token cancellation") } catch (_: CancellationException) { }
+            assertTrue("Cancelled-token readers must leave contended pins within100ms", allEndedBeforeRelease)
+            assertTrue(originalPinUnaffected)
+            assertEquals(AcquisitionState.COMPLETED, value(f.engine.status(q.plan.jobId, token)).state)
+        }
+    }
+    @Test fun removalStopsOnlySelectedConsentWorkerAndUnrelatedTransferCompletes() = runTest {
+        Fixture(this).use { f ->
+            val unrelated = f.queued(); val removable = f.queued()
+            val release = CompletableDeferred<Unit>()
+            var closed = 0
+            f.response = { spec -> flow {
+                try {
+                    emit(Outcome.Success(chunk("abc", metadata = f.metadata(spec, length = 6), final = false)))
+                    release.await()
+                    emit(Outcome.Success(chunk("def", sequence = 1, offset = 3)))
+                } finally { closed++ }
+            } }
+            val unrelatedRunner = async { f.engine.run(unrelated.plan.jobId, token) }
+            val removableRunner = async { f.engine.run(removable.plan.jobId, token) }
+            runCurrent()
+            val before = value(f.engine.status(unrelated.plan.jobId, token))
+            value(f.engine.removeArtifacts(removable.consentId!!, token))
+            val unrelatedStillRunning = !unrelatedRunner.isCompleted && value(f.engine.status(unrelated.plan.jobId, token)) == before
+            assertEquals(AcquisitionState.CANCELLED, value(f.engine.status(removable.plan.jobId, token)).state)
+            try { removableRunner.await(); fail("Selected worker must stop") } catch (_: CancellationException) { }
+            release.complete(Unit)
+            val unrelatedResult = try { value(unrelatedRunner.await()) } catch (_: CancellationException) { null }
+            assertTrue("Unrelated transfer must stay live during scoped removal", unrelatedStillRunning)
+            assertEquals(AcquisitionState.COMPLETED, unrelatedResult?.state)
+            assertEquals(2, closed)
+        }
+    }
+
+    @Test fun staleStartAndResumeLeaveLiveTransferUntouchedUntilCompletion() = runTest {
+        Fixture(this).use { f ->
+            val release = CompletableDeferred<Unit>()
+            var closed = false
+            f.response = { spec -> flow {
+                try {
+                    emit(Outcome.Success(chunk("abc", metadata = f.metadata(spec, length = 6), final = false)))
+                    release.await()
+                    emit(Outcome.Success(chunk("def", sequence = 1, offset = 3)))
+                } finally { closed = true }
+            } }
+            val q = f.queued()
+            val runner = async { f.engine.run(q.plan.jobId, token) }
+            runCurrent()
+            val before = value(f.engine.status(q.plan.jobId, token))
+            assertEquals(AcquisitionState.RUNNING, before.state)
+            val staleStart = f.engine.start(q.plan.jobId, q.revision, q.consentId!!, token)
+            assertEquals(FailureCode.STALE_REVISION, (staleStart as Outcome.Failure).error.code)
+            assertFalse(closed); assertFalse(runner.isCompleted)
+            val staleResume = f.engine.resume(q.plan.jobId, q.revision, q.consentId!!, token)
+            assertEquals(FailureCode.STALE_REVISION, (staleResume as Outcome.Failure).error.code)
+            assertFalse(closed); assertFalse(runner.isCompleted)
+            val wrongState = f.engine.resume(q.plan.jobId, before.revision, q.consentId!!, token)
+            assertEquals(FailureCode.INVALID_INPUT, (wrongState as Outcome.Failure).error.code)
+            assertEquals(before, value(f.engine.status(q.plan.jobId, token)))
+            assertFalse(closed); assertFalse(runner.isCompleted)
+            release.complete(Unit)
+            assertEquals(AcquisitionState.COMPLETED, value(runner.await()).state)
+            assertTrue(closed); assertEquals(1, f.requests.size)
+        }
+    }
+
     @Test fun stalePauseDoesNotSignalCurrentWriterAndRecoveryJoinsIt() = runTest {
         Fixture(this).use { f ->
             var closed = false
@@ -393,6 +698,8 @@ class LocalAcquisitionTest {
         val seen = linkedMapOf<Pair<String, String>, MutableMap<String, SqlValue>>()
         var zeroPageCheckpoint = false
         var onCompletionCommit: (suspend () -> Unit)? = null
+        var onRemovalCommit: (suspend () -> Unit)? = null
+        var afterListing: (() -> Unit)? = null
         private fun params(request: SqlRequest) = request.parameters.associate { it.name to it.value }
         override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> {
             cancel.throwIfCancelled()
@@ -407,11 +714,13 @@ class LocalAcquisitionTest {
             rows = rows.sortedWith(compareByDescending<MutableMap<String, SqlValue>> { (it.getValue("created_seconds") as SqlValue.Integer).value }
                 .thenByDescending { (it.getValue("created_nano") as SqlValue.Integer).value }.thenByDescending { (it.getValue("job_id") as SqlValue.Text).value })
             rows = rows.take((p["lim"] as? SqlValue.Integer)?.value?.toInt() ?: request.maxRows)
-            return Outcome.Success(SnapshotList.copyOf(rows.map { j ->
+            val result = Outcome.Success(SnapshotList.copyOf(rows.map { j ->
                 val a = artifacts[(j.getValue("job_id") as SqlValue.Text).value]
                 val aliases = mapOf("artifact_key" to "artifact_key", "artifact_bytes" to "byte_count", "artifact_sha256" to "sha256", "artifact_framing" to "framing", "artifact_compression" to "compression", "artifact_payload" to "verified_payload", "artifact_version" to "payload_version", "artifact_seconds" to "completed_seconds", "artifact_nano" to "completed_nano")
                 RowData(SnapshotList.copyOf((j + aliases.mapValues { a?.get(it.value) ?: SqlValue.Null }).map { RowColumn(it.key, it.value) }))
             }))
+            if ("ORDER BY" in request.statement) afterListing?.let { callback -> afterListing = null; callback() }
+            return result
         }
         private fun execute(request: SqlRequest): Outcome<DbWriteResult> {
             val p = params(request)
@@ -466,6 +775,7 @@ class LocalAcquisitionTest {
                 if (rollback != null) { restore(); return rollback!! }
                 if (result is Outcome<*> && result !is Outcome.Success<*>) { restore(); @Suppress("UNCHECKED_CAST") return result as Outcome<T> }
                 if (artifacts.size > oldArtifacts.size) onCompletionCommit?.invoke()
+                if (jobs.values.any { it["failure_payload"] == SqlValue.Text("removal-pending-v1") } && oldJobs.values.none { it["failure_payload"] == SqlValue.Text("removal-pending-v1") }) onRemovalCommit?.invoke()
                 return Outcome.Success(result)
             } catch (e: CancellationException) { restore(); throw e }
             catch (e: TransactionAbort) { restore(); return rollback ?: Outcome.Failure(e.failure) }

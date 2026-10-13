@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.net.URI
+import java.util.IdentityHashMap
 import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
 import java.security.MessageDigest
@@ -45,6 +45,8 @@ internal class LocalAcquisition(
     private val workers = ConcurrentHashMap<String, Deferred<Outcome<AcquisitionSnapshot>>>()
     private val searchStarts = Mutex()
     private var lastSearchStart: Duration? = null
+    private var lastWireSearchStart: Duration? = null // Protected by the shared consent gate.
+    private val wireContexts = IdentityHashMap<RequestSpec, Stored>()
     private fun control(id: EntityId) = controls[id.value] ?: Mutex().let { controls.putIfAbsent(id.value, it) ?: it }
     private fun fileGuard(id: EntityId) = fileGuards[id.value] ?: Mutex().let { fileGuards.putIfAbsent(id.value, it) ?: it }
 
@@ -81,9 +83,11 @@ internal class LocalAcquisition(
             AcquisitionState.WAITING_CONSENT, AcquisitionState.WAITING_NETWORK, AcquisitionState.WAITING_WIFI, AcquisitionState.FAILED), cancel)
 
     private suspend fun queue(id: EntityId, expected: Revision, consentId: EntityId, allowed: Set<AcquisitionState>, cancel: CancelToken): Outcome<AcquisitionSnapshot> = outcome(cancel) {
-        control(id).withLock {
-            workers[id.value]?.cancelAndJoin()
-            fileGuard(id).withLock {
+        control(id).withTokenLock(cancel) {
+            // Registration and other controls also take this lock. Reject before any signal.
+            expect(load(id, cancel), expected, allowed)
+            workers[id.value]?.cancelAndJoinChecked(cancel)
+            fileGuard(id).withTokenLock(cancel) {
                 var row = load(id, cancel)
                 expect(row, expected, allowed)
                 if (row.state == AcquisitionState.FAILED && row.phase != AcquisitionPhase.VERIFYING && row.attempt > 0) row = restart(row, cancel)
@@ -102,14 +106,14 @@ internal class LocalAcquisition(
         stop(jobId, expected, AcquisitionState.CANCELLED, cancel)
 
     private suspend fun stop(id: EntityId, expected: Revision, target: AcquisitionState, cancel: CancelToken): Outcome<AcquisitionSnapshot> = outcome(cancel) {
-        control(id).withLock {
+        control(id).withTokenLock(cancel) {
             // Validate before signalling. A stale caller cannot cancel a newer execution.
             val initial = load(id, cancel)
             expect(initial, expected, AcquisitionState.entries.toSet() - setOf(AcquisitionState.CANCELLED, AcquisitionState.COMPLETED))
             // File guard excludes completion/CAS. Worker cancellation joins before acknowledgment.
             // The signal may interrupt a transfer but not a synchronous fsync/transaction.
-            workers[id.value]?.cancelAndJoin()
-            fileGuard(id).withLock {
+            workers[id.value]?.cancelAndJoinChecked(cancel)
+            fileGuard(id).withTokenLock(cancel) {
                 val settled = load(id, cancel)
                 if (settled.state == AcquisitionState.COMPLETED) throw Reject(failure(FailureCode.STALE_REVISION))
                 // Internal cancellation settlement may advance revision; external competing controls are excluded.
@@ -145,11 +149,11 @@ internal class LocalAcquisition(
 
     override suspend fun run(jobId: EntityId, cancel: CancelToken): Outcome<AcquisitionSnapshot> = coroutineScope {
         var task: Deferred<Outcome<AcquisitionSnapshot>>? = null
-        admission.withLock {
-            control(jobId).withLock {
+        admission.withTokenLock(cancel) {
+            control(jobId).withTokenLock(cancel) {
                 if (workers[jobId.value]?.isActive == true) return@coroutineScope Outcome.Failure(failure(FailureCode.STALE_REVISION))
                 task = async(start = CoroutineStart.LAZY) {
-                    fileGuard(jobId).withLock { execute(jobId, cancel) }
+                    fileGuard(jobId).withTokenLock(cancel) { execute(jobId, cancel) }
                 }
                 workers[jobId.value] = task!!
                 task!!.start()
@@ -378,7 +382,7 @@ internal class LocalAcquisition(
         var row = reserve(initial, allowance, cancel); checkpoint(row)
         val out = ByteArrayOutputStream()
         var metadata: HttpMetadata? = null
-        val signal = searchStarts.withLock {
+        val signal = searchStarts.withTokenLock(cancel) {
             val previous = lastSearchStart
             if (previous != null) {
                 val elapsed = clock.monotonicNow() - previous
@@ -409,48 +413,105 @@ internal class LocalAcquisition(
         return row to (hash(bytes).hex to parsed)
     }
 
-    /** Starts collection under the gate until its first suspension/handoff. A rendezvous prevents
-     * a synchronous producer from doing a whole transfer while holding the settings gate.
-     * A structured monitor cancels the active producer even when no bytes are arriving.
+    /** Production network wiring invokes this for every physical enqueue using the exact
+     * original RequestSpec object. An equal caller-created spec conveys no authority. */
+    internal suspend fun authorizeWireDispatch(spec: RequestSpec, actualUri: ResourceUri, cancel: CancelToken, enqueue: () -> Unit) {
+        while (true) {
+            var remaining: Duration? = null
+            consent.withExclusive(cancel) {
+                val registered = synchronized(wireContexts) { wireContexts[spec] } ?: throw Reject(failure(FailureCode.PERMISSION))
+                val current = load(registered.id, cancel)
+                if (current.plan != registered.plan || current.attempt != registered.attempt || current.owner != registered.owner ||
+                    current.state != AcquisitionState.RUNNING || current.consentId != registered.consentId || current.revision != registered.revision)
+                    throw Reject(failure(FailureCode.PERMISSION))
+                policy(current, current.consentId, cancel)?.let { throw Stop(it) }
+                validateWireTarget(current.plan.request, spec.request.uri, actualUri)
+                val endpoint = endpointFor(current.plan.request, actualUri)
+                val target = validUri(actualUri)
+                require(endpoint.origin == Origin("https", target.host, if (target.port == -1) 443 else target.port) && endpoint.secret == null && endpoint.retry.maxAttempts == 1)
+                if (current.plan.request.source is AcquisitionSource.EnglishSearch) lastWireSearchStart?.let { last ->
+                    val elapsed = clock.monotonicNow() - last
+                    require(elapsed >= Duration.ZERO && elapsed.isFinite())
+                    if (elapsed < 600.milliseconds) remaining = 600.milliseconds - elapsed
+                }
+                if (remaining == null) {
+                    check(cancel)
+                    val dispatchContext = currentCoroutineContext()
+                    synchronized(wireContexts) {
+                        if (wireContexts[spec] !== registered) throw Reject(failure(FailureCode.PERMISSION))
+                        dispatchContext.ensureActive(); cancel.throwIfCancelled()
+                        // No suspension between the final guarded checks and physical enqueue.
+                        enqueue()
+                        if (current.plan.request.source is AcquisitionSource.EnglishSearch) lastWireSearchStart = clock.monotonicNow()
+                    }
+                }
+            }
+            val wait = remaining ?: return
+            // Rate waits never hold the settings gate. Each retry reloads the registered job and
+            // authoritative settings, so revocation during a slot wait prevents the enqueue.
+            check(cancel)
+            delay(minOf(wait, 50.milliseconds))
+        }
+    }
+
+    /** Register immutable trusted execution context under the gate, then release before collection.
+     * The production network factory must require authorizeWireDispatch for physical enqueues.
+     * A rendezvous handoff bounds synchronous producers; monitoring stops silent active responses.
      */
     private suspend fun transfer(row: Stored, uri: ResourceUri, headers: List<HttpHeader>, allowance: Long, cancel: CancelToken,
         beforeDispatch: () -> Unit = {}, consume: suspend (ByteChunk) -> Unit): Exception? = try {
         coroutineScope {
             val channel = Channel<Outcome<ByteChunk>>(Channel.RENDEZVOUS)
-            lateinit var producer: Job
-            consent.withExclusive(cancel) {
+            val spec = consent.withExclusive(cancel) {
                 policy(row, row.consentId, cancel)?.let { throw Stop(it) }
                 val endpoint = endpointFor(row.plan.request, uri)
                 require(endpoint.secret == null && endpoint.retry.maxAttempts == 1)
-                val spec = RequestSpec(endpoint, Request(HttpMethod.GET, uri, SnapshotList.copyOf(headers), null),
-                    120.seconds, RequestCharge.NONCHARGED, RetryClassification.NEVER_AUTOMATIC, null, allowance)
+                RequestSpec(endpoint, Request(HttpMethod.GET, uri, SnapshotList.copyOf(headers), null),
+                    120.seconds, RequestCharge.NONCHARGED, RetryClassification.NEVER_AUTOMATIC, null, allowance).also {
+                    synchronized(wireContexts) { wireContexts[it] = row }
+                }
+            }
+            try {
                 beforeDispatch()
-                producer = launch(start = CoroutineStart.UNDISPATCHED) {
+                val producer = launch(start = CoroutineStart.UNDISPATCHED) {
                     try { network.stream(spec, cancel).collect { channel.send(it) }; channel.close() }
                     catch (e: Throwable) { channel.close(e); throw e }
                 }
-            }
-            val monitor = launch {
-                while (isActive) { delay(100); check(cancel); policy(row, row.consentId, cancel)?.let { throw Stop(it) } }
-            }
-            try {
-                var offset = 0L; var sequence = 0L; var ended = false
-                for (result in channel) {
-                    check(cancel)
-                    val chunk = requireSuccess(result)
-                    require(!ended && chunk.sequence == sequence && chunk.offset == offset && chunk.bytes.size <= row.plan.request.limits.maxChunkBytes)
-                    if (sequence == 0L) require(chunk.metadata != null)
-                    consume(chunk)
-                    require(chunk.bytes.size.toLong() <= allowance - offset)
-                    offset += chunk.bytes.size; sequence = checkedAdd(sequence, 1)
-                    ended = chunk.final
+                val monitor = launch {
+                    while (isActive) { delay(100); check(cancel); policy(row, row.consentId, cancel)?.let { throw Stop(it) } }
                 }
-                require(ended)
-                producer.join()
-            } finally { monitor.cancelAndJoin(); producer.cancelAndJoin(); channel.cancel() }
+                try {
+                    var offset = 0L; var sequence = 0L; var ended = false
+                    for (result in channel) {
+                        check(cancel)
+                        val chunk = requireSuccess(result)
+                        require(!ended && chunk.sequence == sequence && chunk.offset == offset && chunk.bytes.size <= row.plan.request.limits.maxChunkBytes)
+                        if (sequence == 0L) require(chunk.metadata != null)
+                        consume(chunk)
+                        require(chunk.bytes.size.toLong() <= allowance - offset)
+                        offset += chunk.bytes.size; sequence = checkedAdd(sequence, 1)
+                        ended = chunk.final
+                    }
+                    require(ended)
+                    producer.join()
+                } finally { monitor.cancelAndJoin(); producer.cancelAndJoin(); channel.cancel() }
+            } finally { synchronized(wireContexts) { wireContexts.remove(spec) } }
         }
         null
-    } catch (e: CancellationException) { throw e } catch (e: Exception) { e }
+    } catch (e: CancellationException) { throw e }
+    catch (e: Exception) {
+        // Transport intentionally strips callback exceptions. Re-read authoritative policy so a
+        // revoked or offline execution reports its durable waiting state rather than generic FAILED.
+        try {
+            consent.withExclusive(cancel) {
+                val current = load(row.id, cancel)
+                if (current.state == AcquisitionState.CANCELLED) throw Stop(AcquisitionState.CANCELLED)
+                policy(current, row.consentId, cancel)?.let { throw Stop(it) }
+            }
+            e
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (classified: Exception) { classified }
+    }
 
     private suspend fun reserve(row: Stored, allowance: Long, cancel: CancelToken): Stored {
         require(allowance > 0 && allowance <= row.plan.request.limits.maxTransferBytes - row.transferred) { "Transfer budget exhausted" }
@@ -517,18 +578,26 @@ internal class LocalAcquisition(
     }
 
     override suspend fun recover(cancel: CancelToken): Outcome<Unit> = outcome(cancel) {
-        admission.withLock {
+        var cleanupFailure: DomainFailure? = null
+        admission.withTokenLock(cancel) {
             // Only live structured jobs prove quiescence; timestamps are not death evidence.
-            workers.values.toList().forEach { it.cancelAndJoin() }
+            workers.values.toList().forEach { it.cancelAndJoinChecked(cancel) }
             var cursor: String? = null
             do {
                 val batch = requireSuccess(list(PageRequest(100, cursor), cancel))
-                for (snapshot in batch.items) control(snapshot.plan.jobId).withLock {
-                    fileGuard(snapshot.plan.jobId).withLock {
+                for (snapshot in batch.items) control(snapshot.plan.jobId).withTokenLock(cancel) {
+                    fileGuard(snapshot.plan.jobId).withTokenLock(cancel) {
                         var row = load(snapshot.plan.jobId, cancel)
-                        if (row.state in setOf(AcquisitionState.CANCELLED, AcquisitionState.COMPLETED, AcquisitionState.PLANNED)) return@withLock
+                        if (row.stringOrNull("failure_payload") == REMOVAL_PENDING) {
+                            try { finishRemoval(row, cancel) }
+                            catch (e: CancellationException) { throw e }
+                            catch (e: Reject) { if (cleanupFailure == null) cleanupFailure = e.failure }
+                            catch (_: Exception) { if (cleanupFailure == null) cleanupFailure = failure(FailureCode.PERSISTENCE) }
+                            return@withTokenLock
+                        }
+                        if (row.state in setOf(AcquisitionState.CANCELLED, AcquisitionState.COMPLETED, AcquisitionState.PLANNED)) return@withTokenLock
                         if (row.phase == AcquisitionPhase.VERIFYING) {
-                            if (row.state == AcquisitionState.PAUSED) return@withLock
+                            if (row.state == AcquisitionState.PAUSED) return@withTokenLock
                             val blocked = consent.withExclusive(cancel) { policy(row, row.consentId, cancel) }
                             if (blocked == null) {
                                 row = mutate(row, mapOf("state" to text(AcquisitionState.RUNNING.name), "owner_token" to text(ids.nextId())), cancel)
@@ -538,10 +607,15 @@ internal class LocalAcquisition(
                                 catch (_: Exception) { mutate(row, mapOf("state" to text(AcquisitionState.FAILED.name), "owner_token" to SqlValue.Null), cancel) }
                             } else mutate(row, mapOf("state" to text(blocked.name), "owner_token" to SqlValue.Null), cancel)
                         } else {
-                            val length = files.length(partial(row))
-                            if (length != null) files.truncateToCheckpoint(partial(row), row.offset)
-                            else require(row.offset == 0L)
-                            if (row.state in setOf(AcquisitionState.RUNNING, AcquisitionState.QUEUED)) mutate(row,
+                            val validPartial = try {
+                                val length = files.length(partial(row))
+                                if ((length == null && row.offset > 0) || (length != null && length < row.offset)) false
+                                else { if (length != null) files.truncateToCheckpoint(partial(row), row.offset); true }
+                            } catch (e: CancellationException) { throw e }
+                            catch (_: Exception) { false }
+                            if (!validPartial) mutate(row, mapOf("state" to text(AcquisitionState.FAILED.name), "owner_token" to SqlValue.Null,
+                                "failure_payload" to text("failure-v1:CORRUPT_DATA")), cancel)
+                            else if (row.state in setOf(AcquisitionState.RUNNING, AcquisitionState.QUEUED)) mutate(row,
                                 mapOf("state" to text(AcquisitionState.INTERRUPTED.name), "owner_token" to SqlValue.Null), cancel)
                         }
                     }
@@ -549,10 +623,11 @@ internal class LocalAcquisition(
                 cursor = batch.nextCursor
             } while (cursor != null)
         }
+        cleanupFailure?.let { throw Reject(it) }
     }
 
     override fun openArtifact(jobId: EntityId, cancel: CancelToken): Flow<ByteChunk> = flow {
-        fileGuard(jobId).withLock { emitAll(verifiedBytes(loadForRead(jobId, cancel), cancel)) }
+        fileGuard(jobId).withTokenLock(cancel) { emitAll(verifiedBytes(loadForRead(jobId, cancel), cancel)) }
     }
 
     private suspend fun loadForRead(id: EntityId, cancel: CancelToken): Stored = try {
@@ -584,14 +659,14 @@ internal class LocalAcquisition(
 
     /** Pin spans the entire action. Supplied flow must be consumed inside that action. */
     internal suspend fun <T> withVerifiedArtifact(jobId: EntityId, cancel: CancelToken,
-        action: suspend (VerifiedArtifact, Flow<ByteChunk>) -> T): T = fileGuard(jobId).withLock {
+        action: suspend (VerifiedArtifact, Flow<ByteChunk>) -> T): T = fileGuard(jobId).withTokenLock(cancel) {
         val row = loadForRead(jobId, cancel)
         action(requireArtifact(row), verifiedBytes(row, cancel))
     }
 
     /** Platform-only private provider callback. The descriptor must close before action returns. */
     internal suspend fun <T> withArtifactFile(jobId: EntityId, cancel: CancelToken,
-        action: suspend (File, VerifiedArtifact, Flow<ByteChunk>) -> T): T = fileGuard(jobId).withLock {
+        action: suspend (File, VerifiedArtifact, Flow<ByteChunk>) -> T): T = fileGuard(jobId).withTokenLock(cancel) {
         val row = loadForRead(jobId, cancel)
         val artifact = requireArtifact(row)
         val context = currentCoroutineContext()
@@ -602,26 +677,50 @@ internal class LocalAcquisition(
 
     /** Settings removal handler calls after its consent mutation has settled, outside the gate. */
     internal suspend fun removeArtifacts(consentId: EntityId, cancel: CancelToken): Outcome<Unit> = outcome(cancel) {
-        admission.withLock {
-            workers.values.toList().forEach { it.cancelAndJoin() }
+        admission.withTokenLock(cancel) {
             var cursor: String? = null
             do {
                 val batch = requireSuccess(list(PageRequest(100, cursor), cancel))
-                for (snapshot in batch.items) if (snapshot.consentId == consentId) control(snapshot.plan.jobId).withLock {
-                    fileGuard(snapshot.plan.jobId).withLock {
+                for (snapshot in batch.items) if (snapshot.consentId == consentId) control(snapshot.plan.jobId).withTokenLock(cancel) selected@ {
+                    // Membership is live. Revalidate under the same lock used by reconsent controls
+                    // before stopping any worker or waiting for its file pin.
+                    if (load(snapshot.plan.jobId, cancel).consentId != consentId) return@selected
+                    workers[snapshot.plan.jobId.value]?.cancelAndJoinChecked(cancel)
+                    fileGuard(snapshot.plan.jobId).withTokenLock(cancel) {
                         val row = load(snapshot.plan.jobId, cancel)
-                        // Mark unavailable before deletion. Recovery never republishes cancellation.
-                        requireSuccess(database.transaction({ tx ->
+                        if (row.consentId != consentId) return@withTokenLock
+                        val pending = requireSuccess(database.transaction({ tx ->
                             requireSuccess(tx.execute(sql("DELETE FROM acquisition_artifact WHERE job_id = :id", mapOf("id" to text(row.id.value))), cancel))
+                            requireSuccess(tx.execute(sql("DELETE FROM acquisition_seen_id WHERE job_id = :id", mapOf("id" to text(row.id.value))), cancel))
+                            // Keep immutable partial_key/attempt identity and a durable retry marker.
+                            // Requested removal becomes unavailable before touching file bytes.
                             cas(tx, row, mapOf("state" to text(AcquisitionState.CANCELLED.name), "phase" to text(AcquisitionPhase.TRANSFERRING.name),
-                                "owner_token" to SqlValue.Null, "failure_payload" to SqlValue.Null), cancel)
+                                "owner_token" to SqlValue.Null, "failure_payload" to text(REMOVAL_PENDING)), cancel)
+                            load(row.id, cancel, tx)
                         }, cancel))
-                        files.delete(partial(row)); files.delete(candidate(row))
+                        finishRemoval(pending, cancel)
                     }
                 }
                 cursor = batch.nextCursor
             } while (cursor != null)
         }
+    }
+
+    /** Called with writer/readers excluded. The marker survives every deletion/sync failure. */
+    private suspend fun finishRemoval(row: Stored, cancel: CancelToken): Stored {
+        require(row.state == AcquisitionState.CANCELLED && row.stringOrNull("failure_payload") == REMOVAL_PENDING)
+        // Earlier restart crashes may leave old attempt-owned keys; all derive from this immutable
+        // private namespace, and no other job can own the persisted unique partial_key.
+        for (attempt in 0..row.attempt) {
+            check(cancel)
+            val partial = row.string("partial_key") + "-a$attempt"
+            files.delete(partial); files.delete(partial + "-verified"); files.delete(partial + "-verified-sync")
+        }
+        val barrier = row.string("partial_key") + "-removal-sync"
+        files.delete(barrier); files.create(barrier); files.delete(barrier)
+        // The durable directory barrier matters even if a previous unlink succeeded but its sync
+        // failed and the recovery process currently observes no file entry.
+        return mutate(row, mapOf("failure_payload" to SqlValue.Null), cancel)
     }
 
     private fun requireArtifact(row: Stored): VerifiedArtifact {
@@ -663,14 +762,17 @@ internal class LocalAcquisition(
         bounded(uri.value, 4096)
         return URI(uri.value).also { require(it.scheme == "https" && !it.host.isNullOrBlank() && it.rawUserInfo == null && it.rawFragment == null && it.port in listOf(-1, 443)) }
     }
-    private fun validateMetadata(request: AcquisitionRequest, requested: ResourceUri, metadata: HttpMetadata) {
-        val target = validUri(metadata.finalUri)
+    private fun validateWireTarget(request: AcquisitionRequest, requested: ResourceUri, actual: ResourceUri) {
+        val target = validUri(actual)
         val origin = Origin("https", target.host, if (target.port == -1) 443 else target.port)
         val initial = validUri(requested)
         when (val source = request.source) {
             is AcquisitionSource.RemoteFile -> require(origin == Origin("https", initial.host, if (initial.port == -1) 443 else initial.port) || origin in source.allowedRedirectOrigins)
-            is AcquisitionSource.EnglishSearch -> require(metadata.finalUri == requested && EnglishSearchPageCodec.pageNumber(metadata.finalUri.value) > 0)
+            is AcquisitionSource.EnglishSearch -> require(actual == requested && EnglishSearchPageCodec.pageNumber(actual.value) > 0)
         }
+    }
+    private fun validateMetadata(request: AcquisitionRequest, requested: ResourceUri, metadata: HttpMetadata) {
+        validateWireTarget(request, requested, metadata.finalUri)
         require(metadata.headers.size <= 128)
         for (h in metadata.headers) { bounded(h.name, 128); require(h.value.length <= 8192) }
     }
@@ -749,7 +851,10 @@ internal class LocalAcquisition(
                 }
                 require(artifact.provenance.retrievalCompletedAt == UtcTimestamp(row.long("artifact_seconds"), exactInt(row.long("artifact_nano"))))
             } else { require(row.artifact == null && row.phase != AcquisitionPhase.COMPLETE) }
-            row.stringOrNull("failure_payload")?.let { if (row.phase != AcquisitionPhase.VERIFYING) require(it.startsWith("failure-v1:") && FailureCode.valueOf(it.removePrefix("failure-v1:")) in FailureCode.entries) }
+            row.stringOrNull("failure_payload")?.let {
+                if (it == REMOVAL_PENDING) require(row.state == AcquisitionState.CANCELLED && row.phase == AcquisitionPhase.TRANSFERRING && row.owner == null)
+                else if (row.phase != AcquisitionPhase.VERIFYING) require(it.startsWith("failure-v1:") && FailureCode.valueOf(it.removePrefix("failure-v1:")) in FailureCode.entries)
+            }
             return row
         } catch (e: Exception) { throw Reject(failure(FailureCode.CORRUPT_DATA)) }
     }
@@ -809,6 +914,25 @@ internal class LocalAcquisition(
         require(fields[0] == time.epochSeconds.toString() && fields[1] == time.nanoAdjustment.toString())
         return time to fields[2]
     }
+    private suspend fun Job.cancelAndJoinChecked(cancel: CancelToken) {
+        check(cancel)
+        cancel()
+        while (!isCompleted) { check(cancel); delay(50) }
+        join()
+        check(cancel)
+    }
+
+    /** Token cancellation is independent of coroutine cancellation. Poll every contended engine
+     * lock, including reader pins, and recheck after acquisition before running its action. */
+    private suspend inline fun <T> Mutex.withTokenLock(cancel: CancelToken, action: () -> T): T {
+        while (true) {
+            check(cancel)
+            if (tryLock()) break
+            delay(50)
+        }
+        try { check(cancel); return action() } finally { unlock() }
+    }
+
     private suspend fun check(cancel: CancelToken) { currentCoroutineContext().ensureActive(); cancel.throwIfCancelled() }
     private suspend fun <T> outcome(cancel: CancelToken, action: suspend () -> T): Outcome<T> = try { check(cancel); Outcome.Success(action()) }
         catch (e: CancellationException) { throw e }
@@ -829,6 +953,7 @@ internal class LocalAcquisition(
     private class RateLimited(val metadata: HttpMetadata) : RuntimeException()
     private companion object {
         const val MAX_ATTEMPTS = 3
+        const val REMOVAL_PENDING = "removal-pending-v1"
         val ZERO_HASH = ContentHash("SHA-256", "0".repeat(64))
         val NO_CANCEL = object : CancelToken { override val isCancelled = false; override fun throwIfCancelled() = Unit }
         const val SELECT = "SELECT j.*,a.artifact_key AS artifact_key,a.byte_count AS artifact_bytes,a.sha256 AS artifact_sha256,a.framing AS artifact_framing,a.compression AS artifact_compression,a.verified_payload AS artifact_payload,a.payload_version AS artifact_version,a.completed_seconds AS artifact_seconds,a.completed_nano AS artifact_nano FROM acquisition_job j LEFT JOIN acquisition_artifact a ON a.job_id=j.job_id"
