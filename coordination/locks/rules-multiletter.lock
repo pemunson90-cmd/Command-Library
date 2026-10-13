@@ -1,0 +1,11 @@
+{
+  "component": "rules-parser-multiletter",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "Reserved; Sol medium completed, no live writer",
+  "owned_paths": [
+    "android-app/feature/rules/src/main/kotlin/com/architectpsg/commandlibrary/feature/rules/parser/RulesStructure.kt",
+    "android-app/feature/rules/src/main/kotlin/com/architectpsg/commandlibrary/feature/rules/parser/RuleReferenceScanner.kt",
+    "android-app/feature/rules/src/test/kotlin/com/architectpsg/commandlibrary/feature/rules/parser/RulesMultiLetterAuditProbeTest.kt",
+    "coordination/handoffs/cx-rules-multiletter-01.md"
+  ]
+}
