@@ -12,8 +12,9 @@ internal class ScannedReference(val raw: String, val identifiers: List<String>)
  * `through`, `to`). A letter range on one rule such as `702.19b-d` or `702.19b-702.19d` expands to
  * the numbered subrules, skipping intermediate l/o letters. Explicit endpoints remain targets,
  * including l/o, so malformed explicit references are not silently removed. Other ranges keep
- * only their two ends. Bare numbers without a keyword are not
- * references.
+ * only their two ends, including ranges with multi-letter suffixes. Bare numbers without a keyword
+ * are not references. To avoid consuming prose as suffixes, word-separated shorthand accepts only
+ * single-letter endpoints; symbolic-dash shorthand additionally accepts two-letter endpoints.
  */
 internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
 
@@ -33,7 +34,7 @@ internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
             while (true) {
                 val separator = separator(text, position) ?: break
                 if (separator.range) {
-                    val letterEnd = letterShorthand(text, separator.next, previous)
+                    val letterEnd = letterShorthand(text, separator.next, previous, separator.symbolicRange)
                     val fullEnd = if (letterEnd == null) target(text, separator.next, section) else null
                     val end = letterEnd ?: fullEnd ?: break
                     group.removeAt(group.size - 1)
@@ -52,9 +53,9 @@ internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
     }
 
     private class Target(val start: Int, val end: Int, val identifier: String) {
-        /** For a subrule such as `702.19b`: the rule `702.19` and the letter `b`. */
-        val rule: String? get() = if (identifier.last().isLetter()) identifier.dropLast(1) else null
-        val letter: Char? get() = if (identifier.last().isLetter()) identifier.last() else null
+        /** The parent rule excludes the entire suffix; only a single-letter suffix can expand. */
+        val rule: String? = identifier.trimEnd { it in 'a'..'z' }.takeIf { it.length < identifier.length }
+        val letter: Char? = if (rule != null && identifier.length - rule.length == 1) identifier.last() else null
     }
 
     private fun single(text: String, target: Target): ScannedReference =
@@ -92,21 +93,25 @@ internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
         return null
     }
 
-    /** The letter-only end of a shorthand range such as the `d` in `702.19b-d`. */
-    private fun letterShorthand(text: String, at: Int, previous: Target): Target? {
+    /** Bounded shorthand grammar, not an upstream guarantee of the maximum suffix length. */
+    private fun letterShorthand(text: String, at: Int, previous: Target, symbolicRange: Boolean): Target? {
         val rule = previous.rule ?: return null
+        if (!symbolicRange && previous.letter == null) return null
         if (at >= text.length || text[at] !in 'a'..'z') return null
-        if (!boundary(text, at + 1)) return null
-        return Target(at, at + 1, "$rule${text[at]}")
+        val maxLetters = if (symbolicRange) 2 else 1
+        var end = at + 1
+        while (end - at < maxLetters && end < text.length && text[end] in 'a'..'z') end++
+        if (!boundary(text, end)) return null
+        return Target(at, end, "$rule${text.substring(at, end)}")
     }
 
-    private class Separator(val next: Int, val range: Boolean)
+    private class Separator(val next: Int, val range: Boolean, val symbolicRange: Boolean = false)
 
     private fun separator(text: String, at: Int): Separator? {
         val list = LIST_SEPARATOR.matcher(text).regionAt(at)
         if (list.lookingAt()) return Separator(list.end(), range = false)
         val range = RANGE_SEPARATOR.matcher(text).regionAt(at)
-        if (range.lookingAt()) return Separator(range.end(), range = true)
+        if (range.lookingAt()) return Separator(range.end(), range = true, symbolicRange = range.group(1) != null)
         return null
     }
 
@@ -129,9 +134,9 @@ internal class RuleReferenceScanner(private val maxRangeExpansion: Int) {
 
     private companion object {
         val KEYWORD: Pattern = Pattern.compile("""\b(rules?|sections?)\b""", Pattern.CASE_INSENSITIVE)
-        val NUMBERED: Pattern = Pattern.compile("""\d{3}(?:\.\d+[a-z]?)?""")
+        val NUMBERED: Pattern = Pattern.compile("""\d{3}(?:\.\d+[a-z]*)?""")
         val SECTION_NUMBER: Pattern = Pattern.compile("""[1-9]""")
         val LIST_SEPARATOR: Pattern = Pattern.compile("""\s*,\s*(?:(?:and|or)\s+)?|\s+(?:and|or)\s+""")
-        val RANGE_SEPARATOR: Pattern = Pattern.compile("""\s*[-\u2013\u2014]\s*|\s+(?:through|to)\s+""")
+        val RANGE_SEPARATOR: Pattern = Pattern.compile("""\s*([-\u2013\u2014])\s*|\s+(?:through|to)\s+""")
     }
 }

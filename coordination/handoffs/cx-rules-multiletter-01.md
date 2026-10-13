@@ -1,0 +1,21 @@
+# Rules multi-letter suffix defect
+
+## Latest continuation delta
+
+Worker scope frozen on `agent/cx-local-resume-20261013-public`, starting head `87832293dd733afc41dc7c099cd0da6ba880abfe`. Ownership: `coordination/locks/rules-multiletter.lock`; only `RulesStructure.kt`, `RuleReferenceScanner.kt`, `RulesMultiLetterAuditProbeTest.kt` and this handoff changed by this worker. No worker commit, build, network or public/core-contract changes.
+
+Root cause confirmed: the heading recognizer accepts exactly one suffix letter, silently appending `704.5aa` to the preceding rule. The scanner also accepts one letter, and dropping just the last letter would manufacture a wrong parent for a multi-letter suffix. Heading/direct-reference grammar now accepts lowercase ASCII suffixes. Scanner parent extraction removes the entire suffix; expansion remains limited to same-parent single-letter ranges. Full multi-letter ranges retain exact endpoints without inventing intermediate numbering. Symbolic-dash shorthand accepts one- or two-letter endpoints; word-separated shorthand retains the original single-letter-only grammar. Existing single-letter expansion bounds and intermediate l/o omission remain unchanged.
+
+Eleven synthetic test methods cover independent heading identity, unchanged preceding z text, direct aa/ab references, exact full and shorthand multi-letter/mixed-length range endpoints, parser resolution to independent aa/ab entries, and prose after `to`, `through` and a dash. The added word-separator case rejects two-letter shorthand. These are synthetic probes. Claude's W-20 audit records an official `704.5aa`, but the raw payload is unavailable here; this change does not establish a new genuine-corpus result or validate earlier recorded corpus counts.
+
+Verification actually run by worker: `git diff --check` passed. Builds/tests: `not_run` by worker (central root owns them). Root supplied actual baseline evidence: heading probe exit 1 in `/tmp/cx-claude-rules-aa-probe.log`; five-case scanner/parser RED exit 1, five assertion failures and zero errors/skips in `/tmp/cx-claude-rules-scanner-red.log`; seven-case RED exit 1, seven assertion failures and zero errors/skips in `/tmp/cx-claude-rules-shorthand-red.log`. Production edits occurred only after the seven-case RED confirmation. Initial root checks completed exit 0 in 1m16s, 83 rules JVM cases with zero failures/errors/skips, test APK compilation and lint passed. Independent Astra review then blocked unrestricted shorthand because it fabricated targets from prose. Four new negative methods were compiled and failed as assertions (11 cases, four failures, zero errors/skips) in `/tmp/cx-claude-rules-prose-red.log`. Bounded shorthand correction followed that RED. Root final `bash gradlew --no-daemon --console=plain :feature:rules:testDebugUnitTest :feature:rules:lintDebug :feature:rules:assembleDebugAndroidTest` exited0, BUILD SUCCESSFUL1m10s. Eight XML reports contain87tests,0failures/errors/skips, including11newcases. Lint and test-APK compilation passed; native execution/full genuine corpus not_run. Astra-high renewed source review APPROVE, previous blocker resolved; exact revised hashes match. Reviewer tests not_run.
+
+The shorthand limit is an engineering parsing policy, not an upstream maximum-suffix guarantee. Fully numbered targets still accept lowercase suffixes within existing input limits. Longer shorthand is left unparsed; future support requires evidence and review. Two-letter dash tokens can inherently resemble prose, so this is not a claim to eliminate every possible prose ambiguity.
+
+Frozen SHA-256:
+
+- `RulesStructure.kt`: `378f87f90bcba5c0d18fb946991c08ffbf15299ef9aa3bad7c99cc749eb27fe3`
+- `RuleReferenceScanner.kt`: `afd96f0b1e7d1d018db1c8cdc8078891ac8527688b5593688255e9d7f16fc657`
+- `RulesMultiLetterAuditProbeTest.kt`: `88292151b7b946864f1670731efe318f714b50d31d8e77096a55b85971c630d5`
+
+Exact next action: preserve/publish this reviewed component independently, then incorporate unchanged into the next coherent guarded native candidate with binder and collector corrections. No separate native rerun solely for this internal parser correction; genuine full-corpus remeasurement requires actual retained source bytes and remains separate.
