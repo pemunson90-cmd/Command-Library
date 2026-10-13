@@ -1,10 +1,10 @@
 {
   "component": "life",
-  "orchestrator": "codex-full-v1-execution-20261012",
+  "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-m2-life-functional-01",
-  "branch": "agent/cx-m2-life-functional-01",
+  "branch": "agent/cx-thread-recovery-20261013",
   "base_commit": "bebf6f0dd223567098be5ca1c928610952e828c3",
-  "owner": "Codex orchestrator; contract phase first, no component worker active",
+  "owner": "Recovery Codex orchestrator; contracts phase, review-only agent active",
   "owned_paths": [
     "android-app/feature/life/**",
     "coordination/tasks/cx-m2-life-functional-01.md",

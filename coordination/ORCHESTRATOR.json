@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-local-resume-20261013",
+  "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-13T21:02:11Z",
-  "expires_utc": "2026-10-13T21:47:11Z",
-  "checkpoint_id": "cp-20261013-native-pass-life-inputs-82",
-  "note": "Pat authorized resume; root owns shared configuration and coordination. Reserved component scopes preserved; workers must be explicitly assigned."
+  "heartbeat_utc": "2026-10-13T22:17:09Z",
+  "expires_utc": "2026-10-13T23:02:09Z",
+  "checkpoint_id": "cp-20261013-thread-recovery-83",
+  "note": "User authorized recovery from unresponsive thread 01a13607-410d-761d-9745-7b7acdd9f0e7. Old remote head still464d875; heartbeat21:02 expired21:47. No access to old unpushed work; old branch preserved, recovery isolated."
 }

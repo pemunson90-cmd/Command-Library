@@ -16,7 +16,7 @@ Codex, GPT, Claude and Claude Code all use the same continuation path. Chat hist
 
 Normal resume is intentionally small:
 
-1. Verify current `main` and the published continuation branch named by `state.working_branch`. Current unfinished work is on `agent/cx-native-20261013`; use its live pointers, preserving any dirty checkout or unpublished commits.
+1. Verify current `main` and the published continuation branch named by `state.working_branch`. Current unfinished work is on `agent/cx-thread-recovery-20261013`; use its live pointers, preserving any dirty checkout or unpublished commits.
 2. Read [`CONTINUE.md`](CONTINUE.md) if unfamiliar with the protocol.
 3. Read [`coordination/state.json`](coordination/state.json), [`coordination/ORCHESTRATOR.json`](coordination/ORCHESTRATOR.json), and the task card named by `state.next_task`.
 4. Read only the decisions, contracts, architecture or gate evidence linked by that task.
