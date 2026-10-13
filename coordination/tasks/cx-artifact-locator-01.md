@@ -21,3 +21,7 @@ Packet drafted from source review: narrowed provider/locator security and tests 
 ## Exact-source correction delta
 
 0843f088 source/native12fixture compilation passed actualK2/Android/Room/SQLite. Independent review blocked final dup CLOEXEC loss and generic postcallback cancellation; native not_run. MandatoryAstra-high ruling FD-COMPATIBILITY-RULING.md chooses public API30+ atomic duplication/adoption; retain min23/functionality with explicitly no legacy CLOEXEC guarantee, no JNI/hidden APIs. Future subprocess/exec/dynamic executable code requires renewed lifetime/security review. Remove only postcallback check, preserveentry/read/callback cancellation andfinallyclosure. Add actual modernreturned-resolver F_GETFD assertion guardedviaAPI30 helper and normal-result-preservation regression. Worker sameownedpaths correction; rootfinalAstra-source/native gates then batchpublication.
+
+## Hosted lint correction — 2026-10-13
+
+Exact root2d556a4 run38350496219 compiled instrumentation APKs, then catalog lint blocked on public OsConstants.O_CLOEXEC API27 availability at provider line156. Emulator jobs did not run. Same existing component lock/owned paths explicitly remain assigned to cx-artifact-locator-01 for a minimal official-API-backed correction, targeted real compile and local handoff; no push. Check every used open/dup flag boundary. Preserve design B and all assertions; no hidden/numeric API workaround or lint suppression. Root independently reviews before another coherent batch.
