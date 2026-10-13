@@ -103,8 +103,8 @@ private fun denied(): Nothing = throw FileNotFoundException("Private verified ar
  * No detached/duplicated consumer handles: resolver wrappers/streams must be lexical use owners.
  * Removing admission and all adapter-owned handles is synchronous before that pin is released.
  * Consumer process must not exec/spawn subprocesses or load untrusted executable code; adding
- * those behaviors requires renewed lifetime/security review. Legacy final FDs lack a CLOEXEC
- * guarantee. Modern CLOEXEC does not revoke arbitrary FD copies or prevent fork-only inheritance.
+ * those behaviors requires renewed lifetime/security review. API23–26 temporary FDs and API23–29
+ * final FDs lack a CLOEXEC guarantee. Modern CLOEXEC cannot revoke FD copies or prevent fork-only inheritance.
  */
 internal object ArtifactLocatorRegistry {
     private val monitor = Any()
@@ -153,7 +153,9 @@ internal object ArtifactLocatorRegistry {
         signal?.throwIfCanceled()
         var owned: ParcelFileDescriptor? = null
         try {
-            val temporary = Os.open(lease.file.path, OsConstants.O_RDONLY or OsConstants.O_CLOEXEC or OsConstants.O_NOFOLLOW or OsConstants.O_NONBLOCK, 0)
+            // O_CLOEXEC is public from API27; legacy opens retain no-follow/nonblocking admission.
+            val closeOnExec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) OsConstants.O_CLOEXEC else 0
+            val temporary = Os.open(lease.file.path, OsConstants.O_RDONLY or OsConstants.O_NOFOLLOW or OsConstants.O_NONBLOCK or closeOnExec, 0)
             var primary: Throwable? = null
             try {
                 val stat = Os.fstat(temporary)
