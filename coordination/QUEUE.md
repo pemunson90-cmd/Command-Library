@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-bulk-route-52. Next: orch-kotlin-k3-offline-data-01 step3; Full Android v1 execution active; incomplete.
+Checkpoint-ID: cp-20261013-life-integrated-56. Next: orch-kotlin-k3-offline-data-01 step3; Full Android v1 execution active; incomplete.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
@@ -8,10 +8,11 @@ This file lists runnable or conditionally runnable work. Completed and supersede
 |---|---|---|---|---|
 | orch-fold7-functional-01 | Historical internal build | superseded as delivery pointer by D-24 | debug foundation evidence retained | no finished-app delivery claim |
 | orch-kotlin-k3-offline-data-01 | K3 full offline corpus | active; incomplete | reviewed K2 foundation and D-24 complete-app execution | reviewed downloads/full-feed/rulings/search implementation and acceptance |
-| cx-k3-acquisition-codec-01 | K3 payload persistence | code integrated; independently reviewed, hosted gate pending | compiled candidate acquisition contracts; no app binding before acceptance | explicit bounded payload codecs/tests |
-| cx-k3-full-framing-01 | K3 full framing | code integrated; independently reviewed, hosted gate pending | existing parsers and approved full-import identity design | finite full profile and bounded batches, preserve tiny capability |
-| cx-k3-download-engine-01 | K3 durable downloads | assigned; real capability implementation | accepted main core/schema3/codec/consent guard | complete all DownloadService/Runner methods and tests; root platform binding |
-| cc-m2-life-domain-01 | M2 domain preparation | assigned to Claude; disjoint life lock | merged core contracts; prepared life module | pure counter/clock/random logic and tests; no milestone closure |
+| cx-k3-acquisition-codec-01 | K3 payload persistence | source/hosted accepted | exact schema4/wire hosted gate38328542087 | root platform binding |
+| cx-k3-full-framing-01 | K3 full framing | source/hosted accepted | exact38327108153 | consume in actual full installation |
+| cx-k3-download-engine-01 | K3 durable downloads | source reviewed/integrated on root working branch; lock released | independent134tests+31probes | actual guarded platform binding and hosted acceptance |
+| cc-m2-life-domain-01 | M2 domain preparation | merged PR17, old lock released | independent review and focused/full hosted gates | completed internal component; no milestone closure |
+| cx-m2-life-functional-01 | M2 functional service/UI | root contract phase active, new life-functional.lock | merged corrected life domain and D25/all14 dispositions | reviewed contracts/schema, real service/persistence/UI |
 | orch-source-fixtures-01 | Source evidence fallback | policy gap closed; source-specific cases retained | FIXTURE_POLICY and genuine input evidence | exact rights/coverage review when a later acquisition/distribution path needs it |
 
 ## Accepted history summary

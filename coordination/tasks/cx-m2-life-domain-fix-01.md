@@ -1,0 +1,13 @@
+# cx-m2-life-domain-fix-01 — correct independently reproduced clock undo defects
+
+Assigned isolated bounded fix, basec4a27190d343d3d01ece4d0c70c26c0f87d45736 on agent/cx-life-domain-fix-01. Claude author branch preserved; worker finished. Root owns contracts/decisions/CI/merge and retains life.lock until acceptance. No subagents/shared/core/config edits.
+
+Own only SeatClockReducer.kt, SeatClockReducerTest.kt under life/domain and coordination/handoffs/cx-m2-life-domain-fix-01.md. Read existing cc-m2 task/handoff, actual GameContracts, G07/G13 and independent /workspace/scratch/m2-life-domain-review.md plus probes /workspace/scratch/m2-life-review-probe/ReviewRegressionTest.kt. Original85tests pass; three scratch assertions fail, source correction required.
+
+Fix PER_TURN KEEP_ELAPSED undo: one-seat switch must retain both elapsed time charged before refill and after refill (beforebank10s@100, same-seat switch@105, undo@108 ->2s, not7s). Reverting incoming refill must honor PAUSE/ELIMINATE zero policy (incoming bank10s/initial30s, switch@100, undo@115 ->0 not-5; new derived zero crossing reports alert/timeout candidate once). Preserve ALERT negative behavior, active-seat/turn assignment undo, existing restart rules, already-fired alert filtering, unique redo occurrences and no fabricated elimination state. No broad reducer rewrite or new core fields.
+
+Add meaningful regressions reproducing all three assertions and useful same-seat/two-seat policy combinations; run all exact model+life source tests/strict compiler. No local SDK required for pure JVM: actualK2compiler/JUnit jars /workspace/scratch/kotlin-probe/lib; independent probe fixture driver available. Hosted originalhead c4 and revised exactcandidate run by root. Pat requests ask-before-elimination (effects can prevent losing), official commander rule including stolen own commander; SHARED global countdown definition is a subsequent contract task, not this correction. Commit/push only ownedpaths + replaceable handoff, <=10lines SHA/tests/not_run/exactnext.
+
+## Latest continuation delta
+
+Completed and integrated: exact ce97e47e independently approved,97tests+3originalprobes pass; hosted38333007130 16model+81life0failures/errors/skips. Final integration6fa6043 focused102tests pass and matrix38333213528 428JVM/66nativeeach0failures/errors. PR17 mergedmain3cc82c25; life.lock released. Next life task cx-m2-life-functional-01 under a new life-functional.lock. Original author/correction branches preserved.
