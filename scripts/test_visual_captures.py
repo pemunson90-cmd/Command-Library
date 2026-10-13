@@ -66,5 +66,35 @@ class CaptureSafetyTest(unittest.TestCase):
                 run.assert_not_called()
             self.assertEqual(36, len(list((root/'captures').glob('*.png'))))
 
+    def test_api23_logcat_marker_recovers_capture_missing_from_xml(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            results = root / 'feature/shell/build/outputs/androidTest-results/connected/debug'
+            report = results / 'TEST-k2.xml'
+            report.parent.mkdir(parents=True)
+            report.write_text('<testsuite>' + ''.join(
+                f'<testcase classname="VisualSystemAcceptanceTest" name="case[{i}]"/>'
+                for i in range(36)) + '</testsuite>')
+            missing = sorted(EXPECTED)[0]
+            captures = root / 'captures'
+            captures.mkdir()
+            for name in EXPECTED - {missing}:
+                (captures / name).write_bytes(PNG)
+            logcat = results / 'k2(AVD) - 6.0/logcat-com.example.VisualSystemAcceptanceTest-case.txt'
+            logcat.parent.mkdir()
+            device_path = ('/storage/emulated/0/Android/data/'
+                           'com.architectpsg.commandlibrary.feature.shell.test/'
+                           'files/visual-acceptance/' + missing)
+            logcat.write_text(
+                '10-13 17:18:43.286 I System.out: VISUAL_CAPTURE_PATH=' + device_path + '\n'
+                '10-13 17:18:43.287 I System.out: VISUAL_CAPTURE_PATH=/sdcard/other/secret.png\n')
+            with patch('collect_visual_captures.subprocess.run') as run:
+                run.return_value.returncode = 0
+                run.return_value.stdout = PNG
+                collect(root, captures, 'adb')
+                run.assert_called_once_with(['adb', 'exec-out', 'cat', device_path],
+                                            capture_output=True, timeout=30)
+            self.assertEqual(36, len(list(captures.glob('*.png'))))
+
 if __name__ == '__main__':
     unittest.main()

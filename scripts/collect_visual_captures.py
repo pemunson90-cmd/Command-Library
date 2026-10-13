@@ -71,16 +71,22 @@ def collect(root, output, adb):
             shutil.copyfile(path, output / path.name)
     visual_cases = []
     device_paths = set()
-    for report in root.glob('**/build/outputs/androidTest-results/connected/**/TEST-*.xml'):
-        tree = ET.parse(report).getroot()
-        visual_cases.extend(case for case in tree.iter('testcase')
-                            if 'VisualSystemAcceptanceTest' in case.get('classname', ''))
-        for line in ''.join(tree.itertext()).splitlines():
+    def add_capture_paths(lines):
+        for line in lines:
             marker = 'VISUAL_CAPTURE_PATH='
             if marker in line:
                 path = line.split(marker, 1)[1].strip()
                 if safe_device_path(path) and pathlib.PurePosixPath(path).name in EXPECTED:
                     device_paths.add(path)
+
+    for report in root.glob('**/build/outputs/androidTest-results/connected/**/TEST-*.xml'):
+        tree = ET.parse(report).getroot()
+        visual_cases.extend(case for case in tree.iter('testcase')
+                            if 'VisualSystemAcceptanceTest' in case.get('classname', ''))
+        add_capture_paths(''.join(tree.itertext()).splitlines())
+    # API23's connected runner retains System.out in per-test logcat files, not XML.
+    for logcat in root.glob('**/build/outputs/androidTest-results/connected/**/logcat-*VisualSystemAcceptanceTest*.txt'):
+        add_capture_paths(logcat.read_text(errors='replace').splitlines())
     for path in sorted(device_paths):
         destination = output / pathlib.PurePosixPath(path).name
         if destination.exists():
