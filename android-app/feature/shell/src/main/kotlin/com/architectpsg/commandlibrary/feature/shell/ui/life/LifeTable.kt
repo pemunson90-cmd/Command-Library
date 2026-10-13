@@ -77,15 +77,22 @@ internal fun LifeTable(
                             snapshot.clock.seats.firstOrNull { it.seatId == seat.id }?.let {
                                 Text(stringResource(R.string.life_clock, it.remaining.toString()), style = MaterialTheme.typography.bodyMedium)
                             }
-                            val counters = snapshot.counters.filter { it.seatId == seat.id }.sortedBy { if (it.definitionId == lifeDefinitionId && it.commanderSlotId == null) 0 else 1 }
+                            val counters = snapshot.counters.filter { it.seatId == seat.id && !it.hidden }.sortedBy { if (it.definitionId == lifeDefinitionId && it.commanderSlotId == null) 0 else 1 }
                             counters.forEach { counter ->
                                 val definition = snapshot.settings.counterDefinitions.firstOrNull { it.id == counter.definitionId }
-                                val commander = seat.commanders.firstOrNull { it.id == counter.commanderSlotId }
-                                val label = if (commander != null) stringResource(R.string.life_commander_counter, definition?.label ?: counter.definitionId.value, commander.label) else definition?.label ?: counter.definitionId.value
+                                val sourceSlotId = counter.commanderSlotId
+                                val source = snapshot.seats.firstOrNull { owner -> owner.commanders.any { it.id == sourceSlotId } }
+                                val commander = source?.commanders?.firstOrNull { it.id == sourceSlotId }
+                                val definitionLabel = definition?.label ?: counter.definitionId.value
+                                val label = when {
+                                    commander != null && source != null -> stringResource(R.string.life_commander_counter, definitionLabel, source.playerName, commander.label, commander.id.value)
+                                    sourceSlotId != null -> stringResource(R.string.life_commander_unknown_counter, definitionLabel, sourceSlotId.value)
+                                    else -> definitionLabel
+                                }
                                 val minimum = definition?.minimum
                                 val maximum = definition?.maximum
                                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text(if (counter.hidden) stringResource(R.string.life_hidden, label) else label, style = MaterialTheme.typography.bodyMedium)
+                                    Text(label, style = MaterialTheme.typography.bodyMedium)
                                     Text(counter.value.toString(), style = MaterialTheme.typography.headlineMedium.copy(fontSize = if (counter.definitionId == lifeDefinitionId) 48.sp else 28.sp, lineHeight = if (counter.definitionId == lifeDefinitionId) 56.sp else 36.sp, fontFeatureSettings = "tnum"))
                                     ActionRow {
                                         val decrease = stringResource(R.string.life_decrease, label, seat.playerName)
