@@ -30,6 +30,8 @@ dependencies {
     testImplementation(libs.sqlite.bundled.jvm)
     testImplementation(libs.coroutines.test)
     androidTestImplementation(project(":data:storage"))
+    androidTestImplementation(project(":feature:settings"))
+    androidTestImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
 }
