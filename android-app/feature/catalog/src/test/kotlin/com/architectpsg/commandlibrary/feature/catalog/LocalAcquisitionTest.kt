@@ -12,6 +12,7 @@ import java.io.IOException
 import java.nio.file.Files
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 /** Synthetic seams deliberately execute the actual engine/SQL/codec/file helper. No source bodies. */
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -107,6 +108,72 @@ class LocalAcquisitionTest {
             val records = (firstId until firstId + count).joinToString(",") { "{\"object\":\"card\",\"id\":\"synthetic-$it\",\"lang\":\"en\"}" }
             val next = if (number * 175 < total) ",\"next_page\":\"${EnglishSearchPageCodec.INITIAL_URI.replace("page=1", "page=${number + 1}")}\"" else ""
             return "{\"object\":\"list\",\"total_cards\":$total,\"has_more\":${number * 175 < total},\"data\":[$records]$next}"
+        }
+    }
+
+    /** Synthetic metadata/state fixtures; this is not real adapter-to-engine composition evidence. */
+    @Test fun headerOnly429WaitsThenFailsWithoutArtifactOrAutomaticRetry() = runTest {
+        for (search in listOf(false, true)) for (retryMillis in listOf(30_000L, 60_000L)) Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429, length = 10_000_000)
+                .copy(retryAfter = if (retryMillis == 30_000L) Knowledge.Absent("Not supplied") else Knowledge.Known(60.seconds))))) }
+            val q = f.queued(f.request(search = search))
+            val runner = async { f.engine.run(q.plan.jobId, token) }
+            runCurrent()
+            assertEquals(AcquisitionState.RUNNING, value(f.engine.status(q.plan.jobId, token)).state)
+            assertEquals(1, f.wireEnqueues.size)
+            advanceTimeBy(retryMillis - 1); runCurrent()
+            assertFalse(runner.isCompleted)
+            assertEquals(1, f.requests.size)
+            advanceTimeBy(1); runCurrent()
+            val failed = value(runner.await())
+            assertEquals(AcquisitionState.FAILED, failed.state)
+            assertEquals(FailureCode.TRANSPORT, failed.failure?.code)
+            assertEquals(if (search) 15_000L else 6L, failed.transferredBytes)
+            assertEquals(0L, failed.durableArtifactBytes)
+            assertTrue(failed.artifact !is Knowledge.Known)
+            advanceTimeBy(60_000); runCurrent()
+            assertEquals(1, f.requests.size)
+        }
+    }
+
+    @Test fun explicitResumeAfter429RetainsReservationsAndExhaustsAttemptLimit() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)))) }
+            var queued = f.queued()
+            repeat(3) { index ->
+                val running = async { f.engine.run(queued.plan.jobId, token) }
+                runCurrent(); advanceTimeBy(30_000); runCurrent()
+                val failed = value(running.await())
+                assertEquals(AcquisitionState.FAILED, failed.state)
+                assertEquals(index + 1, failed.attempt)
+                assertEquals((index + 1) * 6L, failed.transferredBytes)
+                assertEquals(index + 1, f.wireEnqueues.size)
+                if (index < 2) queued = value(f.engine.resume(failed.plan.jobId, failed.revision, requireNotNull(failed.consentId), token))
+                else {
+                    assertTrue(f.engine.resume(failed.plan.jobId, failed.revision, requireNotNull(failed.consentId), token) is Outcome.Failure)
+                    assertEquals(3, f.requests.size)
+                }
+            }
+        }
+    }
+
+    @Test fun cancellationDuring429WaitSettlesInterruptedAndRevocationBlocksResume() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)))) }
+            val q = f.queued()
+            val runner = async { f.engine.run(q.plan.jobId, token) }
+            runCurrent(); advanceTimeBy(1000); runCurrent()
+            runner.cancelAndJoin()
+            val interrupted = value(f.engine.status(q.plan.jobId, token))
+            assertEquals(AcquisitionState.INTERRUPTED, interrupted.state)
+            assertEquals(6L, interrupted.transferredBytes)
+            value(f.settings.update(SettingsPatch(SnapshotList.empty()), f.state.revision, token))
+            assertTrue(f.engine.resume(interrupted.plan.jobId, interrupted.revision, requireNotNull(interrupted.consentId), token) is Outcome.Unavailable)
+            assertEquals(1, f.requests.size)
+            assertEquals(1, f.wireEnqueues.size)
         }
     }
 

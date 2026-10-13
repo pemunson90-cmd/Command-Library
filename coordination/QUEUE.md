@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-claude-audit-complete-72. Next: orch-kotlin-k3-offline-data-01 step3; Claude audit completed/reviewed; parser defect fixed/verified separately; guarded download integration pending.
+Checkpoint-ID: cp-20261013-rate-limit-local-green-74. Next: orch-kotlin-k3-offline-data-01 step3; 429 bridge locally verified;553JVM/testAPK/lint pass; guardedfactory preflight active, native/fullv1 incomplete.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

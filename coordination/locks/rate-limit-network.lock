@@ -1,0 +1,11 @@
+{
+  "component": "acquisition429-network-bridge",
+  "orchestrator": "codex-local-resume-20261013",
+  "agent_task": "cx-k3-rate-limit-bridge-01",
+  "owner": "Reserved; Sol medium finished, no live writer",
+  "owned_paths": [
+    "android-app/data/network/src/main/kotlin/com/architectpsg/commandlibrary/data/network/OkHttpNetworkClient.kt",
+    "android-app/data/network/src/test/kotlin/com/architectpsg/commandlibrary/data/network/Acquisition429MetadataTest.kt",
+    "coordination/handoffs/cx-k3-rate-limit-network-01.md"
+  ]
+}

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-claude-audit-complete-72
+Checkpoint-ID: cp-20261013-rate-limit-local-green-74
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Review bounded429 transport/engine behavior before guardedfactory; preserve explicitresume, exactwireauthority and cumulativebudgets; integrate reviewedbinder/parser/collector only in next coherentnativecandidate.
+Next step: 3. Review concrete guarded English factory/admission proposal using actualengine/binder; resolve durablecooldown/notice/disk boundaries before registeredproduction composition; localchecks then onecoherentnativebatch.
 
-Updated UTC: 2026-10-13T17:55:53Z
-Status: Claude audit completed/reviewed; parser defect fixed/verified separately; guarded download integration pending; lease: active.
-Verified base: be2bebdc3866d1f9633f670fde9d42a2ca3d7c0f.
+Updated UTC: 2026-10-13T18:43:53Z
+Status: 429 bridge locally verified;553JVM/testAPK/lint pass; guardedfactory preflight active, native/fullv1 incomplete; lease: active.
+Verified base: c16b68b8c29be08eeacfa4f4fa68625c47ca899b.
 
-Claude6c9715b evidence preserved8783229; Solmedium finished auditbe2bebd, Astra-high APPROVE. Actual parserRED then correction3ed7237 separatelypublished:87JVM0failure/error/skip,lint/testAPKpass; source re-reviewAPPROVE, native/fullcorpusnot_run. Previousnative120/lane andvisual/API23capturelimitations retained.
+Userapprovedexecution. Binder/parser integratedlocally; default-off429streambridge sourceapproved, focused47network/144catalogpass. Full local55XML553JVM0failure/error/skip, alltestAPK/check/debugassemble and16KiB alignmentpass. No realadapter-engine/native/downloadUI acceptance; lifevisualreferencebrief saved.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

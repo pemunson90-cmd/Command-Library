@@ -184,7 +184,9 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         shell: bash
         working-directory: android-app
-        run: bash gradlew --no-daemon --console=plain connectedDebugAndroidTest
+        # Retain the test APKs on this ephemeral AVD until synthetic captures are collected.
+        # AGP9.4.1 otherwise requests uninstall, risking API23 external-files fallback loss.
+        run: bash gradlew --no-daemon --console=plain -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true connectedDebugAndroidTest
       - name: Count executed instrumentation tests
         if: always() && steps.gate.outputs.run == 'true'
         shell: bash
