@@ -369,6 +369,149 @@ class SeatClockReducerTest {
         assertEquals(9.seconds, undone.remaining(seatA))
     }
 
+    @Test fun sameSeatRefillUndoKeepsChargesOnBothSidesOfTheSwitch() {
+        for (policy in ClockZeroPolicy.entries) {
+            for (solo in listOf(true, false)) {
+                val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN, zero = policy).let {
+                    if (!solo) it else it.copy(seats = SnapshotList.of(LifeFixtures.seat(seatA, 0)), clock = it.clock.copy(seats = SnapshotList.of(it.clock.seats.first())))
+                }
+                val switched = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+                val undone = SeatClockReducer.undo(before, switched, reading(108)).success()
+                assertEquals("$policy solo=$solo: keep five seconds before refill and three after", 2.seconds, undone.snapshot.remaining(seatA))
+                assertEquals(1L, undone.snapshot.turnNumber)
+                assertEquals(seatA, undone.snapshot.clock.activeSeat)
+                assertTrue(undone.alerts.isEmpty())
+            }
+        }
+    }
+
+    @Test fun incomingRefillUndoUnderPauseClampsAndReportsANewZeroTransitionOnce() =
+        checkIncomingRefillZeroUndo(ClockZeroPolicy.PAUSE)
+
+    @Test fun incomingRefillUndoUnderEliminateClampsAndReportsANewZeroTransitionOnce() =
+        checkIncomingRefillZeroUndo(ClockZeroPolicy.ELIMINATE)
+
+    private fun checkIncomingRefillZeroUndo(policy: ClockZeroPolicy) {
+        val before = clockGame(bRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN, zero = policy)
+        val switched = SeatClockReducer.switchTurn(before, seatB, reading(100)).success().snapshot
+        val undone = SeatClockReducer.undo(before, switched, reading(115)).success()
+        assertEquals("$policy must clamp the reverted incoming bank", Duration.ZERO, undone.snapshot.remaining(seatB))
+        assertTrue(undone.snapshot.clock.paused)
+        assertEquals(listOf(zeroAlertId(seatB, 2, 1)), undone.alerts.map { it.id })
+        assertEquals(listOf(zeroAlertId(seatB, 2, 1)), undone.snapshot.clock.firedAlertIds)
+        assertEquals(if (policy == ClockZeroPolicy.ELIMINATE) listOf(seatB) else emptyList<EntityId>(), undone.timedOutSeats)
+        assertEquals(seatA, undone.snapshot.activeSeatId)
+        assertEquals(before.seats, undone.snapshot.seats)
+        val settledAgain = SeatClockReducer.settle(undone.snapshot, reading(120)).success()
+        assertTrue(settledAgain.alerts.isEmpty())
+        assertTrue(settledAgain.timedOutSeats.isEmpty())
+    }
+
+    @Test fun incomingRefillUndoUnderAlertKeepsNegativeTimeAndFiresOnce() {
+        val before = clockGame(bRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+        val switched = SeatClockReducer.switchTurn(before, seatB, reading(100)).success().snapshot
+        val undone = SeatClockReducer.undo(before, switched, reading(115)).success()
+        assertEquals((-5).seconds, undone.snapshot.remaining(seatB))
+        assertFalse(undone.snapshot.clock.paused)
+        assertEquals(listOf(zeroAlertId(seatB, 2, 1)), undone.alerts.map { it.id })
+        assertTrue(undone.timedOutSeats.isEmpty())
+    }
+
+    @Test fun incomingRefillUndoDoesNotRepeatAnAlreadyReportedTimeout() {
+        val before = clockGame(bRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN, zero = ClockZeroPolicy.ELIMINATE)
+        val switched = SeatClockReducer.switchTurn(before, seatB, reading(100)).success().snapshot
+        val crossed = SeatClockReducer.settle(switched, reading(135)).success()
+        assertEquals(listOf(seatB), crossed.timedOutSeats)
+        val undone = SeatClockReducer.undo(before, crossed.snapshot, reading(140)).success()
+        assertEquals(Duration.ZERO, undone.snapshot.remaining(seatB))
+        assertTrue(undone.alerts.isEmpty())
+        assertTrue(undone.timedOutSeats.isEmpty())
+        assertEquals(crossed.snapshot.clock.firedAlertIds, undone.snapshot.clock.firedAlertIds)
+        val redone = SeatClockReducer.switchTurn(undone.snapshot, seatB, reading(145)).success().snapshot
+        val resumed = SeatClockReducer.setPaused(redone, false, reading(145)).success().snapshot
+        val recrossed = SeatClockReducer.settle(resumed, reading(180)).success()
+        assertEquals(listOf(zeroAlertId(seatB, 2, 2)), recrossed.alerts.map { it.id })
+        assertEquals(listOf(seatB), recrossed.timedOutSeats)
+    }
+
+    @Test fun sameSeatRefillUndoAfterCheckpointRequiresActionProvenance() {
+        val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+        val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+        val checkpoint = SeatClockReducer.settle(afterAction, reading(107)).success().snapshot
+        SeatClockReducer.undo(before, checkpoint, reading(108)).failure(FailureCode.INVALID_INPUT)
+    }
+
+    @Test fun sameSeatRefillUndoUsesTheOriginalActionAnchorAfterCheckpoint() {
+        for (policy in ClockZeroPolicy.entries) {
+            val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN, zero = policy)
+            val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+            val checkpoint = SeatClockReducer.settle(afterAction, reading(107)).success().snapshot
+            val undone = SeatClockReducer.undo(before, afterAction, checkpoint, reading(108)).success()
+            assertEquals(2.seconds, undone.snapshot.remaining(seatA))
+            assertTrue(undone.alerts.isEmpty())
+            assertEquals(1L, undone.snapshot.turnNumber)
+        }
+    }
+
+    @Test fun sameSeatRefillUndoKeepsOnlyTimeActuallyChargedBeforeAPause() {
+        val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+        val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+        val paused = SeatClockReducer.setPaused(afterAction, true, reading(107)).success().snapshot
+        val undone = SeatClockReducer.undo(before, afterAction, paused, reading(200)).success()
+        assertEquals(3.seconds, undone.snapshot.remaining(seatA))
+        assertFalse(undone.snapshot.clock.paused)
+        assertTrue(undone.alerts.isEmpty())
+    }
+
+    @Test fun sameSeatRefillUndoKeepsDurableChargesAcrossRestartWithActionProvenance() {
+        val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+        val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+        val checkpoint = SeatClockReducer.settle(afterAction, reading(107)).success().snapshot
+        val recovered = SeatClockReducer.recoverAfterRestart(checkpoint, reading(5, process2)).success().snapshot
+        SeatClockReducer.undo(before, recovered, reading(10, process2)).failure(FailureCode.INVALID_INPUT)
+        val undone = SeatClockReducer.undo(before, afterAction, recovered, reading(10, process2)).success()
+        assertEquals(3.seconds, undone.snapshot.remaining(seatA))
+        assertTrue(undone.snapshot.clock.paused)
+        assertEquals(reading(10, process2).anchor(), undone.snapshot.clock.anchor)
+        assertTrue(undone.alerts.isEmpty())
+    }
+
+    @Test fun sameSeatRefillUndoReportsTheReconstructedCrossingAfterCheckpoint() {
+        for (policy in ClockZeroPolicy.entries) {
+            val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN, zero = policy)
+            val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+            val checkpoint = SeatClockReducer.settle(afterAction, reading(108)).success().snapshot
+            val undone = SeatClockReducer.undo(before, afterAction, checkpoint, reading(112)).success()
+            assertEquals(if (policy == ClockZeroPolicy.ALERT) (-2).seconds else Duration.ZERO, undone.snapshot.remaining(seatA))
+            assertEquals(policy != ClockZeroPolicy.ALERT, undone.snapshot.clock.paused)
+            assertEquals(listOf(zeroAlertId(seatA, 2, 1)), undone.alerts.map { it.id })
+            assertEquals(if (policy == ClockZeroPolicy.ELIMINATE) listOf(seatA) else emptyList<EntityId>(), undone.timedOutSeats)
+            val repeated = SeatClockReducer.settle(undone.snapshot, reading(113)).success()
+            assertTrue(repeated.alerts.isEmpty())
+            assertTrue(repeated.timedOutSeats.isEmpty())
+        }
+    }
+
+    @Test fun sameSeatRefillUndoDoesNotRefireTheOutgoingZeroTransition() {
+        for (policy in listOf(ClockZeroPolicy.PAUSE, ClockZeroPolicy.ELIMINATE)) {
+            val before = clockGame(aRemaining = 3.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN, zero = policy)
+            val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+            val undone = SeatClockReducer.undo(before, afterAction, afterAction, reading(108)).success()
+            assertEquals(Duration.ZERO, undone.snapshot.remaining(seatA))
+            assertTrue(undone.snapshot.clock.paused)
+            assertTrue(undone.alerts.isEmpty())
+            assertTrue(undone.timedOutSeats.isEmpty())
+            assertEquals(listOf(zeroAlertId(seatA, 1, 1)), undone.snapshot.clock.firedAlertIds)
+        }
+    }
+
+    @Test fun undoRejectsActionProvenanceFromADifferentTimeline() {
+        val before = clockGame(aRemaining = 10.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+        val afterAction = SeatClockReducer.switchTurn(before, seatA, reading(105)).success().snapshot
+        SeatClockReducer.undo(before, afterAction.copy(turnNumber = 9), afterAction, reading(108)).failure(FailureCode.INVALID_INPUT)
+        SeatClockReducer.undo(before, afterAction.copy(id = GameId(LifeFixtures.provider, "other-game")), afterAction, reading(108)).failure(FailureCode.INVALID_INPUT)
+    }
+
     @Test fun nonFiniteReadingsAreRejectedBeforeAnyChange() {
         val infinite = ClockReading(Duration.INFINITE, UtcTimestamp(1), process1)
         val paused = clockGame(paused = true)

@@ -159,17 +159,36 @@ internal object SeatClockReducer {
      * the clock comes back paused, as [recoverAfterRestart] would leave it.
      *
      * [ClockUndoPolicy.KEEP_ELAPSED] keeps time charged where the clock charged it and reverts only active seat, pause flag
-     * and turn. A pause that [current] received in another process session (restart recovery) is kept.
+     * and turn. A pause that [current] received in another process session (restart recovery) is kept. A
+     * reconstructed bank reaching zero also pauses under PAUSE/ELIMINATE and reports its new transition.
      *
      * A zero transition that [current] already fired is not fired again when the restored timeline replays it.
      */
-    fun undo(before: GameSnapshot, current: GameSnapshot, reading: ClockReading): Outcome<ClockReduction> {
+    fun undo(before: GameSnapshot, current: GameSnapshot, reading: ClockReading): Outcome<ClockReduction> =
+        undoWithAction(before, null, current, reading)
+
+    /**
+     * Use the immutable snapshot immediately after the undone action when [current] has since been settled,
+     * paused, or recovered. Its original anchor provides action-time provenance; wall time never measures elapsed.
+     * The three-argument overload requires the immediate after-action snapshot for a same-seat PER_TURN refill.
+     */
+    fun undo(before: GameSnapshot, afterAction: GameSnapshot, current: GameSnapshot, reading: ClockReading): Outcome<ClockReduction> =
+        undoWithAction(before, afterAction, current, reading)
+
+    private fun undoWithAction(before: GameSnapshot, afterAction: GameSnapshot?, current: GameSnapshot, reading: ClockReading): Outcome<ClockReduction> {
         checkClock(before)?.let { return it }
         checkClock(current)?.let { return it }
         checkReading(reading)?.let { return it }
         if (before.id != current.id) return invalidInput("Undo snapshots belong to different games")
         if (before.clock.mode != current.clock.mode) return invalidInput("Undo cannot cross a clock mode change")
         if (before.clock.seats.map { it.seatId }.toSet() != current.clock.seats.map { it.seatId }.toSet()) return invalidInput("Undo cannot cross a clock seat change")
+        if (afterAction != null) {
+            checkClock(afterAction)?.let { return it }
+            if (afterAction.id != current.id || afterAction.turnNumber != current.turnNumber || afterAction.clock.activeSeat != current.clock.activeSeat ||
+                afterAction.clock.mode != current.clock.mode || afterAction.clock.seats.map { it.seatId }.toSet() != current.clock.seats.map { it.seatId }.toSet()) {
+                return invalidInput("Undo action snapshot does not match the current clock timeline")
+            }
+        }
         val restored = before.copy(revision = current.revision, lastEventId = current.lastEventId)
         if (current.clock.mode == SeatClockMode.NONE) return Outcome.Success(ClockReduction(restored, SnapshotList.empty(), SnapshotList.empty()))
         val fired = current.clock.firedAlertIds
@@ -185,13 +204,12 @@ internal object SeatClockReducer {
             }
             ClockUndoPolicy.KEEP_ELAPSED -> {
                 val charged = settleClock(current, reading).valueOr { return it }
-                val seats = revertTurnRefill(before, current, charged.clock.seats).valueOr { return it }
+                val reverted = revertTurnRefill(before, afterAction, current, charged, reading).valueOr { return it }
                 val recoveryPause = current.clock.paused && current.clock.anchor?.processSessionId != before.clock.anchor?.processSessionId
-                charged.copy(
-                    clock = charged.clock.copy(
-                        seats = seats,
+                reverted.copy(
+                    clock = reverted.clock.copy(
                         activeSeat = before.clock.activeSeat,
-                        paused = before.clock.paused || recoveryPause,
+                        paused = before.clock.paused || recoveryPause || reverted.refillStopped,
                         anchor = reading.anchor(),
                     ),
                 )
@@ -211,23 +229,48 @@ internal object SeatClockReducer {
     }
 
     /**
-     * Undoing a PER_TURN switch also undoes the refill it gave the incoming seat: that seat returns to its [before] balance
-     * minus the time charged to it since the refill.
+     * Undoing a PER_TURN switch removes its refill while retaining both the outgoing settlement (when the
+     * same seat switches to itself) and the charge since the refill. Reconstructed zero transitions follow
+     * the same policy as a normal settlement, without reporting a transition already fired by this action.
      */
-    private fun revertTurnRefill(before: GameSnapshot, current: GameSnapshot, seats: SnapshotList<SeatTime>): Outcome<SnapshotList<SeatTime>> {
+    private fun revertTurnRefill(before: GameSnapshot, afterAction: GameSnapshot?, current: GameSnapshot, charged: Settled, reading: ClockReading): Outcome<Settled> {
         val refilled = current.clock.activeSeat
-        if (current.clock.mode != SeatClockMode.PER_TURN || current.turnNumber == before.turnNumber || refilled == null) return Outcome.Success(seats)
-        val prior = before.clock.seats.firstOrNull { it.seatId == refilled } ?: return Outcome.Success(seats)
-        val reverted = seats.map { time ->
-            if (time.seatId != refilled) return@map time
-            val remaining = prior.remaining - (time.initial - time.remaining)
-            if (!remaining.isFinite()) return invalidInput("Clock arithmetic for seat ${refilled.value} left the finite range")
-            time.copy(remaining = remaining)
+        if (current.clock.mode != SeatClockMode.PER_TURN || current.turnNumber == before.turnNumber || refilled == null) return Outcome.Success(charged)
+        var prior = before.clock.seats.firstOrNull { it.seatId == refilled } ?: return Outcome.Success(charged)
+        val action = afterAction ?: current
+        val switchAnchor = action.clock.anchor
+        if (refilled == before.clock.activeSeat && !before.clock.paused) {
+            val actionBank = action.clock.seats.single { it.seatId == refilled }
+            if (switchAnchor == null || switchAnchor.processSessionId != before.clock.anchor?.processSessionId || actionBank.remaining != actionBank.initial) {
+                return invalidInput("Same-seat refill undo requires the original after-action snapshot")
+            }
+            val atSwitch = ClockReading(switchAnchor.monotonicElapsed, switchAnchor.wallTime, switchAnchor.processSessionId)
+            prior = settleClock(before, atSwitch).valueOr { return it }.clock.seats.single { it.seatId == refilled }
         }
-        return Outcome.Success(SnapshotList.copyOf(reverted))
+        val time = charged.clock.seats.single { it.seatId == refilled }
+        val remaining = prior.remaining - (time.initial - time.remaining)
+        if (!remaining.isFinite()) return invalidInput("Clock arithmetic for seat ${refilled.value} left the finite range")
+        val clamp = charged.clock.zeroPolicy != ClockZeroPolicy.ALERT && remaining <= Duration.ZERO
+        val alreadyReported = charged.clock.firedAlertIds.any { id ->
+            id !in before.clock.firedAlertIds && id.value.startsWith("clock-zero/${refilled.value}/turn-${current.turnNumber}/")
+        }
+        val alerts = ArrayList(charged.alerts)
+        val timedOut = ArrayList(charged.timedOut)
+        if (prior.remaining > Duration.ZERO && remaining <= Duration.ZERO && !alreadyReported) {
+            val occurrence = (1..charged.clock.firedAlertIds.size + 1).first { zeroAlertId(refilled, current.turnNumber, it) !in charged.clock.firedAlertIds }
+            alerts += ClockAlert(zeroAlertId(refilled, current.turnNumber, occurrence), current.id, refilled, reading.wall, null)
+            if (charged.clock.zeroPolicy == ClockZeroPolicy.ELIMINATE) timedOut += refilled
+        }
+        val seats = charged.clock.seats.map { if (it.seatId == refilled) it.copy(remaining = if (clamp) Duration.ZERO else remaining) else it }
+        return Outcome.Success(charged.copy(
+            clock = charged.clock.copy(seats = SnapshotList.copyOf(seats), firedAlertIds = SnapshotList.copyOf(charged.clock.firedAlertIds + alerts.drop(charged.alerts.size).map { it.id })),
+            alerts = alerts,
+            timedOut = timedOut,
+            refillStopped = clamp,
+        ))
     }
 
-    private data class Settled(val clock: SeatClockState, val alerts: List<ClockAlert>, val timedOut: List<EntityId>) {
+    private data class Settled(val clock: SeatClockState, val alerts: List<ClockAlert>, val timedOut: List<EntityId>, val refillStopped: Boolean = false) {
         fun reduction(base: GameSnapshot): ClockReduction =
             ClockReduction(base.copy(clock = clock), SnapshotList.copyOf(alerts), SnapshotList.copyOf(timedOut))
     }
