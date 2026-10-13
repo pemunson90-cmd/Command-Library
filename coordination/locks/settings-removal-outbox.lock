@@ -1,0 +1,16 @@
+{
+  "component": "settings",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cx-k3-settings-removal-outbox-01",
+  "branch": "agent/cx-k3-settings-removal-outbox-01",
+  "base_commit": "c4de743",
+  "owned_paths": [
+    "android-app/feature/settings/src/main/kotlin/com/architectpsg/commandlibrary/feature/settings/SettingsStoreFormat.kt",
+    "android-app/feature/settings/src/main/kotlin/com/architectpsg/commandlibrary/feature/settings/DataStoreSettingsRepository.kt",
+    "android-app/feature/settings/src/test/kotlin/com/architectpsg/commandlibrary/feature/settings/SettingsStoreCodecTest.kt",
+    "android-app/feature/settings/src/test/kotlin/com/architectpsg/commandlibrary/feature/settings/DataStoreSettingsRepositoryTest.kt",
+    "android-app/feature/settings/src/test/kotlin/com/architectpsg/commandlibrary/feature/settings/SettingsPersistenceBoundsTest.kt",
+    "android-app/feature/settings/src/test/kotlin/com/architectpsg/commandlibrary/feature/settings/SettingsTestSupport.kt",
+    "coordination/handoffs/cx-k3-settings-removal-outbox-01.md"
+  ]
+}

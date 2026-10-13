@@ -3,15 +3,18 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-life-review-54",
-  "verified_base_head": "42851d925f70687b3ad8ed24bc281dd99be5cfef",
+  "checkpoint_id": "cp-20261013-life-integration-55",
+  "verified_base_head": "c4de743baf1ea0e91c20f74328f35b1a8891fe89",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "Full Android v1 execution active; incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "review",
+  "first_action": "Complete PR17 Android checks then merge; activate next life task and continue guarded K3 platform/outbox integration",
   "active_tasks": [
-    "orch-kotlin-k3-offline-data-01"
+    "orch-kotlin-k3-offline-data-01",
+    "cx-k3-full-bulk-import-01",
+    "cx-m2-life-domain-fix-01",
+    "cx-k3-settings-removal-outbox-01"
   ],
   "blockers": [
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
@@ -41,8 +44,9 @@
     "k3_acquisition_infrastructure": "Acceptedmain67713d29aa5dec03d9a91ab3eb4239b020ab8ffa: exacte24a958 hosted38323540680 all4lanespass316JVM/61nativeeach. Candidate71acd14 Androidtreeidentical795b94b. Debugbuildonly; fullK3notaccepted.",
     "k3_full_contracts": "PR14 expected3e32f214 mergedmaina4a57e4; exacthosted38327108153 all4lanes337JVM/61nativeeach0failures+errors; treeequal. Declarations/framingonly, no fullinstallation.",
     "k3_schema4_wire": "Exact44d02c9 hosted38328542087 all4lanes success:347 JVM,66native per API23/API36/API36-16KiB lane; actualKSP4 export committed in next checkpoint, SHA6f1f94a2c2653635e70784a77b933bbcc2a7b23b636e9d26b7abb830afa0dcec.",
-    "life_original": "Exactc4a27190 hosted38331874820 command success,16model+69life,0failures/errors/skips. Two independent undo defects prevent acceptance; revisedce97e47e hosted38333007130 pending."
+    "life_original": "Exactc4a27190 hosted38331874820 command success,16model+69life,0failures/errors/skips. Two independent undo defects prevent acceptance; revisedce97e47e hosted38333007130 pending.",
+    "life_corrected": "ce97e47e independently approved,97tests+3originalprobes pass; hosted38333007130 16model+81life pass0failures/errors/skips. Integration6fa6043 hosted38333232421 21model+81life pass; PR17 matrix38333213528 pending."
   },
-  "last_completed": "Verified original life hosted reports, routed exact corrected reviews and hosted run, recorded all14 dispositions;105 catalog tests pass and actual schema4 export retained",
-  "updated_utc": "2026-10-13T01:38:41Z"
+  "last_completed": "Life correction exact source independently approved and hosted verified; all14dispositions recorded, nexttaskprepared; settings outbox assigned. No life/service/UI/fullapp acceptance.",
+  "updated_utc": "2026-10-13T01:43:42Z"
 }
