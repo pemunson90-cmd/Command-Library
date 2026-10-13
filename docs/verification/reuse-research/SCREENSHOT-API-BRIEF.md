@@ -9,4 +9,4 @@ Evidence checked 2026-10-13:
 - Published source archive, `androidx.compose.ui:ui-test-android:1.12.1`: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-test-android/1.12.1/ui-test-android-1.12.1-sources.jar (`AndroidImageHelpers.android.kt`, `WindowCapture.android.kt`).
 - Android API reference: https://developer.android.com/reference/android/app/UiAutomation — `UiAutomation` added API 18; documents `Bitmap takeScreenshot()`.
 - AOSP implementation: https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/core/java/android/app/UiAutomation.java — captures the full real display and returns null on failure.
-- PixelCopy API reference: https://developer.android.com/reference/android/view/PixelCopy — API 26.
+- PixelCopy API reference: https://developer.android.com/reference/android/view/PixelCopy — class added API24; the Window overload used by this helper requires API26.
