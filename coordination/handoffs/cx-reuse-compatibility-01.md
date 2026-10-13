@@ -1,9 +1,9 @@
 # Latest continuation delta
-Branch: agent/cx-reuse-compatibility-01; source/evidence commit: cda7cc73cc4c972b945c1a2068aa4a99d8736845.
-Root-only dependency commit2235e5e cherry-picked as990975f; worker changed only five owned paths.
-Recommend test-only com.jsoizo:kotlin-csv-jvm:1.10.0 and Coil core/compose-core3.3.0; aliases already root-integrated.
-Actual K2/std2.2.10 compilation passes; CSV JUnit8/8 and Coil real cache LRU/pack preservation JUnit1/1 pass.
-Latest Coil3.6.3 rejected: published stdlib2.4.10 metadata incompatible; CSV2 comparison passes but runtime upgrade deferred.
-Four Android runtime probes compiled, not_run; AGP/full graph/Room-SQLite-DataStore coexistence/device/Compose/native graph not_run.
-Artifact/source/POM/module hashes, license/tag provenance, transitive metadata and finite red/green evidence: PROBE-DECISIONS.json.
-Next: root independently review both owned probe classes/evidence, run hosted Android/common tests and graph checks; then decide production pins.
+Branch: agent/cx-reuse-compatibility-01; revised source/evidence: 73e59fcaa6c1b5bcb7c48b5212bc2274336e91d2.
+Original hosted c540a3a run38341796969 JVM job115114220595 executed4 Coil runtime cases; valid PNG and malformed bytes failed2/4.
+Published Robolectric4.17 defaults LEGACY: invalid bytes get dummy bitmaps and modern file-descriptor path is incomplete; original PNG cause omitted by XML.
+Candidate adds class-local GraphicsMode.NATIVE and actual result/error-cause diagnostics; all success/error/dimension/network/cancellation assertions remain.
+Actual revised K2/std2.2.10 compilation0, CSV8/8 and real Coil cache1/1 pass; revised Android runtime rerun not_run locally.
+No CSV/production/shared-config/dependency edits; pins remain CSV1.10.0 and Coil3.3.0. Root rootcause hypothesis must be verified, no production acceptance claim.
+PROBE-DECISIONS.json records original failures/XML hash, source evidence/checksums, candidate changes and exact hosted next checks.
+Next: root independently review and run exact hosted candidate; inspect all4 runtime outcomes/diagnostics before confirming graphics fix or accepting production pins.
