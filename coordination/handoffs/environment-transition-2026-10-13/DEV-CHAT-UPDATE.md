@@ -41,3 +41,9 @@ Passed run: https://github.com/pemunson90-cmd/Command-Library/actions/runs/38351
 Packets: `coordination/handoffs/environment-transition-2026-10-13/NEXT-CODEX.md` and `CLAUDE-CODE.md`.
 
 The new environment may not contain the old private data samples or build tools. Git preserves code and records, not those temporary files. Reacquisition must use genuine sources without putting private datasets or signing material in the repository.
+
+## Cheaper research workflow — explicit instruction
+
+When research is missing, Codex should drop a concise, ready-to-paste request into Codex chat for me to take to regular ChatGPT or Claude chat. It should include the question, enough context, exact versions, sources to check and the answer format. Save a copy in Git too. Do not spend cloud Codex work on standalone research by default.
+
+Codex continues unrelated implementation while I obtain the answer, checks the returned findings against our code before using them, and keeps actual code/build/device verification in the tool-enabled environment. Reuse existing findings so I am not asked to research the same thing twice. Claude's browsing-only profile audit can be done in regular chat; it does not require Claude Code.
