@@ -233,7 +233,7 @@
     <string name="life_clock">Remaining time: %1$s</string>
     <string name="life_clock_pause">Pause clock</string>
     <string name="life_clock_resume">Resume clock</string>
-    <string name="life_commander_counter">%1$s · %2$s / %3$s [%4$s]</string>
-    <string name="life_commander_unknown_counter">%1$s · commander slot %2$s</string>
+    <string name="life_commander_counter">%1$s · %2$s / %3$s (commander %4$s)</string>
+    <string name="life_commander_unknown_counter">%1$s · unknown commander</string>
     <string name="life_no_seats">No seats in this snapshot</string>
 </resources>

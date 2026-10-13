@@ -148,11 +148,11 @@ class VisualSystemAcceptanceTest(private val width: Int, private val height: Int
         tableNode(hasText("40")).assertIsDisplayed()
         screenshot("life")
 
-        // Opposing partners have the same display label; their source slot IDs still distinguish them.
+        // Opposing partners have the same display label; readable slot numbers distinguish them, while actions retain their exact IDs.
         val commanderLabels = listOf(
-            "synthetic-b1" to shell.string(R.string.life_commander_counter, "Synthetic damage", "Synthetic Seat B", "Synthetic Partner", "synthetic-b1"),
-            "synthetic-b2" to shell.string(R.string.life_commander_counter, "Synthetic damage", "Synthetic Seat B", "Synthetic Partner", "synthetic-b2"),
-            "synthetic-a1" to shell.string(R.string.life_commander_counter, "Synthetic damage", "Synthetic Seat A", "Synthetic Own", "synthetic-a1"),
+            "synthetic-b1" to shell.string(R.string.life_commander_counter, "Synthetic damage", "Synthetic Seat B", "Synthetic Partner", "1"),
+            "synthetic-b2" to shell.string(R.string.life_commander_counter, "Synthetic damage", "Synthetic Seat B", "Synthetic Partner", "2"),
+            "synthetic-a1" to shell.string(R.string.life_commander_counter, "Synthetic damage", "Synthetic Seat A", "Synthetic Own", "1"),
         )
         val descriptions = commanderLabels.map { (_, label) -> shell.string(R.string.life_increase, label, "Synthetic Seat A") }
         assertEquals(3, descriptions.distinct().size)

@@ -85,8 +85,8 @@ internal fun LifeTable(
                                 val commander = source?.commanders?.firstOrNull { it.id == sourceSlotId }
                                 val definitionLabel = definition?.label ?: counter.definitionId.value
                                 val label = when {
-                                    commander != null && source != null -> stringResource(R.string.life_commander_counter, definitionLabel, source.playerName, commander.label, commander.id.value)
-                                    sourceSlotId != null -> stringResource(R.string.life_commander_unknown_counter, definitionLabel, sourceSlotId.value)
+                                    commander != null && source != null -> stringResource(R.string.life_commander_counter, definitionLabel, source.playerName, commander.label, (source.commanders.indexOfFirst { it.id == commander.id } + 1).toString())
+                                    sourceSlotId != null -> stringResource(R.string.life_commander_unknown_counter, definitionLabel)
                                     else -> definitionLabel
                                 }
                                 val minimum = definition?.minimum
