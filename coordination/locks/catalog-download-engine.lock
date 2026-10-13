@@ -1,0 +1,12 @@
+{
+  "component": "catalog",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cx-k3-download-engine-01",
+  "branch": "agent/cx-k3-download-engine-01",
+  "base_commit": "d4024d83379d2bbfe75cd5b320b0e8fe2091350a",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalAcquisition.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalAcquisitionTest.kt",
+    "coordination/handoffs/cx-k3-download-engine-01.md"
+  ]
+}
