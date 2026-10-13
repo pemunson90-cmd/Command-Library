@@ -3,6 +3,13 @@ on:
   push:
     branches: ['main', 'agent/cc-*', 'agent/cx-*']
     paths: ['android-app/**', '.github/workflows/android-k2.yml']
+  pull_request:
+    branches: ['main']
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android-k2.yml'
+      - 'scripts/**'
+      - 'config/**'
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,6 +40,11 @@ jobs:
           yes | "$SDKM" --licenses > /dev/null || true
           "$SDKM" --install "$SDK_PLATFORM" "$SDK_BUILD_TOOLS" > /dev/null
           ls "$ANDROID_HOME/platforms"
+      # Compile instrumentation sources before starting three costly emulator jobs.
+      - name: Compile Android instrumentation APKs
+        shell: bash
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain assembleDebugAndroidTest
       - name: JVM tests, debug APK assembly
         shell: bash
         working-directory: android-app
@@ -78,9 +90,11 @@ jobs:
         if: success()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
+          # Preflight artifact: build success alone does not imply emulator acceptance.
           name: command-library-fold7-apk-${{ github.sha }}
           path: android-app/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+          overwrite: true
           retention-days: 14
       - name: Retain evidence
         if: always()
@@ -97,6 +111,7 @@ jobs:
           retention-days: 14
 
   emulator:
+    needs: jvm-and-assemble
     if: github.repository == 'pemunson90-cmd/Command-Library'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -224,4 +239,39 @@ jobs:
             android-app/**/build/reports/androidTests/**
             emulator.log
           if-no-files-found: ignore
+          retention-days: 14
+
+  verified-debug-apk:
+    name: Four-lane verified debug APK
+    needs: [jvm-and-assemble, emulator]
+    if: needs.jvm-and-assemble.result == 'success' && needs.emulator.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Download the exact-SHA APK built above, without rebuilding or trusting other refs.
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: command-library-fold7-apk-${{ github.sha }}
+          path: verified
+      - name: Record APK and CI provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t apks < <(find verified -maxdepth 1 -type f -name '*.apk' -print)
+          test "${#apks[@]}" -eq 1
+          {
+            printf 'source_commit=%s\n' "$GITHUB_SHA"
+            printf 'workflow_run=%s\n' "$GITHUB_RUN_ID"
+            printf 'event=%s\n' "$GITHUB_EVENT_NAME"
+            printf '%s\n' 'verification=JVM/build plus API23, API36 and API36-16KiB emulator jobs passed'
+            printf '%s\n' 'scope=internal debug validation; not canonical release signing or physical Fold7 verification'
+            sha256sum "${apks[0]}"
+          } | tee verified/VERIFICATION.txt
+      - name: Retain matrix-verified internal debug APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: command-library-matrix-verified-debug-${{ github.sha }}
+          path: verified/
+          if-no-files-found: error
+          overwrite: true
           retention-days: 14
