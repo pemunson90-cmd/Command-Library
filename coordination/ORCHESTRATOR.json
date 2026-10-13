@@ -4,8 +4,8 @@
   "session_id": "codex-full-v1-execution-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-13T00:24:47Z",
-  "expires_utc": "2026-10-13T01:09:47Z",
-  "checkpoint_id": "cp-20261013-schema4-route-50",
+  "heartbeat_utc": "2026-10-13T00:42:04Z",
+  "expires_utc": "2026-10-13T01:27:04Z",
+  "checkpoint_id": "cp-20261013-bulk-route-52",
   "note": "Codex full-v1 orchestration; Claude life and full-framing assignments disjoint; earlier workers complete, hosted gates pending."
 }

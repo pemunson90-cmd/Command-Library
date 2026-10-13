@@ -37,6 +37,7 @@ public class OkHttpNetworkClient(
     private val writeTimeout: Duration = 30.seconds,
     private val maximumOverallTimeout: Duration = 10.minutesCompat(),
     private val maximumBufferedBytes: Int = 8 * 1024 * 1024,
+    private val dispatchGuard: WireDispatchGuard = WireDispatchGuard { _, _, _, enqueue -> enqueue() },
 ) : NetworkClient {
     private val closed = AtomicBoolean(false)
     private val live = java.util.Collections.newSetFromMap(ConcurrentHashMap<Operation, Boolean>())
@@ -160,7 +161,7 @@ public class OkHttpNetworkClient(
                             // interruption. Bound the consumer wait independently; no socket or
                             // request is created after that canceled resolver eventually returns.
                             val response = coroutineScope {
-                                val pending = async { awaitResponse(active) }
+                                val pending = async { awaitResponse(active, request, ResourceUri(uri.toASCIIString()), call, cancel) }
                                 while (!pending.isCompleted) { delay(20); checkCall(call, cancel) }
                                 pending.await()
                             }
@@ -250,16 +251,89 @@ public class OkHttpNetworkClient(
         engine.connectionPool.evictAll()
     }
 
-    private suspend fun awaitResponse(call: okhttp3.Call): Response = suspendCancellableCoroutine { continuation ->
-        continuation.invokeOnCancellation { call.cancel() }
-        call.enqueue(object : Callback {
-            override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
-                if (continuation.isActive) continuation.resumeWithException(e)
+    private suspend fun awaitResponse(active: okhttp3.Call, request: RequestSpec, uri: ResourceUri,
+        operation: Operation, cancel: CancelToken): Response = coroutineScope {
+        val scope = this
+        suspendCancellableCoroutine { continuation ->
+            // Registration precedes a possibly suspended policy-gate wait.
+            val handoff = ResponseHandoff(continuation, active)
+            continuation.invokeOnCancellation { handoff.cancel() }
+            scope.launch(start = CoroutineStart.UNDISPATCHED) {
+                val context = currentCoroutineContext()
+                val accepting = AtomicBoolean(true)
+                val enqueued = AtomicBoolean(false)
+                try {
+                    dispatchGuard.dispatch(request, uri, cancel) {
+                        require(accepting.get() && enqueued.compareAndSet(false, true)) { "Invalid dispatch handoff" }
+                        context.ensureActive()
+                        checkCancellation(cancel)
+                        if (!continuation.isActive) throw CancellationException("Network request cancelled")
+                        if (closed.get()) throw TransportFailure("Network client closed")
+                        if (operation.expired || clock.monotonicNow() >= operation.deadline) throw TransportFailure("Network overall timeout")
+                        active.enqueue(object : Callback {
+                            override fun onFailure(call: okhttp3.Call, e: java.io.IOException) {
+                                handoff.failed(e)
+                            }
+                            override fun onResponse(call: okhttp3.Call, response: Response) {
+                                handoff.received(response)
+                            }
+                        })
+                    }
+                    require(enqueued.get()) { "Dispatch action missing" }
+                    handoff.guardSucceeded()
+                } catch (failure: Exception) {
+                    handoff.guardFailed(failure)
+                } finally { accepting.set(false) }
             }
-            override fun onResponse(call: okhttp3.Call, response: Response) {
-                continuation.resume(response) { _, value, _ -> value.close() }
+        }
+    }
+
+    /** Network callbacks can arrive before the guard settles. Publish only after successful
+     * handoff, arbitrate every terminal path, and close a response that loses to failure/cancel.
+     */
+    private class ResponseHandoff(
+        private val continuation: CancellableContinuation<Response>,
+        private val call: okhttp3.Call,
+    ) {
+        private val lock = Any()
+        private var guardDone = false
+        private var terminal = false
+        private var response: Response? = null
+        private var failure: Throwable? = null
+        fun received(value: Response) = synchronized(lock) {
+            if (terminal || response != null || failure != null) close(value)
+            else { response = value; deliver() }
+        }
+        fun failed(value: Throwable) = synchronized(lock) {
+            if (!terminal && response == null && failure == null) { failure = value; deliver() }
+        }
+        fun guardSucceeded() = synchronized(lock) { guardDone = true; deliver() }
+        fun guardFailed(value: Throwable) {
+            synchronized(lock) {
+                if (!terminal) {
+                    terminal = true; response?.let(::close); response = null
+                    continuation.resumeWithException(value)
+                }
             }
-        })
+            call.cancel()
+        }
+        fun cancel() {
+            synchronized(lock) { terminal = true; response?.let(::close); response = null }
+            call.cancel()
+        }
+        private fun deliver() {
+            if (terminal || !guardDone) return
+            val value = response
+            val error = failure
+            if (value != null) {
+                terminal = true; response = null
+                continuation.resume(value) { _, lost, _ -> close(lost) }
+            } else if (error != null) {
+                terminal = true
+                continuation.resumeWithException(error)
+            }
+        }
+        private fun close(value: Response) { runCatching { value.close() } }
     }
 
     private fun validatedHeaders(response: Response): List<HttpHeader> {

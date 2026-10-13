@@ -341,14 +341,14 @@ class StorageDatabaseTest {
         database.close()
         val file = context.getDatabasePath(fileName)
         BundledSQLiteDriver().open(file.absolutePath).use { connection ->
-            connection.prepare("PRAGMA user_version = 4").use { it.step() }
+            connection.prepare("PRAGMA user_version = 5").use { it.step() }
         }
         val before = file.readBytes()
         val refused = StorageDatabase.open(context, fileName)
         assertEquals(UnavailableReason.UNSUPPORTED, (refused as Outcome.Unavailable).reason)
         assertArrayEquals(before, file.readBytes())
         BundledSQLiteDriver().open(file.absolutePath).use { connection ->
-            connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals(4L, it.getLong(0)) }
+            connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals(5L, it.getLong(0)) }
             connection.prepare("SELECT count(*) FROM catalog_name_fts").use { assertTrue(it.step()); assertEquals(1L, it.getLong(0)) }
         }
     }
@@ -367,7 +367,7 @@ class StorageDatabaseTest {
     @Test fun capabilitiesUseRealEngineForeignKeysParameterLimitAndFts5() = runBlocking {
         val capabilities = success(database.capabilities(neverCancel))
         assertTrue(capabilities.engineVersion.matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+.*")))
-        assertEquals(3, capabilities.schemaVersion)
+        assertEquals(4, capabilities.schemaVersion)
         assertTrue(capabilities.fts5)
         assertTrue(capabilities.transactions)
         assertTrue(capabilities.foreignKeys)

@@ -68,6 +68,11 @@ internal data class CatalogGenerationEntity(
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "activated_at_epoch_seconds") val activatedAtEpochSeconds: Long?,
     @ColumnInfo(name = "activated_at_nano") val activatedAtNano: Int?,
+    /** Legacy rows remain user-selected inputs; the owning versioned codec validates new origins. */
+    @ColumnInfo(name = "input_kind", defaultValue = "'USER_CONTENT_URI'") val inputKind: String = "USER_CONTENT_URI",
+    /** Provenance only. Acquisition retention/removal must never cascade into installed content. */
+    @ColumnInfo(name = "artifact_job_id") val artifactJobId: String? = null,
+    @ColumnInfo(name = "source_payload") val sourcePayload: String? = null,
 )
 
 /** The single persisted active pointer per dataset key. Activation updates it in one transaction. */

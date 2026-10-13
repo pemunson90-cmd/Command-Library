@@ -17,6 +17,28 @@ internal object AcquisitionPayloadCodec {
     fun encodeArtifact(artifact: VerifiedArtifact): String = guarded { encode("artifact", artifactJson(artifact)).also { decodeArtifact(it) } }
     fun decodeArtifact(payload: String): VerifiedArtifact = guarded { readArtifact(envelope(payload, "artifact")) }
 
+    /** Full importer source persistence only; callers must still validate/pin downloaded artifacts. */
+    fun encodeCatalogSource(source: CatalogBulkImportSource): String = guarded {
+        encode("catalogSource", catalogSourceJson(source)).also { decodeCatalogSource(it) }
+    }
+    fun decodeCatalogSource(payload: String): CatalogBulkImportSource = guarded {
+        val v = envelope(payload, "catalogSource").fields("contentUri", "displayName", "provider", "language",
+            "sourceDate", "sourceUri", "expectedChecksum", "expectedBytes", "notice", "framing", "compression", "inputKind", "verifiedArtifact")
+        CatalogBulkImportSource(ResourceUri(text(v["contentUri"])), text(v["displayName"]), ProviderId(text(v["provider"])),
+            LanguageTag(text(v["language"])), readKnowledge(v["sourceDate"], ::readDate),
+            readKnowledge(v["sourceUri"]) { ResourceUri(text(it)) }, readKnowledge(v["expectedChecksum"], ::readHash),
+            readKnowledge(v["expectedBytes"], ::integer), readKnowledge(v["notice"], ::readNotice),
+            enumValue(v["framing"]), enumValue(v["compression"]), enumValue(v["inputKind"]),
+            optional(v["verifiedArtifact"]) { readArtifact(objectValue(it)) })
+    }
+    private fun catalogSourceJson(s: CatalogBulkImportSource) = obj(
+        "contentUri" to str(s.contentUri.value), "displayName" to str(s.displayName), "provider" to str(s.provider.value),
+        "language" to str(s.language.value), "sourceDate" to knowledge(s.sourceDate, ::dateJson),
+        "sourceUri" to knowledge(s.sourceUri) { str(it.value) }, "expectedChecksum" to knowledge(s.expectedChecksum, ::hashJson),
+        "expectedBytes" to knowledge(s.expectedBytes, ::num), "notice" to knowledge(s.notice, ::noticeJson),
+        "framing" to str(s.framing.name), "compression" to str(s.compression.name), "inputKind" to str(s.inputKind.name),
+        "verifiedArtifact" to nullable(s.verifiedArtifact, ::artifactJson))
+
     // Drop causes too: parser/constructor exceptions may contain untrusted source text.
     private inline fun <T> guarded(action: () -> T): T = try { action() }
         catch (_: Exception) { throw IllegalArgumentException("Invalid acquisition payload") }
