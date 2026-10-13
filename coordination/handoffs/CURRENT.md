@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: 87
+Checkpoint-ID: cp-20261013-life-action-codec2-88
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. life-action-codec2
+Next step: 3. correct-checkpoint-id
 
-Updated UTC: 2026-10-13T23:49:00Z
+Updated UTC: 2026-10-13T23:49:27Z
 Status: in_progress; lease: active.
-Verified base: b464b9dc6d6679fb92877dfe0df4d5ba5013564e.
+Verified base: 066cf11de9d7f3e76c4086b00a159d8d96dd98e7.
 
-Action inputs and codec2 source-approved; local whole-app641 JVM/check/debug passed; focused schema6 API36 passed35 native cases. Next local checked profile repository.
+Correct checkpoint87 numeric ID to established cp convention; life actions/codec2 local641 tests pass; native schema6 passes35 cases. Next checked profile repository.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

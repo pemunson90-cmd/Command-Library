@@ -419,3 +419,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T23:27:34Z | codex | cp-20261013-life-schema6-local-86 | containing commit | Reviewed additive schema6/KSP6 with18oldentitiesunchanged;31localstorage and632wholeJVM/check/debug/testAPKs pass; pinned hostJNI fixed. AndroidRoom native pending; no service/UI acceptance.
 
 2026-10-13T23:49:00Z | codex | 87 | containing commit | Action inputs and codec2 source-approved; local whole-app641 JVM/check/debug passed; focused schema6 API36 passed35 native cases. Next local checked profile repository.
+
+2026-10-13T23:49:27Z | codex | cp-20261013-life-action-codec2-88 | containing commit | Correct checkpoint87 numeric ID to established cp convention; life actions/codec2 local641 tests pass; native schema6 passes35 cases. Next checked profile repository.
