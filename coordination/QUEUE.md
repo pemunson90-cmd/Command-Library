@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-rate-limit-local-green-74. Next: orch-kotlin-k3-offline-data-01 step3; 429 bridge locally verified;553JVM/testAPK/lint pass; guardedfactory preflight active, native/fullv1 incomplete.
+Checkpoint-ID: cp-20261013-factory-source-approved-76. Next: orch-kotlin-k3-offline-data-01 step3; Factory source approved and locally verified; native candidate pending.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

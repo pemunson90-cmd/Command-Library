@@ -1,0 +1,12 @@
+{
+  "component": "catalog-factory-native-tests",
+  "orchestrator": "codex-local-resume-20261013",
+  "agent_task": "cx-k3-guarded-factory-01",
+  "owner": "root; implementation/test writer completed and frozen, no live writer",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/api/AndroidCatalogServices.kt",
+    "android-app/feature/catalog/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/catalog/AndroidCatalogServicesTest.kt",
+    "coordination/handoffs/cx-k3-catalog-factory-tests-01.md"
+  ],
+  "status": "reserved"
+}

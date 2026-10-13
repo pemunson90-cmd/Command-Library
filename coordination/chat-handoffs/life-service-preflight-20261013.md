@@ -1,0 +1,11 @@
+# Life persisted-service preflight — October 13, 2026
+
+Read-only Sol-medium review requested by root while factory checks run; no external research, source edits, builds or service acceptance. User LifeElk references are a feature/visual reference, not assets to copy. Full authority remains cx-m2-life-functional-01, D25, G01–G13 and CONTRACT-DISPOSITIONS.
+
+Next root patch: public GameContracts model/persistence envelope, unregistered service, reviewed before storage/service implementation. Existing GameService only resume/dispatch/undo/watch; creation and bounded history/events queries, revision-aware undo and typed cancellable watch failures remain required. Persist explicit counter role identity; confirmed elimination/restore with reason/override; designations (Monarch/Initiative, Day/Night, Blessing); shared countdown and elapsed timers; independent priority pass and durable alert acknowledgement; immutable recorded random outcomes/eligible set for replay; versioned action-time before/immediate-after snapshots and monotonic session/checkpoint lineage. Complete reusable profiles/seat layout/orientation/art/crop/custom-counter color/reset and explicit outcomes/versioned loss rationale/preserved deleted deck history.
+
+Sources: android-app/core/model/.../GameContracts.kt, TransferContracts.kt; feature/life/domain/RandomTools.kt and accepted counter/clock reducers. Existing flat grouped counter actions, hiding, stable seat/commander IDs and variant DTOs remain useful.
+
+StorageSchemaDatabase is version4 and currently has catalog/rules/acquisition entities, no game/event/result/profile/alert tables. After public model architecture/durability review, additive 4→5 schema packet should cover game revision/checkpoint/versioned payload, ordered append-only events/group/undo/provenance, searchable player/deck/seat projections, unique transactional result/retraction, occurrence-keyed alerts/acknowledgement/delivery, reusable profiles/local-art references. Root owns registry, migration registration, KSP exports and real migration checks; preserve existing tables, no destructive fallback.
+
+No research blocker identified by this code/document preflight. This is a gap inventory and proposed sequence, not approval of concrete public contracts or migration design.
