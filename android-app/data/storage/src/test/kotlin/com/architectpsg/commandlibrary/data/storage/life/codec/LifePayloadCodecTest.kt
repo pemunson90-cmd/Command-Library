@@ -7,6 +7,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
+import java.nio.ByteBuffer
 
 class LifePayloadCodecTest {
     private val codec = LifePayloadCodec()
@@ -53,6 +54,12 @@ class LifePayloadCodecTest {
     private fun event(action: GameAction = GameAction.RequestRandom(RandomRequest.Coin(EntityId("request")))) =
         GameEvent(8, snapshot().id, EntityId("group"), action, stamp, Knowledge.Unknown("Undo lineage", SnapshotList.of(evidence)),
             Revision(8), SnapshotList.of(RecordedRandomResult(EntityId("request"), stamp, RecordedRandomValue.Coin(true))))
+    private fun creation(): GameCreation {
+        val base = snapshot()
+        return GameCreation(EntityId("create-operation"), base.settings,
+            SnapshotList.of(base.seats.single().copy(participation = SeatParticipation.Active)),
+            base.clock.copy(anchor = null, firedAlertIds = SnapshotList.empty(), shared = SharedCountdown(10.seconds, 10.seconds)))
+    }
     private fun <T> success(outcome: Outcome<T>): T = (outcome as Outcome.Success<T>).value
     private fun failure(outcome: Outcome<*>, code: FailureCode) = assertEquals(code, (outcome as Outcome.Failure).error.code)
 
@@ -128,7 +135,7 @@ class LifePayloadCodecTest {
         val bytes = success(codec.encodeSnapshot(snapshot())).copyBytes()
         failure(codec.decodeSnapshot(SnapshotBytes(bytes + byteArrayOf(0))), FailureCode.CORRUPT_DATA)
         failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf().also { it[0] = 0 })), FailureCode.CORRUPT_DATA)
-        failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf().also { it[7] = 2 })), FailureCode.CORRUPT_DATA)
+        failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf().also { it[7] = 3 })), FailureCode.CORRUPT_DATA)
         failure(codec.decodeProfile(SnapshotBytes(bytes)), FailureCode.CORRUPT_DATA)
         for (size in 0 until bytes.size) failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf(size))), FailureCode.CORRUPT_DATA)
     }
@@ -177,5 +184,67 @@ class LifePayloadCodecTest {
         assertTrue(encoded.size > 4 * 1024 * 1024)
         assertEquals(both, success(codec.decodeArchive(encoded)))
         failure(codec.encodeArchive(archive(sized(70))), FailureCode.INVALID_INPUT)
+    }
+    @Test fun allRemainingActionFamiliesAndExplicitOutcomesRoundtrip() {
+        val loss = LossEvidence(definition.id, null, -3, CounterLossPolicy.AtOrBelow(0), unknown(), "Synthetic ruling")
+        val outcomes = SnapshotList.of(SeatResult(seatId, SeatResultKind.WIN, null))
+        val actions = listOf<GameAction>(GameAction.SetCounter(seatId, definition.id, null, Int.MIN_VALUE),
+            GameAction.SetAdjustmentStep(5), GameAction.SetCommanderLifeDeduction(true),
+            GameAction.AddCounterDefinition(definition.copy(id = EntityId("custom"), role = CounterRole.OTHER)),
+            GameAction.UpdateCounterDefinition(definition), GameAction.EliminateSeat(seatId, SeatExitKind.CONFIRMED_LOSS, "Confirmed", loss),
+            GameAction.RestoreSeat(seatId, "Effect permits restore"), GameAction.DismissLossCandidate(loss, seatId, "Effect prevents loss"),
+            GameAction.SetMonarch(null), GameAction.SetInitiative(seatId, "Synthetic initiative"), GameAction.SetDayNight(DayNightState.DAY),
+            GameAction.SetBlessing(seatId, true), GameAction.SetSeatAppearance(seatId, appearance),
+            GameAction.SetGamePresentation(GamePresentation(GameLayoutMode.TABLETOP, null, false)),
+            GameAction.FinishWithOutcomes(outcomes, "Confirmed finish"), GameAction.PassClock(seatId), GameAction.SetElapsedPaused(false),
+            GameAction.AcknowledgeGameAlert(EntityId("alert")), GameAction.SetAlertPreferences(GameAlertPreferences(false, true, true)))
+        for (action in actions) assertEquals(event(action), success(codec.decodeEvent(success(codec.encodeEvent(event(action))))))
+        val original = snapshot(); val result = (original.result as Knowledge.Known).value.copy(seatResults = outcomes)
+        val explicit = original.copy(result = Knowledge.Known(result))
+        assertEquals(explicit, success(codec.decodeSnapshot(success(codec.encodeSnapshot(explicit)))))
+    }
+    @Test fun frozenFormatOneSnapshotRetainsAllMetadataAndNoInventedOutcomes() {
+        val bytes = requireNotNull(javaClass.getResourceAsStream("/life-codec-v1-snapshot.bin")).use { it.readBytes() }
+        assertEquals(1, ByteBuffer.wrap(bytes, 4, 4).int)
+        val decoded = success(codec.decodeSnapshot(SnapshotBytes(bytes)))
+        assertEquals(snapshot(), decoded)
+        assertTrue((decoded.result as Knowledge.Known).value.seatResults.isEmpty())
+        val current = success(codec.encodeSnapshot(decoded)).copyBytes()
+        assertEquals(2, ByteBuffer.wrap(current, 4, 4).int)
+        assertEquals(decoded, success(codec.decodeSnapshot(SnapshotBytes(current))))
+    }
+    @Test fun creationInputHasStableExactCanonicalBytesAndFormatTwoOnly() {
+        val original = creation(); val encoded = success(codec.encodeCreation(original))
+        assertEquals(original, success(codec.decodeCreation(encoded)))
+        assertEquals(encoded, success(codec.encodeCreation(original)))
+        assertNotEquals(encoded, success(codec.encodeCreation(original.copy(operationId = EntityId("other-operation")))))
+        failure(codec.decodeCreation(SnapshotBytes(encoded.copyBytes().also { it[7] = 1 })), FailureCode.CORRUPT_DATA)
+    }
+    @Test fun legacyHeaderCannotIntroduceANewActionTag() {
+        val encoded = success(codec.encodeEvent(event(GameAction.SetAdjustmentStep(5)))).copyBytes()
+        failure(codec.decodeEvent(SnapshotBytes(encoded.also { it[7] = 1 })), FailureCode.CORRUPT_DATA)
+    }
+    @Test fun versionTwoArchiveHonorsEachNestedFormatOneSnapshotHeader() {
+        val before = requireNotNull(javaClass.getResourceAsStream("/life-codec-v1-snapshot.bin")).use { it.readBytes() }
+        val after = before.copyOf()
+        val providerLength = ByteBuffer.wrap(after, 9, 4).int
+        val gameLengthOffset = 13 + providerLength
+        val gameLength = ByteBuffer.wrap(after, gameLengthOffset, 4).int
+        val revisionOffset = gameLengthOffset + 4 + gameLength + 4
+        ByteBuffer.wrap(after, revisionOffset, 8).putLong(8)
+        val knownLastSix = byteArrayOf(1) + ByteBuffer.allocate(8).putLong(6).array()
+        val occurrences = (0..after.size - knownLastSix.size).filter { start ->
+            knownLastSix.indices.all { after[start + it] == knownLastSix[it] }
+        }
+        assertEquals("Frozen fixture has one known lastEventId6", 1, occurrences.size)
+        ByteBuffer.wrap(after, occurrences.single() + 1, 8).putLong(8)
+        val writer = LifeWriter(16 * 1024 * 1024)
+        writer.int(0x434c4946); writer.int(2); writer.byte(4); writer.int(1); writer.v(eventWire, event())
+        writer.long(8); writer.blob(before, SNAPSHOT_LIMIT); writer.blob(after, SNAPSHOT_LIMIT)
+        writer.v(durationWire, 3.seconds); writer.v(timestampWire, stamp); writer.v(entityWire, EntityId("original-process"))
+        val archive = success(codec.decodeArchive(SnapshotBytes(writer.finish())))
+        assertEquals(snapshot(), archive.provenance.before)
+        assertEquals(Revision(8), archive.provenance.afterAction.revision)
+        assertTrue((archive.provenance.afterAction.result as Knowledge.Known).value.seatResults.isEmpty())
     }
 }

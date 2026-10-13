@@ -6,7 +6,7 @@ import java.io.IOException
 internal const val SNAPSHOT_LIMIT = 4 * 1024 * 1024
 private const val EVENT_LIMIT = 16 * 1024 * 1024
 private const val MAGIC = 0x434c4946 // CLIF
-private const val CODEC_VERSION = 1
+private const val CODEC_VERSION = 2
 
 internal fun <T> encodeLifeFrame(root: Int, limit: Int, codec: LifeWire<T>, value: T): ByteArray {
     val writer = LifeWriter(limit)
@@ -16,7 +16,10 @@ internal fun <T> encodeLifeFrame(root: Int, limit: Int, codec: LifeWire<T>, valu
 internal fun <T> decodeLifeFrame(bytes: ByteArray, root: Int, limit: Int, codec: LifeWire<T>): T {
     require(bytes.size <= limit) { "Life payload exceeds byte budget" }
     val reader = LifeReader(bytes)
-    require(reader.int() == MAGIC && reader.int() == CODEC_VERSION && reader.byte() == root) { "Unsupported life payload frame" }
+    require(reader.int() == MAGIC) { "Unsupported life payload magic" }
+    val version = reader.int()
+    require(version in 1..CODEC_VERSION && reader.byte() == root && (root != 6 || version >= 2)) { "Unsupported life payload frame" }
+    reader.formatVersion = version
     val value = reader.v(codec)
     require(reader.remaining == 0) { "Trailing life payload bytes" }
     return value
@@ -24,6 +27,8 @@ internal fun <T> decodeLifeFrame(bytes: ByteArray, root: Int, limit: Int, codec:
 
 /** Versioned bounded model serialization, independent of Room and transactional service graph validation. */
 public class LifePayloadCodec {
+    public fun encodeCreation(value: GameCreation): Outcome<SnapshotBytes> = encode(value, 6, SNAPSHOT_LIMIT, creationWire)
+    public fun decodeCreation(bytes: SnapshotBytes): Outcome<GameCreation> = decode(bytes, 6, SNAPSHOT_LIMIT, creationWire)
     public fun encodeSnapshot(value: GameSnapshot): Outcome<SnapshotBytes> = encode(value, 1, SNAPSHOT_LIMIT, snapshotWire)
     public fun decodeSnapshot(bytes: SnapshotBytes): Outcome<GameSnapshot> = decode(bytes, 1, SNAPSHOT_LIMIT, snapshotWire)
     public fun encodeProfile(value: PlayerProfileDraft): Outcome<SnapshotBytes> = encode(value, 2, SNAPSHOT_LIMIT, profileWire)

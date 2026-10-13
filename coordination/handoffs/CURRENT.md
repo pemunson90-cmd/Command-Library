@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-life-schema6-local-86
+Checkpoint-ID: 87
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Publish one useful focused Room schema6 verification branch; continue remaining life actions and versioned creation codec locally.
+Next step: 3. life-action-codec2
 
-Updated UTC: 2026-10-13T23:27:34Z
-Status: Continuous local-first life persistence work; Android v1 incomplete; lease: active.
-Verified base: a2ad711b33f13f7d3158cf9c4b15cc2b08b77ac1.
+Updated UTC: 2026-10-13T23:49:00Z
+Status: in_progress; lease: active.
+Verified base: b464b9dc6d6679fb92877dfe0df4d5ba5013564e.
 
-Reviewed additive schema6/KSP6 with18oldentitiesunchanged;31localstorage and632wholeJVM/check/debug/testAPKs pass; pinned hostJNI fixed. AndroidRoom native pending; no service/UI acceptance.
+Action inputs and codec2 source-approved; local whole-app641 JVM/check/debug passed; focused schema6 API36 passed35 native cases. Next local checked profile repository.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

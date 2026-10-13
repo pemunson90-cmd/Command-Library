@@ -3,10 +3,10 @@ package com.architectpsg.commandlibrary.data.storage.life.codec
 import com.architectpsg.commandlibrary.core.model.*
 
 private val layoutWire = enumeration(GameLayoutMode.TABLETOP, GameLayoutMode.OPERATOR)
-private val presentationWire = wire<GamePresentation>({ v(layoutWire, it.layout); v(nullable(stringWire), it.arrangementId); bool(it.keepAwake) },
+internal val presentationWire = wire<GamePresentation>({ v(layoutWire, it.layout); v(nullable(stringWire), it.arrangementId); bool(it.keepAwake) },
     { GamePresentation(v(layoutWire), v(nullable(stringWire)), bool()) })
-private val exitWire = enumeration(SeatExitKind.CONFIRMED_LOSS, SeatExitKind.CONCEDED, SeatExitKind.DISCONNECTED, SeatExitKind.MANUAL)
-private val lossEvidenceWire = wire<LossEvidence>({ v(nullable(entityWire), it.definitionId); v(nullable(entityWire), it.commanderSlotId);
+internal val exitWire = enumeration(SeatExitKind.CONFIRMED_LOSS, SeatExitKind.CONCEDED, SeatExitKind.DISCONNECTED, SeatExitKind.MANUAL)
+internal val lossEvidenceWire = wire<LossEvidence>({ v(nullable(entityWire), it.definitionId); v(nullable(entityWire), it.commanderSlotId);
     v(nullable(intWire), it.observedValue); v(nullable(lossPolicyWire), it.policy); v(knowledge(stringWire), it.ruleVersion); string(it.rationale) },
     { LossEvidence(v(nullable(entityWire)), v(nullable(entityWire)), v(nullable(intWire)), v(nullable(lossPolicyWire)), v(knowledge(stringWire)), string()) })
 private val participationWire = wire<SeatParticipation>({ value -> when (value) {
@@ -35,7 +35,7 @@ private val clockWire = wire<SeatClockState>({ v(clockModeWire, it.mode); v(list
     v(list(entityWire), it.firedAlertIds); v(nullable(sharedWire), it.shared) },
     { SeatClockState(v(clockModeWire), v(list(seatTimeWire)), v(nullable(entityWire)), v(nullable(anchorWire)), bool(),
         v(zeroPolicyWire), v(undoPolicyWire), v(list(entityWire)), v(nullable(sharedWire))) })
-private val dayNightWire = enumeration(DayNightState.UNSET, DayNightState.DAY, DayNightState.NIGHT)
+internal val dayNightWire = enumeration(DayNightState.UNSET, DayNightState.DAY, DayNightState.NIGHT)
 private val designationsWire = wire<GameDesignations>({ v(nullable(entityWire), it.monarch); v(nullable(entityWire), it.initiative);
     string(it.initiativeNote); v(dayNightWire, it.dayNight); v(list(entityWire), it.blessedSeats) },
     { GameDesignations(v(nullable(entityWire)), v(nullable(entityWire)), string(), v(dayNightWire), v(list(entityWire))) })
@@ -52,7 +52,7 @@ private val targetWire = wire<GameAlertTarget>({ value -> when (value) {
 private val alertWire = wire<GameAlert>({ v(entityWire, it.id); v(gameIdWire, it.gameId); v(targetWire, it.target); v(timestampWire, it.firedAt);
     v(nullable(timestampWire), it.acknowledgedAt) },
     { GameAlert(v(entityWire), v(gameIdWire), v(targetWire), v(timestampWire), v(nullable(timestampWire))) })
-private val alertPreferencesWire = wire<GameAlertPreferences>({ bool(it.visual); bool(it.haptic); bool(it.audio) }, { GameAlertPreferences(bool(), bool(), bool()) })
+internal val alertPreferencesWire = wire<GameAlertPreferences>({ bool(it.visual); bool(it.haptic); bool(it.audio) }, { GameAlertPreferences(bool(), bool(), bool()) })
 private val timerSettingsWire = wire<ElapsedTimerSettings>({ bool(it.enabled); v(nullable(durationWire), it.turnWarning); v(nullable(durationWire), it.gameWarning) },
     { ElapsedTimerSettings(bool(), v(nullable(durationWire)), v(nullable(durationWire))) })
 private val settingsWire = wire<GameSettings>({ v(knowledge(formatIdWire), it.format); int(it.initialLife); v(list(definitionWire, 128), it.counterDefinitions);
@@ -60,9 +60,13 @@ private val settingsWire = wire<GameSettings>({ v(knowledge(formatIdWire), it.fo
     int(it.adjustmentStep); bool(it.deductLifeForCommanderDamage); v(timerSettingsWire, it.elapsedTimers); v(alertPreferencesWire, it.alertPreferences) },
     { GameSettings(v(knowledge(formatIdWire)), int(), v(list(definitionWire, 128)), v(list(variantDefinitionWire, 128)), v(clockModeWire), long(),
         v(presentationWire), int(), bool(), v(timerSettingsWire), v(alertPreferencesWire)) })
+private val seatResultKindWire = enumeration(SeatResultKind.WIN, SeatResultKind.LOSS, SeatResultKind.DRAW)
+internal val seatResultWire = wire<SeatResult>({ v(entityWire, it.seatId); v(seatResultKindWire, it.result); v(nullable(exitWire), it.exit) },
+    { SeatResult(v(entityWire), v(seatResultKindWire), v(nullable(exitWire))) })
 private val resultWire = wire<GameResult>({ v(entityWire, it.id); v(gameIdWire, it.gameId); v(list(entityWire), it.winners); v(timestampWire, it.finishedAt);
-    string(it.reason); v(revisionWire, it.revision); bool(it.retracted) },
-    { GameResult(v(entityWire), v(gameIdWire), v(list(entityWire)), v(timestampWire), string(), v(revisionWire), bool()) })
+    string(it.reason); v(revisionWire, it.revision); bool(it.retracted); v(list(seatResultWire), it.seatResults) },
+    { GameResult(v(entityWire), v(gameIdWire), v(list(entityWire)), v(timestampWire), string(), v(revisionWire), bool(),
+        if (formatVersion >= 2) v(list(seatResultWire)) else SnapshotList.empty()) })
 private val statusWire = enumeration(GameStatus.ACTIVE, GameStatus.PAUSED, GameStatus.COMPLETED)
 internal val snapshotWire = wire<GameSnapshot>({ v(gameIdWire, it.id); int(it.version); v(revisionWire, it.revision); v(settingsWire, it.settings);
     v(statusWire, it.status); v(timestampWire, it.startedAt); v(knowledge(timestampWire), it.endedAt); v(list(seatWire), it.seats);
@@ -72,3 +76,6 @@ internal val snapshotWire = wire<GameSnapshot>({ v(gameIdWire, it.id); int(it.ve
     { GameSnapshot(v(gameIdWire), int(), v(revisionWire), v(settingsWire), v(statusWire), v(timestampWire), v(knowledge(timestampWire)),
         v(list(seatWire)), v(list(counterWire)), v(nullable(entityWire)), long(), v(clockWire), v(list(variantStateWire)),
         v(knowledge(longWire)), v(knowledge(resultWire)), v(designationsWire), v(elapsedWire), v(list(alertWire))) })
+
+internal val creationWire = wire<GameCreation>({ v(entityWire, it.operationId); v(settingsWire, it.settings); v(list(seatWire), it.seats); v(clockWire, it.clock) },
+    { GameCreation(v(entityWire), v(settingsWire), v(list(seatWire)), v(clockWire)) })

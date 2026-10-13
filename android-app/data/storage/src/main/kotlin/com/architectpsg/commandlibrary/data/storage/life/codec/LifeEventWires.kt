@@ -43,7 +43,29 @@ private fun actionCodec(allowGroup: Boolean): LifeWire<GameAction> = wire({ valu
         byte(10); v(list(actionCodec(false), 1024), value.actions); v(entityWire, value.groupId)
     }
     is GameAction.RequestRandom -> { byte(11); v(requestWire, value.request) }
-} }, { when (byte()) {
+    is GameAction.SetCounter -> { byte(12); v(entityWire, value.seatId); v(entityWire, value.definitionId); v(nullable(entityWire), value.commanderSlotId); int(value.value) }
+    is GameAction.SetAdjustmentStep -> { byte(13); int(value.step) }
+    is GameAction.SetCommanderLifeDeduction -> { byte(14); bool(value.enabled) }
+    is GameAction.AddCounterDefinition -> { byte(15); v(definitionWire, value.definition) }
+    is GameAction.UpdateCounterDefinition -> { byte(16); v(definitionWire, value.definition) }
+    is GameAction.EliminateSeat -> { byte(17); v(entityWire, value.seatId); v(exitWire, value.kind); string(value.reason); v(nullable(lossEvidenceWire), value.evidence) }
+    is GameAction.RestoreSeat -> { byte(18); v(entityWire, value.seatId); string(value.reason) }
+    is GameAction.DismissLossCandidate -> { byte(19); v(lossEvidenceWire, value.candidate); v(entityWire, value.seatId); string(value.reason) }
+    is GameAction.SetMonarch -> { byte(20); v(nullable(entityWire), value.seatId) }
+    is GameAction.SetInitiative -> { byte(21); v(nullable(entityWire), value.seatId); string(value.note) }
+    is GameAction.SetDayNight -> { byte(22); v(dayNightWire, value.state) }
+    is GameAction.SetBlessing -> { byte(23); v(entityWire, value.seatId); bool(value.blessed) }
+    is GameAction.SetSeatAppearance -> { byte(24); v(entityWire, value.seatId); v(appearanceWire, value.appearance) }
+    is GameAction.SetGamePresentation -> { byte(25); v(presentationWire, value.presentation) }
+    is GameAction.FinishWithOutcomes -> { byte(26); v(list(seatResultWire), value.seatResults); string(value.reason) }
+    is GameAction.PassClock -> { byte(27); v(entityWire, value.seatId) }
+    is GameAction.SetElapsedPaused -> { byte(28); bool(value.paused) }
+    is GameAction.AcknowledgeGameAlert -> { byte(29); v(entityWire, value.alertId) }
+    is GameAction.SetAlertPreferences -> { byte(30); v(alertPreferencesWire, value.preferences) }
+} }, {
+    val tag = byte()
+    require(formatVersion >= 2 || tag <= 11) { "Action tag is unavailable in format1" }
+    when (tag) {
     1 -> GameAction.AdjustCounter(v(entityWire), v(entityWire), v(nullable(entityWire)), int())
     2 -> GameAction.SetCounterHidden(v(entityWire), v(entityWire), bool()); 3 -> GameAction.RenameSeat(v(entityWire), string())
     4 -> GameAction.ReorderSeats(v(list(entityWire))); 5 -> GameAction.SwitchTurn(v(entityWire)); 6 -> GameAction.ClockPause(bool())
@@ -54,7 +76,18 @@ private fun actionCodec(allowGroup: Boolean): LifeWire<GameAction> = wire({ valu
         val actions = v(list(actionCodec(false), 1024)); require(actions.isNotEmpty()) { "Empty life action group" }
         GameAction.Group(actions, v(entityWire))
     }
-    11 -> GameAction.RequestRandom(v(requestWire)); else -> errorTag()
+    11 -> GameAction.RequestRandom(v(requestWire))
+    12 -> GameAction.SetCounter(v(entityWire), v(entityWire), v(nullable(entityWire)), int())
+    13 -> GameAction.SetAdjustmentStep(int()); 14 -> GameAction.SetCommanderLifeDeduction(bool())
+    15 -> GameAction.AddCounterDefinition(v(definitionWire)); 16 -> GameAction.UpdateCounterDefinition(v(definitionWire))
+    17 -> GameAction.EliminateSeat(v(entityWire), v(exitWire), string(), v(nullable(lossEvidenceWire)))
+    18 -> GameAction.RestoreSeat(v(entityWire), string()); 19 -> GameAction.DismissLossCandidate(v(lossEvidenceWire), v(entityWire), string())
+    20 -> GameAction.SetMonarch(v(nullable(entityWire))); 21 -> GameAction.SetInitiative(v(nullable(entityWire)), string())
+    22 -> GameAction.SetDayNight(v(dayNightWire)); 23 -> GameAction.SetBlessing(v(entityWire), bool())
+    24 -> GameAction.SetSeatAppearance(v(entityWire), v(appearanceWire)); 25 -> GameAction.SetGamePresentation(v(presentationWire))
+    26 -> GameAction.FinishWithOutcomes(v(list(seatResultWire)), string()); 27 -> GameAction.PassClock(v(entityWire))
+    28 -> GameAction.SetElapsedPaused(bool()); 29 -> GameAction.AcknowledgeGameAlert(v(entityWire))
+    30 -> GameAction.SetAlertPreferences(v(alertPreferencesWire)); else -> errorTag()
 } })
 private val actionWire = actionCodec(true)
 internal val eventWire = wire<GameEvent>({ long(it.id); v(gameIdWire, it.gameId); v(entityWire, it.groupId); v(actionWire, it.action);

@@ -49,7 +49,7 @@ internal class LifeWriter(limit: Int) {
     fun finish(): ByteArray = buffer.toByteArray()
 }
 
-internal class LifeReader(bytes: ByteArray) {
+internal class LifeReader(bytes: ByteArray, var formatVersion: Int = 2) {
     private val buffer = ByteArrayInputStream(bytes)
     private val input = DataInputStream(buffer)
     val remaining: Int get() = buffer.available()
