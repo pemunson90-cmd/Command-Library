@@ -1,0 +1,13 @@
+{
+  "component": "catalog-trusted-english-profile",
+  "orchestrator": "codex-local-resume-20261013",
+  "agent_task": "cx-k3-english-profile-01",
+  "owner": "Codex orchestrator; scoped worker complete, reservation only",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/TrustedEnglishSearchProfile.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/TrustedEnglishSearchProfileTest.kt",
+    "coordination/handoffs/cx-k3-english-profile-01.md"
+  ],
+  "status": "reserved",
+  "branch": "component/english-profile-20261013"
+}
