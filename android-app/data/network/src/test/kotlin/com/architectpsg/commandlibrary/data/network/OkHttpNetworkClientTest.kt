@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.toList
 import org.junit.Assert.*
 import org.junit.Test
 import kotlin.time.Duration
+import okio.buffer
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -37,6 +38,142 @@ class OkHttpNetworkClientTest {
     private fun client(clock: TestClock = TestClock(), pauses: MutableList<Duration> = mutableListOf()) = OkHttpNetworkClient(clock, allowLoopbackHttpForTests = true, pause = { pauses.add(it); clock.now += it })
     private fun success(value: Outcome<ByteChunk>) = (value as Outcome.Success).value
     private fun assertFailure(value: Outcome<*>, text: String) { assertTrue(value.toString(), value is Outcome.Failure); assertTrue((value as Outcome.Failure).error.message, value.error.message.contains(text)) }
+
+    @Test fun revocationDuringRateWaitPreventsActualSecondWireRequest() = runBlocking {
+        Fixture().use { f ->
+            val hits = AtomicInteger(); f.at("/") { hits.incrementAndGet(); it.sendResponseHeaders(204, -1) }
+            val gate = kotlinx.coroutines.sync.Mutex()
+            var allowed = true
+            val waiting = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>(); val clock = TestClock()
+            val client = OkHttpNetworkClient(clock, allowLoopbackHttpForTests = true,
+                pause = { waiting.complete(Unit); release.await(); clock.now += it },
+                dispatchGuard = WireDispatchGuard { _, _, _, enqueue ->
+                    gate.lock(); try { check(allowed); enqueue() } finally { gate.unlock() }
+                })
+            try {
+                assertTrue(client.send(f.spec(), Token()) is Outcome.Success)
+                val second = async { client.send(f.spec(), Token()) }
+                withTimeout(2_000) { waiting.await() }
+                gate.lock(); try { allowed = false } finally { gate.unlock() }
+                release.complete(Unit)
+                assertTrue(withTimeout(2_000) { second.await() } is Outcome.Failure)
+                assertEquals(1, hits.get())
+            } finally { client.close() }
+        }
+    }
+    @Test fun redirectRechecksPolicyAtItsOwnWireDestination() = runBlocking {
+        Fixture().use { f ->
+            val firstHits = AtomicInteger(); val nextHits = AtomicInteger()
+            f.at("/") { firstHits.incrementAndGet(); it.responseHeaders.add("Location", "/next"); it.sendResponseHeaders(302, -1) }
+            f.at("/next") { nextHits.incrementAndGet(); it.sendResponseHeaders(204, -1) }
+            val seen = mutableListOf<String>()
+            val client = OkHttpNetworkClient(TestClock(), allowLoopbackHttpForTests = true, pause = {},
+                dispatchGuard = WireDispatchGuard { spec, uri, _, enqueue ->
+                    assertEquals(f.spec().request.uri, spec.request.uri)
+                    seen.add(uri.value)
+                    check(!uri.value.endsWith("/next")); enqueue()
+                })
+            try {
+                assertTrue(client.send(f.spec(), Token()) is Outcome.Failure)
+                assertEquals(1, firstHits.get()); assertEquals(0, nextHits.get())
+                assertEquals(listOf(f.spec().request.uri.value, f.spec("/next").request.uri.value), seen)
+            } finally { client.close() }
+        }
+    }
+    @Test fun cancellationWhileWaitingForDispatchGateNeverEnqueues() = runBlocking {
+        Fixture().use { f ->
+            val hits = AtomicInteger(); f.at("/") { hits.incrementAndGet(); it.sendResponseHeaders(204, -1) }
+            val entered = CompletableDeferred<Unit>(); val waiting = CompletableDeferred<Unit>()
+            val client = OkHttpNetworkClient(TestClock(), allowLoopbackHttpForTests = true,
+                dispatchGuard = WireDispatchGuard { _, _, _, enqueue -> entered.complete(Unit); waiting.await(); enqueue() })
+            try {
+                val pending = async { client.send(f.spec(), Token()) }
+                withTimeout(2_000) { entered.await() }; pending.cancel()
+                withTimeout(2_000) { pending.join() }
+                assertEquals(0, hits.get())
+            } finally { client.close() }
+        }
+    }
+    @Test fun dispatchGateIsReleasedBeforeResponseWait() = runBlocking {
+        Fixture().use { f ->
+            val received = CountDownLatch(1); val release = CountDownLatch(1)
+            f.at("/") { received.countDown(); release.await(3, TimeUnit.SECONDS); it.sendResponseHeaders(204, -1) }
+            val gate = kotlinx.coroutines.sync.Mutex()
+            val client = OkHttpNetworkClient(TestClock(), allowLoopbackHttpForTests = true,
+                dispatchGuard = WireDispatchGuard { _, _, _, enqueue -> gate.lock(); try { enqueue() } finally { gate.unlock() } })
+            try {
+                val pending = async { client.send(f.spec(), Token()) }
+                withContext(Dispatchers.IO) { assertTrue(received.await(2, TimeUnit.SECONDS)) }
+                withTimeout(500) { gate.lock(); gate.unlock() }
+                release.countDown(); assertTrue(pending.await() is Outcome.Success)
+            } finally { release.countDown(); client.close() }
+        }
+    }
+    @Test fun dispatchGuardMustEnqueueAndCannotRetainAction() = runBlocking {
+        Fixture().use { f ->
+            val hits = AtomicInteger(); f.at("/") { hits.incrementAndGet(); it.sendResponseHeaders(204, -1) }
+            var retained: (() -> Unit)? = null
+            val client = OkHttpNetworkClient(TestClock(), allowLoopbackHttpForTests = true,
+                dispatchGuard = WireDispatchGuard { _, _, _, enqueue -> retained = enqueue })
+            try {
+                assertTrue(client.send(f.spec(), Token()) is Outcome.Failure)
+                try { retained!!(); fail("Retained action allowed") } catch (_: IllegalArgumentException) { }
+                assertEquals(0, hits.get())
+            } finally { client.close() }
+        }
+    }
+
+    private class SyntheticCall(private val wire: okhttp3.Request, private val action: (okhttp3.Callback, okhttp3.Call) -> Unit) : okhttp3.Call by okhttp3.OkHttpClient().newCall(wire) {
+        private var cancelled = false
+        private var executed = false
+        private val timeoutValue = okio.Timeout()
+        override fun request() = wire
+        override fun execute(): okhttp3.Response = error("Only asynchronous transport is exercised")
+        override fun enqueue(responseCallback: okhttp3.Callback) { executed = true; action(responseCallback, this) }
+        override fun cancel() { cancelled = true }
+        override fun isExecuted() = executed
+        override fun isCanceled() = cancelled
+        override fun timeout() = timeoutValue
+        override fun clone(): okhttp3.Call = SyntheticCall(wire, action)
+    }
+    private fun syntheticResponse(wire: okhttp3.Request, closes: AtomicInteger): okhttp3.Response {
+        val body = object : okhttp3.ResponseBody() {
+            private val sourceValue = object : okio.ForwardingSource(okio.Buffer().writeByte(1)) {
+                override fun close() { closes.incrementAndGet(); super.close() }
+            }.buffer()
+            override fun contentType(): okhttp3.MediaType? = null
+            override fun contentLength(): Long = 1
+            override fun source(): okio.BufferedSource = sourceValue
+        }
+        return okhttp3.Response.Builder().request(wire).protocol(okhttp3.Protocol.HTTP_1_1).code(200).message("OK").body(body).build()
+    }
+    @Test fun synchronousResponseCannotHidePostEnqueueGuardFailure() = runBlocking {
+        Fixture().use { f ->
+            val closes = AtomicInteger()
+            val client = OkHttpNetworkClient(TestClock(), allowLoopbackHttpForTests = true,
+                dispatchGuard = WireDispatchGuard { _, _, _, enqueue -> enqueue(); error("Guard failed after handoff") })
+            client.callFactoryForTests = { wire -> SyntheticCall(wire) { callback, call -> callback.onResponse(call, syntheticResponse(wire, closes)) } }
+            try {
+                assertTrue(client.send(f.spec(), Token()) is Outcome.Failure)
+                assertEquals(1, closes.get())
+            } finally { client.close() }
+        }
+    }
+    @Test fun responseAfterGuardFailureIsClosedWithoutSecondCompletion() = runBlocking {
+        Fixture().use { f ->
+            val closes = AtomicInteger()
+            lateinit var callback: okhttp3.Callback; lateinit var call: okhttp3.Call; lateinit var wire: okhttp3.Request
+            val client = OkHttpNetworkClient(TestClock(), allowLoopbackHttpForTests = true,
+                dispatchGuard = WireDispatchGuard { _, _, _, enqueue -> enqueue(); error("Guard failed after handoff") })
+            client.callFactoryForTests = { request -> wire = request; SyntheticCall(request) { saved, active -> callback = saved; call = active } }
+            try {
+                assertTrue(client.send(f.spec(), Token()) is Outcome.Failure)
+                callback.onResponse(call, syntheticResponse(wire, closes))
+                callback.onFailure(call, java.io.IOException("Late failure"))
+                assertEquals(1, closes.get()); assertTrue(call.isCanceled())
+            } finally { client.close() }
+        }
+    }
 
     @Test fun chunksAreBoundedContiguousAndCarryMetadata() = runBlocking {
         Fixture().use { f ->
