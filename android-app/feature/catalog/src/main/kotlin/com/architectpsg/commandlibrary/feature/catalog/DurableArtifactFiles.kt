@@ -85,6 +85,23 @@ internal class DurableArtifactFiles(
         syncDirectory(directory)
     }
 
+    /** Caller pins the job for the entire stream and checks descriptor length/hash at EOF. */
+    fun openRead(key: String): java.io.InputStream = existing(key).inputStream()
+
+    fun length(key: String): Long? = file(key).let { if (it.exists()) it.length() else null }
+
+    /** Used only after writer/reader quiescence; database retention changes remain caller-owned. */
+    fun delete(key: String): Unit = synchronized(namespaceLock) {
+        val target = file(key)
+        if (target.exists()) {
+            if (!target.delete()) throw IOException("Artifact deletion failed")
+            syncDirectory(directory)
+        }
+    }
+
+    /** Private Android content-provider binding only, never a core/UI filesystem path. */
+    fun locatorFile(key: String): File = existing(key)
+
     private companion object {
         val namespaceLocks = ConcurrentHashMap<String, Any>()
     }

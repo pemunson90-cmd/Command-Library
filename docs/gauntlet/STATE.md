@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261012-consent-framing-47. Updated UTC: 2026-10-12T23:44:48Z.
+Checkpoint: cp-20261013-schema4-route-50. Updated UTC: 2026-10-13T00:24:47Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Full Android v1 execution active; incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
-Verify corrected hosted acquisition infrastructure, then implement full durable runner/import
+Complete engine and reviewed schema4 workers; root prepares strict bulk source binding
 
-Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.
+Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing
 
 Read CURRENT, machine state and task card.

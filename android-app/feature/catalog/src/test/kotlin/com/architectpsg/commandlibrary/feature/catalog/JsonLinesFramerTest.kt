@@ -158,4 +158,40 @@ class JsonLinesFramerTest {
         f.finish()
         assertEquals(9_000, count)
     }
+
+    private suspend fun fullFrame(input: ByteArray, limits: FullFeedFramingLimits = FullFeedFramingLimits()): JsonLinesFramer {
+        val f = JsonLinesFramer(limits, Token())
+        var offset = 0
+        var sequence = 0L
+        while (offset < input.size) {
+            val end = minOf(input.size, offset + 64 * 1024)
+            f.accept(chunk(input.copyOfRange(offset, end), sequence++, offset.toLong(), end == input.size)) {}
+            offset = end
+        }
+        f.finish()
+        assertEquals(input.size.toLong(), f.observedBytes)
+        assertEquals(MessageDigest.getInstance("SHA-256").digest(input).joinToString("") { "%02x".format(it) }, f.sha256)
+        return f
+    }
+    @Test fun fullFeedEightMiBRecordWithCrLfAndOneOver(): Unit = runBlocking {
+        fun raw(size: Int) = "{\"x\":\"" + "x".repeat(size - 8) + "\"}"
+        val exact = (raw(8 * 1024 * 1024) + "\r\n").toByteArray()
+        val f = fullFrame(exact)
+        assertEquals(1L, f.recordCount)
+        assertEquals(f.sha256, f.sha256)
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { fullFrame((raw(8 * 1024 * 1024 + 1) + "\n").toByteArray()) } }
+        assertEquals(10_001L, fullFrame("{}\n".repeat(10_001).toByteArray()).recordCount)
+    }
+    @Test fun fullFeedDelimiterCountAndChunkBounds(): Unit = runBlocking {
+        assertEquals(1L, fullFrame("{}\r\n".toByteArray(), FullFeedFramingLimits(4, 1, 2, 1)).recordCount)
+        assertThrows(IllegalArgumentException::class.java) { runBlocking {
+            fullFrame("{}\r\n".toByteArray(), FullFeedFramingLimits(3, 1, 2, 1))
+        } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking {
+            fullFrame("{}\n{}".toByteArray(), FullFeedFramingLimits(5, 1, 2, 1))
+        } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking {
+            JsonLinesFramer(FullFeedFramingLimits(), Token()).accept(chunk(ByteArray(65537))) {}
+        } }
+    }
 }

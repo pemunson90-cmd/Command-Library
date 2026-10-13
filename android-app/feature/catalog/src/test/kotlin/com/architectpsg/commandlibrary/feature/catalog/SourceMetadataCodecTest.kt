@@ -17,4 +17,21 @@ class SourceMetadataCodecTest {
         assertEquals(notice, SourceMetadataCodec.notice(payload))
         assertTrue(SourceMetadataCodec.sourceDate(null) is Knowledge.Unknown)
     }
+    @Test fun storedMetadataRejectsUnsupportedUntypedAndUnboundedVersions() {
+        val payload = """{"version":1,"sourceDate":{"state":"absent","reason":"No date"},"notice":{"state":"absent","reason":"No notice"}}"""
+        assertTrue(SourceMetadataCodec.sourceDate(payload) is Knowledge.Absent)
+        assertNull(SourceMetadataCodec.notice(payload))
+        for (bad in listOf(
+            payload.replace("\"version\":1,", ""),
+            payload.replace("\"version\":1", "\"version\":2"),
+            payload.replace("\"version\":1", "\"version\":\"1\""),
+            payload.replace("\"version\":1", "\"version\":1.5"),
+            payload.replace("\"version\":1", "\"version\":999999999999999999999"),
+            payload.replace("No date", "x".repeat(128 * 1024)),
+        )) {
+            assertThrows(Exception::class.java) { SourceMetadataCodec.sourceDate(bad) }
+            assertThrows(Exception::class.java) { SourceMetadataCodec.notice(bad) }
+        }
+    }
+
 }

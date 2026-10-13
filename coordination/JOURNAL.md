@@ -339,3 +339,9 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-12T23:33:15Z | codex | cp-20261012-acquisition-integration-46 | containing commit | Reviewed transport/schema3 candidates integrated; genuine full mapper verified; schema3 generated and legacy entities preserved. Hosted failures corrected pending rerun; isolated payload codec assigned. Full app incomplete.
 
 2026-10-12T23:44:48Z | codex | cp-20261012-consent-framing-47 | containing commit | Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.
+
+2026-10-13T00:14:45Z | codex | cp-20261013-download-engine-48 | containing commit | Infrastructure accepted exact tested main; full genuine framing and58puretests pass. Download engine assigned; Claude life disjoint; full Android v1 remains incomplete.
+
+2026-10-13T00:24:09Z | codex | cp-20261013-full-contracts-49 | containing commit | Reconciled active engine and accepted main; independently reviewed full catalog contracts freshly compile with 21 passing JVM tests; schema4 review pending
+
+2026-10-13T00:24:47Z | codex | cp-20261013-schema4-route-50 | containing commit | Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing

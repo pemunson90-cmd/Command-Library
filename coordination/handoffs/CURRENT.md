@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261012-consent-framing-47
+Checkpoint-ID: cp-20261013-schema4-route-50
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Verify corrected hosted acquisition infrastructure, then implement full durable runner/import
+Next step: 3. Complete engine and reviewed schema4 workers; root prepares strict bulk source binding
 
-Updated UTC: 2026-10-12T23:44:48Z
+Updated UTC: 2026-10-13T00:24:47Z
 Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: fc1b233d9e60a1f357ea43f3280b2719c2d89422.
+Verified base: 427e70c8c28a31cb98e8445a464b129496a02161.
 
-Codec integrated with independent40-test proof; consent mutation settlement reviewed with16commontests; Androidsync publicSDK correction pending hosted. Full-framing writer assigned while Claude life remains isolated.
+Full contracts committed4cddb8c; schema4 design independently approved and third disjoint writer assigned at427e70c; engine tests ongoing
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -22,16 +22,25 @@ internal object SourceMetadataCodec {
         return root.toString().also { require(it.toByteArray(Charsets.UTF_8).size <= 128 * 1024) }
     }
     fun sourceDate(payload: String?): Knowledge<UtcTimestamp> = if (payload == null) Knowledge.Unknown("Source date metadata unavailable", SnapshotList.empty())
-        else readKnowledge(ScryfallCodec.parse(payload, 16).getAsJsonObject("sourceDate")) { timestamp(it) }
+        else readKnowledge(readPayload(payload).getAsJsonObject("sourceDate")) { timestamp(it) }
     fun notice(payload: String?): SourceNotice? {
         if (payload == null) return null
-        val root = ScryfallCodec.parse(payload, 16)
+        val root = readPayload(payload)
         val state = readKnowledge(root.getAsJsonObject("notice")) { item ->
             SourceNotice(ProviderId(item.get("provider").asString), item.get("title").asString,
                 readKnowledge(item.getAsJsonObject("license")) { it.get("text").asString },
                 item.get("attribution").asString, item.get("uri")?.asString?.let(::ResourceUri))
         }
         return (state as? Knowledge.Known)?.value
+    }
+    private fun readPayload(payload: String): JsonObject {
+        require(payload.toByteArray(Charsets.UTF_8).size <= 128 * 1024) { "Source metadata exceeds limit" }
+        val root = ScryfallCodec.parse(payload, 16)
+        val version = requireNotNull(root.get("version")) { "Source metadata version missing" }
+        require(version.isJsonPrimitive && version.asJsonPrimitive.isNumber && version.asBigDecimal.intValueExact() == 1) {
+            "Unsupported source metadata version"
+        }
+        return root
     }
     private fun date(value: Knowledge<UtcTimestamp>): JsonObject = knowledge(value) { timestamp ->
         JsonObject().apply { addProperty("seconds", timestamp.epochSeconds); addProperty("nanos", timestamp.nanoAdjustment) }

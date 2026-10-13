@@ -1,0 +1,9 @@
+# cx-k3-storage-04 — additive full-input provenance and printing membership
+
+Assigned Sol high, isolated branch agent/cx-k3-storage-04. Read CONTINUE.md and docs/verification/k3-downloads/SCHEMA4-DESIGN.md plus SCHEMA4-DESIGN-REVIEW.md. Implement the exact reviewed design. Owned paths are enumerated in storage-schema4.lock; no shared registry/config/export/other feature edits and no subagents. Root integrates VERSION4/entity/migration registration and obtains actual KSP export/hosted native evidence.
+
+Add provenance columns with matching Room/SQL defaults. Preserve existing rules source_payload exactly. Add source-qualified printing membership entity/DDL/index; source slot -1 whole, original source-face ordinal otherwise, not canonical face index. Backfill only valid complete whole Oracle triples; explicitly reject partial triples rather than inventing relations. No acquisition FK to installed generations. Existing tables/indices/payloads and pointers remain unchanged apart from listed additions.
+
+Meaningful native fixtures cover exact schema3 upgrade preservation, whole-only legacy backfill, invalid partial triple abort/rollback, repeated/late face canonical targets, FK/cascade/index behavior, installed content surviving artifact job deletion and multi-hop 1→2→3→4. Update existing latest-version expectations without removing prior critical assertions; root registry remains version3 until integration, so distinguish static/private checks from not_run Android evidence. Source fixture may create real schema3 from committed export, not handwritten approximation.
+
+Use actual private Kotlin/Room jars and supplemental SQLite checks where possible; no Android SDK available locally. Compile owned sources, record actual test commands/results and Android not_run. Commit/push only owned files and replaceable handoff; return <=10 lines SHA/results/blockers/exact root next.

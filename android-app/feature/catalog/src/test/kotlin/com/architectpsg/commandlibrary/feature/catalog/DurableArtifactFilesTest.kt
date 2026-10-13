@@ -66,4 +66,15 @@ class DurableArtifactFilesTest {
         }
     }
 
+    @Test fun pinnedReadSeesExactBytesAndDeletionDoesNotTouchOtherArtifact() = fixture { _, files ->
+        files.create("one"); files.create("other")
+        files.append("one", 0, byteArrayOf(8, 9), 2)
+        assertEquals(2L, files.length("one"))
+        files.openRead("one").use { assertArrayEquals(byteArrayOf(8, 9), it.readBytes()) }
+        files.delete("one")
+        assertNull(files.length("one"))
+        assertThrows(IOException::class.java) { files.openRead("one") }
+        assertEquals(0L, files.length("other"))
+    }
+
 }

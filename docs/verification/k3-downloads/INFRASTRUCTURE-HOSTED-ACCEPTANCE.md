@@ -1,0 +1,9 @@
+# Reviewed acquisition infrastructure acceptance
+
+Hosted run38323540680 tested e24a958eb5cfd404159a51b28e8f2e01db139703. All four lanes passed:316 JVM tests with0failures/errors, and61 native tests with0failures/errors on each API23, API36 and API36-16KiB lane. The latter reports actual page size16384. Each native lane includes25storage and17shell tests. This verifies the reviewed schema3 migrations and consent integration, plus the forced-layout test correction; it is not physical Fold7 evidence.
+
+PR11 candidate71acd14284ce736f503b438c34e4c9abdc8a52c1 had identical Android tree795b94b144af89e30bbfe4c1d896c74d95b264af to the tested head and passed continuity. Expected-head guarded merge accepted it at67713d29aa5dec03d9a91ab3eb4239b020ab8ffa. Core acquisition declarations, real transport, schema3, payload codec and shared consent guard are available to consumers. This is internal infrastructure acceptance, not K3 or finished-app acceptance.
+
+Subsequent private full-framing candidate90374007f20c1b42868d26ec8432c9f3c91ff739 received independent review and56pureJVMtests pass under512MiB max heap. Combined root pure source/tests with metadata hardening and private read/deletion helpers pass58tests. Actual full JSONL framing consumed620805214bytes/116009records/maxrecord94377bytes and matchedSHAc379fb8470157d1015b0aede0b1e275cd12867757ccad0c9bac4ef9059998f00 under256MiB max heap. Heap ceilings are process settings, not measured peaks or Android performance evidence. Corpus/probe outputs remain outsideGit/APK/publicartifacts.
+
+Remaining: durable acquisition engine and real Android factory/scheduling/connectivity/provider binding; full bulk importer/schema4/membership/projections/rulings/search/data management; retained M2-M9 features, professional UI and physical/signing gates. Build workflow still assembles debug; no canonical-signing or finished delivery claim.
