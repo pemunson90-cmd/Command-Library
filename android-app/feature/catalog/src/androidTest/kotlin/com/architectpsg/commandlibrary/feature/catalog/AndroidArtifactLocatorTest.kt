@@ -137,7 +137,9 @@ class AndroidArtifactLocatorTest {
                 assertEquals(1, chunks.toList().count { it.final })
             }
             rejected { resolverBytes(saved!!) }
-            rejected { context.contentResolver.getType(saved!!) }
+            // ContentResolver catches provider metadata exceptions and reports no MIME type.
+            assertNull(context.contentResolver.getType(saved!!))
+            rejected { provider(saved!!).getType(saved!!) }
             rejected { context.contentResolver.query(saved!!, null, null, null, null)?.close() }
             assertEquals(AcquisitionState.COMPLETED, value(f.engine.status(completed.plan.jobId, token)).state)
         }
