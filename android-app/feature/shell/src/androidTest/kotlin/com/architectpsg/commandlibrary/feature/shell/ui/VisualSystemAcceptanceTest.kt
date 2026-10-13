@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.semantics.Role
@@ -52,7 +51,12 @@ class VisualSystemAcceptanceTest(private val width: Int, private val height: Int
         val filename = "synthetic-${view}-${width}x${height}-${if (dark) "dark" else "light"}-${scale}.png"
         val captureFile = File(directory, filename)
         captureFile.outputStream().use {
-            assertTrue(rule.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, it))
+            // Pinned Compose captureToImage requires API26; this captures the real display on API18+.
+            val bitmap = checkNotNull(InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()) {
+                "Actual display screenshot unavailable"
+            }
+            try { assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+            finally { bitmap.recycle() }
         }
         println("VISUAL_CAPTURE_PATH=" + captureFile.absolutePath)
     }
@@ -98,8 +102,10 @@ class VisualSystemAcceptanceTest(private val width: Int, private val height: Int
         rule.onNodeWithText(shell.string(R.string.shell_language_english)).performScrollTo().assertIsDisplayed()
         rule.onNodeWithText(shell.string(R.string.detail_reserved)).performScrollTo().assertIsDisplayed()
         rule.onNodeWithText(shell.string(R.string.shell_value_no)).performScrollTo().assertIsDisplayed()
-        rule.onNodeWithText(shell.string(R.string.detail_source_title)).performScrollTo().assertIsDisplayed()
-        rule.onNodeWithText(card.provenance.provider.value).performScrollTo().assertIsDisplayed()
+        rule.onNode(hasText(shell.string(R.string.detail_source_title)) and
+            SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading)).performScrollTo().assertIsDisplayed()
+        rule.onNode(hasText(shell.string(R.string.catalog_field_source)) and hasText(card.provenance.provider.value))
+            .performScrollTo().assertIsDisplayed().assert(!hasClickAction())
         rule.onNodeWithText("synthetic-visual-generation").performScrollTo().assertIsDisplayed()
         rule.onNodeWithText(shell.string(R.string.catalog_field_imported)).performScrollTo().assertIsDisplayed()
         rule.onNodeWithText(importedText).performScrollTo().assertIsDisplayed()
