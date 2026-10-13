@@ -8,7 +8,7 @@ Make the accepted private life reducers usable by a real offline, transactional 
 
 Authority: [life task](../../../coordination/tasks/cx-m2-life-functional-01.md), [D-25](../../gauntlet/DECISIONS.md#d-25-life-contract-rulings-and-delegated-shared-clock-semantics), [dispositions 1–14](../../verification/m2-life/CONTRACT-DISPOSITIONS.md), [SPEC G01–G13](../../gauntlet/SPEC.md), [PX07](../../gauntlet/PARITY_ACCEPTANCE.md), [logical model](../../gauntlet/DATA_MODEL.md), [life architecture](../../architecture/life/ARCHITECT.md), [Kotlin contracts](../../architecture/KOTLIN_CONTRACTS.md), [ownership](../../architecture/KOTLIN_OWNERSHIP_MAP.md), [accepted undo integration conditions](../../verification/m2-life/DOMAIN-REREVIEW.md), [reference brief](../../../coordination/chat-handoffs/lifeelk-reference-brief-20261013.md).
 
-Current source: `android-app/core/model/.../GameContracts.kt`; `TransferContracts.kt` ProfileExchange/GameExchange; `feature/life/.../domain/{CounterReducer,SeatClockReducer,RandomTools}.kt`. StorageSchemaDatabase is version4 with no life tables. Existing domain acceptance is not persisted-service acceptance.
+Current source: `android-app/core/model/.../GameContracts.kt`; `TransferContracts.kt` ProfileExchange/GameExchange; `feature/life/.../domain/{CounterReducer,SeatClockReducer,RandomTools}.kt`. StorageSchemaDatabase is now version5 (durable origin cooldown) with no life tables. Existing domain acceptance is not persisted-service acceptance.
 
 ## Approach and compatibility
 
@@ -78,7 +78,8 @@ Legacy Finish remains usable: empty winners means draw; nonempty valid winners m
 ```kotlin
 data class SharedCountdown(val initial: Duration, val remaining: Duration)
 data class ElapsedTimerState(val gameElapsed: Duration, val turnElapsed: Duration,
-    val paused: Boolean, val anchor: ClockAnchor?)
+    val paused: Boolean, val anchor: ClockAnchor?,
+    val turnLineageId: Knowledge<EntityId> = Knowledge.Unknown("Legacy turn lineage not supplied", SnapshotList.empty()))
 sealed interface GameAlertTarget {
     data class SeatClock(val seatId: EntityId) : GameAlertTarget
     data object SharedCountdown : GameAlertTarget
@@ -95,7 +96,7 @@ data class ElapsedTimerSettings(val enabled: Boolean = true,
 
 Append SeatClockState `shared: SharedCountdown? = null`; GameSnapshot `elapsed: ElapsedTimerState = ElapsedTimerState(ZERO, ZERO, true, null)` and `alerts: SnapshotList<GameAlert> = empty`; GameSettings `elapsedTimers: ElapsedTimerSettings = ElapsedTimerSettings()`, `alertPreferences: GameAlertPreferences = GameAlertPreferences()`. Existing ClockAlert remains source-compatible and maps to GameAlertTarget.SeatClock; SHARED alerts use a genuine game target, never a fabricated seat ID.
 
-Settings.clockMode equals clock.mode. SHARED requires shared!=null, no per-seat banks or running clock seat; other modes require shared==null. SHARED charges its single bank once while running. NONE has no countdown bank. All durations/anchors are finite; initial/elapsed and warning durations nonnegative (warnings positive when set). Remaining permits negative overtime only under ALERT; PAUSE/ELIMINATE clamp and pause. A shared zero under ELIMINATE is a game-wide adjudication candidate, never automatic elimination of every seat. Final behavior is a review item below.
+Settings.clockMode equals clock.mode. SHARED requires shared!=null, no per-seat banks or running clock seat; other modes require shared==null. SHARED charges its single bank once while running. NONE has no countdown bank. All durations/anchors are finite; initial/elapsed and warning durations nonnegative (warnings positive when set). Remaining permits negative overtime only under ALERT; PAUSE/ELIMINATE clamp and pause. A shared zero under ELIMINATE is a game-wide adjudication candidate, never automatic elimination of every seat. At zero it pauses the shared countdown and emits one durable game-wide confirmation candidate; acknowledgement/override never eliminates seats or finalizes a result.
 
 GameSnapshot.activeSeatId remains **turn owner**. SeatClockState.activeSeat becomes **clock owner** and can differ after new `PassClock(seatId)`; turn count/turn elapsed/PER_TURN refill are unchanged by priority pass. SwitchTurn settles, changes turn owner, advances turnNumber and resets turnElapsed once; PER_TURN refills only on SwitchTurn. `SetElapsedPaused(paused)` controls elapsed timers independently of ClockPause. New games begin paused until explicit start/resume actions; no silently running setup clock.
 
@@ -186,19 +187,21 @@ Dispatch transaction checks expected revision, settles timing, reduces validated
 
 ## Minimal contract patch versus following work
 
-**First root patch:** declarations/defaults/invariants in GameContracts; new port/profile/query/provenance DTOs; explicit exchange extensions; focused core tests and updated exhaustive action consumers only where necessary to compile. Retain existing slot/hiding/group semantics and private reducers. Do not register a service, add platform classes or claim SHARED works merely because its DTO exists. Required architecture review covers the open items below before implementation.
+**First root patch:** declarations/defaults/invariants in GameContracts; new port/profile/query/provenance DTOs; explicit exchange extensions; focused core tests and updated exhaustive action consumers only where necessary to compile. Retain existing slot/hiding/group semantics and private reducers. Do not register a service, add platform classes or claim SHARED works merely because its DTO exists. Required architecture review covers the root-selected choices below before implementation.
 
 **Following schema packet:** additive5→6 GameTables (schema5 reserved for durable origin cooldown) plus registry/migration/actual KSP6 export; game checkpoint, ordered events/archives, seat search projections, unique per-game result, game+occurrence alerts/acknowledgement, profiles. Root also registers Migration5To6 in StorageDatabase. Prior catalog/rules/acquisition tables unchanged. Typed versioned payload codec and indexed projections must agree; malformed/version-newer data fails visibly, not destructive reset. Real SQLite migration/reopen/rollback/crash evidence precedes binding.
 
 **Following service/domain packet:** extend reducers for new actions/SHARED/elapsed/priority/designations/participation; implement real transactions, random request resolution, profile/history reads, checkpoint/recovery and alert delivery idempotence. Storage failures do not advance observable state. Persisted service review uses actual SQLite CAS/group/finish/reopen/undo and process-session tests. Only then bind production UI, setup/history/profile/custom/art/variant controls. Named variant rules/cards remain authentic versioned corpus obligations; generic variant DTOs are not operational completeness.
 
-## Architecture review decisions still required
+## Root-selected engineering decisions for architecture review
 
-1. Confirm elapsed-turn undo display: retain charged duration in audit and reconstruct restored turn elapsed from original turn lineage without refunding game elapsed. Specify the exact reducer equation before service assignment; accepted countdown undo alone does not settle this new policy.
-2. Confirm shared-countdown ELIMINATE maps to a game-wide confirmation candidate rather than automatic defeat; define its candidate/result UX and alert occurrence identity.
-3. Approve legacy exchange repair/conversion policy, practical compatibility defaults and profile duplicate-field equality. Existing in-repo fixtures are not evidence of persisted legacy games.
-4. Choose finite versioned codec/manifest/payload/retention limits and checkpoint cadence from reviewed storage/performance policy. Do not guess unlimited event archives or claim zero force-stop time loss. Archived action provenance must remain available for the advertised undo/history range.
+1. Elapsed undo: settle at undo time; gameElapsed stays the current settled value. Undoing SwitchTurn restores the immutable pre-action turn lineage/owner and its settled turnElapsed at that action; time accrued in the undone turn stays in its event audit, rather than being reassigned to another player. Undo of a non-turn action preserves the currently settled turnElapsed. Creation and each SwitchTurn persist a fresh turnLineageId; immutable provenance preserves the restored ID. Subsequent time accrues to the restored lineage from the new anchor; no wall-time gap or game elapsed is refunded. Group validation permits at most one SwitchTurn, with an explicit flat atomic action lineage.
+2. SHARED zero ELIMINATE pauses that countdown and produces one game-wide adjudication candidate/alert occurrence, not automatic defeat or result. Candidate resolution is manual: acknowledge/override or explicitly finish with selected result; counters/seat participation remain untouched without confirmed actions. A new positive-to-zero crossing needs a fresh occurrence, so retained acknowledgement is never erased by undo.
+3. Legacy exchange: preview/repair requires explicit role selection and missing-provenance warning; do not infer LIFE from display labels. New profile duplicate fields must agree exactly. Existing old fixtures stay source-compatible with absent/default metadata, but are not silently certified as complete resumable imported games. Runtime/store has no legacy persisted game tables to destructively reinterpret.
+4. First contract patch does not introduce a codec or truncate history. Following codec/service packet uses explicit engineering limits (initial policy: snapshot4MiB, individual event/archive16MiB, string64KiB, definitions128, flat group1024, query page1–100) with validation before commit and a visible failure, never silent truncation. These are application bounds, not measured capacity guarantees. Store retains all history/provenance until explicit user deletion; bounded event/archive pages and streaming export avoid whole-history loading. A 1second foreground timing checkpoint target is an engineering cadence; actual force-stop loss and device cost must be measured before timing acceptance. No model declaration claims that the cadence or full exchange implementation exists.
 
-No additional product decision is inferred from the reference screenshots. Open items are concrete engineering review choices; none authorizes silently dropping a retained requirement.
+No additional product decision is inferred from the reference screenshots. These are concrete engineering review choices; none authorizes silently dropping a retained requirement.
 
 Latest continuation delta: saved this assigned design path only after read-only current-contract/domain/disposition comparison. No product edits, builds, web research, commits or delegation. Next: root independent architecture/durability review, resolve four items, then produce bounded contract implementation packet.
+
+IndependentAstra APPROVE firstmodel-contractdesign after roottechnicalchoices; declarations/defaultsonly, no service/codec/schema6/UIacceptance. Graphcompleteness belongsatnewcreation/import/resume, legacydefaultsremainconstructiblewithoutcertification. Exact-source review requiredaftermodelpatch. Reviewerbuilds/testsnot_run.

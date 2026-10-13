@@ -11,6 +11,12 @@ on:
       - 'scripts/**'
       - 'config/**'
   workflow_dispatch:
+    inputs:
+      compatibility_matrix:
+        description: Also run Android 6 and alternate 16 KiB compatibility lanes
+        type: boolean
+        default: false
+        required: false
 permissions:
   contents: read
 concurrency:
@@ -21,7 +27,7 @@ env:
   SDK_BUILD_TOOLS: 'build-tools;36.0.0'
 jobs:
   jvm-and-assemble:
-    if: github.repository == 'pemunson90-cmd/Command-Library'
+    if: github.repository == 'pemunson90-cmd/Command-Library' && !(github.event_name == 'push' && startsWith(github.ref, 'refs/heads/agent/cx-native-'))
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -108,7 +114,7 @@ jobs:
           retention-days: 14
 
   emulator:
-    # Syntax/API failures stop here before provisioning three emulator machines.
+    # Syntax/API failures stop here before provisioning the selected emulator configuration(s).
     needs: jvm-and-assemble
     if: github.repository == 'pemunson90-cmd/Command-Library'
     runs-on: ubuntu-24.04
@@ -116,13 +122,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - api: 23
-            image: 'system-images;android-23;default;x86_64'
-          - api: 36
-            image: 'system-images;android-36;default;x86_64'
-          - api: 36
-            image: 'system-images;android-36;google_apis_ps16k;x86_64'
+        # Fold7-first: routine native checks use one modern configuration.
+        # Older/alternate-page compatibility remains explicitly opt-in.
+        include: ${{ fromJSON(inputs.compatibility_matrix == true && '[{"api":23,"image":"system-images;android-23;default;x86_64"},{"api":36,"image":"system-images;android-36;default;x86_64"},{"api":36,"image":"system-images;android-36;google_apis_ps16k;x86_64"}]' || '[{"api":36,"image":"system-images;android-36;default;x86_64"}]') }}
     steps:
       # actions/checkout v7.0.1; tag commit verified 2026-10-11.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -248,7 +250,7 @@ jobs:
           retention-days: 14
 
   verified-debug-apk:
-    name: Four-lane verified debug APK
+    name: Selected-lane verified debug APK
     needs: [jvm-and-assemble, emulator]
     if: needs.jvm-and-assemble.result == 'success' && needs.emulator.result == 'success'
     runs-on: ubuntu-24.04
@@ -260,6 +262,8 @@ jobs:
           name: command-library-fold7-apk-${{ github.sha }}
           path: verified
       - name: Record APK and CI provenance
+        env:
+          SELECTED_NATIVE_LANES: ${{ inputs.compatibility_matrix == true && 'API23, API36, API36-16KiB' || 'API36' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -269,14 +273,14 @@ jobs:
             printf 'tested_commit=%s\n' "$GITHUB_SHA"
             printf 'workflow_run=%s\n' "$GITHUB_RUN_ID"
             printf 'event=%s\n' "$GITHUB_EVENT_NAME"
-            printf '%s\n' 'verification=JVM/build plus API23, API36 and API36-16KiB emulator jobs passed'
+            printf 'verification=JVM/build plus %s emulator job(s) passed\n' "$SELECTED_NATIVE_LANES"
             printf '%s\n' 'scope=internal debug validation; not canonical release signing or physical Fold7 verification'
             sha256sum "${apks[0]}"
           } | tee verified/VERIFICATION.txt
-      - name: Retain matrix-verified internal debug APK
+      - name: Retain selected-native-verified internal debug APK
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: command-library-matrix-verified-debug-${{ github.sha }}
+          name: command-library-selected-native-verified-debug-${{ github.sha }}
           path: verified/
           if-no-files-found: error
           overwrite: true

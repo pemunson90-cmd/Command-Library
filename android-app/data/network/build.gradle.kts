@@ -4,7 +4,10 @@ plugins {
 android {
     namespace = "com.architectpsg.commandlibrary.data.network"
     compileSdk = 37
-    defaultConfig { minSdk = 23 }
+    defaultConfig {
+        minSdk = 23
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
     lint { fatal += "NewApi" }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -19,4 +22,10 @@ dependencies {
     implementation(libs.okio)
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
+    androidTestImplementation(project(":core:common"))
+    androidTestImplementation(project(":feature:catalog"))
+    androidTestImplementation(project(":feature:settings"))
+    androidTestImplementation(project(":data:storage"))
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
 }

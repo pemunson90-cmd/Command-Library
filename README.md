@@ -20,7 +20,7 @@ Normal resume is intentionally small:
 2. Read [`CONTINUE.md`](CONTINUE.md) if unfamiliar with the protocol.
 3. Read [`coordination/state.json`](coordination/state.json), [`coordination/ORCHESTRATOR.json`](coordination/ORCHESTRATOR.json), and the task card named by `state.next_task`.
 4. Read only the decisions, contracts, architecture or gate evidence linked by that task.
-5. Claim the lease before shared writes, complete a coherent bounded work unit, run the required verification, then publish a resumable checkpoint.
+5. Claim the lease before shared writes, complete coherent bounded work units, run minimum sufficient verification, and publish resumable checkpoints while continuing the goal. Stop only for missing research or a material blocking question.
 
 [`coordination/handoffs/CURRENT.md`](coordination/handoffs/CURRENT.md), [`docs/gauntlet/STATE.md`](docs/gauntlet/STATE.md), the journal and event logs are mirrors/audit history. They are primarily for human inspection, mismatch recovery and takeover investigation, not mandatory rereads every session.
 
@@ -32,6 +32,6 @@ Pat's recorded rulings control conflicts. Never claim an unrun build, test, devi
 
 Independent review is used where risk justifies it: architecture/public contracts, source-license conclusions, database durability or migration semantics, credentials/security, destructive behavior and final section acceptance. Routine isolated work still needs tests, but not duplicate review paperwork for every small edit.
 
-GitHub is the source of record. Build/test/package through GitHub Actions where required; Pat does not need a development machine. Unknown evidence stays unknown rather than becoming a pass.
+GitHub is the versioning and handoff source of record. Run compilation/JVM/real SQLite checks locally when available; use hosted execution only for device checks this workspace cannot run. Routine verification targets modern Android for Galaxy Z Fold7, with historical compatibility lanes optional under D-27; actual Fold7 acceptance remains required. Pat does not need a development machine. Unknown evidence stays unknown rather than becoming a pass.
 
 Tool-specific entry files are [`AGENTS.md`](AGENTS.md) and [`CLAUDE.md`](CLAUDE.md). They point back to the same protocol instead of maintaining competing copies.

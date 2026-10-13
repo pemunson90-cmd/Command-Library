@@ -32,6 +32,9 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-22 | Fold7-first acceptance and genuine input acquisition | Ruled 2026-10-12 |
 | D-23 | Parallel Claude Code assignment | Ruled 2026-10-11 |
 | D-24 | Complete Android v1 delivery reaffirmed | Ruled 2026-10-12 |
+| D-25 | Life contract rulings and delegated shared-clock semantics | Ruled 2026-10-13 |
+| D-26 | On-device AI engines deferred to v1.1 | Ruled 2026-10-13 |
+| D-27 | Fold7-focused, minimum sufficient verification | Ruled 2026-10-13 |
 
 ## Open
 
@@ -260,3 +263,11 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - This refers to the researched on-device engines, not all AI features: prompt export/pasteback, cloud/custom/LAN providers, grounding, bounded tools, secrets, streaming/history and prompts remain in v1 under H01/H02/H04–H09. Their on-device-only acceptance clauses are deferred with H03. These modes must work without a local runtime.
 - Do not ship an inert model-manager destination or nonworking local-runtime controls in v1. Required downloads for retained v1 catalogs/rules/rulings/art/variants/brackets/enrichment/languages still work in-app. Model/runtime downloads return with functioning engines in v1.1.
 - All other functionality, professional visual/adaptive/accessibility requirements, canonical signing and Fold7 acceptance remain required. Mark the approved deferral in current acceptance tracking; preserve historical audit evidence rather than counting deferred engines as implemented.
+
+## D-27 Fold7-focused, minimum sufficient verification
+
+- Pat, 2026-10-13: "Why do we have a three device test when I only currently need it to work on a galaxy z7old 7 class device currently?" Interpreted in established context as Galaxy Z Fold7-class target, not three physical device models.
+- Pat: "Good we should always be aiming for the most efficient use of time and compute between codex, chat, work when relevant, GitHub for things like versioning and when we specifically need it, and the minimum required testing/emulation. Not cutting corners but we shouldn't be doing more than we need."
+- Applied: local compilation/JVM/real bundledSQLite and static API checks first; changed Android-specific flows use a focused modern native lane; broad modern UI/device acceptance only at meaningful checkpoints. Historical API23/alternate16KiB lanes remain optional when an actual compatibility/API/native concern justifies them. Routine workflow defaults to API36; manual compatibility_matrix enables the prior three configurations. Declared minSdk23 source/lint compatibility remains, but do not invent runtime acceptance for untested source revisions.
+- Physical Fold7/posture/hinge/TalkBack/performance and canonical signing remain actual final obligations. One generic modern emulator is not Samsung/fold acceptance. Full functional v1/D24 remains unchanged; no test expectation weakened or unsupported feature counted as working. Use GitHub for versioning/public checkpoints and unavailable local device execution, not checks Codex can perform locally. Route missing standalone research to regular chat; keep the weakest capable bounded workers and required independent reviews narrow.
+- Pat's continuous goal: "/goal keep working and check pointing. Only stop for research and questions". Continue independent authorized work through checkpoints instead of ending after each component; pause only where missing research or a material question actually blocks dependent progress.

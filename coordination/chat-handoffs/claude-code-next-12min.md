@@ -1,0 +1,9 @@
+# Claude Code next packet — focused native evidence (12minute cap)
+
+Root continues the fullv1 goal; do NOT claim orchestrator or change shared/source/config files. This is one bounded component evidence task after the focused native run is available. Start from the latest published agent/cx-native-20261013 branch and read CURRENT plus cx-k3-real-wire-fixture-01. Do not replay archived task directions or start/rerun workflows.
+
+Owned output ONLY docs/verification/k3-downloads/FOCUSED-NATIVE-EVIDENCE-20261013.md (new report; root will explicitly reserve this path before assignment). No implementation, review swarm, CI changes or broad audit. Maximum12minutes total: first2 identify exact candidate/run, next7 inspect retained Network/Storage XML, last3 write report/handoff and stop. If run is stillactive or artifacttool unavailable, write exact pending/blocker and finish the packet; don't waitoutsession or fabricate results.
+
+Use existing connector artifact downloads or configured GitHub tools; Sediment-backed references use tools.download_file rather than shellfetchsignedURLs. Inspect only the focused artifact. Report exact head/run, required3AcquisitionWireIntegrationTest and2OriginCooldownMigrationTest distinctmethods, all modulecount/fail/error/skip totals, manifest/source scope and actual artifact hashes. Source-only loopback rewriting is synthetic, not officialTLS. No publicpublisherdownload or corpus payload. Treat successfully compiled fixtures as notrun until actual XML exists. Do not repeat primaryroot source reviews or fullmatrix/visual extraction alreadycompleted.
+
+A failed case gets one concise observed cause/file reference and nextcheck, not an unbounded patch. Read-only evidence review should finish inside thecap; independent nativeacceptance/source integration remains root-owned. Root will fill exact run/head oncepublished; use CURRENT's existingrun pointer, not guesses. This packet is prepared, not an active competing lease.

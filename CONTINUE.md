@@ -12,6 +12,14 @@ Pat's recorded rulings in `docs/gauntlet/DECISIONS.md` override project document
 
 Never impersonate another author, invent approvals, report planned tests as run, silently drop requirements, or treat a stale file as stronger evidence than the current repository state.
 
+## Continuous execution and bounded handoffs
+
+Pat's current goal is continuous work/checkpointing, stopping only for missing research or a material blocking question. A checkpoint preserves progress; it does not end execution after each component. Prefer local compilation/JVM/realSQLite/static checks; use GitHub for versioning and unavailable device execution. D-27 makes modern Fold7-focused testing the default, with older/alternate-page lanes optional when justified. Physical Fold7 acceptance remains distinct.
+
+Keep live README/task/CURRENT/machine pointers synchronized at meaningful changes. Move completed directions to clearly marked historical archives; never destroy their evidence or leave obsolete next actions mixed with live ones. Publish code and its truthful handoff together before another lease needs them. Name the exact published branch/head and pending run; do not start duplicate workflows.
+
+Claude Code packets should fit a 10–15minute bounded unit: one file or one closely related fix/review, named owned paths and one exact check. Reserve the last few minutes to write the result/next action before usage ends. Do not expand into adjacent work; finish the packet or record a concrete blocker. Root retains shared contract/schema/configuration/coordination ownership unless explicitly delegated.
+
 ## Fast resume path
 
 For a normal clean resume:

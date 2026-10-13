@@ -1,0 +1,10 @@
+{
+  "component": "real-adapter-engine-native-fixtures",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "root; native source writer completed/frozen",
+  "status": "reserved",
+  "owned_paths": [
+    "android-app/data/network/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/network/AcquisitionWireIntegrationTest.kt",
+    "coordination/handoffs/cx-k3-real-wire-fixture-01.md"
+  ]
+}

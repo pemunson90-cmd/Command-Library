@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-durable-cooldown-local-79",
-  "verified_base_head": "57eee67bd5e482275dfae0e2a2b5ed9a6951d7df",
+  "checkpoint_id": "cp-20261013-focused-native-ready-80",
+  "verified_base_head": "1d06b1bfc6d44d78ae977b13db5dcbead0bffa0e",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
-  "status": "Durable cooldown local-green checkpoint; continuing authorized local work",
+  "status": "Focused native candidate ready; continuous local implementation active",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Continue local adapter-engine native integration and reviewed life contracts; batch next hosted candidate",
+  "first_action": "Publish agent/cx-native-20261013 focused candidate; continue approved life contract tests-first locally",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -17,7 +17,7 @@
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
-  "worktree_mode": "Root local-first continuous execution, completed helper/storage writers frozen; life contract draft unreviewed; no active component source writers.",
+  "worktree_mode": "Root on agent/cx-native-20261013 for focused native workflow. No live component source writers; life model design approved, next tests-first packet.",
   "review_status": "Astra exactfactory/native-source and durablecooldown/schema5 source approved; production composition/source/disk/scheduler/removal/fullv1 remain incomplete.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
@@ -51,8 +51,11 @@
     "local_resume": "Corrected batch: all instrumentation APK compilation/fullcheck/debugassembly pass locally;53XMLreports528JVMtests0failures/errors/skips;17importer/4profile cases pass;16KiB ZIPalignment pass. Internal English policy integrated but unregistered.",
     "native_resume": "Exact89e1710 hosted38431616057 JVM/build passed, all3native failed same catalog fixture; no rules/shell/captures or matrix-debug promotion. Corrected candidate awaiting single native run.",
     "factory_native": "Exact2c6f3e3 run38454916688 all4lanes/promoted-debug SUCCESS; actualextracted5XML129native/lane0failure/error/skip and36validateduniquePNG/lane includingAPI23. Predates schema5. See GUARDED-FACTORY-NATIVE-20261013.",
-    "durable_cooldown_local": "ActualKSP5 all17oldentities unchanged, oneorigin table added. Localcoherent56XMLreports;569JVM0failure/error/skip,alltestAPK/check/debugassembly pass. Native schema5twoRoomfixtures not_run. ExactsourceAstraapprovedinclpre-admission."
+    "durable_cooldown_local": "ActualKSP5 all17oldentities unchanged, oneorigin table added. Localcoherent56XMLreports;569JVM0failure/error/skip,alltestAPK/check/debugassembly pass. Native schema5twoRoomfixtures not_run. ExactsourceAstraapprovedinclpre-admission.",
+    "native_wire_compile": "3realfactory/Room/DataStore/OkHttp instrumentation fixtures compile+lint locally at correctedsource090d2187; URLrewrite test-only, publisherTLS notverified. Focusedruntimepending.",
+    "verification_policy": "D27modernFold7-focused minimalverification: oneAPI36 routine, older/16KiBoptional; focusednetwork/storage branchskipsduplicatefullworkflow. PhysicalFold7/canonicalsigning remain actualfuturegates."
   },
-  "last_completed": "Continuous goal active. Existing2c6f3e3 native38454916688 all4lanes success:129native and36actualvalidPNG perlane, includingAPI23. New source-approved durable origincooldown/schema5/pre-admission locallyverified:569JVM/alltestAPK/check/lint/debugassembly/16KiB ZIPalign pass. ActualKSP5 preserves17oldentities. TwoRoommigrationfixtures compilednot_run; factoryunregistered, externalresponse-precommit/diskfailure limits retained. Next local actualadapter-engine compositiontests and lifecontractreview; no extraGHmatrixyet.",
-  "updated_utc": "2026-10-13T20:07:04Z"
+  "last_completed": "D27minimumsufficient Fold7-focused testing and10\u201315minClaude packets recorded. Native3realwire and2Roommigrationfixtures compile;569JVM/coherentcheck/lint/testAPKs/debugassembly/16KiB ZIPalignment pass. CI/fixturesAstraapproved, selectedlaneprovenance truthful, focusonlyoneAPI36Network+Storage; oldcompatibilityoptional. Prior129native/36PNG all3lanes actualpass retained. Rootactive on agent/cx-native-20261013; completedtaskdirections archived, README/CONTINUE updated; lifefirstcontractdesignAstraapproved, sourcepatchnotyetwritten.",
+  "updated_utc": "2026-10-13T20:34:25Z",
+  "working_branch": "agent/cx-native-20261013"
 }

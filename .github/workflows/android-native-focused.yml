@@ -1,0 +1,105 @@
+name: Focused modern Android native checks
+on:
+  push:
+    branches: ['agent/cx-native-*']
+    paths: ['android-app/**', '.github/workflows/android-native-focused.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-native-focused-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  changed-data-flows:
+    if: github.repository == 'pemunson90-cmd/Command-Library'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      # Same verified action pins and platform tuple as the main Android workflow.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Continuation integrity
+        run: python3 scripts/check_continuity.py
+      - name: JDK 17 and compile SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" --install 'platforms;android-37.0' 'build-tools;36.0.0' > /dev/null
+      - name: Compile changed-flow instrumentation before provisioning
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain :data:network:assembleDebugAndroidTest :data:storage:assembleDebugAndroidTest
+      - name: Enable KVM and create modern AVD
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          "$SDKM" --install emulator platform-tools 'system-images;android-36;default;x86_64' > /dev/null
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/command-library-focused-avd"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
+          echo no | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd --force -n focused -p "$ANDROID_AVD_HOME/focused.avd" -k 'system-images;android-36;default;x86_64'
+      - name: Boot one emulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'tail -n 80 emulator.log' ERR
+          nohup "$ANDROID_HOME/emulator/emulator" -avd focused -no-window -no-audio -no-boot-anim -no-snapshot \
+            -gpu swiftshader_indirect -camera-back none -camera-front none -accel on > emulator.log 2>&1 &
+          ADB="$ANDROID_HOME/platform-tools/adb"
+          timeout 120 "$ADB" wait-for-device
+          timeout 900 bash -c "until [ \"\$($ADB shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')\" = '1' ]; do sleep 5; done"
+          "$ADB" shell settings put global window_animation_scale 0
+          "$ADB" shell settings put global transition_animation_scale 0
+          "$ADB" shell settings put global animator_duration_scale 0
+          test "$($ADB shell getprop ro.build.version.sdk | tr -d '\r')" = '36'
+      - name: Run changed data flows only
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain :data:network:connectedDebugAndroidTest :data:storage:connectedDebugAndroidTest
+      - name: Verify executed suites
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          required = {'data/network': ('AcquisitionWireIntegrationTest', {
+              'unregisteredDirectTransportSpecNeverEnqueues',
+              'registeredOriginalWireAndCopiedSpecDenialPersistInfinite429AcrossReopen',
+              'persistedConsentRevokedBeforeAuthorizerLeavesWaitingConsentAndNoWire'}),
+              'data/storage': ('OriginCooldownMigrationTest', {
+              'schema4RowsAndDdlSurviveSchema5MigrationAndCooldownOutlivesJob',
+              'tombstoneRevisionCasSurvivesReopenAndFreshTableMatchesMigratedTable'})}
+          for module, (required_class, required_methods) in required.items():
+              reports = list(pathlib.Path('android-app', module).glob('build/outputs/androidTest-results/connected/**/TEST-*.xml'))
+              assert reports, f'Missing connected reports: {module}'
+              tests = failures = skipped = 0
+              selected = []
+              for report in reports:
+                  root = ET.parse(report).getroot()
+                  tests += int(root.get('tests', 0))
+                  failures += sum(max(int(root.get(kind + 's', 0)), sum(c.find(kind) is not None for c in root.iter('testcase'))) for kind in ('failure', 'error'))
+                  skipped += max(int(root.get('skipped', 0)), sum(c.find('skipped') is not None for c in root.iter('testcase')))
+                  selected.extend(c.get('name', '') for c in root.iter('testcase') if c.get('classname', '').endswith(required_class))
+              print(module, 'tests', tests, 'failures/errors', failures, 'skipped', skipped, 'required cases', selected)
+              assert failures == 0 and skipped == 0 and set(selected) == required_methods and len(selected) == len(required_methods), f'Incomplete or failed focused evidence: {module}'
+          PY
+      - name: Retain focused synthetic reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: android-native-focused-${{ github.sha }}
+          path: |
+            android-app/data/network/build/outputs/androidTest-results/connected/**
+            android-app/data/network/build/reports/androidTests/connected/**
+            android-app/data/storage/build/outputs/androidTest-results/connected/**
+            android-app/data/storage/build/reports/androidTests/connected/**
+            emulator.log
+          if-no-files-found: ignore
+          retention-days: 14
