@@ -85,6 +85,7 @@ internal val ShellTypography: Typography = Typography().let { base ->
         headlineMedium = base.headlineMedium.sized(28, 36),
         titleLarge = base.titleLarge.sized(22, 28),
         titleMedium = base.titleMedium.sized(18, 24),
+        headlineLarge = base.headlineLarge.sized(48, 56).copy(fontFeatureSettings = "tnum"),
         bodyLarge = base.bodyLarge.sized(16, 24),
         bodyMedium = base.bodyMedium.sized(14, 20),
         labelLarge = base.labelLarge.sized(14, 20),
