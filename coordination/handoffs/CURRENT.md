@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-download-engine-48
+Checkpoint-ID: cp-20261013-full-contracts-49
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Complete actual download engine and full bulk importer/schema4/rulings/search binding
+Next step: 3. Review schema4 design then assign isolated migration implementation; finish durable download engine and full importer
 
-Updated UTC: 2026-10-13T00:14:45Z
+Updated UTC: 2026-10-13T00:24:09Z
 Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: e9be943ad2364d812bf46695fce4bc19b6d6abdd.
+Verified base: 53d250e38eba9e1af2a25b7aa8dea25b3662269f.
 
-Infrastructure accepted exact tested main; full genuine framing and58puretests pass. Download engine assigned; Claude life disjoint; full Android v1 remains incomplete.
+Reconciled active engine and accepted main; independently reviewed full catalog contracts freshly compile with 21 passing JVM tests; schema4 review pending
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

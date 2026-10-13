@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-download-engine-48",
-  "verified_base_head": "e9be943ad2364d812bf46695fce4bc19b6d6abdd",
+  "checkpoint_id": "cp-20261013-full-contracts-49",
+  "verified_base_head": "53d250e38eba9e1af2a25b7aa8dea25b3662269f",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "Full Android v1 execution active; incomplete",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Complete actual download engine and full bulk importer/schema4/rulings/search binding",
+  "first_action": "Review schema4 design then assign isolated migration implementation; finish durable download engine and full importer",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -40,6 +40,6 @@
     "k3_acquisition_schema": "Hosted38321835421 actualKSP3 SHA6bb715b72a1681998238d448756ca099e31e8a33b0d0a450a73a975035b7a265 all13legacyentitiesidentical; API23/API36 61nativeeachpass; ps16KiBstorage25passbutoneShellUIfail; JVMtestfixturecompilefailfixedpendingrerun.",
     "k3_acquisition_infrastructure": "Acceptedmain67713d29aa5dec03d9a91ab3eb4239b020ab8ffa: exacte24a958 hosted38323540680 all4lanespass316JVM/61nativeeach. Candidate71acd14 Androidtreeidentical795b94b. Debugbuildonly; fullK3notaccepted."
   },
-  "last_completed": "Infrastructure accepted exact tested main; full genuine framing and58puretests pass. Download engine assigned; Claude life disjoint; full Android v1 remains incomplete.",
-  "updated_utc": "2026-10-13T00:14:45Z"
+  "last_completed": "Reconciled active engine and accepted main; independently reviewed full catalog contracts freshly compile with 21 passing JVM tests; schema4 review pending",
+  "updated_utc": "2026-10-13T00:24:09Z"
 }

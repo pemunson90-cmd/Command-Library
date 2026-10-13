@@ -1,0 +1,11 @@
+# Additive full-input provenance and printing membership
+
+Candidate design, not migration acceptance. Preserve all schema3 tables and stored payload bytes.
+
+Catalog generation adds input_kind TEXT NOT NULL DEFAULT 'USER_CONTENT_URI', artifact_job_id TEXT nullable and source_payload TEXT nullable. Legacy rows remain selected input with no manufactured artifact. Rules corpus adds only input_kind and artifact_job_id; its existing non-null source_payload remains unchanged. Download provenance is subsequently versioned by the owning codec. Installed generations have no acquisition-job foreign key: deleting an artifact must not delete installed data.
+
+printing_oracle_membership has primary key (generation_id, printing_provider, printing_id, source_slot). source_slot=-1 means whole printing; nonnegative values mean original printing-face ordinal, never canonical-face index. source_kind is WHOLE or FACE. oracle_provider, oracle_id and oracle_language are non-null. Printing FK references (generation_id,provider,printing_id), ON DELETE CASCADE; Oracle FK references (generation_id,provider,oracle_id,language), ON DELETE NO ACTION. Lookup index (generation_id,oracle_provider,oracle_id,oracle_language,printing_provider,printing_id). Both source faces remain represented even when they target the same Oracle; lookup uses DISTINCT printing identities.
+
+Migration3To4 adds these five columns, table and index, then backfills source_slot=-1/source_kind=WHOLE for existing printing rows with all three Oracle columns non-null. Invalid partial legacy triples must fail validation rather than fabricate identity. Legacy printing-only rows gain no invented relation. New full importer resolves all memberships after EOF in bounded pages, because canonical targets may occur later; deferred FK within a batch does not solve this ordering.
+
+Root owns schema registry/version4, migration registration and real KSP schema export. Worker owns entities, migration and native fixtures only. Required evidence: exact schema3 fixture preservation/active pointers/payloads, whole-only backfill, late and repeated face targets, FK/index behavior, installed data survives job deletion, transactional rollback/retry, and 1→2→3→4 coverage. Existing migration assertions remain meaningful. Hosted native lanes are required after integration; private SQLite checks are supplemental.
