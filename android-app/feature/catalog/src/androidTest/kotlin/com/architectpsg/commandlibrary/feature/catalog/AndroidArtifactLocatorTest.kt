@@ -1,11 +1,14 @@
 package com.architectpsg.commandlibrary.feature.catalog
 
+import android.annotation.TargetApi
 import android.content.res.AssetFileDescriptor
 import android.net.Uri
 import android.os.CancellationSignal
+import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import android.system.Os
+import android.system.OsConstants
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
@@ -100,9 +103,18 @@ class AndroidArtifactLocatorTest {
         try { return client.localContentProvider as AcquisitionArtifactProvider }
         finally { @Suppress("DEPRECATION") client.release() } // close()/AutoCloseable starts at API24.
     }
-    private fun resolverBytes(uri: Uri): ByteArray = ParcelFileDescriptor.AutoCloseInputStream(
-        context.contentResolver.openFileDescriptor(uri, "r")!!,
-    ).use { it.readBytes() }
+    private fun resolverBytes(uri: Uri): ByteArray = context.contentResolver.openFileDescriptor(uri, "r")!!.use { descriptor ->
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Api30.assertCloseOnExec(descriptor.fileDescriptor)
+        // API23–29 exercise the same bytes/lifetime without a final-FD CLOEXEC guarantee.
+        ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes() }
+    }
+    @TargetApi(30)
+    private object Api30 {
+        fun assertCloseOnExec(descriptor: java.io.FileDescriptor) {
+            val flags = Os.fcntlInt(descriptor, OsConstants.F_GETFD, 0)
+            assertTrue("Actual resolver-returned descriptor must be close-on-exec", flags and OsConstants.FD_CLOEXEC != 0)
+        }
+    }
 
     @Test fun actualResolverTypedAndReadRoutesHaveExactBytesHashAndWholeFileMetadata(): Unit = runBlocking {
         fixture { f ->
@@ -302,6 +314,34 @@ class AndroidArtifactLocatorTest {
                 }; fail("Token cancellation swallowed")
             } catch (_: CancellationException) { }
             rejected { resolverBytes(saved!!) }
+        }
+    }
+
+    @Test fun normallyCommittedCallbackResultSurvivesLateTokenCancellationAndClosesLease(): Unit = runBlocking {
+        fixture { f ->
+            val completed = f.completed(); var saved: Uri? = null; var raw: ParcelFileDescriptor? = null
+            val lateCancellation = object : CancelToken {
+                var now = false
+                override val isCancelled get() = now
+                override fun throwIfCancelled() { if (now) throw CancellationException("Synthetic late token") }
+            }
+            val result = f.locator.withPinnedArtifact(completed.plan.jobId, lateCancellation) { resource, _, chunks ->
+                saved = Uri.parse(resource.value)
+                assertArrayEquals(payload, resolverBytes(saved!!)); assertTrue(chunks.toList().last().final)
+                raw = provider(saved!!).openFile(saved!!, "r") // Registry-owned raw handle verifies finally cleanup.
+                val committed = f.db.transaction({ tx ->
+                    value(tx.execute(SqlRequest("CREATE TABLE locator_callback_result (id INTEGER PRIMARY KEY)", SnapshotList.empty()), token))
+                    value(tx.execute(SqlRequest("INSERT INTO locator_callback_result (id) VALUES (1)", SnapshotList.empty()), token))
+                }, token)
+                assertEquals(Outcome.Success(DbWriteResult(1)), committed)
+                lateCancellation.now = true
+                committed
+            }
+            assertEquals(Outcome.Success(DbWriteResult(1)), result)
+            assertTrue(lateCancellation.isCancelled)
+            assertFalse(raw!!.fileDescriptor.valid()); raw!!.close(); rejected { resolverBytes(saved!!) }
+            val committedRows = value(f.db.query(SqlRequest("SELECT id FROM locator_callback_result", SnapshotList.empty()), token))
+            assertEquals(SqlValue.Integer(1), committedRows.single().columns.single().value)
         }
     }
 

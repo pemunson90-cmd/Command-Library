@@ -1,5 +1,6 @@
 package com.architectpsg.commandlibrary.feature.catalog
 
+import android.annotation.TargetApi
 import android.content.ContentProvider
 import android.content.ContentProviderOperation
 import android.content.ContentProviderResult
@@ -11,6 +12,7 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.os.Binder
+import android.os.Build
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.ParcelFileDescriptor
@@ -100,6 +102,9 @@ private fun denied(): Nothing = throw FileNotFoundException("Private verified ar
 /** Only AndroidVerifiedArtifactLocator registers, inside LocalAcquisition's completed-job pin.
  * No detached/duplicated consumer handles: resolver wrappers/streams must be lexical use owners.
  * Removing admission and all adapter-owned handles is synchronous before that pin is released.
+ * Consumer process must not exec/spawn subprocesses or load untrusted executable code; adding
+ * those behaviors requires renewed lifetime/security review. Legacy final FDs lack a CLOEXEC
+ * guarantee. Modern CLOEXEC does not revoke arbitrary FD copies or prevent fork-only inheritance.
  */
 internal object ArtifactLocatorRegistry {
     private val monitor = Any()
@@ -153,7 +158,8 @@ internal object ArtifactLocatorRegistry {
             try {
                 val stat = Os.fstat(temporary)
                 if (!OsConstants.S_ISREG(stat.st_mode) || stat.st_dev != lease.device || stat.st_ino != lease.inode || stat.st_size != lease.bytes) denied()
-                owned = ParcelFileDescriptor.dup(temporary)
+                owned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Api30.duplicate(temporary)
+                    else ParcelFileDescriptor.dup(temporary) // API23–29: no final-FD CLOEXEC promise.
             } catch (error: Throwable) { primary = error; throw error }
             finally {
                 try { Os.close(temporary) } catch (close: Throwable) { if (primary != null) primary.addSuppressed(close) else throw close }
@@ -165,6 +171,13 @@ internal object ArtifactLocatorRegistry {
             if (error is android.system.ErrnoException) throw FileNotFoundException("Private verified artifact unavailable").also { it.initCause(error) }
             throw error
         }
+    }
+
+    @TargetApi(30)
+    private object Api30 {
+        fun duplicate(temporary: java.io.FileDescriptor): ParcelFileDescriptor =
+            // No intervening work after duplication: adoptFd owns the valid returned integer once.
+            ParcelFileDescriptor.adoptFd(Os.fcntlInt(temporary, OsConstants.F_DUPFD_CLOEXEC, 0))
     }
 
     fun close(lease: Lease): Unit = synchronized(monitor) {
