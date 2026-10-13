@@ -32,6 +32,16 @@ internal class LocalBulkCatalog(
         var staged: GenerationId? = null
         var activationCandidate: CatalogBulkImportResult? = null
         var activationEnvelope: String? = null
+        var activationAcknowledgementResult: ActivationAcknowledgement? = null
+        suspend fun reconcileActivation(candidate: CatalogBulkImportResult): ActivationAcknowledgement {
+            return withContext(NonCancellable) {
+                try {
+                    withTimeout(ACTIVATION_ACK_TIMEOUT_MILLIS) {
+                        activationAcknowledgement(candidate, requireNotNull(activationEnvelope))
+                    }
+                } catch (_: TimeoutCancellationException) { ActivationAcknowledgement.INCONCLUSIVE }
+            }.also { activationAcknowledgementResult = it }
+        }
         try {
             require(source.contentUri.value.toByteArray(Charsets.UTF_8).size <= 4096)
             require(source.displayName.toByteArray(Charsets.UTF_8).size <= 512)
@@ -138,18 +148,19 @@ internal class LocalBulkCatalog(
                 committed = result; staged = null
                 return result
             }
-            if (source.inputKind == SourceInputKind.VERIFIED_ARTIFACT) verifiedInput.withPinnedInput(source, cancel) { input, consentId -> consume(input, consentId) } else consume(chunks, null)
+            if (source.inputKind == SourceInputKind.VERIFIED_ARTIFACT) verifiedInput.withPinnedInput(source, cancel) { input, consentId ->
+                try { consume(input, consentId) }
+                catch (e: Exception) {
+                    if (committed == null) activationCandidate?.let { reconcileActivation(it) }
+                    throw e
+                }
+            } else consume(chunks, null)
             Outcome.Success(requireNotNull(committed))
         } catch (e: Exception) {
             committed?.let { return@withCatalogImportOwner Outcome.Success(it) }
             activationCandidate?.let { candidate ->
-                val acknowledgement = withContext(NonCancellable) {
-                    try {
-                        withTimeout(ACTIVATION_ACK_TIMEOUT_MILLIS) {
-                            activationAcknowledgement(candidate, requireNotNull(activationEnvelope))
-                        }
-                    } catch (_: TimeoutCancellationException) { ActivationAcknowledgement.INCONCLUSIVE }
-                }
+                val acknowledgement = activationAcknowledgementResult
+                    ?: if (source.inputKind == SourceInputKind.VERIFIED_ARTIFACT) ActivationAcknowledgement.INCONCLUSIVE else reconcileActivation(candidate)
                 when (acknowledgement) {
                     ActivationAcknowledgement.INSTALLED -> return@withCatalogImportOwner Outcome.Success(candidate)
                     ActivationAcknowledgement.ROLLED_BACK -> Unit

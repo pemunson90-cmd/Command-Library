@@ -1,0 +1,11 @@
+# cx-k3-bulk-pin-01: keep verified input pinned through activation acknowledgement
+
+Bounded importer correction under approved plan Tasks3/4. Read AGENTS/CONTINUE, ANDROID-BINDING-DRAFT-REVIEW.md blocker2 and existing LocalBulkCatalog/LocalBulkCatalogTest. Own only importer, its test file and this worker handoff; shared config/coordination belongs to root. No public contracts, provider, facade/profile/scheduler/removal UI changes.
+
+## Source-backed preflight and acceptance
+
+Root inspected actual importer: verifiedInput.withPinnedInput executes consume, but activation acknowledgement is in an outer catch after pin exit. Existing real bundled SQLite test database supports actual COMMIT then CancellationException, inconclusive acknowledgement, and suspended acknowledgement gate. Existing reviewed binding design requires pin through bounded reconciliation. Coroutine1.10.2 NonCancellable/withTimeout are already used and reviewed; reuse exact existing500ms acknowledgement policy and original commit/cancellation/cleanup rules, no new runtime assumptions or research required.
+
+Write a regression first that forces ambiguous actual COMMIT on VERIFIED_ARTIFACT input and checks the binding remains active during durable acknowledgement (prefer existing suspended gate, no sleeps/polling if a deterministic signal suffices). Prove prior production fails, then minimally move bounded reconciliation into the verified callback. Preserve selected-input reconciliation, success after commit and pin-release exception, cancellation before commit, inconclusive outcomes and no deletion of possibly active data, cleanup/owner release within existing deadline. Add rollback/inconclusive pin coverage if needed; avoid mirrors of implementation.
+
+Root runs Gradle builds centrally; do not start competing Gradle processes. First write tests only and notify root with exact focused command; wait for root red evidence before production edits. Root's initial compile/lint baseline is currently running. After green implementation root runs focused catalog suite/full checks. Do not commit or push; root stages disjoint changes after review. Record exact changed files, actual red/green results or not_run, remaining limits and next action in handoff.

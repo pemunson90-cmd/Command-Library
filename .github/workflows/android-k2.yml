@@ -3,6 +3,13 @@ on:
   push:
     branches: ['main', 'agent/cc-*', 'agent/cx-*']
     paths: ['android-app/**', '.github/workflows/android-k2.yml']
+  pull_request:
+    branches: ['main']
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android-k2.yml'
+      - 'scripts/**'
+      - 'config/**'
   workflow_dispatch:
 permissions:
   contents: read
@@ -58,13 +65,14 @@ jobs:
           import pathlib, xml.etree.ElementTree as ET
           reports = [p for p in pathlib.Path('android-app').glob('**/build/test-results/**/TEST-*.xml')]
           assert reports, 'No executed JVM test reports'
-          total = failures = 0
+          total = failures = skipped = 0
           for p in reports:
               r = ET.parse(p).getroot()
               total += int(r.get('tests', 0))
-              failures += int(r.get('failures', 0)) + int(r.get('errors', 0))
-          print('JVM test reports:', len(reports), 'tests:', total, 'failures+errors:', failures)
-          assert total > 0 and failures == 0
+              failures += sum(max(int(r.get(kind + 's', 0)), sum(case.find(kind) is not None for case in r.iter('testcase'))) for kind in ('failure', 'error'))
+              skipped += max(int(r.get('skipped', 0)), sum(case.find('skipped') is not None for case in r.iter('testcase')))
+          print('JVM test reports:', len(reports), 'tests:', total, 'failures+errors:', failures, 'skipped:', skipped)
+          assert total - skipped > 0 and failures == 0 and skipped == 0
           PY
       - name: APK checksum and 16 KiB ZIP alignment
         shell: bash
@@ -120,15 +128,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: Skip when no instrumentation sources exist
+      - name: Require instrumentation sources for native acceptance
         id: gate
         shell: bash
         run: |
           if find android-app -path '*/src/androidTest/*' -name '*.kt' | grep -q .; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
-            echo 'No androidTest sources on this commit; no emulator run.'
-            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo 'Native acceptance requires instrumentation sources on this commit.'
+            exit 1
           fi
       - name: Enable KVM
         if: steps.gate.outputs.run == 'true'
@@ -196,14 +204,15 @@ jobs:
               if own or shared:
                   required.append(module)
           assert required, 'No module has instrumentation sources'
-          total = failures = 0
+          total = failures = skipped = 0
           for module in required:
               reports = list(module.glob('build/outputs/androidTest-results/connected/**/TEST-*.xml'))
-              tests = fails = 0
+              tests = fails = skips = 0
               for p in reports:
                   r = ET.parse(p).getroot()
                   tests += int(r.get('tests', 0))
-                  fails += int(r.get('failures', 0)) + int(r.get('errors', 0))
+                  fails += sum(max(int(r.get(kind + 's', 0)), sum(case.find(kind) is not None for case in r.iter('testcase'))) for kind in ('failure', 'error'))
+                  skips += max(int(r.get('skipped', 0)), sum(case.find('skipped') is not None for case in r.iter('testcase')))
                   for case in r.iter('testcase'):
                       for kind in ('failure', 'error'):
                           issue = case.find(kind)
@@ -211,12 +220,13 @@ jobs:
                               print('FAILED CASE:', case.get('classname'), case.get('name'))
                               print((issue.get('message', '') + '\n' + (issue.text or ''))[:4000])
               name = ':' + ':'.join(module.relative_to(root).parts)
-              print(f'{name}: reports {len(reports)} tests {tests} failures+errors {fails}')
-              assert reports and tests > 0, f'{name} has instrumentation sources but no executed connected tests'
+              print(f'{name}: reports {len(reports)} tests {tests} failures+errors {fails} skipped {skips}')
+              assert reports and tests - skips > 0 and skips == 0, f'{name} has instrumentation sources but no executed connected tests'
               total += tests
               failures += fails
-          print('Instrumentation total tests:', total, 'failures+errors:', failures)
-          assert failures == 0
+              skipped += skips
+          print('Instrumentation total tests:', total, 'failures+errors:', failures, 'skipped:', skipped)
+          assert failures == 0 and skipped == 0
           PY
       - name: Collect synthetic visual captures
         if: always() && steps.gate.outputs.run == 'true'
@@ -233,4 +243,39 @@ jobs:
             visual-captures/**
             emulator.log
           if-no-files-found: ignore
+          retention-days: 14
+
+  verified-debug-apk:
+    name: Four-lane verified debug APK
+    needs: [jvm-and-assemble, emulator]
+    if: needs.jvm-and-assemble.result == 'success' && needs.emulator.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Download the exact-SHA APK built above, without rebuilding or trusting other refs.
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: command-library-fold7-apk-${{ github.sha }}
+          path: verified
+      - name: Record APK and CI provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t apks < <(find verified -maxdepth 1 -type f -name '*.apk' -print)
+          test "${#apks[@]}" -eq 1
+          {
+            printf 'tested_commit=%s\n' "$GITHUB_SHA"
+            printf 'workflow_run=%s\n' "$GITHUB_RUN_ID"
+            printf 'event=%s\n' "$GITHUB_EVENT_NAME"
+            printf '%s\n' 'verification=JVM/build plus API23, API36 and API36-16KiB emulator jobs passed'
+            printf '%s\n' 'scope=internal debug validation; not canonical release signing or physical Fold7 verification'
+            sha256sum "${apks[0]}"
+          } | tee verified/VERIFICATION.txt
+      - name: Retain matrix-verified internal debug APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: command-library-matrix-verified-debug-${{ github.sha }}
+          path: verified/
+          if-no-files-found: error
+          overwrite: true
           retention-days: 14

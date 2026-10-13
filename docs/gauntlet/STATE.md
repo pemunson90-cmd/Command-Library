@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-environment-handoff-66. Updated UTC: 2026-10-13T15:31:14Z.
+Checkpoint: cp-20261013-local-candidate-68. Updated UTC: 2026-10-13T16:32:23Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Paused for environment transition; ready for handoff. Next: orch-kotlin-k3-offline-data-01 step3.
-Paused: next Codex reads environment-transition NEXT-CODEX.md, claims lease, reviews locator16bd535 and PR19, integrates only accepted changes, then verifies one coherent candidate.
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Active: local coherent candidate passed; hosted native/render verification pending. Next: orch-kotlin-k3-offline-data-01 step3.
+Publish reviewed local candidate once; verify API23/API36/API36-16KiB120native/lane and36validrenders/lane, inspect actual screenshots and present concrete visual checkpoint. Continue source-bound K3 work without untrusted adapters.
 
-Environment handoffs saved; completed locator16bd535/f8741ed preserved remotely but unintegrated. PR19 passed main-equivalent app only; continuation2d failed lint, no native pass. No workers active; lease released; no full-v1, canonical or Fold7 acceptance.
+Reviewed locator API27 correction, importer acknowledgement pin and selective PR19 CI changes integrated. Actual local instrumentation APK assembly and full check/debug assembly pass:524JVMtests0failures/errors/skips,17importer tests,16KiBZIPalignment. No native/runtime/render/fullv1/canonical/Fold7 pass claimed; missing standalone source discovery research packet posted and saved.
 
 Read CURRENT, machine state and task card.

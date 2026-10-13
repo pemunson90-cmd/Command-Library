@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-environment-handoff-66. Next: orch-kotlin-k3-offline-data-01 step3; Paused for environment transition; ready for handoff.
+Checkpoint-ID: cp-20261013-local-candidate-68. Next: orch-kotlin-k3-offline-data-01 step3; Active: local coherent candidate passed; hosted native/render verification pending.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

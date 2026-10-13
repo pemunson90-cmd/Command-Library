@@ -166,6 +166,58 @@ class LocalBulkCatalogTest {
             assertTrue(LocalCatalogIdentities(db).printing(CardId(ProviderId("scryfall"),"new"),BULK_NO_CANCEL) is Outcome.Success)
         }
     }
+    @Test fun verifiedInputRemainsPinnedDuringAmbiguousCommitAcknowledgement() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            val raw=bulkRecord("new","new-o"); val source=bulkAcquired(raw)
+            val entered=CompletableDeferred<Unit>(); val gate=CompletableDeferred<Unit>()
+            db.activationAcknowledgementEntered=entered; db.activationAcknowledgementGate=gate
+            db.cancelAfterActivationCommit=true
+            var pinHeld=false
+            val binding=CatalogVerifiedInputBinding { _,_,consume ->
+                pinHeld=true
+                try { consume(bulkChunks(raw),EntityId("consent")) }
+                finally { pinHeld=false }
+            }
+            val import=async { db.importer(binding=binding).`import`(source,flow { error("untrusted flow consumed") },{},BULK_NO_CANCEL) }
+            try {
+                withTimeout(1000) { entered.await() }
+                assertTrue("Verified input pin must cover durable activation acknowledgement",pinHeld)
+            } finally { gate.complete(Unit) }
+            val result=import.await().bulkValue()
+            assertEquals(result.installed.generation.id.value,db.active())
+            assertFalse(pinHeld)
+        }
+    }
+    @Test fun timedOutVerifiedAcknowledgementReleasesPinAndOwnerWithoutDeletingCommittedData() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            val raw=bulkRecord("new","new-o"); val source=bulkAcquired(raw)
+            val entered=CompletableDeferred<Unit>(); val gate=CompletableDeferred<Unit>()
+            db.activationAcknowledgementEntered=entered; db.activationAcknowledgementGate=gate
+            db.cancelAfterActivationCommit=true
+            var pinHeld=false
+            val binding=CatalogVerifiedInputBinding { _,_,consume ->
+                pinHeld=true
+                try { consume(bulkChunks(raw),EntityId("consent")) }
+                finally { pinHeld=false }
+            }
+            val import=async { db.importer(binding=binding).`import`(source,flow { error("untrusted flow consumed") },{},BULK_NO_CANCEL) }
+            try {
+                withTimeout(1000) { entered.await() }
+                assertTrue(pinHeld)
+                try { withTimeout(1100) { import.await() }; fail("Cancelled ambiguous commit must propagate cancellation") }
+                catch (e: CancellationException) {
+                    assertFalse("Acknowledgement must finish before the test deadline",e is TimeoutCancellationException)
+                    assertEquals("Cancelled commit acknowledgement",e.message)
+                }
+                assertFalse(pinHeld)
+                assertFalse(CatalogImportOwnership.mutex.isLocked)
+                assertEquals(1,db.activationAcknowledgementAttempts)
+                assertEquals(1L,db.rows("SELECT count(*) AS n FROM printing WHERE printing_id='new'").single().bulkLong("n"))
+                assertNotNull(db.active())
+                assertEquals(0L,db.rows("SELECT count(*) AS n FROM catalog_generation WHERE status='FAILED'").single().bulkLong("n"))
+            } finally { gate.complete(Unit); import.cancel(); import.join() }
+        }
+    }
     @Test fun inconclusiveCancelledCommitAcknowledgementNeverDeletesPossiblyActiveData() = runBlocking {
         BulkSqlTestDatabase().use { db ->
             db.install(listOf(bulkRecord("old","old-o")))
@@ -234,6 +286,8 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
     var cancelAfterActivationCommit=false
     var failActivationAcknowledgement=false
     var activationAcknowledgementGate: CompletableDeferred<Unit>?=null
+    var activationAcknowledgementEntered: CompletableDeferred<Unit>?=null
+    var activationAcknowledgementAttempts=0
     private var serial=0
     init {
         exec("PRAGMA foreign_keys=ON")
@@ -264,7 +318,7 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
         require(names.toSet()==r.parameters.map { it.name }.toSet())
         for((i,name) in names.withIndex()) when(val v=r.parameters.single { it.name==name }.value) { SqlValue.Null -> s.bindNull(i+1); is SqlValue.Text -> s.bindText(i+1,v.value); is SqlValue.Integer -> s.bindLong(i+1,v.value); else -> error("Unused type") }
     }
-    override suspend fun query(request: SqlRequest,cancel: CancelToken): Outcome<SnapshotList<RowData>> { cancel.throwIfCancelled(); return try { if(request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) activationAcknowledgementGate?.await(); if(failActivationAcknowledgement && request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) error("Injected acknowledgement failure"); Outcome.Success(queryRaw(request)) } catch (_: Exception) { Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL query failed")) } }
+    override suspend fun query(request: SqlRequest,cancel: CancelToken): Outcome<SnapshotList<RowData>> { cancel.throwIfCancelled(); return try { if(request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) { activationAcknowledgementAttempts++; activationAcknowledgementEntered?.complete(Unit); activationAcknowledgementGate?.await() }; if(failActivationAcknowledgement && request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) error("Injected acknowledgement failure"); Outcome.Success(queryRaw(request)) } catch (_: Exception) { Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL query failed")) } }
     override suspend fun <T> transaction(action: suspend (DbTransaction)->T,cancel: CancelToken): Outcome<T> {
         cancel.throwIfCancelled(); exec("BEGIN IMMEDIATE")
         val tx=object : DbTransaction {

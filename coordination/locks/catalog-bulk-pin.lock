@@ -1,0 +1,12 @@
+{
+  "component": "catalog-bulk-acknowledgement-pin",
+  "orchestrator": "codex-local-resume-20261013",
+  "agent_task": "cx-k3-bulk-pin-01",
+  "owner": "Codex orchestrator; completed scoped worker, reservation only",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalBulkCatalog.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalBulkCatalogTest.kt",
+    "coordination/handoffs/cx-k3-bulk-pin-01.md"
+  ],
+  "status": "reserved"
+}

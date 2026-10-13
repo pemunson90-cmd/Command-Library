@@ -3,20 +3,22 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-environment-handoff-66",
-  "verified_base_head": "17c0dce75b4ccf7ce3af1c794b599528ea9ff5ce",
+  "checkpoint_id": "cp-20261013-local-candidate-68",
+  "verified_base_head": "89f58be458e74dec87eb4d7d9ca09194586616f3",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
-  "status": "Paused for environment transition; ready for handoff",
+  "status": "Active: local coherent candidate passed; hosted native/render verification pending",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "Paused: next Codex reads environment-transition NEXT-CODEX.md, claims lease, reviews locator16bd535 and PR19, integrates only accepted changes, then verifies one coherent candidate.",
-  "active_tasks": [],
+  "first_action": "Publish reviewed local candidate once; verify API23/API36/API36-16KiB120native/lane and36validrenders/lane, inspect actual screenshots and present concrete visual checkpoint. Continue source-bound K3 work without untrusted adapters.",
+  "active_tasks": [
+    "orch-kotlin-k3-offline-data-01"
+  ],
   "blockers": [
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
-  "worktree_mode": "Paused for environment transition; no workers active. Component scope locks reserved for inspection/reassignment by next lease-holder; finished locator branch published, not integrated.",
-  "review_status": "Prior source reviews retained. Locator API27 correction16bd535 awaits independent review and corrected hosted lint/native evidence. PR19 CI pass applies only to main-equivalent Android tree. Full v1/signing/Fold7 unaccepted.",
+  "worktree_mode": "Active restored continuation on agent/cx-local-resume-20261013-public; no component workers active. Existing scope locks are reservations, not live leases.",
+  "review_status": "Astra-high approved locator public API27 correction and bounded importer acknowledgement lifetime. Sol-medium approved selective CI reconciliation. Local full checks pass; native/render/fullv1/canonical/Fold7 acceptance pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -44,9 +46,10 @@
     "k3_merged_source": "Bulk b6e74819 independently91tests+original3probes+boundedackprobe pass, integrated15e80ab. Actual combined root model/common/catalog strict production compile and172JVMtests pass underXmx256m; harness nonexistent resources warnings only. Settings d4d30f8 independently56actualDataStore tests pass, integratede3be616; platformconfiguredartifact checks pending.",
     "firstbatch_jvm": "Exactd9f4132 hosted38345526072 job115125940772: all Android test APKs compiled,522JVMtests0failures/errors, debugAPK and16KiBZIPalignment pass. Three native lanes/render evidence ongoing; no full-v1 acceptance.",
     "firstbatch_native": "Exactd9 hosted38345526072 failed:API36default/16KiB each106tests12visualSource-selector failures;API23 106tests36PixelCopy screenshot failures. All4Coil probes passed3lanes;36actualcaptures retained/inspected eachAPI36 lane; no visualacceptance. Corrected source batch pending.",
-    "locator_candidate": "Exact2d556a4 run38350496219 compiled instrumentation APKs then failed catalog lint O_CLOEXEC API27/min23; no emulators ran. Finished16bd535 targeted real Kotlin production compile passed; AGP lint/native not_run.",
-    "pr19_ci": "PR19 head19bbb8a run38351397485 passed JVM/build and three emulator lanes plus debug artifact promotion on actual merge b7d1b962f30c9710850c297622ac7b60e054659f. Android source tree equals main6f841cc4, not continuation candidate. XML counts/screenshots not independently extracted; no canonical/physical evidence."
+    "locator_candidate": "Old2d556a4 hosted38350496219 failed API27 lint; reviewed16bd535 integrated5e994ed. Corrected local SDK37 catalog lint/whole check and all native source compile pass;120native/lane and36renders/lane still require exact hosted candidate execution.",
+    "pr19_ci": "PR19 head19bbb8a run38351397485 passed JVM/build and three emulator lanes plus debug artifact promotion on actual merge b7d1b962f30c9710850c297622ac7b60e054659f. Android source tree equals main6f841cc4, not continuation candidate. XML counts/screenshots not independently extracted; no canonical/physical evidence.",
+    "local_resume": "Source89f58be: all instrumentation APK assembly and check/:app:assembleDebug pass locally;52XMLreports524JVMtests0failures/errors/skips,17importer tests pass; ZIP16KiB alignment pass. Native runtime not_run locally (no emulator/KVM)."
   },
-  "last_completed": "Environment handoffs saved; completed locator16bd535/f8741ed preserved remotely but unintegrated. PR19 passed main-equivalent app only; continuation2d failed lint, no native pass. No workers active; lease released; no full-v1, canonical or Fold7 acceptance.",
-  "updated_utc": "2026-10-13T15:31:14Z"
+  "last_completed": "Reviewed locator API27 correction, importer acknowledgement pin and selective PR19 CI changes integrated. Actual local instrumentation APK assembly and full check/debug assembly pass:524JVMtests0failures/errors/skips,17importer tests,16KiBZIPalignment. No native/runtime/render/fullv1/canonical/Fold7 pass claimed; missing standalone source discovery research packet posted and saved.",
+  "updated_utc": "2026-10-13T16:32:23Z"
 }
