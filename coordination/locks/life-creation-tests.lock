@@ -1,0 +1,10 @@
+{
+  "component": "life-creation-contract-tests",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "Sol medium tests-only; root owns public source",
+  "status": "active",
+  "owned_paths": [
+    "android-app/core/model/src/test/kotlin/com/architectpsg/commandlibrary/core/model/GameCreationContractsTest.kt",
+    "coordination/handoffs/cx-m2-life-creation-contracts-02.md"
+  ]
+}

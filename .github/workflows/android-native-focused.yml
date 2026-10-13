@@ -2,7 +2,23 @@ name: Focused modern Android native checks
 on:
   push:
     branches: ['agent/cx-native-*']
-    paths: ['android-app/**', '.github/workflows/android-native-focused.yml']
+    # Scope this acquisition/storage gate to its dependencies, rather than unrelated life/UI work.
+    paths:
+      - 'android-app/data/network/**'
+      - 'android-app/data/storage/**'
+      - 'android-app/feature/catalog/**'
+      - 'android-app/feature/settings/**'
+      - 'android-app/core/common/**'
+      - 'android-app/core/model/src/main/**'
+      - '!android-app/core/model/src/main/**/GameContracts.kt'
+      - '!android-app/core/model/src/main/**/LifeStateContracts.kt'
+      - 'android-app/core/model/build.gradle.kts'
+      - 'android-app/build.gradle.kts'
+      - 'android-app/settings.gradle.kts'
+      - 'android-app/gradle/**'
+      - 'android-app/gradle.properties'
+      - 'android-app/gradlew*'
+      - '.github/workflows/android-native-focused.yml'
   workflow_dispatch:
 permissions:
   contents: read

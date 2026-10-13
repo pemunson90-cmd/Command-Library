@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-focused-native-ready-80. Next: orch-kotlin-k3-offline-data-01 step3; Focused native candidate ready; continuous local implementation active.
+Checkpoint-ID: cp-20261013-life-state-native-fixtures-81. Next: orch-kotlin-k3-offline-data-01 step3; K3 and life contracts active; continuous local-first execution.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

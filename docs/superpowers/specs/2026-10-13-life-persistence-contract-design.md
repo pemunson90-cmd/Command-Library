@@ -1,6 +1,6 @@
 # Life persistence contract design
 
-2026-10-13. **Draft for mandatory architecture/durability review.** No product implementation, migration, build or runtime verification is represented by this document. Root owns public contracts, schema, configuration and DI. The user approved the overall execution plan; this draft prepares the next technical review, not another product-permission request.
+2026-10-13. **First state-contract unit architecture-approved; later service/schema/codec packets remain review-gated.** No product implementation, migration, build or runtime verification is represented by this document. Root owns public contracts, schema, configuration and DI. The user approved the overall execution plan; this draft prepares the next technical review, not another product-permission request.
 
 ## Intent and authority
 
@@ -187,7 +187,7 @@ Dispatch transaction checks expected revision, settles timing, reduces validated
 
 ## Minimal contract patch versus following work
 
-**First root patch:** declarations/defaults/invariants in GameContracts; new port/profile/query/provenance DTOs; explicit exchange extensions; focused core tests and updated exhaustive action consumers only where necessary to compile. Retain existing slot/hiding/group semantics and private reducers. Do not register a service, add platform classes or claim SHARED works merely because its DTO exists. Required architecture review covers the root-selected choices below before implementation.
+**First bounded root unit:** state/presentation declarations, compatible defaults and local invariants in GameContracts/LifeStateContracts, with focused core tests. Separate following model units add ports/profile/query/provenance DTOs, exchange extensions and actions with their necessary exhaustive-consumer changes. Retain existing slot/hiding/group semantics and private reducers. Do not register a service, add platform classes or claim SHARED works merely because its DTO exists. Required architecture review covers the root-selected choices below before implementation.
 
 **Following schema packet:** additive5→6 GameTables (schema5 reserved for durable origin cooldown) plus registry/migration/actual KSP6 export; game checkpoint, ordered events/archives, seat search projections, unique per-game result, game+occurrence alerts/acknowledgement, profiles. Root also registers Migration5To6 in StorageDatabase. Prior catalog/rules/acquisition tables unchanged. Typed versioned payload codec and indexed projections must agree; malformed/version-newer data fails visibly, not destructive reset. Real SQLite migration/reopen/rollback/crash evidence precedes binding.
 
@@ -202,6 +202,4 @@ Dispatch transaction checks expected revision, settles timing, reduces validated
 
 No additional product decision is inferred from the reference screenshots. These are concrete engineering review choices; none authorizes silently dropping a retained requirement.
 
-Latest continuation delta: saved this assigned design path only after read-only current-contract/domain/disposition comparison. No product edits, builds, web research, commits or delegation. Next: root independent architecture/durability review, resolve four items, then produce bounded contract implementation packet.
-
-IndependentAstra APPROVE firstmodel-contractdesign after roottechnicalchoices; declarations/defaultsonly, no service/codec/schema6/UIacceptance. Graphcompleteness belongsatnewcreation/import/resume, legacydefaultsremainconstructiblewithoutcertification. Exact-source review requiredaftermodelpatch. Reviewerbuilds/testsnot_run.
+Current implementation pointer: `coordination/tasks/cx-m2-life-state-contracts-01.md`. Independent Astra approved the first state-only model design after the four root technical choices. Exact-source review is separate; no service, codec, schema6, exchange or UI acceptance follows from declarations. Later packets retain all obligations above.

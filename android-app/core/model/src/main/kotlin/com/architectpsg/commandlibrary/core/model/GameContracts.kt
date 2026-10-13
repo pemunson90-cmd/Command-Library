@@ -13,6 +13,8 @@ public data class Seat(
     public val deck: Knowledge<DeckReference>,
     public val order: Int,
     public val commanders: SnapshotList<CommanderSlot>,
+    public val appearance: SeatAppearance = SeatAppearance(null, null),
+    public val participation: SeatParticipation = SeatParticipation.Active,
 ) { init { require(order >= 0) } }
 public sealed interface CounterLossPolicy {
     public data object None : CounterLossPolicy
@@ -27,6 +29,10 @@ public data class CounterDefinition(
     public val initial: Int,
     public val lossPolicy: CounterLossPolicy,
     public val custom: Boolean,
+    public val role: CounterRole = CounterRole.OTHER,
+    public val color: DisplayColor? = null,
+    public val preset: CounterPreset? = null,
+    public val resetPolicy: CounterResetPolicy = CounterResetPolicy.MANUAL,
 ) { init { require(minimum == null || maximum == null || minimum <= maximum); require(minimum == null || initial >= minimum); require(maximum == null || initial <= maximum) } }
 public data class CounterState(
     public val definitionId: EntityId,
@@ -49,6 +55,7 @@ public data class SeatClockState(
     public val zeroPolicy: ClockZeroPolicy,
     public val undoPolicy: ClockUndoPolicy,
     public val firedAlertIds: SnapshotList<EntityId>,
+    public val shared: SharedCountdown? = null,
 )
 public data class ClockAlert(
     public val id: EntityId,
@@ -114,7 +121,12 @@ public data class GameSettings(
     public val variantDefinitions: SnapshotList<VariantDefinition>,
     public val clockMode: SeatClockMode,
     public val randomSeed: Long,
-)
+    public val presentation: GamePresentation = GamePresentation(),
+    public val adjustmentStep: Int = 1,
+    public val deductLifeForCommanderDamage: Boolean = false,
+    public val elapsedTimers: ElapsedTimerSettings = ElapsedTimerSettings(),
+    public val alertPreferences: GameAlertPreferences = GameAlertPreferences(),
+) { init { require(adjustmentStep > 0) { "Adjustment step must be positive" } } }
 public sealed interface GameAction {
     public data class AdjustCounter(public val seatId: EntityId, public val definitionId: EntityId, public val commanderSlotId: EntityId?, public val delta: Int) : GameAction
     public data class SetCounterHidden(public val seatId: EntityId, public val definitionId: EntityId, public val hidden: Boolean) : GameAction
@@ -161,6 +173,9 @@ public data class GameSnapshot(
     public val variants: SnapshotList<VariantState>,
     public val lastEventId: Knowledge<Long>,
     public val result: Knowledge<GameResult>,
+    public val designations: GameDesignations = GameDesignations(),
+    public val elapsed: ElapsedTimerState = ElapsedTimerState(Duration.ZERO, Duration.ZERO, true, null),
+    public val alerts: SnapshotList<GameAlert> = SnapshotList.empty(),
 ) { init { require(version > 0 && turnNumber >= 0) } }
 public interface GameService {
     public suspend fun resume(id: GameId, cancel: CancelToken): Outcome<GameSnapshot>

@@ -291,9 +291,10 @@ class FullCatalogMigrationTest {
             assertEquals("Every original column definition in $table", original,
                 rows("SELECT * FROM pragma_table_info('$table') ORDER BY cid").take(original.size))
         }
-        // ALTER TABLE changes only these two CREATE TABLE statements; preserve all other DDL exactly.
+        // ALTER TABLE changes two legacy CREATE TABLE statements; schema5 adds only its own table/index.
         fun unchanged(ddl: List<List<SqlValue>>) = ddl.filterNot {
-            it[0] == SqlValue.Text("table") && it[1] in listOf(SqlValue.Text("catalog_generation"), SqlValue.Text("rules_corpus"))
+            it[2] == SqlValue.Text("acquisition_origin_cooldown") ||
+                (it[0] == SqlValue.Text("table") && it[1] in listOf(SqlValue.Text("catalog_generation"), SqlValue.Text("rules_corpus")))
         }
         assertEquals(unchanged(fixture.ddl), unchanged(rows(legacyDdlQuery)))
         assertEquals(0L, scalar("SELECT count(*) FROM pragma_foreign_key_check"))

@@ -341,14 +341,14 @@ class StorageDatabaseTest {
         database.close()
         val file = context.getDatabasePath(fileName)
         BundledSQLiteDriver().open(file.absolutePath).use { connection ->
-            connection.prepare("PRAGMA user_version = 5").use { it.step() }
+            connection.prepare("PRAGMA user_version = 6").use { it.step() }
         }
         val before = file.readBytes()
         val refused = StorageDatabase.open(context, fileName)
         assertEquals(UnavailableReason.UNSUPPORTED, (refused as Outcome.Unavailable).reason)
         assertArrayEquals(before, file.readBytes())
         BundledSQLiteDriver().open(file.absolutePath).use { connection ->
-            connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals(5L, it.getLong(0)) }
+            connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals(6L, it.getLong(0)) }
             connection.prepare("SELECT count(*) FROM catalog_name_fts").use { assertTrue(it.step()); assertEquals(1L, it.getLong(0)) }
         }
     }

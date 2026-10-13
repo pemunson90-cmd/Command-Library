@@ -1,0 +1,15 @@
+# Life creation contract — bounded model unit 2
+
+Authority: approved life persistence design, D25, G01–G13. No product-scope change or standalone research. Root owns public contracts; bounded worker may write tests only. Add `GameCreation(operationId: EntityId, settings: GameSettings, seats: SnapshotList<Seat>, clock: SeatClockState)` in a separate core/model/GameCreationContracts.kt. No service implementation, port binding, codecs, schema6, actions, UI or history in this unit.
+
+Technical design for independent review: unlike legacy Snapshot/Settings constructors, this input represents a complete *new* paused game, so its constructor rejects inconsistent graphs with IllegalArgumentException before it can enter a future creation service. That service still owns idempotence, persistence, generated game/event IDs and typed operational failures. The constructor validates only immutable input structure; it does not prove persistence or import/resume acceptance.
+
+Require 1..6 seats; unique seat IDs; seat orders exact0..n-1; globally unique commander-slot IDs; all participation Active. Counter definitions unique by ID, exactly one roleLIFE, at most one COMMANDER_DAMAGE and one COMMANDER_TAX; OTHER repeatable. LIFE.initial equals settings.initialLife. No label inference, fixed commander count, art availability requirement or silently imposed preset loss policy. Existing CounterDefinition range invariants apply; no new positive initialLife requirement is invented.
+
+Require settings.clockMode == clock.mode; new clock paused, activeSeat null, anchor null, firedAlertIds empty. NONE requires empty seat banks/sharednull. SHARED requires empty seat banks/sharednonnull, remaining==initial (finite/nonnegative via SharedCountdown). CHESS/PER_TURN require sharednull and exact one bank per seat: unique/matching seat IDs, finite nonnegative initial, remaining==initial. Zero initial banks remain valid. Existing legacy SeatTime and SeatClockState constructors retain compatibility; validation is specifically at this new boundary. Default elapsed/designation/result state is created later by service and is not fabricated in this input.
+
+Tests-first writer cap12min: one new GameCreationContractsTest.kt and own handoff only, no production/build/delegation/config. Synthetic identities only. Cover valid explicit LIFE/custom roles and each mode, 1/6seat boundaries, duplicate IDs/orders/commander slots/inactive seats, missing/duplicate roles and inconsistent LIFEinitial, wrong clock modes/targets/alerts/anchors/runstate/banksets/finite durations. Root APIabsence RED, declaration-only graph behavior RED, constructor checks GREEN. ExactsourceAstrareview after the design review and patch; future persistence remains unaccepted.
+
+## Latest continuation delta
+
+Prepared root engineering design above. Independent design review and tests-only assignment precede production implementation. Prior state-only unit passed32model+81life cases and exactsourceAstraAPPROVE; coherent app check running centrally, no duplicate Gradle.

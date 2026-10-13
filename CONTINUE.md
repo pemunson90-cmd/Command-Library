@@ -24,7 +24,7 @@ Claude Code packets should fit a 10–15minute bounded unit: one file or one clo
 
 For a normal clean resume:
 
-1. Verify current `main` head.
+1. Verify current `main` head and the published continuation branch named by `state.working_branch` (currently `agent/cx-native-20261013`). Accepted main and unfinished continuation work are different heads; read the continuation branch's pointers before resuming. Preserve any dirty checkout or unpublished commits before switching.
 2. Read `coordination/state.json`.
 3. Read `coordination/ORCHESTRATOR.json`.
 4. Read only `coordination/tasks/<state.next_task>.md` and its `Latest continuation delta` when present.

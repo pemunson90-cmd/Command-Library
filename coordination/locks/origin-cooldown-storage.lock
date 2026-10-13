@@ -1,10 +1,13 @@
 {
   "component": "origin-cooldown-storage-native-tests",
   "orchestrator": "codex-local-resume-20261013",
-  "owner": "root; assigned writer completed/frozen, no live writer",
+  "owner": "root; bounded fixture writer completed/frozen, no live writer",
   "status": "reserved",
   "owned_paths": [
     "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/OriginCooldownMigrationTest.kt",
-    "coordination/handoffs/cx-k3-origin-cooldown-storage-01.md"
+    "coordination/handoffs/cx-k3-origin-cooldown-storage-01.md",
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/FullCatalogMigrationTest.kt",
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/StorageDatabaseTest.kt",
+    "docs/verification/k3-downloads/FOCUSED-NATIVE-EVIDENCE-20261013.md"
   ]
 }

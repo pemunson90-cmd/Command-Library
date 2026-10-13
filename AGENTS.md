@@ -8,7 +8,7 @@ Do not maintain a separate Codex protocol here. The active cross-model protocol 
 
 For a clean resume:
 
-1. Verify current `main`.
+1. Verify current `main` and the continuation branch named by `state.working_branch`; use that branch's live pointers and preserve dirty/unpublished work.
 2. Read `coordination/state.json`.
 3. Read `coordination/ORCHESTRATOR.json`.
 4. Read the task card named by `state.next_task` and only the documents it links.

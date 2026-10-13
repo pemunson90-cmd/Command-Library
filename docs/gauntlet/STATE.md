@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-focused-native-ready-80. Updated UTC: 2026-10-13T20:34:25Z.
+Checkpoint: cp-20261013-life-state-native-fixtures-81. Updated UTC: 2026-10-13T20:49:16Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Focused native candidate ready; continuous local implementation active. Next: orch-kotlin-k3-offline-data-01 step3.
-Publish agent/cx-native-20261013 focused candidate; continue approved life contract tests-first locally
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: K3 and life contracts active; continuous local-first execution. Next: orch-kotlin-k3-offline-data-01 step3.
+Publish reviewed state contracts and four native fixture corrections; inspect one corrected focused run while completing approved GameCreation unit locally.
 
-D27minimumsufficient Fold7-focused testing and10–15minClaude packets recorded. Native3realwire and2Roommigrationfixtures compile;569JVM/coherentcheck/lint/testAPKs/debugassembly/16KiB ZIPalignment pass. CI/fixturesAstraapproved, selectedlaneprovenance truthful, focusonlyoneAPI36Network+Storage; oldcompatibilityoptional. Prior129native/36PNG all3lanes actualpass retained. Rootactive on agent/cx-native-20261013; completedtaskdirections archived, README/CONTINUE updated; lifefirstcontractdesignAstraapproved, sourcepatchnotyetwritten.
+First life state exactsource approved; coherent57XML580JVM/check/lint/testAPKs/debugassembly pass. Focuseddb15592 actual3wire+2newmigration pass, four stale storagefixture failures corrected; correctednative not_run. Entrydocs point to published continuation, stale Claude assignments deprecated; next creation tests-only unit active and design approved.
 
 Read CURRENT, machine state and task card.
