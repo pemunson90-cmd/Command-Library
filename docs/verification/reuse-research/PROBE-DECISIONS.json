@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "verified_utc": "2026-10-13",
-  "status": "test-only candidates; original hosted graphics probes failed2/4; native graphics harness candidate awaiting hosted rerun and independent review",
+  "status": "test-only candidates; native Robolectric SDK35 Coil3/4 exposed upstream FileSource limit; actual Android instrumentation candidate compiled, runtime not_run",
   "scope": "Task1 D26v1.1; image/CSV compatibility only; no production source, DI, model or runtime-engine changes",
   "toolchain": {
     "compiler": "Kotlin K2 2.2.10",
@@ -244,7 +244,7 @@
     "fixture": "1x1 RGBA PNG generated with Python struct/zlib; valid IHDR/IDAT/IEND CRCs; no image model/tool involved"
   },
   "not_run": [
-    "Revised @GraphicsMode(NATIVE) Android runtime probe rerun; original hosted run38341796969 executed4 with2 assertion failures",
+    "Actual API35 Android instrumentation local-file decode/no-network/malformed/cancellation acceptance; native Robolectric run38343151548 executed4 with1 failure",
     "Gradle variant/dependency resolution and full module/app build against AGP9.4.1",
     "Compose rendering/instrumentation/device/fold tests",
     "Complete resolved-transitive native packaging/16KiB scan",
@@ -317,6 +317,49 @@
     },
     "candidate_change": "Class-local @GraphicsMode(NATIVE) and bounded actual result/error cause diagnostics only. Success/error/dimension/no-fetcher/cancellation assertions retained. Shared config/dependency graph unchanged.",
     "candidate_local_checks": "K2 compile0, plain JVM cache1/1; four revised Android runtime cases not_run locally.",
-    "hosted_next": "Root review, run exact published candidate once using existing hosted pipeline, inspect result/cause stdout and all four runtime assertions. If decode still fails, investigate actual cause rather than weaken assertions."
+    "hosted_next": "Root independently review exact source/config then run API35 connectedDebugAndroidTest filtered to CoilCompatibilityProbeTest; inspect all4 actual results. JVM cache remains separate. No production acceptance yet.",
+    "native_graphics_actual_run": {
+      "source_sha": "9907eaa43d3cd33028f2b3724e59487c381a9c84",
+      "run_url": "https://github.com/pemunson90-cmd/Command-Library/actions/runs/38343151548",
+      "xml_sha256": "19d951f1acb3649c1e565a03ccfcd722e6061ab0214ead6c65a1610454358c07",
+      "tests": 4,
+      "failures": 1,
+      "skipped": 0,
+      "passed": [
+        "malformedLocalImageReturnsError",
+        "externalHttpsHasNoFetcherWhenServiceLoadingIsDisabled",
+        "cancellingSuspendedLocalRequestPropagatesWithoutSuccess"
+      ],
+      "failed": "localPngDecodesWithoutNetworkComponents",
+      "cause": "android.graphics.ImageDecoder$DecodeException: Only supported on AndroidException in input: null, at nativeBinding -> FileSource -> StaticImageDecoder.decode; requested NATIVE, actual SDK35"
+    },
+    "confirmed_native_file_limitation": {
+      "upstream_test_url": "https://github.com/robolectric/robolectric/blob/robolectric-4.17/integration_tests/nativegraphics/src/test/java/org/robolectric/shadows/ShadowNativeImageDecoderTest.java",
+      "source_sha256": "4241abefbf1120831b293fa83f9a1dca7273dc2740971fff1db83c781826aaaf",
+      "upstream_statement": "TODO(hoisie): Support file sources in Android V+. getSourceCreators includes FileSource only when API < VANILLA_ICE_CREAM (35).",
+      "coil_source": "Published Coil3.3.0 StaticImageDecoder.toImageDecoderSourceOrNull selects ImageDecoder.createSource(file.toFile()) for SYSTEM local file sources; hosted stack confirms exactly this path.",
+      "conclusion": "Robolectric4.17 NATIVE at SDK35 cannot validate the required actual file decode route. Passing malformed input used BitmapFactoryDecoder and does not establish StaticImageDecoder support. No third SDK/input/decoder substitution, skipped success case, or weakened assertion is warranted.",
+      "upstream_lines": "153-165, specifically TODO162 and API guard163"
+    },
+    "instrumentation_candidate": {
+      "root_configuration_sha": "294e8b3",
+      "worker_configuration_cherry_pick_sha": "0a65c97",
+      "source_path": "android-app/feature/shell/src/androidTest/kotlin/com/architectpsg/commandlibrary/feature/shell/compatibility/CoilCompatibilityProbeTest.kt",
+      "change": "Move all4 runtime cases to AndroidJUnit4/ApplicationProvider; API23-safe File.createTempFile in context.cacheDir and android.util.Base64; original file input/assertions/default bundled decoders/no-network retained. JVM cache remains.",
+      "actual_local_verification": "K2 compiler2.2.10/std2.2.10 JVM17 exit0 for instrumentation source referencing real android-all15 and actual published AndroidX core1.7.0/ext-junit1.3.0 classes; JVM cache1/1 and CSV8/8 exit0. No SDK/device runtime execution.",
+      "compile_log_sha256": "c671f38ac1862e801fe00829eea60ea60537b65472dff090d13dfcdedc7ef5fd",
+      "androidx_artifacts": [
+        {
+          "url": "https://maven.google.com/androidx/test/core/1.7.0/core-1.7.0.aar",
+          "sha256": "f4dacd8edceeec48e0c76ecf28339b28f4b4f6b74f8e34e9e59b472c27d9eb81"
+        },
+        {
+          "url": "https://maven.google.com/androidx/test/ext/junit/1.3.0/junit-1.3.0.aar",
+          "sha256": "3363df84da4540ba8daff02c3f7cd65471037a6a5370591a7e6deba377b36e7f"
+        }
+      ],
+      "device_result": "not_run",
+      "hosted_command": "./gradlew :feature:shell:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.architectpsg.commandlibrary.feature.shell.compatibility.CoilCompatibilityProbeTest"
+    }
   }
 }
