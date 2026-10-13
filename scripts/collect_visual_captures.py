@@ -6,6 +6,7 @@ import shutil
 import struct
 import subprocess
 import xml.etree.ElementTree as ET
+import zlib
 
 EXPECTED = {
     f"synthetic-{view}-{size}-{theme}-{scale}.png"
@@ -17,16 +18,50 @@ EXPECTED = {
 
 
 def valid_png(data):
-    return (len(data) >= 33 and data[:8] == b'\x89PNG\r\n\x1a\n'
-            and data[12:16] == b'IHDR'
-            and all(struct.unpack('>II', data[16:24])))
+    if data[:8] != b'\x89PNG\r\n\x1a\n':
+        return False
+    offset, header, compressed, ended = 8, None, bytearray(), False
+    while offset + 12 <= len(data):
+        length = struct.unpack('>I', data[offset:offset + 4])[0]
+        end = offset + 12 + length
+        if end > len(data):
+            return False
+        kind = data[offset + 4:offset + 8]
+        payload = data[offset + 8:end - 4]
+        if zlib.crc32(kind + payload) != struct.unpack('>I', data[end - 4:end])[0]:
+            return False
+        if kind == b'IHDR':
+            if offset != 8 or length != 13:
+                return False
+            header = struct.unpack('>IIBBBBB', payload)
+        elif kind == b'IDAT':
+            compressed.extend(payload)
+        elif kind == b'IEND':
+            ended = length == 0 and end == len(data)
+            break
+        offset = end
+    if not header or not ended or not compressed:
+        return False
+    width, height, depth, color, compression, filtering, interlace = header
+    if not (0 < width <= 16000 and 0 < height <= 16000 and width * height <= 16000000):
+        return False
+    if depth != 8 or color not in (2, 6) or (compression, filtering, interlace) != (0, 0, 0):
+        return False
+    expected = height * (1 + width * (3 if color == 2 else 4))
+    try:
+        decoder = zlib.decompressobj()
+        pixels = decoder.decompress(compressed, expected + 1)
+        return decoder.eof and not decoder.unused_data and len(pixels) == expected
+    except zlib.error:
+        return False
 
 
 def safe_device_path(path):
     return bool(re.fullmatch(
         r'/(?:sdcard|storage/emulated/0)/Android/(?:data|media)/'
         r'com\.architectpsg\.commandlibrary\.feature\.shell(?:\.test)?/'
-        r'[A-Za-z0-9_./-]+', path)) and '..' not in pathlib.PurePosixPath(path).parts
+        r'(?:files/visual-acceptance|(?:files/)?additional_test_output)/'
+        r'synthetic-[A-Za-z0-9_.-]+\.png', path)) and '..' not in pathlib.PurePosixPath(path).parts
 
 
 def collect(root, output, adb):
@@ -58,11 +93,15 @@ def collect(root, output, adb):
     if missing:
         print('Missing synthetic captures:', ', '.join(sorted(missing)))
     # Failed suites retain partial evidence; passing suites must retain the complete matrix.
-    passed = len(visual_cases) == 3 and all(
+    passed = bool(visual_cases) and all(
         not any(case.find(kind) is not None for kind in ('failure', 'error', 'skipped'))
         for case in visual_cases)
-    if passed and missing:
-        raise SystemExit('Passing visual suite has incomplete screenshot evidence')
+    expected_suite = any(root.glob('**/src/androidTest/**/VisualSystemAcceptanceTest.kt'))
+    if expected_suite and not visual_cases:
+        raise SystemExit('Visual acceptance source has no executed cases')
+    unique_cases = {(case.get('classname'), case.get('name')) for case in visual_cases}
+    if passed and (missing or len(unique_cases) < 36):
+        raise SystemExit('Passing visual suite has incomplete matrix evidence')
 
 
 if __name__ == '__main__':
