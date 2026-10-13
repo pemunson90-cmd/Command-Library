@@ -128,6 +128,7 @@ public data class GameSettings(
     public val alertPreferences: GameAlertPreferences = GameAlertPreferences(),
 ) { init { require(adjustmentStep > 0) { "Adjustment step must be positive" } } }
 public sealed interface GameAction {
+    public data class RequestRandom(public val request: RandomRequest) : GameAction
     public data class AdjustCounter(public val seatId: EntityId, public val definitionId: EntityId, public val commanderSlotId: EntityId?, public val delta: Int) : GameAction
     public data class SetCounterHidden(public val seatId: EntityId, public val definitionId: EntityId, public val hidden: Boolean) : GameAction
     public data class RenameSeat(public val seatId: EntityId, public val name: String) : GameAction
@@ -147,6 +148,7 @@ public data class GameEvent(
     public val at: UtcTimestamp,
     public val undoOfEventId: Knowledge<Long>,
     public val revision: Revision,
+    public val randomResults: SnapshotList<RecordedRandomResult> = SnapshotList.empty(),
 ) { init { require(id >= 0) } }
 public data class GameResult(
     public val id: EntityId,

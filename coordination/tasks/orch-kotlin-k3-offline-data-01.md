@@ -38,6 +38,8 @@ Accepted scoped source disposition: docs/verification/k3-downloads/PERSONAL-SOUR
 
 ## Latest continuation delta
 
-User authorized recovery from unresponsive thread `01a13607-410d-761d-9745-7b7acdd9f0e7`. Remote original branch still at `464d8757e909ab45cd8f3b6a43fee22cfa0e6037`, last heartbeat21:02 UTC/lease expired21:47; screenshot shows later codec-design review but that file is not published. Preserve original branch and inaccessible unpushed work; no proof of process termination. New continuation branch `agent/cx-thread-recovery-20261013`, root session `codex-thread-recovery-20261013`.
+Root recovered original remote464d875 on separate published `agent/cx-thread-recovery-20261013`; old unresponsive thread `01a13607-410d-761d-9745-7b7acdd9f0e7` remains inaccessible, unpushed work cannot be recovered from this instance. Original branch preserved, no stopped-process claim. Recovery checkpoint8112922.
 
-Recovered latest contracts/native evidence unchanged. Baseline focused model/life checks ongoing locally. Next: independently review and implement bounded random/provenance contracts with Long batch IDs before codec/schema6/service. No new product/runtime acceptance.
+Bounded random/provenance contracts now independently design/exact-source APPROVE. Long batch IDs, exact capped remainder/face/sum validation, finite action-time readings, archive game/event/revision checks and compatible empty defaults. APIabsenceRED50s; behaviorRED66model11fail; GREEN66model+81life0failure/error/skip72s. Existing reducers reject random requests until real service. No codec/schema6/service/UI acceptance.
+
+Reconstructed codec design and inline plan under docs/superpowers/{specs,plans}/2026-10-13-life-payload-codec*.md, independently design-approved: dependency-free storage binary framing, complete metadata, lossless finite duration extrema, separate archived snapshot scopes. Exact next: implement typed snapshot/profile-draft/event/archive/checkpoint roots with RED/GREEN and independent source review; then additive5to6schema before persisted service. Physical/genuinecorpus/canonical/fullv1 remain unverified.

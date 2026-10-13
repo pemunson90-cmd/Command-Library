@@ -411,3 +411,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T21:02:11Z | codex | cp-20261013-native-pass-life-inputs-82 | containing commit | CorrectedoneAPI36 native38465889103 exact341b719 actual3network+32storage passed, independently extracted. Reviewed creation/profile/history-port units have meaningfulRED then54model+81lifeGREEN; declarations only, no persistence/UI. CI triggers scoped actualwire dependencies with unchanged gates/manualdispatch; oldpublicbranch docs redirectd92ec31, all localcommits preserved; no active Claude task.
 
 2026-10-13T22:17:09Z | codex | cp-20261013-thread-recovery-83 | containing commit | User-authorized recovery from unresponsive thread; remote original464d875 unchanged, expired lease checked, recovery branch preserves old work. Focused baseline ongoing; no product change yet.
+
+2026-10-13T22:24:01Z | codex | cp-20261013-recovered-random-provenance-84 | containing commit | Recovered random/provenance model packet source-approved; actual66model+81life tests pass0fail/error/skip. Codec design reconstructed/reviewed, no codec/schema/service implementation acceptance.

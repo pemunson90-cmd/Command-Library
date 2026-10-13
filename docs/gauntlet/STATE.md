@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261013-thread-recovery-83. Updated UTC: 2026-10-13T22:17:09Z.
+Checkpoint: cp-20261013-recovered-random-provenance-84. Updated UTC: 2026-10-13T22:24:01Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Recovery active; Android v1 incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
-Complete reviewed random/provenance contracts from preserved464d875, then reconstruct codec/schema6 design.
+Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: Recovery continuous implementation; Android v1 incomplete. Next: orch-kotlin-k3-offline-data-01 step3.
+Implement reviewed typed life payload codec with independent snapshot/archive limits; then schema6 and real transactional service.
 
-User-authorized recovery from unresponsive thread; remote original464d875 unchanged, expired lease checked, recovery branch preserves old work. Focused baseline ongoing; no product change yet.
+Recovered random/provenance model packet source-approved; actual66model+81life tests pass0fail/error/skip. Codec design reconstructed/reviewed, no codec/schema/service implementation acceptance.
 
 Read CURRENT, machine state and task card.

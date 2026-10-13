@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-thread-recovery-83. Next: orch-kotlin-k3-offline-data-01 step3; Recovery active; Android v1 incomplete.
+Checkpoint-ID: cp-20261013-recovered-random-provenance-84. Next: orch-kotlin-k3-offline-data-01 step3; Recovery continuous implementation; Android v1 incomplete.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

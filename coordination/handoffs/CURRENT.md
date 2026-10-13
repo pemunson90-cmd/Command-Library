@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-thread-recovery-83
+Checkpoint-ID: cp-20261013-recovered-random-provenance-84
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Complete reviewed random/provenance contracts from preserved464d875, then reconstruct codec/schema6 design.
+Next step: 3. Implement reviewed typed life payload codec with independent snapshot/archive limits; then schema6 and real transactional service.
 
-Updated UTC: 2026-10-13T22:17:09Z
-Status: Recovery active; Android v1 incomplete; lease: active.
-Verified base: 464d8757e909ab45cd8f3b6a43fee22cfa0e6037.
+Updated UTC: 2026-10-13T22:24:01Z
+Status: Recovery continuous implementation; Android v1 incomplete; lease: active.
+Verified base: 8112922d2ae0e46a72097a6349ae0aa10cbb6fa0.
 
-User-authorized recovery from unresponsive thread; remote original464d875 unchanged, expired lease checked, recovery branch preserves old work. Focused baseline ongoing; no product change yet.
+Recovered random/provenance model packet source-approved; actual66model+81life tests pass0fail/error/skip. Codec design reconstructed/reviewed, no codec/schema/service implementation acceptance.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -202,4 +202,12 @@ Dispatch transaction checks expected revision, settles timing, reduces validated
 
 No additional product decision is inferred from the reference screenshots. These are concrete engineering review choices; none authorizes silently dropping a retained requirement.
 
+## Recovery random/provenance packet refinement
+
+The 2026-10-13 recovery review approved a bounded random/provenance packet before the remaining action families. Both `ContinueDice.batchIndex` and recorded Dice.batchIndex use `Long`, correcting the draft `Int` shape above. Every batch consumes exactly `min(remaining, 10000)` faces, matching the accepted RandomTools.rollBatch behavior. Validate `index <= (requested - 1) / 10000` before multiplication, then check exact batch size, remainder, face range and sum. No dropped tail or inferred extra batch is valid. ContinueDice starts at index1; index0 belongs to the initial Dice request.
+
+Recorded SeatPick has distinct eligible IDs and a selected member exactly when eligible is nonempty. SeatOrder locally rejects duplicates; full game membership/permutation and request history consistency belong to the transactional service. RequestRandom is a declaration, never a reducer's implicit success.
+
+Action provenance validates finite nonnegative monotonic time, nonnegative event ID, identical before/after game identity, consecutive revisions with an overflow guard, and afterAction.lastEventId matching that event. Archive validates positive version plus matching event/game/revision. It does not mistake structural validity for authenticated service lineage. Checkpoints reject negative known settled IDs while preserving unknown/absent data. Default-empty exchange archives preserve legacy construction without certifying resumability.
+
 Current implementation pointer: `coordination/tasks/cx-m2-life-state-contracts-01.md`. Independent Astra approved the first state-only model design after the four root technical choices. Exact-source review is separate; no service, codec, schema6, exchange or UI acceptance follows from declarations. Later packets retain all obligations above.
