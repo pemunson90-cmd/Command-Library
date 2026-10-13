@@ -1,6 +1,6 @@
 # cx-k3-full-bulk-import-01 — full atomic catalog installation and identity lookup
 
-Prepared; assign only after root publishes lock/base. Sol high, fresh narrow packet. Core full contracts/framing merged maina4a57e4 after hosted337JVM/61native each. Root owns shared helper visibility/import owner, schema4 registry/export, Android provider/trusted artifact binding, DI/navigation/settings/CI. No extra subagents.
+Assigned; base0dcac576c0964f59b0fcc1767a0e9859333ecdb4, branch agent/cx-k3-full-bulk-import-01; exact owned paths in catalog-full-bulk.lock. Sol high, fresh narrow packet. Core full contracts/framing merged maina4a57e4 after hosted337JVM/61native each. Root owns shared helper visibility/import owner, schema4 registry/export, Android provider/trusted artifact binding, DI/navigation/settings/CI. No extra subagents.
 
 Read CONTINUE.md, FullCatalogContracts, LocalCatalogContracts, actual Database/Values contracts; FULL-IMPORT-IDENTITY-REVIEW (including superseding private-provider addendum), FULL-CATALOG-CONTRACT-REVIEW, SCHEMA4-DESIGN/review, FULL-MAPPER-VERIFICATION, FULL-SOURCE-MEASUREMENTS, FULL-FRAMING-REVIEW, FULL-SOURCE-CODEC-REVIEW and actual source/schema/mapper. Preserve all full-v1 obligations; this task implements complete bounded installation and identity capabilities only, not a fake aggregate CatalogRepository.
 
