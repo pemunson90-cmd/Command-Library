@@ -4,8 +4,8 @@
   "session_id": "codex-local-resume-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-13T19:31:31Z",
-  "expires_utc": "2026-10-13T20:16:31Z",
-  "checkpoint_id": "cp-20261013-continuous-resume-78",
+  "heartbeat_utc": "2026-10-13T20:07:04Z",
+  "expires_utc": "2026-10-13T20:52:04Z",
+  "checkpoint_id": "cp-20261013-durable-cooldown-local-79",
   "note": "Pat authorized resume; root owns shared configuration and coordination. Reserved component scopes preserved; workers must be explicitly assigned."
 }

@@ -1,0 +1,10 @@
+{
+  "component": "origin-cooldown-storage-native-tests",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "root; assigned writer completed/frozen, no live writer",
+  "status": "reserved",
+  "owned_paths": [
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/OriginCooldownMigrationTest.kt",
+    "coordination/handoffs/cx-k3-origin-cooldown-storage-01.md"
+  ]
+}

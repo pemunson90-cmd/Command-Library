@@ -1,0 +1,11 @@
+{
+  "component": "durable-origin-cooldown-helper",
+  "orchestrator": "codex-local-resume-20261013",
+  "owner": "root; assigned writer completed/frozen, no live writer",
+  "status": "reserved",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalOriginCooldown.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalOriginCooldownTest.kt",
+    "coordination/handoffs/cx-k3-origin-cooldown-helper-01.md"
+  ]
+}

@@ -367,7 +367,7 @@ class StorageDatabaseTest {
     @Test fun capabilitiesUseRealEngineForeignKeysParameterLimitAndFts5() = runBlocking {
         val capabilities = success(database.capabilities(neverCancel))
         assertTrue(capabilities.engineVersion.matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+.*")))
-        assertEquals(4, capabilities.schemaVersion)
+        assertEquals(5, capabilities.schemaVersion)
         assertTrue(capabilities.fts5)
         assertTrue(capabilities.transactions)
         assertTrue(capabilities.foreignKeys)

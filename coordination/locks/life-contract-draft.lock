@@ -1,9 +1,9 @@
 {
   "component": "life-contract-design-draft",
   "orchestrator": "codex-local-resume-20261013",
-  "owner": "Sol medium read-only repository analysis and exclusive design draft",
+  "owner": "root; assigned writer completed/frozen, no live writer",
   "owned_paths": [
     "docs/superpowers/specs/2026-10-13-life-persistence-contract-design.md"
   ],
-  "status": "active"
+  "status": "reserved"
 }

@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-continuous-resume-78. Next: orch-kotlin-k3-offline-data-01 step3; Continuous local execution active; existing native result pending.
+Checkpoint-ID: cp-20261013-durable-cooldown-local-79. Next: orch-kotlin-k3-offline-data-01 step3; Durable cooldown local-green checkpoint; continuing authorized local work.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

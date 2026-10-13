@@ -42,7 +42,7 @@ class AcquisitionStorageMigrationTest {
     @Test fun actualV2MigrationPreservesLegacyDataAndDurableAcquisitionRows() = runBlocking {
         val fixture = createV2()
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(5, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyUnchanged(fixture)
 
         write(job("paused"), job("completed"), job("unrelated"))
@@ -162,7 +162,7 @@ class AcquisitionStorageMigrationTest {
         }
         // Real Room open must still complete 2->3->4 after the aborted acquisition DDL transaction.
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(5, success(database!!.capabilities(token)).schemaVersion)
         assertAcquisitionSchema()
         assertLegacyUnchanged(fixture)
         reopen()

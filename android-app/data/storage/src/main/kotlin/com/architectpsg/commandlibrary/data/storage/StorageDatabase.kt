@@ -13,6 +13,7 @@ import com.architectpsg.commandlibrary.core.common.RollbackOnlyLatch
 import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.data.storage.schema.Migration1To2
 import com.architectpsg.commandlibrary.data.storage.schema.Migration2To3
+import com.architectpsg.commandlibrary.data.storage.schema.Migration4To5
 import com.architectpsg.commandlibrary.data.storage.schema.Migration3To4
 import com.architectpsg.commandlibrary.data.storage.schema.StorageSchema
 import com.architectpsg.commandlibrary.data.storage.schema.StorageSchemaDatabase
@@ -151,7 +152,7 @@ public class StorageDatabase private constructor(private val room: StorageSchema
             var database: StorageSchemaDatabase? = null
             try {
                 database = Room.databaseBuilder(context.applicationContext, StorageSchemaDatabase::class.java, fileName)
-                    .addMigrations(Migration1To2, Migration2To3, Migration3To4)
+                    .addMigrations(Migration1To2, Migration2To3, Migration3To4, Migration4To5)
                     .setDriver(driver)
                     .setQueryCoroutineContext(Dispatchers.IO)
                     .build()

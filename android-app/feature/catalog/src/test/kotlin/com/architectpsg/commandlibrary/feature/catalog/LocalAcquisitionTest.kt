@@ -177,6 +177,104 @@ class LocalAcquisitionTest {
         }
     }
 
+    @Test fun longAndInfinite429AreTransportFailuresWithoutAutomaticRetry() = runTest {
+        for (retry in listOf(86_401.seconds, Duration.INFINITE)) Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)
+                .copy(retryAfter = Knowledge.Known(retry))))) }
+            val q = f.queued()
+            val failed = value(f.engine.run(q.plan.jobId, token))
+            assertEquals(AcquisitionState.FAILED, failed.state)
+            assertEquals(FailureCode.TRANSPORT, requireNotNull(failed.failure).code)
+            assertEquals(1, f.wireEnqueues.size)
+            assertTrue(f.database.artifacts.isEmpty())
+        }
+    }
+
+    @Test fun revocationDuring429WaitSettlesWaitingConsentPromptly() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)))) }
+            val q = f.queued()
+            val runner = async { f.engine.run(q.plan.jobId, token) }
+            runCurrent()
+            value(f.settings.update(SettingsPatch(SnapshotList.empty()), f.state.revision, token))
+            advanceTimeBy(250); runCurrent()
+            assertEquals(AcquisitionState.WAITING_CONSENT, value(f.engine.status(q.plan.jobId, token)).state)
+            assertEquals(AcquisitionState.WAITING_CONSENT, value(runner.await()).state)
+            assertEquals(1, f.wireEnqueues.size)
+        }
+    }
+
+    @Test fun oneJobsIndefinite429DeniesAnotherJobsPhysicalEnqueue() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            val first = f.queued()
+            val second = f.queued()
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)
+                .copy(retryAfter = Knowledge.Known(Duration.INFINITE))))) }
+            assertEquals(FailureCode.TRANSPORT, value(f.engine.run(first.plan.jobId, token)).failure?.code)
+            f.response = { spec -> flowOf(Outcome.Success(chunk("abcdef", metadata = f.metadata(spec, length = 6)))) }
+            assertEquals(FailureCode.TRANSPORT, value(f.engine.run(second.plan.jobId, token)).failure?.code)
+            assertEquals(1, f.wireEnqueues.size)
+            assertTrue(f.database.artifacts.isEmpty())
+        }
+    }
+
+    @Test fun cancellationAt429CommitAcknowledgementRetainsTheOriginBlock() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            val first = f.queued()
+            val second = f.queued()
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)))) }
+            lateinit var runner: Deferred<Outcome<AcquisitionSnapshot>>
+            f.database.onCooldownCommit = { runner.cancel() }
+            runner = async(start = CoroutineStart.LAZY) { f.engine.run(first.plan.jobId, token) }
+            runner.start(); runner.join()
+            assertTrue(runner.isCancelled)
+            assertEquals(AcquisitionState.INTERRUPTED, value(f.engine.status(first.plan.jobId, token)).state)
+            f.response = { spec -> flowOf(Outcome.Success(chunk("abcdef", metadata = f.metadata(spec, length = 6)))) }
+            assertEquals(FailureCode.TRANSPORT, value(f.engine.run(second.plan.jobId, token)).failure?.code)
+            assertEquals(1, f.wireEnqueues.size)
+        }
+    }
+
+    @Test fun resumeDuringKnownCooldownDoesNotConsumeAttemptsOrAlterTheJob() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)
+                .copy(retryAfter = Knowledge.Known(Duration.INFINITE))))) }
+            val q = f.queued()
+            val failed = value(f.engine.run(q.plan.jobId, token))
+            repeat(4) {
+                val denied = f.engine.resume(failed.plan.jobId, failed.revision, requireNotNull(failed.consentId), token)
+                assertTrue(denied.toString(), denied is Outcome.Failure)
+                assertEquals(FailureCode.TRANSPORT, (denied as Outcome.Failure).error.code)
+                assertEquals(failed, value(f.engine.status(failed.plan.jobId, token)))
+            }
+            assertEquals(1, f.wireEnqueues.size)
+        }
+    }
+
+    @Test fun startDuringKnownCooldownKeepsTheNewPlanUncharged() = runTest {
+        Fixture(this).use { f ->
+            f.guardedWire = true
+            f.response = { spec -> flowOf(Outcome.Success(chunk("", metadata = f.metadata(spec, status = 429)
+                .copy(retryAfter = Knowledge.Known(Duration.INFINITE))))) }
+            val q = f.queued()
+            value(f.engine.run(q.plan.jobId, token))
+            val request = f.request()
+            val planned = value(f.engine.plan(request, token))
+            val approval = value(f.settings.approve(request.intent, token))
+            val denied = f.engine.start(planned.plan.jobId, planned.revision, approval.id, token)
+            assertTrue(denied.toString(), denied is Outcome.Failure)
+            assertEquals(FailureCode.TRANSPORT, (denied as Outcome.Failure).error.code)
+            assertEquals(planned, value(f.engine.status(planned.plan.jobId, token)))
+            assertEquals(0L, planned.transferredBytes)
+            assertEquals(1, f.wireEnqueues.size)
+        }
+    }
+
     @Test fun planIsDurableAndDoesNotApproveOrDispatch() = runTest {
         Fixture(this).use { f ->
             val planned = value(f.engine.plan(f.request(), token))
@@ -763,14 +861,22 @@ class LocalAcquisitionTest {
         val jobs = linkedMapOf<String, MutableMap<String, SqlValue>>()
         val artifacts = linkedMapOf<String, MutableMap<String, SqlValue>>()
         val seen = linkedMapOf<Pair<String, String>, MutableMap<String, SqlValue>>()
+        val cooldowns = linkedMapOf<String, MutableMap<String, SqlValue>>()
         var zeroPageCheckpoint = false
         var onCompletionCommit: (suspend () -> Unit)? = null
         var onRemovalCommit: (suspend () -> Unit)? = null
+        var onCooldownCommit: (() -> Unit)? = null
         var afterListing: (() -> Unit)? = null
         private fun params(request: SqlRequest) = request.parameters.associate { it.name to it.value }
         override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> {
             cancel.throwIfCancelled()
             val p = params(request)
+            if ("FROM acquisition_origin_cooldown" in request.statement) {
+                val row = cooldowns[(p.getValue("origin") as SqlValue.Text).value]
+                return Outcome.Success(SnapshotList.copyOf(listOfNotNull(row?.let {
+                    RowData(SnapshotList.copyOf(it.map { (name, value) -> RowColumn(name, value) }))
+                })))
+            }
             var rows = jobs.values.toList()
             if ("WHERE j.job_id = :id" in request.statement) rows = rows.filter { it["job_id"] == p["id"] }
             if ("j.created_seconds < :cs" in request.statement) rows = rows.filter {
@@ -792,13 +898,28 @@ class LocalAcquisitionTest {
         private fun execute(request: SqlRequest): Outcome<DbWriteResult> {
             val p = params(request)
             if (request.statement.startsWith("INSERT INTO")) {
-                val table = request.statement.substringAfter("INSERT INTO ").substringBefore(' ')
+                val table = request.statement.substringAfter("INSERT INTO ").takeWhile { !it.isWhitespace() && it != '(' }
                 val values = p.toMutableMap()
                 when (table) {
                     "acquisition_job" -> { val id = (p.getValue("job_id") as SqlValue.Text).value; if (jobs.containsKey(id)) return failure(); jobs[id] = values }
                     "acquisition_artifact" -> { val id = (p.getValue("job_id") as SqlValue.Text).value; if (artifacts.containsKey(id)) return failure(); artifacts[id] = values }
                     "acquisition_seen_id" -> { val key = (p.getValue("job_id") as SqlValue.Text).value to (p.getValue("raw_id") as SqlValue.Text).value; if (seen.containsKey(key)) return failure(); seen[key] = values }
+                    "acquisition_origin_cooldown" -> { val origin = (p.getValue("origin") as SqlValue.Text).value; if (cooldowns.containsKey(origin)) return failure(); cooldowns[origin] = values }
                     else -> error("Unexpected test SQL")
+                }
+                return Outcome.Success(DbWriteResult(1))
+            }
+            if (request.statement.startsWith("UPDATE acquisition_origin_cooldown")) {
+                val row = cooldowns[(p.getValue("origin") as SqlValue.Text).value] ?: return Outcome.Success(DbWriteResult(0))
+                if (row["revision"] != p["expected_revision"]) return Outcome.Success(DbWriteResult(0))
+                if ("new_revision" in p) {
+                    row["revision"] = p.getValue("new_revision")
+                    row["interval_seconds"] = p.getValue("interval_seconds")
+                    row["interval_nano"] = p.getValue("interval_nano")
+                } else {
+                    row["revision"] = SqlValue.Integer((row.getValue("revision") as SqlValue.Integer).value + 1)
+                    row["interval_seconds"] = SqlValue.Integer(0)
+                    row["interval_nano"] = SqlValue.Integer(0)
                 }
                 return Outcome.Success(DbWriteResult(1))
             }
@@ -820,6 +941,7 @@ class LocalAcquisitionTest {
         private fun failure(): Outcome<Nothing> = Outcome.Failure(DomainFailure(FailureCode.PERSISTENCE, "Synthetic constraint", SnapshotList.empty()))
         override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> {
             val oldJobs = jobs.mapValues { it.value.toMutableMap() }; val oldArtifacts = artifacts.mapValues { it.value.toMutableMap() }; val oldSeen = seen.mapValues { it.value.toMutableMap() }
+            val oldCooldowns = cooldowns.mapValues { it.value.toMutableMap() }
             var rollback: Outcome<Nothing>? = null
             val tx = object : DbTransaction {
                 override val state: DbTransactionState get() = rollback?.let { DbTransactionState.RollbackOnly(it) } ?: DbTransactionState.Active
@@ -834,7 +956,7 @@ class LocalAcquisitionTest {
                 }
                 override fun abort(error: DomainFailure): Nothing { if (rollback == null) rollback = Outcome.Failure(error); throw TransactionAbort(error) }
             }
-            fun restore() { jobs.clear(); jobs.putAll(oldJobs); artifacts.clear(); artifacts.putAll(oldArtifacts); seen.clear(); seen.putAll(oldSeen) }
+            fun restore() { jobs.clear(); jobs.putAll(oldJobs); artifacts.clear(); artifacts.putAll(oldArtifacts); seen.clear(); seen.putAll(oldSeen); cooldowns.clear(); cooldowns.putAll(oldCooldowns) }
             try {
                 currentCoroutineContext().ensureActive(); cancel.throwIfCancelled()
                 val result = action(tx)
@@ -843,6 +965,7 @@ class LocalAcquisitionTest {
                 if (result is Outcome<*> && result !is Outcome.Success<*>) { restore(); @Suppress("UNCHECKED_CAST") return result as Outcome<T> }
                 if (artifacts.size > oldArtifacts.size) onCompletionCommit?.invoke()
                 if (jobs.values.any { it["failure_payload"] == SqlValue.Text("removal-pending-v1") } && oldJobs.values.none { it["failure_payload"] == SqlValue.Text("removal-pending-v1") }) onRemovalCommit?.invoke()
+                if (cooldowns != oldCooldowns) onCooldownCommit?.let { callback -> onCooldownCommit = null; callback() }
                 return Outcome.Success(result)
             } catch (e: CancellationException) { restore(); throw e }
             catch (e: TransactionAbort) { restore(); return rollback ?: Outcome.Failure(e.failure) }

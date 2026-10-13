@@ -40,7 +40,7 @@ class RulesStorageMigrationTest {
         val schema = exportedV1()
         val original = createV1(schema)
         database = success(StorageDatabase.open(context, fileName))
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(5, success(database!!.capabilities(token)).schemaVersion)
         for (table in listOf("acquisition_job", "acquisition_artifact", "acquisition_seen_id")) {
             assertEquals("1->2->3->4 creates $table", 0L, scalar("SELECT count(*) AS total FROM $table"))
         }

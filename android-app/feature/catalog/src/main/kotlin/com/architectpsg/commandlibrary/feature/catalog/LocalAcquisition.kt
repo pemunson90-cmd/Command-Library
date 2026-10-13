@@ -43,6 +43,7 @@ internal class LocalAcquisition(
     private val controls = ConcurrentHashMap<String, Mutex>()
     private val fileGuards = ConcurrentHashMap<String, Mutex>()
     private val workers = ConcurrentHashMap<String, Deferred<Outcome<AcquisitionSnapshot>>>()
+    private val originCooldown = LocalOriginCooldown(database, clock)
     private val searchStarts = Mutex()
     private var lastSearchStart: Duration? = null
     private var lastWireSearchStart: Duration? = null // Protected by the shared consent gate.
@@ -90,6 +91,14 @@ internal class LocalAcquisition(
             fileGuard(id).withTokenLock(cancel) {
                 var row = load(id, cancel)
                 expect(row, expected, allowed)
+                consent.withExclusive(cancel) {
+                    policy(row, consentId, cancel)?.let { throw Stop(it) }
+                    // Known throttling must not consume a retry or discard a checkpoint.
+                    // VERIFYING reconciles a prepared artifact without issuing a request.
+                    if (row.phase != AcquisitionPhase.VERIFYING &&
+                        requireSuccess(originCooldown.remaining(row.plan.request.intent.resource, cancel)) > Duration.ZERO)
+                        throw Reject(failure(FailureCode.TRANSPORT))
+                }
                 if (row.state == AcquisitionState.FAILED && row.phase != AcquisitionPhase.VERIFYING && row.attempt > 0) row = restart(row, cancel)
                 consent.withExclusive(cancel) {
                     policy(row, consentId, cancel)?.let { throw Stop(it) }
@@ -270,7 +279,7 @@ internal class LocalAcquisition(
                     metadata = requireNotNull(chunk.metadata)
                     val m = metadata!!
                     validateMetadata(row.plan.request, source.uri, m)
-                    if (m.statusCode == 429) throw RateLimited(m)
+                    if (m.statusCode == 429) { persistRateLimit(m); throw RateLimited(m) }
                     if (offset > 0 && m.statusCode == 200) { restartResponse = true; throw RestartResponse() }
                     if (offset == 0L) require(m.statusCode == 200) else require(m.statusCode == 206)
                     val encoding = header(m, "Content-Encoding") ?: "identity"
@@ -307,7 +316,7 @@ internal class LocalAcquisition(
                     is RateLimited -> {
                         // Known settled error response still consumes its conservative reservation;
                         // a user/scheduler retry waits rather than hammering the endpoint.
-                        waitRateLimit(signal.metadata, cancel)
+                        waitRateLimit(row, signal.metadata, cancel)
                         throw Reject(failure(FailureCode.TRANSPORT))
                     }
                     null -> Unit
@@ -393,7 +402,7 @@ internal class LocalAcquisition(
                 if (metadata == null) {
                     metadata = requireNotNull(chunk.metadata)
                     validateMetadata(row.plan.request, uri, metadata!!)
-                    if (metadata!!.statusCode == 429) throw RateLimited(metadata!!)
+                    if (metadata!!.statusCode == 429) { persistRateLimit(metadata!!); throw RateLimited(metadata!!) }
                     require(metadata!!.statusCode == 200 && (header(metadata!!, "Content-Encoding") ?: "identity") == "identity")
                     header(metadata!!, "Content-Length")?.let { require(unsignedLong(it) <= allowance) }
                 } else if (chunk.metadata != null) require(chunk.metadata == metadata)
@@ -403,7 +412,7 @@ internal class LocalAcquisition(
                 if (chunk.final) header(metadata!!, "Content-Length")?.let { require(unsignedLong(it) == out.size().toLong()) }
             }
         }
-        if (signal is RateLimited) { waitRateLimit(signal.metadata, cancel); throw Reject(failure(FailureCode.TRANSPORT)) }
+        if (signal is RateLimited) { waitRateLimit(row, signal.metadata, cancel); throw Reject(failure(FailureCode.TRANSPORT)) }
         if (signal != null) throw signal
         val bytes = out.toByteArray()
         val decoder = Charsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT)
@@ -429,6 +438,8 @@ internal class LocalAcquisition(
                 val endpoint = endpointFor(current.plan.request, actualUri)
                 val target = validUri(actualUri)
                 require(endpoint.origin == Origin("https", target.host, if (target.port == -1) 443 else target.port) && endpoint.secret == null && endpoint.retry.maxAttempts == 1)
+                if (requireSuccess(originCooldown.remaining(actualUri, cancel)) > Duration.ZERO)
+                    throw Reject(failure(FailureCode.TRANSPORT))
                 if (current.plan.request.source is AcquisitionSource.EnglishSearch) lastWireSearchStart?.let { last ->
                     val elapsed = clock.monotonicNow() - last
                     require(elapsed >= Duration.ZERO && elapsed.isFinite())
@@ -784,11 +795,31 @@ internal class LocalAcquisition(
     private fun strongEtag(metadata: HttpMetadata): String? = header(metadata, "ETag")?.let {
         if (it.matches(Regex("\"[\\x21\\x23-\\x7e\\x80-\\xff]*\"")) && it.length <= 1024) it else null
     }
-    private suspend fun waitRateLimit(metadata: HttpMetadata, cancel: CancelToken) {
-        val wait = maxOf(30.seconds, (metadata.retryAfter as? Knowledge.Known)?.value ?: Duration.ZERO)
-        require(wait.isFinite() && wait <= (24 * 60 * 60).seconds)
-        var elapsed = Duration.ZERO
-        while (elapsed < wait) { check(cancel); val step = minOf(100.milliseconds, wait - elapsed); delay(step); elapsed += step }
+    private suspend fun persistRateLimit(metadata: HttpMetadata) = withContext(NonCancellable) {
+        // Persist the validated observation before transfer cleanup can replace its signal with
+        // cancellation or a waiting state. Gate acquisition is also cancellation-safe.
+        consent.withExclusive(NO_CANCEL) {
+            requireSuccess(originCooldown.record(metadata.finalUri, metadata.retryAfter, NO_CANCEL))
+        }
+    }
+
+    private suspend fun waitRateLimit(row: Stored, metadata: HttpMetadata, cancel: CancelToken) {
+        while (true) {
+            check(cancel)
+            val remaining = consent.withExclusive(cancel) {
+                val current = load(row.id, cancel)
+                if (current.owner != row.owner || current.attempt != row.attempt || current.plan != row.plan ||
+                    current.revision != row.revision || current.state != AcquisitionState.RUNNING || current.consentId != row.consentId)
+                    throw Reject(failure(FailureCode.PERMISSION))
+                policy(current, current.consentId, cancel)?.let { throw Stop(it) }
+                requireSuccess(originCooldown.remaining(metadata.finalUri, cancel))
+            }
+            if (remaining <= Duration.ZERO) return
+            if (!remaining.isFinite() || remaining > (24 * 60 * 60).seconds)
+                throw Reject(failure(FailureCode.TRANSPORT))
+            // Waiting holds neither the consent gate nor the search-start lock.
+            delay(minOf(100.milliseconds, remaining))
+        }
     }
 
     private suspend fun load(id: EntityId, cancel: CancelToken, tx: DbTransaction? = null): Stored {
