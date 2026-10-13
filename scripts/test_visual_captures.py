@@ -37,6 +37,17 @@ class CaptureSafetyTest(unittest.TestCase):
                     collect(root, root/'captures', 'adb')
                 run.assert_not_called()
 
+    def test_skipped_matrix_cannot_pass_evidence_gate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            report = root / 'feature/shell/build/outputs/androidTest-results/connected/device/TEST-visual.xml'
+            report.parent.mkdir(parents=True)
+            report.write_text('<testsuite>' + ''.join(
+                f'<testcase classname="VisualSystemAcceptanceTest" name="case[{i}]"><skipped/></testcase>'
+                for i in range(36)) + '</testsuite>')
+            with self.assertRaises(SystemExit):
+                collect(root, root/'captures', 'adb')
+
     def test_complete_host_matrix_needs_no_device_reads(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)

@@ -94,12 +94,13 @@ def collect(root, output, adb):
         print('Missing synthetic captures:', ', '.join(sorted(missing)))
     # Failed suites retain partial evidence; passing suites must retain the complete matrix.
     passed = bool(visual_cases) and all(
-        not any(case.find(kind) is not None for kind in ('failure', 'error', 'skipped'))
+        not any(case.find(kind) is not None for kind in ('failure', 'error'))
         for case in visual_cases)
     expected_suite = any(root.glob('**/src/androidTest/**/VisualSystemAcceptanceTest.kt'))
     if expected_suite and not visual_cases:
         raise SystemExit('Visual acceptance source has no executed cases')
-    unique_cases = {(case.get('classname'), case.get('name')) for case in visual_cases}
+    unique_cases = {(case.get('classname'), case.get('name')) for case in visual_cases
+                    if case.find('skipped') is None}
     if passed and (missing or len(unique_cases) < 36):
         raise SystemExit('Passing visual suite has incomplete matrix evidence')
 
