@@ -1,0 +1,10 @@
+{
+  "component": "visual-capture-collector",
+  "orchestrator": "codex-local-resume-20261013",
+  "agent_task": "ci_reconcile",
+  "owner": "Reserved; Sol medium completed, no live writer",
+  "owned_paths": [
+    "scripts/collect_visual_captures.py",
+    "scripts/test_visual_captures.py"
+  ]
+}

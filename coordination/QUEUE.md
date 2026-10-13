@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-metadata-corrected-70. Next: orch-kotlin-k3-offline-data-01 step3; Active: corrected528-test candidate; native/render execution pending.
+Checkpoint-ID: cp-20261013-native-visual-binder-71. Next: orch-kotlin-k3-offline-data-01 step3; Native120/lane passed; API23capturefix locally verified, binder preserved unregistered; visual/fullv1 incomplete.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
