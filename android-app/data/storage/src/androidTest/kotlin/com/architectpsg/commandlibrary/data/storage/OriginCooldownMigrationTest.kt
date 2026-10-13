@@ -1,5 +1,7 @@
 package com.architectpsg.commandlibrary.data.storage
 
+import com.architectpsg.commandlibrary.data.storage.schema.StorageSchema
+
 import android.content.Context
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
@@ -16,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** Real committed schema-4 file, migrated through StorageDatabase.open to schema 5. */
+/** Real committed schema-4 file, migrated through schema5 to the current schema via StorageDatabase.open. */
 @RunWith(AndroidJUnit4::class)
 class OriginCooldownMigrationTest {
     private lateinit var context: Context
@@ -37,7 +39,7 @@ class OriginCooldownMigrationTest {
     @Test fun schema4RowsAndDdlSurviveSchema5MigrationAndCooldownOutlivesJob() = runBlocking {
         val fixture = createV4()
         reopen()
-        assertEquals(5, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyPreserved(fixture)
         assertCooldownShape()
 
@@ -77,7 +79,7 @@ class OriginCooldownMigrationTest {
         try {
             val fresh = success(StorageDatabase.open(context, freshName))
             try {
-                assertEquals(5, success(fresh.capabilities(token)).schemaVersion)
+                assertEquals(StorageSchema.VERSION, success(fresh.capabilities(token)).schemaVersion)
                 assertEquals(migratedShape, cooldownShape(fresh))
             } finally { fresh.close() }
         } finally { context.deleteDatabase(freshName) }
@@ -220,5 +222,5 @@ class OriginCooldownMigrationTest {
         assertTrue("Expected success, got $outcome", outcome is Outcome.Success)
         return (outcome as Outcome.Success).value
     }
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name != 'room_master_table' AND tbl_name != 'acquisition_origin_cooldown' ORDER BY type,name"
+    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name != 'room_master_table' AND tbl_name != 'acquisition_origin_cooldown' AND tbl_name NOT IN ('life_game','life_event','life_seat_search','life_result','life_alert','life_profile') ORDER BY type,name"
 }

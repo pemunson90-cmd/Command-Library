@@ -1,3 +1,5 @@
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.ksp)
@@ -33,6 +35,34 @@ room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
+// Android's driver loads sqliteJni by name. JVM unit tests need the host binary, not the APK's ABI.
+val hostSqliteNative = configurations.create("hostSqliteNative") {
+    isCanBeConsumed = false
+    isTransitive = false
+}
+val hostSqliteDirectory = layout.buildDirectory.dir("host-sqlite-native")
+val prepareHostSqliteNative = tasks.register<Sync>("prepareHostSqliteNative") {
+    val hostOs = System.getProperty("os.name").lowercase(Locale.ROOT)
+    val hostArch = System.getProperty("os.arch").lowercase(Locale.ROOT)
+    val platform = when {
+        hostOs.contains("linux") && hostArch in setOf("amd64", "x86_64") -> "linux_x64"
+        hostOs.contains("linux") && hostArch in setOf("aarch64", "arm64") -> "linux_arm64"
+        hostOs.contains("mac") && hostArch in setOf("aarch64", "arm64") -> "osx_arm64"
+        hostOs.contains("windows") && hostArch in setOf("amd64", "x86_64") -> "windows_x64"
+        else -> error("Bundled SQLite has no JVM native for $hostOs/$hostArch")
+    }
+    from(hostSqliteNative.map { zipTree(it) }) {
+        include("natives/$platform/*")
+        eachFile { relativePath = org.gradle.api.file.RelativePath(true, name) }
+        includeEmptyDirs = false
+    }
+    into(hostSqliteDirectory)
+}
+tasks.withType<Test>().configureEach {
+    dependsOn(prepareHostSqliteNative)
+    systemProperty("java.library.path", hostSqliteDirectory.get().asFile.absolutePath)
+}
+
 dependencies {
     api(project(":core:model"))
     implementation(project(":core:common"))
@@ -43,6 +73,7 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
+    add(hostSqliteNative.name, libs.sqlite.bundled.jvm)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)

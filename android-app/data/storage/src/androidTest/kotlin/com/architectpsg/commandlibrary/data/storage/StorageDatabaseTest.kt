@@ -1,5 +1,7 @@
 package com.architectpsg.commandlibrary.data.storage
 
+import com.architectpsg.commandlibrary.data.storage.schema.StorageSchema
+
 import android.content.Context
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -341,14 +343,14 @@ class StorageDatabaseTest {
         database.close()
         val file = context.getDatabasePath(fileName)
         BundledSQLiteDriver().open(file.absolutePath).use { connection ->
-            connection.prepare("PRAGMA user_version = 6").use { it.step() }
+            connection.prepare("PRAGMA user_version = ${StorageSchema.VERSION + 1}").use { it.step() }
         }
         val before = file.readBytes()
         val refused = StorageDatabase.open(context, fileName)
         assertEquals(UnavailableReason.UNSUPPORTED, (refused as Outcome.Unavailable).reason)
         assertArrayEquals(before, file.readBytes())
         BundledSQLiteDriver().open(file.absolutePath).use { connection ->
-            connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals(6L, it.getLong(0)) }
+            connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals((StorageSchema.VERSION + 1).toLong(), it.getLong(0)) }
             connection.prepare("SELECT count(*) FROM catalog_name_fts").use { assertTrue(it.step()); assertEquals(1L, it.getLong(0)) }
         }
     }
@@ -367,7 +369,7 @@ class StorageDatabaseTest {
     @Test fun capabilitiesUseRealEngineForeignKeysParameterLimitAndFts5() = runBlocking {
         val capabilities = success(database.capabilities(neverCancel))
         assertTrue(capabilities.engineVersion.matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+.*")))
-        assertEquals(5, capabilities.schemaVersion)
+        assertEquals(StorageSchema.VERSION, capabilities.schemaVersion)
         assertTrue(capabilities.fts5)
         assertTrue(capabilities.transactions)
         assertTrue(capabilities.foreignKeys)

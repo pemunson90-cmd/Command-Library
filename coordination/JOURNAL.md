@@ -415,3 +415,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T22:24:01Z | codex | cp-20261013-recovered-random-provenance-84 | containing commit | Recovered random/provenance model packet source-approved; actual66model+81life tests pass0fail/error/skip. Codec design reconstructed/reviewed, no codec/schema/service implementation acceptance.
 
 2026-10-13T22:44:08Z | codex | cp-20261013-recovered-life-codec-85 | containing commit | Recovered typed life codec source approved; actuallocal627JVM0failure/error/skip, wholecheck/debugassembly and16KiBZIPalignment pass. Local-first guidance persisted; unintended hosted run cancelled, recovery jobs skipped. Schema6 pending.
+
+2026-10-13T23:27:34Z | codex | cp-20261013-life-schema6-local-86 | containing commit | Reviewed additive schema6/KSP6 with18oldentitiesunchanged;31localstorage and632wholeJVM/check/debug/testAPKs pass; pinned hostJNI fixed. AndroidRoom native pending; no service/UI acceptance.

@@ -28,6 +28,12 @@ import androidx.room3.RoomDatabase
         AcquisitionArtifactEntity::class,
         AcquisitionSeenIdEntity::class,
         OriginCooldownEntity::class,
+        LifeGameEntity::class,
+        LifeEventEntity::class,
+        LifeSeatSearchEntity::class,
+        LifeResultEntity::class,
+        LifeAlertEntity::class,
+        LifeProfileEntity::class,
     ],
     version = StorageSchema.VERSION,
     exportSchema = true,
@@ -36,5 +42,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 5
+    const val VERSION: Int = 6
 }

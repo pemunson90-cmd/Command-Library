@@ -29,8 +29,12 @@
 
 Files: create schema/LifeTables.kt, Migration5To6.kt; modify StorageSchemaDatabase.kt and StorageDatabase.kt; create LifeMigrationTest.kt and exported schema5 fixture resource; retain generated6.json.
 
-- [ ] Generate schema5 SQL fixture from committed5.json and verify provenance; write migration/constraint/CAS/reopen/rollback tests before implementation.
-- [ ] Run APIabsence RED; implement exact six-table migration/entities/registration.
-- [ ] Run local realSQLite/storage JVM tests and actualKSP6 compile. Compare old18 exports and physical schema/index/FK to new export.
-- [ ] Independent source/durability review; fix and rerun affected checks.
-- [ ] Publish truthful checkpoint; next is checked storage adapters and service action/timing contracts.
+- [x] Generate schema5 SQL fixture from committed5.json and verify provenance; write migration/constraint/CAS/reopen/rollback tests before implementation.
+- [x] Run APIabsence RED; implement exact six-table migration/entities/registration.
+- [x] Run local realSQLite/storage JVM tests and actualKSP6 compile. Compare old18 exports and physical schema/index/FK to new export.
+- [x] Independent source/durability review; fix and rerun affected checks.
+- [x] Publish truthful checkpoint; next is checked storage adapters and service action/timing contracts.
+
+## Execution ledger
+
+Recovered dirty schema source after environment reconnection; preserved files and independently verified against approved design. APIabsence RED54s; initial5JNI failures were local host setup, fixed via pinned test-only native extraction.31storageGREEN91s. Old18export entities and fixture verified, newphysicalcolumns/indexes matched. Wholelocalcheck/debug/focusedtestAPKs235s,632JVM0failure/error/skip; zipalignmentpassed. Late exact-six-table native fixture filter reviewed and locally reproduced. Source review approved. Android Room automatic open/native gate pending, no service binding.
