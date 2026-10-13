@@ -27,7 +27,8 @@ env:
   SDK_BUILD_TOOLS: 'build-tools;36.0.0'
 jobs:
   jvm-and-assemble:
-    if: github.repository == 'pemunson90-cmd/Command-Library' && !(github.event_name == 'push' && startsWith(github.ref, 'refs/heads/agent/cx-native-'))
+    # Recovery work is verified locally; retain the complete PR/main/manual gates.
+    if: github.repository == 'pemunson90-cmd/Command-Library' && !(github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/agent/cx-native-') || startsWith(github.ref, 'refs/heads/agent/cx-thread-recovery-')))
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
