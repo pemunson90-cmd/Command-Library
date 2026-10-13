@@ -5,6 +5,7 @@ import coil3.serviceLoaderEnabled
 import coil3.compose.AsyncImagePainter
 import coil3.disk.DiskCache
 import coil3.request.ErrorResult
+import coil3.request.ImageResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import kotlinx.coroutines.CompletableDeferred
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 import java.nio.file.Files
 import java.util.Base64
 
@@ -64,6 +66,9 @@ class CoilDiskCacheCompatibilityProbeTest {
 /** Android runtime probes: require actual Robolectric/Android resources, never SDK stubs. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])
+// Legacy graphics manufacture bitmaps for malformed bytes and do not implement
+// modern ImageDecoder file descriptors. Use Robolectric's actual native codecs.
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class CoilCompatibilityProbeTest {
     @Test fun localPngDecodesWithoutNetworkComponents() = runTest {
@@ -75,7 +80,7 @@ class CoilCompatibilityProbeTest {
         try {
             file.writeBytes(Base64.getDecoder().decode(PNG))
             val result = loader.execute(ImageRequest.Builder(context).data(file).size(1, 1).build())
-            assertTrue(result is SuccessResult)
+            assertTrue(describeResult("local PNG: expected SuccessResult", result), result is SuccessResult)
             result as SuccessResult
             assertEquals(1, result.image.width)
             assertEquals(1, result.image.height)
@@ -91,7 +96,7 @@ class CoilCompatibilityProbeTest {
             .diskCache(null).memoryCache(null).build()
         try {
             val result = loader.execute(ImageRequest.Builder(context).data(byteArrayOf(0, 1, 2)).size(1, 1).build())
-            assertTrue(result is ErrorResult)
+            assertTrue(describeResult("malformed local bytes: expected ErrorResult", result), result is ErrorResult)
         } finally { loader.shutdown(); Dispatchers.resetMain() }
     }
 
@@ -102,8 +107,9 @@ class CoilCompatibilityProbeTest {
             .diskCache(null).memoryCache(null).build()
         try {
             val result = loader.execute(ImageRequest.Builder(context).data("https://example.invalid/image.png").size(1, 1).build())
-            assertTrue(result is ErrorResult)
-            assertTrue((result as ErrorResult).throwable.message.orEmpty().contains("Unable to create a fetcher"))
+            assertTrue(describeResult("external HTTPS: expected ErrorResult", result), result is ErrorResult)
+            assertTrue(describeResult("HTTPS: expected no supported fetcher", result),
+                (result as ErrorResult).throwable.message.orEmpty().contains("Unable to create a fetcher"))
         } finally { loader.shutdown(); Dispatchers.resetMain() }
     }
 
@@ -130,6 +136,14 @@ class CoilCompatibilityProbeTest {
             assertTrue(job.isCancelled)
             assertFalse(completed)
         } finally { loader.shutdown(); Dispatchers.resetMain() }
+    }
+
+    private fun describeResult(expected: String, result: ImageResult): String {
+        val actual = when (result) {
+            is SuccessResult -> "SuccessResult image=${result.image.width}x${result.image.height}, source=${result.dataSource}"
+            is ErrorResult -> "ErrorResult cause=" + result.throwable.stackTraceToString().lineSequence().take(16).joinToString("\n")
+        }
+        return "$expected; actual=$actual; requested graphics=NATIVE, runtime sdk=${RuntimeEnvironment.getApiLevel()}".also { println(it) }
     }
 
     private companion object {
