@@ -176,6 +176,28 @@ class LocalBulkCatalogTest {
         }
     }
 
+    @Test fun suspendedCancelledCommitAcknowledgementReleasesOwnerWithinDeadlineWithoutDeletingCommittedData() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            val prior=db.install(listOf(bulkRecord("old","old-o"))).installed.generation.id.value
+            val gate=CompletableDeferred<Unit>(); db.activationAcknowledgementGate=gate
+            var observed: Outcome<CatalogBulkImportResult>?=null
+            val child=launch(start=CoroutineStart.LAZY) {
+                val caller=currentCoroutineContext()[Job]!!
+                db.afterCommit={ if(db.active()!=prior) caller.cancel(CancellationException("postcommit caller cancelled")) }
+                db.cancelAfterActivationCommit=true
+                observed=db.importer().`import`(bulkSelected(),bulkChunks(bulkRecord("new","new-o")),{},BULK_NO_CANCEL)
+            }
+            child.start()
+            try {
+                withTimeout(1100) { child.join() }
+                assertNull(observed); assertFalse(CatalogImportOwnership.mutex.isLocked)
+                assertNotEquals(prior,db.active())
+                assertEquals(1L,db.rows("SELECT count(*) AS n FROM printing WHERE printing_id='new'").single().bulkLong("n"))
+                assertEquals(0L,db.rows("SELECT count(*) AS n FROM catalog_generation WHERE status='FAILED'").single().bulkLong("n"))
+            } finally { gate.complete(Unit); child.cancel(); child.join(); db.activationAcknowledgementGate=null }
+        }
+    }
+
     @Test fun pointerChangeAndZeroCasRollbackPreserveOriginal() = runBlocking {
         for (zero in listOf(false,true)) BulkSqlTestDatabase().use { db ->
             val old=db.install(listOf(bulkRecord("old","old-o")))
@@ -211,6 +233,7 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
     var failCleanup=false
     var cancelAfterActivationCommit=false
     var failActivationAcknowledgement=false
+    var activationAcknowledgementGate: CompletableDeferred<Unit>?=null
     private var serial=0
     init {
         exec("PRAGMA foreign_keys=ON")
@@ -241,7 +264,7 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
         require(names.toSet()==r.parameters.map { it.name }.toSet())
         for((i,name) in names.withIndex()) when(val v=r.parameters.single { it.name==name }.value) { SqlValue.Null -> s.bindNull(i+1); is SqlValue.Text -> s.bindText(i+1,v.value); is SqlValue.Integer -> s.bindLong(i+1,v.value); else -> error("Unused type") }
     }
-    override suspend fun query(request: SqlRequest,cancel: CancelToken): Outcome<SnapshotList<RowData>> { cancel.throwIfCancelled(); return try { if(failActivationAcknowledgement && request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) error("Injected acknowledgement failure"); Outcome.Success(queryRaw(request)) } catch (_: Exception) { Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL query failed")) } }
+    override suspend fun query(request: SqlRequest,cancel: CancelToken): Outcome<SnapshotList<RowData>> { cancel.throwIfCancelled(); return try { if(request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) activationAcknowledgementGate?.await(); if(failActivationAcknowledgement && request.statement.startsWith("SELECT g.*") && request.parameters.any { it.name=="g" }) error("Injected acknowledgement failure"); Outcome.Success(queryRaw(request)) } catch (_: Exception) { Outcome.Failure(bulkError(FailureCode.PERSISTENCE,"SQL query failed")) } }
     override suspend fun <T> transaction(action: suspend (DbTransaction)->T,cancel: CancelToken): Outcome<T> {
         cancel.throwIfCancelled(); exec("BEGIN IMMEDIATE")
         val tx=object : DbTransaction {
