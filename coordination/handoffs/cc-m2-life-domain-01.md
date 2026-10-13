@@ -11,7 +11,7 @@ Worker handoff for `coordination/tasks/cc-m2-life-domain-01.md`. Branch `agent/c
 | 2 | Seat clock calculations + tests | done: `SeatClockReducer.kt`, `SeatClockReducerTest.kt` (22 tests) |
 | 3 | Random tools + tests | done: `RandomTools.kt`, `RandomToolsTest.kt` (12 tests) |
 | 4a | Independent adversarial review of 1-3 | done: 8-agent review (3 readers, 1 mutation tester, 4 probe-test verifiers); 36 findings, 28 confirmed, 8 refuted |
-| 4b | Fix confirmed counter and random findings + tests | pending |
+| 4b | Fix confirmed counter and random findings + tests | done: nested groups rejected, implicit states in loss assessment, randomize checks status before drawing; 5 counter tests added, randomizer test strengthened |
 | 4c | Fix confirmed clock findings + tests | pending |
 | 4d | Correct handoff statements, final checks | pending |
 
@@ -49,6 +49,7 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 - Section 1: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` `CounterReducerTest` 20 tests, 0 failures/errors/skips.
 - Section 2: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 42 tests (`CounterReducerTest` 20, `SeatClockReducerTest` 22), 0 failures/errors/skips.
 - Section 3: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 54 tests (`CounterReducerTest` 20, `SeatClockReducerTest` 22, `RandomToolsTest` 12), 0 failures/errors/skips.
+- Section 4b: same command BUILD SUCCESSFUL, 0 compiler warnings; `:core:model` 16/0/0/0; `:feature:life` 59 tests (`CounterReducerTest` 25, `SeatClockReducerTest` 22, `RandomToolsTest` 12), 0 failures/errors/skips.
 
 ## Contract requests for Codex
 
@@ -66,4 +67,4 @@ All runs are local JVM runs in this Claude Code cloud container (OpenJDK 17 tool
 
 ## Latest continuation delta
 
-Section 4a complete on `origin/agent/cc-m2-life-domain-01` (parent of this commit: `9ffc840`): review results recorded above, no code changed. Next action: 4b, fix counter C1/C3 and random R1 with the listed tests, run the task's Gradle command, commit, push, update this file; then 4c clock fixes; then 4d handoff corrections.
+Section 4b complete on `origin/agent/cc-m2-life-domain-01` (parent of this commit: `7a37750`): counter C1/C3/T1-T3 and random R1 fixed and tested, local check green as recorded above. Next action: 4c, fix clock C1-C7, C9, C10 and add the C12/M10/M25-M28 tests, run the task's Gradle command, commit, push, update this file; then 4d handoff corrections.

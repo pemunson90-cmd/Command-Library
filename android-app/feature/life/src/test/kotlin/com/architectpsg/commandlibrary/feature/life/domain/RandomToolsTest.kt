@@ -127,7 +127,9 @@ class RandomToolsTest {
         assertEquals(input.counters, reduced.snapshot.counters)
         assertEquals(input.revision, reduced.snapshot.revision)
         assertEquals(listOf(0, 1, 2), input.seats.map { it.order })
-        RandomTools.randomizeSeats(snapshot(status = GameStatus.COMPLETED), ScriptedRandom(0, 0)).failure(FailureCode.INVALID_INPUT)
+        val untouched = BoundRandom { 0 }
+        RandomTools.randomizeSeats(snapshot(status = GameStatus.COMPLETED), untouched).failure(FailureCode.INVALID_INPUT)
+        assertEquals("A rejected randomize consumes no draws", 0, untouched.calls)
     }
 
     @Test fun explicitReorderMustBeACompletePermutation() {

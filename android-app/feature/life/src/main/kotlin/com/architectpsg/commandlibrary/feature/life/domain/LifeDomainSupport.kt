@@ -40,6 +40,8 @@ internal class SeatIndex private constructor(
     fun slotsOwnedBy(seatId: EntityId): List<EntityId> =
         seats[seatId]?.commanders?.map { it.id }.orEmpty()
 
+    fun orderedSeatIds(): List<EntityId> = seats.values.sortedBy { it.order }.map { it.id }
+
     /** Commander slots of every other seat, in table order. */
     fun slotsOpposing(seatId: EntityId): List<EntityId> =
         seats.values.sortedBy { it.order }.filter { it.id != seatId }.flatMap { seat -> seat.commanders.map { it.id } }

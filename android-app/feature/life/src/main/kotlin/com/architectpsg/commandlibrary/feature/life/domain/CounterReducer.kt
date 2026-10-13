@@ -48,7 +48,10 @@ internal data class CounterReduction(
 )
 
 internal object CounterReducer {
-    /** Applies [GameAction.AdjustCounter], [GameAction.SetCounterHidden] or a [GameAction.Group] of them, all or nothing. */
+    /**
+     * Applies [GameAction.AdjustCounter], [GameAction.SetCounterHidden] or one flat [GameAction.Group] of them, all or
+     * nothing. A group inside a group is rejected: an event carries exactly one group ID.
+     */
     fun reduce(snapshot: GameSnapshot, roles: CounterRoles, action: GameAction): Outcome<CounterReduction> {
         if (snapshot.status == GameStatus.COMPLETED) return invalidInput("Game is completed; reopen it before changing counters")
         val board = CounterBoard.of(snapshot, roles).valueOr { return it }
@@ -88,7 +91,7 @@ internal object CounterReducer {
         return reduce(snapshot, roles, GameAction.Group(SnapshotList.copyOf(actions), groupId))
     }
 
-    /** Every counter currently meeting its loss policy, without changing anything. */
+    /** Every counter currently meeting its loss policy, absent states counted at their initial value, without changing anything. */
     fun assessLoss(snapshot: GameSnapshot, roles: CounterRoles): Outcome<SnapshotList<LossCandidate>> {
         val board = CounterBoard.of(snapshot, roles).valueOr { return it }
         return Outcome.Success(SnapshotList.copyOf(board.lossCandidates { _, _ -> false }.map { it.first }))
@@ -122,7 +125,11 @@ private class CounterBoard private constructor(
     fun apply(action: GameAction): Outcome.Failure? = when (action) {
         is GameAction.AdjustCounter -> adjust(action)
         is GameAction.SetCounterHidden -> setHidden(action)
-        is GameAction.Group -> if (action.actions.isEmpty()) invalidInput("Group ${action.groupId.value} has no actions") else action.actions.firstNotNullOfOrNull { apply(it) }
+        is GameAction.Group -> when {
+            action.actions.isEmpty() -> invalidInput("Group ${action.groupId.value} has no actions")
+            action.actions.any { it is GameAction.Group } -> invalidInput("Group ${action.groupId.value} nests another group")
+            else -> action.actions.firstNotNullOfOrNull { apply(it) }
+        }
         else -> invalidInput("${action::class.simpleName} is not a counter action")
     }
 
@@ -145,11 +152,7 @@ private class CounterBoard private constructor(
     private fun setHidden(action: GameAction.SetCounterHidden): Outcome.Failure? {
         val definition = definitions[action.definitionId] ?: return invalidInput("Unknown counter definition ${action.definitionId.value}")
         if (!seats.contains(action.seatId)) return invalidInput("Unknown seat ${action.seatId.value}")
-        val slots: List<EntityId?> = when (scopeOf(action.definitionId)) {
-            CounterScope.SEAT -> listOf(null)
-            CounterScope.ANY_COMMANDER -> (seats.slotsOpposing(action.seatId) + existingSlots(action.seatId, action.definitionId)).distinct()
-            CounterScope.OWN_COMMANDER -> seats.slotsOwnedBy(action.seatId)
-        }
+        val slots = slotsFor(action.seatId, action.definitionId)
         if (slots.isEmpty()) return invalidInput("Seat ${action.seatId.value} has no commander slots for counter ${definition.id.value}")
         val inherited = inheritedHidden(action.seatId, action.definitionId)
         val keys = slots.map { CounterKey(action.definitionId, action.seatId, it) }
@@ -161,6 +164,16 @@ private class CounterBoard private constructor(
                 ?: CounterState(key.definitionId, key.seatId, key.commanderSlotId, definition.initial, action.hidden)
         }
         return null
+    }
+
+    /**
+     * The states a seat's counter has, recorded or implicit at the initial value: one for a seat counter, the seat's own
+     * slots for commander tax, and every opposing slot plus any recorded slot (a stolen own commander) for commander damage.
+     */
+    private fun slotsFor(seatId: EntityId, definitionId: EntityId): List<EntityId?> = when (scopeOf(definitionId)) {
+        CounterScope.SEAT -> listOf(null)
+        CounterScope.ANY_COMMANDER -> (seats.slotsOpposing(seatId) + existingSlots(seatId, definitionId)).distinct()
+        CounterScope.OWN_COMMANDER -> seats.slotsOwnedBy(seatId)
     }
 
     private fun existingSlots(seatId: EntityId, definitionId: EntityId): List<EntityId> =
@@ -187,12 +200,22 @@ private class CounterBoard private constructor(
         }
     }
 
-    fun lossCandidates(isNew: (CounterKey, CounterLossPolicy) -> Boolean): List<Pair<LossCandidate, Boolean>> =
-        states.mapNotNull { (key, state) ->
-            val policy = definition(key).lossPolicy
-            if (!CounterReducer.meets(policy, state.value)) null
-            else LossCandidate(state.seatId, state.definitionId, state.commanderSlotId, state.value, policy) to isNew(key, policy)
+    /**
+     * Recorded states first, then implicit ones in table order. An absent state means its initial value, so whether a
+     * state happens to be recorded (for example by hiding) never changes the assessment.
+     */
+    fun lossCandidates(isNew: (CounterKey, CounterLossPolicy) -> Boolean): List<Pair<LossCandidate, Boolean>> {
+        val keys = LinkedHashSet(states.keys)
+        for (seatId in seats.orderedSeatIds()) {
+            for (definitionId in definitions.keys) slotsFor(seatId, definitionId).forEach { keys += CounterKey(definitionId, seatId, it) }
         }
+        return keys.mapNotNull { key ->
+            val policy = definition(key).lossPolicy
+            val value = states[key]?.value ?: definition(key).initial
+            if (!CounterReducer.meets(policy, value)) null
+            else LossCandidate(key.seatId, key.definitionId, key.commanderSlotId, value, policy) to isNew(key, policy)
+        }
+    }
 
     companion object {
         fun of(snapshot: GameSnapshot, roles: CounterRoles): Outcome<CounterBoard> {

@@ -76,6 +76,8 @@ internal object RandomTools {
 
     /** Permutes the table once. Seat IDs keep their players, decks and commanders; counters stay keyed by seat ID. */
     fun randomizeSeats(snapshot: GameSnapshot, random: RandomSource): Outcome<SeatOrderReduction> {
+        // Rejected requests consume no draws, so a replayable source stays in step.
+        if (snapshot.status == GameStatus.COMPLETED) return invalidInput("Game is completed; reopen it before reordering seats")
         val seats = SeatIndex.of(snapshot).valueOr { return it }
         val order = shuffle(random, seats.seats.values.sortedBy { it.order }.map { it.id }).valueOr { return it }
         return reorderSeats(snapshot, GameAction.ReorderSeats(order))

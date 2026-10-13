@@ -232,6 +232,59 @@ class CounterReducerTest {
         CounterReducer.reduce(snapshot(seats = reusedOrder), roles, action).failure(FailureCode.CORRUPT_DATA)
     }
 
+    @Test fun nestedGroupsAreRejectedWithoutRecursing() {
+        var deep: GameAction = adjust(seatA, life, -1)
+        repeat(200_000) { deep = GameAction.Group(SnapshotList.of(deep), group) }
+        CounterReducer.reduce(snapshot(), roles, deep).failure(FailureCode.INVALID_INPUT)
+        val shallow = GameAction.Group(SnapshotList.of(adjust(seatA, life, -1), GameAction.Group(SnapshotList.of(adjust(seatA, life, -1)), group)), group)
+        CounterReducer.reduce(snapshot(), roles, shallow).failure(FailureCode.INVALID_INPUT)
+    }
+
+    @Test fun absentCountersBecomingLethalAreNewlyReached() {
+        val lethal = CounterReducer.commanderDamage(snapshot(), roles, seatA, slotB1, 21, deductLife = false, groupId = group).success()
+        assertEquals(slotB1, lethal.newlyReached.single().commanderSlotId)
+        val dead = CounterReducer.reduce(snapshot(), roles, adjust(seatA, life, -40)).success()
+        assertEquals(0, dead.lossCandidates.single().value)
+        assertEquals(dead.lossCandidates.single(), dead.newlyReached.single())
+        val recovered = GameAction.Group(SnapshotList.of(adjust(seatA, life, -41), adjust(seatA, life, 5)), group)
+        assertTrue(CounterReducer.reduce(snapshot(), roles, recovered).success().lossCandidates.isEmpty())
+        val stepped = GameAction.Group(SnapshotList.of(adjust(seatA, life, -39), adjust(seatA, life, -1)), group)
+        assertEquals(1, CounterReducer.reduce(snapshot(), roles, stepped).success().newlyReached.size)
+    }
+
+    @Test fun lossAssessmentCountsAbsentStatesAtTheirInitialValue() {
+        val lives = EntityId("counter-lives")
+        val definitions = SnapshotList.copyOf(LifeFixtures.definitions() + CounterDefinition(lives, "Lives", 0, 3, 0, CounterLossPolicy.AtOrBelow(0), true))
+        val fresh = snapshot(definitions = definitions)
+        val assessed = CounterReducer.assessLoss(fresh, roles).success()
+        assertEquals(listOf(seatA, seatB, seatC), assessed.map { it.seatId })
+        val hidden = CounterReducer.reduce(fresh, roles, GameAction.SetCounterHidden(seatA, lives, true)).success()
+        assertTrue(hidden.newlyReached.isEmpty())
+        assertEquals(assessed.toSet(), hidden.lossCandidates.toSet())
+        assertEquals(assessed.toSet(), CounterReducer.assessLoss(hidden.snapshot, roles).success().toSet())
+    }
+
+    @Test fun hidingCommanderDamageIncludesARecordedOwnSlotAndShowingRevealsAll() {
+        val input = snapshot(listOf(state(commanderDamage, seatA, 3, slotA)))
+        val hidden = CounterReducer.reduce(input, roles, GameAction.SetCounterHidden(seatA, commanderDamage, true)).success().snapshot
+        assertEquals(state(commanderDamage, seatA, 3, slotA, hidden = true), hidden.counter(commanderDamage, seatA, slotA))
+        assertEquals(state(commanderDamage, seatA, 0, slotB1, hidden = true), hidden.counter(commanderDamage, seatA, slotB1))
+        assertEquals(state(commanderDamage, seatA, 0, slotB2, hidden = true), hidden.counter(commanderDamage, seatA, slotB2))
+        CounterReducer.reduce(hidden, roles, GameAction.SetCounterHidden(seatA, commanderDamage, true)).failure(FailureCode.INVALID_INPUT)
+        val shown = CounterReducer.reduce(hidden, roles, GameAction.SetCounterHidden(seatA, commanderDamage, false)).success().snapshot
+        assertTrue(shown.counters.none { it.hidden })
+        assertEquals(3, shown.counter(commanderDamage, seatA, slotA)!!.value)
+    }
+
+    @Test fun hidingPartnerTaxCoversBothSlotsAndMixedSiblingsDoNotHideNewSlots() {
+        val taxHidden = CounterReducer.reduce(snapshot(), roles, GameAction.SetCounterHidden(seatB, commanderTax, true)).success().snapshot
+        assertEquals(state(commanderTax, seatB, 0, slotB1, hidden = true), taxHidden.counter(commanderTax, seatB, slotB1))
+        assertEquals(state(commanderTax, seatB, 0, slotB2, hidden = true), taxHidden.counter(commanderTax, seatB, slotB2))
+        val mixed = snapshot(listOf(state(commanderDamage, seatA, 1, slotB1, hidden = true), state(commanderDamage, seatA, 1, slotB2, hidden = false)))
+        val added = CounterReducer.reduce(mixed, roles, adjust(seatA, commanderDamage, 3, slotA)).success().snapshot
+        assertEquals(state(commanderDamage, seatA, 3, slotA, hidden = false), added.counter(commanderDamage, seatA, slotA))
+    }
+
     @Test fun singleSeatPracticeGameIsSupported() {
         val solo = snapshot(seats = SnapshotList.of(LifeFixtures.seat(seatA, 0, CommanderSlot(slotA, LifeFixtures.identity("solo"), "Commander"))))
         assertEquals(39, CounterReducer.reduce(solo, roles, adjust(seatA, life, -1)).success().snapshot.counter(life, seatA)!!.value)
