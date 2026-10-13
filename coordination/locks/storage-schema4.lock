@@ -1,0 +1,18 @@
+{
+  "component": "storage",
+  "orchestrator": "codex-full-v1-execution-20261012",
+  "agent_task": "cx-k3-storage-04",
+  "branch": "agent/cx-k3-storage-04",
+  "base_commit": "4cddb8c",
+  "owned_paths": [
+    "android-app/data/storage/src/main/kotlin/com/architectpsg/commandlibrary/data/storage/schema/CatalogTables.kt",
+    "android-app/data/storage/src/main/kotlin/com/architectpsg/commandlibrary/data/storage/schema/RulesTables.kt",
+    "android-app/data/storage/src/main/kotlin/com/architectpsg/commandlibrary/data/storage/schema/PrintingMembershipTables.kt",
+    "android-app/data/storage/src/main/kotlin/com/architectpsg/commandlibrary/data/storage/schema/Migration3To4.kt",
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/FullCatalogMigrationTest.kt",
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/AcquisitionStorageMigrationTest.kt",
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/RulesStorageMigrationTest.kt",
+    "android-app/data/storage/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/storage/StorageDatabaseTest.kt",
+    "coordination/handoffs/cx-k3-storage-04.md"
+  ]
+}
