@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261013-private-locator-64. Next: orch-kotlin-k3-offline-data-01 step3; Functional Android v1 active; native visuals pending and private locator packet approved.
+Checkpoint-ID: cp-20261013-locator-native-65. Next: orch-kotlin-k3-offline-data-01 step3; Functional Android v1 active; coherent native candidate running.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
