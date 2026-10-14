@@ -1,27 +1,19 @@
-# Active chat collision notice — 2026-10-14
+# Cross-chat coordination — current readback 2026-10-14
 
-Pat reports original thread `01a13607-410d-761d-9745-7b7acdd9f0e7` is running again. Do not infer that either chat is stopped from an expired lease. Reconcile assignments before overlapping writes; do not merge the two evolving implementations blindly.
+## Recovery orchestrator
 
-## Recovery chat (this checkout)
+Session `codex-thread-recovery-20261013`, branch `agent/cx-thread-recovery-20261013`, owns life persistence and shared coordination. Completed recovery product work through066cf11: random/provenance, complete typed codec1, additive Room schema6, nineteen action families/outcomes and codec2 with frozen1 compatibility. Local whole-app641 JVM tests and focused API36 network3/storage32 passed; see `docs/verification/m2-life/` for exact evidence.
 
-Session: `codex-thread-recovery-20261013`. Branch: `agent/cx-thread-recovery-20261013`. Completed product work through `066cf11`; checkpoint naming correction `7aa55c04f08d455b0152adcaf9d6895d7dd0251d`.
+Next reserved unit: SQLite-backed player profile repository, model LifePayloadCodecPort, concrete codec implementation, test-only storage-to-life dependency and actual SQLite/codec tests. Design reviewed; implementation has not started. Cross-chat hold is cleared by the completed disjoint task below. Do not run a second shared orchestrator; new workers need explicit disjoint claims.
 
-- Random/provenance contracts: `e86dd16fd38bb2398a04e7340c9cb43b70cca5a2`.
-- Complete typed binary codec1 in `data/storage/.../life/codec`: `a2ad711`.
-- Additive Room schema6, actual KSP export, local real SQLite migration/CAS/rollback tests: `b464b9dc6d6679fb92877dfe0df4d5ba5013564e`.
-- Nineteen action families, seat outcomes, canonical GameCreation frame, codec2 with frozen codec1 compatibility: `066cf11`.
-- Local whole-app check/debug:641 JVM tests, zero failures/errors/skips. Focused native run38484784441 at frozen `c997c773466c26c0e9461625b0471a895e260eef`:3 network +32 storage, all pass. Detailed evidence is under `docs/verification/m2-life/`.
+## Other chat — completed, no active claim
 
-Reserved next unit: real player profile repository in `android-app/feature/life`, model `LifePayloadCodecPort`, codec implementation of that port, storage test-only life dependency and actual SQLite/codec integration tests. Design reviewed; no implementation edits have started. Recovery chat holds code writes while the revived chat's assignment is clarified. Do not duplicate this unit or change these shared contracts without reconciling ownership. No GameService/DI/UI acceptance is claimed.
+Fetched `component/scryfall-rulings-metadata-20261013` at `0db3298cc752a8433c72416a0f75cfd0fdb45d45`. Its task `cx-k3-scryfall-rulings-boundary-tests-02` completed2026-10-14T00:26:41Z, released its dedicated lock, and explicitly retained global coordination with the life orchestrator. Six additional test methods bring focused metadata coverage to13 passing cases per its recorded local XML evidence. Production decoder source remained unchanged. This chat has read the handoff/diff but has not independently rerun that component's tests or integrated it.
 
-## Last observed status
+Component's reviewed decoder commit is e45d573, claim6f57ef5, completion0db3298. Preserve only its four scoped source/test/handoff/task files when integrating; its inherited global pointers are historical. Trusted discovery retrieval, authority issuance and gzip installation remain unimplemented. See that branch's `coordination/handoffs/cx-k3-scryfall-rulings-metadata-01.md`.
 
-Checked2026-10-14T00:26:01Z after Pat requested a one-minute delay. Fetch of original branch still returned20a9283; no newly published assignment/completion notice was visible there. Recovery remote remained7aa55c0; collision notice commit47522e8 is local only because push authentication failed. These are observations, not proof of either chat's current unpublished activity. Refresh original branch and its task/lease/locks before resuming writes; replace this status when new evidence arrives.
+## Superseded collision concern
 
-## Revived original chat
+The original `agent/cx-native-20261013` remains20a9283 with a historical codec/schema next step. It was the wrong branch to inspect for this completed disjoint assignment. It is not current ownership evidence. The earlier possible-collision hold is resolved by the component completion above; preserve all branches and do not blindly merge competing life contracts/codecs.
 
-Branch `agent/cx-native-20261013` was read back at `20a92836a11c70dc11776fa469688c0e1dcc6b4e`. Its latest handoff says private feature/life binary codec, then schema6/service next. That overlaps completed recovery work and uses a different codec placement. Its newer unpublished work is unknown. Preserve it; compare contracts/designs/bytes and review before selecting an integration direction.
-
-## Coordination
-
-One orchestrator must own shared model/schema/configuration/DI and global pointers. The recovery lease is not authorization for a second simultaneous orchestrator in the other thread. Explicit disjoint scopes or a recorded handback are required before both write. No direct cross-thread messaging capability is available here; this notice is published in git for the other chat to fetch/read. GitHub remains versioning plus genuinely useful unavailable verification; local work is preferred.
+Keep this file a replaceable current status. Refresh actual branch/task/lock evidence before new assignments; lease expiry alone does not establish that a chat stopped. GitHub is for versioning and genuinely useful unavailable verification; implementation/checks stay local where possible.

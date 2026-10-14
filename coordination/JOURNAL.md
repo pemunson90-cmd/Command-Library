@@ -423,3 +423,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-13T23:49:27Z | codex | cp-20261013-life-action-codec2-88 | containing commit | Correct checkpoint87 numeric ID to established cp convention; life actions/codec2 local641 tests pass; native schema6 passes35 cases. Next checked profile repository.
 
 2026-10-14T00:24:23Z | codex | cp-20261014-cross-chat-coordination-89 | containing commit | Pat revived original chat; original20a9283 overlaps completed recovery codec/schema. Published ACTIVE-CHATS notice; reserve profile persistence but hold code writes pending disjoint ownership.
+
+2026-10-14T00:35:05Z | codex | cp-20261014-cross-chat-resolved-90 | containing commit | Read completed disjoint Scryfall metadata task0db3298 with lock released; clear collision hold and stale routing/branch notes. Recovery retains life/shared ownership; profile repository next.

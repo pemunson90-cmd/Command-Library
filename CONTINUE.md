@@ -6,7 +6,7 @@ See `docs/gauntlet/DOCUMENTATION_POLICY.md` for documentation authority and dupl
 
 ## Live cross-chat coordination
 
-Pat revived the original chat on2026-10-14. Read `coordination/ACTIVE-CHATS.md` before writes: its codec/schema next steps overlap completed recovery work. Preserve both branches and reconcile ownership; do not run two orchestrators or infer stopped status from lease expiry alone.
+Read `coordination/ACTIVE-CHATS.md` before assignments. The revived chat completed its disjoint Scryfall metadata test task on2026-10-14 and released its claim; recovery retains life/shared orchestration. Preserve branch-specific handoffs and do not treat inherited component pointers or lease expiry as live ownership evidence.
 
 ## What "continue" authorizes
 
@@ -30,7 +30,7 @@ Claude Code packets should fit a 10–15minute bounded unit: one file or one clo
 
 For a normal clean resume:
 
-1. Verify current `main` head and the published continuation branch named by `state.working_branch` (currently `agent/cx-native-20261013`). Accepted main and unfinished continuation work are different heads; read the continuation branch's pointers before resuming. Preserve any dirty checkout or unpublished commits before switching.
+1. Verify current `main` head and the published continuation branch named by `state.working_branch` (read the live state; recovery currently uses `agent/cx-thread-recovery-20261013`). Accepted main and unfinished continuation work are different heads; read the continuation branch's pointers before resuming. Preserve any dirty checkout or unpublished commits before switching.
 2. Read `coordination/state.json`.
 3. Read `coordination/ORCHESTRATOR.json`.
 4. Read only `coordination/tasks/<state.next_task>.md` and its `Latest continuation delta` when present.

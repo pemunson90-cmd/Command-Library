@@ -4,11 +4,11 @@
   "agent_task": "cx-m2-life-functional-01",
   "branch": "agent/cx-thread-recovery-20261013",
   "base_commit": "bebf6f0dd223567098be5ca1c928610952e828c3",
-  "owner": "Recovery chat reserves profile persistence; code writes held while revived original chat assignment is clarified. See coordination/ACTIVE-CHATS.md.",
+  "owner": "Recovery orchestrator; life profile persistence next, no implementation edits started; disjoint Scryfall task completed.",
   "owned_paths": [
     "android-app/feature/life/**",
     "coordination/tasks/cx-m2-life-functional-01.md",
     "coordination/handoffs/cx-m2-life-functional-01.md"
   ],
-  "status": "reserved-awaiting-cross-chat-reconciliation"
+  "status": "active"
 }
