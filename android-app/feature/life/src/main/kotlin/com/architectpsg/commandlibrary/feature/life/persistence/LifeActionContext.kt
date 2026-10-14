@@ -47,6 +47,11 @@ public class LifeActionContext internal constructor(
         }
     }
 
+    /** Success(null) is checked absence; a non-success still latches rollback. */
+    public suspend fun randomPredecessor(requestId: EntityId): Outcome<LifeRandomHistory?> = checked {
+        readRandomPredecessor(tx, reader, current.checkpoint.snapshot, requestId, cancel)
+    }
+
     private suspend fun <T> checked(read: suspend () -> T): Outcome<T> = access.withLock {
         cancel.throwIfCancelled()
         if (!active) return@withLock Outcome.Failure(DomainFailure(FailureCode.INVALID_INPUT, "Action context is closed", SnapshotList.empty()))

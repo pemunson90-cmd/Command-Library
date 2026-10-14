@@ -28,3 +28,5 @@ Recorded random pure helper complete: architecture/exact-source APPROVE; RED175l
 Pure action/event packet assembly complete: architecture/exact-source APPROVE; pause-boundary regression corrected; final836JVM/80XML0fail/error/skip,check/debug155s,16KiBZIPpass. Evidence ACTION-EVENT-LOCAL-20261014.md. Same-transaction action context design next for authoritative service; variant-source backend still mandatory, no public-service binding.
 
 Same-transaction action context foundation complete: architecture/exact-source APPROVE; malformed undo metadata regression fixed; final846JVM/81XML0fail/error/skip,check/debug250s,16KiBZIPpass. Evidence ACTION-CONTEXT-LOCAL-20261014.md. Next reviewed random predecessor scan inside context; public service/source/publication remains pending.
+
+Random predecessor context complete: architecture/exact-source APPROVE, RED128storage7fail194s→GREEN107s; expanded final855JVM/82XML0fail/error/skip,check/debug181s,16KiBZIPpass. Evidence RANDOM-PREDECESSOR-LOCAL-20261014.md. Offline history query design next, actual service/source/publication/UI remain pending.
