@@ -1,6 +1,6 @@
 # Strict ruling-record decoder
 
-Status: next bounded K3 implementation batch; independent source/design ACK/APPROVE. Parent: orch-kotlin-k3-offline-data-01. No new transfer, public port, schema, dataset activation or UI registration in this unit.
+Status: internal decoder implemented; independent design/source review refinements applied; focused32tests pass17s. Parent: orch-kotlin-k3-offline-data-01. No new transfer, public port, schema, dataset activation or UI registration in this unit.
 
 The accepted personal-source review identifies the official rulings feed as gzip JSONL and requires preserving oracle_id, source, published_at and comment. The existing metadata decoder establishes structural candidates only. Existing Ruling uses an instant and has no explicit publisher-source field, so this unit must not force source dates into instants, fabricate provider IDs, or lose source information by adapting prematurely to that old public DTO.
 
@@ -13,3 +13,5 @@ Batch meaningful cases before one focused catalog JVM run: exact Unicode/source/
 Next units retained: exact source/retrieval authority and per-intent consent for fixed official metadata plus offered artifact; immutable public ruling/source/date representation; additive persisted ruling generations and atomic activation/rollback; local Oracle-linked ruling reads/UI; genuine full-feed and device validation. This internal decoder closes none of those obligations.
 
 Review refinements: validate raw Unicode with strict UTF-8 encoding and the record cap before JSON tree allocation. Bound unknown field names/values as well as retained strings. Existing strict parser rejects duplicate fields/invalid escaped Unicode and enforces depth/node bounds. Reject year0000 explicitly; no platform calendar/timezone/clock is required. Canonical UUID spelling is checked directly.
+
+Actual evidence: docs/verification/k3-downloads/RULING-RECORD-LOCAL-20261014.md. Source/current parser tests match final reviewed draft; unsupported NUL rejection removed. Next public source-preserving data/read contract must precede storage or adapting the old Ruling DTO.
