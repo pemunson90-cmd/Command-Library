@@ -13,3 +13,7 @@ Owned pure feature/life domain helpers/tests and root-reviewed necessary model/c
 ## Latest continuation delta
 
 TAKEN after transactional mutation adapter source review findings resolved and final local wholecheck/debug743JVM/72XML0failure/error/skip124s,110storage incl27mutator; alignment pass. See GAME-MUTATIONS-LOCAL-20261014.md. Timing design/API/code/tests for this NEW unit not_run. Exact next action read retained G07/G13/dispositions and accepted legacy clock reducer/undo cases, settle modern clock/elapsed/recovery/occurrence design, obtain independent review before code. History audit OPEN; root sole life/shared orchestration retained.
+
+## Active work — 2026-10-14, after checkpoint 97
+
+Concrete design and inline plan written at docs/superpowers/specs/2026-10-14-life-timing-engine-design.md and docs/superpowers/plans/2026-10-14-life-timing-engine-plan.md. Independent architecture review APPROVE with accepted missing-lineage undo/repair and warning/provenance clarifications recorded in design. Boundary RED tests in progress locally: bounded legacy alert identity, exact canonical undo occurrence matching, Known opening elapsed lineage persistence; implementation not yet changed. This task stays TAKEN; no overlapping timing/service writer. Completion evidence will replace this active-work note rather than assuming success from design approval.
