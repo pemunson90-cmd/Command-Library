@@ -4,7 +4,7 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Root codex-thread-recovery-20261013 owns life-functional/shared orchestration on agent/cx-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. CUSTOMfactory4648184 independently APPROVE, whole932JVM91XML0fail/error/skip221s; actual public config/shuffle/undo/reopen/rollback/watch tested. Next audited countdownrecovery A3/livehistorypagination D2. Namedsource/manifestpersist/import/service/platform/DI/UI remain incomplete. Detailed current delta: coordination/tasks/orch-kotlin-k3-offline-data-01.md.
+Root codex-thread-recovery-20261013 owns life-functional/shared orchestration on agent/cx-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. CUSTOMfactory4648184 independently APPROVE, whole932JVM91XML0fail/error/skip221s; actual public config/shuffle/undo/reopen/rollback/watch tested. Countdownrecovery A3/livehistorypagination D2 followup52ef4bb verified189storage19XML0fail/error/skip140s. Next inclusivecalendar history adapter with explicitAndroidmin23 compatibility. Namedsource/manifestpersist/import/service/platform/DI/UI remain incomplete. Detailed current delta: coordination/tasks/orch-kotlin-k3-offline-data-01.md.
 
 ## Other chat — completed, no active claim
 

@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-custom-factory-116",
-  "verified_base_head": "4648184762f55c395ea0a1b98befbbe305ab21fa",
+  "checkpoint_id": "cp-20261014-life-recovery-history-117",
+  "verified_base_head": "52ef4bb835e1ca42d803e99e450bea2e3ae209fc",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "close-life-countdown-recovery-and-live-history-regressions",
+  "first_action": "design-android-compatible-calendar-history-adapter",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -87,9 +87,10 @@
     "life_variant_shuffle_local": "APIabsenceRED97s; focused73model205lifeGREEN158s; first178storage3testfixturefails238s corrected. Final603s90XML924JVM0fail/error/skip,73model205life179storage,check/debug,16KiBZIPpass. APK26d42261025c30970845e1d325bf9cbcfc9c9347be7b68c564b9cf1107f73e85. Actualoldv1/v2goldens, pureauthority + syntheticSQLite/publicnegative split; positivepublicfactorypending.",
     "life_history_audit": "Claude a47d1cc basede489af7 docs-only/no tests. Scoped report/task/releasedlock/board consumedcda11ca; root sourceclarifies SQLiteReopenpackets and completedackalreadycovered, actualcommand/restart/checkpoint/duplicateunknownack gaps accepted; clock stayssessioninjected. No service acceptance.",
     "life_audit_command_regressions": "Source3ab12bd productionunchanged; initial14commandGREEN93s; strengthened183storage17XML0fail/error/skip139s. Actualnonzerorefill CHESS/PER_TURN bothpolicies/checkpointundo; fileelapsedrecoveryundo; commandReopen/refinish/undo; duplicate/unknownack. Shared/countdownrecovery/platform/D2 remain. Evidence SQLITE-AUDIT-REGRESSIONS-20261014.md.",
-    "life_custom_factory_local": "Source4648184 architecture/exactsourceAPPROVE; strictunusedIDfix+independent415byte digestgolden. APIabsence65s/compile91s then2tests104s/4publicactualSQLite97s; whole932JVM91XML0fail/error/skip221s,73model205life187storage,check/debug/16KiBZIPpass. APKunchanged26d42261025c30970845e1d325bf9cbcfc9c9347be7b68c564b9cf1107f73e85, factoryunbound. No namedsource/manifestpersist/import/UI/DI acceptance."
+    "life_custom_factory_local": "Source4648184 architecture/exactsourceAPPROVE; strictunusedIDfix+independent415byte digestgolden. APIabsence65s/compile91s then2tests104s/4publicactualSQLite97s; whole932JVM91XML0fail/error/skip221s,73model205life187storage,check/debug/16KiBZIPpass. APKunchanged26d42261025c30970845e1d325bf9cbcfc9c9347be7b68c564b9cf1107f73e85, factoryunbound. No namedsource/manifestpersist/import/UI/DI acceptance.",
+    "life_countdown_live_history_local": "Source52ef4bb testonly independentAPPROVE; recovery6scenarios1JUnitmethodGREEN60s; full189storage19XML0fail/error/skip140s. Actual CHESS/PER_TURN/SHARED bothpolicy filereopen/recoveryundo/durablepausedbanks; livecommandFinish/Reopen/undo acrosspages/counts/uniquekeys/latestresults. Priorwhole932 unchanged production; no native/processkill/Roomconcurrency."
   },
-  "last_completed": "Reviewed public CUSTOMfactory4648184 verified whole932JVM; continue remaining countdownrecovery/history audit boundaries.",
-  "updated_utc": "2026-10-14T12:03:55Z",
+  "last_completed": "Reviewed countdown recovery and live history52ef4bb verified189storage; next inclusivecalendar adapter with Androidmin23 compatibility.",
+  "updated_utc": "2026-10-14T12:09:54Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
