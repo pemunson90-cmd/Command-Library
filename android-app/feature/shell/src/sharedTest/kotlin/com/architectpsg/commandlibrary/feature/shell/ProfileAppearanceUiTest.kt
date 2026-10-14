@@ -77,7 +77,7 @@ class ProfileAppearanceUiTest {
         val old = seed(); shell.show(); open(); shell.waitForText("Ada")
         click("profile-edit-ada"); change(ProfileTags.NAME, "Unsaved name"); click(ProfileAppearanceTags.MANAGE)
         change(ProfileAppearanceTags.COLOR, "#FFFFFFFF")
-        Class.forName("androidx.test.espresso.Espresso").getMethod("pressBack").invoke(null); rule.waitForIdle()
+        shell.pressAppBackAfterKeyboardDismissal()
         rule.onNodeWithTag(ProfileTags.NAME).assertTextContains("Unsaved name")
         assertEquals(old.value.appearance, shell.controllers.profiles!!.state.value.editor!!.appearance)
         click(ProfileTags.CANCEL); assertNull(shell.controllers.profiles!!.state.value.editor); assertEquals(old, profiles.rows[old.id])

@@ -121,6 +121,15 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
         rule.waitUntil(timeoutMillis) { rule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
     }
 
+    /** App navigation after text entry: a device's first Back may otherwise only dismiss its IME. */
+    fun pressAppBackAfterKeyboardDismissal() {
+        val espresso = Class.forName("androidx.test.espresso.Espresso")
+        espresso.getMethod("closeSoftKeyboard").invoke(null)
+        rule.waitForIdle()
+        espresso.getMethod("pressBack").invoke(null)
+        rule.waitForIdle()
+    }
+
     fun text(text: String, substring: Boolean = false): SemanticsNodeInteraction = rule.onNodeWithText(text, substring = substring)
 
     fun exists(tag: String): Boolean = rule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()

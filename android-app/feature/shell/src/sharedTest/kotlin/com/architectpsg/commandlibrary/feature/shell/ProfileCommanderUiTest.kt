@@ -99,7 +99,7 @@ class ProfileCommanderUiTest {
         listClick(Tags.MANAGER, Tags.edit("partner")); change(Tags.LABEL, ""); click(Tags.APPLY)
         shell.text(shell.string(R.string.profile_commander_invalid_label)).performScrollTo().assertIsDisplayed()
         click(Tags.CANCEL); listClick(Tags.MANAGER, Tags.ADD); change(Tags.QUERY, "Unsubmitted")
-        fun back() { Class.forName("androidx.test.espresso.Espresso").getMethod("pressBack").invoke(null); rule.waitForIdle() }
+        fun back() = shell.pressAppBackAfterKeyboardDismissal()
         back(); rule.onNodeWithTag(Tags.MANAGER).assertExists()
         assertEquals("", shell.controllers.profiles!!.commanderSearch!!.queryInput)
         back(); rule.onNodeWithTag(ProfileTags.NAME).assertTextContains("Unsaved")

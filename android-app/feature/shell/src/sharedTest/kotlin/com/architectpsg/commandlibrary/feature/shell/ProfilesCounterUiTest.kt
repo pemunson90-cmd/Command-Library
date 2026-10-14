@@ -104,7 +104,7 @@ class ProfilesCounterUiTest {
         val old = seed(); shell.show(); open(); shell.waitForText("Ada")
         click("profile-edit-ada"); change(ProfileTags.NAME, "Unsaved name"); click(ProfileCounterTags.MANAGE)
         managerClick(ProfileCounterTags.edit("charge")); change(ProfileCounterTags.INITIAL, "9")
-        fun back() { Class.forName("androidx.test.espresso.Espresso").getMethod("pressBack").invoke(null); rule.waitForIdle() }
+        fun back() = shell.pressAppBackAfterKeyboardDismissal()
         back(); rule.onNodeWithTag(ProfileCounterTags.MANAGER).assertIsDisplayed()
         assertEquals(old.value.counterDefinitions, shell.controllers.profiles!!.state.value.editor!!.counterDefinitions)
         back(); rule.onNodeWithTag(ProfileTags.NAME).assertTextContains("Unsaved name")
