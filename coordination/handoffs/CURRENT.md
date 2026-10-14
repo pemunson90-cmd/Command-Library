@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-timing-engine-98
+Checkpoint-ID: cp-20261014-life-counter-engine-99
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. design-modern-life-semantic-actions-and-initialization
+Next step: 3. implement-reviewed-life-table-actions
 
-Updated UTC: 2026-10-14T07:52:29Z
+Updated UTC: 2026-10-14T08:08:26Z
 Status: in_progress; lease: active.
-Verified base: 075736ef2e9b3875e946ecafbf990a0f01326eb1.
+Verified base: 83a7fc16d9195d52e6e78358831fe405c43e62c2.
 
-Modern timing helpers reviewed and verified:122life/111storage focused GREEN; whole770JVM/73XML0fail/error/skip,check/debug104s,alignmentpass. Timing DONE; root TAKES semantic action/initializer design before real service/UI. History audit OPEN; no full-v1 claim.
+First semantic counter slice reviewed/verified:132life and whole780JVM/74XML0fail/error/skip,check/debug185s,alignmentpass. Semantic umbrella remains TAKEN; reviewed table/participation/ack slice RED next. History audit OPEN; no service/UI/full-v1 claim.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
