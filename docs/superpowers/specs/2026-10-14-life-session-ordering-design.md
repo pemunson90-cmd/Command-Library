@@ -1,4 +1,4 @@
-# Ordered local life sessions — proposed next prerequisite
+# Ordered local life sessions — implemented prerequisite
 
 Root cx-m2-life-action-engine-01 remains TAKEN. Actual lifecycle, semantic commands, history and event adapters exist. The remaining ordered publication/session prerequisite must not register a partial GameService or claim authentic variants, foreground cadence, alert OS delivery or UI acceptance.
 
@@ -18,4 +18,4 @@ Every successful recovery return publishes immediately under same game lock befo
 
 Architecture review must resolve exact subscription, capacity/lifetime, creation race and cancellation boundaries before source. Actual hostSQLite tests should block publication/reads/writes deterministically: two same-game commands serialize and revisions cannot regress; different-game work remains independent within database capability; delayed new watcher never overwrites a newer commit; no failed/proposed event emission; recovery success then command failure/cancellation publishes recovery; resumed current sequence orders same revision; stale expected/no random draws; watcher teardown/eviction cannot split locks; actual durable reopen matches latest publication. No emulator for these host checks. Final service/source/UI/cadence/device acceptance remains pending.
 
-Independent architecture APPROVE (life_contract_review) after concrete subscription/refcount/source/creation/cancellation policy. Equal revision/sequence with different durable payload is integrity conflict, never suppress as duplicate; exact StoredLifeGame equality alone may no-op. Source/tests next.
+Independent architecture APPROVE (life_contract_review) after concrete subscription/refcount/source/creation/cancellation policy. Equal revision/sequence with different durable payload is integrity conflict, never suppress as duplicate; exact StoredLifeGame equality alone may no-op. Exact-source APPROVE; eight actual hostSQLite session methods verified. See docs/verification/m2-life/SESSIONS-LOCAL-20261014.md.
