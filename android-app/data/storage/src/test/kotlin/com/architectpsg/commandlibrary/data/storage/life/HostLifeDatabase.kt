@@ -44,7 +44,7 @@ internal class HostLifeDatabase(file: File, initialize: Boolean = true) : Databa
                         1 -> SqlValue.Integer(s.getLong(i))
                         3 -> SqlValue.Text(s.getText(i))
                         4 -> {
-                            if(s.getColumnName(i) in setOf("payload","creation_payload","checkpoint_payload")) blobQueries++
+                            if(s.getColumnName(i) in setOf("payload","creation_payload","checkpoint_payload","archive_payload")) blobQueries++
                             SqlValue.Blob(SnapshotBytes(s.getBlob(i)))
                         }
                         5 -> SqlValue.Null

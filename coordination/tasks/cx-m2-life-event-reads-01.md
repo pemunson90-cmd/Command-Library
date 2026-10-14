@@ -1,4 +1,4 @@
-# Checked immutable life event/archive reads — TAKEN
+# Checked immutable life event/archive reads — DONE
 
 Owner codex-thread-recovery-20261013, agent/cx-thread-recovery-20261013. Parent cx-m2-life-functional-01, root life-functional lock retained. Other chat may claim disjoint read-only history audit, not shared production files.
 
@@ -10,4 +10,6 @@ Before implementation write concrete spec/inline plan and independent architectu
 
 ## Latest continuation delta
 
-Design/inline plan drafted in docs/superpowers/specs/2026-10-14-life-event-reads-design.md and docs/superpowers/plans/2026-10-14-life-event-reads.md. Concrete read-only APIs archive/events, strict projection metadata, game-bound keyset cursor and32MiB encodedpage budget specified; current/settled/system/semantic undo authority explicitly deferred. Independent review requested before product code. New tests not_run. Root claim published at ea8b2e1; exact next action resolve design findings then API/behavior RED and actual checked reader.
+DONE: SqlLifeEventReader archive/events, strict event metadata and canonical length-framed game-bound cursor, deterministic revision keyset pages<=32MiB encoded selected archives. Independent design/source APPROVE; no blocking/deferred findings. APIabsence67s, declaration77/10fail77s; GREEN80storage76s, expanded83storage incl16reader79s. Final local wholecheck/debug88s71XML714JVM0failure/error/skip, alignment pass. See docs/verification/m2-life/EVENT-READS-LOCAL-20261014.md; legacy independent timestamps/roles/Unknown/random metadata preserved. No schema/coreport/dependency/DI change or currentpointer/semantic undo authority claim.
+
+Root next TAKEN cx-m2-life-game-mutations-01: reviewed transactional revision+sequence CAS and atomic event/checkpoint/seat/result/alert persistence. History audit OPEN; root retains shared/life lock. Exact next action concrete mutation design from actual schema/contracts/read helpers before implementation.
