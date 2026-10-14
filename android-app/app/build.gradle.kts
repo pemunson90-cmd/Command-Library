@@ -20,6 +20,10 @@ android {
         compose = true
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     lint {
         fatal += "NewApi"
     }
@@ -50,6 +54,11 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
 
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.coroutines.test)
+
+    androidTestImplementation(project(":feature:life"))
     androidTestImplementation(project(":core:common"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
