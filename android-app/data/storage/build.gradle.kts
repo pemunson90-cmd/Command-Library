@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.sqlite.bundled)
     ksp(libs.room3.compiler)
 
+    // Integration tests consume the pure JVM repository; production registry/DAG is unchanged.
+    testImplementation(project(":feature:life"))
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
     add(hostSqliteNative.name, libs.sqlite.bundled.jvm)

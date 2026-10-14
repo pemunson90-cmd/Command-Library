@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-chat-task-board-91",
-  "verified_base_head": "680748afbdf190382819c14b6dab4a674dd011e2",
+  "checkpoint_id": "cp-20261014-life-profiles-92",
+  "verified_base_head": "07fdbd038072e89460d4baef6fc75a29655bd45f",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "publish-disjoint-chat-tasks",
+  "first_action": "complete-profiles-and-integrate-scryfall",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Codec2/actions/schema6 preparation reviewed; local641 JVM/check/debug and focused schema API36 35 cases passed. Real profile persistence/service/UI pending.",
+  "review_status": "Profile codec port/repository design and source reviewed; API23 Base64 and metadata/UTF8 corruption findings fixed with actual tests/bytecode. Final whole667 cases pass; actual game store/service/UI remain pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -60,9 +60,11 @@
     "life_profile_contract": "ExactsourceAstraAPPROVE; APIabsence29s/behaviorRED10-6fail59s then54model+81lifeGREEN51s. Typedport declarations, input/default/exchangechecks only; no service/codec/schema6/UI.",
     "life_random_provenance": "Independent recovery design/exactsource approved. APIabsence RED50s; declarationbehavior RED66model11fail; GREEN66model+81life0failure/error/skip72s. Model packet only; no codec/schema6/service/UI.",
     "life_payload_codec": "Design/exactsource approved; local APIabsenceRED82s, firstGREEN100s; final63XML627JVM0failure/error/skip, check/lint/debugassemble9m3s, APK9fe70edf16KiBZIPalignmentpassed.13codec tests include separatearchive>4MiBcombined. No schema6/service/native/physical claim.",
-    "life_schema6_local": "Source/design approved. Actual KSP6 c46511a5:18priorentitiesidentical/24total. Host31storage0failure/error/skip91s incl5realSQLite migration/reopen/constraints/CAS/rollback. Wholecheck/debug+focusedtestAPKs235s64XML632JVM0fail/error/skip;16KiBZIPpass. AndroidRoom/native not_run; no service/UI."
+    "life_schema6_local": "Source/design approved. Actual KSP6 c46511a5:18priorentitiesidentical/24total. Host31storage0failure/error/skip91s incl5realSQLite migration/reopen/constraints/CAS/rollback. Wholecheck/debug+focusedtestAPKs235s64XML632JVM0fail/error/skip;16KiBZIPpass. Native pending at that historical checkpoint, subsequently passed focused35 cases; see life_schema6_native. No service/UI.",
+    "life_profiles_local": "Final wholecheck/debug113s67XML667JVM0failure/error/skip; storage49 including13profile realSQLite/codec cases, catalog173 including13metadata cases. Portable Base64 bytecode and APK16KiBZIP alignment checked. SQLmetadata/UTF8 RED-to-GREEN, cancellation rollback/CAS/reopen/paging/history preservation. No service/UI/native claim.",
+    "life_schema6_native": "Frozen c997c773 focused API36 run38484784441 success:3network32storage0failure/error/skip, Room migration/open checks. Detailed report SCHEMA6-LOCAL-20261013.md."
   },
-  "last_completed": "Published concurrent task board: recovery TAKES life profiles; OPEN scoped Scryfall integration and history audit. Refreshed parent delta; claims/completions publish with dedicated locks.",
-  "updated_utc": "2026-10-14T03:02:20Z",
+  "last_completed": "Reviewed checked profile repository/codec port and scoped Scryfall integration; final local667JVM/check/debug0failure/error/skip. SQL UTF8 replacement and API23 linkage fixed. Profiles DONE; root TAKES checked game creation/read store next; history audit OPEN.",
+  "updated_utc": "2026-10-14T04:29:40Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

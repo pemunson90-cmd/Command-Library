@@ -1,4 +1,4 @@
-# Life profiles — TAKEN
+# Life profiles — DONE
 
 Owner: codex-thread-recovery-20261013 (this chat).
 Branch: agent/cx-thread-recovery-20261013. Parent: cx-m2-life-functional-01.
@@ -11,4 +11,6 @@ Acceptance: meaningful RED→GREEN; real local bundledSQLite and codec CRUD/reop
 
 ## Latest continuation delta
 
-Task explicitly taken on2026-10-14. Design reviewed in current chat; no implementation edits yet. Next: persist concrete spec/plan, write failing actual integration tests, implement and verify locally. See coordination/CHAT-TASKS.md for other disjoint assignments.
+DONE: actual twelve-method codec port and SQLite-backed repository, strict bounded UTF8 projection/payload checks, CAS, canonical keyset cursor and bytebudget pages. Independent design/source review findings fixed; meaningful malformed metadata/UTF8 RED→GREEN. Final local wholecheck/debug667JVM/67XML and storage49cases including13profile tests,0failures/errors/skips; alignment pass. Details docs/verification/m2-life/PROFILES-LOCAL-20261014.md. No operational service/DI/UI binding.
+
+Next root unit TAKEN: cx-m2-life-game-store-01 (checked creation/read foundation). This profile assignment is complete; broad parent life-functional lock remains with root for subsequent life work. Scryfall integration ad3f9aa source/test hashes verified and integrated with the coherent local check.

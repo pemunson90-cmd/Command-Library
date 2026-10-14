@@ -26,19 +26,19 @@ internal fun <T> decodeLifeFrame(bytes: ByteArray, root: Int, limit: Int, codec:
 }
 
 /** Versioned bounded model serialization, independent of Room and transactional service graph validation. */
-public class LifePayloadCodec {
-    public fun encodeCreation(value: GameCreation): Outcome<SnapshotBytes> = encode(value, 6, SNAPSHOT_LIMIT, creationWire)
-    public fun decodeCreation(bytes: SnapshotBytes): Outcome<GameCreation> = decode(bytes, 6, SNAPSHOT_LIMIT, creationWire)
-    public fun encodeSnapshot(value: GameSnapshot): Outcome<SnapshotBytes> = encode(value, 1, SNAPSHOT_LIMIT, snapshotWire)
-    public fun decodeSnapshot(bytes: SnapshotBytes): Outcome<GameSnapshot> = decode(bytes, 1, SNAPSHOT_LIMIT, snapshotWire)
-    public fun encodeProfile(value: PlayerProfileDraft): Outcome<SnapshotBytes> = encode(value, 2, SNAPSHOT_LIMIT, profileWire)
-    public fun decodeProfile(bytes: SnapshotBytes): Outcome<PlayerProfileDraft> = decode(bytes, 2, SNAPSHOT_LIMIT, profileWire)
-    public fun encodeEvent(value: GameEvent): Outcome<SnapshotBytes> = encode(value, 3, EVENT_LIMIT, eventWire)
-    public fun decodeEvent(bytes: SnapshotBytes): Outcome<GameEvent> = decode(bytes, 3, EVENT_LIMIT, eventWire)
-    public fun encodeArchive(value: GameEventArchive): Outcome<SnapshotBytes> = encode(value, 4, EVENT_LIMIT, archiveWire)
-    public fun decodeArchive(bytes: SnapshotBytes): Outcome<GameEventArchive> = decode(bytes, 4, EVENT_LIMIT, archiveWire)
-    public fun encodeCheckpoint(value: GameCheckpoint): Outcome<SnapshotBytes> = encode(value, 5, SNAPSHOT_LIMIT + 65_536, checkpointWire)
-    public fun decodeCheckpoint(bytes: SnapshotBytes): Outcome<GameCheckpoint> = decode(bytes, 5, SNAPSHOT_LIMIT + 65_536, checkpointWire)
+public class LifePayloadCodec : LifePayloadCodecPort {
+    public override fun encodeCreation(value: GameCreation): Outcome<SnapshotBytes> = encode(value, 6, SNAPSHOT_LIMIT, creationWire)
+    public override fun decodeCreation(bytes: SnapshotBytes): Outcome<GameCreation> = decode(bytes, 6, SNAPSHOT_LIMIT, creationWire)
+    public override fun encodeSnapshot(value: GameSnapshot): Outcome<SnapshotBytes> = encode(value, 1, SNAPSHOT_LIMIT, snapshotWire)
+    public override fun decodeSnapshot(bytes: SnapshotBytes): Outcome<GameSnapshot> = decode(bytes, 1, SNAPSHOT_LIMIT, snapshotWire)
+    public override fun encodeProfile(value: PlayerProfileDraft): Outcome<SnapshotBytes> = encode(value, 2, SNAPSHOT_LIMIT, profileWire)
+    public override fun decodeProfile(bytes: SnapshotBytes): Outcome<PlayerProfileDraft> = decode(bytes, 2, SNAPSHOT_LIMIT, profileWire)
+    public override fun encodeEvent(value: GameEvent): Outcome<SnapshotBytes> = encode(value, 3, EVENT_LIMIT, eventWire)
+    public override fun decodeEvent(bytes: SnapshotBytes): Outcome<GameEvent> = decode(bytes, 3, EVENT_LIMIT, eventWire)
+    public override fun encodeArchive(value: GameEventArchive): Outcome<SnapshotBytes> = encode(value, 4, EVENT_LIMIT, archiveWire)
+    public override fun decodeArchive(bytes: SnapshotBytes): Outcome<GameEventArchive> = decode(bytes, 4, EVENT_LIMIT, archiveWire)
+    public override fun encodeCheckpoint(value: GameCheckpoint): Outcome<SnapshotBytes> = encode(value, 5, SNAPSHOT_LIMIT + 65_536, checkpointWire)
+    public override fun decodeCheckpoint(bytes: SnapshotBytes): Outcome<GameCheckpoint> = decode(bytes, 5, SNAPSHOT_LIMIT + 65_536, checkpointWire)
 
     private fun <T> encode(value: T, root: Int, limit: Int, codec: LifeWire<T>): Outcome<SnapshotBytes> =
         guard(FailureCode.INVALID_INPUT) { SnapshotBytes(encodeLifeFrame(root, limit, codec, value)) }

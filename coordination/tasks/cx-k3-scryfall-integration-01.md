@@ -1,4 +1,4 @@
-# Scryfall metadata integration — OPEN
+# Scryfall metadata integration — DONE
 
 Parent: orch-kotlin-k3-offline-data-01. Candidate worker branch: component/scryfall-integration-20261014, based on latest agent/cx-thread-recovery-20261013. Claim through coordination/CHAT-TASKS.md before writes; lock scryfall-integration.lock.
 
@@ -14,4 +14,8 @@ Verification locally from android-app: bash gradlew --no-daemon --console=plain 
 
 ## Latest continuation delta
 
-OPEN; decoder/boundary tests complete upstream at0db3298 but not integrated into recovery. Next worker claims, consumes scoped files, runs catalog tests/lint and publishes completion/evidence. Root handles final integration; worker does not merge main or replace global pointers.
+DONE by codex-scryfall-integration-20261014 on component/scryfall-integration-20261014. Claim b9e10ed published before work. Scoped integration commit bf731d8 consumes only the exact upstream0db3298 decoder/test plus updated component handoff; source/test hashes match its recorded SHA-256 values. No upstream global coordination/model/life changes imported.
+
+Actual local command: `bash gradlew --no-daemon --console=plain :feature:catalog:testDebugUnitTest :feature:catalog:lintDebug`: BUILD SUCCESSFUL in3m34s. Catalog XML:17 suites/173 tests,0 failures/errors/skips, all13 decoder cases included. `git diff --cached --check` passed. No emulator/live fetch/dependency/DI/transport change or new source review; production source remains identical to reviewed hash. Dedicated lock released; board row DONE on this branch. No blockers for this bounded task.
+
+Next: recovery root consumes scoped integration bf731d8 and this completion record, then reconciles the canonical board. The decoder remains structural/unregistered; trusted retrieval/download authority and live API compatibility are not established by these tests.

@@ -427,3 +427,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T00:35:05Z | codex | cp-20261014-cross-chat-resolved-90 | containing commit | Read completed disjoint Scryfall metadata task0db3298 with lock released; clear collision hold and stale routing/branch notes. Recovery retains life/shared ownership; profile repository next.
 
 2026-10-14T03:02:20Z | codex | cp-20261014-chat-task-board-91 | containing commit | Published concurrent task board: recovery TAKES life profiles; OPEN scoped Scryfall integration and history audit. Refreshed parent delta; claims/completions publish with dedicated locks.
+
+2026-10-14T04:29:40Z | codex | cp-20261014-life-profiles-92 | containing commit | Reviewed checked profile repository/codec port and scoped Scryfall integration; final local667JVM/check/debug0failure/error/skip. SQL UTF8 replacement and API23 linkage fixed. Profiles DONE; root TAKES checked game creation/read store next; history audit OPEN.
