@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-profile-ui-review-125
+Checkpoint-ID: cp-20261014-profile-library-126
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. verify-profile-ui-then-wire-real-app-repository
+Next step: 3. implement-custom-counter-draft-red-green
 
-Updated UTC: 2026-10-14T15:06:01Z
+Updated UTC: 2026-10-14T15:35:14Z
 Status: in_progress; lease: active.
-Verified base: 1018d9e7eeb8fa314d2b8dfb295a0c2caf1122d3.
+Verified base: 22d22300bad229ea78d7591e007688c1eab91aad.
 
-Profile UI candidate review corrections approved; local combined tests running, app assembly and full gate next. Preserve dirty source and exclusive root ownership.
+Profile library22d2230 verified973JVM/check/debug/4APKZIP with independent approval; continue reviewed custom-counter draft editing locally.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

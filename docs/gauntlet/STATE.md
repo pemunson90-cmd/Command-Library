@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-profile-ui-review-125. Updated UTC: 2026-10-14T15:06:01Z.
+Checkpoint: cp-20261014-profile-library-126. Updated UTC: 2026-10-14T15:35:14Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-verify-profile-ui-then-wire-real-app-repository
+implement-custom-counter-draft-red-green
 
-Profile UI candidate review corrections approved; local combined tests running, app assembly and full gate next. Preserve dirty source and exclusive root ownership.
+Profile library22d2230 verified973JVM/check/debug/4APKZIP with independent approval; continue reviewed custom-counter draft editing locally.
 
 Read CURRENT, machine state and task card.

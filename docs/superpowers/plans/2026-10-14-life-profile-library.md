@@ -48,7 +48,7 @@ Interfaces: consumes task1 controller/state; add ShellPorts.playerProfiles:Playe
 - [x] Run named UI tests and observe RED before screen/navigation changes.
 - [x] Implement labelled list/editor/dialog using existing adaptive scaffold and Problem resource mapping. No advanced edit controls that do nothing; retained advanced values may display as summaries. Busy write is visible; screen back cannot misreport a committed operation as unsaved.
 - [x] Run full shell suite and lint; resolve actual failures.
-- [ ] Commit UI and truthful continuation delta.
+- [x] Commit UI and truthful continuation delta.
 
 ### Task3: Real app profile assembly and verification
 
@@ -60,7 +60,7 @@ Interfaces: construct SqlPlayerProfileRepository(opened.value,LifePayloadCodec()
 - [x] Wire exact complete repository, preserving all non-success/cancellation branches and existing shell/catalog/settings initialization.
 - [x] Run check :app:assembleDebug :app:assembleDebugAndroidTest :feature:shell:assembleDebugAndroidTest and appropriate storage compile gate. Count exact XML; independently check APK ZIP alignment; record runtime not_run where applicable.
 - [x] Obtain independent exact source/publicAPI/durability/UI review and fix findings, rerun affected checks only.
-- [ ] Publish source/evidence and synchronized checkpoint with continuity/31Python checks; advance directly to retained profile advanced/apply or named variant/source prerequisites. No checkpoint stop or unfinished APK delivery.
+- [x] Publish source/evidence and synchronized checkpoint with continuity/31Python checks; advance directly to retained profile advanced/apply or named variant/source prerequisites. No checkpoint stop or unfinished APK delivery.
 
 ## Chronological progress and rulings
 
@@ -81,3 +81,5 @@ Task3 intendedmissingport RED observed417s containingfullshell98pass13XML/0fail-
 Current: controller/UI/app realprofileassembly are implemented/sourceAPPROVE. Focused18testsGREEN186s, full98shell13XML0failure/error/skip, shelllintDebugGREEN. ActualApplication/Room probeGREEN1test21.323s (containing60s command). Whole check/debug/app+shell+storage testAPKs executing; APKZIP/XML aggregate and source/evidence commit/checkpoint next. Native/physicalnot_run.
 
 Final local whole gateGREEN616s441tasks:973JVM99XML0failures/errors/skips, check/debug/app+shell+storage testAPK compiled;4independentZIP16KiBexit0, exactSHA/DEX evidence in PROFILE-LIBRARY-LOCAL. IndependentwholefeatureAPPROVE. Publish source/evidence/checkpoint next, then bounded customcounterdrafteditor (sameprofileport; reservedroles untouched). Native/physicalnot_run; no delivery.
+
+Source/evidence committed22d2230; checkpoint126 publishes verifiedbasiclibrary and next boundedcustomcounterdraftRED. Rootcontinues immediately, no finalAPKdelivery.
