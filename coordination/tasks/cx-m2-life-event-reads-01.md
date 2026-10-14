@@ -10,4 +10,4 @@ Before implementation write concrete spec/inline plan and independent architectu
 
 ## Latest continuation delta
 
-TAKEN after structural current graph guard design/source/integration approved and local wholecheck/debug698JVM/70XML0failure/error/skip80s,67storage including18Store cases; APK alignment pass. New event-read design/code/tests not_run. Exact next action: inspect schema/contract/history requirements, specify bounded read/page API and integrity/legacy boundaries, obtain review before tests/code. Root remains sole life/shared orchestrator.
+Design/inline plan drafted in docs/superpowers/specs/2026-10-14-life-event-reads-design.md and docs/superpowers/plans/2026-10-14-life-event-reads.md. Concrete read-only APIs archive/events, strict projection metadata, game-bound keyset cursor and32MiB encodedpage budget specified; current/settled/system/semantic undo authority explicitly deferred. Independent review requested before product code. New tests not_run. Root claim published at ea8b2e1; exact next action resolve design findings then API/behavior RED and actual checked reader.
