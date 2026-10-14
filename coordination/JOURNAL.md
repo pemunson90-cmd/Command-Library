@@ -539,3 +539,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T23:06:45Z | codex | cp-20261014-oracle-text-search-147 | containing commit | Oracle text cda372d reviewed/actualSQLite/controller/UI/compilepass; continue local name suggestions. Local unpublished/token rejected, native r3prepared/notrun.
 
 2026-10-14T23:14:45Z | codex | cp-20261014-name-suggestions-148 | containing commit | Autocomplete46d143d36focused/nativecompilepass53s. Next reviewed exact glossary links, no guessed IDs. Local unpublished/token rejected; native r3notrun.
+
+2026-10-14T23:48:01Z | codex | cp-20261014-glossary-auth-restored-149 | containing commit | Glossary8908e46 reviewed29pass+8SQLite; auth restored/published exact. Combined fresh0022 whole running before ONE current native snapshot; preserve olderdrafts.
