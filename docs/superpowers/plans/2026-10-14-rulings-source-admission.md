@@ -1,6 +1,6 @@
 # Trusted ruling metadata and one shared acquisition owner
 
-Status: revised architecture/security/durability design independently ACK; implementation next, no source-authority acceptance yet. Reviewer required explicit v3 sizing and durable-before-cache publication; both are specified below and re-reviewed without blockers. Builds on actual unbound importer90c3a70 and source audit `docs/verification/trusted-profiles-audit/evidence/src-rulings.md`. Root remains sole catalog/schema/app/shared writer. Existing fixed English download behavior remains a required regression.
+Status: revised architecture/security/durability design independently ACK; receipt/schema8 foundation implemented with12focused checks passed, source review pending. Android pins/shared-factory composition/v3 installed context remain next; no source-authority acceptance yet. Reviewer required explicit v3 sizing and durable-before-cache publication; both are specified below and re-reviewed without blockers. Builds on actual unbound importer90c3a70 and source audit `docs/verification/trusted-profiles-audit/evidence/src-rulings.md`. Root remains sole catalog/schema/app/shared writer. Existing fixed English download behavior remains a required regression.
 
 ## Admission, consent and lifetime
 

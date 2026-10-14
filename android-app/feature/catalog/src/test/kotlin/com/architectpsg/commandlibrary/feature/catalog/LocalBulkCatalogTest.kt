@@ -337,7 +337,14 @@ internal class BulkSqlTestDatabase(path: String=":memory:") : Database, AutoClos
         }
         var committed=false
         var activation=false
-        try { val value=action(tx); cancel.throwIfCancelled(); if(tx.state is DbTransactionState.RollbackOnly) { exec("ROLLBACK"); return (tx.state as DbTransactionState.RollbackOnly).status }; activation=queryRaw(bulkSql("SELECT count(*) AS n FROM catalog_generation WHERE status='ACTIVE' AND activated_at_epoch_seconds IS NOT NULL")).single().bulkLong("n")>0 && queryRaw(bulkSql("SELECT count(*) AS n FROM catalog_generation WHERE status='STAGING'")).single().bulkLong("n")==0L
+        try { val value=action(tx); cancel.throwIfCancelled(); if(tx.state is DbTransactionState.RollbackOnly) { exec("ROLLBACK"); return (tx.state as DbTransactionState.RollbackOnly).status }
+        // Match the actual Database contract when a callback returns a typed non-success.
+        when(value) {
+            is Outcome.Failure -> { exec("ROLLBACK"); return value }
+            is Outcome.Unavailable -> { exec("ROLLBACK"); return value }
+            is Outcome.Unknown -> { exec("ROLLBACK"); return value }
+        }
+        activation=queryRaw(bulkSql("SELECT count(*) AS n FROM catalog_generation WHERE status='ACTIVE' AND activated_at_epoch_seconds IS NOT NULL")).single().bulkLong("n")>0 && queryRaw(bulkSql("SELECT count(*) AS n FROM catalog_generation WHERE status='STAGING'")).single().bulkLong("n")==0L
         exec("COMMIT"); committed=true; afterCommit?.invoke(); if(cancelAfterActivationCommit && activation) { cancelAfterActivationCommit=false; throw CancellationException("Cancelled commit acknowledgement") }; return Outcome.Success(value) }
         catch(e: CancellationException) { if(!committed) exec("ROLLBACK"); throw e }
         catch(e: TransactionAbort) { exec("ROLLBACK"); return Outcome.Failure(e.failure) }
