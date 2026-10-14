@@ -288,4 +288,46 @@ class SqlLifeGameCommandsTest {
         }
     }
 
+    @Test fun countdownUndoAfterFileReopenPreservesDurableChargeAndPausesEveryModeAndPolicy() = runBlocking<Unit> {
+        for(mode in listOf(SeatClockMode.CHESS,SeatClockMode.PER_TURN,SeatClockMode.SHARED)) {
+            for(policy in ClockUndoPolicy.entries) {
+                val file=folder.newFile();val ids=Ids();lateinit var lineage:Knowledge<EntityId>
+                HostLifeDatabase(file).use { db ->
+                    val lifecycle=life(db,ids);val commands=SqlLifeGameCommands(db,codec,ids,Random());val base=f.input()
+                    val input=base.copy(settings=base.settings.copy(clockMode=mode),clock=base.clock.copy(mode=mode,undoPolicy=policy,
+                        seats=if(mode==SeatClockMode.SHARED)SnapshotList.empty() else SnapshotList.copyOf(base.seats.map { SeatTime(it.id,20.seconds,20.seconds) }),
+                        shared=if(mode==SeatClockMode.SHARED)SharedCountdown(20.seconds,20.seconds) else null))
+                    var current=ok(lifecycle.create(input,reading(),f.token))
+                    current=ok(commands.dispatch(f.id,GameAction.Group(SnapshotList.of(GameAction.SwitchTurn(f.other),GameAction.ClockPause(false),
+                        GameAction.SetElapsedPaused(false)),EntityId("start")),current.rev(),reading(),f.token))
+                    current=ok(commands.dispatch(f.id,GameAction.SwitchTurn(f.seat),current.rev(),reading(3),f.token))
+                    lineage=current.checkpoint.snapshot.elapsed.turnLineageId
+                    current=ok(commands.dispatch(f.id,GameAction.SwitchTurn(f.other),current.rev(),reading(5),f.token))
+                    current=ok(lifecycle.resume(f.id,reading(9),f.token))
+                    assertEquals(9.seconds,current.checkpoint.snapshot.elapsed.gameElapsed)
+                    if(mode==SeatClockMode.SHARED)assertEquals(11.seconds,current.checkpoint.snapshot.clock.shared!!.remaining)
+                }
+                HostLifeDatabase(file,false).use { db ->
+                    val lifecycle=life(db,ids);val commands=SqlLifeGameCommands(db,codec,ids,Random());val foreign=EntityId("foreign")
+                    val recovered=ok(lifecycle.resume(f.id,GameTimeObservation(0.seconds,UtcTimestamp(9_000_000),foreign),f.token))
+                    assertTrue(recovered.checkpoint.snapshot.clock.paused)
+                    val undone=ok(commands.undo(f.id,recovered.rev(),GameTimeObservation(1.seconds,UtcTimestamp(1),foreign),f.token))
+                    val snapshot=undone.checkpoint.snapshot
+                    assertEquals(f.seat,snapshot.activeSeatId);assertEquals(lineage,snapshot.elapsed.turnLineageId)
+                    assertEquals(9.seconds,snapshot.elapsed.gameElapsed);assertEquals(2.seconds,snapshot.elapsed.turnElapsed)
+                    assertTrue(snapshot.clock.paused);assertTrue(snapshot.elapsed.paused)
+                    assertEquals(foreign,snapshot.clock.anchor!!.processSessionId)
+                    if(mode==SeatClockMode.SHARED)assertEquals(11.seconds,snapshot.clock.shared!!.remaining)
+                    else {
+                        assertEquals(18.seconds,snapshot.clock.seats.single { it.seatId==f.seat }.remaining)
+                        assertEquals(if(policy==ClockUndoPolicy.KEEP_ELAPSED)13.seconds else 17.seconds,
+                            snapshot.clock.seats.single { it.seatId==f.other }.remaining)
+                    }
+                    assertEquals(Knowledge.Known(2L),ok(SqlLifeEventReader(db,codec).archive(f.id,3,f.token)).event.undoOfEventId)
+                    assertEquals(undone,ok(lifecycle.resume(f.id,GameTimeObservation(500.seconds,UtcTimestamp(800),foreign),f.token)))
+                }
+            }
+        }
+    }
+
 }
