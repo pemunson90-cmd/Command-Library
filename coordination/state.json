@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-query-parser-146",
-  "verified_base_head": "85096591b00d4b8e3264d06cf0ebf3420485aa6c",
+  "checkpoint_id": "cp-20261014-oracle-text-search-147",
+  "verified_base_head": "cda372d6acf37d28b05de4a2e90cca8b14bd7a21",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "review-and-implement-existing-index-oracle-text-capability",
+  "first_action": "implement-local-name-suggestions-on-existing-index",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -20,7 +20,7 @@
     "GitHub rejected configured token: source de135ae/ef7eddd and subsequent checkpoints retained locally; publication/corrected native run blocked pending credential refresh. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "8509659 parser design/exact source ACK;90parserpass4s,81modelpass unchanged. Next existing-index Oracle text capability review. Earlier ef7 privacy1113wholepass retained; local unpublished/token rejected.",
+  "review_status": "cda372d indexed Oracle text public-contract/source/cursor ACK;SQLite/controller/UI/app/nativecompile51s, finalcopyUI29s. Parser850 reviewed90pass/81model; next presentation name suggestions. Local unpublished/token rejected.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -121,9 +121,10 @@
     "card_keyword_lookup_local": "de135ae15focused/twoXML0fail/error/skip37s, app/native-test compile. Literal local text search, no guessed canonical RuleId/import. CARD-KEYWORD-LOOKUP-LOCAL-20261014.md.",
     "search_edit_supersession_local": "7fbffc5:12controller/oneXML0failure/error/skip SUCCESS14s. Ticket/cancel/draft preservation, no automatic lookup. Newer than1113 whole; no repeat native/full claim. SEARCH-EDIT-SUPERSESSION-LOCAL-20261014.md.",
     "rulings_native_r3_prepared": "LOCAL isolated d5d3026 onagent/cx-rulings-source-integration-r3-20261014; actualruntime/compile inputs identical toef7eddd/1113fresh0022whole. Not published/not run; credential refresh pending. Later7fbffc5 excluded; no oldsnapshotmove.",
-    "local_card_query_parser": "8509659 design/exact source ACK; final90parser/twoXML0fail/error/skip4s; unchanged81model/13XMLpass16s. Pure syntax/module, no execution/DI/aggregate/source claims. LOCAL-CARD-QUERY-PARSER-20261014.md."
+    "local_card_query_parser": "8509659 design/exact source ACK; final90parser/twoXML0fail/error/skip4s; unchanged81model/13XMLpass16s. Pure syntax/module, no execution/DI/aggregate/source claims. LOCAL-CARD-QUERY-PARSER-20261014.md.",
+    "oracle_text_local_search": "cda372d reviewed; actualSQLite4/controller/UI/native/appcompile SUCCESS51s; final2Compose prompt/nativecompile29s. ExistingFTS/no schema/acquisition/AST execution. ORACLE-TEXT-LOCAL-SEARCH-20261014.md."
   },
-  "last_completed": "Parser8509659 design/source ACK90pass+81model. Next expose actual indexed Oracle text capability/UI, focused checks. Local unpublished/GitHub token rejected.",
-  "updated_utc": "2026-10-14T22:58:49Z",
+  "last_completed": "Oracle text cda372d reviewed/actualSQLite/controller/UI/compilepass; continue local name suggestions. Local unpublished/token rejected, native r3prepared/notrun.",
+  "updated_utc": "2026-10-14T23:06:45Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
