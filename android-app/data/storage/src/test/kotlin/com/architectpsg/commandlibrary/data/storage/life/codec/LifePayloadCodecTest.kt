@@ -247,4 +247,38 @@ class LifePayloadCodecTest {
         assertEquals(Revision(8), archive.provenance.afterAction.revision)
         assertTrue((archive.provenance.afterAction.result as Knowledge.Known).value.seatResults.isEmpty())
     }
+
+    private fun versionTwoGoldenCases(): List<Pair<String, (SnapshotBytes) -> Unit>> {
+        val cases = ArrayList<Pair<String, (SnapshotBytes) -> Unit>>()
+        fun <T> add(name: String, value: T, decode: (SnapshotBytes) -> Outcome<T>) {
+            cases += name to { bytes -> assertEquals(value, success(decode(bytes))) }
+        }
+        val before = snapshot()
+        add("snapshot", before, codec::decodeSnapshot)
+        add("creation", creation(), codec::decodeCreation)
+        add("checkpoint", GameCheckpoint(before, Knowledge.Known(6L), EntityId("golden-process")), codec::decodeCheckpoint)
+        add("profile", PlayerProfileDraft("Synthetic profile", 20, SnapshotList.of(definition), appearance, before.seats.single().commanders, 5), codec::decodeProfile)
+        val id = EntityId("request")
+        val random = listOf(
+            Triple("dice", RandomRequest.Dice(id, 2, 6), RecordedRandomValue.Dice(6, SnapshotList.of(2,3), 5, 2, 0, 0)),
+            Triple("continue", RandomRequest.ContinueDice(id, 1), RecordedRandomValue.Dice(6, SnapshotList.of(6), 6, 10_001, 1, 0)),
+            Triple("coin", RandomRequest.Coin(id), RecordedRandomValue.Coin(true)),
+            Triple("pick", RandomRequest.SeatPick(id, seatId, false), RecordedRandomValue.SeatPick(seatId, SnapshotList.of(seatId))),
+            Triple("order", RandomRequest.SeatOrder(id), RecordedRandomValue.SeatOrder(SnapshotList.of(seatId))))
+        for ((name, request, value) in random) {
+            val original = event(GameAction.RequestRandom(request)).copy(randomResults = SnapshotList.of(RecordedRandomResult(id, stamp, value)))
+            add("event-$name", original, codec::decodeEvent)
+            val after = before.copy(revision = Revision(8), lastEventId = Knowledge.Known(original.id))
+            add("archive-$name", GameEventArchive(1, original, GameActionProvenance(original.id, before, after,
+                GameTimeObservation(1.seconds, stamp, EntityId("golden-process")))), codec::decodeArchive)
+        }
+        return cases
+    }
+    @Test fun actualVersionTwoGoldenBytesStillDecode() {
+        for ((name, validate) in versionTwoGoldenCases()) {
+            val bytes = requireNotNull(javaClass.getResourceAsStream("/life-codec-v2/$name.bin")) { "Missing pinned v2 fixture $name" }.use { it.readBytes() }
+            assertEquals(2, ByteBuffer.wrap(bytes).getInt(4))
+            validate(SnapshotBytes(bytes))
+        }
+    }
 }
