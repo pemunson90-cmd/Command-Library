@@ -1,6 +1,6 @@
 # Rulings source admission and retained installation chain
 
-Status: implemented locally; focused integration passes. Independent production source review ACK; final exact-source/test evidence review and broad integration gate pending at this snapshot. No production UI/root ruling capability is bound yet. Source authenticity/full-feed/device acceptance remains separate.
+Status: source1a4f43b implemented and independently ACK; focused and broad local integration gates pass. No production UI/root ruling capability is bound yet. Source authenticity/full-feed/device acceptance remains separate.
 
 ## Implemented boundary
 
@@ -21,10 +21,21 @@ Version3 installation persists the complete receipt, exact file plan and prior i
 - Final focused gate SUCCESS36s,144tasks8executed136cached:4catalog v3 cases2.336s +5new actual Room/DataStore/Android pin/factory cases14.782s +4existing root recovery/ownership cases1.274s;3XML,13tests,0failure/error/skip. App instrumentation counterparts compile. Log `/tmp/rulings-source-admission-pins.log`.
 - New checks cover full chain retained after temporary jobs/receipts disappear, legacy metadata bound, exact3MiB/one-over payload, corrupt versions/receipt/file plan/artifact, v3 lost activation ACK inside pin, two approvals, exact rehydration, no second recovery, same-host redirect rejection before synthetic enqueue, malformed UTF8, inconclusive receipt-save nonpublication followed by exact reconciliation, and durable receipt/cache drift rejection before staging.
 
-Broad `check lintDebug assembleDebug assembleDebugAndroidTest` is running in `/tmp/rulings-source-admission-boundary.log` at this snapshot. Do not report it passing until completion/XML/artifacts are inspected. Prior1075whole/APK evidence at5ea27c9 predates schema8 and this integration. Current filtered XML counts above are not a fresh whole-suite count.
+Broad `check lintDebug assembleDebug assembleDebugAndroidTest` SUCCESS4m59s,588tasks80executed508up-to-date. Exact source1a4f43b;119XML/1096tests,0failure/error/skip. Included app19/6XML, catalog218/22XML and storage205/23XML. Unchanged cached tests are reused under D-28. Snapshot `/tmp/rulings-source-admission-boundary-xml`, log `/tmp/rulings-source-admission-boundary.log`; all8actual APKs pass ZIP16KiB alignment (not runtime/ELF/device evidence). Main DEX contains actual AndroidRulingsSourceAdmission/v3 codec; test APK includes the five shared source cases and excludes host directory shadow. Independent exact-source/test review ACK1a4f43b, no blockers. Prior1075gate remains historical.
+
+| APK | Bytes | SHA256 |
+| --- | ---: | --- |
+| app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk | 1478420 | 9f817cac450aa4bfc6fd46cf711b96dfe61e0fca58d4c3370e85ffeff1a3406e |
+| app/build/outputs/apk/debug/app-debug.apk | 26776528 | 57ca8aa7e2e0e2ea026f4d391213c080ea1a95b5ac565b23ce58c3a59b2d52a8 |
+| data/network/build/outputs/apk/androidTest/debug/network-debug-androidTest.apk | 11621034 | e5c5456faa1f8a4bb207972fc36461f4549d4f876fa03e272df5d93fe773aa4c |
+| data/storage/build/outputs/apk/androidTest/debug/storage-debug-androidTest.apk | 10284091 | b284f78d5dc2b464bc459c6c2e3e5459dbb1a872f53542f91ac6245840343d09 |
+| feature/catalog/build/outputs/apk/androidTest/debug/catalog-debug-androidTest.apk | 11167355 | 8a8463e1cca6b0d370b0576642c6d41a9044230cf82d7f5f97e9cc024bcf8d81 |
+| feature/rules/build/outputs/apk/androidTest/debug/rules-debug-androidTest.apk | 9856786 | ba4a3ec4aaa0af83e88f1c3ac21fa19e1889e04e24624876ce6a6a6a85c6b304 |
+| feature/settings/build/outputs/apk/androidTest/debug/settings-debug-androidTest.apk | 2837597 | ceda3ac0dc2fb6d67a4353ebbf0c53e6e95ddda5c735f257c3d875c7aa837a33 |
+| feature/shell/build/outputs/apk/androidTest/debug/shell-debug-androidTest.apk | 16067391 | c24bea1ca468aea266bd4499597c6b6a146e70343672c15366bb65ee81c4bcb5 |
 
 ## Limits and next action
 
-No real Scryfall TLS/full-corpus validation: supported environment policy still denies api.scryfall.com/data.scryfall.io, and no bypass was attempted. Synthetic transport invokes the actual factory dispatch guard but supplies synthetic bodies; it does not establish publisher authenticity. No native execution or new APK acceptance is claimed here. No frozen hosted branch moved or duplicate run started.
+No real Scryfall TLS/full-corpus validation: supported environment policy still denies api.scryfall.com/data.scryfall.io, and no bypass was attempted. Synthetic transport invokes the actual factory dispatch guard but supplies synthetic bodies; it does not establish publisher authenticity. Debug/test packaging is verified above; native execution, final package/release acceptance and physical Fold7 remain unrun. No frozen hosted branch moved or duplicate run started.
 
-Finish broad local source-security/schema integration gate and final exact-source review, checkpoint its exact evidence, then bind ruling capability/offline reader through the same root acquisition owner and implement actual download/ruling UI. Full Android v1 remains incomplete; no unfinished APK delivery.
+Next implement docs/superpowers/plans/2026-10-14-rulings-root-access.md: bind ruling capability/offline reader through the same root acquisition owner and implement actual download/ruling UI. Full Android v1 remains incomplete; no unfinished APK delivery.

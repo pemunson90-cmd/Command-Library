@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-rulings-receipt-foundation-138",
-  "verified_base_head": "8226b02cadb43e4445d9c5024ca911da1bb78125",
+  "checkpoint_id": "cp-20261014-rulings-source-admission-139",
+  "verified_base_head": "1a4f43bfa060af087085655ae7afe005b174e705",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "complete-rulings-v3-context-android-pins-shared-factory",
+  "first_action": "bind-rulings-root-access-offline-reader-same-owner",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Source receipt foundation8226b02: design ACK, intermediate exact-source review ACK; actual KSP8/27oldentities unchanged and12focusedtests pass. Next actual Android pins/shared factory/v3 context. Prior1075whole gate excludes schema8.",
+  "review_status": "Source1a4f43b independent design/exact-source security/durability ACK; actual full chain/pins/shared factory/v3 complete. Broad1096whole/lint/allAPKs/ZIPpass. Next shared root capability/offline reader, then UI.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -111,9 +111,10 @@
     "english_downloads_native_r1": "Frozen12f8980/run38623690607 FAILED: JVM111XML1039pass;API36/x86_64/page4096sixXML173cases3profileBackfail/0skip,170passed,36capturesretainednotinspected,promotion skipped. Correction29d64ee independentACK/19focusedlocalpass1m40+testAPKZIPpass; nativecorrectionnot_run/no retrigger. ENGLISH-DOWNLOADS-NATIVE-R1-20261014.md.",
     "rulings_atomic_import_local": "Source90c3a70/tests5ea27c9: independent design+exact-source durabilityACK. Core/catalog284tests passed51s; final wholecheck/lint/debug/alltestAPK SUCCESS9m40,115XML1075tests0failure/error/skip,8APKsZIP16KiBpass.15actualSQLite importer tests incl500ms ack timeout/recoverablecleanup. Schema7 unchanged; real importer unbound, no Android/sourceauthority/DI/UI/native acceptance. RULINGS-ATOMIC-IMPORT-LOCAL-20261014.md.",
     "rulings_full_feed": "not_run: bounded fixedmetadata GET403 at2026-10-14T20:28:59Z. Current runtime observation confirms restricted/enforced network policy excludes Scryfall; no corpus downloaded/no bypass. Local implementation continues; supported host access required before actual full-feed proof.",
-    "rulings_receipt_foundation": "8226b02: actualKSP8 SUCCESS23s,27oldentitiesidentical/one receipt table; corrected9receipt+3migration tests/2XML0failure/error/skip passed20s. Intermediate exact-source review ACK; no Android issuer/shared-factory/v3/APK/native acceptance. RULINGS-RECEIPT-FOUNDATION-LOCAL-20261014.md."
+    "rulings_receipt_foundation": "8226b02: actualKSP8 SUCCESS23s,27oldentitiesidentical/one receipt table; corrected9receipt+3migration tests/2XML0failure/error/skip passed20s. Intermediate exact-source review ACK; no Android issuer/shared-factory/v3/APK/native acceptance. RULINGS-RECEIPT-FOUNDATION-LOCAL-20261014.md.",
+    "rulings_source_admission_local": "Exact1a4f43b independent ACK; focused13pass36s, whole119XML/1096tests0fail/error/skip andcheck/lint/debug/alltestAPKs SUCCESS4m59/588tasks80exec508cached. All8APK ZIP16KiBpass; main/test actualDEX checked, hostshadowexcluded. Schema8foundation accepted. No native execution/liveTLS/fullfeed/physical/release claim. Evidence RULINGS-SOURCE-ADMISSION-LOCAL-20261014.md."
   },
-  "last_completed": "Root exclusive. Receipt foundation8226b02 actualKSP8/27oldidentical+1table and12focusedpass; exactsource ACK. Next actual v3 context/Android metadata-file pins/SAME factory owner. Prior1075whole excludes8. No Gradle running/nativefix/livefeed/finishedAPK acceptance; continue local-first underD28.",
-  "updated_utc": "2026-10-14T20:54:22Z",
+  "last_completed": "Rulings source1a4f43b independently ACK; full1096/lint/allAPKs/ZIP pass. Continue shared root capability/offline reader and UI.",
+  "updated_utc": "2026-10-14T21:15:43Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

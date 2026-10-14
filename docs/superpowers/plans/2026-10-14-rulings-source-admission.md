@@ -1,6 +1,6 @@
 # Trusted ruling metadata and one shared acquisition owner
 
-Status: revised architecture/security/durability design independently ACK; receipt/schema8 foundation implemented with12focused checks passed, intermediate exact-source review ACK. Android pins/shared-factory composition/v3 installed context remain next; no source-authority acceptance yet. Reviewer required explicit v3 sizing and durable-before-cache publication; both are specified below and re-reviewed without blockers. Builds on actual unbound importer90c3a70 and source audit `docs/verification/trusted-profiles-audit/evidence/src-rulings.md`. Root remains sole catalog/schema/app/shared writer. Existing fixed English download behavior remains a required regression.
+Status: implemented at1a4f43b, independent design/exact-source security/durability ACK. Actual receipt/schema8, Android pins/shared-factory composition and bounded v3 installed context are complete. Focused13pass; broad1096tests/lint/allAPKs/ZIPpass4m59. Evidence `docs/verification/k3-downloads/RULINGS-SOURCE-ADMISSION-LOCAL-20261014.md`. Root ruling access/UI and actual publisher TLS/full-feed/device acceptance remain next; this is not final source or app acceptance. Builds on the atomic importer and retained source audit. Next root wiring plan: `2026-10-14-rulings-root-access.md`.
 
 ## Admission, consent and lifetime
 

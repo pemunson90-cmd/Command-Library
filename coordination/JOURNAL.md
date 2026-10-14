@@ -519,3 +519,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T20:39:37Z | codex | cp-20261014-rulings-atomic-import-137 | containing commit | Root exclusive. Atomic ruling importer90c3a70/tests5ea27c9 exactreviewACK; whole1075tests/lint/APKsZIPpass. Next reviewed source admission/shared factory/schema8. Full live feed policy-blocked; native Back correction not_run. No Gradle running, no finished APK/GameService HOLD; continue local-first under D-28.
 
 2026-10-14T20:54:22Z | codex | cp-20261014-rulings-receipt-foundation-138 | containing commit | Root exclusive. Receipt foundation8226b02 actualKSP8/27oldidentical+1table and12focusedpass; exactsource review pending. Next actual v3 context/Android metadata-file pins/SAME factory owner. Prior1075whole excludes8. No Gradle running/nativefix/livefeed/finishedAPK acceptance; continue local-first underD28.
+
+2026-10-14T21:15:43Z | codex | cp-20261014-rulings-source-admission-139 | containing commit | Rulings source1a4f43b independently ACK; full1096/lint/allAPKs/ZIP pass. Continue shared root capability/offline reader and UI.
