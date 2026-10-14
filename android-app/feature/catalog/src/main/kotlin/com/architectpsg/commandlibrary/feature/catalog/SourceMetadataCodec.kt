@@ -45,7 +45,16 @@ internal object SourceMetadataCodec {
     private fun date(value: Knowledge<UtcTimestamp>): JsonObject = knowledge(value) { timestamp ->
         JsonObject().apply { addProperty("seconds", timestamp.epochSeconds); addProperty("nanos", timestamp.nanoAdjustment) }
     }
-    private fun timestamp(value: JsonObject): UtcTimestamp = UtcTimestamp(value.get("seconds").asLong, value.get("nanos").asInt)
+    private fun timestamp(value: JsonObject): UtcTimestamp {
+        require(value.keySet() == setOf("seconds", "nanos")) { "Invalid source timestamp fields" }
+        val seconds = requireNotNull(value.get("seconds"))
+        val nanos = requireNotNull(value.get("nanos"))
+        require(seconds.isJsonPrimitive && seconds.asJsonPrimitive.isNumber && nanos.isJsonPrimitive && nanos.asJsonPrimitive.isNumber) {
+            "Invalid source timestamp type"
+        }
+        // Exact conversion must precede narrowing; corrupt 2^32 nanos cannot wrap to zero.
+        return UtcTimestamp(seconds.asBigDecimal.longValueExact(), nanos.asBigDecimal.intValueExact())
+    }
     private fun <T> knowledge(value: Knowledge<T>, known: (T) -> JsonObject): JsonObject = JsonObject().apply {
         when (value) {
             is Knowledge.Known -> { addProperty("state", "known"); add("value", known(value.value)) }

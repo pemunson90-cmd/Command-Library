@@ -60,12 +60,18 @@ dependencies {
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.robolectric)
+    // Compatibility trials only; no production/network image loader is bound here.
+    testImplementation(libs.coil.core.compatibility)
+    testImplementation(libs.coil.compose.core.compatibility)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.coroutines.test)
+    // Real Android codec probes; no production or automatic network image loader.
+    androidTestImplementation(libs.coil.core.compatibility)
+    androidTestImplementation(libs.coil.compose.core.compatibility)
 
     debugImplementation(libs.compose.ui.test.manifest)
 }

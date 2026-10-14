@@ -13,6 +13,8 @@ public data class Seat(
     public val deck: Knowledge<DeckReference>,
     public val order: Int,
     public val commanders: SnapshotList<CommanderSlot>,
+    public val appearance: SeatAppearance = SeatAppearance(null, null),
+    public val participation: SeatParticipation = SeatParticipation.Active,
 ) { init { require(order >= 0) } }
 public sealed interface CounterLossPolicy {
     public data object None : CounterLossPolicy
@@ -27,6 +29,10 @@ public data class CounterDefinition(
     public val initial: Int,
     public val lossPolicy: CounterLossPolicy,
     public val custom: Boolean,
+    public val role: CounterRole = CounterRole.OTHER,
+    public val color: DisplayColor? = null,
+    public val preset: CounterPreset? = null,
+    public val resetPolicy: CounterResetPolicy = CounterResetPolicy.MANUAL,
 ) { init { require(minimum == null || maximum == null || minimum <= maximum); require(minimum == null || initial >= minimum); require(maximum == null || initial <= maximum) } }
 public data class CounterState(
     public val definitionId: EntityId,
@@ -49,6 +55,7 @@ public data class SeatClockState(
     public val zeroPolicy: ClockZeroPolicy,
     public val undoPolicy: ClockUndoPolicy,
     public val firedAlertIds: SnapshotList<EntityId>,
+    public val shared: SharedCountdown? = null,
 )
 public data class ClockAlert(
     public val id: EntityId,
@@ -114,8 +121,46 @@ public data class GameSettings(
     public val variantDefinitions: SnapshotList<VariantDefinition>,
     public val clockMode: SeatClockMode,
     public val randomSeed: Long,
-)
+    public val presentation: GamePresentation = GamePresentation(),
+    public val adjustmentStep: Int = 1,
+    public val deductLifeForCommanderDamage: Boolean = false,
+    public val elapsedTimers: ElapsedTimerSettings = ElapsedTimerSettings(),
+    public val alertPreferences: GameAlertPreferences = GameAlertPreferences(),
+) { init { require(adjustmentStep > 0) { "Adjustment step must be positive" } } }
 public sealed interface GameAction {
+    public data class SetCounter(public val seatId: EntityId, public val definitionId: EntityId, public val commanderSlotId: EntityId?, public val value: Int) : GameAction
+    public data class SetAdjustmentStep(public val step: Int) : GameAction {
+        init { require(step > 0) { "Adjustment step must be positive" } }
+    }
+    public data class SetCommanderLifeDeduction(public val enabled: Boolean) : GameAction
+    public data class AddCounterDefinition(public val definition: CounterDefinition) : GameAction
+    public data class UpdateCounterDefinition(public val definition: CounterDefinition) : GameAction
+    public data class EliminateSeat(public val seatId: EntityId, public val kind: SeatExitKind, public val reason: String, public val evidence: LossEvidence?) : GameAction {
+        init { require(reason.isNotBlank()) { "Elimination needs an explicit reason" } }
+    }
+    public data class RestoreSeat(public val seatId: EntityId, public val reason: String) : GameAction {
+        init { require(reason.isNotBlank()) { "Restoration needs an explicit reason" } }
+    }
+    public data class DismissLossCandidate(public val candidate: LossEvidence, public val seatId: EntityId, public val reason: String) : GameAction {
+        init { require(reason.isNotBlank()) { "Loss override needs an explicit reason" } }
+    }
+    public data class SetMonarch(public val seatId: EntityId?) : GameAction
+    public data class SetInitiative(public val seatId: EntityId?, public val note: String) : GameAction
+    public data class SetDayNight(public val state: DayNightState) : GameAction
+    public data class SetBlessing(public val seatId: EntityId, public val blessed: Boolean) : GameAction
+    public data class SetSeatAppearance(public val seatId: EntityId, public val appearance: SeatAppearance) : GameAction
+    public data class SetGamePresentation(public val presentation: GamePresentation) : GameAction
+    public data class FinishWithOutcomes(public val seatResults: SnapshotList<SeatResult>, public val reason: String) : GameAction {
+        init {
+            require(reason.isNotBlank() && seatResults.isNotEmpty()) { "Explicit finish needs a reason and outcomes" }
+            requireCoherentSeatOutcomes(seatResults)
+        }
+    }
+    public data class PassClock(public val seatId: EntityId) : GameAction
+    public data class SetElapsedPaused(public val paused: Boolean) : GameAction
+    public data class AcknowledgeGameAlert(public val alertId: EntityId) : GameAction
+    public data class SetAlertPreferences(public val preferences: GameAlertPreferences) : GameAction
+    public data class RequestRandom(public val request: RandomRequest) : GameAction
     public data class AdjustCounter(public val seatId: EntityId, public val definitionId: EntityId, public val commanderSlotId: EntityId?, public val delta: Int) : GameAction
     public data class SetCounterHidden(public val seatId: EntityId, public val definitionId: EntityId, public val hidden: Boolean) : GameAction
     public data class RenameSeat(public val seatId: EntityId, public val name: String) : GameAction
@@ -135,6 +180,7 @@ public data class GameEvent(
     public val at: UtcTimestamp,
     public val undoOfEventId: Knowledge<Long>,
     public val revision: Revision,
+    public val randomResults: SnapshotList<RecordedRandomResult> = SnapshotList.empty(),
 ) { init { require(id >= 0) } }
 public data class GameResult(
     public val id: EntityId,
@@ -144,7 +190,24 @@ public data class GameResult(
     public val reason: String,
     public val revision: Revision,
     public val retracted: Boolean,
-)
+    public val seatResults: SnapshotList<SeatResult> = SnapshotList.empty(),
+) {
+    init {
+        require(winners.toSet().size == winners.size) { "Winner identities must be unique" }
+        if (seatResults.isNotEmpty()) {
+            requireCoherentSeatOutcomes(seatResults)
+            require(winners.toSet() == seatResults.filter { it.result == SeatResultKind.WIN }.map { it.seatId }.toSet()) {
+                "Winners must match explicit WIN outcomes"
+            }
+        }
+    }
+}
+private fun requireCoherentSeatOutcomes(outcomes: SnapshotList<SeatResult>) {
+    require(outcomes.map { it.seatId }.toSet().size == outcomes.size) { "Seat outcomes must have unique identities" }
+    require(outcomes.none { it.result == SeatResultKind.DRAW } || outcomes.none { it.result == SeatResultKind.WIN }) {
+        "Draw outcomes cannot coexist with winners"
+    }
+}
 public data class GameSnapshot(
     public val id: GameId,
     public val version: Int,
@@ -161,6 +224,9 @@ public data class GameSnapshot(
     public val variants: SnapshotList<VariantState>,
     public val lastEventId: Knowledge<Long>,
     public val result: Knowledge<GameResult>,
+    public val designations: GameDesignations = GameDesignations(),
+    public val elapsed: ElapsedTimerState = ElapsedTimerState(Duration.ZERO, Duration.ZERO, true, null),
+    public val alerts: SnapshotList<GameAlert> = SnapshotList.empty(),
 ) { init { require(version > 0 && turnNumber >= 0) } }
 public interface GameService {
     public suspend fun resume(id: GameId, cancel: CancelToken): Outcome<GameSnapshot>

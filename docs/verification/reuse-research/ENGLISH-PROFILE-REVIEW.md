@@ -1,0 +1,9 @@
+# Concrete English search policy review
+
+2026-10-13; source SHA25662c88517aa2728fda77877af33f2182565d4784ed3d695d4ba56940fba1838cf. Fresh-context gpt-6-astra high: APPROVE internal, unregistered helper; no blocking findings. Root selected retained draft numeric engineering ceilings, not source maxima, expected transfer size or measured device capacity.
+
+Canonical request equality fixes identity/version, exact English scope/initial URI, unknown upstream metadata and every bound; only bounded display label/Wi-Fi preference vary. Codec validates official HTTPS scope; helper admits pages1–2858. Endpoint has no secrets/redirect origins and retains2requests/sec/single-attempt30s–24h retry profile. Unknown notice/version/date/bytes are not fabricated; checksum null. No public contract/schema/AppGraph registration.
+
+Actual central local verification: API-absence compile RED (missing helper, no tests executed); catalog test+lint exit0; final catalog suite after page2859 case exit0,15XMLreports141tests0failures/errors/skips, including4profile tests. Lint zero errors with existing warnings. Source whitespace passes. Reviewer did not run tests; root did. Hosted candidate89e1710 does not contain this helper.
+
+Production factory remains separately gated: sole guarded AppGraph composition, exact-spec physical enqueue/durable consent, actual app-version User-Agent/JSON Accept, engine no-redirect/pacing/timeout/explicit-resume behavior, real transfer reserve and measured staging/WAL headroom. Profile alone does not implement network authorization, scheduler/disk checks, in-app downloads or K3 completion. Preserve helper in component/english-profile-20261013 without requesting another full matrix; next coherent factory integration must include its appropriate tests and native verification.

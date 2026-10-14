@@ -1,5 +1,7 @@
 package com.architectpsg.commandlibrary.data.storage
 
+import com.architectpsg.commandlibrary.data.storage.schema.StorageSchema
+
 import android.content.Context
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
@@ -38,7 +40,7 @@ class FullCatalogMigrationTest {
     @Test fun actualV3PreservesEveryLegacyColumnAndBackfillsOnlyWholeRelations() = runBlocking {
         val fixture = createV3()
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyPreserved(fixture)
         assertEquals(listOf(SqlValue.Text("USER_CONTENT_URI"), SqlValue.Null, SqlValue.Null), values(
             "SELECT input_kind,artifact_job_id,source_payload FROM catalog_generation",
@@ -84,7 +86,7 @@ class FullCatalogMigrationTest {
                 connection.execute("UPDATE printing SET oracle_provider='legacy-provider',oracle_id='oracle-old',oracle_language='en' WHERE printing_id='printing-old'")
             }
             reopen()
-            assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+            assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
             assertEquals(listOf(SqlValue.Integer(-1), SqlValue.Text("WHOLE")), values(
                 "SELECT source_slot,source_kind FROM printing_oracle_membership",
             ))
@@ -115,7 +117,7 @@ class FullCatalogMigrationTest {
             assertV3Unchanged(connection, fixture)
         }
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyPreserved(fixture)
     }
 
@@ -134,7 +136,7 @@ class FullCatalogMigrationTest {
             connection.execute("UPDATE printing SET oracle_id='oracle-old' WHERE printing_id='printing-old'")
         }
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyPreserved(fixture)
         assertEquals(1L, scalar("SELECT count(*) FROM printing_oracle_membership"))
     }
@@ -291,9 +293,10 @@ class FullCatalogMigrationTest {
             assertEquals("Every original column definition in $table", original,
                 rows("SELECT * FROM pragma_table_info('$table') ORDER BY cid").take(original.size))
         }
-        // ALTER TABLE changes only these two CREATE TABLE statements; preserve all other DDL exactly.
+        // ALTER TABLE changes two legacy CREATE TABLE statements; schema5 adds only its own table/index.
         fun unchanged(ddl: List<List<SqlValue>>) = ddl.filterNot {
-            it[0] == SqlValue.Text("table") && it[1] in listOf(SqlValue.Text("catalog_generation"), SqlValue.Text("rules_corpus"))
+            it[2] == SqlValue.Text("acquisition_origin_cooldown") ||
+                (it[0] == SqlValue.Text("table") && it[1] in listOf(SqlValue.Text("catalog_generation"), SqlValue.Text("rules_corpus")))
         }
         assertEquals(unchanged(fixture.ddl), unchanged(rows(legacyDdlQuery)))
         assertEquals(0L, scalar("SELECT count(*) FROM pragma_foreign_key_check"))
@@ -356,5 +359,5 @@ class FullCatalogMigrationTest {
         assertTrue("Expected success, got $outcome", outcome is Outcome.Success)
         return (outcome as Outcome.Success).value
     }
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' ORDER BY type,name"
+    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' AND tbl_name NOT IN ('life_game','life_event','life_seat_search','life_result','life_alert','life_profile') ORDER BY type,name"
 }

@@ -5,6 +5,13 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class SourceMetadataCodecTest {
+    @Test fun sourceTimestampNeverTruncatesFractionalOrOverflowedValues() {
+        for (date in listOf("{\"seconds\":1,\"nanos\":4294967296}", "{\"seconds\":1.5,\"nanos\":0}",
+            "{\"seconds\":1,\"nanos\":0.5}", "{\"seconds\":\"1\",\"nanos\":0}", "{\"seconds\":1,\"nanos\":1000000000}")) {
+            val payload = "{\"version\":1,\"sourceDate\":{\"state\":\"known\",\"value\":" + date + "},\"notice\":{\"state\":\"absent\",\"reason\":\"Not supplied\"}}"
+            assertThrows(Exception::class.java) { SourceMetadataCodec.sourceDate(payload) }
+        }
+    }
     @Test fun retainsSourceKnowledgeAndNoticeAcrossPayload() {
         val evidence = Evidence("Upstream date is undocumented", ResourceUri("https://example.org/source"), UtcTimestamp(42, 7))
         val provider = ProviderId("scryfall")

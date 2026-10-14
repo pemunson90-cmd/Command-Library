@@ -32,7 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -68,7 +68,7 @@ internal fun CardsScreen(
     val listState = rememberLazyListState()
     val catalogMissing = statusState.status?.installed == false
     val selected = state.selected
-    if (widthClass == WidthClass.EXPANDED) {
+    if (widthClass == WidthClass.EXPANDED && LocalDensity.current.fontScale < 1.5f) {
         Row(modifier.fillMaxSize()) {
             Box(Modifier.weight(0.45f).fillMaxHeight().testTag(ShellTags.RESULTS_PANE)) {
                 SearchPane(controller, state, catalogMissing, widthClass, showSelection = true, onOpenCatalog, listState)
@@ -113,7 +113,7 @@ private fun SearchPane(
         state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = widthClass.gutter, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item(key = "search-form") { SearchForm(controller, state) }
         item(key = "search-status") { SearchStatus(state, catalogMissing, onOpenCatalog, controller) }
@@ -137,6 +137,7 @@ private fun SearchForm(controller: SearchController, state: SearchUiState) {
         keyboard?.hide()
     }
     Column(Modifier.fillMaxWidth().padding(bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(stringResource(R.string.search_eyebrow), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
         SectionHeading(stringResource(R.string.search_idle_title), style = MaterialTheme.typography.headlineMedium)
         val problem = state.queryProblem
         OutlinedTextField(
@@ -162,7 +163,7 @@ private fun SearchForm(controller: SearchController, state: SearchUiState) {
             keyboardActions = KeyboardActions(onSearch = { submit() }),
             modifier = Modifier.fillMaxWidth(),
         )
-        Button(onClick = submit) { Text(stringResource(R.string.search_action)) }
+        Button(onClick = submit, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text(stringResource(R.string.search_action)) }
     }
 }
 
@@ -253,18 +254,19 @@ private fun ResultRow(card: CardRecord, selected: Boolean, showSelection: Boolea
             .fillMaxWidth()
             .heightIn(min = 48.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(if (selected) colors.primaryContainer else Color.Transparent)
+            .background(if (selected) colors.primaryContainer else colors.surface)
             .clickable(onClickLabel = stringResource(R.string.search_result_open), role = Role.Button, onClick = onClick)
             .then(if (showSelection) Modifier.semantics { this.selected = selected } else Modifier)
             .padding(horizontal = 12.dp, vertical = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(card.name, style = MaterialTheme.typography.titleMedium, color = colors.onSurface, modifier = Modifier.weight(1f))
+        ActionRow {
+            Text(card.name, style = MaterialTheme.typography.titleMedium, color = colors.onSurface, modifier = Modifier.fillMaxWidth())
             (card.manaCost as? Knowledge.Known)?.value?.takeIf(String::isNotEmpty)?.let {
                 Text(it, style = MaterialTheme.typography.bodyLarge, color = colors.onSurface)
             }
         }
+        if (selected) Text(stringResource(R.string.search_selected), style = MaterialTheme.typography.bodyMedium, color = colors.primary)
         (card.types as? Knowledge.Known)?.value?.original?.takeIf(String::isNotEmpty)?.let {
             Text(it, style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant)
         }

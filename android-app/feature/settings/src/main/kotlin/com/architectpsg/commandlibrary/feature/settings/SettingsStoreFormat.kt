@@ -44,7 +44,11 @@ internal class UnsupportedSettingsStoreVersionException(
 ) : IOException("Settings store version $foundVersion is newer than supported version $supportedVersion")
 
 /** One consent exactly as persisted: the record plus the installation that approved it. */
-internal data class StoredConsent(val installationId: String, val record: ConsentRecord)
+internal data class StoredConsent(
+    val installationId: String,
+    val record: ConsentRecord,
+    val pendingDataRemoval: Boolean = false,
+)
 
 /** Everything the settings feature persists. One value, one file, one atomic write. */
 internal data class StoredSettings(
@@ -85,7 +89,7 @@ internal data class StoredSettings(
  * Binary format, all integers big-endian:
  *
  *     "CLSS"            4 bytes magic
- *     schema version    int32, currently 1
+ *     schema version    int32, currently 2
  *     body              version specific
  *     CRC-32            int32 over every byte before it
  *
@@ -93,7 +97,7 @@ internal data class StoredSettings(
  * change the body and trailer, is reported as unsupported and never as corruption or an empty store.
  */
 internal object SettingsStoreCodec {
-    const val SUPPORTED_VERSION: Int = 1
+    const val SUPPORTED_VERSION: Int = 2
     private const val HEADER_BYTES = 8
     private const val TRAILER_BYTES = 4
     const val MAX_STORE_BYTES: Int = 16 * 1024 * 1024
@@ -140,7 +144,7 @@ internal object SettingsStoreCodec {
         if (expected != actual) throw CorruptSettingsStoreException("Settings store checksum does not match")
         val reader = Reader(ByteBuffer.wrap(bytes, HEADER_BYTES, bytes.size - HEADER_BYTES - TRAILER_BYTES))
         try {
-            val state = readBody(reader)
+            val state = readBody(reader, version)
             if (reader.remaining != 0) throw CorruptSettingsStoreException("Settings store has trailing bytes")
             return state
         } catch (failure: CorruptSettingsStoreException) {
@@ -166,11 +170,15 @@ internal object SettingsStoreCodec {
         out.writeInt(state.consents.size)
         state.consents.forEach { stored ->
             writeString(out, stored.installationId)
+            if (stored.pendingDataRemoval && stored.record.revokedAt == null) {
+                throw InvalidSettingsValueException("Pending removal requires revoked consent")
+            }
             writeConsent(out, stored.record)
+            out.writeBoolean(stored.pendingDataRemoval)
         }
     }
 
-    private fun readBody(input: Reader): StoredSettings {
+    private fun readBody(input: Reader, version: Int): StoredSettings {
         val revision = Revision(input.long())
         val updatedAt = readTimestamp(input)
         val dataLanguage = LanguageTag(input.string())
@@ -179,7 +187,13 @@ internal object SettingsStoreCodec {
         val cache = CachePolicy(input.long(), input.boolean(), input.boolean())
         val budget = readKnowledge(input, ::readDecimalAmount)
         val profiles = List(input.count()) { EntityId(input.string()) }
-        val consents = List(input.count()) { StoredConsent(input.string(), readConsent(input)) }
+        val consents = List(input.count()) {
+            val stored = StoredConsent(input.string(), readConsent(input), if (version == 2) input.boolean() else false)
+            if (stored.pendingDataRemoval && stored.record.revokedAt == null) {
+                throw CorruptSettingsStoreException("Pending removal requires revoked consent")
+            }
+            stored
+        }
         return StoredSettings(revision, updatedAt, dataLanguage, theme, storageMode, cache, budget, profiles, consents)
     }
 

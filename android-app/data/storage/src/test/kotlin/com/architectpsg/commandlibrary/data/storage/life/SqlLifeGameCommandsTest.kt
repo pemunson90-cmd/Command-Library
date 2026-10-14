@@ -1,0 +1,181 @@
+package com.architectpsg.commandlibrary.data.storage.life
+
+import com.architectpsg.commandlibrary.core.model.*
+import com.architectpsg.commandlibrary.data.storage.life.codec.LifePayloadCodec
+import com.architectpsg.commandlibrary.feature.life.persistence.*
+import kotlinx.coroutines.runBlocking
+import kotlin.time.Duration.Companion.seconds
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.TemporaryFolder
+
+class SqlLifeGameCommandsTest {
+    @get:Rule val folder = TemporaryFolder()
+    private val f = LifeMutationFixtures
+    private val codec = LifePayloadCodec()
+    private class Ids : IdSource { var calls = 0; override fun nextId() = if(++calls == 1) "game" else "identity-$calls" }
+    private class Random : RandomSource { var calls = 0; override fun nextInt(upperBound: Int): Int { calls++; return upperBound - 1 } }
+    private fun reading(n: Long = 0, process: EntityId = f.process) = GameTimeObservation(n.seconds, UtcTimestamp(1000+n), process)
+    private fun <T> ok(outcome: Outcome<T>): T { assertTrue("Expected success, got $outcome", outcome is Outcome.Success); return (outcome as Outcome.Success).value }
+    private fun failed(outcome: Outcome<*>, code: FailureCode) { assertTrue("Expected $code, got $outcome", outcome is Outcome.Failure); assertEquals(code, (outcome as Outcome.Failure).error.code) }
+    private fun life(db: HostLifeDatabase, ids: Ids) = SqlLifeGameLifecycle(db, codec, ids, f.provider)
+    private fun StoredLifeGame.rev() = checkpoint.snapshot.revision
+    private fun StoredLifeGame.counter() = checkpoint.snapshot.counters.single { it.seatId == f.seat }.value
+    private fun set(n: Int) = GameAction.SetCounter(f.seat, EntityId("life"), null, n)
+    @Test fun actualDispatchCanonicalGroupUndoAndFileReopenAreDurable() = runBlocking<Unit> {
+        val file=folder.newFile(); lateinit var final: StoredLifeGame
+        HostLifeDatabase(file).use { db ->
+            val ids=Ids(); val life=life(db,ids); val commands=SqlLifeGameCommands(db,codec,ids,Random())
+            val initial=ok(life.create(f.input(),reading(),f.token))
+            val first=ok(commands.dispatch(f.id,set(14),initial.rev(),reading(1),f.token)); assertEquals(14,first.counter())
+            val archived=ok(SqlLifeEventReader(db,codec).archive(f.id,0,f.token))
+            assertEquals(GameAction.AdjustCounter(f.seat,EntityId("life"),null,-6),archived.event.action)
+            assertEquals(Revision(0),archived.provenance.before.revision)
+            val group=GameAction.Group(SnapshotList.of(set(8),GameAction.RenameSeat(f.seat,"Renamed")),EntityId("explicit-group"))
+            val grouped=ok(commands.dispatch(f.id,group,first.rev(),reading(2),f.token)); assertEquals(8,grouped.counter())
+            final=ok(commands.undo(f.id,null,reading(3),f.token)); assertEquals(14,final.counter()); assertEquals("A",final.checkpoint.snapshot.seats[0].playerName)
+            val undo=ok(SqlLifeEventReader(db,codec).archive(f.id,2,f.token)); assertEquals(group.groupId,undo.event.groupId); assertEquals(Knowledge.Known(1L),undo.event.undoOfEventId)
+        }
+        HostLifeDatabase(file,false).use { db -> assertEquals(final,ok(life(db,Ids()).read(f.id,f.token))) }
+    }
+    @Test fun staleAndInvalidGroupNeverDrawOrCommitPartialEdits() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val random=Random(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,random)
+            val initial=ok(life.create(f.input(),reading(),f.token)); val changed=ok(c.dispatch(f.id,set(19),initial.rev(),reading(1),f.token)); val count=ids.calls
+            val request=GameAction.RequestRandom(RandomRequest.Coin(EntityId("coin")))
+            failed(c.dispatch(f.id,request,initial.rev(),reading(2),f.token),FailureCode.STALE_REVISION); assertEquals(count,ids.calls); assertEquals(0,random.calls)
+            val invalid=GameAction.Group(SnapshotList.of(set(1),GameAction.RenameSeat(EntityId("missing"),"No")),EntityId("bad"))
+            failed(c.dispatch(f.id,invalid,changed.rev(),reading(2),f.token),FailureCode.INVALID_INPUT)
+            val mixed=GameAction.Group(SnapshotList.of(set(1),request),EntityId("mixed"))
+            failed(c.dispatch(f.id,mixed,changed.rev(),reading(2),f.token),FailureCode.INVALID_INPUT); assertEquals(0,random.calls)
+            assertEquals(changed,ok(life.read(f.id,f.token))); assertEquals(1L,db.scalar("SELECT count(*) FROM life_event"))
+        }
+    }
+    @Test fun diceContinuationUsesCommittedHistoryAndUndoDoesNotReleaseRequestIdentity() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val random=Random(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,random)
+            var current=ok(life.create(f.input(),reading(),f.token)); val request=EntityId("dice")
+            current=ok(c.dispatch(f.id,GameAction.RequestRandom(RandomRequest.Dice(request,10001,6)),current.rev(),reading(1),f.token))
+            val first=ok(SqlLifeEventReader(db,codec).archive(f.id,0,f.token)).event.randomResults.single().value as RecordedRandomValue.Dice
+            assertEquals(10000,first.faces.size); assertEquals(60000L,first.sum); assertEquals(1L,first.remaining)
+            failed(c.dispatch(f.id,GameAction.RequestRandom(RandomRequest.ContinueDice(request,2)),current.rev(),reading(2),f.token),FailureCode.INVALID_INPUT); assertEquals(10000,random.calls)
+            current=ok(c.dispatch(f.id,GameAction.RequestRandom(RandomRequest.ContinueDice(request,1)),current.rev(),reading(2),f.token)); assertEquals(10001,random.calls)
+            val tail=ok(SqlLifeEventReader(db,codec).archive(f.id,1,f.token)).event.randomResults.single().value as RecordedRandomValue.Dice
+            assertEquals(1,tail.faces.size); assertEquals(0L,tail.remaining)
+            current=ok(c.undo(f.id,null,reading(3),f.token)); current=ok(c.undo(f.id,null,reading(4),f.token)); assertEquals(10001,random.calls)
+            failed(c.dispatch(f.id,GameAction.RequestRandom(RandomRequest.Dice(request,10001,6)),current.rev(),reading(5),f.token),FailureCode.INVALID_INPUT)
+            assertEquals(10001,random.calls); assertEquals(current,ok(life.read(f.id,f.token)))
+        }
+    }
+    @Test fun finishUndoAndRefinishKeepOneResultIdentityAndExactEventRevision() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,Random()); var current=ok(life.create(f.input(),reading(),f.token))
+            current=ok(c.dispatch(f.id,GameAction.Finish(SnapshotList.of(f.seat),"Confirmed"),current.rev(),reading(1),f.token))
+            val result=(current.checkpoint.snapshot.result as Knowledge.Known).value; assertEquals(current.rev(),result.revision)
+            current=ok(c.undo(f.id,current.rev(),reading(2),f.token)); val retracted=(current.checkpoint.snapshot.result as Knowledge.Known).value
+            assertEquals(result.id,retracted.id); assertTrue(retracted.retracted)
+            val before=ids.calls
+            current=ok(c.dispatch(f.id,GameAction.Finish(SnapshotList.empty(),"Draw"),current.rev(),reading(3),f.token))
+            val confirmed=(current.checkpoint.snapshot.result as Knowledge.Known).value
+            assertEquals(before+1,ids.calls); assertEquals(result.id,confirmed.id); assertEquals(current.rev(),confirmed.revision)
+            assertTrue(confirmed.seatResults.all { it.result == SeatResultKind.DRAW }); assertEquals(1L,db.scalar("SELECT count(*) FROM life_result"))
+        }
+    }
+    @Test fun randomDrawThenSqlFailureDoesNotReserveRequestAndRetryDrawsAgain() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val random=Random(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,random)
+            val initial=ok(life.create(f.input(),reading(),f.token)); val request=GameAction.RequestRandom(RandomRequest.Coin(EntityId("retry-coin")))
+            db.sql("CREATE TRIGGER fail_command BEFORE INSERT ON life_event BEGIN SELECT RAISE(ABORT,'synthetic event failure'); END")
+            failed(c.dispatch(f.id,request,initial.rev(),reading(1),f.token),FailureCode.PERSISTENCE)
+            assertEquals(1,random.calls); assertEquals(initial,ok(life.read(f.id,f.token))); assertEquals(0L,db.scalar("SELECT count(*) FROM life_event"))
+            db.sql("DROP TRIGGER fail_command")
+            val committed=ok(c.dispatch(f.id,request,initial.rev(),reading(2),f.token)); assertEquals(2,random.calls)
+            assertEquals(Revision(1),committed.rev()); assertEquals(1L,db.scalar("SELECT count(*) FROM life_event"))
+        }
+    }
+    @Test fun groupedAddedDefinitionUndoRetainsFinalMetadataButHidesAllInitialStates() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,Random()); val initial=ok(life.create(f.input(),reading(),f.token))
+            val definition=CounterDefinition(EntityId("custom"),"First",0,100,3,CounterLossPolicy.None,true)
+            val updated=definition.copy(label="Final",initial=4)
+            val group=GameAction.Group(SnapshotList.of(GameAction.AddCounterDefinition(definition),GameAction.UpdateCounterDefinition(updated),
+                GameAction.SetCounter(f.seat,definition.id,null,9)),EntityId("add-update-set"))
+            val changed=ok(c.dispatch(f.id,group,initial.rev(),reading(1),f.token))
+            val archive=ok(SqlLifeEventReader(db,codec).archive(f.id,0,f.token))
+            assertTrue((archive.event.action as GameAction.Group).actions.last() is GameAction.AdjustCounter)
+            val undone=ok(c.undo(f.id,changed.rev(),reading(2),f.token))
+            assertEquals(updated,undone.checkpoint.snapshot.settings.counterDefinitions.last())
+            assertTrue(undone.checkpoint.snapshot.counters.filter { it.definitionId==definition.id }.all { it.value==4 && it.hidden })
+            assertEquals(2,undone.checkpoint.snapshot.counters.count { it.definitionId==definition.id })
+        }
+    }
+    @Test fun foreignRunningProcessRequiresExplicitLifecycleRecoveryAndNeverChargesGap() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,Random()); var current=ok(life.create(f.input(),reading(),f.token))
+            current=ok(c.dispatch(f.id,GameAction.Group(SnapshotList.of(GameAction.SwitchTurn(f.seat),GameAction.SetElapsedPaused(false)),EntityId("start")),current.rev(),reading(1),f.token))
+            current=ok(life.resume(f.id,reading(5),f.token)); val foreign=EntityId("foreign")
+            failed(c.dispatch(f.id,set(10),current.rev(),reading(9000,foreign),f.token),FailureCode.INVALID_INPUT)
+            assertEquals(current,ok(life.read(f.id,f.token)))
+            val recovered=ok(life.resume(f.id,reading(9000,foreign),f.token)); assertTrue(recovered.checkpoint.snapshot.elapsed.paused)
+            val edited=ok(c.dispatch(f.id,set(10),recovered.rev(),reading(9001,foreign),f.token))
+            assertEquals(4.seconds,edited.checkpoint.snapshot.elapsed.gameElapsed); assertEquals(10,edited.counter())
+        }
+    }
+    @Test fun invalidIdentityAndCancelledLateWriteRollbackEntireSemanticCommand() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val life=life(db,ids); val initial=ok(life.create(f.input(),reading(),f.token))
+            val broken=object:IdSource { override fun nextId()="" }
+            failed(SqlLifeGameCommands(db,codec,broken,Random()).dispatch(f.id,set(1),initial.rev(),reading(1),f.token),FailureCode.INTERNAL)
+            var stopped=false; var writes=0
+            val token=object:CancelToken { override val isCancelled get()=stopped; override fun throwIfCancelled() { if(stopped) throw kotlinx.coroutines.CancellationException("Synthetic command cancellation") } }
+            db.afterWrite={ if(++writes==2) stopped=true }
+            try { SqlLifeGameCommands(db,codec,ids,Random()).dispatch(f.id,set(1),initial.rev(),reading(1),token); fail("Cancellation swallowed") }
+            catch(expected:kotlinx.coroutines.CancellationException) { }
+            db.afterWrite=null
+            assertEquals(2,writes); assertEquals(initial,ok(life.read(f.id,f.token))); assertEquals(0L,db.scalar("SELECT count(*) FROM life_event"))
+        }
+    }
+    @Test fun turnResetIsGlobalAndPriorityPassDoesNotRefillPerTurnBank() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,Random()); val base=f.input()
+            val reset=CounterDefinition(EntityId("reset"),"Reset",0,100,2,CounterLossPolicy.None,true,resetPolicy=CounterResetPolicy.ON_TURN_START)
+            val input=base.copy(settings=base.settings.copy(clockMode=SeatClockMode.PER_TURN,counterDefinitions=SnapshotList.copyOf(base.settings.counterDefinitions+reset)),
+                clock=base.clock.copy(mode=SeatClockMode.PER_TURN,seats=SnapshotList.copyOf(base.seats.map { SeatTime(it.id,20.seconds,20.seconds) })))
+            var current=ok(life.create(input,reading(),f.token))
+            val setup=GameAction.Group(SnapshotList.of(GameAction.SwitchTurn(f.seat),GameAction.ClockPause(false),GameAction.SetElapsedPaused(false),
+                GameAction.SetCounter(f.seat,reset.id,null,9),GameAction.SetCounter(f.other,reset.id,null,8)),EntityId("setup"))
+            current=ok(c.dispatch(f.id,setup,current.rev(),reading(1),f.token))
+            current=ok(c.dispatch(f.id,GameAction.PassClock(f.other),current.rev(),reading(4),f.token))
+            assertEquals(17.seconds,current.checkpoint.snapshot.clock.seats.single { it.seatId==f.seat }.remaining)
+            assertEquals(listOf(9,8),current.checkpoint.snapshot.counters.filter { it.definitionId==reset.id }.map { it.value })
+            current=ok(c.dispatch(f.id,GameAction.PassClock(f.seat),current.rev(),reading(6),f.token))
+            assertEquals(17.seconds,current.checkpoint.snapshot.clock.seats.single { it.seatId==f.seat }.remaining)
+            current=ok(c.dispatch(f.id,GameAction.SwitchTurn(f.other),current.rev(),reading(7),f.token))
+            assertEquals(20.seconds,current.checkpoint.snapshot.clock.seats.single { it.seatId==f.other }.remaining)
+            assertTrue(current.checkpoint.snapshot.counters.filter { it.definitionId==reset.id }.all { it.value==2 })
+            assertEquals(6.seconds,current.checkpoint.snapshot.elapsed.gameElapsed); assertEquals(0.seconds,current.checkpoint.snapshot.elapsed.turnElapsed)
+            assertEquals(4L,db.scalar("SELECT count(*) FROM life_event"))
+        }
+    }
+    @Test fun acknowledgementAndDeliverySurviveFinishUndoWithoutChangingPriorResultRevision() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val life=life(db,ids); val c=SqlLifeGameCommands(db,codec,ids,Random()); val base=f.input()
+            val input=base.copy(settings=base.settings.copy(elapsedTimers=ElapsedTimerSettings(gameWarning=1.seconds)))
+            var current=ok(life.create(input,reading(),f.token))
+            current=ok(c.dispatch(f.id,GameAction.SetElapsedPaused(false),current.rev(),reading(),f.token))
+            current=ok(life.resume(f.id,reading(2),f.token)); val alert=current.checkpoint.snapshot.alerts.single()
+            ok(SqlLifeGameMutator(db,codec).markDelivered(f.id,alert.id,7,f.token))
+            current=ok(c.dispatch(f.id,GameAction.Finish(SnapshotList.empty(),"Draw"),current.rev(),reading(2),f.token))
+            val result=current.checkpoint.snapshot.result
+            current=ok(c.dispatch(f.id,GameAction.AcknowledgeGameAlert(alert.id),current.rev(),reading(3),f.token))
+            assertEquals(result,current.checkpoint.snapshot.result)
+            current=ok(c.undo(f.id,null,reading(4),f.token))
+            assertEquals(result,current.checkpoint.snapshot.result); assertNotNull(current.checkpoint.snapshot.alerts.single().acknowledgedAt)
+            current=ok(c.undo(f.id,null,reading(5),f.token))
+            assertTrue((current.checkpoint.snapshot.result as Knowledge.Known).value.retracted)
+            assertEquals(2.seconds,current.checkpoint.snapshot.elapsed.gameElapsed); assertNotNull(current.checkpoint.snapshot.alerts.single().acknowledgedAt)
+            assertEquals(7L,db.scalar("SELECT delivery_mask FROM life_alert")); assertEquals(1L,db.scalar("SELECT count(*) FROM life_alert"))
+        }
+    }
+}

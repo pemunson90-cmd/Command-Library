@@ -356,7 +356,7 @@ internal class RulesStructure(
         val SECTION = Regex("""([1-9])\.\s+(\S.*)""", RegexOption.DOT_MATCHES_ALL)
         val CHAPTER = Regex("""(\d{3})\.\s+(\S.*)""", RegexOption.DOT_MATCHES_ALL)
         val RULE = Regex("""(\d{3})\.(\d+)\.?(?:\s+.*)?""", RegexOption.DOT_MATCHES_ALL)
-        val SUBRULE = Regex("""(\d{3})\.(\d+)([a-z])\.?(?:\s+.*)?""", RegexOption.DOT_MATCHES_ALL)
+        val SUBRULE = Regex("""(\d{3})\.(\d+)([a-z]+)\.?(?:\s+.*)?""", RegexOption.DOT_MATCHES_ALL)
 
         fun utf8Length(text: String): Int {
             var bytes = 0

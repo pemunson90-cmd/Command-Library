@@ -84,3 +84,7 @@ The completed K0 reviewer verified: D-07 is resolved for version 1; Android-v1 e
 ## D-21 complete-section execution policy
 
 The full Android app is the delivery target. Each internal section has a functional finish line and is not a public or finished-app release. Before a section closes, publish its evidence, independent-review result where required, current state, queue, handoff, journal entry and exact next action; read back the checkpoint and release the lease. A usage-limit checkpoint preserves unfinished work only when labelled incomplete. No placeholder, fake success path or empty production implementation may satisfy a section. A dependency that cannot be built without unavailable tools or approval must name the exact affected requirement and missing capability.
+
+## D-26 execution amendment
+
+Pat approved the research-based professional release plan on2026-10-13 with on-device AI engines/runtime/model management deferred to v1.1. H03/S25 and engine-only acceptance clauses are not v1 gates. Retained prompt export, cloud/custom/LAN AI, grounding/tools/vault/history and all other functional/professional/canonical/Fold7 requirements remain v1. Implement v1 without native inference dependencies or inert model controls; track engines as approved-deferred, never as completed features.

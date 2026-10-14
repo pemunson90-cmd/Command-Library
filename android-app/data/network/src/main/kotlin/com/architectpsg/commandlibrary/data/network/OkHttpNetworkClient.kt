@@ -25,7 +25,8 @@ import kotlin.time.Duration.Companion.seconds
 
 /** Raw-representation transport. Higher-level callers supply already-resolved, origin-scoped auth.
  * Non-null secret references are rejected: this adapter has no vault dependency.
- * Non-2xx responses are failures; error bodies are never exposed or logged.
+ * Non-2xx responses are failures, except opt-in acquisition streams expose header-only 429
+ * metadata. Error bodies are never exposed or logged; buffered send retains failure behavior.
  */
 public class OkHttpNetworkClient(
     private val clock: Clock,
@@ -38,6 +39,8 @@ public class OkHttpNetworkClient(
     private val maximumOverallTimeout: Duration = 10.minutesCompat(),
     private val maximumBufferedBytes: Int = 8 * 1024 * 1024,
     private val dispatchGuard: WireDispatchGuard = WireDispatchGuard { _, _, _, enqueue -> enqueue() },
+    /** Dedicated acquisition streams only: GET without a body, NEVER_AUTOMATIC, one attempt. */
+    private val exposeAcquisition429Metadata: Boolean = false,
 ) : NetworkClient {
     private val closed = AtomicBoolean(false)
     private val live = java.util.Collections.newSetFromMap(ConcurrentHashMap<Operation, Boolean>())
@@ -93,7 +96,7 @@ public class OkHttpNetworkClient(
         var metadata: HttpMetadata? = null
         var failure: Outcome<Nothing>? = null
         // send has a separate allocation ceiling, even if streaming permits multi-GiB artifacts.
-        stream(request.copy(maxResponseBytes = minOf(request.maxResponseBytes, maximumBufferedBytes.toLong())), cancel).collect { value ->
+        streamResponse(request.copy(maxResponseBytes = minOf(request.maxResponseBytes, maximumBufferedBytes.toLong())), cancel, false).collect { value ->
             when (value) {
                 is Outcome.Success -> { metadata = value.value.metadata ?: metadata; output.write(value.value.bytes.copyBytes()) }
                 is Outcome.Failure -> failure = value
@@ -104,7 +107,10 @@ public class OkHttpNetworkClient(
         return failure ?: Outcome.Success(ByteResponse(checkNotNull(metadata), SnapshotBytes(output.toByteArray())))
     }
 
-    override fun stream(request: RequestSpec, cancel: CancelToken): Flow<Outcome<ByteChunk>> = flow {
+    override fun stream(request: RequestSpec, cancel: CancelToken): Flow<Outcome<ByteChunk>> =
+        streamResponse(request, cancel, exposeAcquisition429Metadata)
+
+    private fun streamResponse(request: RequestSpec, cancel: CancelToken, allowAcquisition429Metadata: Boolean): Flow<Outcome<ByteChunk>> = flow {
         coroutineScope {
             val owner = currentCoroutineContext().job
             val deadline = clock.monotonicNow() + minOf(request.timeout, maximumOverallTimeout)
@@ -130,6 +136,10 @@ public class OkHttpNetworkClient(
                     return@coroutineScope
                 }
                 validateRequest(request)
+                if (allowAcquisition429Metadata && (request.request.method != HttpMethod.GET || request.request.body != null ||
+                    request.retryClassification != RetryClassification.NEVER_AUTOMATIC || request.endpoint.retry.maxAttempts != 1)) {
+                    throw InvalidRequest("Acquisition metadata requires body-free GET with one nonautomatic attempt")
+                }
                 var attempt = 0
                 var emitted = false
                 while (true) {
@@ -187,11 +197,21 @@ public class OkHttpNetworkClient(
                                         if (status == 429 && uri.host.equals("api.scryfall.com", true)) retryDelay = maxOf(retryDelay ?: Duration.ZERO, 30.seconds)
                                         val mandatory = retryAfter != null || status == 429 && uri.host.equals("api.scryfall.com", true)
                                         if (request.endpoint.retry.honorRetryAfter || mandatory) retryDelay?.let { holdOrigin(uri, it) }
+                                        if (status == 429 && allowAcquisition429Metadata) {
+                                            val metadata = responseMetadata(status, responseHeaders, uri, retryAfter)
+                                            // Cancel before close so connection reuse cannot drain the error body.
+                                            // This makes no guarantee about bytes already prefetched by the socket.
+                                            call.cancel()
+                                            response.close()
+                                            checkCall(call, cancel)
+                                            emit(Outcome.Success(ByteChunk(0, 0, SnapshotBytes(byteArrayOf()), metadata, true)))
+                                            return@coroutineScope
+                                        }
                                         throw RetryableFailure("HTTP $status", retryDelay, mandatory)
                                     }
                                     throw TransportFailure("HTTP $status")
                                 }
-                                val metadata = HttpMetadata(status, SnapshotList.copyOf(responseHeaders), ResourceUri(uri.toASCIIString()), clock.utcNow(), retryAfter?.let { Knowledge.Known(it) } ?: Knowledge.Absent("No Retry-After"), Knowledge.Unknown("Transport cannot determine charge", SnapshotList.empty()))
+                                val metadata = responseMetadata(status, responseHeaders, uri, retryAfter)
                                 val rawLength = response.header("Content-Length")
                                 val length = rawLength?.toLongOrNull() ?: if (rawLength == null) -1L else throw TransportFailure("Invalid response length")
                                 if (length < -1 || rawLength != null && length < 0) throw TransportFailure("Invalid response length")
@@ -347,6 +367,11 @@ public class OkHttpNetworkClient(
             HttpHeader(name, value)
         }
     }
+
+    private fun responseMetadata(status: Int, headers: List<HttpHeader>, uri: URI, retryAfter: Duration?): HttpMetadata =
+        HttpMetadata(status, SnapshotList.copyOf(headers), ResourceUri(uri.toASCIIString()), clock.utcNow(),
+            retryAfter?.let { Knowledge.Known(it) } ?: Knowledge.Absent("No Retry-After"),
+            Knowledge.Unknown("Transport cannot determine charge", SnapshotList.empty()))
 
     private fun holdOrigin(uri: URI, duration: Duration) {
         val key = origin(uri)
