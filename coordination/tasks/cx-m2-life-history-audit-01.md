@@ -1,4 +1,4 @@
-# Life history and recovery requirement audit — OPEN
+# Life history and recovery requirement audit — TAKEN
 
 Parent: cx-m2-life-functional-01. Candidate branch component/life-history-audit-20261014 from latest recovery. Claim through coordination/CHAT-TASKS.md before writes; lock life-history-audit.lock.
 
@@ -10,4 +10,4 @@ Acceptance: every cited path/requirement exists; gaps are concrete and nonduplic
 
 ## Latest continuation delta
 
-OPEN. Next worker claims and maps actual retained requirements to checked gaps; no service implementation is assigned by this task.
+TAKEN by claude-code-life-history-audit-20261014 on component/life-history-audit-20261014 (base e489af7 of agent/cx-thread-recovery-20261013). Writing docs/verification/m2-life/HISTORY-SERVICE-AUDIT-20261014.md; no source edits. Next: publish report, mark DONE, release lock.

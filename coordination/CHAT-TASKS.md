@@ -6,7 +6,7 @@ Current assignment board,2026-10-14. Base your checkout on the latest published 
 |---|---|---|---|---|
 | life-profiles | Real SQLite player profile persistence and model codec port | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-profiles-01.md) |
 | scryfall-integrate | Bring the completed reviewed metadata decoder and13 tests onto the recovery baseline; verify locally | DONE | codex-scryfall-integration-20261014 / ad3f9aa | [details](tasks/cx-k3-scryfall-integration-01.md) |
-| life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | OPEN | — | [details](tasks/cx-m2-life-history-audit-01.md) |
+| life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | TAKEN | claude-code-life-history-audit-20261014 / component/life-history-audit-20261014 | [details](tasks/cx-m2-life-history-audit-01.md) |
 | life-variant-source-audit | Inventory authentic variant rules/cards/placement/source gaps without code edits | OPEN | — | [details](tasks/cx-m2-life-variant-source-audit-01.md) |
 | life-game-store | Checked game creation/read persistence foundation | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-game-store-01.md) |
 | life-snapshot-graph | Structural snapshot validation before mutation/service binding | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-snapshot-graph-01.md) |
