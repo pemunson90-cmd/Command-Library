@@ -487,3 +487,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T13:27:14Z | codex | cp-20261014-life-native-routing-120 | containing commit | Published service950JVM checkpointd3beaae; exactsourceverification refs onlycontinuity observed, gh dispatch blocked at workflow GET Forbidden; native not_run, PR21 finalmergeHOLD.
 
 2026-10-14T13:53:53Z | codex | cp-20261014-life-platform-active-121 | containing commit | Active local execution restored; platform944bcdb reviewed, SDK34 rerun/fullgate pending after SDK36/JDK17 harness failure; gameplay binding HOLD; profile CRUD library reviewed next.
+
+2026-10-14T14:15:01Z | codex | cp-20261014-platform-merge-profiles-123 | containing commit | Platformf0eff04 whole954JVM and3APKZIP verified; Pat-approved PR21 mergedbe663b2, mainrouteed76f72 preserves active recovery. Continue reviewed real profileCRUD controller/UI without GameServicebinding or APKdelivery.

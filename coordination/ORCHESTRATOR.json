@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T13:53:53Z",
-  "expires_utc": "2026-10-14T14:38:53Z",
-  "checkpoint_id": "cp-20261014-life-platform-active-121",
-  "note": "Root active life/shared development/finalmerge. Platform944bcdb reviewed, SDK34rerun/fullgatepending; gameplaybindingHOLD. Next approved independent profileCRUD UI. PR21 finalmergeHOLD."
+  "heartbeat_utc": "2026-10-14T14:15:01Z",
+  "expires_utc": "2026-10-14T15:00:01Z",
+  "checkpoint_id": "cp-20261014-platform-merge-profiles-123",
+  "note": "Root active life/shared development/finalmerge. Platformf0eff04 whole954JVM verified; next approved profileCRUD controller/UI. GameplaybindingHOLD sourceprereqs. FrozenPR21 mergedbe663b2/mainrouteed76f72; releasedmainroutingrecord is not releaseofthis activelease."
 }

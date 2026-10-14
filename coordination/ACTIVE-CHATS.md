@@ -4,9 +4,9 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Root codex-thread-recovery-20261013 owns active life/shared orchestration on agent/cx-thread-recovery-20261013; life-action-engine TAKEN. Workspace restored; platform sources944bcdb reviewed, local SDK34 rerun/fullgate pending after SDK36/JDK17 harness failure. Prior facade1dc4390 whole950JVM passed; no new native run. Gameplay AppGraph binding remains HOLD on retained named variant/source prerequisite. Next independently approved player-profile CRUD library, spec/plan in currenttaskdelta; no profileUI source yet. Root owns these app/shell paths; no overlapping writer.
+Root codex-thread-recovery-20261013 retains exclusive active life/app/shell/shared orchestration on agent/cx-thread-recovery-20261013; life-action-engine TAKEN. Platformf0eff04 reviewed/whole954JVM96XML0failure/error/skip474s/debug+app/storageTestAPK+3ZIP16KiBexit0; new nativeprobe packagedbutnot_run. Next approved real player-profile library controller/UI under currenttask/spec/plan. GameServicebinding remains HOLD on named/source prerequisites; no profileUI source yet.
 
-PMfreeze decision770e835 ACK authorizes secondCodex isolatedtestedPRprep only. DraftPR21 head e9cb72b75bddc832eb1c8b702878e4c74bec25cc exactmain+freezeparents/producttreeverified; hostedAndroid/continuitysuccessreported. NativeXML/mainmetadatareconciliationpending, finalmergeHOLD/rootexclusiveauthority. No activecheckout/staleglobalcoord takeover/newerrootwork/unfinishedAPKdelivery. Rules coordination/integration/FREEZE-5a88846-20261014.md.
+Pat explicitly approved frozenPR21 merge: guardedbe663b2b48a83c35f52586a3f804ca16a0fbf2cc and docs-onlymainrouteed76f72ee2195d032f27d3520b37f490f14e6136 published. Main product exactlyfreeze5a88846/testedcandidate; freshrun38565369384 logs908JVM/134nativeAPI36pass; no newerrootproduct copied, no APKdelivery. Main releasedrouting-only lease does not release rootactivelease; read recoverybranch beforeclaiming. See integration/FREEZE-5a88846-20261014.md and ROOT-MERGE-20261014.md.
 
 ## Other chat — completed, no active claim
 
