@@ -4,7 +4,9 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Root codex-thread-recovery-20261013 owns life-functional/shared orchestration on agent/cx-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. CUSTOMfactory4648184 independently APPROVE, whole932JVM91XML0fail/error/skip221s; actual public config/shuffle/undo/reopen/rollback/watch tested. Countdownrecovery A3/livehistorypagination D2 followup52ef4bb verified189storage19XML0fail/error/skip140s. Next inclusivecalendar history adapter with explicitAndroidmin23 compatibility. Namedsource/manifestpersist/import/service/platform/DI/UI remain incomplete. Detailed current delta: coordination/tasks/orch-kotlin-k3-offline-data-01.md.
+Root codex-thread-recovery-20261013 owns active life-functional/shared orchestration on agent/cx-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. Calendar1d69fba verified943JVM94XML0fail/error/skip1704s plus actualmin23testAPK/desugaredDEX/16KiBZIP; runtimeAPI23/UIpending. Next reviewed actual persistedserviceport facade (no DI/sourceinstall/UI yet), details currenttaskdelta. Namedsource/manifestpersist/import/platform/DI/UI incomplete.
+
+PMfreeze decision770e835 ACK authorizes secondCodex separateclone testedintegrationPR from exact5a888461a4af5185054152420d46b0e2bfd24bd4 ONLY; finalmergeHOLD/rootretainsactivedevelopment+finalmerge. No activecheckout/staleglobalcoord copy/newerrootwork/unfinishedAPKdelivery. Rules coordination/integration/FREEZE-5a88846-20261014.md; board AUTHORIZED/secondchatclaimpending.
 
 ## Other chat — completed, no active claim
 

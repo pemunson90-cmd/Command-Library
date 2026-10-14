@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T12:09:54Z",
-  "expires_utc": "2026-10-14T12:54:54Z",
-  "checkpoint_id": "cp-20261014-life-recovery-history-117",
-  "note": "Root sole life/shared orchestration. CUSTOMfactory reviewed932JVM retained; countdownrecovery/livehistory189storage verified. Next Androidmin23-compatible inclusivecalendar adapter. Claude audit DONE; variant-source OPEN."
+  "heartbeat_utc": "2026-10-14T12:50:01Z",
+  "expires_utc": "2026-10-14T13:35:01Z",
+  "checkpoint_id": "cp-20261014-life-calendar-freeze-118",
+  "note": "Root sole active life/shared orchestration/finalmerge. Calendar943JVM/min23packaging verified, runtimeunrun. Next reviewed unboundpersistedportfacade. Freeze5a88846 ACK isolatedsecondCodexPRprep only/finalmergeHOLD."
 }
