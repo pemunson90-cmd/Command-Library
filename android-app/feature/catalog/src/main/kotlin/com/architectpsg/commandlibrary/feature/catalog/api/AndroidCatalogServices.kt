@@ -17,7 +17,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 
-/** Real English-acquisition assembly for controlled use; the application has not registered it.
+/** Real English-acquisition assembly used by the root's lazy EnglishCatalogAccess binding.
  * Database and settings are caller-owned. Closing disables this factory's wire authorizer and
  * closes only the transport it created, not those stores or the exposed offline lookup ports.
  */

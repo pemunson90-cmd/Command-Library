@@ -54,6 +54,19 @@ class DownloadsUiTest {
         assertFalse(downloads.catalog.initialized); assertNull(shell.controllers.downloads!!.state.value.installed)
     }
 
+    @Test fun failedInitialJobReadDoesNotClaimEmptyHistoryAndRefreshRetriesLocally() {
+        downloads.listFailure = failure(FailureCode.PERSISTENCE)
+        shell.show(); open()
+        shell.text(shell.string(R.string.downloads_empty)).assertDoesNotExist()
+        shell.text(shell.string(R.string.downloads_notice)).assertExists()
+        assertTrue(downloads.settingsBase.stored.consents.isEmpty())
+        downloads.listFailure = null
+        rule.onNodeWithTag(Tags.LIST).performScrollToNode(hasTestTag(Tags.REFRESH)); rule.onNodeWithTag(Tags.REFRESH).performClick()
+        shell.awaitState { shell.controllers.downloads!!.state.value.let { !it.loading && it.problem == null } }
+        shell.waitForText(shell.string(R.string.downloads_empty))
+        assertTrue(downloads.settingsBase.stored.consents.isEmpty()); assertTrue(downloads.rows.isEmpty())
+    }
+
     @Test fun narrowDoubleFontDialogScrollAndNestedBackDoNotStartUnconfirmedWork() {
         shell.show(width = 360.dp, height = 640.dp, fontScale = 2f); open(); plan()
         shell.text(shell.string(R.string.downloads_mutable_source)).performScrollTo().assertIsDisplayed()

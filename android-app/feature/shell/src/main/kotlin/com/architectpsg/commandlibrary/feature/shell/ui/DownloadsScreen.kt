@@ -76,7 +76,7 @@ internal fun DownloadsScreen(controller: DownloadsController, widthClass: WidthC
                     }
                     DownloadNotice(state)
                     if (state.loading || state.planning) DownloadBusy(stringResource(R.string.downloads_loading))
-                    if (!state.loading && state.ready && state.items.isEmpty()) Text(stringResource(
+                    if (!state.loading && state.ready && state.problem == null && state.items.isEmpty()) Text(stringResource(
                         if (state.nextCursor == null) R.string.downloads_empty else R.string.downloads_empty_page))
                     Text(stringResource(R.string.downloads_live_detail))
                 }

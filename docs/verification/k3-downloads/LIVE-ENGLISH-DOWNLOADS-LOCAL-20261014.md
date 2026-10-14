@@ -1,6 +1,6 @@
 # English download controls — local integration, 2026-10-14
 
-Status: implementation and independent source review complete; focused11tests passed; broader integration/packaging running. This is not full K3/v1 acceptance or APK delivery. Prior lazy access evidence is separately recorded in LIVE-ENGLISH-ACCESS-LOCAL-20261014.md.
+Status: implementation and independent source review complete; focused11tests passed; broader integration/packaging retry pending. This is not full K3/v1 acceptance or APK delivery. Prior lazy access evidence is separately recorded in LIVE-ENGLISH-ACCESS-LOCAL-20261014.md.
 
 The real Catalog screen now offers English downloads when its complete root capability exists. Opening initializes and reads persisted job pages without approval or transfer. A trusted plan displays the actual provider/URL/language, unknown source metadata and expected size, finite transfer budget, Wi-Fi requirement and mutable upstream traversal notice. Explicit confirmation re-reads the persisted plan and revision before approving its exact intent; start/resume uses that revision and returned consent. Stale plans require reloading and explicit confirmation.
 
@@ -12,7 +12,7 @@ Independent read-only review by life_contract_review: ACK/APPROVE, no source blo
 
 ## Verification
 
-Focused invocation :feature:shell:testDebugUnitTest filtered to DownloadsControllerTest and DownloadsUiTest passed1m42s/34tasks17executed17up-to-date. Actual2XML:8controller tests1.452s and3UI tests48.531s,0failures/errors/skips. Log /tmp/live-english-downloads-batch2-focused.log. A ninth controller case now models activation before acknowledgement and cancelled install reconciliation. One broader check/lint/app-debug/appTest/shellTest/storageTest assembly is running at this completed consent/DI/UI integration boundary under D-28, log /tmp/live-english-downloads-integration.log. No current packaging/native/full-corpus result is asserted here.
+Focused invocation :feature:shell:testDebugUnitTest filtered to DownloadsControllerTest and DownloadsUiTest passed1m42s/34tasks17executed17up-to-date. Actual2XML:8controller tests1.452s and3UI tests48.531s,0failures/errors/skips. Log /tmp/live-english-downloads-batch2-focused.log. A ninth controller case now models activation before acknowledgement and cancelled install reconciliation. Initial broader check/lint/app-debug/appTest/shellTest/storageTest assembly was cancelled after daemon detected client disconnection at18:22:46 (daemon BUILD FAILED18:23:36); D8 interrupted, no completed gate claim. A serial retry resumes existing caches, log /tmp/live-english-downloads-integration-retry.log with explicit exit sentinel. The ninth controller case and fourth UI failed-history-read/empty-state case await this gate. No current packaging/native/full-corpus result is asserted here.
 
 ## Remaining scope
 

@@ -19,6 +19,7 @@ internal class DownloadsFixture : DownloadService, DownloadRunner, CatalogStatus
     private val approvalMutex = Mutex()
     var approvalFailure: Outcome<Nothing>? = null
     var accessFailure: Outcome<Nothing>? = null
+    var listFailure: Outcome<Nothing>? = null
     var installFailure: Outcome<Nothing>? = null
     var runGate = CompletableDeferred<Unit>()
     var installGate: CompletableDeferred<Unit>? = null
@@ -78,6 +79,7 @@ internal class DownloadsFixture : DownloadService, DownloadRunner, CatalogStatus
     override suspend fun status(cancel: CancelToken): Outcome<LocalCatalogStatus> = Outcome.Success(catalog)
     override suspend fun list(page: PageRequest, cancel: CancelToken): Outcome<Page<AcquisitionSnapshot>> {
         cancel.throwIfCancelled()
+        listFailure?.let { return it }
         val start = page.cursor?.removePrefix("offset:")?.toInt() ?: 0
         val all = rows.values.sortedByDescending { it.plan.createdAt.epochSeconds }
         val values = all.drop(start).take(page.limit)
