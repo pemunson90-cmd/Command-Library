@@ -27,6 +27,8 @@ internal class DurableArtifactFiles(
     fun create(key: String): Unit = synchronized(namespaceLock) {
         val file = file(key)
         if (!file.createNewFile()) throw IOException("Artifact key already exists")
+        // The parent namespace is private; tighten the empty file before writing any data.
+        requirePrivateArtifactPermissions(file)
         RandomAccessFile(file, "rw").use { it.fd.sync() }
         syncDirectory(directory)
     }
@@ -35,6 +37,7 @@ internal class DurableArtifactFiles(
         require(durableOffset >= 0 && maximumBytes > 0 && bytes.size <= 64 * 1024)
         require(durableOffset <= maximumBytes && bytes.size.toLong() <= maximumBytes - durableOffset)
         val file = existing(key)
+        requirePrivateArtifactPermissions(file)
         RandomAccessFile(file, "rw").use {
             if (it.length() != durableOffset) throw IOException("Artifact offset disagrees with durable checkpoint")
             it.seek(durableOffset)
@@ -46,7 +49,9 @@ internal class DurableArtifactFiles(
 
     fun truncateToCheckpoint(key: String, durableOffset: Long) {
         require(durableOffset >= 0)
-        RandomAccessFile(existing(key), "rw").use {
+        val file = existing(key)
+        requirePrivateArtifactPermissions(file)
+        RandomAccessFile(file, "rw").use {
             if (it.length() < durableOffset) throw IOException("Artifact shorter than durable checkpoint")
             it.setLength(durableOffset)
             it.fd.sync()
@@ -115,4 +120,12 @@ internal class DurableArtifactFiles(
         if (entryKind(file) in listOf(ArtifactEntryKind.SYMLINK, ArtifactEntryKind.OTHER) || file.canonicalFile != file.absoluteFile) throw IOException("Artifact link or path escape")
         return file
     }
+}
+
+/** Fail before writing bytes if owner-only access cannot be established, including recovery. */
+internal fun requirePrivateArtifactPermissions(file: File, directory: Boolean = false) {
+    if (!file.setReadable(false, false) || !file.setWritable(false, false) ||
+        !file.setExecutable(false, false) || !file.setReadable(true, true) ||
+        !file.setWritable(true, true) || (directory && !file.setExecutable(true, true)))
+        throw IOException("Artifact privacy permissions unavailable")
 }

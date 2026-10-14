@@ -7,6 +7,18 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class DurableArtifactFilesTest {
+    @Test fun recoveredPermissivePartialIsPrivateBeforeWritingAndRemainsPrivateAfterPromotion() = fixture { dir, files ->
+        files.create("partial")
+        val partial = File(dir, "partial")
+        val privateMode = java.nio.file.attribute.PosixFilePermissions.fromString("rw-------")
+        assertEquals(privateMode, Files.getPosixFilePermissions(partial.toPath()))
+        Files.setPosixFilePermissions(partial.toPath(), java.nio.file.attribute.PosixFilePermissions.fromString("rw-r--r--"))
+        files.truncateToCheckpoint("partial", 0)
+        assertEquals(privateMode, Files.getPosixFilePermissions(partial.toPath()))
+        files.append("partial", 0, byteArrayOf(1), 1)
+        files.promote("partial", "candidate")
+        assertEquals(privateMode, Files.getPosixFilePermissions(File(dir, "candidate").toPath()))
+    }
     private fun entryKind(file: File): ArtifactEntryKind = when {
         Files.isSymbolicLink(file.toPath()) -> ArtifactEntryKind.SYMLINK
         Files.isRegularFile(file.toPath(), java.nio.file.LinkOption.NOFOLLOW_LINKS) -> ArtifactEntryKind.REGULAR
