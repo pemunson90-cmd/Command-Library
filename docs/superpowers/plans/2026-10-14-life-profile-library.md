@@ -32,11 +32,11 @@ Files: create shell presentation/ProfilesController.kt and matching src/test/...
 
 Interfaces: consumes PlayerProfileRepository and existing callPort dispatcher/token handling. Produces internal ProfilesController(scope,repository,portDispatcher), state:StateFlow<ProfilesUiState>, refresh(), loadMore(), create(lifeLabel:String), edit(profile), changeName(String), changeLife(String), changeStep(String), save(), requestDelete(profile), dismissDelete(), confirmDelete(), closeEditor(), reloadEditor(). ProfilesUiState exposes immutable items/nextCursor/loading/busy/editor/pendingDelete/problem/validation; ProfileEditor retains original snapshot plus name/life/step strings. Numeric error enum local to controller, no raw exception/UI messages.
 
-- [ ] Write failing tests: pages use actual cursors and refresh resets; duplicate submissions produce one write; basic edit preserves advanced fields and updates LIFE.initial only; signed life works; blank name/overflow/step0/retained life bounds reject before writes; each typed non-success retains draft; stale revision passes exact original and explicit reload alone replaces draft from repository.read; confirmed delete passes exact revision and refreshes; stale page can't append after refresh; cancelled scope leaks no publication/detached write.
-- [ ] Run :feature:shell:testDebugUnitTest --tests '*ProfilesControllerTest'; observe intended missingAPI/behavior RED.
-- [ ] Implement minimal scoped controller; use exact loaded.value.copy and real callPort, separate list/write jobs and generation guards; block double write/back while busy, explicit later reload after stale.
-- [ ] Run full shell unit tests; all pass, report actual XML.
-- [ ] Commit controller/tests plus current task delta, without prematurely enabling a destination.
+- [x] Write failing tests: pages use actual cursors and refresh resets; duplicate submissions produce one write; basic edit preserves advanced fields and updates LIFE.initial only; signed life works; blank name/overflow/step0/retained life bounds reject before writes; each typed non-success retains draft; stale revision passes exact original and explicit reload alone replaces draft from repository.read; confirmed delete passes exact revision and refreshes; stale page can't append after refresh; cancelled scope leaks no publication/detached write.
+- [x] Run :feature:shell:testDebugUnitTest --tests '*ProfilesControllerTest'; observe intended missingAPI/behavior RED.
+- [x] Implement minimal scoped controller; use exact loaded.value.copy and real callPort, separate list/write jobs and generation guards; block double write/back while busy, explicit later reload after stale.
+- [x] Run full shell unit tests; all pass, report actual XML.
+- [x] Commit controller/tests plus current task delta, without prematurely enabling a destination.
 
 ### Task2: Profile library screen and navigation
 
@@ -64,7 +64,7 @@ Interfaces: construct SqlPlayerProfileRepository(opened.value,LifePayloadCodec()
 
 ## Inline progress and rulings
 
-Task1 implementation not started; capture its exact BASE when starting. Provider whole gate passed954JVM96XML0failures/errors/skips474s; root is publishing that evidence before the profile controller RED cycle. Required independent architecture/publicAPI/UI composition APPROVE recorded in spec. Reuse active isolated recovery branch, preserve frozen PR21 and all other checkout/authority files. Canonical currenttaskdelta is the durable continuation ledger under repository documentation policy; no essential state only in git-ignored skill scratch.
+Task1 BASE6587568; controller APIabsenceRED131s → focused7GREEN88s → fullshell87tests12XML0failures/errors/skips290s. Containing source commit records task1 completion; final whole-feature review remains pending. Task2 UI/navigation RED tests next. Provider prior whole954JVM evidence is separate. Required independent architecture/publicAPI/UI composition APPROVE recorded in spec. Reuse active isolated recovery branch, preserve frozen PR21 and all other checkout/authority files. Canonical currenttaskdelta is the durable continuation ledger under repository documentation policy; no essential state only in git-ignored skill scratch.
 
 Pre-flight task1→task2: controller draft/cursor/status methods match screen needs. Ruling: create takes lifeLabel:String from the caller's actual string resource, so the pure controller never hardcodes persisted user-facing English. Explicit reloadEditor() rereads only the current existing profile after user requests discarding edits; failed reload retains draft. Needed to make stale-write reconciliation concrete rather than force endless retries against an old revision. Cost if wrong: internal controller/UI signature change only, no core API/migration.
 
