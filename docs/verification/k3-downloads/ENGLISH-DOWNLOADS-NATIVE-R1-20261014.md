@@ -1,0 +1,15 @@
+# Combined integration native readback — 2026-10-14
+
+Frozen source12f898004c809b7e7584d3e388e64135d7d1778a, Androidtree65868ad77e71fcae19e2fd2c2ba7f157b0391f93, branch agent/cx-english-downloads-integration-r1-20261014. [Run38623690607](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38623690607) FAILED; no retrigger/branch movement. Continuity38623690832 SUCCESS. This snapshot excludes later ruling public models/schema7/reader.
+
+JVM/build job116057346807 SUCCESS: actual log reports111XML/1039tests/0failures+errors/0skipped. Its local-run source desugaring correction passed all prior failing Android test metadata prerequisites. API36/x86_64/page4096 job116062337843 FAILED connected instrumentation9m11s: six module reports173tests/3failures+errors/0skips. App13/network3/storage34/catalog31/rules6 all passed. Shell86tests3failed, hence170cases passed across all modules. Selected-lane verified APK promotion skipped. A build artifact is not finished-app delivery.
+
+Failures (all immediately after typing and Espresso.pressBack):
+
+- ProfileAppearanceUiTest.systemBackReturnsToBasicDraftBeforeWholeCancelDiscardsIt: line81, profile-name missing.
+- ProfileCommanderUiTest.narrowLargeFontValidationAndNestedSystemBackPreserveUnsavedBasicDraft: line103, profile-commanders-list missing.
+- ProfilesCounterUiTest.backFromCounterEditorThenManagerKeepsBasicDraftUntilWholeCancel: line108, profile-counters-list not displayed.
+
+Working hypothesis: device IME consumes the first system Back, while these tests assume it navigates the app immediately. Production BackHandler already closes the most nested editor; host tests pass but host IME behavior is not device evidence. Investigate/independently review an explicit keyboard-dismissal test precondition before actual system Back, preserving all navigation/draft assertions. No product bug/fix or successful rerun claimed yet. Do not weaken assertions, add arbitrary sleeps, press Back repeatedly until a node appears, or change production navigation to accommodate the test.
+
+Visual collection log reports36/36captures retained; not visually inspected. Artifact11924003403,1344847bytes, uploaded ZIP digest8b92b0c4377521efacee358a4c11665b1d884a4fd0a4f257130d3e947693839a. [Retained native evidence](https://github.com/pemunson90-cmd/Command-Library/actions/runs/38623690607/artifacts/11924003403); bytes not downloaded independently. Build artifact11923781777 and JVM11922629892 retained. No API23/16KiB/physical Fold7/TalkBack/canonical/release/full-v1 acceptance.

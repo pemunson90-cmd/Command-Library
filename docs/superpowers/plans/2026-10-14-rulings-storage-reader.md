@@ -1,6 +1,6 @@
 # Independent ruling storage and local reads
 
-Status: independent durability design ACK; implementation in progress under D-17/D-28. Parent orch-kotlin-k3-offline-data-01. Builds on reviewed fe48e56 contracts. No importer, acquisition authority, DI, UI or network action in this unit.
+Status: implemented; independent design/exact-source durability ACK and whole local gate1058tests/lint/APKs passed under D-17/D-28. Parent orch-kotlin-k3-offline-data-01. Builds on reviewed fe48e56 contracts. No importer, acquisition authority, DI, UI or network action in this unit.
 
 Design reviewer: rulings_contract_review (Astra high), read-only, no blockers. Actual Database.transaction uses IMMEDIATE writer connection; bounded snapshot reads briefly serialize writers. Catch stored-data validation inside its callback as CORRUPT_DATA and flatten typed nested outcomes; do not let storage misclassify them as user input errors.
 
@@ -27,3 +27,5 @@ Read at most limit+1 small identity rows, then one payload at a time, with SQL b
 Batch schema, real local reader, codec and meaningful regression tests. Use actual bundled SQLite for migration/payload preservation/rollback/reopen/FKs/query-plan and keyset paging; no fake SQL evaluation. Migration tests start with actual exported6schema and retained life/acquisition payloads. Add an actual Room6-to7 open/reopen instrumentation probe, compile it locally; device execution remains not_run until a later justified integration run. Existing historical5-to6 tests remain unchanged.
 
 One broader local check/lint/all-test-APK/debug-APK boundary after implementation and independent exact-source durability review. Compare actual KSP6/7: all24old entities byte-for-byte equal, exactly3new entities. Keep native frozen12f8980/run38623690607 separate; that earlier source cannot prove this schema. Do not retrigger it. No finished APK/full-v1 acceptance claim.
+
+Actual evidence: docs/verification/k3-downloads/RULINGS-STORAGE-READER-LOCAL-20261014.md. Device schema7 runtime remains not_run.
