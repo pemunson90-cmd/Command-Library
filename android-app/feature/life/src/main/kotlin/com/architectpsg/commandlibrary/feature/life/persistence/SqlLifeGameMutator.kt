@@ -9,18 +9,31 @@ public class SqlLifeGameMutator(private val db: Database, private val codec: Lif
     private val games = SqlLifeGameStore(db, codec)
     private val events = SqlLifeEventReader(db, codec)
 
-    public suspend fun action(id: GameId, expected: Revision, expectedSequence: Long, build: (StoredLifeGame, Long) -> Outcome<LifeActionWrite>, cancel: CancelToken): Outcome<StoredLifeGame> = gameTransaction(db, cancel) { tx ->
+    /** Awaited local callback; nullable expected is legacy authoritative-in-transaction mode. */
+    public suspend fun actionWithContext(id: GameId, expected: Revision?, build: suspend (LifeActionContext) -> Outcome<LifeActionWrite>, cancel: CancelToken): Outcome<StoredLifeGame> =
+        actionTransaction(id, expected, null, { tx, current, nextId ->
+            val context = LifeActionContext(current, nextId, tx, events, cancel)
+            val proposed: Outcome<LifeActionWrite>
+            var failedRead: Outcome<Nothing>?
+            try { proposed = build(context) } finally { failedRead = context.close() }
+            failedRead ?: proposed
+        }, cancel)
+
+    public suspend fun action(id: GameId, expected: Revision, expectedSequence: Long, build: (StoredLifeGame, Long) -> Outcome<LifeActionWrite>, cancel: CancelToken): Outcome<StoredLifeGame> =
+        actionTransaction(id, expected, expectedSequence, { _, current, nextId -> build(current, nextId) }, cancel)
+
+    private suspend fun actionTransaction(id: GameId, expected: Revision?, expectedSequence: Long?, build: suspend (DbTransaction, StoredLifeGame, Long) -> Outcome<LifeActionWrite>, cancel: CancelToken): Outcome<StoredLifeGame> = gameTransaction(db, cancel) { tx ->
         val current = current(tx, id, expected, expectedSequence, cancel)
-        requireGame(expected.value < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Game revision exhausted")
+        requireGame(current.checkpoint.snapshot.revision.value < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Game revision exhausted")
         val operational = loadLifeOperational(tx, current.checkpoint.snapshot, cancel)
         val nextId = nextEvent(tx, id, cancel)
-        val write = gameValue(build(current, nextId))
+        val write = gameValue(build(tx, current, nextId))
         lifeActionPacket(current, nextId, write)
         val undo = (write.archive.event.undoOfEventId as? Knowledge.Known)?.value
         if (undo != null) {
-            val target = referenced(tx, id, undo, expected.value, FailureCode.INVALID_INPUT, cancel)
+            val target = referenced(tx, id, undo, current.checkpoint.snapshot.revision.value, FailureCode.INVALID_INPUT, cancel)
             if (target.event.undoOfEventId is Knowledge.Unknown) throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Undo intent requires explicit repair"))
-            requireGame(target.event.revision.value <= expected.value && target.event.undoOfEventId is Knowledge.Absent, FailureCode.INVALID_INPUT, "Target is not an explicit original action")
+            requireGame(target.event.revision.value <= current.checkpoint.snapshot.revision.value && target.event.undoOfEventId is Knowledge.Absent, FailureCode.INVALID_INPUT, "Target is not an explicit original action")
             val used = gameValue(tx.query(gameRequest("SELECT 1 AS present FROM life_event WHERE game_source=:source AND game_id=:id AND undo_of_event_id=:undo LIMIT 1",
                 *lifeIdentityParameters(id), "undo" to gameNumber(undo), maxRows = 1), cancel))
             requireGame(used.isEmpty(), FailureCode.INVALID_INPUT, "Event already undone")
@@ -64,22 +77,23 @@ public class SqlLifeGameMutator(private val db: Database, private val codec: Lif
             *lifeIdentityParameters(id), "occurrence" to gameText(occurrenceId.value), "bits" to gameNumber(channels.toLong())), cancel)))
     }
 
-    private suspend fun current(tx: DbTransaction, id: GameId, expected: Revision, sequence: Long, cancel: CancelToken): StoredLifeGame {
-        requireGame(sequence >= 0, FailureCode.INVALID_INPUT, "Negative checkpoint sequence")
+    private suspend fun current(tx: DbTransaction, id: GameId, expected: Revision?, sequence: Long?, cancel: CancelToken): StoredLifeGame {
+        requireGame(sequence == null || sequence >= 0, FailureCode.INVALID_INPUT, "Negative checkpoint sequence")
         val stored = games.readWithin(tx, id, cancel)
-        requireGame(stored.checkpoint.snapshot.revision == expected && stored.sequence == sequence, FailureCode.STALE_REVISION, "Game revision/checkpoint changed")
-        requireGame(sequence < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Checkpoint sequence exhausted")
+        requireGame((expected == null || stored.checkpoint.snapshot.revision == expected) && (sequence == null || stored.sequence == sequence), FailureCode.STALE_REVISION, "Game revision/checkpoint changed")
+        requireGame(stored.sequence < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Checkpoint sequence exhausted")
         val game = stored.checkpoint.snapshot
+        val revision = game.revision
         val latest = gameValue(tx.query(gameRequest("SELECT ${typedGameInteger("revision")} FROM life_event WHERE game_source=:source AND game_id=:id ORDER BY revision DESC LIMIT 1", *lifeIdentityParameters(id), maxRows = 1), cancel))
         if (game.lastEventId is Knowledge.Unknown || stored.checkpoint.lastSettledEventId is Knowledge.Unknown) throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Event lineage requires explicit repair"))
-        if (expected.value == 0L) corruptGame(game.lastEventId is Knowledge.Absent && stored.checkpoint.lastSettledEventId is Knowledge.Absent && latest.isEmpty(), "Initial event lineage is contradictory")
+        if (revision.value == 0L) corruptGame(game.lastEventId is Knowledge.Absent && stored.checkpoint.lastSettledEventId is Knowledge.Absent && latest.isEmpty(), "Initial event lineage is contradictory")
         else {
             val last = (game.lastEventId as? Knowledge.Known)?.value
                 ?: throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Missing live event lineage"))
             if (stored.checkpoint.lastSettledEventId !is Knowledge.Known) throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Missing settled event lineage"))
-            corruptGame(stored.checkpoint.lastSettledEventId == Knowledge.Known(last) && latest.size == 1 && latest.single().gameRequiredLong("revision") == expected.value, "Current event/settled/revision lineage mismatch")
-            val archive = referenced(tx, id, last, expected.value, FailureCode.CORRUPT_DATA, cancel)
-            corruptGame(archive.event.revision == expected, "Current event revision mismatch")
+            corruptGame(stored.checkpoint.lastSettledEventId == Knowledge.Known(last) && latest.size == 1 && latest.single().gameRequiredLong("revision") == revision.value, "Current event/settled/revision lineage mismatch")
+            val archive = referenced(tx, id, last, revision.value, FailureCode.CORRUPT_DATA, cancel)
+            corruptGame(archive.event.revision == revision, "Current event revision mismatch")
             lifeSettlement(archive.provenance.afterAction, game, FailureCode.CORRUPT_DATA)
         }
         return stored

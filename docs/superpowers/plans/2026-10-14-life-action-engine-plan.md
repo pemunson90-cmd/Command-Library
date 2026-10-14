@@ -26,3 +26,5 @@ Semantic undo step3c pure composition complete: exact-source APPROVE; grouped-ad
 Recorded random pure helper complete: architecture/exact-source APPROVE; RED175life7fail57s→GREEN60s; expanded final825JVM/79XML0fail/error/skip,check/debug119s,16KiBZIPpass. Evidence RANDOM-ENGINE-LOCAL-20261014.md. Action/event packet design under review; concrete variant backend/source, durable ledger/service/UI remain pending.
 
 Pure action/event packet assembly complete: architecture/exact-source APPROVE; pause-boundary regression corrected; final836JVM/80XML0fail/error/skip,check/debug155s,16KiBZIPpass. Evidence ACTION-EVENT-LOCAL-20261014.md. Same-transaction action context design next for authoritative service; variant-source backend still mandatory, no public-service binding.
+
+Same-transaction action context foundation complete: architecture/exact-source APPROVE; malformed undo metadata regression fixed; final846JVM/81XML0fail/error/skip,check/debug250s,16KiBZIPpass. Evidence ACTION-CONTEXT-LOCAL-20261014.md. Next reviewed random predecessor scan inside context; public service/source/publication remains pending.
