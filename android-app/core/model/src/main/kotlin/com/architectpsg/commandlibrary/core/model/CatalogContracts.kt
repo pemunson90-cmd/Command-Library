@@ -254,7 +254,9 @@ public interface RulesRepository {
 }
 
 public enum class Comparison { EQ, NE, LT, LE, GT, GE }
-public enum class SearchTextField { NAME, ORACLE_TEXT, TYPE, KEYWORD }
+public enum class SearchTextField { NAME, ORACLE_TEXT, TYPE, KEYWORD, LAYOUT }
+public enum class PrintingSearchField { RARITY, SET, LANGUAGE, FINISH }
+public enum class SearchFlag { RESERVED, GAMECHANGER }
 public enum class SearchNumericField { MANA_VALUE, POWER, TOUGHNESS, LOYALTY, DEFENSE }
 public enum class FaceMatchPolicy { ANY_FACE, SAME_FACE, CANONICAL }
 public sealed interface QueryAst {
@@ -262,11 +264,26 @@ public sealed interface QueryAst {
     public data class Numeric(public val field: SearchNumericField, public val comparison: Comparison, public val value: BigDecimal) : QueryAst
     public data class Colors(public val values: SnapshotList<Color>, public val identity: Boolean, public val comparison: Comparison) : QueryAst
     public data class LegalIn(public val format: FormatId, public val status: LegalityStatus) : QueryAst
+    /** Categorical token membership, never a substring match (foil differs from nonfoil). */
+    public data class PrintingText(public val field: PrintingSearchField, public val value: String) : QueryAst
+    public data class Flag(public val field: SearchFlag, public val value: Boolean) : QueryAst
+    public data class Owned(public val comparison: Comparison, public val quantity: BigDecimal) : QueryAst
+    /** Requires the actual selected deck context during execution. */
+    public data object InDeck : QueryAst
+    /** Requires the selected provider/native currency/statistic/policy during execution. */
+    public data class Price(public val comparison: Comparison, public val amount: BigDecimal) : QueryAst
     public data class And(public val terms: SnapshotList<QueryAst>) : QueryAst
     public data class Or(public val terms: SnapshotList<QueryAst>) : QueryAst
     public data class Not(public val term: QueryAst) : QueryAst
 }
 public data class QueryDiagnostic(public val start: Int, public val end: Int, public val message: String) { init { require(start >= 0 && end >= start) } }
+/** UTF16 half-open diagnostic ranges refer to the original input, as Android text selection does. */
+public sealed interface CardQueryParseResult {
+    public data class Valid(public val query: QueryAst) : CardQueryParseResult
+    public data class Invalid(public val diagnostics: SnapshotList<QueryDiagnostic>) : CardQueryParseResult {
+        init { require(diagnostics.isNotEmpty()) }
+    }
+}
 public data class SearchContext(
     public val snapshots: SnapshotList<SnapshotReference>,
     public val languages: SnapshotList<LanguageTag>,

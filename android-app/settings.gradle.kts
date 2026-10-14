@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "CommandLibrary"
-include(":core:model", ":core:common", ":data:storage", ":data:network", ":feature:settings", ":feature:catalog", ":feature:shell", ":feature:rules", ":feature:life", ":app")
+include(":core:model", ":core:common", ":data:storage", ":data:network", ":feature:settings", ":feature:catalog", ":feature:shell", ":feature:rules", ":feature:life", ":feature:search", ":app")
