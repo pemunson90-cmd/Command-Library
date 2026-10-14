@@ -25,10 +25,12 @@ internal class LocalCatalogRulings(private val database: Database) : CatalogRuli
             val identities = tx.query(bulkSql("""SELECT ordinal,
                 CASE WHEN length(CAST(published_day AS BLOB))=10 THEN published_day END AS published_day
                 FROM ruling_record r WHERE generation_id=:g AND oracle_provider='scryfall' AND oracle_id=:o
-                AND (published_day<:day OR (published_day=:day AND ordinal>:ordinal))
+                AND (:first=1 OR published_day<:day OR (published_day=:day AND ordinal>:ordinal))
                 ORDER BY r.published_day DESC,r.ordinal ASC LIMIT :limit""", page.limit + 1,
-                "g" to generation.id.value, "o" to oracleId.raw, "day" to (cursor?.day ?: "9999-99-99"),
+                "g" to generation.id.value, "o" to oracleId.raw, "first" to if(cursor == null) 1 else 0, "day" to (cursor?.day ?: ""),
                 "ordinal" to (cursor?.ordinal ?: 0L), "limit" to page.limit + 1), cancel).bulkValue()
+            // A bounded page cannot prove the whole count, but must reject an observed contradiction.
+            require(identities.size.toLong() <= generation.recordCount)
             val result = ArrayList<StoredRuling>()
             var bytes = 0
             for (identity in identities.take(page.limit)) {

@@ -29,7 +29,7 @@ class LocalCatalogRulingsTest {
         entities.map { it.asJsonObject }.filter { it["tableName"].asString in setOf("rulings_generation", "ruling_record", "rulings_active") }.forEach { e ->
             val name = e["tableName"].asString
             db.exec(e["createSql"].asString.replace("\${TABLE_NAME}", name))
-            e.getAsJsonArray("indices").forEach { db.exec(it.asJsonObject["createSql"].asString.replace("\${TABLE_NAME}", name)) }
+            e.getAsJsonArray("indices")?.forEach { db.exec(it.asJsonObject["createSql"].asString.replace("\${TABLE_NAME}", name)) }
         }
     }
     private fun provenance(id: String = "g") = Provenance(ProviderId("scryfall"), ResourceUri("https://example.invalid/synthetic-rulings"),
@@ -130,10 +130,10 @@ class LocalCatalogRulingsTest {
 
     @Test fun persistedGenerationAndProjectionCorruptionNeverBecomesEmptySuccess() = runBlocking {
         val mutations = listOf("UPDATE rulings_generation SET status='STAGING'", "UPDATE rulings_generation SET provider='other'",
-            "UPDATE rulings_generation SET language_scope='ENGLISH_CARDS'", "UPDATE rulings_generation SET record_count=-1",
+            "UPDATE rulings_generation SET language_scope='ENGLISH_CARDS'", "UPDATE rulings_generation SET record_count=-1", "UPDATE rulings_generation SET record_count=0",
             "UPDATE rulings_generation SET payload_schema_version=2", "UPDATE rulings_generation SET provenance_payload='private-secret'",
             "UPDATE rulings_generation SET provenance_payload='${"x".repeat(LocalCatalogRulings.MAX_METADATA_BYTES + 1)}'",
-            "UPDATE ruling_record SET ordinal=0", "UPDATE ruling_record SET publisher='scryfall'", "UPDATE ruling_record SET published_day='2026-10-12'",
+            "UPDATE ruling_record SET ordinal=0", "UPDATE ruling_record SET publisher='scryfall'", "UPDATE ruling_record SET published_day='2026-10-12'", "UPDATE ruling_record SET published_day='zzzzzzzzzz'",
             "UPDATE ruling_record SET record_payload='private-secret'", "UPDATE ruling_record SET record_payload='${"x".repeat(ScryfallRulingRecordCodec.MAX_RECORD_BYTES + 1)}'",
             "UPDATE rulings_active SET singleton_id=2")
         for(mutation in mutations) BulkSqlTestDatabase().use { db ->
@@ -163,15 +163,28 @@ class LocalCatalogRulingsTest {
         BulkSqlTestDatabase().use { db ->
             tables(db); generation(db, records = listOf(raw(), raw()))
             var transactions = 0
+            var pageQuery: SqlRequest? = null
             val guarded = object : Database by db {
                 override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> = error("Read outside snapshot")
-                override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> { transactions++; return db.transaction(action, cancel) }
+                override suspend fun <T> transaction(action: suspend (DbTransaction) -> T, cancel: CancelToken): Outcome<T> {
+                    transactions++
+                    return db.transaction({ tx -> action(object : DbTransaction by tx {
+                        override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> {
+                            if(request.statement.contains("FROM ruling_record r")) pageQuery = request
+                            return tx.query(request, cancel)
+                        }
+                    }) }, cancel)
+                }
             }
             val reader = LocalCatalogRulings(guarded)
             db.afterCommit = { db.afterCommit = null; db.exec("UPDATE rulings_generation SET status='RETIRED'"); db.exec("DELETE FROM rulings_active") }
             val page = reader.rulings(oracle, PageRequest(20), cancel).bulkValue()
             assertEquals(2, page.items.size); assertEquals(1, transactions)
             assertNull(reader.status(cancel).bulkValue().active); assertEquals(2, transactions)
+            val query = requireNotNull(pageQuery)
+            val plans = db.query(query.copy(statement = "EXPLAIN QUERY PLAN " + query.statement), cancel).bulkValue().map { it.bulkText("detail") }
+            assertTrue(plans.any { it.contains("index_ruling_record_oracle_day_ordinal") })
+            assertFalse(plans.any { it.contains("TEMP B-TREE") })
         }
     }
 

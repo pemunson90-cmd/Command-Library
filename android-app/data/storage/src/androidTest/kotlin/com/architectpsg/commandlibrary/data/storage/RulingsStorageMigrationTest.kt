@@ -36,8 +36,8 @@ class RulingsStorageMigrationTest {
                 for(i in 0 until entities.length()) {
                     val entity = entities.getJSONObject(i); val table = entity.getString("tableName")
                     exec(entity.getString("createSql").replace("\${TABLE_NAME}", table))
-                    val indices = entity.getJSONArray("indices")
-                    for(j in 0 until indices.length()) exec(indices.getJSONObject(j).getString("createSql").replace("\${TABLE_NAME}", table))
+                    val indices = entity.optJSONArray("indices")
+                    if(indices != null) for(j in 0 until indices.length()) exec(indices.getJSONObject(j).getString("createSql").replace("\${TABLE_NAME}", table))
                 }
                 val setup = schema.getJSONArray("setupQueries")
                 for(i in 0 until setup.length()) exec(setup.getString(i))
