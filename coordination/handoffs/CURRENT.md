@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-variant-shuffle-audit-114
+Checkpoint-ID: cp-20261014-life-audit-commands-115
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. close-audited-life-sqlite-command-boundaries
+Next step: 3. implement-reviewed-life-custom-manifest-factory
 
-Updated UTC: 2026-10-14T11:41:22Z
+Updated UTC: 2026-10-14T11:49:50Z
 Status: in_progress; lease: active.
-Verified base: cda11caa9818b680553ff6ddc7fb7d0c7f8e4086.
+Verified base: 3ab12bdac7b2ae610c1d35e50bf391c9a800d8dc.
 
-Shuffleea09f13 approved924JVM; Claude history audit consumedcda11ca/DONE with narrowing. Close command regressions then reviewed custom factory; variant-source OPEN.
+Verified bounded history audit command regressions183storage; continue reviewed CUSTOM factory, remaining platform boundaries retained.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

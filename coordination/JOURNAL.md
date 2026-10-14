@@ -473,3 +473,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T11:11:13Z | codex | cp-20261014-life-codec-v2-goldens-113 | containing commit | Actualv2goldens5a88846 pinned preupgrade;capture1pass122s/pinned1pass148s. Continue reviewed shuffle/model/codec3; umbrella TAKEN, audits OPEN.
 
 2026-10-14T11:41:22Z | codex | cp-20261014-life-variant-shuffle-audit-114 | containing commit | Shuffleea09f13 approved924JVM; Claude history audit consumedcda11ca/DONE with narrowing. Close command regressions then reviewed custom factory; variant-source OPEN.
+
+2026-10-14T11:49:50Z | codex | cp-20261014-life-audit-commands-115 | containing commit | Verified bounded history audit command regressions183storage; continue reviewed CUSTOM factory, remaining platform boundaries retained.
