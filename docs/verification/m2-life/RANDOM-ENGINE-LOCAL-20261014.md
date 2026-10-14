@@ -1,0 +1,11 @@
+# Recorded random request engine — local evidence, 2026-10-14
+
+Parent cx-m2-life-action-engine-01 stays TAKEN. Architecture/exact-source APPROVE. LifeRandomEngine resolves explicit single requests through accepted RandomTools, records actual values and applies the same validated representation as replay. No implicit seeded source, timing settlement, revision increment or persistence. Pure context carries original request/last predecessor facts; service must authenticate request uniqueness, durable retries and full committed chain including undone events. Replay uses historical predecessor and has no RandomSource parameter.
+
+Dice cap10000 retains exact requested/index/remainder, including Long.MAX_VALUE request/final5807-face tail and Int.MAX_VALUE die sum. Coin retains actual face. SeatPick eligible=current Active seats in order; empty/singleton no draws, asker membership checked. SeatOrder shuffles all roster seats including eliminated once, retains metadata/counters and original RequestRandom logged action; replay applies exact full permutation without draws. Invalid context/kind/parameters/order/eligible sets rejected before resolve draws, typed bad-source failure returns no partial game.
+
+Declared API RED175life7expectedfail57s; implemented175lifeGREEN60s. Added wrong-original parameters/finished-tail/latest-vs-historical replay context, eliminated full-roster shuffle metadata and late bad-source/final exact recorded-time tests before whole gate. Nine new methods total; actual focused final177life, storage111 retained green.
+
+Final repository-root `bash android-app/gradlew -p android-app --no-daemon --console=plain check :app:assembleDebug`: BUILD SUCCESSFUL119s,336tasks14executed; actual79XML825JVM0failures/errors/skips. Log /tmp/life-random-engine-whole.log. Standalone build-tools36.0.0 zipalign `-c -P 16 4` exit0; debug APK SHA2569b668e3fb4ba720276e3a3e4cfb7cbf53cebbb7ca4a1ac9cfa2a044ddd702d4c unchanged unbound artifact.
+
+No schema/DI/UI/service/native/device change or source entropy/authentication proof. Actual transactional random ledger/history, named variant source/rules backend, event orchestration/publication/UI and full-v1 remain incomplete. Next action/event packet design under review; disjoint variant-source inventory OPEN for another chat, root retains semantic engine ownership.
