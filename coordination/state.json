@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-calendar-freeze-118",
-  "verified_base_head": "e1c97ce0e9e9972adff4a037bb9bf20c7ac093ac",
+  "checkpoint_id": "cp-20261014-life-persisted-service-119",
+  "verified_base_head": "1dc43908b81a3869fc064ea29ad3f5375f69640a",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "implement-reviewed-persisted-game-service-facade",
+  "first_action": "verify-persisted-service-room-calendar-native-exact-head",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Calendararchitecture/exactsource/dependencyAPPROVE; whole943JVM localpackagingverified, nativeAPI23not_run. PersistedservicefacadearchitectureAPPROVE withall-nonsuccessUnknownpreservation/sourcepending. No fullM2/serviceDI/UI/source acceptance.",
+  "review_status": "Persisted facade architecture/exactsource/expandedtests/nativeprobe APPROVE;950JVM localgate passed. Real Room/calendar probes compiled but not_run. FreezePR21 prepared, finalmergeHOLD.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -90,9 +90,11 @@
     "life_custom_factory_local": "Source4648184 architecture/exactsourceAPPROVE; strictunusedIDfix+independent415byte digestgolden. APIabsence65s/compile91s then2tests104s/4publicactualSQLite97s; whole932JVM91XML0fail/error/skip221s,73model205life187storage,check/debug/16KiBZIPpass. APKunchanged26d42261025c30970845e1d325bf9cbcfc9c9347be7b68c564b9cf1107f73e85, factoryunbound. No namedsource/manifestpersist/import/UI/DI acceptance.",
     "life_countdown_live_history_local": "Source52ef4bb testonly independentAPPROVE; recovery6scenarios1JUnitmethodGREEN60s; full189storage19XML0fail/error/skip140s. Actual CHESS/PER_TURN/SHARED bothpolicy filereopen/recoveryundo/durablepausedbanks; livecommandFinish/Reopen/undo acrosspages/counts/uniquekeys/latestresults. Priorwhole932 unchanged production; no native/processkill/Roomconcurrency.",
     "life_calendar_history_local": "Source1d69fba treeequals1b83fc6, architecture/exactsource/dependencyAPPROVE.7pureGREEN285s; full943JVM94XML0fail/error/skip1704s,73model212life191storage incl2calendarSQL,check/debug/storageAndroidTestAPK; min23manifest+desugaredLocalDate/probeDEX verified,both16KiBZIPexit0. Appabb96caa1c90966e25e7e36aa1ab38014b89ab20bd351a68af9885b54eda6ff0; testc2910d8f1611fa65d20c6ce9c4a78b1d798495d9ec4c3539c50924bc8dd48582. RuntimeAPI23not_run/UIpending; evidence CALENDAR-HISTORY-LOCAL-20261014.md.",
-    "integration_freeze_decision": "PMrequest ACK770e835 for isolatedtested PRprep ONLY from5a888461a4af5185054152420d46b0e2bfd24bd4; independentreviewconcurred. FinalmergeHOLD/rootexclusiveactiveownership. Separateclone, exactcandidatefreshchecks, exclude staleglobalauthority/newerrootwork. Rules coordination/integration/FREEZE-5a88846-20261014.md. No merge/delivery."
+    "integration_freeze_decision": "PMrequest ACK770e835 for isolatedtested PRprep ONLY from5a888461a4af5185054152420d46b0e2bfd24bd4; independentreviewconcurred. FinalmergeHOLD/rootexclusiveactiveownership. Separateclone, exactcandidatefreshchecks, exclude staleglobalauthority/newerrootwork. Rules coordination/integration/FREEZE-5a88846-20261014.md. No merge/delivery.",
+    "life_persisted_service_local": "Source1dc4390 reviewed complete unbound serviceport;7actual hostSQLite tests/concurrency/CUSTOM/status/cancellation. Whole950JVM95XML0fail/error/skip608s; check/debug/storageTestAPK, both16KiBZIPexit0. Appabb96caa1c90966e25e7e36aa1ab38014b89ab20bd351a68af9885b54eda6ff0; test2a940792c5431f2b0d6e65f86c51718b3c2bfb0c558c171d9cb939cd658b2b8d. Nativeprobecompiled/not_run; no DI/UI/fullserviceacceptance. PERSISTED-SERVICE-LOCAL-20261014.md.",
+    "integration_freeze_candidate": "DraftPR21 e9cb72b75bddc832eb1c8b702878e4c74bec25cc exactparents main6f841cc4+freeze5a88846; root verified byteidentical android-app/workflows/scripts. HostedAndroid38565369384/continuity38565369459 successreported; detailednativeXML/mainmetadatareconciliationpending. FinalmergeHOLD; isolatedprepACK retained."
   },
-  "last_completed": "Calendar943JVM/min23packaging verified; freeze5a88846 ACK isolatedPRprep/finalmergeHOLD; continue reviewed actual persistedport facade.",
-  "updated_utc": "2026-10-14T12:50:01Z",
+  "last_completed": "Reviewed unbound persisted facade1dc4390 passed950JVM and debug/testAPK; PR21 frozen source verified, final merge HOLD; next one focused native verification.",
+  "updated_utc": "2026-10-14T13:24:51Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

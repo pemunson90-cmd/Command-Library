@@ -14,8 +14,8 @@ Current assignment board,2026-10-14. Base your checkout on the latest published 
 | life-game-mutations | Transactional revision/sequence CAS and atomic persisted mutation adapter | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-game-mutations-01.md) |
 | life-timing-engine | Modern SHARED/elapsed/priority/recovery/undo timing calculations | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-timing-engine-01.md) |
 | life-action-engine | Modern semantic actions and actual initialization design/implementation | TAKEN | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-action-engine-01.md) |
-| frozen-integration-pr | Prepare isolated tested integration PR from exact freeze5a88846; root retains active development/final merge | AUTHORIZED / second Codex to claim isolated branch | Separate clone only; final merge HOLD | [decision](integration/FREEZE-5a88846-20261014.md) |
-| life-game-service | Implement transactional persisted game service and operational UI | BLOCKED | Root assigns after semantic/initializer/source prerequisites are ready | cx-m2-life-functional-01 |
+| frozen-integration-pr | Prepare isolated tested integration PR from exact freeze5a88846; root retains active development/final merge | PREPARED / second Codex draft PR21; root merge HOLD | Separate clone only; final merge HOLD | [decision](integration/FREEZE-5a88846-20261014.md) |
+| life-game-service | Bind reviewed persisted service to real platform/source providers and operational UI | BLOCKED | Unbound port implemented1dc4390; platform/source/DI/UI prerequisites remain | cx-m2-life-functional-01 |
 
 ## Claim and completion protocol
 

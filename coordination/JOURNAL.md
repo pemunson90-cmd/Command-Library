@@ -481,3 +481,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T12:09:54Z | codex | cp-20261014-life-recovery-history-117 | containing commit | Reviewed countdown recovery and live history52ef4bb verified189storage; next inclusivecalendar adapter with Androidmin23 compatibility.
 
 2026-10-14T12:50:01Z | codex | cp-20261014-life-calendar-freeze-118 | containing commit | Calendar943JVM/min23packaging verified; freeze5a88846 ACK isolatedPRprep/finalmergeHOLD; continue reviewed actual persistedport facade.
+
+2026-10-14T13:24:51Z | codex | cp-20261014-life-persisted-service-119 | containing commit | Reviewed unbound persisted facade1dc4390 passed950JVM and debug/testAPK; PR21 frozen source verified, final merge HOLD; next one focused native verification.
