@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261013-life-action-codec2-88",
-  "verified_base_head": "066cf11de9d7f3e76c4086b00a159d8d96dd98e7",
+  "checkpoint_id": "cp-20261014-cross-chat-coordination-89",
+  "verified_base_head": "7aa55c04f08d455b0152adcaf9d6895d7dd0251d",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "correct-checkpoint-id",
+  "first_action": "record-revived-chat-collision",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -62,7 +62,7 @@
     "life_payload_codec": "Design/exactsource approved; local APIabsenceRED82s, firstGREEN100s; final63XML627JVM0failure/error/skip, check/lint/debugassemble9m3s, APK9fe70edf16KiBZIPalignmentpassed.13codec tests include separatearchive>4MiBcombined. No schema6/service/native/physical claim.",
     "life_schema6_local": "Source/design approved. Actual KSP6 c46511a5:18priorentitiesidentical/24total. Host31storage0failure/error/skip91s incl5realSQLite migration/reopen/constraints/CAS/rollback. Wholecheck/debug+focusedtestAPKs235s64XML632JVM0fail/error/skip;16KiBZIPpass. AndroidRoom/native not_run; no service/UI."
   },
-  "last_completed": "Correct checkpoint87 numeric ID to established cp convention; life actions/codec2 local641 tests pass; native schema6 passes35 cases. Next checked profile repository.",
-  "updated_utc": "2026-10-13T23:49:27Z",
+  "last_completed": "Pat revived original chat; original20a9283 overlaps completed recovery codec/schema. Published ACTIVE-CHATS notice; reserve profile persistence but hold code writes pending disjoint ownership.",
+  "updated_utc": "2026-10-14T00:24:23Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

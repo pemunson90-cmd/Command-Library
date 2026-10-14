@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-life-action-codec2-88
+Checkpoint-ID: cp-20261014-cross-chat-coordination-89
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. correct-checkpoint-id
+Next step: 3. record-revived-chat-collision
 
-Updated UTC: 2026-10-13T23:49:27Z
+Updated UTC: 2026-10-14T00:24:23Z
 Status: in_progress; lease: active.
-Verified base: 066cf11de9d7f3e76c4086b00a159d8d96dd98e7.
+Verified base: 7aa55c04f08d455b0152adcaf9d6895d7dd0251d.
 
-Correct checkpoint87 numeric ID to established cp convention; life actions/codec2 local641 tests pass; native schema6 passes35 cases. Next checked profile repository.
+Pat revived original chat; original20a9283 overlaps completed recovery codec/schema. Published ACTIVE-CHATS notice; reserve profile persistence but hold code writes pending disjoint ownership.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

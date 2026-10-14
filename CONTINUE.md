@@ -4,6 +4,10 @@ Applies to Codex, GPT, Claude and Claude Code. The repository must remain resuma
 
 See `docs/gauntlet/DOCUMENTATION_POLICY.md` for documentation authority and duplication rules.
 
+## Live cross-chat coordination
+
+Pat revived the original chat on2026-10-14. Read `coordination/ACTIVE-CHATS.md` before writes: its codec/schema next steps overlap completed recovery work. Preserve both branches and reconcile ownership; do not run two orchestrators or infer stopped status from lease expiry alone.
+
 ## What "continue" authorizes
 
 Resume the exact committed queue pointer, perform reversible work inside the current reviewed product scope, verify it honestly and publish bounded progress. Any model family may replace a stopped prior orchestrator. One orchestrator lease-holder at a time. Parallel component writers require explicit disjoint ownership/locks.

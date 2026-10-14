@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-13T23:49:27Z",
-  "expires_utc": "2026-10-14T00:34:27Z",
-  "checkpoint_id": "cp-20261013-life-action-codec2-88",
-  "note": "User authorized recovery from unresponsive thread 01a13607-410d-761d-9745-7b7acdd9f0e7. Old remote head still464d875; heartbeat21:02 expired21:47. No access to old unpushed work; old branch preserved, recovery isolated."
+  "heartbeat_utc": "2026-10-14T00:24:23Z",
+  "expires_utc": "2026-10-14T01:09:23Z",
+  "checkpoint_id": "cp-20261014-cross-chat-coordination-89",
+  "note": "Original thread revived per Pat2026-10-14; see coordination/ACTIVE-CHATS.md. Recovery holds code writes pending disjoint assignments; do not infer stopped status from expired leases or start a second orchestrator."
 }
