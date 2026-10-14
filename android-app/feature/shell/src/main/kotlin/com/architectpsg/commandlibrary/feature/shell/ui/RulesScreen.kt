@@ -86,6 +86,7 @@ internal fun RulesScreen(
             Button(onClick = controller::submit, enabled = !state.searchLoading) { Text(stringResource(R.string.search_action)) }
             state.searchProblem?.let { Text(stringResource(problemText(it))) }
             state.detailProblem?.let { Text(stringResource(problemText(it))) }
+            if (state.keywordFallback) Text(stringResource(R.string.rules_keyword_search_fallback))
             if (state.searchLoading || state.detailLoading) Text(stringResource(R.string.search_loading))
             if (state.query != null && !state.searchLoading && state.searchProblem == null) {
                 Text(stringResource(R.string.rules_results_shown, formatCount(state.results.size.toLong())))

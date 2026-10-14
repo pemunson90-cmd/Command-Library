@@ -3,6 +3,8 @@ package com.architectpsg.commandlibrary.feature.rules
 import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.feature.rules.parser.*
 import java.io.IOException
+import java.text.Normalizer
+import java.util.Locale
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +14,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 
 /** Offline English rules capability. Imports use finite parser limits and batches of at most 32 entries. */
-public class LocalRules(private val database: Database, private val clock: Clock, private val ids: IdSource) : LocalRulesImport, LocalRulesLookup {
+public class LocalRules(private val database: Database, private val clock: Clock, private val ids: IdSource) : LocalRulesImport, LocalRulesLookup, KeywordRulesLookup {
     private companion object { val mutex = Mutex() }
     @Volatile private var initialized = false
     private val parser = RulesTextParser()
@@ -104,6 +106,73 @@ public class LocalRules(private val database: Database, private val clock: Clock
             storedEntry(row, metadata).also { stored { require(it.id == id && it.corpusId == corpusId) } }
         }
     }
+
+    override suspend fun lookupKeyword(keyword: String, corpusId: GenerationId?, cancel: CancelToken): Outcome<KeywordRuleLink> = readOperation(cancel) {
+        require(keyword.isNotBlank() && keyword.codePointCount(0, keyword.length) <= 128) { "Keyword must contain at most 128 code points" }
+        initialize(cancel)
+        val key = keywordTitle(keyword)
+        readTransaction(cancel) { tx ->
+            // Guard both corpus bodies before materializing them, not after JSON decoding.
+            val projection = keywordCorpusProjection()
+            val selected = if (corpusId == null) tx.query(rulesSql("SELECT $projection FROM rules_active a JOIN rules_corpus g ON g.generation_id=a.generation_id WHERE a.singleton_id=1", 1), cancel).requireSuccess().firstOrNull()
+                else tx.query(rulesSql("SELECT $projection FROM rules_corpus g WHERE g.generation_id=:id AND g.status IN ('ACTIVE','RETIRED')", 1, "id" to corpusId.value), cancel).requireSuccess().firstOrNull()
+            if (selected == null) throw RulesFailure(if (corpusId == null) Outcome.Unavailable(UnavailableReason.NOT_INSTALLED, "No rules installed") else rulesFailure(FailureCode.STALE_GENERATION, "Rules snapshot unavailable"))
+            stored { require(selected.number("keyword_projection_oversized") == 0L) }
+            val metadata = corpus(selected)
+            var after: Long? = null
+            var count = 0
+            var bytes = 0L
+            var matches = 0
+            var matchedOrdinal: Long? = null
+            while (true) {
+                cancel.check()
+                // First page has no sentinel predicate: ordinal zero cannot disappear.
+                val lower = if (after == null) "" else " AND ordinal>:after"
+                val parameters = mutableListOf<Pair<String, Any?>>("corpus" to metadata.id.value)
+                after?.let { parameters += "after" to it }
+                val rows = tx.query(rulesSql("SELECT ordinal,length(CAST(title AS BLOB)) AS title_bytes,CASE WHEN length(CAST(title AS BLOB))<=4096 THEN title ELSE NULL END AS title FROM rule_entry WHERE corpus_id=:corpus AND kind='GLOSSARY'$lower ORDER BY ordinal LIMIT 100", 100, *parameters.toTypedArray()), cancel).requireSuccess()
+                if (rows.isEmpty()) break
+                for (row in rows) {
+                    val ordinal = stored { row.number("ordinal").also { require(it >= 0 && (after == null || it > after!!)) } }
+                    val titleBytes = stored { row.number("title_bytes").also { require(it > 0) } }
+                    if (++count > 20_000 || titleBytes > 4096 || titleBytes > 8L * 1024 * 1024 - bytes)
+                        throw RulesFailure(Outcome.Unavailable(UnavailableReason.SOURCE_UNAVAILABLE, "Exact glossary mapping exceeds its finite scan budget"))
+                    val title = stored { row.text("title").also { require(it.isNotBlank() && it.toByteArray(Charsets.UTF_8).size.toLong() == titleBytes) } }
+                    bytes += titleBytes
+                    if (keywordTitle(title) == key) { matches++; if (matchedOrdinal == null) matchedOrdinal = ordinal }
+                    after = ordinal
+                }
+            }
+            val evidence = SnapshotList.of(Evidence("Exact normalized glossary-title lookup in installed corpus ${metadata.id.value}", metadata.provenance.source, metadata.provenance.fetchedAt))
+            val target: Knowledge<RuleId> = when {
+                matches == 0 -> Knowledge.Absent("No exact glossary title in this corpus")
+                matches > 1 -> Knowledge.Unknown("Multiple glossary titles normalize to this keyword", evidence)
+                else -> {
+                    val columns = keywordTextColumns("e", listOf("corpus_id", "provider", "local_id", "kind", "number", "title", "text", "entry_payload")) + ",e.ordinal"
+                    val row = tx.query(rulesSql("SELECT $columns FROM rule_entry e WHERE e.corpus_id=:corpus AND e.ordinal=:ordinal", 1,
+                        "corpus" to metadata.id.value, "ordinal" to requireNotNull(matchedOrdinal)), cancel).requireSuccess().single()
+                    stored { require(row.number("keyword_projection_oversized") == 0L) }
+                    val entry = storedEntry(row, metadata)
+                    stored { require(entry.kind == RuleEntryKind.GLOSSARY && keywordTitle(requireNotNull(entry.title.known())) == key) }
+                    Knowledge.Known(entry.id)
+                }
+            }
+            KeywordRuleLink(keyword, metadata.id, target, evidence)
+        }
+    }
+
+    private fun keywordTitle(value: String): String = Normalizer.normalize(value, Normalizer.Form.NFKC).trim().lowercase(Locale.ROOT)
+
+    private fun keywordTextColumns(alias: String, columns: List<String>): String {
+        val oversized = columns.joinToString(" OR ") { "length(CAST($alias.$it AS BLOB))>2097152" }
+        return columns.joinToString(",") {
+            "CASE WHEN length(CAST($alias.$it AS BLOB))<=2097152 THEN $alias.$it ELSE NULL END AS $it"
+        } + ",CASE WHEN ($oversized) THEN 1 ELSE 0 END AS keyword_projection_oversized"
+    }
+
+    private fun keywordCorpusProjection(): String = keywordTextColumns("g", listOf("generation_id", "provider", "language", "status", "content_uri", "display_name",
+        "source_payload", "provenance_payload", "upstream_version", "source_uri", "content_sha256")) + "," +
+        listOf("effective_at_epoch_seconds", "effective_at_nano", "source_date_epoch_seconds", "source_date_nano", "observed_at_epoch_seconds", "observed_at_nano", "observed_bytes", "entry_count", "reference_count", "payload_schema_version", "activated_at_epoch_seconds", "activated_at_nano").joinToString(",") { "g.$it" }
 
     /** Literal Unicode words, AND semantics; at most 256 code points and 32 words. Empty text lists entries. */
     override suspend fun search(query: RulesQuery, cancel: CancelToken): Outcome<Page<RuleEntry>> = readOperation(cancel) {

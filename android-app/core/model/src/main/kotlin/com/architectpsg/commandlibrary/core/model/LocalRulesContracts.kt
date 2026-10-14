@@ -117,3 +117,10 @@ public interface LocalRulesLookup {
     public suspend fun entry(id: RuleId, corpusId: GenerationId, cancel: CancelToken): Outcome<RuleEntry>
     public suspend fun search(query: RulesQuery, cancel: CancelToken): Outcome<Page<RuleEntry>>
 }
+/** Unique exact normalized installed glossary title only; never invents a keyword-family mapping.
+ * Null corpus binds active atomically; explicit retained corpus stays pinned. Completed absence
+ * is Absent, ambiguity Unknown; an incomplete bounded scan is SOURCE_UNAVAILABLE, never no-match.
+ */
+public interface KeywordRulesLookup {
+    public suspend fun lookupKeyword(keyword: String, corpusId: GenerationId?, cancel: CancelToken): Outcome<KeywordRuleLink>
+}

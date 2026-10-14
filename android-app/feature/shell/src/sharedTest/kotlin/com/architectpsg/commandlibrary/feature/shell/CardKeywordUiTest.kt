@@ -16,12 +16,31 @@ class CardKeywordUiTest {
     private var shell: ShellUiHarness? = null
     @Before fun budget() = profileHostIdleBudget(300)
     @After fun close() { shell?.close(); profileHostIdleBudget(60) }
-    private fun show(rules: KeywordRulesFixture?): ShellUiHarness {
-        val s = ShellUiHarness(rule, localRules = rules); shell = s
+    private fun show(rules: KeywordRulesFixture?, exact: Boolean = false): ShellUiHarness {
+        val s = ShellUiHarness(rule, localRules = rules, exactKeywords = exact); shell = s
         s.show(width = 360.dp, height = 640.dp, fontScale = 2f)
         val card = syntheticCard("Synthetic keyword card", s.catalog.active?.id).copy(keywords = Knowledge.Known(SnapshotList.of("Flying")))
         rule.runOnIdle { s.controllers.search.select(card) }
         return s
+    }
+    @Test fun exactInstalledTargetOpensActualReturnedGlossaryInsteadOfGuessingOrSearching() {
+        val fixture = KeywordRulesFixture(); val s = show(fixture, exact = true)
+        rule.onNodeWithTag("card-keyword-0").performScrollTo().performClick()
+        s.awaitState { s.controllers.rules!!.state.value.selected != null }
+        assertEquals("Flying", (s.controllers.rules!!.state.value.selected!!.title as Knowledge.Known).value)
+        assertEquals(listOf("Flying"), fixture.keywordRequests); assertTrue(fixture.queries.isEmpty()); assertEquals(0, fixture.imports)
+        rule.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Synthetic exact glossary entry"))
+        s.text("Synthetic exact glossary entry").assertIsDisplayed()
+    }
+    @Test fun ambiguousExactLinkIsVisiblyLocalSearchInsteadOfAnInventedDirectEntry() {
+        val fixture = KeywordRulesFixture().also { it.uniqueMatch = false }; val s = show(fixture, exact = true)
+        rule.onNodeWithTag("card-keyword-0").performScrollTo().performClick()
+        s.awaitState { s.controllers.rules!!.state.value.let { it.keywordFallback && !it.searchLoading } }
+        assertNull(s.controllers.rules!!.state.value.selected)
+        assertEquals(s.controllers.rules!!.state.value.generation, fixture.queries.single().corpusId)
+        val explanation = s.string(R.string.rules_keyword_search_fallback)
+        rule.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(explanation))
+        s.text(explanation).assertIsDisplayed(); assertEquals(0, fixture.imports)
     }
     @Test fun knownKeywordOpensActualLocalRulesSearchWithOriginalQueryAndNoImport() {
         val fixture = KeywordRulesFixture(); val s = show(fixture)

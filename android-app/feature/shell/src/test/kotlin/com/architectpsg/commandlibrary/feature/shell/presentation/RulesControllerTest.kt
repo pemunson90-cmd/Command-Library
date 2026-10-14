@@ -17,6 +17,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runCurrent
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -39,7 +40,9 @@ class RulesControllerTest {
         Page(SnapshotList.copyOf(entries), cursor, SnapshotReference(provider, corpus, null, LanguageTag.ENGLISH))
     private fun rejected(code: FailureCode): Outcome<Nothing> = Outcome.Failure(DomainFailure(code, "Synthetic failure", SnapshotList.empty()))
 
-    private inner class Ports : LocalRulesImport, LocalRulesLookup {
+    private inner class Ports : LocalRulesImport, LocalRulesLookup, KeywordRulesLookup {
+        var keywordAction: suspend (String) -> Outcome<KeywordRuleLink> = { Outcome.Unavailable(UnavailableReason.SOURCE_UNAVAILABLE, "Synthetic lookup not requested") }
+        override suspend fun lookupKeyword(keyword: String, corpusId: GenerationId?, cancel: CancelToken) = keywordAction(keyword)
         var importAction: suspend (LocalRulesImportSource, () -> Flow<ByteChunk>) -> Outcome<LocalRulesImportResult> = { _, _ ->
             Outcome.Unavailable(UnavailableReason.NOT_INSTALLED, "Synthetic import not requested")
         }
@@ -57,8 +60,57 @@ class RulesControllerTest {
         }
     }
 
-    private fun TestScope.controller(ports: Ports, documents: MemoryDocuments = MemoryDocuments()) =
-        RulesController(ownerScope(), ports, ports, documents, StandardTestDispatcher(testScheduler))
+    private fun TestScope.controller(ports: Ports, documents: MemoryDocuments = MemoryDocuments(), exactKeywords: Boolean = false) =
+        RulesController(ownerScope(), ports, ports, documents, StandardTestDispatcher(testScheduler), ports.takeIf { exactKeywords })
+
+    @Test fun knownExactKeywordReadsTheActualPinnedGlossaryAndKeepsItsRealRowOnBack() = runTest {
+        val ports = Ports(); val glossary = entry("actual-stored-glossary").copy(kind = RuleEntryKind.GLOSSARY, number = Knowledge.Absent("No number"), title = Knowledge.Known("Flying"))
+        ports.keywordAction = { Outcome.Success(KeywordRuleLink(it, generation, Knowledge.Known(glossary.id), SnapshotList.empty())) }
+        ports.entryAction = { _, _ -> Outcome.Success(glossary) }
+        ports.searchAction = { error("Exact target must not be invented by text search") }
+        val c = controller(ports, exactKeywords = true)
+        c.lookupKeyword("Flying"); advanceUntilIdle()
+        assertEquals(glossary, c.state.value.selected); assertEquals(listOf(glossary), c.state.value.results)
+        assertEquals(listOf(glossary.id to generation), ports.entryRequests)
+        assertFalse(c.state.value.keywordFallback)
+        c.clearSelection(); assertEquals(listOf(glossary), c.state.value.results)
+    }
+
+    @Test fun absentAndAmbiguousLinksAreVisiblyPinnedSearchFallbacksWithoutInventedTargets() = runTest {
+        for (target in listOf(Knowledge.Absent("No exact title"), Knowledge.Unknown("Ambiguous title", SnapshotList.empty()))) {
+            val ports = Ports(); var query: RulesQuery? = null
+            ports.keywordAction = { Outcome.Success(KeywordRuleLink(it, generation, target, SnapshotList.empty())) }
+            ports.searchAction = { query = it; Outcome.Success(page(emptyList())) }
+            val c = controller(ports, exactKeywords = true)
+            c.lookupKeyword("Flying"); advanceUntilIdle()
+            assertEquals(generation, query!!.corpusId); assertEquals("Flying", query!!.text)
+            assertTrue(c.state.value.keywordFallback); assertNull(c.state.value.selected); assertTrue(ports.entryRequests.isEmpty())
+        }
+    }
+
+    @Test fun aNewSearchSupersedesPendingKeywordAuthorityAndWrongKeywordReplyIsRejected() = runTest {
+        val ports = Ports(); val gate = CompletableDeferred<KeywordRuleLink>()
+        ports.keywordAction = { gate.await().let { Outcome.Success(it) } }
+        val c = controller(ports, exactKeywords = true)
+        c.lookupKeyword("Flying"); runCurrent()
+        c.queryInput = "New query"; c.submit(); advanceUntilIdle()
+        gate.complete(KeywordRuleLink("Flying", generation, Knowledge.Known(entry("old").id), SnapshotList.empty())); advanceUntilIdle()
+        assertEquals("New query", c.state.value.query); assertNull(c.state.value.selected); assertTrue(ports.entryRequests.isEmpty())
+        ports.keywordAction = { Outcome.Success(KeywordRuleLink("Wrong keyword", generation, Knowledge.Absent("None"), SnapshotList.empty())) }
+        c.lookupKeyword("Flying"); advanceUntilIdle()
+        assertEquals(Problem.CORRUPT_DATA, c.state.value.searchProblem); assertNull(c.state.value.selected)
+    }
+
+    @Test fun anExactTargetCannotSubstituteAnotherCorpusOrANumberedEntry() = runTest {
+        for (wrong in listOf(entry("target"), entry("target", GenerationId("other")).copy(kind = RuleEntryKind.GLOSSARY))) {
+            val ports = Ports()
+            ports.keywordAction = { Outcome.Success(KeywordRuleLink(it, generation, Knowledge.Known(entry("target").id), SnapshotList.empty())) }
+            ports.entryAction = { _, _ -> Outcome.Success(wrong) }
+            val c = controller(ports, exactKeywords = true)
+            c.lookupKeyword("Flying"); advanceUntilIdle()
+            assertEquals(Problem.STALE_GENERATION, c.state.value.searchProblem); assertNull(c.state.value.selected)
+        }
+    }
 
     @Test fun keywordHandoffClearsOldDetailEvenForInvalidInputThenUsesActualLocalSearch() = runTest {
         val ports = Ports(); val c = controller(ports)

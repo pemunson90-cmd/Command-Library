@@ -118,6 +118,7 @@
     <string name="search_suggestions_title">Name suggestions</string>
     <string name="search_suggestions_loading">Looking up local names…</string>
     <string name="search_suggestions_failed">Name suggestions unavailable</string>
+    <string name="rules_keyword_search_fallback">Showing local search results. No unique exact glossary entry was found.</string>
     <string name="search_oracle_text_label">Oracle text</string>
     <string name="search_oracle_text_empty">Enter some Oracle text.</string>
     <string name="search_oracle_text_help">Search recorded card text on this device. Words stay in order; the last word can be a prefix. Nothing is sent online.</string>

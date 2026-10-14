@@ -40,7 +40,7 @@ internal class AppGraph(context: Context) {
                 val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
                     rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
                     englishCatalog = downloads, rulingsDownloads = downloads,
-                    rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog)
+                    rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules)
                 ready = ports
                 Outcome.Success(ports)
             }

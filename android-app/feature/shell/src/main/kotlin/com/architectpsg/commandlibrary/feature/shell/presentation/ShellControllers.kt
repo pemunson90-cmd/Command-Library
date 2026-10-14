@@ -35,7 +35,7 @@ internal class ShellControllers(
     )
     val settings = SettingsController(scope, ports.settings, ioDispatcher)
     val rules: RulesController? = if (ports.rulesImport != null && ports.rulesLookup != null) {
-        RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher)
+        RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher, keywordLookup = ports.keywordRulesLookup)
     } else null
 
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,

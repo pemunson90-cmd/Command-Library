@@ -40,6 +40,7 @@ internal data class RulesUiState(
     val selected: RuleEntry? = null,
     val detailLoading: Boolean = false,
     val detailProblem: Problem? = null,
+    val keywordFallback: Boolean = false,
 ) {
     val active: LocalRulesCorpus? get() = (status?.active as? Knowledge.Known)?.value
     val canLoadMore: Boolean get() = nextCursor != null && !searchLoading && results.size < RulesController.MAX_RESULTS && pagesLoaded < RulesController.MAX_PAGES
@@ -52,6 +53,7 @@ internal class RulesController(
     private val lookup: LocalRulesLookup,
     private val documents: DocumentSource,
     private val io: CoroutineDispatcher,
+    private val keywordLookup: KeywordRulesLookup? = null,
 ) {
     private val mutable = MutableStateFlow(RulesUiState())
     val state: StateFlow<RulesUiState> = mutable.asStateFlow()
@@ -160,11 +162,37 @@ internal class RulesController(
         }
     }
 
-    /** A card lookup is a fresh local search, never a guessed entry or an import. */
+    /** Exact installed glossary identity when proven; otherwise visibly literal local search. */
     fun lookupKeyword(keyword: String) {
         clearSearch(null)
         queryInput = keyword
-        submit()
+        val links = keywordLookup
+        val query = keyword.trim()
+        if (links == null || query.isEmpty() || query.codePointCount(0, query.length) > MAX_QUERY_CODE_POINTS) { submit(); return }
+        mutable.update { it.copy(query = query, searchLoading = true) }
+        val epoch = searchEpoch
+        searchJob = scope.launch {
+            when (val result = callPort(io) { links.lookupKeyword(keyword, null, it) }) {
+                is PortResult.Ok -> {
+                    if (epoch != searchEpoch) return@launch
+                    val link = result.value
+                    if (link.keyword != keyword) { clearSearch(Problem.CORRUPT_DATA); return@launch }
+                    val target = (link.target as? Knowledge.Known)?.value
+                    if (target == null) {
+                        mutable.update { it.copy(keywordFallback = true) }
+                        load(query, null, link.corpusId, epoch)
+                    } else when (val entry = callPort(io) { lookup.entry(target, link.corpusId, it) }) {
+                        is PortResult.Ok -> if (epoch == searchEpoch) {
+                            if (entry.value.id != target || entry.value.corpusId != link.corpusId || entry.value.kind != RuleEntryKind.GLOSSARY) clearSearch(Problem.STALE_GENERATION)
+                            else mutable.update { it.copy(results = listOf(entry.value), selected = entry.value, generation = link.corpusId,
+                                pagesLoaded = 1, searchLoading = false, searchProblem = null) }
+                        }
+                        is PortResult.Failed -> if (epoch == searchEpoch) { clearSearch(entry.problem); if (entry.problem == Problem.STALE_GENERATION) refresh() }
+                    }
+                }
+                is PortResult.Failed -> if (epoch == searchEpoch) { clearSearch(result.problem); if (result.problem == Problem.STALE_GENERATION) refresh() }
+            }
+        }
     }
 
     fun submit() {
@@ -253,7 +281,7 @@ internal class RulesController(
         searchJob?.cancel()
         detailJob?.cancel()
         mutable.update { it.copy(results = emptyList(), generation = null, nextCursor = null, selected = null,
-            query = null, pagesLoaded = 0, searchLoading = false, detailLoading = false, searchProblem = problem, detailProblem = null) }
+            query = null, pagesLoaded = 0, searchLoading = false, detailLoading = false, searchProblem = problem, detailProblem = null, keywordFallback = false) }
     }
 
     internal companion object {

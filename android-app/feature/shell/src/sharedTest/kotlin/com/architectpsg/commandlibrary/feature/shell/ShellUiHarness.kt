@@ -54,7 +54,7 @@ class SyntheticPickerRegistry(private val answer: () -> Uri?) : ActivityResultRe
  */
 internal class ShellUiHarness(private val rule: ComposeContentTestRule, private val profiles: com.architectpsg.commandlibrary.core.model.PlayerProfileRepository? = null,
     private val downloads: DownloadsFixture? = null, private val rulings: RulingsFixture? = null, private val localRules: KeywordRulesFixture? = null,
-    private val indexedText: Boolean = false) {
+    private val indexedText: Boolean = false, private val exactKeywords: Boolean = false) {
     val catalog = SyntheticCatalog(listOf("Synthetic Existing Card"))
     val textLookup = OracleTextFixture(catalog)
     val settings = SyntheticSettings()
@@ -83,7 +83,8 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
         // Controllers live outside composition, as they do in the ViewModel.
         controllers = ShellControllers(ownerScope, ShellPorts(catalog, catalog, catalog, downloads?.settings ?: settings,
             playerProfiles = profiles, englishCatalog = downloads?.access, rulings = rulings, rulingsDownloads = rulings?.access,
-            rulesImport = localRules, rulesLookup = localRules, catalogTextLookup = textLookup.takeIf { indexedText }), documents, Dispatchers.IO)
+            rulesImport = localRules, rulesLookup = localRules, catalogTextLookup = textLookup.takeIf { indexedText },
+            keywordRulesLookup = localRules.takeIf { exactKeywords }), documents, Dispatchers.IO)
         val registryOwner = object : ActivityResultRegistryOwner {
             override val activityResultRegistry: ActivityResultRegistry = picker
         }

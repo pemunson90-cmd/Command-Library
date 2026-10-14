@@ -10,6 +10,7 @@ import com.architectpsg.commandlibrary.core.model.LocalRulesLookup
 import com.architectpsg.commandlibrary.core.model.PlayerProfileRepository
 import com.architectpsg.commandlibrary.core.model.CatalogRulings
 import com.architectpsg.commandlibrary.core.model.CatalogTextLookup
+import com.architectpsg.commandlibrary.core.model.KeywordRulesLookup
 
 /**
  * The accepted core capabilities the shell presents. Root assembly supplies real adapters, created
@@ -40,4 +41,6 @@ public class ShellPorts(
     public val rulingsDownloads: RulingsCatalogAccess? = null,
     /** Complete independent indexed name/Oracle text reader, with no acquisition initialization. */
     public val catalogTextLookup: CatalogTextLookup? = null,
+    /** Exact installed glossary links, independent of acquisition and literal search fallback. */
+    public val keywordRulesLookup: KeywordRulesLookup? = null,
 )
