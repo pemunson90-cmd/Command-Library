@@ -30,3 +30,5 @@ Pure action/event packet assembly complete: architecture/exact-source APPROVE; p
 Same-transaction action context foundation complete: architecture/exact-source APPROVE; malformed undo metadata regression fixed; final846JVM/81XML0fail/error/skip,check/debug250s,16KiBZIPpass. Evidence ACTION-CONTEXT-LOCAL-20261014.md. Next reviewed random predecessor scan inside context; public service/source/publication remains pending.
 
 Random predecessor context complete: architecture/exact-source APPROVE, RED128storage7fail194s→GREEN107s; expanded final855JVM/82XML0fail/error/skip,check/debug181s,16KiBZIPpass. Evidence RANDOM-PREDECESSOR-LOCAL-20261014.md. Offline history query design next, actual service/source/publication/UI remain pending.
+
+Offline history query prerequisite complete: architecture/exact-source APPROVE, RED136storage6fail146s→GREEN123s; expanded final865JVM/83XML0fail/error/skip,check/debug181s,16KiBZIPpass. Evidence HISTORY-QUERY-LOCAL-20261014.md. Lifecycle actual creation/recovery/checkpoint design next; service/source/UI remain pending.
