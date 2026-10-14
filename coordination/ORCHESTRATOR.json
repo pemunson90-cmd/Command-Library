@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T23:48:01Z",
-  "expires_utc": "2026-10-15T00:33:01Z",
-  "checkpoint_id": "cp-20261014-glossary-auth-restored-149",
-  "note": "Root sole writer/final merge. Auth restored,8908e46 published/readback exact. Exactglossary reviewed29pass28s+final8SQLite8s; current combined fresh0022 whole session2866 RUNNING/no source edits. Next current tested native freezeONErun; older localr3 superseded/do not push, allrefs preserved. Fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-14T23:56:57Z",
+  "expires_utc": "2026-10-15T00:41:57Z",
+  "checkpoint_id": "cp-20261014-search-rules-boundary-150",
+  "note": "Root sole writer/final merge. Current8908e46 combined fresh0022 whole1233pass/129XML/allAPKs/8ZIP16KiB9m10s. Prepare ONE current isolated native snapshot; older r3 superseded, allrefs preserved. Then local rules draft lifecycle. Fullv1 incomplete/GameService HOLD/no finished APK."
 }
