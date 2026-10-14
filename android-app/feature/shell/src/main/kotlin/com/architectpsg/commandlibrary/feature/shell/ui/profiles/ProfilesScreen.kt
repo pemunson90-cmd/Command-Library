@@ -48,6 +48,10 @@ internal fun ProfilesScreen(controller:ProfilesController,widthClass:WidthClass,
     BackHandler(enabled=state.editor!=null || state.pendingDelete!=null) {
         when {
             state.pendingDelete != null -> controller.dismissDelete()
+            state.editor?.pendingCommanderDelete != null -> controller.dismissCommanderDelete()
+            state.editor?.commanderEditor != null -> controller.closeCommanderEditor()
+            state.editor?.commanderPicker == true -> controller.closeCommanderPicker()
+            state.editor?.commanderManager == true -> controller.showProfile()
             state.editor?.pendingCounterDelete != null -> controller.dismissCounterDelete()
             state.editor?.appearanceEditor != null -> controller.closeAppearanceEditor()
             state.editor?.counterEditor != null -> controller.closeCounterEditor()
@@ -57,7 +61,8 @@ internal fun ProfilesScreen(controller:ProfilesController,widthClass:WidthClass,
     }
     Box(modifier.fillMaxSize().imePadding(),contentAlignment=Alignment.TopCenter) {
         val editor=state.editor
-        if(editor?.appearanceEditor != null) ProfileAppearanceScreen(state,editor,controller,widthClass)
+        if(editor?.commanderManager == true) ProfileCommandersScreen(state,editor,controller,widthClass)
+        else if(editor?.appearanceEditor != null) ProfileAppearanceScreen(state,editor,controller,widthClass)
         else if(editor?.counterManager == true) ProfileCountersScreen(state,editor,controller,widthClass)
         else if(editor!=null) ProfileEditorScreen(state,editor,controller,widthClass)
         else LazyColumn(Modifier.widthIn(max=ReadingWidth).fillMaxSize().padding(horizontal=widthClass.gutter).testTag(ProfileTags.LIST),
@@ -134,7 +139,11 @@ private fun ProfileEditorScreen(state:ProfilesUiState,editor:ProfileEditor,contr
             modifier=Modifier.heightIn(min=48.dp).testTag(ProfileAppearanceTags.MANAGE)) {
             Text(stringResource(R.string.profile_appearance_title))
         }
-        if(original!=null)Text(stringResource(R.string.profiles_retained,editor.counterDefinitions.size,original.commanders.size))
+        OutlinedButton(onClick=controller::showCommanders,enabled=!state.busy,
+            modifier=Modifier.heightIn(min=48.dp).testTag(ProfileCommanderTags.MANAGE)) {
+            Text(stringResource(R.string.profile_commanders_manage,editor.commanders.size))
+        }
+        if(original!=null)Text(stringResource(R.string.profiles_retained,editor.counterDefinitions.size,editor.commanders.size))
         if(state.busy)ProfileProgress(stringResource(R.string.profiles_working))
         ActionRow {
             Button(onClick=controller::save,enabled=!state.busy,modifier=Modifier.heightIn(min=48.dp).testTag(ProfileTags.SAVE)) {Text(stringResource(R.string.profiles_save))}

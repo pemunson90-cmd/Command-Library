@@ -38,7 +38,8 @@ internal class ShellControllers(
         RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher)
     } else null
 
-    val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher) }
+    val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
+        commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
 
     init {
         scope.launch {
@@ -46,7 +47,10 @@ internal class ShellControllers(
                 .mapNotNull { it.status }
                 .map { it.activeGeneration()?.id }
                 .distinctUntilChanged()
-                .collect(search::onActiveGeneration)
+                .collect { generation ->
+                    search.onActiveGeneration(generation)
+                    profiles?.commanderSearch?.onActiveGeneration(generation)
+                }
         }
         status.refresh()
         settings.load()

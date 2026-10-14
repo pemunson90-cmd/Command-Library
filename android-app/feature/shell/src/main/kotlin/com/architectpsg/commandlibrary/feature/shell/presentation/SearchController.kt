@@ -120,6 +120,14 @@ internal class SearchController(
 
     fun clearSelection() = mutableState.update { it.copy(selected = null) }
 
+    /** End an embedded picker without carrying an earlier editor's query or selection forward. */
+    fun reset() {
+        job?.cancel()
+        job = null
+        queryInput = ""
+        mutableState.update { SearchUiState(activeGenerationKnown = it.activeGenerationKnown, activeGeneration = it.activeGeneration) }
+    }
+
     /** Committed catalog status reports [generation] as active (null when nothing is installed). */
     fun onActiveGeneration(generation: GenerationId?) =
         mutableState.update { it.copy(activeGenerationKnown = true, activeGeneration = generation) }

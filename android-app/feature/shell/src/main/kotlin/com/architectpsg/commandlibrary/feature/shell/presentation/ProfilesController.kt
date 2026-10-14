@@ -14,6 +14,11 @@ internal data class ProfileEditor(
     val name: String = "", val life: String = "20", val step: String = "1",
     val appearance: SeatAppearance = original?.value?.appearance ?: SeatAppearance(null, null),
     val appearanceEditor: ProfileAppearanceEditor? = null,
+    val commanders: SnapshotList<CommanderSlot> = original?.value?.commanders ?: SnapshotList.empty(),
+    val commanderManager: Boolean = false,
+    val commanderPicker: Boolean = false,
+    val commanderEditor: ProfileCommanderEditor? = null,
+    val pendingCommanderDelete: CommanderSlot? = null,
     val counterDefinitions: SnapshotList<CounterDefinition> = original?.value?.counterDefinitions
         ?: SnapshotList.of(CounterDefinition(EntityId("life"), lifeLabel, null, null, 20,
             CounterLossPolicy.AtOrBelow(0), false, CounterRole.LIFE)),
@@ -34,6 +39,8 @@ internal class ProfilesController(
     private val repository: PlayerProfileRepository,
     private val portDispatcher: CoroutineDispatcher,
     private val counterIds: () -> EntityId = { EntityId(UUID.randomUUID().toString()) },
+    val commanderSearch: SearchController? = null,
+    private val commanderIds: () -> EntityId = { EntityId(UUID.randomUUID().toString()) },
 ) {
     private val mutableState = MutableStateFlow(ProfilesUiState())
     val state: StateFlow<ProfilesUiState> = mutableState.asStateFlow()
@@ -80,10 +87,16 @@ internal class ProfilesController(
     }
 
     fun create(lifeLabel: String) {
-        if (!mutableState.value.busy) mutableState.update { it.copy(editor=ProfileEditor(null,lifeLabel),pendingDelete=null,problem=null,validation=null) }
+        if (!mutableState.value.busy) {
+            commanderSearch?.reset()
+            mutableState.update { it.copy(editor=ProfileEditor(null,lifeLabel),pendingDelete=null,problem=null,validation=null) }
+        }
     }
     fun edit(profile: PlayerProfileSnapshot) {
-        if (!mutableState.value.busy) mutableState.update { it.copy(editor=profile.editor(),pendingDelete=null,problem=null,validation=null) }
+        if (!mutableState.value.busy) {
+            commanderSearch?.reset()
+            mutableState.update { it.copy(editor=profile.editor(),pendingDelete=null,problem=null,validation=null) }
+        }
     }
     fun changeName(value:String) = change { it.copy(name=value) }
     fun changeLife(value:String) = change { it.copy(life=value) }
@@ -92,7 +105,7 @@ internal class ProfilesController(
         if (!mutableState.value.busy) mutableState.update { it.copy(editor=it.editor?.let(update),validation=null,problem=null) }
     }
     fun editAppearance() = change { editor ->
-        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || editor.appearanceEditor != null) editor
+        if (editor.commanderManager || editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || editor.appearanceEditor != null) editor
         else editor.copy(appearanceEditor = editor.appearance.draftAppearanceEditor())
     }
     private fun changeAppearance(update: (ProfileAppearanceEditor) -> ProfileAppearanceEditor) = change { editor ->
@@ -111,8 +124,70 @@ internal class ProfilesController(
             else editor.copy(appearance = editor.appearance.copy(color = color, orientation = form.orientation), appearanceEditor = null)
         }
     }
-    fun showCounters() = change { if(it.appearanceEditor == null) it.copy(counterManager = true) else it }
-    fun showProfile() = change { it.copy(counterManager = false, counterEditor = null, pendingCounterDelete = null) }
+    fun showCounters() = change { if(it.appearanceEditor == null && !it.commanderManager) it.copy(counterManager = true) else it }
+    fun showProfile() {
+        if (mutableState.value.busy) return
+        commanderSearch?.reset()
+        change { it.copy(counterManager = false, counterEditor = null, pendingCounterDelete = null,
+            commanderManager = false, commanderPicker = false, commanderEditor = null, pendingCommanderDelete = null) }
+    }
+    fun showCommanders() = change { editor ->
+        if (editor.counterManager || editor.appearanceEditor != null) editor else editor.copy(commanderManager = true)
+    }
+    fun openCommanderPicker() {
+        val state = mutableState.value
+        val editor = state.editor ?: return
+        if (state.busy || commanderSearch == null || !editor.commanderManager || editor.commanderEditor != null || editor.pendingCommanderDelete != null) return
+        commanderSearch.reset()
+        change { it.copy(commanderPicker = true) }
+    }
+    fun closeCommanderPicker() {
+        if (mutableState.value.busy) return
+        commanderSearch?.reset()
+        change { it.copy(commanderPicker = false) }
+    }
+    fun addCommander(card: CardRecord) {
+        val state = mutableState.value
+        val editor = state.editor ?: return
+        val search = commanderSearch?.state?.value ?: return
+        if (state.busy || !editor.commanderManager || !editor.commanderPicker || editor.commanderEditor != null || editor.pendingCommanderDelete != null ||
+            search.loading != null || search.stale || search.results.none { it == card }) return
+        val id = try { commanderIds() } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { mutableState.update { it.copy(problem = Problem.INTERNAL) }; return }
+        if (id.value.isBlank() || editor.commanders.any { it.id == id }) {
+            mutableState.update { it.copy(problem = Problem.INTERNAL) }; return
+        }
+        change { it.copy(commanders = SnapshotList.copyOf(it.commanders + CommanderSlot(id, card.profileCommanderIdentity(), card.name)), commanderPicker = false) }
+        commanderSearch?.reset()
+    }
+    fun editCommander(id: EntityId) = change { editor ->
+        val slot = editor.commanders.find { it.id == id }
+        if (!editor.commanderManager || editor.commanderPicker || editor.commanderEditor != null || editor.pendingCommanderDelete != null || slot == null) editor
+        else editor.copy(commanderEditor = ProfileCommanderEditor(slot))
+    }
+    fun changeCommanderLabel(value: String) = change { editor ->
+        editor.copy(commanderEditor = editor.commanderEditor?.copy(label = value, invalidLabel = false))
+    }
+    fun closeCommanderEditor() = change { it.copy(commanderEditor = null) }
+    fun applyCommander() = change { editor ->
+        val form = editor.commanderEditor
+        if (!editor.commanderManager || editor.commanderPicker || editor.pendingCommanderDelete != null || form == null ||
+            editor.commanders.find { it.id == form.original.id } != form.original) editor
+        else if (form.label.isBlank() && form.label != form.original.label) editor.copy(commanderEditor = form.copy(invalidLabel = true))
+        else editor.copy(commanders = SnapshotList.copyOf(editor.commanders.map {
+            if (it.id == form.original.id) it.copy(label = form.label) else it
+        }), commanderEditor = null)
+    }
+    fun requestCommanderDelete(id: EntityId) = change { editor ->
+        if (!editor.commanderManager || editor.commanderPicker || editor.commanderEditor != null || editor.pendingCommanderDelete != null) editor
+        else editor.copy(pendingCommanderDelete = editor.commanders.find { it.id == id })
+    }
+    fun dismissCommanderDelete() = change { it.copy(pendingCommanderDelete = null) }
+    fun confirmCommanderDelete() = change { editor ->
+        val target = editor.pendingCommanderDelete
+        if (!editor.commanderManager || editor.commanderPicker || editor.commanderEditor != null || target == null) editor
+        else editor.copy(commanders = SnapshotList.copyOf(editor.commanders.filter { it.id != target.id }), pendingCommanderDelete = null)
+    }
     fun addCounter() {
         val state = mutableState.value
         val editor = state.editor ?: return
@@ -172,11 +247,15 @@ internal class ProfilesController(
         else editor.copy(counterDefinitions = SnapshotList.copyOf(editor.counterDefinitions.filter { it.id != target.id }), pendingCounterDelete = null)
     }
     fun closeEditor() {
-        if (!mutableState.value.busy) mutableState.update { it.copy(editor=null,validation=null,problem=null) }
+        if (!mutableState.value.busy) {
+            commanderSearch?.reset()
+            mutableState.update { it.copy(editor=null,validation=null,problem=null) }
+        }
     }
     fun reloadEditor() {
         val original = mutableState.value.editor?.original ?: return
         perform({ repository.read(original.id,it) }) { latest ->
+            commanderSearch?.reset()
             mutableState.update { it.copy(editor=latest.editor(),problem=null,validation=null) }
         }
     }
@@ -184,7 +263,8 @@ internal class ProfilesController(
         val current = mutableState.value
         if (current.busy) return
         val editor = current.editor ?: return
-        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || editor.appearanceEditor != null) return
+        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || editor.appearanceEditor != null ||
+            editor.commanderManager || editor.commanderPicker || editor.commanderEditor != null || editor.pendingCommanderDelete != null) return
         val life = editor.life.toIntOrNull()
         val step = editor.step.toIntOrNull()
         val validation = when {
@@ -197,8 +277,8 @@ internal class ProfilesController(
         val value = try {
             val old = editor.original?.value
             val definitions = SnapshotList.copyOf(editor.counterDefinitions.map { if(it.role==CounterRole.LIFE)it.copy(initial=life!!)else it })
-            if (old == null) PlayerProfileDraft(editor.name,life!!,definitions,editor.appearance,SnapshotList.empty(),step!!)
-            else old.copy(name=editor.name,preferredLife=life!!,adjustmentStep=step!!,counterDefinitions=definitions,appearance=editor.appearance)
+            if (old == null) PlayerProfileDraft(editor.name,life!!,definitions,editor.appearance,editor.commanders,step!!)
+            else old.copy(name=editor.name,preferredLife=life!!,adjustmentStep=step!!,counterDefinitions=definitions,appearance=editor.appearance,commanders=editor.commanders)
         } catch (_: IllegalArgumentException) {
             mutableState.update { it.copy(validation=ProfileValidation.LIFE) };return
         }

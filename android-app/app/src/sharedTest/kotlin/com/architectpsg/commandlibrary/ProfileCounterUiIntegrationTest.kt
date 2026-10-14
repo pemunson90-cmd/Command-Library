@@ -75,6 +75,47 @@ class ProfileCounterUiIntegrationTest {
         return result
     }
 
+    @Test fun commanderRenameAndConfirmedRemovalPreserveRestOfActualRoomProfile() {
+        val name = "Commander probe ${UUID.randomUUID()}"
+        val app = rule.activity.application as CommandLibraryApplication
+        rule.waitUntil(20_000) { rule.onAllNodesWithTag("shell-nav-profiles").fetchSemanticsNodes().isNotEmpty() }
+        val repo = runBlocking { requireNotNull(ok(app.graph.ports()).playerProfiles) }
+        try {
+            val card = CardIdentity(Knowledge.Absent("Synthetic"), Knowledge.Absent("Synthetic"),
+                ProviderIdentity(ProviderId("synthetic"), "card", "one"), Knowledge.Known("Commander"), LanguageTag.ENGLISH)
+            val life = CounterDefinition(EntityId("life"), "Life", null, null, 40, CounterLossPolicy.AtOrBelow(0), false, CounterRole.LIFE)
+            val original = PlayerProfileDraft(name, 40, SnapshotList.of(life), SeatAppearance(DisplayColor(0xffffffff),
+                GameArtReference.CachedCard(card, EntityId("cached-art")), ArtFit.CONTAIN, ArtCrop(0.1, 0.2, 0.8, 0.9), SeatOrientation.INVERTED),
+                SnapshotList.of(CommanderSlot(EntityId("partner"), card, "Partner")), 3)
+            val created = runBlocking { ok(repo.create(original, token)) }
+            rule.onNodeWithTag("shell-nav-profiles").performClick(); waitSaved(); click("profiles-refresh"); waitSaved()
+            revealProfileAction("profile-edit-${created.id.value}"); click("profile-edit-${created.id.value}"); click("profile-commanders")
+            rule.onNodeWithTag("profile-commanders-list").performScrollToNode(hasTestTag("profile-commander-edit-partner"))
+            click("profile-commander-edit-partner"); text("profile-commander-label", "Primary"); click("profile-commander-apply")
+            assertEquals(created, runBlocking { ok(repo.read(created.id, token)) })
+            rule.onNodeWithTag("profile-commanders-list").performScrollToNode(hasTestTag("profile-commanders-back"))
+            click("profile-commanders-back"); click("profile-save"); waitSaved()
+            val renamed = runBlocking { ok(repo.read(created.id, token)) }
+            assertEquals(created.revision.next(), renamed.revision)
+            assertEquals(original.copy(commanders = SnapshotList.of(original.commanders.single().copy(label = "Primary"))), renamed.value)
+            revealProfileAction("profile-edit-${created.id.value}"); click("profile-edit-${created.id.value}"); click("profile-commanders")
+            rule.onNodeWithTag("profile-commanders-list").performScrollToNode(hasTestTag("profile-commander-delete-partner"))
+            click("profile-commander-delete-partner"); rule.onNodeWithTag("profile-commander-delete-confirm").performClick()
+            assertEquals(renamed, runBlocking { ok(repo.read(created.id, token)) })
+            rule.onNodeWithTag("profile-commanders-list").performScrollToNode(hasTestTag("profile-commanders-back"))
+            click("profile-commanders-back"); click("profile-save"); waitSaved()
+            val removed = runBlocking { ok(repo.read(created.id, token)) }
+            assertEquals(renamed.revision.next(), removed.revision); assertEquals(original.copy(commanders = SnapshotList.empty()), removed.value)
+        } finally {
+            runBlocking {
+                for (row in ownedRows(repo, name)) {
+                    val latest = repo.read(row.id, token)
+                    if (latest is Outcome.Success) ok(repo.delete(row.id, latest.value.revision, token))
+                }
+            }
+        }
+    }
+
     @Test fun appearanceEditorChangesOnlyColorAndOrientationThroughRealAppGraphRoom() {
         val name = "Appearance probe ${UUID.randomUUID()}"
         val app = rule.activity.application as CommandLibraryApplication

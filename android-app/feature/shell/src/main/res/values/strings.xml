@@ -317,4 +317,17 @@
     <string name="profile_appearance_inverted">Upside down · 180°</string>
     <string name="profile_appearance_counterclockwise">Left · 270°</string>
     <string name="profile_appearance_kept">Existing artwork, fit and crop are kept.</string>
+    <string name="profile_commanders_title">Profile commanders</string>
+    <string name="profile_commanders_manage">Commanders (%1$d)</string>
+    <string name="profile_commanders_empty">No commanders are set for this profile.</string>
+    <string name="profile_commander_add">Add commander from local cards</string>
+    <string name="profile_commander_select_named">Add %1$s to draft</string>
+    <string name="profile_commander_edit_title">Edit commander label</string>
+    <string name="profile_commander_label">Commander label</string>
+    <string name="profile_commander_invalid_label">Enter a commander label.</string>
+    <string name="profile_commander_edit_named">Edit commander %1$s</string>
+    <string name="profile_commander_remove_named">Remove commander %1$s</string>
+    <string name="profile_commander_remove">Remove</string>
+    <string name="profile_commander_remove_title">Remove commander from profile?</string>
+    <string name="profile_commander_remove_body">Remove %1$s from this draft? Existing games stay unchanged. Save the profile to keep this change.</string>
 </resources>

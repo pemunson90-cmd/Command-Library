@@ -20,6 +20,6 @@ New life-functional.lock is owned by root for this task: feature/life production
 
 ## Latest continuation delta
 
-Profile appearance batch passed its combined integration gate:1,001JVM/104XML0failures/errors/skips; whole-row actual Room preservation, check/lint/debug/affectedtestAPKs and4ZIP16KiB checks. Source/UI/durability/composition review APPROVE. Exact evidence: docs/verification/m2-life/PROFILE-APPEARANCE-LOCAL-20261014.md. Native/physicalnot_run; GameService remains unbound; full M2/v1 incomplete.
+Profile commander manager source/UI/durability/composition APPROVE; focused64shell Profile*/Search +3actualAppRoom tests pass,0failures/errors/skips. Literal-ID collision regression and real Room rename/remove preserve whole-profile CAS/metadata; details in docs/verification/m2-life/PROFILE-COMMANDERS-LOCAL-20261014.md. No full-suite/APK/native repeat under D-28; previous whole1,001 proof remains efa6955. GameService still unbound; full M2/v1 incomplete.
 
-Continue the reviewed commander-manager controller/UI batch in parent orch-kotlin-k3-offline-data-01 Latest continuation delta. D-28 user ruling supersedes per-edit test ceremonies: batch implementation and focus checks at meaningful boundaries. Existing life-action-engine claim/root shared ownership/final-merge authority remain unchanged.
+Root returns to the parent K3 download-composition design/implementation in orch-kotlin-k3-offline-data-01 Latest continuation delta. Existing life claim/root shared ownership/final merge remain unchanged; no overlapping component writer or finished APK delivery.
