@@ -1,4 +1,4 @@
-# Inclusive calendar-day history adapter — proposed, review pending
+# Inclusive calendar-day history adapter — architecture and source approved; verification in progress
 
 Root cx-m2-life-action-engine-01 TAKEN. HistoryFilter's existing UTC interval is half-open; G11 UI dates include both selected calendar days. Audited command/history/countdown foundations do not define this adapter. No user ruling is needed for ordinary date conversion; the chosen zone must be explicit and retained while a filter is active.
 
@@ -13,3 +13,5 @@ Primary source read2026-10-14 through Exa full-page extraction: https://develope
 Verification: meaningful local unit tests UTC inclusive endpoints/clearoldbounds/one-sided/inverted/MAX overflow, America/New_York spring23/fall25hours, Pacific/Apia skipped2011-12-30, midnight transition, retain explicitZone after systemdefaultTimeZone change (restoreglobalfinally). HostSQLite integration uses boundary gamestarts at exactUTCfrom/lastnanobeforeuntil/atuntil and selectedday filters; counts/rows verifyG11 bothenddays semantics and offline query. Add small actual Android instrumentation probe for min23-compatible packaged dateconversion and nonUTC DST; compile local native APKs. Actual API23/API36 runtime is not available here without emulator; retain as not_run until meaningful hosted native lane/device evidence. Do not claim local JVM TZDB equals every device historicalTZDB; retain explicitzoneID and actual platform rules, no snapshots/corpusbundling. Later UI/accessibility/zonecontrols and completeG11/native acceptance remain separate.
 
 Independent publicAPI/dependency/runtime architecture review required before implementation. No schema/codec/service/DI/UI or CI workflow changes proposed here. Shared Gradle/version files root-owned. Do not register partial GameService to make date test convenient.
+
+Independent architecture/publicAPI/dependency and exact-source APPROVE, regular private-constructor immutableclass invariants and typed date exceptions confirmed. Seven localunit methodsGREEN285s; fullcheck/SQLite/nativeAPKcompile pending. RuntimeAPI23 remains not_run. Evidence CALENDAR-HISTORY-LOCAL-20261014.md.

@@ -21,6 +21,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -64,6 +65,7 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     api(project(":core:model"))
     implementation(project(":core:common"))
     implementation(libs.coroutines.core)
@@ -73,6 +75,7 @@ dependencies {
 
     // Integration tests consume the pure JVM repository; production registry/DAG is unchanged.
     testImplementation(project(":feature:life"))
+    androidTestImplementation(project(":feature:life"))
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
     add(hostSqliteNative.name, libs.sqlite.bundled.jvm)
