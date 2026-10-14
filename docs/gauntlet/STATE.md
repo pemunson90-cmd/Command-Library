@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-profile-appearance-128. Updated UTC: 2026-10-14T17:14:59Z.
+Checkpoint: cp-20261014-profile-commanders-129. Updated UTC: 2026-10-14T17:30:14Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-implement-profile-commander-manager-batch
+design-live-english-download-composition
 
-Appearance efa6955 approved and verified1,001JVM104XML/check/debug/affectedtestAPKs/4ZIP16KiB. D-28 batching recorded; continue reviewed commander-manager controller/UI batch with focused verification. GameService HOLD, no finished APK.
+Commander0f3a197 approved/focused67tests10XML pass; D-28 batching. Next actual K3 English download/install public/DI composition design and reviewed implementation. Prior whole1,001/APK proof efa6955 distinct; GameService HOLD/no finished APK.
 
 Read CURRENT, machine state and task card.

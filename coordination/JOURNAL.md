@@ -499,3 +499,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T16:05:58Z | codex | cp-20261014-profile-counters-127 | containing commit | Customcountereditor8759b61 verified989JVM/check/debug/4APKZIP, reviewedactualUI/Room proof; continue approvedprofilecolor/orientation drafts locally.
 
 2026-10-14T17:14:59Z | codex | cp-20261014-profile-appearance-128 | containing commit | Appearance efa6955 approved and verified1,001JVM104XML/check/debug/affectedtestAPKs/4ZIP16KiB. D-28 batching recorded; continue reviewed commander-manager controller/UI batch with focused verification. GameService HOLD, no finished APK.
+
+2026-10-14T17:30:14Z | codex | cp-20261014-profile-commanders-129 | containing commit | Commander0f3a197 approved/focused67tests10XML pass; D-28 batching. Next actual K3 English download/install public/DI composition design and reviewed implementation. Prior whole1,001/APK proof efa6955 distinct; GameService HOLD/no finished APK.
