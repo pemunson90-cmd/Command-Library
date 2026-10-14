@@ -15,3 +15,6 @@ Priority before next public custom-factory composition: bounded real command reg
 
 
 Root execution follow-up: bounded actual command A1/A2/B1/C1 plus A3 countdown-mode/policy recovery and D2 live-pagination regressions are now verified locally,189storage19XML0fail/error/skip140s, production unchanged in this follow-up. Detailed scopes/limits: SQLITE-AUDIT-REGRESSIONS-20261014.md. These are focused scenario boundaries, not an assertion of every action×zero/alert/mode cross-product or OS process-kill/Room concurrent/runtime evidence. Original auditor report remains unchanged. D1 calendar adapter and platform/delivery/stat/service/UI obligations remain incomplete.
+
+
+D1 adapter now implemented/reviewed as CalendarGameHistoryFilter, source1d69fba: retained explicit LocalDate/ZoneId and both inclusive days→UTC halfopen, real DST/skippedday semantics, typed errors/no clock/defaultzone sampling. Local7pure+2actualSQLite cases and whole943JVM94XML0fail/error/skip1704s, debug/testAPK min23/backport inclusion verified; native runtime probe authored but not_run. See CALENDAR-HISTORY-LOCAL-20261014.md. Calendar UI/retained control wiring/accessibility/native runtime remain incomplete; this closes the pure/SQL adapter gap, not fullG11/service acceptance.

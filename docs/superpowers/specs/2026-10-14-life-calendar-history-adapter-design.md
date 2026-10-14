@@ -1,4 +1,4 @@
-# Inclusive calendar-day history adapter — architecture and source approved; verification in progress
+# Inclusive calendar-day history adapter — architecture and source approved; local verification complete
 
 Root cx-m2-life-action-engine-01 TAKEN. HistoryFilter's existing UTC interval is half-open; G11 UI dates include both selected calendar days. Audited command/history/countdown foundations do not define this adapter. No user ruling is needed for ordinary date conversion; the chosen zone must be explicit and retained while a filter is active.
 
@@ -14,4 +14,4 @@ Verification: meaningful local unit tests UTC inclusive endpoints/clearoldbounds
 
 Independent publicAPI/dependency/runtime architecture review required before implementation. No schema/codec/service/DI/UI or CI workflow changes proposed here. Shared Gradle/version files root-owned. Do not register partial GameService to make date test convenient.
 
-Independent architecture/publicAPI/dependency and exact-source APPROVE, regular private-constructor immutableclass invariants and typed date exceptions confirmed. Seven localunit methodsGREEN285s; fullcheck/SQLite/nativeAPKcompile pending. RuntimeAPI23 remains not_run. Evidence CALENDAR-HISTORY-LOCAL-20261014.md.
+Independent architecture/publicAPI/dependency and exact-source APPROVE, regular private-constructor immutableclass invariants and typed date exceptions confirmed. Seven localunit methodsGREEN285s; final whole943JVM94XML0fail/error/skip1704s,check/debug/storageAndroidTestAPK/min23manifest+backportDEX verified, both16KiBZIPpass. RuntimeAPI23 remains not_run. Evidence CALENDAR-HISTORY-LOCAL-20261014.md.
