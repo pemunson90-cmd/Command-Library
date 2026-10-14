@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-download-controls-132",
-  "verified_base_head": "d7e864f65e500c3ac526eedca78a90c740aac601",
+  "checkpoint_id": "cp-20261014-rulings-parser-native-fix-133",
+  "verified_base_head": "12f898004c809b7e7584d3e388e64135d7d1778a",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "implement-rulings-record-decoder-and-observe-frozen-modern-gate",
+  "first_action": "implement-reviewed-rulings-data-read-contract-and-observe-native-r1",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "English access a611c0f and controls d7e864f source/security/durability APPROVE;13new functional cases pass. Whole1,031cases sole style failure corrected3style/lint/4APK follow-up/4ZIP pass. Frozen modern run38621711127 pending; next internal ruling decoder design/source draft approved. No native/fullinstall/fullv1 acceptance.",
+  "review_status": "Parser f161fbf independently ACK/32focusedpass17s. Public ruling data/read design ACK, next implement. Scoped12f8980 desugaring compatibility ACK/all7testAPKs build+ZIPpass2m12s. Corrected frozen modern38623690607 pending; first38621711127 failed predevice metadata. No native/fullapp acceptance.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -103,9 +103,10 @@
     "life_profile_commanders_local": "0f3a197: focused3m52s131tasks7executed124cached,64shell Profile*/Search9XML+3actualAppRoom1XML0failures/errors/skips;6controller/4UI inclIDcollision and actualRoom rename/remove2.454s. Initial test-dialog scrolling error fixed; source key collision fixed and reviewed APPROVE. PROFILE-COMMANDERS-LOCAL-20261014.md. No whole/APK/native repeat; prior wholeefa6955 separate. No finished APK.",
     "k3_live_english_access_local": "a611c0f: actual lazy root guarded factory/session, once recovery and pinned install composition source APPROVE; focused6tests2XML0failures/errors/skips1m3s.4realRoom/DataStore/factory6.657s+2realLinuxdirectory checks18.022s; scoped host shadows fix incomplete Robolectric lstat/directoryfd/no-opclose. LIVE-ENGLISH-ACCESS-LOCAL-20261014.md. No approved wire transfer/successful artifact install/native/APK claim; controller/UI pending.",
     "k3_live_english_download_controls": "d7e864f: reviewed explicit consent/CAS/independent controls/serialized pinned install orchestration. Boundary110XML1,031cases1stylefailure only;9controller/4UI pass. Resource correction3style/lint/4APK pass3m32s;4ZIP16KiBexit0/app manifest+DEX verified. No clean whole-check exit claimed. LIVE-ENGLISH-DOWNLOADS-LOCAL-20261014.md.",
-    "k3_live_english_native": "Pending run38621711127/continuity38621711056, exactd7e864f65e500c3ac526eedca78a90c740aac601 Androidtreebb9e7cc3939f6badd8df0a5bd5b6739820ed178d, frozenagent/cx-english-downloads-integration-20261014. Actions GET in_progress19:12UTC. Existing reviewed workflow one defaultAPI36/build prerequisite; no CI edits/compatibility optin/duplicate/merge/release. Native counts/physical not yet verified."
+    "k3_live_english_native": "Firstd7 run38621711127 FAILED pre-emulator AndroidTestAarMetadata (network consumes desugared storage), downstream skipped. Root local4s diagnostic scopes network/catalog/rules;12f8980 flags+existing2.1.5 pin reviewedACK. All-testAPK assembleSUCCESS2m12s/361tasks/7ZIP16KiBexit0. Corrected frozen run38623690607 in_progress exact12f898004c809b7e7584d3e388e64135d7d1778a Androidtree65868ad77e71fcae19e2fd2c2ba7f157b0391f93 on agent/cx-english-downloads-integration-r1-20261014, continuity38623690832SUCCESS. No duplicate/CI edit/merge/release/native-pass claim. NATIVE-CONSUMER-DESUGAR-20261014.md.",
+    "k3_ruling_record_decoder": "f161fbf independent exactsource ACK;32focused3XML0failures/errors/skips17s/19tasks.8newrecord/13metadata/11framing. StrictUnicode/raw128KiB,known+unknownstrings64KiB/keys256bytes/depth16; exactsource/calendar/prose, no inventedID/instant/language/provenance. RULING-RECORD-LOCAL-20261014.md. No schema/DI/fullfeed/native."
   },
-  "last_completed": "English controls d7e864f source approved;13new functional cases pass. Whole1,031cases sole style failure corrected3style/lint/4APK follow-up,4ZIP16KiBpass; no clean whole-check claim. One frozen modern run38621711127/continuity38621711056 observed in_progress for exact d7e864f, no CI edits/duplicate/merge/release. Continue approved local ruling decoder; fullinstall/fullK3/v1/physical unproven, GameService HOLD.",
-  "updated_utc": "2026-10-14T19:13:32Z",
+  "last_completed": "Parser f161fbf sourceACK/32focusedpass17s. Native first38621711127 failed before device on missing consumer desugar flags; scoped12f8980 fix reviewedACK/all7testAPKs build+ZIPpass2m12s. Corrected frozen run38623690607 pending exact12f8980, continuity38623690832SUCCESS; no CI edits/duplicate/merge/release. Continue independently approved public ruling data/read contract. Fullfeed/activation/fullK3/v1/physical unproven, GameService HOLD.",
+  "updated_utc": "2026-10-14T19:27:37Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

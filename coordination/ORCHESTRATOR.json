@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T19:13:32Z",
-  "expires_utc": "2026-10-14T19:58:32Z",
-  "checkpoint_id": "cp-20261014-download-controls-132",
-  "note": "Root sole life/app/shell/shared/finalmerge. English controls d7e864f source APPROVE/local functional+correctedstyle/lint/4APK proof. Frozen modern run38621711127 pending, do not retrigger/move branch. Continue internal ruling decoder on recovery; D-28 batch checks, no finished APK/GameService binding."
+  "heartbeat_utc": "2026-10-14T19:27:37Z",
+  "expires_utc": "2026-10-14T20:12:37Z",
+  "checkpoint_id": "cp-20261014-rulings-parser-native-fix-133",
+  "note": "Root sole development/finalmerge. Parser f161fbf/32focusedpass sourceACK;12f8980 desugar consumer fix compatibilityACK/7testAPKs build+ZIPpass. Corrected frozen native38623690607 pending, do not move/retrigger. Continue reviewed public ruling data/read models. D-28/no finished APK/GameService HOLD."
 }
