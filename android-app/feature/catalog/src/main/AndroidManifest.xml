@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Normal permission required for real connectivity admission; no download is registered. -->
+    <!-- Normal permission required for guarded acquisition connectivity admission. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application>
         <!-- Same-process locator; no file paths or URI grants leave the verified pin. -->

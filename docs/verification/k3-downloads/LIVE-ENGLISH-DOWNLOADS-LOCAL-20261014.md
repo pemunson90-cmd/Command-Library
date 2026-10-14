@@ -1,0 +1,19 @@
+# English download controls — local integration, 2026-10-14
+
+Status: implementation and independent source review complete; focused11tests passed; broader integration/packaging running. This is not full K3/v1 acceptance or APK delivery. Prior lazy access evidence is separately recorded in LIVE-ENGLISH-ACCESS-LOCAL-20261014.md.
+
+The real Catalog screen now offers English downloads when its complete root capability exists. Opening initializes and reads persisted job pages without approval or transfer. A trusted plan displays the actual provider/URL/language, unknown source metadata and expected size, finite transfer budget, Wi-Fi requirement and mutable upstream traversal notice. Explicit confirmation re-reads the persisted plan and revision before approving its exact intent; start/resume uses that revision and returned consent. Stale plans require reloading and explicit confirmation.
+
+The ViewModel owns independent per-job transfer/control coroutines and one observed detail. Navigation does not promise OS background execution or cancel a transfer. Pause and confirmed cancel remain available during transfer; deliberately cancelled engine workers reconcile authoritative persisted state before suppressing a recognized stop. Revision merging and observation tickets protect newer/current detail state. List pagination uses the real service cursor, never a synthetic count.
+
+Only newly completed approved transfers automatically install; recovered completed jobs require explicit install. Installations serialize through the same session's pinned verified-artifact importer. Failure retains the actual installed catalog and completed artifact for retry. Acknowledged success refreshes catalog/search status. Stop-install joins cancellation and re-reads durable catalog truth, including an ambiguous activation outcome; it never manufactures an installation-success acknowledgement. UI controls are labelled, scrolling and at least48dp, with large-font/narrow-layout and nested Back coverage. No unsupported feed controls were added.
+
+Independent read-only review by life_contract_review: ACK/APPROVE, no source blocker. Reviewed exact-plan consent/CAS, independently usable controls, cancellation reconciliation, stale-data guards, serialized installs, existing pinned delegation and UI/lifecycle copy. Review notes that synthetic controller/UI fixtures do not prove physical wire authorization, real transfer-to-verified-install, OS process death or full-corpus acceptance. Cancellation after actual durable activation is a meaningful separate reconciliation case.
+
+## Verification
+
+Focused invocation :feature:shell:testDebugUnitTest filtered to DownloadsControllerTest and DownloadsUiTest passed1m42s/34tasks17executed17up-to-date. Actual2XML:8controller tests1.452s and3UI tests48.531s,0failures/errors/skips. Log /tmp/live-english-downloads-batch2-focused.log. A ninth controller case now models activation before acknowledgement and cancelled install reconciliation. One broader check/lint/app-debug/appTest/shellTest/storageTest assembly is running at this completed consent/DI/UI integration boundary under D-28, log /tmp/live-english-downloads-integration.log. No current packaging/native/full-corpus result is asserted here.
+
+## Remaining scope
+
+The download-controller fixture is explicitly synthetic: no wire, publisher corpus or verified file bytes. Real lazy Room/DataStore/factory boundary coverage remains separate. The scoped host filesystem bridge does not establish regular artifact verification or successful pinned installation. Device wrapper, modern Android/native process behavior, full English acquisition and physical Fold7/TalkBack remain unexecuted. Other feeds, rules/rulings, Full/Lean and full K3/M2–M9 remain open; GameService stays unbound.

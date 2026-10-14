@@ -52,7 +52,8 @@ class SyntheticPickerRegistry(private val answer: () -> Uri?) : ActivityResultRe
  * Hosts the real ShellRoot and controllers over synthetic, test-only ports, at a forced width,
  * height and font scale. Controllers run on the main dispatcher like a ViewModel scope.
  */
-internal class ShellUiHarness(private val rule: ComposeContentTestRule, private val profiles: com.architectpsg.commandlibrary.core.model.PlayerProfileRepository? = null) {
+internal class ShellUiHarness(private val rule: ComposeContentTestRule, private val profiles: com.architectpsg.commandlibrary.core.model.PlayerProfileRepository? = null,
+    private val downloads: DownloadsFixture? = null) {
     val catalog = SyntheticCatalog(listOf("Synthetic Existing Card"))
     val settings = SyntheticSettings()
     val documents = MemoryDocuments()
@@ -78,7 +79,8 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
         val ownerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         scope = ownerScope
         // Controllers live outside composition, as they do in the ViewModel.
-        controllers = ShellControllers(ownerScope, ShellPorts(catalog, catalog, catalog, settings, playerProfiles = profiles), documents, Dispatchers.IO)
+        controllers = ShellControllers(ownerScope, ShellPorts(catalog, catalog, catalog, downloads?.settings ?: settings,
+            playerProfiles = profiles, englishCatalog = downloads?.access), documents, Dispatchers.IO)
         val registryOwner = object : ActivityResultRegistryOwner {
             override val activityResultRegistry: ActivityResultRegistry = picker
         }

@@ -185,8 +185,11 @@ private fun DestinationContent(
             modifier = modifier,
         )
         ShellDestination.CATALOG -> {
+            var downloadsOpen by rememberSaveable { mutableStateOf(false) }
             val importState by controllers.catalogImport.state.collectAsState()
-            CatalogScreen(
+            val downloads = controllers.downloads
+            if (downloadsOpen && downloads != null) DownloadsScreen(downloads, widthClass, onBack = { downloadsOpen = false }, modifier = modifier)
+            else CatalogScreen(
                 statusState = statusState,
                 importState = importState,
                 limits = controllers.importLimits,
@@ -197,6 +200,7 @@ private fun DestinationContent(
                 onDismissImport = controllers.catalogImport::dismiss,
                 onRetryStatus = controllers.status::refresh,
                 modifier = modifier,
+                onOpenDownloads = if (downloads != null) ({ downloadsOpen = true }) else null,
             )
         }
         ShellDestination.RULES -> controllers.rules?.let { rules ->

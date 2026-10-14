@@ -52,18 +52,19 @@ internal fun CatalogScreen(
     onDismissImport: () -> Unit,
     onRetryStatus: () -> Unit,
     modifier: Modifier = Modifier,
+    onOpenDownloads: (() -> Unit)? = null,
 ) {
     val installed = statusState.status?.installed == true
     Box(modifier.fillMaxSize().verticalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
         val sectionModifier = Modifier.padding(horizontal = widthClass.gutter, vertical = 16.dp)
         if (widthClass == WidthClass.EXPANDED) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StatusSection(statusState, onRetryStatus, sectionModifier.weight(1f))
+                StatusSection(statusState, onRetryStatus, sectionModifier.weight(1f), onOpenDownloads)
                 ImportSection(importState, limits, installed, pickerUnavailable, onPickFile, onCancelImport, onDismissImport, sectionModifier.weight(1f))
             }
         } else {
             Column(Modifier.widthIn(max = ReadingWidth).fillMaxWidth()) {
-                StatusSection(statusState, onRetryStatus, sectionModifier)
+                StatusSection(statusState, onRetryStatus, sectionModifier, onOpenDownloads)
                 ImportSection(importState, limits, installed, pickerUnavailable, onPickFile, onCancelImport, onDismissImport, sectionModifier)
             }
         }
@@ -71,9 +72,11 @@ internal fun CatalogScreen(
 }
 
 @Composable
-private fun StatusSection(state: CatalogStatusUiState, onRetry: () -> Unit, modifier: Modifier) {
+private fun StatusSection(state: CatalogStatusUiState, onRetry: () -> Unit, modifier: Modifier, onOpenDownloads: (() -> Unit)?) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SectionHeading(stringResource(R.string.catalog_title), style = MaterialTheme.typography.headlineMedium)
+        if (onOpenDownloads != null) OutlinedButton(onClick = onOpenDownloads,
+            modifier = Modifier.heightIn(min = 48.dp).testTag("catalog-downloads-open")) { Text(stringResource(R.string.downloads_title)) }
         val status = state.status
         if (status == null && state.loading) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
