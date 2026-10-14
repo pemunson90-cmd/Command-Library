@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-rulings-atomic-import-137
+Checkpoint-ID: cp-20261014-rulings-receipt-foundation-138
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. implement-reviewed-rulings-source-admission-shared-factory
+Next step: 3. complete-rulings-v3-context-android-pins-shared-factory
 
-Updated UTC: 2026-10-14T20:39:37Z
+Updated UTC: 2026-10-14T20:54:22Z
 Status: in_progress; lease: active.
-Verified base: 5ea27c946af73d941c04330c5d4380686c21d6d9.
+Verified base: 8226b02cadb43e4445d9c5024ca911da1bb78125.
 
-Root exclusive. Atomic ruling importer90c3a70/tests5ea27c9 exactreviewACK; whole1075tests/lint/APKsZIPpass. Next reviewed source admission/shared factory/schema8. Full live feed policy-blocked; native Back correction not_run. No Gradle running, no finished APK/GameService HOLD; continue local-first under D-28.
+Root exclusive. Receipt foundation8226b02 actualKSP8/27oldidentical+1table and12focusedpass; exactsource ACK. Next actual v3 context/Android metadata-file pins/SAME factory owner. Prior1075whole excludes8. No Gradle running/nativefix/livefeed/finishedAPK acceptance; continue local-first underD28.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

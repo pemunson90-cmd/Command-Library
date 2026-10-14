@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T20:39:37Z",
-  "expires_utc": "2026-10-14T21:24:37Z",
-  "checkpoint_id": "cp-20261014-rulings-atomic-import-137",
-  "note": "Root exclusive development and final merge. Atomic ruling importer90c3a70/tests5ea27c9 independently ACK; whole1075tests/lint/APKsZIPpass. Next trusted source admission design ACK, implement locally. Live feed blocked by enforced host policy; native Back correction not_run. No finished APK/GameService HOLD."
+  "heartbeat_utc": "2026-10-14T20:54:22Z",
+  "expires_utc": "2026-10-14T21:39:22Z",
+  "checkpoint_id": "cp-20261014-rulings-receipt-foundation-138",
+  "note": "Root exclusive development/final merge. Source receipt foundation8226b02 has KSP8/27oldunchanged and12focusedpass; source review ACK. Next actual v3 context/Android pins/SAME factory owner. Prior1075whole excludes8; livefeed policy-blocked/native Back correction not_run. No finished APK/GameService HOLD."
 }
