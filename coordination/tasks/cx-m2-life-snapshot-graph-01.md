@@ -12,4 +12,4 @@ Acceptance: meaningful RED→GREEN pure-JVM positive/adversarial graph tests, in
 
 ## Latest continuation delta
 
-TAKEN after checked game creation/read store passed682localJVM/check/debug cases and exact bounded-source review. Design/implementation/tests for this NEW graph unit not_run. Next: inspect existing validators/requirements, settle structural/live-timing boundaries in concrete spec/plan, review, then tests/code. Game store source remains a bounded core+seat read adapter until these and later guards are integrated.
+Design and inline plan drafted in docs/superpowers/specs/2026-10-14-life-snapshot-graph-design.md and docs/superpowers/plans/2026-10-14-life-snapshot-graph.md. Existing read-only life_contract_review requested to review structural vs operational boundaries before code. Product code/tests unchanged; new tests not_run. Exact next action: resolve independent design findings, then API/behavior RED and pure guard implementation. Other chat's disjoint audit remains OPEN; root life lock unchanged.
