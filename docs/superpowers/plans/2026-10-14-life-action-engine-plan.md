@@ -1,0 +1,12 @@
+# Modern semantic actions / initialization inline plan
+
+Owner codex-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. Current design is docs/superpowers/specs/2026-10-14-life-action-engine-design.md. No code yet.
+
+1. Independent design review, reconcile actual contract gaps. Map retained action requirements to bounded units; do not claim variants initialized from missing metadata.
+2. First counter unit RED→GREEN: exact numeric canonical delta; definitions/preferences; explicit damage/life group; global all-seat ON_TURN_START reset. Reuse accepted reducer/graph and independent source review. Publish coherent tested sub-checkpoint; umbrella semantic task stays TAKEN.
+3. Participation/designation/presentation/ack unit, then results/semantic undo composition, each meaningful pure tests/review.
+4. Initializer with fresh Known lineage and exact initial scopes; resolve typed data-driven variant initialization gap without guesses. Test actual SQLite creation callback/reopen.
+5. Random recorded resolution/replay and authenticated data-driven variant reducer/initialization separately; retain source obligations, no fake-success fallback.
+6. Assemble pure atomic action/event packets, then reviewed persisted service/ordered publication/history and real UI under separate tasks. Full-v1/device gates remain unfulfilled until actual evidence.
+
+First-counter-slice architecture approved after clarifications in design: all marked states reset every turn; candidate newlyReached uses old-policy versus final-policy stable-key membership. Exact numeric edits still require representable canonical delta; policy resets assign initial directly. Preparing meaningful behavioral RED now.
