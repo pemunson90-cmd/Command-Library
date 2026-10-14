@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T10:04:14Z",
-  "expires_utc": "2026-10-14T10:49:14Z",
-  "checkpoint_id": "cp-20261014-life-history-query-108",
+  "heartbeat_utc": "2026-10-14T10:20:14Z",
+  "expires_utc": "2026-10-14T11:05:14Z",
+  "checkpoint_id": "cp-20261014-life-lifecycle-109",
   "note": "Recovery retains sole life/shared orchestration. Atomic mutation helper complete; modern timing engine TAKEN. History audit OPEN, no component writer."
 }
