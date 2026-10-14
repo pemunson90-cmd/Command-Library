@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfilesScreen
 import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentRef
 import com.architectpsg.commandlibrary.feature.shell.presentation.ShellControllers
@@ -45,6 +46,7 @@ internal enum class ShellDestination(@param:StringRes val label: Int, @param:Dra
     CARDS(R.string.shell_nav_cards, R.drawable.shell_ic_cards, "shell-nav-cards"),
     CATALOG(R.string.shell_nav_catalog, R.drawable.shell_ic_catalog, "shell-nav-catalog"),
     RULES(R.string.rules_title, R.drawable.shell_ic_catalog, "shell-nav-rules"),
+    PROFILES(R.string.profiles_nav, R.drawable.shell_ic_profiles, "shell-nav-profiles"),
     SETTINGS(R.string.shell_nav_settings, R.drawable.shell_ic_settings, "shell-nav-settings"),
 }
 
@@ -65,7 +67,13 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
     ShellTheme(settingsState.theme) {
         var destination by rememberSaveable { mutableStateOf(ShellDestination.CARDS) }
         var pickerUnavailable by rememberSaveable { mutableStateOf(false) }
-        val destinations = ShellDestination.entries.filter { it != ShellDestination.RULES || controllers.rules != null }
+        val destinations = ShellDestination.entries.filter {
+            when (it) {
+                ShellDestination.RULES -> controllers.rules != null
+                ShellDestination.PROFILES -> controllers.profiles != null
+                else -> true
+            }
+        }
         val visibleDestination = destination.takeIf { it in destinations } ?: ShellDestination.CARDS
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
         val rulesPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -194,6 +202,7 @@ private fun DestinationContent(
         ShellDestination.RULES -> controllers.rules?.let { rules ->
             RulesScreen(rules, widthClass, rulesPickerUnavailable, onPickRules, modifier)
         }
+        ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
         ShellDestination.SETTINGS -> {
             val settingsState by controllers.settings.state.collectAsState()
             SettingsScreen(

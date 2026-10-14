@@ -20,6 +20,11 @@ android {
         compose = true
     }
 
+    sourceSets {
+        getByName("test").kotlin.directories.add("src/sharedTest/kotlin")
+        getByName("androidTest").kotlin.directories.add("src/sharedTest/kotlin")
+    }
+
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
@@ -39,11 +44,22 @@ kotlin {
     jvmToolchain(17)
 }
 
+// Reuse the storage task output; a clean app test build prepares the actual host JNI.
+val storageProject = project(":data:storage")
+tasks.withType<Test>().configureEach {
+    dependsOn(":data:storage:prepareHostSqliteNative")
+    doFirst {
+        val prepared = storageProject.tasks.named("prepareHostSqliteNative").get()
+        systemProperty("java.library.path", prepared.outputs.files.singleFile.absolutePath)
+    }
+}
+
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":data:storage"))
+    implementation(project(":feature:life"))
     implementation(project(":feature:catalog"))
     implementation(project(":feature:rules"))
     implementation(project(":feature:settings"))
@@ -54,11 +70,11 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
 
+    testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     testImplementation(libs.coroutines.test)
 
-    androidTestImplementation(project(":feature:life"))
     androidTestImplementation(project(":core:common"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)

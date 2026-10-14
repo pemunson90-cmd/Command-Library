@@ -37,6 +37,16 @@ class ProfilesControllerTest {
         assertEquals(expected,repo.rows[old.id]!!.value);assertEquals(old.id to old.revision,repo.expected.single())
     }
 
+    @Test fun unchangedLegacyBlankNameDoesNotPreventNumericEdit()=runTest {
+        val repo=ProfilesFixture();val old=profile().let { it.copy(value=it.value.copy(name="  ")) }
+        repo.rows[old.id]=old;val c=controller(repo)
+        c.edit(old);c.changeLife("30");c.changeStep("5");c.save();advanceUntilIdle()
+        val saved=repo.rows[old.id]!!
+        assertEquals("  ",saved.value.name);assertEquals(30,saved.value.preferredLife)
+        assertEquals(5,saved.value.adjustmentStep);assertEquals(old.revision.next(),saved.revision)
+        assertNull(c.state.value.editor)
+    }
+
     @Test fun invalidNumericAndRetainedCounterBoundsRejectBeforeWrites()=runTest {
         val repo=ProfilesFixture();val c=controller(repo)
         for((name,life,step) in listOf(Triple(" ","20","1"),Triple("A","2147483648","1"),Triple("A","20","0"),Triple("A","20","-1"),Triple("A","20","2147483648"))) {
@@ -70,6 +80,15 @@ class ProfilesControllerTest {
         assertEquals(old,c.state.value.pendingDelete);assertEquals(Problem.STALE_REVISION,c.state.value.problem)
         repo.writeStatus=null;c.confirmDelete();advanceUntilIdle()
         assertEquals(old.id to old.revision,repo.deletes.last());assertTrue(repo.rows.isEmpty());assertTrue(c.state.value.items.isEmpty());assertNull(c.state.value.pendingDelete)
+    }
+
+    @Test fun dismissingPendingDeleteDoesNotPromiseRollbackOrLoseCommittedResult()=runTest {
+        val repo=ProfilesFixture();val old=profile();repo.rows[old.id]=old;val c=controller(repo)
+        c.refresh();advanceUntilIdle();c.requestDelete(old);repo.gate=CompletableDeferred()
+        c.confirmDelete();runCurrent();assertTrue(c.state.value.busy)
+        c.dismissDelete();assertNull(c.state.value.pendingDelete);assertTrue(c.state.value.busy)
+        assertEquals(old,repo.rows[old.id]);repo.gate!!.complete(Unit);advanceUntilIdle()
+        assertFalse(c.state.value.busy);assertTrue(repo.rows.isEmpty());assertTrue(c.state.value.items.isEmpty())
     }
 
     @Test fun oldMorePageCannotAppendAfterRefreshAndRepeatedIdsAreNotDuplicated()=runTest {
@@ -114,7 +133,7 @@ private class ProfilesFixture:PlayerProfileRepository {
         val row=PlayerProfileSnapshot(id,Revision(expected.value+1),value);rows[id]=row;return Outcome.Success(row)
     }
     override suspend fun delete(id:EntityId,expected:Revision,cancel:CancelToken):Outcome<Unit> {
-        deletes+=id to expected;cancel.throwIfCancelled();writeStatus?.let{return it}
+        deletes+=id to expected;gate?.await();cancel.throwIfCancelled();writeStatus?.let{return it}
         if(rows[id]?.revision!=expected)return failure(FailureCode.STALE_REVISION)
         rows.remove(id);return Outcome.Success(Unit)
     }

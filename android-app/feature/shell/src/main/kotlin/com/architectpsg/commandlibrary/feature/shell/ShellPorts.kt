@@ -7,6 +7,7 @@ import com.architectpsg.commandlibrary.core.model.CatalogStatus
 import com.architectpsg.commandlibrary.core.model.SettingsRepository
 import com.architectpsg.commandlibrary.core.model.LocalRulesImport
 import com.architectpsg.commandlibrary.core.model.LocalRulesLookup
+import com.architectpsg.commandlibrary.core.model.PlayerProfileRepository
 
 /**
  * The accepted core capabilities the shell presents. Root assembly supplies real adapters, created
@@ -27,4 +28,6 @@ public class ShellPorts(
     public val importLimits: CatalogImportLimits = CatalogImportLimits(),
     public val rulesImport: LocalRulesImport? = null,
     public val rulesLookup: LocalRulesLookup? = null,
+    /** Complete reusable-profile capability; absence hides the destination. No game service implied. */
+    public val playerProfiles: PlayerProfileRepository? = null,
 )

@@ -97,7 +97,7 @@ internal class ProfilesController(
         val life = editor.life.toIntOrNull()
         val step = editor.step.toIntOrNull()
         val validation = when {
-            editor.name.isBlank() -> ProfileValidation.NAME
+            editor.name.isBlank() && editor.name != editor.original?.value?.name -> ProfileValidation.NAME
             life == null -> ProfileValidation.LIFE
             step == null || step <= 0 -> ProfileValidation.STEP
             else -> null
@@ -122,8 +122,9 @@ internal class ProfilesController(
     fun requestDelete(profile: PlayerProfileSnapshot) {
         if (!mutableState.value.busy) mutableState.update { it.copy(pendingDelete=profile,problem=null) }
     }
+    /** Dismisses only the modal; an already-started deletion remains owned by the scope. */
     fun dismissDelete() {
-        if (!mutableState.value.busy) mutableState.update { it.copy(pendingDelete=null,problem=null) }
+        mutableState.update { it.copy(pendingDelete=null,problem=if(it.busy)it.problem else null) }
     }
     fun confirmDelete() {
         val target = mutableState.value.pendingDelete ?: return

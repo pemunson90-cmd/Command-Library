@@ -5,6 +5,8 @@ import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
+import com.architectpsg.commandlibrary.data.storage.life.codec.LifePayloadCodec
+import com.architectpsg.commandlibrary.feature.life.persistence.SqlPlayerProfileRepository
 import com.architectpsg.commandlibrary.feature.catalog.LocalCatalog
 import com.architectpsg.commandlibrary.feature.rules.LocalRules
 import com.architectpsg.commandlibrary.feature.settings.DataStoreSettingsRepository
@@ -14,7 +16,7 @@ import kotlinx.coroutines.sync.withLock
 
 /**
  * Process-wide composition root. It creates each real adapter once: one settings repository for
- * its store file, one catalog over one opened database, and one set of import limits shared by the
+ * its store file, catalog/rules/profiles over one opened database, and import limits shared by the
  * catalog importer and the shell so the disclosed limits are the enforced ones.
  */
 internal class AppGraph(context: Context) {
@@ -25,14 +27,16 @@ internal class AppGraph(context: Context) {
     private val mutex = Mutex()
     private var ready: ShellPorts? = null
 
-    /** Opens the catalog database on first success and keeps those ports; a failed open is retried on the next call. */
+    /** Opens the shared database on first success and keeps the complete ports; a failed open is retried on the next call. */
     suspend fun ports(): Outcome<ShellPorts> = mutex.withLock {
         ready?.let { return@withLock Outcome.Success(it) }
         when (val opened = StorageDatabase.open(appContext, DATABASE_FILE)) {
             is Outcome.Success -> {
                 val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
                 val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
-                val ports = ShellPorts(catalog, catalog, catalog, settings, limits, rulesImport = rules, rulesLookup = rules)
+                val profiles = SqlPlayerProfileRepository(opened.value, LifePayloadCodec(), SystemUtcClock, RandomUuidIdSource)
+                val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
+                    rulesImport = rules, rulesLookup = rules, playerProfiles = profiles)
                 ready = ports
                 Outcome.Success(ports)
             }

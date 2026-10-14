@@ -38,6 +38,8 @@ internal class ShellControllers(
         RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher)
     } else null
 
+    val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher) }
+
     init {
         scope.launch {
             status.state
@@ -49,5 +51,6 @@ internal class ShellControllers(
         status.refresh()
         settings.load()
         rules?.refresh()
+        profiles?.refresh()
     }
 }

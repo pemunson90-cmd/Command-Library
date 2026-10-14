@@ -266,10 +266,11 @@ class ShellUiTest {
         shell.show(width = 599.dp)
         assertTrue(shell.exists(ShellTags.NAVIGATION_BAR))
         assertFalse(shell.exists(ShellTags.NAVIGATION_RAIL))
-        ShellDestination.entries.filter { it != ShellDestination.RULES }.forEach {
+        ShellDestination.entries.filter { it != ShellDestination.RULES && it != ShellDestination.PROFILES }.forEach {
             rule.onNodeWithTag(it.tag).assertHasClickAction().assertHeightIsAtLeast(48.dp)
         }
         rule.onNodeWithTag(ShellDestination.RULES.tag).assertDoesNotExist()
+        rule.onNodeWithTag(ShellDestination.PROFILES.tag).assertDoesNotExist()
     }
 
     @Test
