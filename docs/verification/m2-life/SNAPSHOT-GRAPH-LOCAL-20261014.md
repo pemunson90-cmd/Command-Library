@@ -11,3 +11,11 @@ Actual bundledSQLite integration behavioral RED68s67tests/3failures: contradicto
 Final local `check :app:assembleDebug` passed80s,336tasks/9executed. Actual70XMLreports contain698JVMtests,0failures/errors/skips. Debug APK16KiB ZIP alignment passed; SHA256 `9b668e3fb4ba720276e3a3e4cfb7cbf53cebbb7ca4a1ac9cfa2a044ddd702d4c` (unchanged because concrete life helpers remain unregistered in the operational app graph). HostSQLite does not prove Android Room concurrency, force-stop cadence, operational timers/result/alert ledger/source authority or UI. Frozen schema6 API36 evidence remains separate. No new emulator/hosted build requested; full service/UI/full-v1 remains incomplete.
 
 Coordination continuity passed;31 Python coordination tests passed. No remaining/deferred review findings. Continuous next claim is cx-m2-life-event-reads-01; this completed unit does not close M2.
+
+## Follow-up timing policy correction
+
+After event-reader checkpoint95, root found two missing current-graph constraints while rereading accepted original persistence Timing policy: nonALERT clocks must clamp/pause at zero, and SHARED cannot have a running seat owner. Independent boundary/exact-source review approved the minimal correction. Two new regression methods observed RED56s96tests/2failures before source change. Guard now rejects negative nonALERT banks, runningzero ACTIVE/shared banks and runningSHARED owner; preserves ALERT overtime, inactivezero banks, paused initialzero/retained owner and independently running elapsed timers. ActualSQLite corruptcheckpoint read/retry loop includes negativePAUSEshared and runningSHAREDowner. Historical archive codecs are unchanged.
+
+Local combined96life/83storage GREEN92s0failure/error/skip; final wholecheck/debug100s336tasks/9executed71XML716JVM0failure/error/skip, APK16KiBZIPalignment pass. No new emulator/source/UI/service authority claim. Root resumes transactional mutation design under existing claim; previous guard packet's evidence is historical, this addendum records the correction.
+
+Follow-up checkpoint continuity and31Python coordination tests passed.

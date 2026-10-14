@@ -3,8 +3,8 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-event-reads-95",
-  "verified_base_head": "6ba6aaa2e20fcea8e4bce30c023a25c68de61b40",
+  "checkpoint_id": "cp-20261014-life-clock-graph-policy-96",
+  "verified_base_head": "a040273f34fb5e8a3ba82ad3bdb0e3570248c5ea",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Checked event/archive reader design/source APPROVE; local714JVM/check/debug0fail/error/skip. Atomic CAS/event/result/alert writes, semantic undo/source/recovery and operational service/UI pending.",
+  "review_status": "Timing graph correction boundary/source APPROVE; local716JVM/check/debug0fail/error/skip. Root mutation writer design remains next; no operational service/UI acceptance.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -65,9 +65,10 @@
     "life_schema6_native": "Frozen c997c773 focused API36 run38484784441 success:3network32storage0failure/error/skip, Room migration/open checks. Detailed report SCHEMA6-LOCAL-20261013.md.",
     "life_game_store_local": "Exact bounded design/source APPROVE. APIabsence52s/behavior9RED55s then9GREEN73s; full storage64/8XML incl15Store0fail/error/skip125s. Final wholecheck/debug76s68XML682JVM0fail/error/skip,16KiBZIPalignment pass. No source/event/full-domain/Room/concurrency/service/UI acceptance.",
     "life_snapshot_graph_local": "Independent design/source/integration APPROVE. APIabsence73s/behavior94tests11fail66s; actualSQLite67tests3fail68s then94life/67storageGREEN71s. Wholecheck/debug80s70XML698JVM0fail/error/skip;16KiBZIPpass. Structural only, no event/source/timing/service/UI authority.",
-    "life_event_reads_local": "Independent design/source APPROVE. APIabsence67s/declaration77tests10fail77s; implemented80storageGREEN76s, expanded83incl16readerGREEN79s. Wholecheck/debug88s71XML714JVM0fail/error/skip;16KiBZIPpass. Checked historical reads only, no checkpoint/semantic undo/source/live service authority."
+    "life_event_reads_local": "Independent design/source APPROVE. APIabsence67s/declaration77tests10fail77s; implemented80storageGREEN76s, expanded83incl16readerGREEN79s. Wholecheck/debug88s71XML714JVM0fail/error/skip;16KiBZIPpass. Checked historical reads only, no checkpoint/semantic undo/source/live service authority.",
+    "life_clock_graph_policy_local": "Accepted originalTiming policy gap corrected after2newtests RED96tests2fail56s; boundary/exactsource APPROVE.96life/83storageGREEN92s, wholecheck/debug100s71XML716JVM0fail/error/skip,16KiBZIPpass. ALERT/paused/inactivezero/elapsed preserved; no archivecodec change."
   },
-  "last_completed": "Checked immutable event/archive reader reviewed; local714JVM/check/debug0fail/error/skip,83storage incl16reader,alignment pass. Event-reads DONE; root TAKES transactional revision/sequence CAS and event/checkpoint/seat/result/alert adapter. History audit OPEN; no operational service/UI/full-v1 claim.",
-  "updated_utc": "2026-10-14T06:23:10Z",
+  "last_completed": "Corrected current clock graph policies after2regressions RED; independent boundary/source APPROVE,96life/83storage and whole716JVM/check/debug0fail/error/skip,alignment pass. Root retains mutation adapter TAKEN; next concrete CAS/event/checkpoint/result/alert design. History audit OPEN; no operational service/UI claim.",
+  "updated_utc": "2026-10-14T06:30:24Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -12,6 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class SqlLifeGameStoreTest {
     @get:Rule val folder=TemporaryFolder()
@@ -186,7 +187,12 @@ class SqlLifeGameStoreTest {
             original.copy(clock=original.clock.copy(paused=false)),
             original.copy(designations=GameDesignations(monarch=missing)),
             original.copy(result=Knowledge.Known(GameResult(EntityId("result"),original.id,SnapshotList.of(missing),stamp,"bad",Revision(0),false))),
-            original.copy(elapsed=original.elapsed.copy(paused=false)))
+            original.copy(elapsed=original.elapsed.copy(paused=false)),
+            original.copy(settings=original.settings.copy(clockMode=SeatClockMode.SHARED),clock=original.clock.copy(mode=SeatClockMode.SHARED,
+                shared=SharedCountdown(5.seconds,(-1).seconds),zeroPolicy=ClockZeroPolicy.PAUSE)),
+            original.copy(settings=original.settings.copy(clockMode=SeatClockMode.SHARED),clock=original.clock.copy(mode=SeatClockMode.SHARED,
+                shared=SharedCountdown(5.seconds,4.seconds),activeSeat=EntityId("seat"),paused=false,
+                anchor=ClockAnchor(stamp,Duration.ZERO,EntityId("process")))))
         for(snapshot in invalid) HostLifeDatabase(folder.newFile()).use { db ->
             val store=SqlLifeGameStore(db,codec);create(store)
             val bytes=ok(codec.encodeCheckpoint(initial().copy(snapshot=snapshot))).copyBytes()

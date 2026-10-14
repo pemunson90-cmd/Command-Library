@@ -53,11 +53,18 @@ internal object SnapshotGraphValidator {
         if (clock.firedAlertIds.toSet().size != clock.firedAlertIds.size) return corruptData("Duplicate fired alert identity")
         when (clock.mode) {
             SeatClockMode.NONE -> if (clock.seats.isNotEmpty() || clock.shared != null || clock.activeSeat != null || clock.anchor != null || !clock.paused) return corruptData("NONE has countdown state")
-            SeatClockMode.SHARED -> if (clock.seats.isNotEmpty() || clock.shared == null) return corruptData("Invalid shared countdown banks")
+            SeatClockMode.SHARED -> {
+                val shared = clock.shared
+                if (clock.seats.isNotEmpty() || shared == null) return corruptData("Invalid shared countdown banks")
+                if (!clock.paused && clock.activeSeat != null) return corruptData("Running shared countdown has a seat owner")
+                if (clock.zeroPolicy != ClockZeroPolicy.ALERT && (shared.remaining < Duration.ZERO || (!clock.paused && shared.remaining == Duration.ZERO))) return corruptData("Non-ALERT shared countdown is exhausted/running or negative")
+            }
             SeatClockMode.CHESS, SeatClockMode.PER_TURN -> {
                 if (clock.shared != null || clock.seats.size != seats.seats.size || clock.seats.map { it.seatId }.toSet() != seats.seats.keys) return corruptData("Invalid seat countdown banks")
                 if (clock.seats.any { !it.initial.isFinite() || it.initial < Duration.ZERO || !it.remaining.isFinite() }) return corruptData("Nonfinite countdown balance")
                 if (!clock.paused && clock.activeSeat == null) return corruptData("Running seat clock has no owner")
+                if (clock.zeroPolicy != ClockZeroPolicy.ALERT && clock.seats.any { it.remaining < Duration.ZERO ||
+                    (!clock.paused && it.seatId == clock.activeSeat && it.remaining == Duration.ZERO) }) return corruptData("Non-ALERT seat countdown is exhausted/running or negative")
             }
         }
         if (!clock.paused && (clock.anchor == null || clock.activeSeat?.let { seats.seats.getValue(it).participation is SeatParticipation.Eliminated } == true)) return corruptData("Running countdown lacks anchor/active participant")

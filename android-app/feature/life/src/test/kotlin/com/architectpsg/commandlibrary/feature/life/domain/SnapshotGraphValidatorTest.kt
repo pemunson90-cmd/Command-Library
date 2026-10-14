@@ -67,6 +67,27 @@ class SnapshotGraphValidatorTest {
         val fired = SnapshotList.of(EntityId("old-alert")); ok(clock(s, shared.copy(firedAlertIds = fired)))
         bad(clock(s, shared.copy(firedAlertIds = SnapshotList.of(fired[0], fired[0]))))
     }
+    @Test fun nonAlertClocksCannotRetainOvertimeOrRunAnExhaustedBank() {
+        val s=base();val c=chess(s)
+        for(policy in listOf(ClockZeroPolicy.PAUSE,ClockZeroPolicy.ELIMINATE)) {
+            for(mode in listOf(SeatClockMode.CHESS,SeatClockMode.PER_TURN)) {
+                val stopped=c.copy(mode=mode,zeroPolicy=policy,paused=true)
+                bad(clock(s,stopped.copy(seats=SnapshotList.copyOf(c.seats.map{it.copy(remaining=(-1).seconds)}))))
+                val zero=stopped.copy(seats=SnapshotList.copyOf(c.seats.map{it.copy(remaining=Duration.ZERO)}))
+                ok(clock(s,zero));bad(clock(s,zero.copy(paused=false)))
+                val inactiveZero=stopped.copy(paused=false,seats=SnapshotList.copyOf(c.seats.map{if(it.seatId==LifeFixtures.seatA)it else it.copy(remaining=Duration.ZERO)}))
+                ok(clock(s,inactiveZero))
+            }
+            val shared=s.clock.copy(mode=SeatClockMode.SHARED,shared=SharedCountdown(5.seconds,Duration.ZERO),zeroPolicy=policy,anchor=anchor)
+            ok(clock(s,shared));bad(clock(s,shared.copy(paused=false)))
+            ok(clock(s.copy(elapsed=s.elapsed.copy(paused=false,anchor=anchor)),shared))
+            bad(clock(s,shared.copy(shared=SharedCountdown(5.seconds,(-1).seconds))))
+        }
+    }
+    @Test fun runningSharedCountdownCannotChargeASeatOwner() {
+        val s=base();val c=s.clock.copy(mode=SeatClockMode.SHARED,shared=SharedCountdown(5.seconds,4.seconds),anchor=anchor,activeSeat=LifeFixtures.seatA)
+        ok(clock(s,c));bad(clock(s,c.copy(paused=false)))
+    }
     @Test fun elapsedRequiresValidAnchorButPreservesUnknownLineage() {
         val s = base(); val e = s.elapsed.copy(paused = false, anchor = anchor)
         ok(s.copy(elapsed = e)); ok(s.copy(elapsed = e.copy(paused = true)))

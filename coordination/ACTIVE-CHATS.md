@@ -4,9 +4,9 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles and Scryfall inte
 
 ## Recovery orchestrator
 
-Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Completed codec2/schema6 and checked profile persistence. Final coherent local wholecheck/debug714JVMtests,0failures/errors/skips; schema6 focused API36 previously passed3network/32storage. Evidence docs/verification/m2-life/GAME-STORE-LOCAL-20261014.md, PROFILES-LOCAL-20261014.md and SCHEMA6-LOCAL-20261013.md. No operational service/UI/full-v1 claim.
+Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Completed codec2/schema6 and checked profile persistence. Final coherent local wholecheck/debug716JVMtests,0failures/errors/skips; schema6 focused API36 previously passed3network/32storage. Evidence docs/verification/m2-life/GAME-STORE-LOCAL-20261014.md, PROFILES-LOCAL-20261014.md and SCHEMA6-LOCAL-20261013.md. No operational service/UI/full-v1 claim.
 
-Next unit cx-m2-life-game-mutations-01 is TAKEN: reviewed revision+sequence CAS and atomic event/checkpoint/seat/result/alert writes before real service binding. Event reader design/source reviewed and local714JVM/check/debug pass; see EVENT-READS-LOCAL-20261014.md. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
+Next unit cx-m2-life-game-mutations-01 is TAKEN: reviewed revision+sequence CAS and atomic event/checkpoint/seat/result/alert writes before real service binding. Event reader complete; follow-up timing graph policy corrected with boundary/source APPROVE and local716JVM/check/debug pass. See SNAPSHOT-GRAPH-LOCAL-20261014.md addendum and EVENT-READS-LOCAL-20261014.md. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
 
 ## Other chat — completed, no active claim
 
