@@ -73,4 +73,69 @@ class ScryfallRulingsMetadataCodecTest {
         rejected(metadata().replace("\"gzip\"", "\"br\""))
         rejected(metadata().replace("application/json", "text/html"))
     }
+
+    @Test fun unknownKeysAndStringsAreBoundedByUtf8Bytes() {
+        assertEquals(id, ScryfallRulingsMetadataCodec.decode(metadata(",\"ignored\":\"${"é".repeat(2048)}\"")).bulkId.value)
+        rejected(metadata(",\"ignored\":\"${"é".repeat(2049)}\""))
+        assertEquals(id, ScryfallRulingsMetadataCodec.decode(metadata(",\"${"é".repeat(128)}\":null")).bulkId.value)
+        rejected(metadata(",\"${"é".repeat(129)}\":null"))
+    }
+
+    @Test fun totalMetadataLimitCountsUtf8BytesAcrossIndividuallyLegalStrings() {
+        val item = "\"${"é".repeat(2048)}\""
+        val within = metadata(",\"ignored\":[${List(255) { item }.joinToString(",")}]")
+        assertTrue(within.toByteArray(Charsets.UTF_8).size < 1048576)
+        assertEquals(id, ScryfallRulingsMetadataCodec.decode(within).bulkId.value)
+        val oversized = metadata(",\"ignored\":[${List(256) { item }.joinToString(",")}]")
+        assertTrue(oversized.length < 1048576)
+        assertTrue(oversized.toByteArray(Charsets.UTF_8).size > 1048576)
+        rejected(oversized)
+    }
+
+    @Test fun unknownNestedValuesCannotBypassDepthOrUnicodeValidation() {
+        val within = "[".repeat(15) + "null" + "]".repeat(15)
+        assertEquals(id, ScryfallRulingsMetadataCodec.decode(metadata(",\"ignored\":$within")).bulkId.value)
+        val excessive = "[".repeat(16) + "null" + "]".repeat(16)
+        rejected(metadata(",\"ignored\":$excessive"))
+        rejected(metadata(",\"ignored\":\"\\uD800\""))
+        rejected(metadata(",\"ignored\":\"\\uDC00\""))
+    }
+
+    @Test fun configurableCompressedCeilingPreservesExactLongCounts() {
+        val maximum = metadata().replace("2147483648", Long.MAX_VALUE.toString())
+        assertEquals(Long.MAX_VALUE, ScryfallRulingsMetadataCodec.decode(maximum, Long.MAX_VALUE).compressedBytes)
+        assertThrows(IllegalArgumentException::class.java) { ScryfallRulingsMetadataCodec.decode(maximum, Long.MAX_VALUE - 1) }
+        val ten = metadata().replace("2147483648", "10")
+        assertEquals(10L, ScryfallRulingsMetadataCodec.decode(ten, 10).compressedBytes)
+        for (ceiling in listOf(9L, 0L, -1L)) {
+            assertThrows(IllegalArgumentException::class.java) { ScryfallRulingsMetadataCodec.decode(ten, ceiling) }
+        }
+    }
+
+    @Test fun timestampsUseProlepticGregorianDatesAndNormalizeOffsetBoundaries() {
+        fun at(date: String) = metadata().replace("2026-10-13T12:34:56.123456789+00:00", date)
+        val expected = mapOf(
+            "1500-03-01T00:00:00Z" to UtcTimestamp(-14826672000L, 0),
+            "1969-12-31T23:59:59.5Z" to UtcTimestamp(-1L, 500000000),
+            "2026-10-13T12:34:56+18:00" to UtcTimestamp(1791830096L, 0),
+            "2026-10-13T12:34:56-18:00" to UtcTimestamp(1791959696L, 0),
+        )
+        for ((date, timestamp) in expected) assertEquals(timestamp, ScryfallRulingsMetadataCodec.decode(at(date)).updatedAt)
+        for (date in listOf("1500-02-29T00:00:00Z", "0000-01-01T00:00:00Z",
+            "2026-10-13T12:34:56+18:01", "2026-10-13T12:34:56-19:00", "2026-10-13T12:34:56+00:60")) rejected(at(date))
+    }
+
+    @Test fun malformedListEntriesAndRequiredFieldShapesFailClosed() {
+        for (data in listOf("null", "{}", "[null]", "[1]", "[{}]")) {
+            rejected("""{"object":"list","data":$data}""")
+        }
+        for (value in listOf("null", "false", "123", "[]", "{}")) {
+            rejected(metadata().replace("\"type\":\"rulings\"", "\"type\":$value"))
+            rejected(metadata().replace("\"updated_at\":\"2026-10-13T12:34:56.123456789+00:00\"", "\"updated_at\":$value"))
+        }
+        for (value in listOf("false", "123", "[]", "{}"))
+            rejected(metadata().replace("\"content_encoding\":\"gzip\"", "\"content_encoding\":$value"))
+        assertNull(ScryfallRulingsMetadataCodec.decode(metadata().replace("\"content_encoding\":\"gzip\"", "\"content_encoding\":null")).contentEncoding)
+        rejected(metadata().replace("https://api.scryfall.com/bulk-data/$id", "https://api.scryfall.com/bulk-data/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"))
+    }
 }
