@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-audit-commands-115
+Checkpoint-ID: cp-20261014-life-custom-factory-116
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. implement-reviewed-life-custom-manifest-factory
+Next step: 3. close-life-countdown-recovery-and-live-history-regressions
 
-Updated UTC: 2026-10-14T11:49:50Z
+Updated UTC: 2026-10-14T12:03:55Z
 Status: in_progress; lease: active.
-Verified base: 3ab12bdac7b2ae610c1d35e50bf391c9a800d8dc.
+Verified base: 4648184762f55c395ea0a1b98befbbe305ab21fa.
 
-Verified bounded history audit command regressions183storage; continue reviewed CUSTOM factory, remaining platform boundaries retained.
+Reviewed public CUSTOMfactory4648184 verified whole932JVM; continue remaining countdownrecovery/history audit boundaries.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

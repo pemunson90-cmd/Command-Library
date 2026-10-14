@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T11:49:50Z",
-  "expires_utc": "2026-10-14T12:34:50Z",
-  "checkpoint_id": "cp-20261014-life-audit-commands-115",
-  "note": "Root retains sole life/shared orchestration. Audit command regression183storage verified; Claude audit DONE. Implement reviewed CUSTOM factory next; variant-source audit OPEN."
+  "heartbeat_utc": "2026-10-14T12:03:55Z",
+  "expires_utc": "2026-10-14T12:48:55Z",
+  "checkpoint_id": "cp-20261014-life-custom-factory-116",
+  "note": "Root retains sole life/shared orchestration. CUSTOMfactory reviewed932JVM verified. Next countdownrecovery/livehistory audit regressions. Claude audit DONE; variant-source OPEN."
 }

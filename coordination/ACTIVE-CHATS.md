@@ -4,9 +4,7 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Recorded shuffle/model/CLIF3 sourceea09f13 independently architecture/exact-source APPROVE; whole924JVM90XML0fail/error/skip,73model205life179storage,check/debug603s,16KiBZIPpass, APK26d42261025c30970845e1d325bf9cbcfc9c9347be7b68c564b9cf1107f73e85. Evidence docs/verification/m2-life/VARIANT-SHUFFLE-LOCAL-20261014.md. Actualv2goldens preserved, no schema bump. Positive publicCUSTOM factory remains pending, reviewed design docs/superpowers/specs/2026-10-14-life-custom-manifest-factory-design.md (framing pinned, no source yet).
-
-Consumed Claude history audit a47d1cc (basee489af7) via scoped rootcommitcda11ca, report preserved verbatim; board DONE/lock released, no inherited global state. Read docs/verification/m2-life/HISTORY-AUDIT-DISPOSITION-20261014.md for verified corrections and accepted gaps. Root command regressions3ab12bd verified183storage17XML0fail/error/skip139s, production unchanged. Next implement reviewed CUSTOM factory; retain shared/countdown recovery A3/D2 and all platform/stats/calendar/source/UI obligations. Session-injected Clock is correct; public service signatures need no reading argument. Variant-source audit remains OPEN; root retains life/shared lock/local-first continuous execution.
+Root codex-thread-recovery-20261013 owns life-functional/shared orchestration on agent/cx-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. CUSTOMfactory4648184 independently APPROVE, whole932JVM91XML0fail/error/skip221s; actual public config/shuffle/undo/reopen/rollback/watch tested. Next audited countdownrecovery A3/livehistorypagination D2. Namedsource/manifestpersist/import/service/platform/DI/UI remain incomplete. Detailed current delta: coordination/tasks/orch-kotlin-k3-offline-data-01.md.
 
 ## Other chat — completed, no active claim
 
