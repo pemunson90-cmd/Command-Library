@@ -43,6 +43,23 @@ class SqlLifeGameStoreTest {
     private suspend fun create(store:SqlLifeGameStore,input:GameCreation=input(),id:String="game")=
         ok(store.create(input,{Outcome.Success(initial(input,id))},token))
 
+    @Test fun creationPreservesKnownOpeningLineageAndRejectsUnknown()=runBlocking {
+        val lineage=Knowledge.Known(EntityId("fresh-opening-lineage"))
+        val checkpoint=initial().let { it.copy(snapshot=it.snapshot.copy(elapsed=it.snapshot.elapsed.copy(turnLineageId=lineage))) }
+        val file=folder.newFile()
+        HostLifeDatabase(file).use { db ->
+            assertEquals(checkpoint,ok(SqlLifeGameStore(db,codec).create(input(),{Outcome.Success(checkpoint)},token)).checkpoint)
+        }
+        HostLifeDatabase(file,false).use { db ->
+            assertEquals(lineage,ok(SqlLifeGameStore(db,codec).read(checkpoint.snapshot.id,token)).checkpoint.snapshot.elapsed.turnLineageId)
+        }
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val unknown=checkpoint.copy(snapshot=checkpoint.snapshot.copy(elapsed=checkpoint.snapshot.elapsed.copy(turnLineageId=Knowledge.Unknown("Missing",SnapshotList.empty()))))
+            fails(SqlLifeGameStore(db,codec).create(input(),{Outcome.Success(unknown)},token),FailureCode.INVALID_INPUT)
+            assertEquals(0L,db.scalar("SELECT count(*) FROM life_game"))
+        }
+    }
+
     @Test fun createAndReopenPreserveOriginalInputCheckpointAndFrozenNames()=runBlocking {
         val file=folder.newFile();val input=input();val checkpoint=initial(input)
         HostLifeDatabase(file).use { db ->

@@ -17,7 +17,7 @@ internal fun validateInitialGame(input: GameCreation, checkpoint: GameCheckpoint
         checkpoint.lastSettledEventId is Knowledge.Absent && checkpoint.recoveredProcessSessionId == null, "Initial game contains incomplete/prior lineage")
     need(game.alerts.isEmpty() && game.designations == GameDesignations(), "Initial game contains prior alerts/designations")
     need(game.elapsed.gameElapsed == Duration.ZERO && game.elapsed.turnElapsed == Duration.ZERO && game.elapsed.paused &&
-        game.elapsed.anchor == null && game.elapsed.turnLineageId is Knowledge.Absent, "Invalid initial elapsed timer")
+        game.elapsed.anchor == null && (game.elapsed.turnLineageId is Knowledge.Absent || game.elapsed.turnLineageId is Knowledge.Known), "Invalid initial elapsed timer")
     when (val checked = SnapshotGraphValidator.validate(game)) {
         is Outcome.Success -> Unit
         is Outcome.Failure -> rejectGame(code, checked.error.message)

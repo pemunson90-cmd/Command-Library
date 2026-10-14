@@ -60,7 +60,7 @@ internal data class ClockView(
 /**
  * Seat clock calculations for [SeatClockMode.CHESS] (per-seat bank) and [SeatClockMode.PER_TURN] (each turn starts
  * from the seat's initial time). Only the active seat is charged, by monotonic delta within one process session.
- * [SeatClockMode.SHARED] has no defined semantics in the core contract and is reported as unsupported.
+ * [SeatClockMode.SHARED] is handled by the modern timing facade, not this legacy seat-only reducer.
  */
 internal object SeatClockReducer {
     fun reduce(snapshot: GameSnapshot, action: GameAction, reading: ClockReading): Outcome<ClockReduction> = when (action) {
@@ -175,7 +175,11 @@ internal object SeatClockReducer {
     fun undo(before: GameSnapshot, afterAction: GameSnapshot, current: GameSnapshot, reading: ClockReading): Outcome<ClockReduction> =
         undoWithAction(before, afterAction, current, reading)
 
-    private fun undoWithAction(before: GameSnapshot, afterAction: GameSnapshot?, current: GameSnapshot, reading: ClockReading): Outcome<ClockReduction> {
+    /** Modern flat groups may pass priority after switching turns; refill belongs to the explicit turn target. */
+    internal fun undoWithTurnTarget(before: GameSnapshot, afterAction: GameSnapshot, current: GameSnapshot, reading: ClockReading, turnTarget: EntityId?): Outcome<ClockReduction> =
+        undoWithAction(before, afterAction, current, reading, turnTarget)
+
+    private fun undoWithAction(before: GameSnapshot, afterAction: GameSnapshot?, current: GameSnapshot, reading: ClockReading, turnTarget: EntityId? = null): Outcome<ClockReduction> {
         checkClock(before)?.let { return it }
         checkClock(current)?.let { return it }
         checkReading(reading)?.let { return it }
@@ -192,10 +196,11 @@ internal object SeatClockReducer {
         val restored = before.copy(revision = current.revision, lastEventId = current.lastEventId)
         if (current.clock.mode == SeatClockMode.NONE) return Outcome.Success(ClockReduction(restored, SnapshotList.empty(), SnapshotList.empty()))
         val fired = current.clock.firedAlertIds
+        val firedSet = fired.toHashSet()
         val settled = when (current.clock.undoPolicy) {
             ClockUndoPolicy.RESTORE_TIME -> {
                 val continued = settleClock(measurableBefore(before, current, reading), reading).valueOr { return it }
-                val newAlerts = continued.alerts.filter { it.id !in fired }
+                val newAlerts = continued.alerts.filter { it.id !in firedSet }
                 continued.copy(
                     clock = continued.clock.copy(anchor = reading.anchor(), firedAlertIds = SnapshotList.copyOf(fired + newAlerts.map { it.id })),
                     alerts = newAlerts,
@@ -204,7 +209,7 @@ internal object SeatClockReducer {
             }
             ClockUndoPolicy.KEEP_ELAPSED -> {
                 val charged = settleClock(current, reading).valueOr { return it }
-                val reverted = revertTurnRefill(before, afterAction, current, charged, reading).valueOr { return it }
+                val reverted = revertTurnRefill(before, afterAction, current, charged, reading, turnTarget).valueOr { return it }
                 val recoveryPause = current.clock.paused && current.clock.anchor?.processSessionId != before.clock.anchor?.processSessionId
                 reverted.copy(
                     clock = reverted.clock.copy(
@@ -233,8 +238,8 @@ internal object SeatClockReducer {
      * same seat switches to itself) and the charge since the refill. Reconstructed zero transitions follow
      * the same policy as a normal settlement, without reporting a transition already fired by this action.
      */
-    private fun revertTurnRefill(before: GameSnapshot, afterAction: GameSnapshot?, current: GameSnapshot, charged: Settled, reading: ClockReading): Outcome<Settled> {
-        val refilled = current.clock.activeSeat
+    private fun revertTurnRefill(before: GameSnapshot, afterAction: GameSnapshot?, current: GameSnapshot, charged: Settled, reading: ClockReading, turnTarget: EntityId?): Outcome<Settled> {
+        val refilled = turnTarget ?: current.clock.activeSeat
         if (current.clock.mode != SeatClockMode.PER_TURN || current.turnNumber == before.turnNumber || refilled == null) return Outcome.Success(charged)
         var prior = before.clock.seats.firstOrNull { it.seatId == refilled } ?: return Outcome.Success(charged)
         val action = afterAction ?: current
@@ -251,14 +256,15 @@ internal object SeatClockReducer {
         val remaining = prior.remaining - (time.initial - time.remaining)
         if (!remaining.isFinite()) return invalidInput("Clock arithmetic for seat ${refilled.value} left the finite range")
         val clamp = charged.clock.zeroPolicy != ClockZeroPolicy.ALERT && remaining <= Duration.ZERO
-        val alreadyReported = charged.clock.firedAlertIds.any { id ->
-            id !in before.clock.firedAlertIds && id.value.startsWith("clock-zero/${refilled.value}/turn-${current.turnNumber}/")
-        }
+        val identity = ClockZeroIdentity(refilled, current.turnNumber)
+        val beforeFired = before.clock.firedAlertIds.toHashSet()
+        val fired = charged.clock.firedAlertIds.toHashSet()
+        val alreadyReported = fired.any { id -> id !in beforeFired && identity.matches(id) }
         val alerts = ArrayList(charged.alerts)
         val timedOut = ArrayList(charged.timedOut)
         if (prior.remaining > Duration.ZERO && remaining <= Duration.ZERO && !alreadyReported) {
-            val occurrence = (1..charged.clock.firedAlertIds.size + 1).first { zeroAlertId(refilled, current.turnNumber, it) !in charged.clock.firedAlertIds }
-            alerts += ClockAlert(zeroAlertId(refilled, current.turnNumber, occurrence), current.id, refilled, reading.wall, null)
+            val occurrence = (1..fired.size + 1).first { identity.id(it) !in fired }
+            alerts += ClockAlert(identity.id(occurrence), current.id, refilled, reading.wall, null)
             if (charged.clock.zeroPolicy == ClockZeroPolicy.ELIMINATE) timedOut += refilled
         }
         val seats = charged.clock.seats.map { if (it.seatId == refilled) it.copy(remaining = if (clamp) Duration.ZERO else remaining) else it }
@@ -281,7 +287,7 @@ internal object SeatClockReducer {
      * timeline derives the same ID and is recognised as already fired.
      */
     internal fun zeroAlertId(seatId: EntityId, turnNumber: Long, occurrence: Int): EntityId =
-        EntityId("clock-zero/${seatId.value}/turn-$turnNumber/$occurrence")
+        ClockZeroIdentity(seatId, turnNumber).id(occurrence)
 
     private fun settleClock(snapshot: GameSnapshot, reading: ClockReading): Outcome<Settled> {
         val clock = snapshot.clock
@@ -294,8 +300,10 @@ internal object SeatClockReducer {
         val alerts = ArrayList<ClockAlert>()
         val timedOut = ArrayList<EntityId>()
         if (time.remaining > Duration.ZERO && next <= Duration.ZERO) {
-            val occurrence = (1..clock.firedAlertIds.size + 1).first { zeroAlertId(active, snapshot.turnNumber, it) !in clock.firedAlertIds }
-            alerts += ClockAlert(zeroAlertId(active, snapshot.turnNumber, occurrence), snapshot.id, active, reading.wall, null)
+            val identity = ClockZeroIdentity(active, snapshot.turnNumber)
+            val fired = clock.firedAlertIds.toHashSet()
+            val occurrence = (1..fired.size + 1).first { identity.id(it) !in fired }
+            alerts += ClockAlert(identity.id(occurrence), snapshot.id, active, reading.wall, null)
             if (clock.zeroPolicy == ClockZeroPolicy.ELIMINATE) timedOut += active
         }
         // A clamping policy holds a seat at zero whenever it would run below it, including a seat resumed at zero.
@@ -335,7 +343,7 @@ internal object SeatClockReducer {
         if (clock.mode != snapshot.settings.clockMode) return corruptData("Clock mode ${clock.mode} disagrees with game setting ${snapshot.settings.clockMode}")
         when (clock.mode) {
             SeatClockMode.NONE -> return null
-            SeatClockMode.SHARED -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "SHARED seat clock semantics are not defined by the core contract")
+            SeatClockMode.SHARED -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "SHARED requires the modern timing engine; this reducer handles seat clocks only")
             SeatClockMode.CHESS, SeatClockMode.PER_TURN -> Unit
         }
         val timed = HashSet<EntityId>()
