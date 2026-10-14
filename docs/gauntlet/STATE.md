@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-search-rules-boundary-150. Updated UTC: 2026-10-14T23:56:57Z.
+Checkpoint: cp-20261014-rules-draft-native-freeze-151. Updated UTC: 2026-10-14T23:59:05Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-freeze-one-current-native-snapshot-then-rules-draft-supersession
+design-indexed-query-execution-and-monitor-frozen-native
 
-Source8908e46 combined fresh0022 local whole SUCCESS9m10s/129XML1233tests0fail-error-skip/allAPKs/8ZIP16KiB; source published. Freeze ONE current native snapshot, preserve older drafts, continue local rules edit lifecycle. Fullv1 incomplete.
+Rules draft24focused/nativecompile passed35s. Published frozen9c1573b ONE Android38657175303 in_progress; source8908e46 whole1233pass retained. Continue indexed query design locally; no native/fullv1/finished APK claim.
 
 Read CURRENT, machine state and task card.

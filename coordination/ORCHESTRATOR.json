@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T23:56:57Z",
-  "expires_utc": "2026-10-15T00:41:57Z",
-  "checkpoint_id": "cp-20261014-search-rules-boundary-150",
-  "note": "Root sole writer/final merge. Current8908e46 combined fresh0022 whole1233pass/129XML/allAPKs/8ZIP16KiB9m10s. Prepare ONE current isolated native snapshot; older r3 superseded, allrefs preserved. Then local rules draft lifecycle. Fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-14T23:59:05Z",
+  "expires_utc": "2026-10-15T00:44:05Z",
+  "checkpoint_id": "cp-20261014-rules-draft-native-freeze-151",
+  "note": "Root sole writer/final merge. Source8908e46 whole1233pass/129XML/8ZIP16KiB9m10s. Frozen9c1573b ONE Android38657175303 in_progress; no device pass, preserve allrefs/older r3 notscheduled. Later rules draft24focused/nativecompile35s passed; next indexed query execution design. Fullv1 incomplete/GameService HOLD/no finished APK."
 }

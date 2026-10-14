@@ -57,7 +57,14 @@ internal class RulesController(
 ) {
     private val mutable = MutableStateFlow(RulesUiState())
     val state: StateFlow<RulesUiState> = mutable.asStateFlow()
-    var queryInput: String by mutableStateOf("")
+    private var queryDraft: String by mutableStateOf("")
+    var queryInput: String
+        get() = queryDraft
+        set(value) {
+            if (value == queryDraft) return
+            queryDraft = value
+            clearSearch(null)
+        }
     private var importJob: Job? = null
     private var statusJob: Job? = null
     private var searchJob: Job? = null
@@ -197,11 +204,11 @@ internal class RulesController(
 
     fun submit() {
         val query = queryInput.trim()
+        clearSearch(null)
         if (query.isEmpty() || query.codePointCount(0, query.length) > MAX_QUERY_CODE_POINTS) {
             mutable.update { it.copy(searchProblem = Problem.INVALID_INPUT) }
             return
         }
-        clearSearch(null)
         mutable.update { it.copy(query = query, searchLoading = true) }
         val epoch = searchEpoch
         searchJob = scope.launch { load(query, null, null, epoch) }

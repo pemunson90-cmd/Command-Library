@@ -63,6 +63,66 @@ class RulesControllerTest {
     private fun TestScope.controller(ports: Ports, documents: MemoryDocuments = MemoryDocuments(), exactKeywords: Boolean = false) =
         RulesController(ownerScope(), ports, ports, documents, StandardTestDispatcher(testScheduler), ports.takeIf { exactKeywords })
 
+    @Test fun editingClearsOldResultsDetailAndCursorWithoutLosingDraftOrInstalledStatus() = runTest {
+        val ports = Ports(); val c = controller(ports)
+        c.refresh(); c.queryInput = "old"; c.submit(); advanceUntilIdle()
+        c.select(c.state.value.results.single()); advanceUntilIdle()
+        assertNotNull(c.state.value.selected); assertNotNull(c.state.value.nextCursor)
+        val status = c.state.value.status
+        c.queryInput = "  new exact draft  "
+        assertEquals("  new exact draft  ", c.queryInput)
+        assertEquals(status, c.state.value.status)
+        assertTrue(c.state.value.results.isEmpty()); assertNull(c.state.value.query)
+        assertNull(c.state.value.selected); assertNull(c.state.value.nextCursor)
+        assertNull(c.state.value.generation); assertFalse(c.state.value.canLoadMore)
+        assertFalse(c.state.value.searchLoading); assertNull(c.state.value.searchProblem)
+        c.submit(); advanceUntilIdle()
+        assertEquals("new exact draft", c.state.value.query)
+        assertEquals("  new exact draft  ", c.queryInput)
+    }
+
+    @Test fun editingSupersedesPendingKeywordLookupWithoutSubmittingAnotherSearch() = runTest {
+        val ports = Ports(); val gate = CompletableDeferred<KeywordRuleLink>()
+        ports.keywordAction = { Outcome.Success(gate.await()) }
+        ports.searchAction = { error("Editing must not execute a search") }
+        val c = controller(ports, exactKeywords = true)
+        c.lookupKeyword("Flying"); runCurrent(); assertTrue(c.state.value.searchLoading)
+        c.queryInput = "new draft"
+        gate.complete(KeywordRuleLink("Flying", generation, Knowledge.Known(entry("old").id), SnapshotList.empty()))
+        advanceUntilIdle()
+        assertEquals("new draft", c.queryInput); assertNull(c.state.value.query)
+        assertFalse(c.state.value.searchLoading); assertTrue(c.state.value.results.isEmpty())
+        assertNull(c.state.value.selected); assertTrue(ports.entryRequests.isEmpty())
+    }
+
+    @Test fun editingSupersedesPendingPageAndDetailAndInvalidSubmissionCannotRestoreThem() = runTest {
+        for (detail in listOf(false, true)) {
+            val ports = Ports(); val c = controller(ports)
+            c.queryInput = "old"; c.submit(); advanceUntilIdle()
+            val old = c.state.value.results.single()
+            val pageGate = CompletableDeferred<Page<RuleEntry>>()
+            val entryGate = CompletableDeferred<RuleEntry>()
+            if (detail) {
+                ports.entryAction = { _, _ -> Outcome.Success(entryGate.await()) }
+                c.select(old)
+            } else {
+                ports.searchAction = { Outcome.Success(pageGate.await()) }
+                c.loadMore()
+            }
+            runCurrent()
+            c.queryInput = " "; c.submit()
+            pageGate.complete(page(listOf(entry("old-late"))))
+            entryGate.complete(old); advanceUntilIdle()
+            assertEquals(" ", c.queryInput); assertNull(c.state.value.query)
+            assertEquals(Problem.INVALID_INPUT, c.state.value.searchProblem)
+            assertTrue(c.state.value.results.isEmpty()); assertNull(c.state.value.selected)
+            assertNull(c.state.value.nextCursor); assertFalse(c.state.value.searchLoading)
+            assertFalse(c.state.value.detailLoading)
+            c.queryInput = "corrected"
+            assertNull(c.state.value.searchProblem)
+        }
+    }
+
     @Test fun knownExactKeywordReadsTheActualPinnedGlossaryAndKeepsItsRealRowOnBack() = runTest {
         val ports = Ports(); val glossary = entry("actual-stored-glossary").copy(kind = RuleEntryKind.GLOSSARY, number = Knowledge.Absent("No number"), title = Knowledge.Known("Flying"))
         ports.keywordAction = { Outcome.Success(KeywordRuleLink(it, generation, Knowledge.Known(glossary.id), SnapshotList.empty())) }
