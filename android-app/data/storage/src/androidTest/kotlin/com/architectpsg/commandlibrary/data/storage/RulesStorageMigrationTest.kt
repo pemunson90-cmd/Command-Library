@@ -1,5 +1,7 @@
 package com.architectpsg.commandlibrary.data.storage
 
+import com.architectpsg.commandlibrary.data.storage.schema.StorageSchema
+
 import android.content.Context
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
@@ -40,7 +42,7 @@ class RulesStorageMigrationTest {
         val schema = exportedV1()
         val original = createV1(schema)
         database = success(StorageDatabase.open(context, fileName))
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         for (table in listOf("acquisition_job", "acquisition_artifact", "acquisition_seen_id")) {
             assertEquals("1->2->3->4 creates $table", 0L, scalar("SELECT count(*) AS total FROM $table"))
         }

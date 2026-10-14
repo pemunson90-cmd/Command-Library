@@ -1,0 +1,9 @@
+# Bounded importer acknowledgement lifetime review
+
+2026-10-13; independent fresh-context gpt-6-astra high reviewed LocalBulkCatalog.kt and its real-SQLite regression against ANDROID-BINDING-DRAFT-REVIEW blocker2: APPROVE, no blocking source findings.
+
+Ambiguous activation acknowledgement now finishes inside verified binding callback using the unchanged NonCancellable/500ms policy. Outer handling consumes recorded acknowledgement and never repeats verified reconciliation after pin exit. Selected-input reconciliation unchanged. Confirmed COMMIT wins over late cancellation/binding release failure; rollback permits staging cleanup; inconclusive preserves possibly active data and propagates cancellation. Import owner finally remains unchanged. This does not establish Task4 consent revocation/install/removal fencing.
+
+Root observed actual RED before production edits: one focused Gradle/JUnit test failed with Verified input pin must cover durable activation acknowledgement. After correction, focused LocalBulkCatalogTest XML reported16tests/0failures/0errors/0skips; combined catalog lint+test command completed successfully. Corrected provider lint has zero errors and2warnings (CheckResult and existing UseRequiresApi), no baseline/suppression introduced.
+
+Reviewer suggested verified-input acknowledgement timeout coverage. Worker added deterministic suspended-acknowledgement test checking original cancellation propagation, pin/owner release, active-data preservation and one attempt. Worker corrected its initial Unknown expectation before execution to match the existing CancellationException policy; no production behavior changed. Root final local verification passed: LocalBulkCatalogTest17/17, all52JUnit XML reports524tests0failures/errors/skips; instrumentation APK assembly and check/:app:assembleDebug successful. Native provider/removal races, genuine binding and fullv1 acceptance remain separate, not_run.

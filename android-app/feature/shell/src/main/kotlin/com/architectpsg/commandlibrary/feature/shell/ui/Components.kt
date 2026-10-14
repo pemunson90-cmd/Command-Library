@@ -102,3 +102,14 @@ internal fun ActionRow(content: @Composable () -> Unit) {
         content()
     }
 }
+
+/** Informational badge deliberately has no click or button semantics. */
+@Composable
+internal fun ReadOnlyBadge(label: String, value: String, modifier: Modifier = Modifier) {
+    Surface(modifier.semantics(mergeDescendants = true) {}, shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.surfaceContainerHigh) {
+        Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+            Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(value, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+        }
+    }
+}

@@ -42,6 +42,9 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 
+/** Atomic installation-scoped removal requests; reading them grants no acquisition authority. */
+public data class PendingDataRemovals(public val revision: Revision, public val consentIds: SnapshotList<EntityId>)
+
 /**
  * Settings and consent persisted in one DataStore file, so a revision bump and a consent change
  * always commit together.
@@ -82,6 +85,40 @@ public class DataStoreSettingsRepository private constructor(
     public override suspend fun read(cancel: CancelToken): Outcome<SettingsSnapshot> = operate(cancel) {
         val installationId = installation.get()
         store.data.first().toSnapshot(installationId)
+    }
+
+    /** Ungated so callers may inspect the outbox while holding the acquisition guard. */
+    public suspend fun pendingDataRemovals(cancel: CancelToken): Outcome<PendingDataRemovals> = operate(cancel) {
+        val installationId = installation.get()
+        val current = store.data.first()
+        PendingDataRemovals(current.revision, SnapshotList.copyOf(current.consents.filter {
+            it.installationId == installationId && it.pendingDataRemoval && it.record.revokedAt != null
+        }.map { it.record.id }))
+    }
+
+    /** Call only after all exact-consent removal has durably completed, outside the shared guard. */
+    public suspend fun acknowledgeDataRemoval(
+        id: EntityId,
+        expectedRevision: Revision,
+        cancel: CancelToken,
+    ): Outcome<Unit> = guardedOperate(cancel) {
+        val installationId = installation.get()
+        settleMutation(cancel) { current ->
+            reject(requireCurrentRevision(expectedRevision, current.revision))
+            val index = current.consents.indexOfFirst { it.installationId == installationId && it.record.id == id }
+            if (index < 0) throw SettingsRejection(failure(FailureCode.INVALID_INPUT, "No consent record with id ${id.value}"))
+            val stored = current.consents[index]
+            if (!stored.pendingDataRemoval) current else {
+                val consents = current.consents.toMutableList()
+                consents[index] = stored.copy(pendingDataRemoval = false)
+                current.copy(
+                    revision = nextRevision(expectedRevision, current.revision),
+                    updatedAt = clock.utcNow(),
+                    consents = consents,
+                ).also { SettingsStoreCodec.validateCandidate(it) }
+            }
+        }
+        Unit
     }
 
     public override suspend fun update(
@@ -334,26 +371,31 @@ private fun applyChanges(
         is SettingChange.Cache -> state.copy(cache = change.policy)
         is SettingChange.Budget -> state.copy(budget = change.amount)
         is SettingChange.ProviderProfiles -> state.copy(providerProfileIds = change.ids.toList())
-        is SettingChange.RevokeConsent -> revoke(state, installationId, change.id, now)
+        is SettingChange.RevokeConsent -> revoke(state, installationId, change.id, change.removeDownloadedData, now)
     }
 }
 
 /**
  * Marks the effective consent revoked at the real current time. Revoking an already revoked consent
- * keeps its original revokedAt. `removeDownloadedData` is not actionable in K2 because no downloaded
- * data exists; nothing is deleted and nothing claims a deletion.
+ * keeps its original revokedAt. An explicit removal choice queues a durable request atomically;
+ * only the removal coordinator can acknowledge it after durable deletion.
  */
 private fun revoke(
     state: StoredSettings,
     installationId: String,
     id: EntityId,
+    removeDownloadedData: Boolean,
     now: UtcTimestamp,
 ): StoredSettings {
     val index = state.consents.indexOfFirst { it.installationId == installationId && it.record.id == id }
     if (index < 0) throw SettingsRejection(failure(FailureCode.INVALID_INPUT, "No consent record with id ${id.value}"))
     val stored = state.consents[index]
-    if (stored.record.revokedAt != null) return state
+    val replacement = stored.copy(
+        record = stored.record.copy(revokedAt = stored.record.revokedAt ?: now),
+        pendingDataRemoval = stored.pendingDataRemoval || removeDownloadedData,
+    )
+    if (replacement == stored) return state
     val updated = state.consents.toMutableList()
-    updated[index] = stored.copy(record = stored.record.copy(revokedAt = now))
+    updated[index] = replacement
     return state.copy(consents = updated)
 }

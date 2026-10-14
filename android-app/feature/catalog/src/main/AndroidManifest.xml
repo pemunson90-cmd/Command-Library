@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Normal permission required for real connectivity admission; no download is registered. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+        <!-- Same-process locator; no file paths or URI grants leave the verified pin. -->
+        <provider
+            android:name="com.architectpsg.commandlibrary.feature.catalog.AcquisitionArtifactProvider"
+            android:authorities="${applicationId}.acquisition.artifact"
+            android:exported="false"
+            android:grantUriPermissions="false" />
+    </application>
+</manifest>

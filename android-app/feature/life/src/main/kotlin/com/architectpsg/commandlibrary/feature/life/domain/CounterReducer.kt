@@ -12,7 +12,7 @@ import com.architectpsg.commandlibrary.core.model.SnapshotList
 
 /**
  * Explicit role bindings by definition ID. A label such as "Life" never selects behavior.
- * Core `GameSettings` has no persisted role field yet; see the worker handoff contract request.
+ * Current snapshot graphs derive these bindings from persisted CounterRole metadata.
  */
 internal data class CounterRoles(
     val life: EntityId,
@@ -48,6 +48,12 @@ internal data class CounterReduction(
 )
 
 internal object CounterReducer {
+    /** Reuses the exact counter graph rules without applying an action or assessing automatic loss. */
+    fun validateState(snapshot: GameSnapshot, roles: CounterRoles): Outcome<Unit> {
+        CounterBoard.of(snapshot, roles).valueOr { return it }
+        return Outcome.Success(Unit)
+    }
+
     /**
      * Applies [GameAction.AdjustCounter], [GameAction.SetCounterHidden] or one flat [GameAction.Group] of them, all or
      * nothing. A group inside a group is rejected: an event carries exactly one group ID.

@@ -321,8 +321,9 @@ class DataStoreSettingsRepositoryTest {
         f.repo.update(patch(SettingChange.RevokeConsent(record.id, false)), Revision(1), LiveToken).success()
         f.clock.now = UtcTimestamp(1_760_200_000)
         val again = f.repo.update(patch(SettingChange.RevokeConsent(record.id, true)), Revision(2), LiveToken).success()
-        assertEquals(Revision(2), again.revision)
+        assertEquals(Revision(3), again.revision)
         assertEquals(revokedAt, again.consents.single().revokedAt)
+        assertEquals(SnapshotList.of(record.id), f.repo.pendingDataRemovals(LiveToken).success().consentIds)
     }
 
     @Test
@@ -413,7 +414,7 @@ class DataStoreSettingsRepositoryTest {
 
     @Test
     fun anUnknownNewerStoredVersionIsATypedFailureAndTheFileIsNeverReset(): Unit = blocking {
-        for (version in listOf(2, 99, Int.MAX_VALUE)) {
+        for (version in listOf(3, 99, Int.MAX_VALUE)) {
             val f = fixture()
             val bytes = bytesWithVersion(version)
             writeStore(f, bytes)
@@ -629,7 +630,7 @@ class DataStoreSettingsRepositoryTest {
         entered.await()
         val revision = f.repo.read(LiveToken).success().revision
         val revoke = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
-            f.repo.update(patch(SettingChange.RevokeConsent(approved.id, false)), revision, LiveToken)
+            f.repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), revision, LiveToken)
         }
         assertFalse("revocation waits for bounded acquisition critical section", revoke.isCompleted)
         release.complete(Unit)
@@ -663,7 +664,7 @@ class DataStoreSettingsRepositoryTest {
             val revision = repo.read(LiveToken).success().revision
             blockWrite.set(true)
             val revoke = launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
-                repo.update(patch(SettingChange.RevokeConsent(approved.id, false)), revision, LiveToken)
+                repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), revision, LiveToken)
             }
             kotlinx.coroutines.withTimeout(2000) { entered.await() }
             revoke.cancel()
@@ -683,10 +684,228 @@ class DataStoreSettingsRepositoryTest {
             assertTrue(revoke.isCancelled)
             assertTrue(dispatched)
             assertFalse(final.consents.single { it.id == approved.id }.permits(approved.intent))
+            assertEquals(SnapshotList.of(approved.id), repo.pendingDataRemovals(LiveToken).success().consentIds)
+            repo.close()
+            val reopened = DataStoreSettingsRepository.create(File(directory, "settings.bin"), File(directory, "installation-id"), coordinator)
+            try { assertEquals(SnapshotList.of(approved.id), reopened.pendingDataRemovals(LiveToken).success().consentIds) }
+            finally { reopened.close() }
         } finally {
             release.complete(Unit)
             repo.close()
         }
+    }
+
+    @Test fun revokeRequestIsAtomicAndFalseNeverClearsItAcrossReopen(): Unit = blocking {
+        val f = fixture()
+        assertTrue(f.repo.pendingDataRemovals(LiveToken).success().consentIds.isEmpty())
+        val first = f.repo.approve(intent(), LiveToken).success()
+        val second = f.repo.approve(intent(id = "other"), LiveToken).success()
+        val revoked = f.repo.update(patch(SettingChange.RevokeConsent(first.id, true)), Revision(2), LiveToken).success()
+        val pending = f.reopen().pendingDataRemovals(LiveToken).success()
+        assertEquals(PendingDataRemovals(revoked.revision, SnapshotList.of(first.id)), pending)
+        assertEquals(revoked, f.repo.update(patch(SettingChange.RevokeConsent(first.id, false)), pending.revision, LiveToken).success())
+        assertEquals(revoked, f.repo.update(patch(SettingChange.RevokeConsent(first.id, true)), pending.revision, LiveToken).success())
+        assertTrue(f.repo.read(LiveToken).success().consents.single { it.id == second.id }.permits(second.intent))
+        f.repo.update(patch(SettingChange.RevokeConsent(second.id, true)), Revision(2), LiveToken).failure(FailureCode.STALE_REVISION)
+        assertEquals(pending, f.repo.pendingDataRemovals(LiveToken).success())
+    }
+
+    @Test fun acknowledgmentIsExactConditionalAndOldDrainerCannotClearNewRequest(): Unit = blocking {
+        val f = fixture()
+        val first = f.repo.approve(intent(), LiveToken).success()
+        val second = f.repo.approve(intent(id = "other"), LiveToken).success()
+        val revoked = f.repo.update(patch(SettingChange.RevokeConsent(first.id, true), SettingChange.RevokeConsent(second.id, true)), Revision(2), LiveToken).success()
+        val old = f.repo.pendingDataRemovals(LiveToken).success()
+        val before = f.storeFile.readBytes()
+        f.repo.acknowledgeDataRemoval(EntityId("unknown"), old.revision, LiveToken).failure(FailureCode.INVALID_INPUT)
+        assertArrayEquals(before, f.storeFile.readBytes())
+        f.repo.acknowledgeDataRemoval(first.id, Revision(2), LiveToken).failure(FailureCode.STALE_REVISION)
+        assertArrayEquals(before, f.storeFile.readBytes())
+        f.clock.now = UtcTimestamp(1_770_000_000)
+        f.repo.acknowledgeDataRemoval(first.id, old.revision, LiveToken).success()
+        val after = f.repo.read(LiveToken).success()
+        assertEquals(Revision(4), after.revision)
+        assertEquals(f.clock.now, after.updatedAt)
+        assertEquals(revoked.consents, after.consents)
+        assertEquals(SnapshotList.of(second.id), f.reopen().pendingDataRemovals(LiveToken).success().consentIds)
+        // A repeated ack with a fresh snapshot is a no-op, preserving revision/time.
+        f.repo.acknowledgeDataRemoval(first.id, after.revision, LiveToken).success()
+        assertEquals(after, f.repo.read(LiveToken).success())
+        f.repo.update(patch(SettingChange.RevokeConsent(first.id, true)), after.revision, LiveToken).success()
+        val newRequest = f.repo.pendingDataRemovals(LiveToken).success()
+        val bytes = f.storeFile.readBytes()
+        val stale = async { f.repo.acknowledgeDataRemoval(first.id, old.revision, LiveToken) }
+        stale.await().failure(FailureCode.STALE_REVISION)
+        assertArrayEquals(bytes, f.storeFile.readBytes())
+        assertEquals(newRequest, f.repo.pendingDataRemovals(LiveToken).success())
+        assertEquals(Revision(5), newRequest.revision)
+    }
+
+    @Test fun foreignPendingFlagsAreInertAndMissingOrDamagedStoresFailClosed(): Unit = blocking {
+        val f = fixture()
+        val record = f.repo.approve(intent(), LiveToken).success()
+        f.repo.update(patch(SettingChange.RevokeConsent(record.id, true)), Revision(1), LiveToken).success()
+        val originalId = f.idFile.readText()
+        f.repo.close()
+        f.idFile.writeText(UUID.randomUUID().toString())
+        val foreign = f.reopen()
+        val before = f.storeFile.readBytes()
+        assertTrue(foreign.pendingDataRemovals(LiveToken).success().consentIds.isEmpty())
+        foreign.acknowledgeDataRemoval(record.id, Revision(2), LiveToken).failure(FailureCode.INVALID_INPUT)
+        assertArrayEquals(before, f.storeFile.readBytes())
+        f.repo.close()
+        f.idFile.writeText(originalId)
+        assertEquals(SnapshotList.of(record.id), f.reopen().pendingDataRemovals(LiveToken).success().consentIds)
+        f.repo.close()
+        f.storeFile.writeBytes(byteArrayOf(1, 2, 3))
+        f.reopen().pendingDataRemovals(LiveToken).failure(FailureCode.CORRUPT_DATA)
+        f.repo.acknowledgeDataRemoval(record.id, Revision(2), LiveToken).failure(FailureCode.CORRUPT_DATA)
+        assertArrayEquals(byteArrayOf(1, 2, 3), f.storeFile.readBytes())
+    }
+
+    @Test fun pendingReadIsUngatedAndAckWaitsForSharedGuard(): Unit = blocking {
+        val f = fixture()
+        val approved = f.repo.approve(intent(), LiveToken).success()
+        f.repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), Revision(1), LiveToken).success()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val entered = kotlinx.coroutines.CompletableDeferred<PendingDataRemovals>()
+        val owner = launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            f.consentCoordinator.withExclusive(LiveToken) {
+                entered.complete(f.repo.pendingDataRemovals(LiveToken).success())
+                release.await()
+            }
+        }
+        val pending = entered.await()
+        val ack = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            f.repo.acknowledgeDataRemoval(approved.id, pending.revision, LiveToken)
+        }
+        assertFalse(ack.isCompleted)
+        release.complete(Unit)
+        kotlinx.coroutines.withTimeout(2000) { owner.join(); ack.await().success() }
+        assertTrue(f.repo.pendingDataRemovals(LiveToken).success().consentIds.isEmpty())
+    }
+
+    @Test fun acknowledgmentCancellationAfterSerializerBoundarySettlesGuardAndClearedFlag(): Unit = blocking {
+        val directory = temporary.newFolder()
+        val coordinator = com.architectpsg.commandlibrary.core.common.ConsentCoordinator()
+        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val blockWrite = java.util.concurrent.atomic.AtomicBoolean(false)
+        val serializer = object : androidx.datastore.core.Serializer<StoredSettings> {
+            override val defaultValue = SettingsStoreSerializer.defaultValue
+            override suspend fun readFrom(input: java.io.InputStream) = SettingsStoreSerializer.readFrom(input)
+            override suspend fun writeTo(t: StoredSettings, output: java.io.OutputStream) {
+                if (blockWrite.get()) { entered.complete(Unit); release.await() }
+                SettingsStoreSerializer.writeTo(t, output)
+            }
+        }
+        val repo = DataStoreSettingsRepository.createWithSerializer(File(directory, "settings.bin"),
+            File(directory, "installation-id"), coordinator, FakeClock(), SequenceIds(), serializer)
+        try {
+            val approved = repo.approve(intent(), LiveToken).success()
+            repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), Revision(1), LiveToken).success()
+            val pending = repo.pendingDataRemovals(LiveToken).success()
+            blockWrite.set(true)
+            val ack = launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                repo.acknowledgeDataRemoval(approved.id, pending.revision, LiveToken)
+            }
+            kotlinx.coroutines.withTimeout(2000) { entered.await() }
+            ack.cancel()
+            kotlinx.coroutines.yield()
+            assertFalse(ack.isCompleted)
+            val next = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                coordinator.withExclusive(LiveToken) { repo.pendingDataRemovals(LiveToken).success() }
+            }
+            assertFalse(next.isCompleted)
+            release.complete(Unit)
+            val cleared = kotlinx.coroutines.withTimeout(2000) { ack.join(); next.await() }
+            assertTrue(ack.isCancelled)
+            assertTrue(cleared.consentIds.isEmpty())
+            assertEquals(Revision(3), cleared.revision)
+            repo.close()
+            val reopened = DataStoreSettingsRepository.create(File(directory, "settings.bin"), File(directory, "installation-id"), coordinator)
+            try { assertEquals(cleared, reopened.pendingDataRemovals(LiveToken).success()) }
+            finally { reopened.close() }
+        } finally { release.complete(Unit); repo.close() }
+    }
+
+    @Test fun exhaustedAckAndCancelledRequestHaveNoPersistedEffects(): Unit = blocking {
+        val f = fixture()
+        val approved = f.repo.approve(intent(), LiveToken).success()
+        val before = f.storeFile.readBytes()
+        try {
+            f.repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), Revision(1), CancelledToken)
+            fail("expected cancellation")
+        } catch (expected: CancellationException) { }
+        assertArrayEquals(before, f.storeFile.readBytes())
+        assertTrue(f.repo.pendingDataRemovals(LiveToken).success().consentIds.isEmpty())
+        f.repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), Revision(1), LiveToken).success()
+        f.repo.close()
+        val state = SettingsStoreCodec.decode(f.storeFile.readBytes()).copy(revision = Revision(Long.MAX_VALUE))
+        f.storeFile.writeBytes(SettingsStoreCodec.encode(state))
+        val bytes = f.storeFile.readBytes()
+        f.reopen().acknowledgeDataRemoval(approved.id, state.revision, LiveToken).failure(FailureCode.PERSISTENCE)
+        assertArrayEquals(bytes, f.storeFile.readBytes())
+        assertEquals(SnapshotList.of(approved.id), f.repo.pendingDataRemovals(LiveToken).success().consentIds)
+    }
+
+    @Test fun schemaOneReopensWithoutRemovalAndMigratesOnlyOnRealEdit(): Unit = blocking {
+        val f = fixture()
+        val approved = f.repo.approve(intent(), LiveToken).success()
+        val revoked = f.repo.update(patch(SettingChange.RevokeConsent(approved.id, false)), Revision(1), LiveToken).success()
+        f.repo.close()
+        val encoded = f.storeFile.readBytes()
+        // This fixture has exactly one consent; v1 omits its final pending-removal byte.
+        val legacy = encoded.copyOfRange(0, encoded.size - 5) + ByteArray(4)
+        java.nio.ByteBuffer.wrap(legacy, 4, 4).putInt(1)
+        java.nio.ByteBuffer.wrap(legacy, legacy.size - 4, 4).putInt(
+            java.util.zip.CRC32().also { it.update(legacy, 0, legacy.size - 4) }.value.toInt())
+        f.storeFile.writeBytes(legacy)
+        assertEquals(revoked, f.reopen().read(LiveToken).success())
+        assertTrue(f.repo.pendingDataRemovals(LiveToken).success().consentIds.isEmpty())
+        f.repo.update(patch(), revoked.revision, LiveToken).success()
+        assertArrayEquals(legacy, f.storeFile.readBytes())
+        val edited = f.repo.update(patch(SettingChange.Theme(ThemePreference.DARK)), revoked.revision, LiveToken).success()
+        assertEquals(2, java.nio.ByteBuffer.wrap(f.storeFile.readBytes(), 4, 4).int)
+        assertEquals(revoked.consents, edited.consents)
+        assertTrue(f.reopen().pendingDataRemovals(LiveToken).success().consentIds.isEmpty())
+    }
+
+    @Test fun oldAcknowledgmentQueuedDuringNewRequestCannotClearIt(): Unit = blocking {
+        val directory = temporary.newFolder()
+        val coordinator = com.architectpsg.commandlibrary.core.common.ConsentCoordinator()
+        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val blockWrite = java.util.concurrent.atomic.AtomicBoolean(false)
+        val serializer = object : androidx.datastore.core.Serializer<StoredSettings> {
+            override val defaultValue = SettingsStoreSerializer.defaultValue
+            override suspend fun readFrom(input: java.io.InputStream) = SettingsStoreSerializer.readFrom(input)
+            override suspend fun writeTo(t: StoredSettings, output: java.io.OutputStream) {
+                if (blockWrite.get()) { entered.complete(Unit); release.await() }
+                SettingsStoreSerializer.writeTo(t, output)
+            }
+        }
+        val repo = DataStoreSettingsRepository.createWithSerializer(File(directory, "settings.bin"),
+            File(directory, "installation-id"), coordinator, FakeClock(), SequenceIds(), serializer)
+        try {
+            val approved = repo.approve(intent(), LiveToken).success()
+            repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), Revision(1), LiveToken).success()
+            val old = repo.pendingDataRemovals(LiveToken).success()
+            repo.acknowledgeDataRemoval(approved.id, old.revision, LiveToken).success()
+            val cleared = repo.pendingDataRemovals(LiveToken).success()
+            blockWrite.set(true)
+            val request = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                repo.update(patch(SettingChange.RevokeConsent(approved.id, true)), cleared.revision, LiveToken)
+            }
+            kotlinx.coroutines.withTimeout(2000) { entered.await() }
+            val stale = async(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                repo.acknowledgeDataRemoval(approved.id, old.revision, LiveToken)
+            }
+            assertFalse(stale.isCompleted)
+            release.complete(Unit)
+            kotlinx.coroutines.withTimeout(2000) { request.await().success(); stale.await().failure(FailureCode.STALE_REVISION) }
+            assertEquals(PendingDataRemovals(Revision(4), SnapshotList.of(approved.id)), repo.pendingDataRemovals(LiveToken).success())
+        } finally { release.complete(Unit); repo.close() }
     }
 
 }

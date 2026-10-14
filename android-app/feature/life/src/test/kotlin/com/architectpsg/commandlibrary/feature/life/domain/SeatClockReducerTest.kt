@@ -34,6 +34,57 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SeatClockReducerTest {
+    @Test fun zeroIdsPreserveLegacyAndBoundMaximumUtf8SeatIdentity() {
+        assertEquals("clock-zero/seat/turn-7/1", zeroAlertId(EntityId("seat"), 7, 1).value)
+        for (seat in listOf(EntityId("a".repeat(65536)), EntityId("界".repeat(21845)))) {
+            val id = zeroAlertId(seat, Long.MAX_VALUE, Int.MAX_VALUE)
+            assertTrue(id.value.toByteArray(Charsets.UTF_8).size <= 65536)
+            assertEquals(id, zeroAlertId(seat, Long.MAX_VALUE, Int.MAX_VALUE))
+            assertFalse(id == zeroAlertId(seat, Long.MAX_VALUE, Int.MAX_VALUE - 1))
+        }
+    }
+
+    @Test fun refillUndoDoesNotMistakeDelimiterSeatOrMalformedSuffixForItsOccurrence() {
+        for (suffix in listOf("1/turn-2/1", "01", "0", "-1", "1x")) {
+            val before = clockGame(aRemaining = 3.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+            val after = SeatClockReducer.switchTurn(before, seatA, reading(101)).success().snapshot
+            val unrelated = EntityId("clock-zero/${seatA.value}/turn-2/$suffix")
+            val current = after.copy(clock = after.clock.copy(firedAlertIds = SnapshotList.of(unrelated)))
+            val undone = SeatClockReducer.undo(before, after, current, reading(104)).success()
+            assertEquals(listOf(zeroAlertId(seatA, 2, 1)), undone.alerts.map { it.id })
+            assertTrue(unrelated in undone.snapshot.clock.firedAlertIds)
+        }
+    }
+
+    @Test fun oversizedSeatZeroIdentitySurvivesCheckpointAndUndoReplay() {
+        val seat = EntityId("界".repeat(21845))
+        val base = clockGame(aRemaining = 3.seconds, initial = 30.seconds, mode = SeatClockMode.PER_TURN)
+        val before = base.copy(
+            seats = SnapshotList.copyOf(base.seats.map { if (it.id == seatA) it.copy(id = seat) else it }),
+            activeSeatId = seat,
+            clock = base.clock.copy(activeSeat = seat, seats = SnapshotList.copyOf(base.clock.seats.map { if (it.seatId == seatA) it.copy(seatId = seat) else it })),
+        )
+        val after = SeatClockReducer.switchTurn(before, seat, reading(101)).success().snapshot
+        val checkpoint = SeatClockReducer.settle(after, reading(132)).success()
+        assertEquals(listOf(zeroAlertId(seat, 2, 1)), checkpoint.alerts.map { it.id })
+        assertTrue(checkpoint.alerts.single().id.value.toByteArray(Charsets.UTF_8).size <= 65536)
+        val undone = SeatClockReducer.undo(before, after, checkpoint.snapshot, reading(133)).success()
+        assertTrue(undone.alerts.isEmpty())
+        assertEquals(checkpoint.snapshot.clock.firedAlertIds, undone.snapshot.clock.firedAlertIds)
+    }
+
+    @Test fun exactUtf8BoundaryPreservesLegacyUntilOccurrenceSuffixWouldOverflow() {
+        val overhead = "clock-zero//turn-7/1".toByteArray(Charsets.UTF_8).size
+        val seat = EntityId("a".repeat(65536-overhead))
+        val one = zeroAlertId(seat,7,1)
+        val ten = zeroAlertId(seat,7,10)
+        assertEquals(65536,one.value.toByteArray(Charsets.UTF_8).size)
+        assertTrue(one.value.startsWith("clock-zero/"))
+        assertTrue(ten.value.startsWith("clock-zero-hashed-v1/"))
+        assertTrue(ClockZeroIdentity(seat,7).matches(one))
+        assertTrue(ClockZeroIdentity(seat,7).matches(ten))
+    }
+
     private val process1 = EntityId("process-1")
     private val process2 = EntityId("process-2")
     private val twoSeats = SnapshotList.of(LifeFixtures.seat(seatA, 0), LifeFixtures.seat(seatB, 1))

@@ -1,0 +1,9 @@
+# Guarded factory and binder native checkpoint
+
+Exact candidate2c6f3e3866e0d2f7674c307447f64e17553e5413, Android run38454916688, all4lanes and verified-debug promotion SUCCESS. Continuity38454916867 success. This candidate predates durablecooldown/schema5 and cannot verify that later source.
+
+JVM job log reports55XML553tests0failures/errors/skips. Independent CI worker downloaded connector Sediment file IDs with tools.download_file (shell signedURL download was policyblocked, not a filetool limitation), extracted three emulator artifacts and validated actual XML/PNG bytes at /tmp/cx-factory-matrix.
+
+Each API23/API36-default/API36-16KiB lane:5connectedXML129tests0failures/errors/skips (app4,storage30,catalog31,rules6,shell58);36distinct executed visual cases; exactly36allowlisted syntheticPNG filenames, all pass collector valid_png, distinctSHA256withinlane. Artifact IDs11844530117/11842507467/11844930087 respectively. ManifestSHA256 API23e968875f87718e78788e1ac534ee493f9bfbd2371a0d154f1c8f10d19e1f79a7; API36-default92ae13ace85083d700c845bea58c978982fd90515c1883a5ccf16a79305a783d; API36-16k c032d9750688ed7eac2364924e4bc72bebf6fdaa7dd8ab57c736da288c216235. Actual modern page sizes4096/16384; API23getconf unavailable, not inferred.
+
+The five new factory and four binder fixtures actually executed. API23capture-retention correction now has actual successful retrieval/validation evidence. Root inspected API23synthetic-life-360x800-dark-2.0.png: large-text content scrolls; forced preview viewport leaves unused full-frame space. This remains synthetic rendered foundation evidence, not complete productionlife flows/professional visual/Fold7/a11y acceptance. Prior fullcapture inspection limits remain in reuse-research/NATIVE-VISUAL-CHECKPOINT-20261013.md. No canonical signing or physical-device claim.

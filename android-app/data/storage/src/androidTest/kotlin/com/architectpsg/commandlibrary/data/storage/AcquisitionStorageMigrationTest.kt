@@ -1,5 +1,7 @@
 package com.architectpsg.commandlibrary.data.storage
 
+import com.architectpsg.commandlibrary.data.storage.schema.StorageSchema
+
 import android.content.Context
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
@@ -42,7 +44,7 @@ class AcquisitionStorageMigrationTest {
     @Test fun actualV2MigrationPreservesLegacyDataAndDurableAcquisitionRows() = runBlocking {
         val fixture = createV2()
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         assertLegacyUnchanged(fixture)
 
         write(job("paused"), job("completed"), job("unrelated"))
@@ -162,7 +164,7 @@ class AcquisitionStorageMigrationTest {
         }
         // Real Room open must still complete 2->3->4 after the aborted acquisition DDL transaction.
         reopen()
-        assertEquals(4, success(database!!.capabilities(token)).schemaVersion)
+        assertEquals(StorageSchema.VERSION, success(database!!.capabilities(token)).schemaVersion)
         assertAcquisitionSchema()
         assertLegacyUnchanged(fixture)
         reopen()
@@ -411,5 +413,5 @@ class AcquisitionStorageMigrationTest {
         return (outcome as Outcome.Success).value
     }
 
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'acquisition_%' AND name NOT LIKE 'index_acquisition_%' AND name NOT LIKE 'sqlite_autoindex_acquisition_%' AND name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' ORDER BY type,name"
+    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'acquisition_%' AND name NOT LIKE 'index_acquisition_%' AND name NOT LIKE 'sqlite_autoindex_acquisition_%' AND name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' AND tbl_name NOT IN ('life_game','life_event','life_seat_search','life_result','life_alert','life_profile') ORDER BY type,name"
 }
