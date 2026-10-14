@@ -8,6 +8,7 @@ import com.architectpsg.commandlibrary.core.model.SettingsRepository
 import com.architectpsg.commandlibrary.core.model.LocalRulesImport
 import com.architectpsg.commandlibrary.core.model.LocalRulesLookup
 import com.architectpsg.commandlibrary.core.model.PlayerProfileRepository
+import com.architectpsg.commandlibrary.core.model.CatalogRulings
 
 /**
  * The accepted core capabilities the shell presents. Root assembly supplies real adapters, created
@@ -32,4 +33,8 @@ public class ShellPorts(
     public val playerProfiles: PlayerProfileRepository? = null,
     /** Complete lazy English download/install access; no wire activity during shell startup. */
     public val englishCatalog: EnglishCatalogAccess? = null,
+    /** Independent offline ruling snapshots; reading never initializes acquisition. */
+    public val rulings: CatalogRulings? = null,
+    /** Complete ruling acquisition/install access sharing the root's English process owner. */
+    public val rulingsDownloads: RulingsCatalogAccess? = null,
 )

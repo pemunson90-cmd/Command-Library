@@ -1,0 +1,15 @@
+# One root acquisition owner and independent offline rulings
+
+Status: implemented; independent architecture/ownership source review ACK. Focused actual host root cases and native counterpart compilation pass. Actual ruling UI is next; no full-app delivery claim.
+
+AppGraph exposes one AppEnglishCatalogAccess object through both EnglishCatalogAccess and RulingsCatalogAccess. A single private Ready contains the factory and both complete facades. One mutex controls creation, once-before-publication recovery, success-only caching and final close. Failed, inconclusive or cancelled initialization disposes the unpublished factory and permits retry through either family. Existing English API/source-binding semantics remain unchanged. Ruling operations delegate the fixed discovery request, metadata-job-only admission and verified job-only importer from the same factory; no URI/bytes/candidate inputs or implicit approval.
+
+The graph separately binds AndroidCatalogServices.localRulings(database), a pure reader constructor that creates no transport, rehydrates no receipt and recovers no acquisition job. ShellPorts receives complete optional typed capabilities; absence remains absence in unbound graphs.
+
+Actual focused command: `:app:testDebugUnitTest --tests '*EnglishCatalogAccessIntegrationTest' :app:compileDebugAndroidTestKotlin`. Corrected gate SUCCESS27s,139tasks3executed136cached. OneXML,6tests11.490s,0failure/error/skip. Log `/tmp/rulings-root-access-corrected.log`. Includes actual graph, mixed concurrent opens/exact shared jobs+runner/cached facades, independent reader before any acquisition directory, unchanged worker state when opening the other family, once-only recovery by a new owner, pre-cancel/failed-create/final-close both APIs, cancellation during real recovery and inconclusive read followed by other-family retry.
+
+Initial gate37s had6cases/1failed: the new test expected an underlying Unknown database query to remain Unknown through recovery. Existing LocalAcquisition deliberately maps that read to Failure(CORRUPT_DATA). Corrected the assertion to this exact fail-closed code and verified retry/publication behavior; no production error policy changed or assertion removed. Native test cases compile; they were not run on a device. Host bridges remain test-only.
+
+Prior1a4f43b source gate119XML/1096whole/lint/allAPKs/ZIPpass is retained at `/tmp/rulings-source-admission-boundary-xml` and described in RULINGS-SOURCE-ADMISSION-LOCAL-20261014.md. This focused root check is not a newly run whole-suite or APK/device proof. Filtered app XML now contains only the6root cases.
+
+Next: actual two-stage ruling download/approval/install controls and bounded offline card ruling display, with stale/cancel/retry states and externalized copy. Keep the same owner; no hidden file download, inferred ruling language or metadata-only installation. Live Scryfall access remains policy-blocked here, full feed/TLS/device/physical Fold7/release evidence separate. No duplicate hosted run or frozen branch change.

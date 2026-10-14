@@ -8,6 +8,7 @@ import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import com.architectpsg.commandlibrary.data.storage.life.codec.LifePayloadCodec
 import com.architectpsg.commandlibrary.feature.life.persistence.SqlPlayerProfileRepository
 import com.architectpsg.commandlibrary.feature.catalog.LocalCatalog
+import com.architectpsg.commandlibrary.feature.catalog.api.AndroidCatalogServices
 import com.architectpsg.commandlibrary.feature.rules.LocalRules
 import com.architectpsg.commandlibrary.feature.settings.DataStoreSettingsRepository
 import com.architectpsg.commandlibrary.feature.shell.ShellPorts
@@ -35,9 +36,11 @@ internal class AppGraph(context: Context) {
                 val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
                 val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
                 val profiles = SqlPlayerProfileRepository(opened.value, LifePayloadCodec(), SystemUtcClock, RandomUuidIdSource)
+                val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
                 val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
                     rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
-                    englishCatalog = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator))
+                    englishCatalog = downloads, rulingsDownloads = downloads,
+                    rulings = AndroidCatalogServices.localRulings(opened.value))
                 ready = ports
                 Outcome.Success(ports)
             }

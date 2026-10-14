@@ -8,27 +8,43 @@ import com.architectpsg.commandlibrary.data.network.WireDispatchGuard
 import com.architectpsg.commandlibrary.feature.catalog.api.AndroidCatalogServices
 import com.architectpsg.commandlibrary.feature.shell.EnglishCatalogAccess
 import com.architectpsg.commandlibrary.feature.shell.EnglishCatalogDownloads
+import com.architectpsg.commandlibrary.feature.shell.RulingsCatalogAccess
+import com.architectpsg.commandlibrary.feature.shell.RulingsCatalogDownloads
 import java.io.IOException
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-/** Process-owned lazy acquisition. Its mutex never blocks AppGraph's offline-port cache. */
+/** One lazy process owner for both source families, independent of AppGraph's offline cache. */
 internal class AppEnglishCatalogAccess(
     context: Context,
     private val database: Database,
     private val settings: SettingsRepository,
     private val consent: ConsentCoordinator,
     private val limits: CatalogBulkImportLimits = CatalogBulkImportLimits(),
-) : EnglishCatalogAccess {
+) : EnglishCatalogAccess, RulingsCatalogAccess {
     private val app = context.applicationContext
     private val mutex = Mutex()
-    private var ready: EnglishCatalogDownloads? = null
-    private var owned: AndroidCatalogServices? = null
+    private data class Ready(val services: AndroidCatalogServices, val english: EnglishCatalogDownloads, val rulings: RulingsCatalogDownloads)
+    private var ready: Ready? = null
     private var closed = false
 
-    override suspend fun open(cancel: CancelToken): Outcome<EnglishCatalogDownloads> = mutex.withLock {
+    override suspend fun open(cancel: CancelToken): Outcome<EnglishCatalogDownloads> = when (val result = acquire(cancel)) {
+        is Outcome.Success -> Outcome.Success(result.value.english)
+        is Outcome.Failure -> result
+        is Outcome.Unavailable -> result
+        is Outcome.Unknown -> result
+    }
+
+    override suspend fun openRulings(cancel: CancelToken): Outcome<RulingsCatalogDownloads> = when (val result = acquire(cancel)) {
+        is Outcome.Success -> Outcome.Success(result.value.rulings)
+        is Outcome.Failure -> result
+        is Outcome.Unavailable -> result
+        is Outcome.Unknown -> result
+    }
+
+    private suspend fun acquire(cancel: CancelToken): Outcome<Ready> = mutex.withLock {
         cancel.throwIfCancelled(); currentCoroutineContext().ensureActive()
         if (closed) return@withLock Outcome.Unavailable(UnavailableReason.SOURCE_UNAVAILABLE, "Download access has been closed")
         ready?.let { return@withLock Outcome.Success(it) }
@@ -48,7 +64,7 @@ internal class AppEnglishCatalogAccess(
                 is Outcome.Unavailable -> return@withLock recovered
                 is Outcome.Unknown -> return@withLock recovered
             }
-            val session = EnglishCatalogDownloads(services.downloads, services.runner, limits, services::englishSearchRequest) { id, progress, token ->
+            val english = EnglishCatalogDownloads(services.downloads, services.runner, limits, services::englishSearchRequest) { id, progress, token ->
                 when (val source = services.catalogSource(id, token)) {
                     is Outcome.Success -> {
                         if (source.value.inputKind != SourceInputKind.VERIFIED_ARTIFACT) rejectedSource()
@@ -60,15 +76,18 @@ internal class AppEnglishCatalogAccess(
                     is Outcome.Unknown -> source
                 }
             }
+            val rulings = RulingsCatalogDownloads(services.downloads, services.runner, services::rulingsDiscoveryRequest,
+                services::rulingsFileRequest, services.rulingsImport::`import`)
+            val session = Ready(services, english, rulings)
             cancel.throwIfCancelled(); currentCoroutineContext().ensureActive()
-            owned = services; ready = session; creating = null
+            ready = session; creating = null
             Outcome.Success(session)
         } catch (cancelled: CancellationException) {
             throw cancelled
         } catch (failure: Exception) {
             currentCoroutineContext().ensureActive(); cancel.throwIfCancelled()
             val code = when (failure) { is SecurityException -> FailureCode.PERMISSION; is IOException -> FailureCode.PERSISTENCE; else -> FailureCode.INTERNAL }
-            Outcome.Failure(DomainFailure(code, "English catalog download access could not be initialized", SnapshotList.empty()))
+            Outcome.Failure(DomainFailure(code, "Catalog download access could not be initialized", SnapshotList.empty()))
         } finally {
             creating?.close()
         }
@@ -76,8 +95,9 @@ internal class AppEnglishCatalogAccess(
 
     /** Disposes this owner's transport only; never closes shared storage/settings or grants consent. */
     suspend fun close() = mutex.withLock {
-        closed = true; ready = null
-        owned?.close(); owned = null
+        closed = true
+        val previous = ready; ready = null
+        previous?.services?.close()
     }
 
     private fun rejectedSource(): Outcome<Nothing> = Outcome.Failure(DomainFailure(

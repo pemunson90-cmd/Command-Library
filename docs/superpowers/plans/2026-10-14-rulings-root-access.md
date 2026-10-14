@@ -2,6 +2,8 @@
 
 > Execute inline under executing-plans. D-17 delegates routine technical design; D-28 batches verification. Root remains sole implementation writer. No additional human approval is required for this already-authorized K3 wiring.
 
+Status: implemented, independent ownership review ACK,6actual root cases pass27s and native counterparts compile. Evidence `docs/verification/k3-downloads/RULINGS-ROOT-ACCESS-LOCAL-20261014.md`. UI remains next.
+
 Goal: expose the real ruling acquisition/import and independent offline reader through the application graph while retaining one lazy process acquisition owner and recovery boundary.
 
 Spec/design: reviewed source boundary in `2026-10-14-rulings-source-admission.md`, public CatalogRulings/CatalogRulingsImport contracts and the active K3 task. No product/security/consent policy changes. This unit binds capabilities; the actual ruling UI follows separately.
@@ -16,13 +18,13 @@ Expose a pure `AndroidCatalogServices.localRulings(database): CatalogRulings` co
 
 ## Files and execution
 
-- [ ] Add `android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/RulingsCatalogAccess.kt`: `RulingsCatalogAccess.openRulings(CancelToken): Outcome<RulingsCatalogDownloads>`, complete session methods `discoveryRequest(String,Boolean)`, `fileRequest(EntityId,String,Boolean,CancelToken)`, `install(EntityId,(JobProgress)->Unit,CancelToken)`.
-- [ ] Extend the existing catalog factory with the pure offline reader constructor. Extend ShellPorts with typed optional complete capabilities; no schema or source-policy changes.
-- [ ] Refactor AppEnglishCatalogAccess cached value to private Ready. One initialization, recovery, cancellation/failed-init disposal and final close path serves both methods. Build facades only over the SAME factory. Preserve existing English verified-input/import semantics.
-- [ ] Bind the single process owner and offline reader in AppGraph.
-- [ ] Expand existing shared host/device EnglishCatalogAccessCases: concurrent opens across both families share exact services; opening/reading/planning grants no consent or wire; opening the other family preserves a live/orphan state; newly created owner recovers once; failed/cancelled initialization and closed access apply to both. Assert actual graph offline ports and both lazy capabilities exist.
-- [ ] Run one focused app/root gate with native counterpart compile after the batch. Required independent architecture/ownership review at this root-wiring boundary. Reuse prior source-security evidence; no repeated full suite absent a new concern.
-- [ ] Update the task delta/checkpoint with exact evidence and next UI action. Continue into actual download/ruling presentation rather than ending at the checkpoint.
+- [x] Add `android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/RulingsCatalogAccess.kt`: `RulingsCatalogAccess.openRulings(CancelToken): Outcome<RulingsCatalogDownloads>`, complete session methods `discoveryRequest(String,Boolean)`, `fileRequest(EntityId,String,Boolean,CancelToken)`, `install(EntityId,(JobProgress)->Unit,CancelToken)`.
+- [x] Extend the existing catalog factory with the pure offline reader constructor. Extend ShellPorts with typed optional complete capabilities; no schema or source-policy changes.
+- [x] Refactor AppEnglishCatalogAccess cached value to private Ready. One initialization, recovery, cancellation/failed-init disposal and final close path serves both methods. Build facades only over the SAME factory. Preserve existing English verified-input/import semantics.
+- [x] Bind the single process owner and offline reader in AppGraph.
+- [x] Expand existing shared host/device EnglishCatalogAccessCases: concurrent opens across both families share exact services; opening/reading/planning grants no consent or wire; opening the other family preserves a live/orphan state; newly created owner recovers once; failed/cancelled initialization and closed access apply to both. Assert actual graph offline ports and both lazy capabilities exist.
+- [x] Run one focused app/root gate with native counterpart compile after the batch. Required independent architecture/ownership review at this root-wiring boundary. Reuse prior source-security evidence; no repeated full suite absent a new concern.
+- [x] Update the task delta/checkpoint with exact evidence and next UI action. Continue into actual download/ruling presentation rather than ending at the checkpoint.
 
 ## Review focus
 

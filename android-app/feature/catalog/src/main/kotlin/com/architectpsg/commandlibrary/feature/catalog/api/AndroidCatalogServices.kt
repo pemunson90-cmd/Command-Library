@@ -54,6 +54,9 @@ public class AndroidCatalogServices private constructor(
     }
 
     public companion object {
+        /** Pure local capability: no transport creation, receipt rehydration or job recovery. */
+        public fun localRulings(database: Database): CatalogRulings = LocalCatalogRulings(database)
+
         /** The builder must wire the supplied authorizer to every physical acquisition enqueue.
          * Only the root-owned AppGraph expression can establish that concrete transport behavior.
          */

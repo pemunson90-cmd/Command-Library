@@ -9,6 +9,7 @@ import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import com.architectpsg.commandlibrary.di.AppEnglishCatalogAccess
 import com.architectpsg.commandlibrary.feature.settings.DataStoreSettingsRepository
+import com.architectpsg.commandlibrary.feature.catalog.api.AndroidCatalogServices
 import java.io.File
 import java.util.UUID
 import kotlinx.coroutines.*
@@ -46,16 +47,91 @@ abstract class EnglishCatalogAccessCases {
     }
     private class Fixture(val context: Context, val db: StorageDatabase, val settings: DataStoreSettingsRepository, val consent: ConsentCoordinator) {
         val accesses = mutableListOf<AppEnglishCatalogAccess>()
-        fun access(): AppEnglishCatalogAccess = AppEnglishCatalogAccess(context, db, settings, consent).also { accesses += it }
+        fun access(database: Database = db): AppEnglishCatalogAccess = AppEnglishCatalogAccess(context, database, settings, consent).also { accesses += it }
     }
 
     @Test fun actualApplicationExposesLazyDownloadAccessAlongsideCachedOfflinePorts() = runBlocking<Unit> {
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as CommandLibraryApplication
         val ports = ok(app.graph.ports())
-        assertNotNull(ports.englishCatalog); assertNotNull(ports.playerProfiles)
+        assertNotNull(ports.englishCatalog); assertNotNull(ports.playerProfiles); assertNotNull(ports.rulings)
+        assertSame(ports.englishCatalog, ports.rulingsDownloads)
         assertSame(ports, ok(app.graph.ports()))
         // Opening offline ports does not open acquisition, plan a job or grant download consent.
         assertSame(ports.englishCatalog, ok(app.graph.ports()).englishCatalog)
+    }
+
+    @Test fun offlineRulingsAndMixedFamilyOpensShareOneLazyOwnerAndRecoveryBoundary() = runBlocking<Unit> {
+        fixture { f ->
+            val offline = AndroidCatalogServices.localRulings(f.db)
+            assertNull(ok(offline.status(token)).active)
+            assertFalse(File(f.context.filesDir, "acquisition-artifacts").exists())
+            val access = f.access()
+            val (english, rulings) = coroutineScope {
+                val first = async(Dispatchers.IO) { ok(access.open(token)) }
+                val second = async(Dispatchers.IO) { ok(access.openRulings(token)) }
+                first.await() to second.await()
+            }
+            assertSame(english.jobs, rulings.jobs); assertSame(english.runner, rulings.runner)
+            assertSame(rulings, ok(access.openRulings(token))); assertSame(english, ok(access.open(token)))
+            assertTrue(ok(f.settings.read(token)).consents.isEmpty())
+            val discovery = rulings.discoveryRequest("Ruling metadata probe", true)
+            assertNull(discovery.intent.language)
+            val planned = ok(rulings.jobs.plan(discovery, token))
+            assertFalse(rulings.fileRequest(planned.plan.jobId, "Ruling file probe", true, token) is Outcome.Success)
+            assertFalse(rulings.install(planned.plan.jobId, {}, token) is Outcome.Success)
+            ok(f.db.transaction({ tx ->
+                ok(tx.execute(SqlRequest("UPDATE acquisition_job SET state='RUNNING',owner_token='synthetic-orphan',revision=revision+1 WHERE job_id=:id",
+                    SnapshotList.of(SqlParameter("id", SqlValue.Text(planned.plan.jobId.value)))), token)); Unit
+            }, token))
+            val before = ok(rulings.jobs.status(planned.plan.jobId, token))
+            assertEquals(AcquisitionState.RUNNING, before.state)
+            assertSame(english, ok(access.open(token))); assertSame(rulings, ok(access.openRulings(token)))
+            assertEquals(before, ok(english.jobs.status(planned.plan.jobId, token)))
+            access.close()
+            assertTrue(access.open(token) is Outcome.Unavailable); assertTrue(access.openRulings(token) is Outcome.Unavailable)
+            val next = f.access(); val nextRulings = ok(next.openRulings(token))
+            val recovered = ok(nextRulings.jobs.status(planned.plan.jobId, token))
+            assertEquals(AcquisitionState.INTERRUPTED, recovered.state); assertEquals(before.revision.next(), recovered.revision)
+            assertSame(nextRulings.jobs, ok(next.open(token)).jobs)
+            assertEquals(recovered, ok(nextRulings.jobs.status(planned.plan.jobId, token)))
+            assertNull(ok(offline.status(token)).active); assertTrue(ok(f.settings.read(token)).consents.isEmpty())
+        }
+    }
+
+    @Test fun cancelledOrInconclusiveRecoveryCannotPublishAHalfSessionAndOtherFamilyCanRetry() = runBlocking<Unit> {
+        fixture { f ->
+            val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
+            var block = true
+            val database = object : Database by f.db {
+                override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> {
+                    if(block && request.statement.contains("FROM acquisition_job")) { block = false; entered.complete(Unit); release.await() }
+                    return f.db.query(request, cancel)
+                }
+            }
+            val access = f.access(database)
+            coroutineScope {
+                val initializing = async(Dispatchers.IO) { access.openRulings(token) }
+                withTimeout(5_000) { entered.await() }
+                initializing.cancelAndJoin()
+            }
+            assertTrue(ok(f.settings.read(token)).consents.isEmpty())
+            val english = ok(access.open(token)); assertSame(english.jobs, ok(access.openRulings(token)).jobs)
+        }
+        fixture { f ->
+            var fail = true
+            val database = object : Database by f.db {
+                override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> {
+                    if(fail && request.statement.contains("FROM acquisition_job")) { fail = false; return Outcome.Unknown("Synthetic recovery unavailable", SnapshotList.empty()) }
+                    return f.db.query(request, cancel)
+                }
+            }
+            val access = f.access(database)
+            // Existing engine maps an inconclusive durable read to CORRUPT_DATA, never success.
+            val rejected = access.openRulings(token)
+            assertEquals(FailureCode.CORRUPT_DATA, (rejected as Outcome.Failure).error.code)
+            val english = ok(access.open(token)); assertSame(english.jobs, ok(access.openRulings(token)).jobs)
+            assertTrue(ok(f.settings.read(token)).consents.isEmpty())
+        }
     }
 
     @Test fun realSessionCachesAfterRecoveryAndNeverRecoversExistingWorkersOnReopen() = runBlocking<Unit> {
@@ -110,12 +186,14 @@ abstract class EnglishCatalogAccessCases {
                 override fun throwIfCancelled() { throw CancellationException("Synthetic caller cancellation") }
             }
             try { access.open(cancelled); fail("Cancelled caller must not initialize access") } catch (_: CancellationException) { }
+            try { access.openRulings(cancelled); fail("Cancelled ruling caller must not initialize access") } catch (_: CancellationException) { }
             val child = File(f.context.filesDir, "acquisition-artifacts")
             assertFalse(child.exists()); child.writeText("Synthetic non-directory")
             assertTrue(access.open(token) is Outcome.Failure)
+            assertTrue(access.openRulings(token) is Outcome.Failure)
             assertTrue(child.delete())
-            assertNotNull(ok(access.open(token)))
-            access.close(); assertTrue(access.open(token) is Outcome.Unavailable)
+            assertNotNull(ok(access.openRulings(token))); assertNotNull(ok(access.open(token)))
+            access.close(); assertTrue(access.open(token) is Outcome.Unavailable); assertTrue(access.openRulings(token) is Outcome.Unavailable)
             // This access never owns or closes these shared stores.
             assertTrue(ok(f.settings.read(token)).consents.isEmpty())
             assertNotNull(ok(f.db.query(SqlRequest("SELECT 1", SnapshotList.empty()), token)))
