@@ -16,6 +16,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,7 +31,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.RulingsControl
 /** Oracle text and game fields only; no card art is requested. Absent stats are omitted, unknown ones say so. */
 @Composable
 internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: WidthClass, modifier: Modifier = Modifier,
-    rulings: RulingsController? = null, onOpenCatalog: (() -> Unit)? = null) {
+    rulings: RulingsController? = null, onOpenCatalog: (() -> Unit)? = null, onLookupKeyword: ((String) -> Unit)? = null) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -63,7 +66,17 @@ internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: Wid
                 DetailField(stringResource(R.string.detail_color_identity), knowledgeText(card.colorIdentity) { colorNames(it) })
                 val separator = stringResource(R.string.detail_list_separator)
                 val none = stringResource(R.string.shell_value_none)
-                DetailField(stringResource(R.string.detail_keywords), knowledgeText(card.keywords) { if (it.isEmpty()) none else it.joinToString(separator) })
+                val keywords = (card.keywords as? Knowledge.Known)?.value
+                if(onLookupKeyword != null && keywords?.isNotEmpty() == true) {
+                    SectionHeading(stringResource(R.string.detail_keywords))
+                    ActionRow {
+                        keywords.forEachIndexed { index, keyword ->
+                            val action = stringResource(R.string.detail_keyword_lookup, keyword)
+                            TextButton(onClick = { onLookupKeyword(keyword) }, modifier = Modifier.heightIn(min = 48.dp)
+                                .testTag("card-keyword-$index").semantics { contentDescription = action }) { Text(keyword) }
+                        }
+                    }
+                } else DetailField(stringResource(R.string.detail_keywords), knowledgeText(card.keywords) { if (it.isEmpty()) none else it.joinToString(separator) })
                 DetailField(stringResource(R.string.detail_layout), knowledgeText(card.layout) { it })
                 val yes = stringResource(R.string.shell_value_yes)
                 val no = stringResource(R.string.shell_value_no)

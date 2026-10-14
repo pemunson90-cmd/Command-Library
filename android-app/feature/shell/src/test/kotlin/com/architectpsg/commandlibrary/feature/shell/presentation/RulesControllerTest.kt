@@ -60,6 +60,19 @@ class RulesControllerTest {
     private fun TestScope.controller(ports: Ports, documents: MemoryDocuments = MemoryDocuments()) =
         RulesController(ownerScope(), ports, ports, documents, StandardTestDispatcher(testScheduler))
 
+    @Test fun keywordHandoffClearsOldDetailEvenForInvalidInputThenUsesActualLocalSearch() = runTest {
+        val ports = Ports(); val c = controller(ports)
+        c.queryInput = "Old query"; c.submit(); advanceUntilIdle()
+        c.select(c.state.value.results.first()); advanceUntilIdle(); assertNotNull(c.state.value.selected)
+        c.lookupKeyword("x".repeat(129)); advanceUntilIdle()
+        assertNull(c.state.value.selected); assertTrue(c.state.value.results.isEmpty()); assertEquals(Problem.INVALID_INPUT, c.state.value.searchProblem)
+        var supplied: RulesQuery? = null
+        ports.searchAction = { query -> supplied = query; Outcome.Success(page(listOf(entry("100.1")))) }
+        c.lookupKeyword("Flying"); advanceUntilIdle()
+        assertEquals("Flying", supplied!!.text); assertEquals("Flying", c.queryInput)
+        assertEquals(generation, c.state.value.generation); assertNull(c.state.value.selected)
+    }
+
     @Test
     fun twoPassImportReopensAndClosesIndependentStreamsWithOnlyKnownLocalFacts() = runTest {
         val ports = Ports()

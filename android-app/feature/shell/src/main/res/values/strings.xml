@@ -426,4 +426,5 @@
     <string name="rulings_date_note">Publication days below are the original ruling dates. Corpus dates do not guarantee that a ruling is current. Ruling languages are not specified by the feed.</string>
     <string name="rulings_published">Published</string>
     <string name="rulings_publisher">Publisher label</string>
+    <string name="detail_keyword_lookup">Look up %1$s in local rules</string>
 </resources>

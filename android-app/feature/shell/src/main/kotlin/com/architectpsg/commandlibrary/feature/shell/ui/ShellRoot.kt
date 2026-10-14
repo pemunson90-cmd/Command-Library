@@ -185,6 +185,9 @@ private fun DestinationContent(
             modifier = modifier,
             rulings = controllers.rulings,
             onManageRulings = if(controllers.downloads?.rulingsEnabled == true) ({ onNavigate(ShellDestination.CATALOG) }) else null,
+            onLookupKeyword = controllers.rules?.let { rules -> { keyword: String ->
+                rules.lookupKeyword(keyword); onNavigate(ShellDestination.RULES)
+            } },
         )
         ShellDestination.CATALOG -> {
             var downloadsOpen by rememberSaveable { mutableStateOf(false) }

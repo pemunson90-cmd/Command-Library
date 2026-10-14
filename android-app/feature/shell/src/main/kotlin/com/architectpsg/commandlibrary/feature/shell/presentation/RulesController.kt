@@ -160,6 +160,13 @@ internal class RulesController(
         }
     }
 
+    /** A card lookup is a fresh local search, never a guessed entry or an import. */
+    fun lookupKeyword(keyword: String) {
+        clearSearch(null)
+        queryInput = keyword
+        submit()
+    }
+
     fun submit() {
         val query = queryInput.trim()
         if (query.isEmpty() || query.codePointCount(0, query.length) > MAX_QUERY_CODE_POINTS) {
