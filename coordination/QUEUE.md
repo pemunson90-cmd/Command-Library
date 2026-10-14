@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261014-cross-chat-resolved-90. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
+Checkpoint-ID: cp-20261014-chat-task-board-91. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
@@ -14,6 +14,10 @@ This file lists runnable or conditionally runnable work. Completed and supersede
 | cc-m2-life-domain-01 | M2 domain preparation | merged PR17, old lock released | independent review and focused/full hosted gates | completed internal component; no milestone closure |
 | cx-m2-life-functional-01 | M2 functional service/UI | root contract phase active, new life-functional.lock | merged corrected life domain and D25/all14 dispositions | reviewed contracts/schema, real service/persistence/UI |
 | orch-source-fixtures-01 | Source evidence fallback | policy gap closed; source-specific cases retained | FIXTURE_POLICY and genuine input evidence | exact rights/coverage review when a later acquisition/distribution path needs it |
+
+## Concurrent chat assignments
+
+See [CHAT-TASKS.md](CHAT-TASKS.md): life-profiles TAKEN by recovery; scryfall-integrate and life-history-audit OPEN with disjoint task cards. Claims/completions must be published before another chat relies on them.
 
 ## Accepted history summary
 

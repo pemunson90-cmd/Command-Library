@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-cross-chat-resolved-90",
-  "verified_base_head": "a4a4c56214814e6a30a5d68afb7cde62e2096b9c",
+  "checkpoint_id": "cp-20261014-chat-task-board-91",
+  "verified_base_head": "680748afbdf190382819c14b6dab4a674dd011e2",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "reconcile-completed-scryfall-chat",
+  "first_action": "publish-disjoint-chat-tasks",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Random/provenance and codec source accepted locally; additive schema6 source approved with actual bundledSQLite/local coherent checks. Useful focused Android Room gate pending; remaining action families/adapters/service/UI incomplete.",
+  "review_status": "Codec2/actions/schema6 preparation reviewed; local641 JVM/check/debug and focused schema API36 35 cases passed. Real profile persistence/service/UI pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -62,7 +62,7 @@
     "life_payload_codec": "Design/exactsource approved; local APIabsenceRED82s, firstGREEN100s; final63XML627JVM0failure/error/skip, check/lint/debugassemble9m3s, APK9fe70edf16KiBZIPalignmentpassed.13codec tests include separatearchive>4MiBcombined. No schema6/service/native/physical claim.",
     "life_schema6_local": "Source/design approved. Actual KSP6 c46511a5:18priorentitiesidentical/24total. Host31storage0failure/error/skip91s incl5realSQLite migration/reopen/constraints/CAS/rollback. Wholecheck/debug+focusedtestAPKs235s64XML632JVM0fail/error/skip;16KiBZIPpass. AndroidRoom/native not_run; no service/UI."
   },
-  "last_completed": "Read completed disjoint Scryfall metadata task0db3298 with lock released; clear collision hold and stale routing/branch notes. Recovery retains life/shared ownership; profile repository next.",
-  "updated_utc": "2026-10-14T00:35:05Z",
+  "last_completed": "Published concurrent task board: recovery TAKES life profiles; OPEN scoped Scryfall integration and history audit. Refreshed parent delta; claims/completions publish with dedicated locks.",
+  "updated_utc": "2026-10-14T03:02:20Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -425,3 +425,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T00:24:23Z | codex | cp-20261014-cross-chat-coordination-89 | containing commit | Pat revived original chat; original20a9283 overlaps completed recovery codec/schema. Published ACTIVE-CHATS notice; reserve profile persistence but hold code writes pending disjoint ownership.
 
 2026-10-14T00:35:05Z | codex | cp-20261014-cross-chat-resolved-90 | containing commit | Read completed disjoint Scryfall metadata task0db3298 with lock released; clear collision hold and stale routing/branch notes. Recovery retains life/shared ownership; profile repository next.
+
+2026-10-14T03:02:20Z | codex | cp-20261014-chat-task-board-91 | containing commit | Published concurrent task board: recovery TAKES life profiles; OPEN scoped Scryfall integration and history audit. Refreshed parent delta; claims/completions publish with dedicated locks.

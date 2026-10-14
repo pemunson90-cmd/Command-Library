@@ -1,5 +1,7 @@
 # Cross-chat coordination — current readback 2026-10-14
 
+Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Life profiles is TAKEN by recovery; Scryfall integration and the history audit are OPEN.
+
 ## Recovery orchestrator
 
 Session `codex-thread-recovery-20261013`, branch `agent/cx-thread-recovery-20261013`, owns life persistence and shared coordination. Completed recovery product work through066cf11: random/provenance, complete typed codec1, additive Room schema6, nineteen action families/outcomes and codec2 with frozen1 compatibility. Local whole-app641 JVM tests and focused API36 network3/storage32 passed; see `docs/verification/m2-life/` for exact evidence.

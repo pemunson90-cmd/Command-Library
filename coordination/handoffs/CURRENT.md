@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-cross-chat-resolved-90
+Checkpoint-ID: cp-20261014-chat-task-board-91
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. reconcile-completed-scryfall-chat
+Next step: 3. publish-disjoint-chat-tasks
 
-Updated UTC: 2026-10-14T00:35:05Z
+Updated UTC: 2026-10-14T03:02:20Z
 Status: in_progress; lease: active.
-Verified base: a4a4c56214814e6a30a5d68afb7cde62e2096b9c.
+Verified base: 680748afbdf190382819c14b6dab4a674dd011e2.
 
-Read completed disjoint Scryfall metadata task0db3298 with lock released; clear collision hold and stale routing/branch notes. Recovery retains life/shared ownership; profile repository next.
+Published concurrent task board: recovery TAKES life profiles; OPEN scoped Scryfall integration and history audit. Refreshed parent delta; claims/completions publish with dedicated locks.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

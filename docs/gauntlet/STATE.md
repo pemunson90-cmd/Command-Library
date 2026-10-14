@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-cross-chat-resolved-90. Updated UTC: 2026-10-14T00:35:05Z.
+Checkpoint: cp-20261014-chat-task-board-91. Updated UTC: 2026-10-14T03:02:20Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-reconcile-completed-scryfall-chat
+publish-disjoint-chat-tasks
 
-Read completed disjoint Scryfall metadata task0db3298 with lock released; clear collision hold and stale routing/branch notes. Recovery retains life/shared ownership; profile repository next.
+Published concurrent task board: recovery TAKES life profiles; OPEN scoped Scryfall integration and history audit. Refreshed parent delta; claims/completions publish with dedicated locks.
 
 Read CURRENT, machine state and task card.
