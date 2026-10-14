@@ -51,6 +51,10 @@ public class SqlLifeGameSessions internal constructor(db: Database, codec: LifeP
             committed(entry, lifecycle.read(created.checkpoint.snapshot.id, cancel))
         }
     }
+    /** Checked serialized read without sampling the clock or implicitly recovering/settling timers. */
+    public suspend fun read(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = outcome {
+        locked(id) { entry -> cancel.throwIfCancelled(); committed(entry, lifecycle.read(id, cancel)) }
+    }
     public suspend fun resume(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = outcome {
         locked(id) { entry -> cancel.throwIfCancelled(); committed(entry, lifecycle.resume(id, observation(), cancel)) }
     }
@@ -62,12 +66,14 @@ public class SqlLifeGameSessions internal constructor(db: Database, codec: LifeP
             committed(entry, commands.dispatch(id, action, expected, reading, cancel))
         }
     }
-    public suspend fun undo(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = outcome {
+    public suspend fun undo(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = undoCurrent(id, null, cancel)
+    public suspend fun undo(id: GameId, expected: Revision, cancel: CancelToken): Outcome<StoredLifeGame> = undoCurrent(id, expected, cancel)
+    private suspend fun undoCurrent(id: GameId, expected: Revision?, cancel: CancelToken): Outcome<StoredLifeGame> = outcome {
         locked(id) { entry ->
             cancel.throwIfCancelled()
             val reading = observation()
             committed(entry, lifecycle.resume(id, reading, cancel))
-            committed(entry, commands.undo(id, null, reading, cancel))
+            committed(entry, commands.undo(id, expected, reading, cancel))
         }
     }
 

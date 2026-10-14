@@ -18,3 +18,5 @@ Root execution follow-up: bounded actual command A1/A2/B1/C1 plus A3 countdown-m
 
 
 D1 adapter now implemented/reviewed as CalendarGameHistoryFilter, source1d69fba: retained explicit LocalDate/ZoneId and both inclusive days→UTC halfopen, real DST/skippedday semantics, typed errors/no clock/defaultzone sampling. Local7pure+2actualSQLite cases and whole943JVM94XML0fail/error/skip1704s, debug/testAPK min23/backport inclusion verified; native runtime probe authored but not_run. See CALENDAR-HISTORY-LOCAL-20261014.md. Calendar UI/retained control wiring/accessibility/native runtime remain incomplete; this closes the pure/SQL adapter gap, not fullG11/service acceptance.
+
+Persisted-port implementation gap is now closed by reviewed SqlPersistedGameService, with actual hostSQLite public-port tests and whole950JVM local gate. This does not close app DI/Android clock-process providers/cadence/presentation/native/process-kill obligations. Exact evidence: PERSISTED-SERVICE-LOCAL-20261014.md; native Room probe compiled, execution not_run. Original auditor report is unchanged.
