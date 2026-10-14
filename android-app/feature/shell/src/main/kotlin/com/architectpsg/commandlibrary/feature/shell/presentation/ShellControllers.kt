@@ -24,7 +24,7 @@ internal class ShellControllers(
 ) {
     val importLimits: CatalogImportLimits = ports.importLimits
     val status = CatalogStatusController(scope, ports.catalogStatus, ioDispatcher)
-    val search = SearchController(scope, ports.catalogLookup, ioDispatcher, textLookup = ports.catalogTextLookup, onStaleCursor = status::refresh)
+    val search = SearchController(scope, ports.catalogLookup, ioDispatcher, textLookup = ports.catalogTextLookup, enableSuggestions = true, onStaleCursor = status::refresh)
     val catalogImport = ImportController(
         scope = scope,
         port = ports.catalogImport,

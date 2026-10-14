@@ -20,6 +20,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -29,6 +30,68 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SearchControllerTest {
+    @Test fun localSuggestionsDebounceSupersededDraftsAndOpenOnlyAnActualCurrentRow() = runTest {
+        val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), enableSuggestions = true) {}
+        controller.onQueryChange("synthetic"); runCurrent()
+        advanceTimeBy(249); runCurrent()
+        assertTrue(catalog.lookupRequests.isEmpty())
+        controller.onQueryChange("unrelated"); runCurrent()
+        advanceTimeBy(250); runCurrent(); advanceUntilIdle()
+        assertEquals("unrelated", catalog.lookupRequests.single().first)
+        assertEquals(6, catalog.lookupRequests.single().second.limit)
+        assertFalse(controller.state.value.searched)
+        val suggestion = controller.state.value.suggestions.single()
+        assertEquals("Unrelated Name", suggestion.name)
+        controller.selectSuggestion(suggestion)
+        assertEquals(suggestion, controller.state.value.selected)
+        assertTrue(controller.state.value.suggestions.isEmpty())
+        assertEquals("unrelated", controller.queryInput)
+    }
+    @Test fun explicitSubmitCancelsPendingSuggestionsAndPublishesOnlySubmittedPages() = runTest {
+        val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), enableSuggestions = true) {}
+        catalog.lookupGate = CompletableDeferred()
+        controller.onQueryChange("synthetic"); runCurrent(); advanceTimeBy(250); runCurrent()
+        assertTrue(controller.state.value.suggestionsLoading)
+        controller.submit(); runCurrent()
+        assertTrue(catalog.lookupTokens.first().isCancelled)
+        catalog.lookupGate!!.complete(Unit); advanceUntilIdle()
+        assertEquals(listOf(6, 50), catalog.lookupRequests.map { it.second.limit })
+        assertTrue(controller.state.value.suggestions.isEmpty())
+        assertFalse(controller.state.value.suggestionsLoading)
+        assertEquals(50, controller.state.value.results.size)
+    }
+    @Test fun activeGenerationChangeClearsCachedSuggestionsAndRefusesLateMismatchedRows() = runTest {
+        val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), enableSuggestions = true) { staleSignals.incrementAndGet() }
+        controller.onActiveGeneration(catalog.active!!.id)
+        controller.onQueryChange("synthetic"); advanceUntilIdle()
+        val old = controller.state.value.suggestions.first()
+        controller.onActiveGeneration(com.architectpsg.commandlibrary.core.model.GenerationId("other"))
+        controller.selectSuggestion(old)
+        assertNull(controller.state.value.selected)
+        assertTrue(controller.state.value.suggestions.isEmpty())
+        controller.onQueryChange("synthetic "); advanceUntilIdle()
+        assertTrue(controller.state.value.suggestions.isEmpty())
+        assertEquals(Problem.STALE_GENERATION, controller.state.value.suggestionProblem)
+        assertEquals(1, staleSignals.get())
+    }
+    @Test fun oracleTextAndInvalidDraftsDoNotRunNameAutocomplete() = runTest {
+        val text = OracleTextFixture(catalog)
+        val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), textLookup = text, enableSuggestions = true) {}
+        controller.onQueryChange(" "); advanceUntilIdle()
+        controller.onQueryChange("x".repeat(129)); advanceUntilIdle()
+        controller.onQueryChange("draw"); controller.onFieldChange(CatalogTextField.ORACLE_TEXT); advanceUntilIdle()
+        assertTrue(catalog.lookupRequests.isEmpty()); assertTrue(text.requests.isEmpty())
+        controller.submit(); advanceUntilIdle()
+        assertEquals(listOf(CatalogTextField.ORACLE_TEXT to "draw"), text.requests)
+    }
+    @Test fun suggestionFailureRemainsAnErrorWithoutPretendingASearchOrCardExists() = runTest {
+        val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), enableSuggestions = true) {}
+        catalog.lookupOverride = failure(FailureCode.PERSISTENCE)
+        controller.onQueryChange("synthetic"); advanceUntilIdle()
+        assertEquals(Problem.PERSISTENCE, controller.state.value.suggestionProblem)
+        assertTrue(controller.state.value.suggestions.isEmpty())
+        assertFalse(controller.state.value.searched); assertNull(controller.state.value.selected)
+    }
     @Test fun optionalTextCapabilityRoutesSelectedFieldAndFieldSwitchCancelsOldWork() = runTest {
         val text = OracleTextFixture(catalog)
         val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), textLookup = text) {}

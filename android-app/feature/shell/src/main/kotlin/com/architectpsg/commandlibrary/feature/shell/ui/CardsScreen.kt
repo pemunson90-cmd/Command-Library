@@ -122,6 +122,15 @@ private fun SearchPane(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item(key = "search-form") { SearchForm(controller, state) }
+        if (state.suggestionsLoading) item(key = "suggestions-loading") { Busy(stringResource(R.string.search_suggestions_loading)) }
+        if (state.suggestionProblem != null) item(key = "suggestions-problem") {
+            MessageBlock(stringResource(R.string.search_suggestions_failed), listOf(stringResource(problemText(state.suggestionProblem))), tone = MessageTone.INFO)
+        }
+        if (state.suggestions.isNotEmpty()) item(key = "suggestions-title") { SectionHeading(stringResource(R.string.search_suggestions_title)) }
+        items(state.suggestions, key = { "suggestion:${it.oracleId.source.value}:${it.oracleId.raw}" }) { card ->
+            OutlinedButton(onClick = { controller.selectSuggestion(card) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                .testTag("name-suggestion-${card.oracleId.raw}")) { Text(card.name) }
+        }
         item(key = "search-status") { SearchStatus(state, catalogMissing, onOpenCatalog, controller) }
         items(state.results, key = { "${it.oracleId.source.value}:${it.oracleId.raw}" }) { card ->
             ResultRow(

@@ -13,6 +13,7 @@ import com.architectpsg.commandlibrary.core.model.PageRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,6 +43,10 @@ internal data class SearchUiState(
     val activeGenerationKnown: Boolean = false,
     val activeGeneration: GenerationId? = null,
     val selected: CardRecord? = null,
+    val suggestions: List<CardRecord> = emptyList(),
+    val suggestionGeneration: GenerationId? = null,
+    val suggestionsLoading: Boolean = false,
+    val suggestionProblem: Problem? = null,
 ) {
     val searched: Boolean get() = query != null
 
@@ -58,6 +63,7 @@ internal class SearchController(
     private val lookup: CatalogLookup,
     private val portDispatcher: CoroutineDispatcher,
     private val textLookup: CatalogTextLookup? = null,
+    private val enableSuggestions: Boolean = false,
     private val onStaleCursor: () -> Unit,
 ) {
     private val mutableState = MutableStateFlow(SearchUiState())
@@ -76,6 +82,7 @@ internal class SearchController(
         fieldInput = field
         invalidateRequest()
         clearSearch()
+        suggest(queryInput)
     }
 
     fun onQueryChange(text: String) {
@@ -83,6 +90,7 @@ internal class SearchController(
         queryInput = text
         invalidateRequest()
         clearSearch()
+        suggest(text)
     }
 
     fun submit() = search(queryInput)
@@ -138,6 +146,13 @@ internal class SearchController(
 
     fun select(card: CardRecord) = mutableState.update { it.copy(selected = card) }
 
+    fun selectSuggestion(card: CardRecord) {
+        val current = mutableState.value
+        if (card !in current.suggestions || (current.activeGenerationKnown && current.suggestionGeneration != current.activeGeneration)) return
+        invalidateRequest()
+        mutableState.update { it.copy(selected = card, suggestions = emptyList(), suggestionsLoading = false, suggestionProblem = null) }
+    }
+
     fun clearSelection() = mutableState.update { it.copy(selected = null) }
 
     /** End an embedded picker without carrying an earlier editor's query or selection forward. */
@@ -160,8 +175,47 @@ internal class SearchController(
     }
 
     /** Committed catalog status reports [generation] as active (null when nothing is installed). */
-    fun onActiveGeneration(generation: GenerationId?) =
-        mutableState.update { it.copy(activeGenerationKnown = true, activeGeneration = generation) }
+    fun onActiveGeneration(generation: GenerationId?) {
+        val current = mutableState.value
+        val discard = (current.suggestions.isNotEmpty() && current.suggestionGeneration != generation) ||
+            (current.suggestionsLoading && current.activeGenerationKnown && current.activeGeneration != generation)
+        if (discard) invalidateRequest()
+        mutableState.update { it.copy(activeGenerationKnown = true, activeGeneration = generation,
+            suggestions = if (discard) emptyList() else it.suggestions,
+            suggestionGeneration = if (discard) null else it.suggestionGeneration,
+            suggestionsLoading = if (discard) false else it.suggestionsLoading,
+            suggestionProblem = if (discard) null else it.suggestionProblem) }
+    }
+
+    private fun suggest(input: String) {
+        val query = input.trim()
+        if (!enableSuggestions || fieldInput != CatalogTextField.NAME || query.isEmpty() ||
+            query.codePointCount(0, query.length) > MAX_QUERY_CODE_POINTS) return
+        val ticket = requestTicket
+        job = scope.launch {
+            delay(SUGGESTION_DELAY_MS)
+            if (ticket != requestTicket) return@launch
+            mutableState.update { it.copy(suggestionsLoading = true) }
+            val result = callPort(portDispatcher) { lookup.lookupName(query, PageRequest(SUGGESTION_LIMIT), it) }
+            if (ticket != requestTicket) return@launch
+            when (result) {
+                is PortResult.Ok -> {
+                    val page = result.value
+                    val current = mutableState.value
+                    val problem = when {
+                        page.items.isNotEmpty() && page.snapshot.generation == null -> Problem.CORRUPT_DATA
+                        current.activeGenerationKnown && page.snapshot.generation != current.activeGeneration -> Problem.STALE_GENERATION
+                        else -> null
+                    }
+                    mutableState.update { it.copy(suggestionsLoading = false, suggestionProblem = problem,
+                        suggestions = if (problem == null) distinct(page.items).take(SUGGESTION_LIMIT) else emptyList(),
+                        suggestionGeneration = if (problem == null) page.snapshot.generation else null) }
+                    if (problem == Problem.STALE_GENERATION) onStaleCursor()
+                }
+                is PortResult.Failed -> mutableState.update { it.copy(suggestionsLoading = false, suggestionProblem = result.problem) }
+            }
+        }
+    }
 
     private suspend fun load(query: String, field: CatalogTextField, cursor: String?, kind: SearchLoad, ticket: Long) {
         val result = callPort(portDispatcher) {
@@ -209,5 +263,7 @@ internal class SearchController(
     internal companion object {
         const val PAGE_SIZE: Int = 50
         const val MAX_QUERY_CODE_POINTS: Int = 128
+        const val SUGGESTION_LIMIT: Int = 6
+        const val SUGGESTION_DELAY_MS: Long = 250
     }
 }
