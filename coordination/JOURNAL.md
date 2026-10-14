@@ -533,3 +533,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T22:48:37Z | codex | cp-20261014-private-artifacts-boundary-144 | containing commit | Fresh0022 whole1113/check/lint/all8APKs ZIPpass6m5s; private fix reviewed. Token rejected, commits local only. Continue search edit lifecycle.
 
 2026-10-14T22:51:59Z | codex | cp-20261014-search-edit-parser-plan-145 | containing commit | Search-edit7fbffc5 verified12pass14s; corrected native r3d5d3026 local/not run, token blocked. Continue reviewed typed query parser foundation.
+
+2026-10-14T22:58:49Z | codex | cp-20261014-query-parser-146 | containing commit | Parser8509659 design/source ACK90pass+81model. Next expose actual indexed Oracle text capability/UI, focused checks. Local unpublished/GitHub token rejected.
