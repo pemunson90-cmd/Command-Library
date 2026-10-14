@@ -1,6 +1,6 @@
 # Modern life semantic actions and initialization
 
-Status: concrete proposed design for root-owned cx-m2-life-action-engine-01; no implementation acceptance yet. Existing reviewed persistence design/dispositions and SPEC G01–G14/PX07 remain requirements. Timing/source/storage authority stays distinct. No schema/DI/UI change assumed. Inline execution continues under user authorization.
+Status: first counter slice implemented/reviewed/locally verified; larger units remain proposed under root-owned cx-m2-life-action-engine-01. Existing reviewed persistence design/dispositions and SPEC G01–G14/PX07 remain requirements. Timing/source/storage authority stays distinct. No schema/DI/UI change assumed. Inline execution continues under user authorization.
 
 ## Ordered bounded units
 
@@ -19,7 +19,7 @@ SetAdjustmentStep and SetCommanderLifeDeduction update only preferences (positiv
 
 Commander damage helper returns an explicit existing flat Group using settings.deductLifeForCommanderDamage and existing CounterReducer.commanderDamage. Raw AdjustCounter/SetCounter remain literal edits; canonical groups are never implicitly expanded again, preventing double life subtraction. The later UI's commander-damage control calls this helper; exact numeric corrections remain explicit. Validate group ID without generating hidden IDs.
 
-resetForTurn(snapshot, incomingSeat) resets only all explicit ON_TURN_START counter states across every seat and commander slot to definition.initial, preserving hidden flags/slot identity; missing states already mean initial and need no synthetic state. It returns Outcome<GameSnapshot> and does not increment turn, refill clocks or change revision. Reset assigns initial directly and need not fit an AdjustCounter Int delta; incomingSeat is validated as active context, never used to scope reset. Called exactly once for SwitchTurn by the later orchestrator, never by PassClock; reset is part of same action provenance so undo restores all affected values. Definitions/role validation applies before and after.
+resetForTurn(snapshot, incomingSeat) resets all explicit ON_TURN_START counter states across every seat and commander slot to definition.initial, preserving hidden flags/slot identity; missing states already mean initial and need no synthetic state. It returns Outcome<GameSnapshot> and does not increment turn, refill clocks or change revision. Reset assigns initial directly and need not fit an AdjustCounter Int delta; incomingSeat is validated as active context, never used to scope reset. Called exactly once for SwitchTurn by the later orchestrator, never by PassClock; reset is part of same action provenance so undo restores all affected values. Definitions/role validation applies before and after.
 
 Counter helpers do not validate source-backed rule authority, resolve random/variant actions, create result IDs or accept completed-game mutations. No partial GameService registration. Pure input identity/graph failures stay typed, with invalid new definition/bounds requests INVALID_INPUT rather than presenting malformed proposed state as stored corruption.
 
@@ -27,4 +27,4 @@ Counter helpers do not validate source-backed rule authority, resolve random/var
 
 Meaningful pure JVM RED→GREEN: numeric target independent of step and exact logged delta, Int.MIN/MAX difference overflow, slot attribution/stolen own damage and partner separation, failed later group leaves input untouched, definition bounds/role mutation rejection, candidate transitions/implicit values, no preset-inferred loss, damage/life deduction exactly once, global turn-boundary reset preserving hidden flags and paused clocks, completed rejection. Existing accepted counter/timing tests remain green. Actual initialization and storage integration receive their own later cases. No emulator for these pure helpers; coherent local check/debug before publishing a completed unit.
 
-Independent first-counter-slice review APPROVE after global reset and old/final candidate-membership clarifications above. Larger participation/result/initializer/random/variant/orchestrator units remain proposed, not implementation approval. No source edit yet.
+Independent first-counter-slice review APPROVE after global reset and old/final candidate-membership clarifications above. Larger participation/result/initializer/random/variant/orchestrator units remain proposed, not implementation approval.
