@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-persisted-service-119",
-  "verified_base_head": "1dc43908b81a3869fc064ea29ad3f5375f69640a",
+  "checkpoint_id": "cp-20261014-life-native-routing-120",
+  "verified_base_head": "d3beaae07354c394ace8f3f7ce1a78373843744b",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "verify-persisted-service-room-calendar-native-exact-head",
+  "first_action": "inspect-focused-workflow-availability-without-duplicate-runs",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -92,9 +92,10 @@
     "life_calendar_history_local": "Source1d69fba treeequals1b83fc6, architecture/exactsource/dependencyAPPROVE.7pureGREEN285s; full943JVM94XML0fail/error/skip1704s,73model212life191storage incl2calendarSQL,check/debug/storageAndroidTestAPK; min23manifest+desugaredLocalDate/probeDEX verified,both16KiBZIPexit0. Appabb96caa1c90966e25e7e36aa1ab38014b89ab20bd351a68af9885b54eda6ff0; testc2910d8f1611fa65d20c6ce9c4a78b1d798495d9ec4c3539c50924bc8dd48582. RuntimeAPI23not_run/UIpending; evidence CALENDAR-HISTORY-LOCAL-20261014.md.",
     "integration_freeze_decision": "PMrequest ACK770e835 for isolatedtested PRprep ONLY from5a888461a4af5185054152420d46b0e2bfd24bd4; independentreviewconcurred. FinalmergeHOLD/rootexclusiveactiveownership. Separateclone, exactcandidatefreshchecks, exclude staleglobalauthority/newerrootwork. Rules coordination/integration/FREEZE-5a88846-20261014.md. No merge/delivery.",
     "life_persisted_service_local": "Source1dc4390 reviewed complete unbound serviceport;7actual hostSQLite tests/concurrency/CUSTOM/status/cancellation. Whole950JVM95XML0fail/error/skip608s; check/debug/storageTestAPK, both16KiBZIPexit0. Appabb96caa1c90966e25e7e36aa1ab38014b89ab20bd351a68af9885b54eda6ff0; test2a940792c5431f2b0d6e65f86c51718b3c2bfb0c558c171d9cb939cd658b2b8d. Nativeprobecompiled/not_run; no DI/UI/fullserviceacceptance. PERSISTED-SERVICE-LOCAL-20261014.md.",
-    "integration_freeze_candidate": "DraftPR21 e9cb72b75bddc832eb1c8b702878e4c74bec25cc exactparents main6f841cc4+freeze5a88846; root verified byteidentical android-app/workflows/scripts. HostedAndroid38565369384/continuity38565369459 successreported; detailednativeXML/mainmetadatareconciliationpending. FinalmergeHOLD; isolatedprepACK retained."
+    "integration_freeze_candidate": "DraftPR21 e9cb72b75bddc832eb1c8b702878e4c74bec25cc exactparents main6f841cc4+freeze5a88846; root verified byteidentical android-app/workflows/scripts. HostedAndroid38565369384/continuity38565369459 successreported; detailednativeXML/mainmetadatareconciliationpending. FinalmergeHOLD; isolatedprepACK retained.",
+    "life_persisted_service_native": "Native verification attempt: pushed source1dc43908b81a3869fc064ea29ad3f5375f69640a to agent/cx-native-life-service-source-20261014 (Android tree identical to checkpointd3beaae). Only continuity38571765761 observed success; no focused Android run observed. Earlier checkpoint-only ref agent/cx-native-life-service-20261014 likewise only continuity38571695707. Manual gh workflow run failed at GET workflow endpoint with Forbidden; no dispatch/queued/runtime claim. Existing GitHub App GET remains usable. No CI edits, duplicate emulator runs or product changes. Next diagnose workflow availability/trigger using read-only Actions API, then execute exactly one focused run when callable; native and API23 remain not_run."
   },
-  "last_completed": "Reviewed unbound persisted facade1dc4390 passed950JVM and debug/testAPK; PR21 frozen source verified, final merge HOLD; next one focused native verification.",
-  "updated_utc": "2026-10-14T13:24:51Z",
+  "last_completed": "Published service950JVM checkpointd3beaae; exactsourceverification refs onlycontinuity observed, gh dispatch blocked at workflow GET Forbidden; native not_run, PR21 finalmergeHOLD.",
+  "updated_utc": "2026-10-14T13:27:14Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -483,3 +483,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T12:50:01Z | codex | cp-20261014-life-calendar-freeze-118 | containing commit | Calendar943JVM/min23packaging verified; freeze5a88846 ACK isolatedPRprep/finalmergeHOLD; continue reviewed actual persistedport facade.
 
 2026-10-14T13:24:51Z | codex | cp-20261014-life-persisted-service-119 | containing commit | Reviewed unbound persisted facade1dc4390 passed950JVM and debug/testAPK; PR21 frozen source verified, final merge HOLD; next one focused native verification.
+
+2026-10-14T13:27:14Z | codex | cp-20261014-life-native-routing-120 | containing commit | Published service950JVM checkpointd3beaae; exactsourceverification refs onlycontinuity observed, gh dispatch blocked at workflow GET Forbidden; native not_run, PR21 finalmergeHOLD.
