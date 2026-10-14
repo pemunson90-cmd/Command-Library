@@ -17,6 +17,24 @@ internal object AcquisitionPayloadCodec {
     fun encodeArtifact(artifact: VerifiedArtifact): String = guarded { encode("artifact", artifactJson(artifact)).also { decodeArtifact(it) } }
     fun decodeArtifact(payload: String): VerifiedArtifact = guarded { readArtifact(envelope(payload, "artifact")) }
 
+    /** Local generation provenance only; does not grant acquisition/source authority. */
+    fun encodeStoredProvenance(value: Provenance): String = guarded {
+        encode("storedProvenance", storedProvenanceJson(value)).also { decodeStoredProvenance(it) }
+    }
+    fun decodeStoredProvenance(payload: String): Provenance = guarded {
+        val v = envelope(payload, "storedProvenance").fields("provider", "source", "version", "sourceDate",
+            "fetchedAt", "effectiveAt", "generation", "checksum", "notice")
+        Provenance(ProviderId(text(v["provider"])), optional(v["source"]) { ResourceUri(text(it)) },
+            readKnowledge(v["version"], ::text), readKnowledge(v["sourceDate"], ::readDate), readDate(v["fetchedAt"]),
+            readKnowledge(v["effectiveAt"], ::readDate), optional(v["generation"]) { GenerationId(text(it)) },
+            optional(v["checksum"], ::readHash), optional(v["notice"], ::readNotice))
+    }
+    private fun storedProvenanceJson(p: Provenance) = obj("provider" to str(p.provider.value),
+        "source" to nullable(p.source) { str(it.value) }, "version" to knowledge(p.version, ::str),
+        "sourceDate" to knowledge(p.sourceDate, ::dateJson), "fetchedAt" to dateJson(p.fetchedAt),
+        "effectiveAt" to knowledge(p.effectiveAt, ::dateJson), "generation" to nullable(p.generation) { str(it.value) },
+        "checksum" to nullable(p.checksum, ::hashJson), "notice" to nullable(p.notice, ::noticeJson))
+
     /** Full importer source persistence only; callers must still validate/pin downloaded artifacts. */
     fun encodeCatalogSource(source: CatalogBulkImportSource): String = guarded {
         encode("catalogSource", catalogSourceJson(source)).also { decodeCatalogSource(it) }
