@@ -1,5 +1,7 @@
 # Life snapshot structural graph validation — DONE
 
+Completed task. The brief and completion-era next steps below are historical; use [CHAT-TASKS.md](../CHAT-TASKS.md) for current claims.
+
 Owner codex-thread-recovery-20261013, agent/cx-thread-recovery-20261013. Parent cx-m2-life-functional-01. Root life-functional lock continues. No other component writer may edit feature/life/shared model or tests under this claim.
 
 Next prerequisite before event/checkpoint mutations and service binding: review retained G01–G13/dispositions and existing CounterBoard/SeatClock validation, design and implement reusable pure-JVM structural validation for decoded current snapshots. Check explicit role bindings, seat/commander/counter references and duplicate keys, clock modes/banks/anchors, elapsed/turn state, designation/alert targets, result identities/outcomes and completed-state timing. Do not infer roles from labels, invent legacy metadata, refund unknown elapsed time or mistake structural validity for external source/undo/event authority.

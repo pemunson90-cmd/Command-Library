@@ -35,12 +35,14 @@ public class SqlLifeGameStore(private val db: Database, private val codec: LifeP
             }
         }
 
-    public suspend fun read(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = gameTransaction(db, cancel) { tx ->
+    public suspend fun read(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = gameTransaction(db, cancel) { tx -> readWithin(tx, id, cancel) }
+
+    internal suspend fun readWithin(tx: DbTransaction, id: GameId, cancel: CancelToken): StoredLifeGame {
         gameIdentity(id.source.value, FailureCode.INVALID_INPUT); gameIdentity(id.raw, FailureCode.INVALID_INPUT)
         val meta = metadata(tx, "game_source=:source AND game_id=:id", identityParameters(id), cancel)
             ?: throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.NOT_FOUND, "Game not found"))
         corruptGame(meta.id == id, "Stored game identity mismatch")
-        load(tx, meta, cancel)
+        return load(tx, meta, cancel)
     }
 
     private suspend fun metadata(tx: DbTransaction, predicate: String, parameters: Array<Pair<String, SqlValue>>, cancel: CancelToken): GameMetadata? {

@@ -1,4 +1,6 @@
-# Transactional life game mutation adapter — TAKEN
+# Transactional life game mutation adapter — DONE
+
+Completed task. The brief and completion-era next steps below are historical; use [CHAT-TASKS.md](../CHAT-TASKS.md) for current claims.
 
 Parent cx-m2-life-functional-01. Owner codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013. Root retains feature/life/shared/storage ownership and life-functional lock; no component writer authorized.
 
@@ -10,4 +12,6 @@ Meaningful actual SQLite RED→GREEN: revision/sequence stale/CAS, new event uni
 
 ## Latest continuation delta
 
-Clock prerequisite fix3631654 published,716localJVM/check/debug pass. Concrete mutation spec/inline plan now written at docs/superpowers/specs/2026-10-14-life-game-mutations-design.md and docs/superpowers/plans/2026-10-14-life-game-mutations.md. Independent architecture boundary APPROVE with incorporated tightenings: narrow system-settlement guard reused for last-after/current/before comparisons, no gameElapsed refund evenundo, first result nonretracted. Atomic action/checkpoint/seat/result/alert writes, revision+sequenceCAS, stable results/ackcarryforward/deliveryOR and trusted-localcallback/no operational binding specified. No new product code/tests yet; exact next action actualSQLite API/behavior RED, transaction-local reader/operationalguard implementation, source review/local verification. History audit OPEN, root sole life/shared writer.
+Transactional game mutation adapter complete; concrete helper remains unregistered. Architecture review tightened exact settlement and elapsed nonrefund; source findings (bounded undo existence/current delivery projection equality) resolved with regressions, plus typedMAX/linear fired IDs and Unknownundo repair. Actual APIabsence64s/declaration92tests9fail88s; final local check/debug124s72XML743JVM0failure/error/skip,110storage incl27mutator/18Store/16reader/13profile,alignment pass. See docs/verification/m2-life/GAME-MUTATIONS-LOCAL-20261014.md. Same-tx revision+sequenceCAS, immutable archive/current checkpoint/seat/result/alert writes, stable result and ack/delivery preservation. No schema/coreport/dependency/DI/UI change; no real semantic GameService claim.
+
+Next TAKEN cx-m2-life-timing-engine-01: pure modern SHARED/elapsed/priority/turn/recovery/undo engine from accepted timing requirements and legacy reducer tests. New unit design/code/tests not_run; first read G07/G13/dispositions and define occurrence/lineage boundaries with independent review. History audit OPEN. Root retains life/shared lock; full K3/M2–M9/v1/device/canonical acceptance incomplete; continue local-first, no checkpoint stop.

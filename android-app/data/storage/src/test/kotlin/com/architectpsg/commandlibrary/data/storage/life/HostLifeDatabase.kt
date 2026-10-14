@@ -17,6 +17,7 @@ internal class HostLifeDatabase(file: File, initialize: Boolean = true) : Databa
     val connection: SQLiteConnection = BundledSQLiteDriver().open(file.path)
     var afterWrite: (() -> Unit)? = null
     var blobQueries = 0
+    var maxDirectTextBytes = 0
     init {
         sql("PRAGMA foreign_keys=ON")
         if (initialize) runBlocking { Migration5To6.migrate(connection) }
@@ -42,7 +43,11 @@ internal class HostLifeDatabase(file: File, initialize: Boolean = true) : Databa
                 rows += RowData(SnapshotList.copyOf((0 until s.getColumnCount()).map { i ->
                     val v = when(s.getColumnType(i)) {
                         1 -> SqlValue.Integer(s.getLong(i))
-                        3 -> SqlValue.Text(s.getText(i))
+                        3 -> {
+                            val value=s.getText(i)
+                            maxDirectTextBytes=maxOf(maxDirectTextBytes,value.toByteArray(Charsets.UTF_8).size)
+                            SqlValue.Text(value)
+                        }
                         4 -> {
                             if(s.getColumnName(i) in setOf("payload","creation_payload","checkpoint_payload","archive_payload")) blobQueries++
                             SqlValue.Blob(SnapshotBytes(s.getBlob(i)))

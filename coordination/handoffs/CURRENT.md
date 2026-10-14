@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-clock-graph-policy-96
+Checkpoint-ID: cp-20261014-life-game-mutations-97
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. design-transactional-life-game-mutations
+Next step: 3. design-modern-life-timing-engine
 
-Updated UTC: 2026-10-14T06:30:24Z
+Updated UTC: 2026-10-14T07:08:02Z
 Status: in_progress; lease: active.
-Verified base: a040273f34fb5e8a3ba82ad3bdb0e3570248c5ea.
+Verified base: 7fe2e6219b1ed0c19084caf510404a7ccdbe8016.
 
-Corrected current clock graph policies after2regressions RED; independent boundary/source APPROVE,96life/83storage and whole716JVM/check/debug0fail/error/skip,alignment pass. Root retains mutation adapter TAKEN; next concrete CAS/event/checkpoint/result/alert design. History audit OPEN; no operational service/UI claim.
+Transactional mutation helper reviewed/findings resolved; final743JVM/check/debug0fail/error/skip,110storage incl27mutator,alignment pass. Game-mutations DONE; root TAKES modern SHARED/elapsed/priority/recovery/undo timing engine before semantic service/UI. History audit OPEN; no full-v1 claim.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

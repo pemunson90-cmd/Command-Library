@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-life-clock-graph-policy-96. Updated UTC: 2026-10-14T06:30:24Z.
+Checkpoint: cp-20261014-life-game-mutations-97. Updated UTC: 2026-10-14T07:08:02Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-design-transactional-life-game-mutations
+design-modern-life-timing-engine
 
-Corrected current clock graph policies after2regressions RED; independent boundary/source APPROVE,96life/83storage and whole716JVM/check/debug0fail/error/skip,alignment pass. Root retains mutation adapter TAKEN; next concrete CAS/event/checkpoint/result/alert design. History audit OPEN; no operational service/UI claim.
+Transactional mutation helper reviewed/findings resolved; final743JVM/check/debug0fail/error/skip,110storage incl27mutator,alignment pass. Game-mutations DONE; root TAKES modern SHARED/elapsed/priority/recovery/undo timing engine before semantic service/UI. History audit OPEN; no full-v1 claim.
 
 Read CURRENT, machine state and task card.

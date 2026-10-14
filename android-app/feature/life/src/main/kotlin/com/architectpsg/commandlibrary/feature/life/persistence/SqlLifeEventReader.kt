@@ -7,10 +7,13 @@ public class SqlLifeEventReader(private val db: Database, private val codec: Lif
     public suspend fun archive(id: GameId, eventId: Long, cancel: CancelToken): Outcome<GameEventArchive> = gameTransaction(db, cancel) { tx ->
         identities(id)
         requireGame(eventId >= 0, FailureCode.INVALID_INPUT, "Negative event identity")
-        val revision = parentRevision(tx, id, cancel)
+        archiveWithin(tx, id, eventId, parentRevision(tx, id, cancel), cancel)
+    }
+
+    internal suspend fun archiveWithin(tx: DbTransaction, id: GameId, eventId: Long, revision: Long, cancel: CancelToken): GameEventArchive {
         val meta = metadata(tx, id, eventId, revision, cancel)
             ?: throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.NOT_FOUND, "Game event not found"))
-        load(tx, id, meta, revision, cancel)
+        return load(tx, id, meta, revision, cancel)
     }
 
     public suspend fun events(id: GameId, page: PageRequest, cancel: CancelToken): Outcome<Page<GameEvent>> = gameTransaction(db, cancel) { tx ->

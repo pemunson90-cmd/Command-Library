@@ -1,5 +1,7 @@
 # Checked game creation/read persistence — DONE
 
+Completed task. The brief and completion-era next steps below are historical; use [CHAT-TASKS.md](../CHAT-TASKS.md) for current claims.
+
 Owner: codex-thread-recovery-20261013; branch agent/cx-thread-recovery-20261013. Parent cx-m2-life-functional-01. Root life-functional lock continues; no component writer owns these files.
 
 Next bounded unit: design/review and implement internal SqlLifeGameStore creation/read foundation over Database and LifePayloadCodecPort. Store exact original creation input/version/hash for operation retry identity and authoritative GameCheckpoint, project current game/seat metadata, and validate stored payload/projection agreement on read. Use original-version bytes or decoded GameCreation equality across codec versions; header changes cannot invalidate a legitimate retry. No reflection, history truncation, fake GameService or DI/UI registration.

@@ -1,5 +1,7 @@
 # Life profiles — DONE
 
+Completed task. The brief and completion-era next steps below are historical; use [CHAT-TASKS.md](../CHAT-TASKS.md) for current claims.
+
 Owner: codex-thread-recovery-20261013 (this chat).
 Branch: agent/cx-thread-recovery-20261013. Parent: cx-m2-life-functional-01.
 

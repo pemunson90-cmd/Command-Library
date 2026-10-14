@@ -10,8 +10,9 @@ Current assignment board,2026-10-14. Base your checkout on the latest published 
 | life-game-store | Checked game creation/read persistence foundation | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-game-store-01.md) |
 | life-snapshot-graph | Structural snapshot validation before mutation/service binding | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-snapshot-graph-01.md) |
 | life-event-reads | Checked immutable event/archive reads and bounded pages | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-event-reads-01.md) |
-| life-game-mutations | Transactional revision/sequence CAS and atomic persisted mutation adapter | TAKEN | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-game-mutations-01.md) |
-| life-game-service | Implement transactional persisted game service and operational UI | BLOCKED | Root assigns after persistence/contracts are ready | cx-m2-life-functional-01 |
+| life-game-mutations | Transactional revision/sequence CAS and atomic persisted mutation adapter | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-game-mutations-01.md) |
+| life-timing-engine | Modern SHARED/elapsed/priority/recovery/undo timing calculations | TAKEN | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-timing-engine-01.md) |
+| life-game-service | Implement transactional persisted game service and operational UI | BLOCKED | Root assigns after modern timing/semantic prerequisites are ready | cx-m2-life-functional-01 |
 
 ## Claim and completion protocol
 
