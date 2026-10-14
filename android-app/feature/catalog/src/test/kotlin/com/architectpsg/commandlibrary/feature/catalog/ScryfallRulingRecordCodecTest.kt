@@ -21,7 +21,7 @@ class ScryfallRulingRecordCodecTest {
         for (source in listOf("wotc", "scryfall")) {
             val result = ScryfallRulingRecordCodec.decode(record(source, "2024-02-29", text).toString())
             assertEquals(OracleId(ProviderId("scryfall"), id), result.oracleId)
-            assertEquals(source, result.source); assertEquals("2024-02-29", result.publishedAt); assertEquals(text, result.comment)
+            assertEquals(source, result.publisher.upstreamValue); assertEquals("2024-02-29", result.publishedAt.value); assertEquals(text, result.comment)
         }
     }
 
@@ -42,7 +42,7 @@ class ScryfallRulingRecordCodecTest {
 
     @Test fun datesAreRealProlepticGregorianDaysInExplicitFourDigitYearRange() {
         for (value in listOf("0001-01-01", "1500-03-01", "1600-02-29", "1900-02-28", "2000-02-29", "9999-12-31"))
-            assertEquals(value, ScryfallRulingRecordCodec.decode(record(published = value).toString()).publishedAt)
+            assertEquals(value, ScryfallRulingRecordCodec.decode(record(published = value).toString()).publishedAt.value)
         for (value in listOf("0000-01-01", "1500-02-29", "1900-02-29", "2023-02-29", "2024-04-31", "2024-00-01", "2024-13-01",
             "2024-01-00", "2024-01-32", "2024-2-29", "2024-02-29T00:00:00Z", "10000-01-01", " 2024-02-29")) rejected(record(published = value).toString())
     }

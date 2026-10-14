@@ -1,5 +1,7 @@
 # Strict ruling-record decoder — 2026-10-14
 
+Historical first-batch evidence for f161fbf. Current typed decoder/model continuation: RULINGS-DATA-READ-LOCAL-20261014.md; the internal output DTO/date validator was replaced by shared RulingContent validation. Retain the original32case proof as scoped history.
+
 Implemented internal immutable ScryfallRulingRecord and bounded decoder for the accepted gzip-JSONL feed's decoded records. Retains source-qualified Scryfall Oracle UUID, literal wotc/scryfall source, exact Gregorian publication day and untrimmed Unicode comment. No invented ruling identity, instant, language, retrieval proof or provenance. Design/independent bounded-source review approved; the suggested removal of an unsupported NUL restriction is applied and valid escaped NUL retention is tested. Final files match the reviewed scratch draft byte-for-byte.
 
 Raw strict UTF-8 encoding rejects malformed UTF-16 and caps128KiB before JSON tree allocation. Existing strict parser enforces duplicate/Unicode/depth/node checks; retained and unknown strings cap64KiB and field names256UTF8bytes, nesting16. Canonical lowercase UUIDs and Gregorian years0001–9999 are explicit. These are internal safety bounds, not measured corpus sizes. Unknown bounded fields grant no trust; unexpected publishers/dates/type/coercions fail closed. Calendar dates are not converted to instants or corpus freshness.

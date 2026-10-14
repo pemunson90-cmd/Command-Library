@@ -1,6 +1,6 @@
 # Source-preserving ruling data and read contract
 
-Status: independent public/source design ACK/APPROVE; implementation next after native-consumer packaging fix. Parent orch-kotlin-k3-offline-data-01. Root owns core/catalog/shared contract files; routine technical design is delegated by D-17. Existing decoder f161fbf passes32focused tests; frozen Android run38621711127 is a separate earlier source d7e864f.
+Status: implemented additive public models/read declaration and actual decoder consumer; independent exact-source ACK,111focused cases pass25s. Persistence/authority/DI/UI remain next units. Parent orch-kotlin-k3-offline-data-01. Root owns core/catalog/shared contract files; routine technical design is delegated by D-17. Existing decoder f161fbf passes32focused tests; frozen Android run38621711127 is a separate earlier source d7e864f.
 
 ## Purpose and boundaries
 
@@ -26,3 +26,5 @@ Only local reads, no automatic network/initialization/install. Non-Scryfall/malf
 Implement all related data/read declarations, validation tests and update the internal ScryfallRulingRecordCodec to produce RulingContent directly, centralizing calendar/Oracle/Unicode validation instead of duplicating it. Existing raw UTF8/JSON/unknown-field/depth bounds stay in the decoder. Existing parser tests adapt to the typed publisher/day without dropping assertions; add meaningful core consistency/invalid Unicode/identical-content/distinct-ordinal identity equality, status/language/provenance cases. One combined core:model tests and focused related catalog run at this public/consumer boundary, with independent source review. Do not run absence/red/fullAPK/emulator loops for each declaration. Next actual storage/schema/atomic read integration gets its own required durability review and broader gate. Full acquisition authority/gzip/source/persistence/UI/full K3/v1/native acceptance remain open.
 
 Review clarification: DTOs validate local identity shape/equality; corpus-wide row-ID uniqueness is the future storage implementation’s responsibility. Independent rulings_contract_review ACK has no blocking findings; it separately verified parser f161fbf and retained32passing XML cases. Future acquisition must share process-owned recovery across source families so opening a new source never recovers another active source worker. That acquisition composition is outside this read-contract unit.
+
+Actual result: docs/verification/k3-downloads/RULINGS-DATA-READ-LOCAL-20261014.md. No database/read implementation or storage uniqueness is claimed by this model unit.
