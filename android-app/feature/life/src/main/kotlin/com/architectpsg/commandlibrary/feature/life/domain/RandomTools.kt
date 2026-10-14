@@ -95,8 +95,9 @@ internal object RandomTools {
     }
 
     /**
-     * Picks one seat from [eligible], which the caller derives (for example, excluding eliminated seats; the core
-     * snapshot has no eliminated-seat field). The draw uses table order, so the caller's list order cannot bias a seeded run.
+     * Picks one seat from [eligible], which the caller derives from current participation (for example, excluding
+     * eliminated seats). This legacy helper does not filter participation itself. Table order makes the caller's list
+     * order irrelevant to the draw in a seeded run.
      */
     fun selectSeat(snapshot: GameSnapshot, random: RandomSource, eligible: SnapshotList<EntityId>, at: UtcTimestamp): Outcome<SeatSelection> {
         val seats = SeatIndex.of(snapshot).valueOr { return it }

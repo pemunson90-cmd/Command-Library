@@ -1,6 +1,6 @@
-# Life table/participation actions — proposed next bounded slice
+# Life table/participation actions — implemented bounded slice
 
-Parent cx-m2-life-action-engine-01 remains TAKEN by recovery. Counter slice is separate; this proposed unit requires independent review before code. Existing result/random/variant/initializer/service obligations remain outside this slice. No shared/schema/DI/UI change.
+Parent cx-m2-life-action-engine-01 remains TAKEN by recovery. Counter slice is separate; this bounded unit is independently reviewed and locally verified. Existing result/random/variant/initializer/service obligations remain outside this slice. No shared/schema/DI/UI change.
 
 Internal LifeTableEngine.reduce(snapshot,action,GameTimeObservation) -> Outcome<TableReduction>. TableReduction includes settledBefore plus snapshot/canonical action and newly fired timing alerts/candidates. First settle via LifeTimingEngine once at the supplied observation; a later orchestrator already-settled input has delta zero. This prevents eliminating a clock owner from discarding uncharged time and preserves auditable action-time before. Pure flat table-only groups1..1024 all-or-nothing; all actions use the same observation. No hidden ID source, event/revision allocation, random draws or external side effects.
 
@@ -16,4 +16,4 @@ Seat art/presentation values are immutable typed references already validated lo
 
 Local meaningful RED→GREEN: eliminated active clock owner settles then pauses without counter/identity loss; restore no resume; shared countdown independence; manual confirmation does not auto finish; old/new designation/blessing independence and eligibility; candidate dismissal exact observation/no persistent disable; acknowledgment retry/wall reversal/after-finish retains old ack; failed tail rolls whole pure group back; seat rename/reorder/art/preferences preserve identity and source data. Existing counter/timing tests and coherent check/debug remain green. No emulator/device claim for pure semantics.
 
-Independent architecture APPROVE with clearing-blessing/completed-ack-group/exact-rename clarifications above. Source/tests not_run; implement only this bounded slice next.
+Independent architecture APPROVE with clearing-blessing/completed-ack-group/exact-rename clarifications above. Exact-source APPROVE;142lifeGREEN, whole790JVM/75XML0fail/error/skip,check/debug175s,16KiBZIPpass. Evidence TABLE-ENGINE-LOCAL-20261014.md. Larger semantic task remains TAKEN.
