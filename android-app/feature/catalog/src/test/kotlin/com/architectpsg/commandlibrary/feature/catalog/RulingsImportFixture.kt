@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import java.io.File
 import java.security.MessageDigest
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 
@@ -67,10 +68,12 @@ internal class RulingsFaultDatabase(private val db: Database) : Database by db {
     var afterStaging: (() -> Unit)? = null
     var beforeAcknowledgement: (() -> Unit)? = null
     var acknowledgementFailure: Outcome<SnapshotList<RowData>>? = null
+    var acknowledgementGate: CompletableDeferred<Unit>? = null
     var deletes = 0
     override suspend fun query(request: SqlRequest, cancel: CancelToken): Outcome<SnapshotList<RowData>> {
         if(request.statement.contains("AS active_generation")) {
             beforeAcknowledgement?.invoke()
+            acknowledgementGate?.await()
             acknowledgementFailure?.let { return it }
         }
         return db.query(request, cancel)

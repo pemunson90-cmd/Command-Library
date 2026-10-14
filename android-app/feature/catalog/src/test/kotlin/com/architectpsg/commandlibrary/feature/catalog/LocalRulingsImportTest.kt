@@ -3,7 +3,7 @@ package com.architectpsg.commandlibrary.feature.catalog
 import com.architectpsg.commandlibrary.core.model.*
 import com.google.gson.JsonParser
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Rule
@@ -229,6 +229,36 @@ class LocalRulingsImportTest {
             val result = LocalRulingsImport(fixture.db, fixture.clock, fixture.ids, rejected).`import`(EntityId("job"), {}, cancel)
             failure(result, FailureCode.PERMISSION); assertFalse((result as Outcome.Failure).error.message.contains("private-secret"))
             assertEquals(old.generation.id.value, fixture.active()); assertEquals(1L, fixture.db.count("rulings_generation"))
+        }
+    }
+
+    @Test fun acknowledgementTimeoutLeavesInstalledDataAndReleasesThePin() = runBlocking {
+        RulingsImportFixture().use { fixture ->
+            val bytes = bulkGzip(rulingTestRaw().toByteArray()); val faults = RulingsFaultDatabase(fixture.db)
+            faults.afterActivation = { error("Synthetic lost acknowledgement") }
+            faults.acknowledgementGate = CompletableDeferred()
+            faults.beforeAcknowledgement = { assertTrue(fixture.pinHeld) }
+            val result = fixture.importer(fixture.artifact(bytes), bulkChunks(bytes), faults).`import`(EntityId("job"), {}, cancel)
+            assertTrue(result is Outcome.Unknown); assertFalse(fixture.pinHeld); assertEquals(0, faults.deletes)
+            assertEquals(1L, fixture.db.count("ruling_record")); assertNotNull(LocalCatalogRulings(fixture.db).status(cancel).bulkValue().active)
+        }
+    }
+
+    @Test fun failedCleanupRemainsRecoverableAndOversizedMetadataIsNeverSilentlyReduced() = runBlocking {
+        RulingsImportFixture().use { fixture ->
+            val old = fixture.install(); val bytes = bulkGzip((rulingTestRaw() + "\nprivate-secret").toByteArray())
+            fixture.db.failCleanup = true
+            val result = fixture.importer(fixture.artifact(bytes), bulkChunks(bytes), policy = RulingsImportPolicy(maxBatchRecords = 1))
+                .`import`(EntityId("job"), {}, cancel)
+            failure(result, FailureCode.INVALID_INPUT)
+            assertFalse((result as Outcome.Failure).error.message.contains("private-secret")); assertEquals(old.generation.id.value, fixture.active())
+            assertEquals("FAILED", fixture.db.rows("SELECT status FROM rulings_generation WHERE generation_id='rulings-2'").single().bulkText("status"))
+            fixture.db.failCleanup = false
+            assertTrue(RulingsGenerationCleanup(fixture.db).recover(cancel).bulkValue())
+            val valid = bulkGzip(rulingTestRaw().toByteArray()); val original = fixture.artifact(valid)
+            val oversized = original.copy(provenance = original.provenance.copy(sourceVersion = Knowledge.Known("é".repeat(70_000))))
+            failure(fixture.importer(oversized, bulkChunks(valid)).`import`(EntityId("job"), {}, cancel), FailureCode.INVALID_INPUT)
+            assertEquals(1L, fixture.db.count("rulings_generation")); assertEquals(old.generation.id.value, fixture.active())
         }
     }
 }
