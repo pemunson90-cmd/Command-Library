@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T17:53:31Z",
-  "expires_utc": "2026-10-14T18:38:31Z",
-  "checkpoint_id": "cp-20261014-english-access-130",
-  "note": "Root sole life/app/shell/shared/finalmerge. English access a611c0f source APPROVE/focused6hostpass. Continue reviewed download controller/UI batch2, no automatic wire; D-28 batched verification. Native/regularartifact/fullinstall unproven; GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-14T18:54:25Z",
+  "expires_utc": "2026-10-14T19:39:25Z",
+  "checkpoint_id": "cp-20261014-download-controls-pending-131",
+  "note": "Root remains active/exclusive. Dirty download UI source APPROVE/focused11pass; whole integration/packaging still running, diagnosing prolonged D8 before any rerun. Exact next in current task delta; no finished APK/native claim."
 }
