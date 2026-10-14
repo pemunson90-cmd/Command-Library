@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-rulings-root-access-140
+Checkpoint-ID: cp-20261014-rulings-presentation-141
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. implement-rulings-download-controls-and-offline-reader-ui
+Next step: 3. freeze-rulings-modern-native-and-continue-keyword-rule-links
 
-Updated UTC: 2026-10-14T21:53:11Z
+Updated UTC: 2026-10-14T22:15:19Z
 Status: in_progress; lease: active.
-Verified base: 6809f42c1042f20e7ac309f5f4e13a3ba97cd734.
+Verified base: 4a4241be9e51c469f4fae9016bd7e358047a7301.
 
-Shared root6809f42 owns both source families, pure offline reader bound; independent ownership ACK and6focusedpass. Continue actual ruling UI.
+Ruling UI4a4241b source/consent ACK, whole1108/lint/allAPKs/ZIPpass. Freeze one justifiedAPI36 integration snapshot and continue local K3.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
