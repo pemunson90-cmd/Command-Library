@@ -27,6 +27,42 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SearchControllerTest {
+    @Test fun typingCancelsSubmittedWorkWithoutSubmittingTheDraft() = runTest {
+        val controller = controller()
+        controller.onActiveGeneration(catalog.active!!.id)
+        catalog.lookupGate = CompletableDeferred()
+        controller.search("synthetic")
+        runCurrent()
+        controller.onQueryChange("unrelated")
+        assertTrue(catalog.lookupTokens.single().isCancelled)
+        assertEquals("unrelated", controller.queryInput)
+        assertFalse(controller.state.value.searched)
+        assertNull(controller.state.value.loading)
+        assertEquals(catalog.active!!.id, controller.state.value.activeGeneration)
+        catalog.lookupGate!!.complete(Unit)
+        advanceUntilIdle()
+        assertTrue(controller.state.value.results.isEmpty())
+        assertEquals(1, catalog.lookupRequests.size)
+        controller.submit()
+        advanceUntilIdle()
+        assertEquals(listOf("Unrelated Name"), controller.state.value.results.map { it.name })
+    }
+
+    @Test fun editingCompletedResultsClearsSelectedDetailAndCursorButPreservesExactDraft() = runTest {
+        val controller = controller()
+        controller.search("synthetic")
+        advanceUntilIdle()
+        controller.select(controller.state.value.results.first())
+        assertTrue(controller.state.value.canLoadMore)
+        controller.onQueryChange("  next draft  ")
+        assertEquals("  next draft  ", controller.queryInput)
+        assertNull(controller.state.value.selected)
+        assertTrue(controller.state.value.results.isEmpty())
+        assertFalse(controller.state.value.canLoadMore)
+        assertFalse(controller.state.value.searched)
+        advanceUntilIdle()
+        assertEquals(1, catalog.lookupRequests.size)
+    }
     private val names = (1..120).map { "Synthetic Card %03d".format(it) } + "Unrelated Name"
     private val catalog = SyntheticCatalog(names)
     private val staleSignals = AtomicInteger(0)

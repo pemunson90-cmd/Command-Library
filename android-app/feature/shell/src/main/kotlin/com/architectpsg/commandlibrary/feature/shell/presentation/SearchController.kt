@@ -59,18 +59,22 @@ internal class SearchController(
     private val mutableState = MutableStateFlow(SearchUiState())
     val state: StateFlow<SearchUiState> = mutableState.asStateFlow()
     private var job: Job? = null
+    private var requestTicket = 0L
 
     /** Text field contents; snapshot state so typing never waits for a flow emission. */
     var queryInput: String by mutableStateOf("")
 
     fun onQueryChange(text: String) {
+        if (text == queryInput) return
         queryInput = text
-        if (mutableState.value.queryProblem != null) mutableState.update { it.copy(queryProblem = null) }
+        invalidateRequest()
+        clearSearch()
     }
 
     fun submit() = search(queryInput)
 
     fun search(input: String) {
+        val ticket = invalidateRequest()
         val trimmed = input.trim()
         val problem = when {
             trimmed.isEmpty() -> QueryProblem.EMPTY
@@ -78,10 +82,9 @@ internal class SearchController(
             else -> null
         }
         if (problem != null) {
-            mutableState.update { it.copy(queryProblem = problem) }
+            clearSearch(problem)
             return
         }
-        job?.cancel()
         mutableState.update {
             SearchUiState(
                 query = trimmed,
@@ -90,7 +93,7 @@ internal class SearchController(
                 activeGeneration = it.activeGeneration,
             )
         }
-        job = scope.launch { load(trimmed, cursor = null, kind = SearchLoad.FIRST_PAGE) }
+        job = scope.launch { load(trimmed, cursor = null, kind = SearchLoad.FIRST_PAGE, ticket = ticket) }
     }
 
     fun loadMore() {
@@ -98,8 +101,9 @@ internal class SearchController(
         val query = current.query ?: return
         val cursor = current.nextCursor ?: return
         if (!current.canLoadMore) return
+        val ticket = invalidateRequest()
         mutableState.update { it.copy(loading = SearchLoad.NEXT_PAGE, problem = null, failedLoad = null) }
-        job = scope.launch { load(query, cursor, SearchLoad.NEXT_PAGE) }
+        job = scope.launch { load(query, cursor, SearchLoad.NEXT_PAGE, ticket) }
     }
 
     fun retry() {
@@ -122,18 +126,30 @@ internal class SearchController(
 
     /** End an embedded picker without carrying an earlier editor's query or selection forward. */
     fun reset() {
+        invalidateRequest()
+        queryInput = ""
+        clearSearch()
+    }
+
+    private fun invalidateRequest(): Long {
+        requestTicket++
         job?.cancel()
         job = null
-        queryInput = ""
-        mutableState.update { SearchUiState(activeGenerationKnown = it.activeGenerationKnown, activeGeneration = it.activeGeneration) }
+        return requestTicket
+    }
+
+    private fun clearSearch(problem: QueryProblem? = null) = mutableState.update {
+        SearchUiState(queryProblem = problem, activeGenerationKnown = it.activeGenerationKnown, activeGeneration = it.activeGeneration)
     }
 
     /** Committed catalog status reports [generation] as active (null when nothing is installed). */
     fun onActiveGeneration(generation: GenerationId?) =
         mutableState.update { it.copy(activeGenerationKnown = true, activeGeneration = generation) }
 
-    private suspend fun load(query: String, cursor: String?, kind: SearchLoad) {
-        when (val result = callPort(portDispatcher) { lookup.lookupName(query, PageRequest(PAGE_SIZE, cursor), it) }) {
+    private suspend fun load(query: String, cursor: String?, kind: SearchLoad, ticket: Long) {
+        val result = callPort(portDispatcher) { lookup.lookupName(query, PageRequest(PAGE_SIZE, cursor), it) }
+        if (ticket != requestTicket) return
+        when (result) {
             is PortResult.Ok -> mutableState.update { current ->
                 val page = result.value
                 when {
