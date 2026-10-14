@@ -10,8 +10,15 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
+/** Shared byte policy only; language/record/source admission belongs to each consuming importer. */
+internal data class ArtifactDecodeLimits(val maxRawBytes: Long, val maxDecodedBytes: Long, val maxChunkBytes: Int) {
+    init { require(maxRawBytes > 0 && maxDecodedBytes > 0 && maxChunkBytes in 1..64 * 1024) }
+}
+
 /** Backpressured raw integrity + incremental RFC1952 decoding. No artifact or decoded file retained. */
-internal class FullCatalogDecodedInput(private val limits: CatalogBulkImportLimits, private val cancel: CancelToken) {
+internal class FullCatalogDecodedInput(private val limits: ArtifactDecodeLimits, private val cancel: CancelToken) {
+    constructor(limits: CatalogBulkImportLimits, cancel: CancelToken) : this(
+        ArtifactDecodeLimits(limits.maxRawBytes, limits.maxDecodedBytes, limits.maxChunkBytes), cancel)
     data class Proof(val rawBytes: Long, val rawHash: ContentHash, val decodedBytes: Long, val decodedHash: ContentHash)
     suspend fun consume(compression: ArtifactCompression, chunks: Flow<ByteChunk>, output: suspend (ByteChunk) -> Unit): Proof {
         val raw = MessageDigest.getInstance("SHA-256")

@@ -35,6 +35,26 @@ internal object AcquisitionPayloadCodec {
         "effectiveAt" to knowledge(p.effectiveAt, ::dateJson), "generation" to nullable(p.generation) { str(it.value) },
         "checksum" to nullable(p.checksum, ::hashJson), "notice" to nullable(p.notice, ::noticeJson))
 
+    fun encodeRulingsInstallation(result: RulingsImportResult, consentId: EntityId): String = guarded {
+        encode("rulingsInstallation", obj("generation" to str(result.generation.id.value),
+            "provenance" to str(encodeStoredProvenance(result.generation.provenance)),
+            "recordCount" to num(result.generation.recordCount), "rawBytes" to num(result.rawBytes),
+            "rawSha256" to hashJson(result.rawSha256), "decodedBytes" to num(result.decodedBytes),
+            "decodedSha256" to hashJson(result.decodedSha256), "activatedAt" to dateJson(result.activatedAt),
+            "artifact" to artifactJson(result.acquiredArtifact), "consentId" to str(consentId.value)))
+            .also { decodeRulingsInstallation(it) }
+    }
+    fun decodeRulingsInstallation(payload: String): StoredRulingsInstallation = guarded {
+        val v = envelope(payload, "rulingsInstallation").fields("generation", "provenance", "recordCount", "rawBytes",
+            "rawSha256", "decodedBytes", "decodedSha256", "activatedAt", "artifact", "consentId")
+        val generation = RulingsGeneration(GenerationId(text(v["generation"])), decodeStoredProvenance(text(v["provenance"])),
+            integer(v["recordCount"]), GenerationStatus.ACTIVE)
+        val result = RulingsImportResult(generation, integer(v["rawBytes"]), readHash(v["rawSha256"]), integer(v["decodedBytes"]),
+            readHash(v["decodedSha256"]), readDate(v["activatedAt"]), readArtifact(objectValue(v["artifact"])))
+        val consentId = EntityId(text(v["consentId"])).also { require(it.value.toByteArray(Charsets.UTF_8).size <= 128 && '\u0000' !in it.value) }
+        StoredRulingsInstallation(result, consentId)
+    }
+
     /** Full importer source persistence only; callers must still validate/pin downloaded artifacts. */
     fun encodeCatalogSource(source: CatalogBulkImportSource): String = guarded {
         encode("catalogSource", catalogSourceJson(source)).also { decodeCatalogSource(it) }
@@ -217,3 +237,5 @@ internal object AcquisitionPayloadCodec {
     private fun int(e: JsonElement): Int { val n = integer(e); require(n in Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()); return n.toInt() }
     private inline fun <reified E : Enum<E>> enumValue(e: JsonElement): E = enumValueOf(text(e))
 }
+
+internal data class StoredRulingsInstallation(val result: RulingsImportResult, val consentId: EntityId)

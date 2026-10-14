@@ -7,5 +7,5 @@
   "heartbeat_utc": "2026-10-14T20:17:41Z",
   "expires_utc": "2026-10-14T21:02:41Z",
   "checkpoint_id": "cp-20261014-rulings-reader-back-136",
-  "note": "Root sole development/finalmerge. Ruling data/read models fe48e56 exactreviewACK/111focusedpass25s; next reviewed additive schema/localreader. Corrected frozen native38623690607 pending exact12f8980, excludeslatermodels; do not retrigger/move. D-28/no finished APK/GameService HOLD."
+  "note": "Root retains exclusive development and final merge authority. Schema7/reader cf33f57 passed independent review and local 1058-test/lint/APK boundary. Native r1 failed three Back tests; correction29d64ee passed19localtests, device correction not_run. Next: review and implement atomic ruling import. Frozen testing branches preserved; no finished APK/GameService HOLD."
 }

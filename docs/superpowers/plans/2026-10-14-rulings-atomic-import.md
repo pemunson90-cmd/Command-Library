@@ -1,6 +1,8 @@
 # Atomic installation from pinned ruling input
 
-Status: proposed next durability design, not implemented/approved yet. Parent orch-kotlin-k3-offline-data-01; root sole writer under D-17/D-28. Prior schema7/localreader cf33f57 independently ACK/1058wholelocalpass. ProfileBack test-precondition correction is the immediate verification unit; native r1 remains failed.
+Status: independent architecture/durability/public-boundary design ACK; implementation next. Parent orch-kotlin-k3-offline-data-01; root sole writer under D-17/D-28. Prior schema7/localreader cf33f57 independently ACK/1058wholelocalpass. ProfileBack test-precondition29d64ee passed19focusedhost cases; native correction remains not_run.
+
+Review clarification: cleanup uses resumable bounded row batches with status/active-pointer guards. Cancellation cleanup is capped by both transaction budget and timeout; unfinished nonactive data remains recoverable. Never perform an unbounded cascading corpus delete under NonCancellable. Exact-source review remains required.
 
 ## Scope and source boundary
 

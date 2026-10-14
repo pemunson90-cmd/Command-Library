@@ -72,4 +72,40 @@ class RulingsContractsTest {
         for (status in GenerationStatus.entries.filter { it != GenerationStatus.ACTIVE })
             assertThrows(IllegalArgumentException::class.java) { RulingsStatus(generation(status)) }
     }
+
+    private fun installed(): RulingsImportResult {
+        val hash = ContentHash("SHA-256", "a".repeat(64))
+        val uri = ResourceUri("https://example.invalid/synthetic.gz")
+        val artifact = VerifiedArtifact(EntityId("job"), ArtifactFraming.JSONL, ArtifactCompression.GZIP, 100, hash, false,
+            Knowledge.Known(2L), 0, AcquisitionProvenance(provider, uri, uri, Knowledge.Absent("Synthetic"),
+                Knowledge.Unknown("Synthetic", SnapshotList.empty()), UtcTimestamp(16), UtcTimestamp(17),
+                Knowledge.Absent("Synthetic"), Knowledge.Absent("Synthetic"), AcquisitionConsistency.FILE_REPRESENTATION,
+                AcquisitionLanguageScope.RULINGS_LANGUAGE_NOT_ASSERTED, Knowledge.Absent("Synthetic")))
+        val corpus = generation().copy(provenance = provenance().copy(source = uri, checksum = hash))
+        return RulingsImportResult(corpus, 100, hash, 200, hash, UtcTimestamp(18), artifact)
+    }
+
+    @Test fun installedResultRequiresConsistentArtifactCountsProofAndActiveGeneration() {
+        val result = installed(); assertEquals(2L, result.generation.recordCount)
+        for(action in listOf<() -> Unit>(
+            { result.copy(rawBytes = 101) }, { result.copy(rawBytes = 0) }, { result.copy(decodedBytes = 0) },
+            { result.copy(rawSha256 = ContentHash("SHA-256", "b".repeat(64))) },
+            { result.copy(decodedSha256 = ContentHash("SHA-256", "a")) },
+            { result.copy(generation = result.generation.copy(status = GenerationStatus.STAGING)) },
+            { result.copy(generation = result.generation.copy(recordCount = 1)) },
+            { result.copy(acquiredArtifact = result.acquiredArtifact.copy(pageCount = 1)) },
+            { result.copy(acquiredArtifact = result.acquiredArtifact.copy(compression = ArtifactCompression.NONE)) }))
+            assertThrows(IllegalArgumentException::class.java) { action() }
+    }
+
+    @Test fun installedResultRetainsActualRetrievalMetadataWithoutAssertingCallerAuthority() {
+        val result = installed()
+        val changes = listOf(result.generation.provenance.copy(fetchedAt = UtcTimestamp(0)),
+            result.generation.provenance.copy(source = null), result.generation.provenance.copy(version = Knowledge.Known("Invented")),
+            result.generation.provenance.copy(sourceDate = Knowledge.Absent("Invented")), result.generation.provenance.copy(checksum = null))
+        for(provenance in changes) assertThrows(IllegalArgumentException::class.java) { result.copy(generation = result.generation.copy(provenance = provenance)) }
+        // Constructor consistency does not authenticate even this synthetic URI; trusted binding is mandatory.
+        assertEquals(ResourceUri("https://example.invalid/synthetic.gz"), result.generation.provenance.source)
+        assertNull(result.generation.provenance.notice)
+    }
 }

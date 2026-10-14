@@ -84,6 +84,40 @@ public interface CatalogRulings {
     public suspend fun rulings(oracleId: OracleId, page: PageRequest, cancel: CancelToken): Outcome<Page<StoredRuling>>
 }
 
+/** Completed installation, separately from downloading an artifact. These checks do not grant source authority. */
+public data class RulingsImportResult(
+    public val generation: RulingsGeneration,
+    public val rawBytes: Long,
+    public val rawSha256: ContentHash,
+    public val decodedBytes: Long,
+    public val decodedSha256: ContentHash,
+    public val activatedAt: UtcTimestamp,
+    public val acquiredArtifact: VerifiedArtifact,
+) {
+    init {
+        require(generation.status == GenerationStatus.ACTIVE && generation.recordCount > 0)
+        require(rawBytes > 0 && decodedBytes > 0)
+        for (hash in listOf(rawSha256, decodedSha256)) require(hash.algorithm.equals("SHA-256", true) && hash.hex.length == 64)
+        val artifact = acquiredArtifact
+        require(artifact.framing == ArtifactFraming.JSONL && artifact.compression == ArtifactCompression.GZIP)
+        require(artifact.pageCount == 0L)
+        require(artifact.bytes == rawBytes && artifact.sha256.algorithm.equals(rawSha256.algorithm, true) && artifact.sha256.hex.equals(rawSha256.hex, true))
+        val source = artifact.provenance
+        require(source.provider == rulingProvider && source.languageScope == AcquisitionLanguageScope.RULINGS_LANGUAGE_NOT_ASSERTED)
+        require(source.consistency == AcquisitionConsistency.FILE_REPRESENTATION)
+        if (artifact.recordCount is Knowledge.Known) require(artifact.recordCount.value == generation.recordCount)
+        val stored = generation.provenance
+        require(stored.source == source.requestedUri && stored.version == source.sourceVersion && stored.sourceDate == source.sourceDate)
+        require(stored.fetchedAt == source.retrievalCompletedAt && stored.checksum == rawSha256)
+        require(stored.notice == (source.notice as? Knowledge.Known)?.value)
+    }
+}
+
+public interface CatalogRulingsImport {
+    /** Uses only a trusted, pinned completed job; no caller URI, claimed metadata or substitute bytes. */
+    public suspend fun `import`(jobId: EntityId, onProgress: (JobProgress) -> Unit, cancel: CancelToken): Outcome<RulingsImportResult>
+}
+
 private val rulingProvider = ProviderId("scryfall")
 private val rulingOraclePattern = Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 private val rulingDayPattern = Regex("([0-9]{4})-([0-9]{2})-([0-9]{2})")
