@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-rulings-data-read-134
+Checkpoint-ID: cp-20261014-rulings-storage-draft-135
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. design-reviewed-rulings-schema-localreader-and-observe-native-r1
+Next step: 3. collect-corrected-rulings-boundary-review-and-native-r1
 
-Updated UTC: 2026-10-14T19:33:46Z
+Updated UTC: 2026-10-14T20:09:53Z
 Status: in_progress; lease: active.
-Verified base: fe48e564600323194ba72c0bff83c66f128451b8.
+Verified base: cf33f574ac3866129dad70ff012846a4a6dd945d.
 
-Ruling data/read models fe48e56 exactsourceACK;111focused16XML0failures/errors/skips25s,6new core/all8record assertions retained. No schema/readerimpl/authority/DI/UI yet. Continue additive schema/localreader design. Corrected frozen native38623690607 pending exact12f8980, excludeslatermodels; no duplicate/merge/release. Full K3/v1/physical open, GameService HOLD.
+Root exclusive. Ruling schema7/reader draftcf33f57, designACK/actualKSP24oldidentical+3new; corrected broad boundary running after fixture/review fixes. Collect log before moreGradle. Frozen12f native JVM1039pass/API36pending; no schema7/native/fullv1/finishedAPK acceptance. Continue.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

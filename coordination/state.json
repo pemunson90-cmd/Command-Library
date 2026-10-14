@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-rulings-data-read-134",
-  "verified_base_head": "fe48e564600323194ba72c0bff83c66f128451b8",
+  "checkpoint_id": "cp-20261014-rulings-storage-draft-135",
+  "verified_base_head": "cf33f574ac3866129dad70ff012846a4a6dd945d",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "design-reviewed-rulings-schema-localreader-and-observe-native-r1",
+  "first_action": "collect-corrected-rulings-boundary-review-and-native-r1",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Ruling models/reader declaration+actual decoder fe48e56 independent exactsource ACK;111focused tests/16XML pass25s. No persistence/authority/DI/UI yet. Next schema/localreader durability design. Corrected native38623690607 pending exact12f8980, not these later types.",
+  "review_status": "Ruling schema7/reader acb05ac correctedcf33f57; design+corrected exactsource durabilityACK. ActualKSP7 all24oldentitiesidentical/exact3new; corrected whole boundary running after8fixturefailures. No accepted schema/runtime claim yet.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -105,9 +105,10 @@
     "k3_live_english_download_controls": "d7e864f: reviewed explicit consent/CAS/independent controls/serialized pinned install orchestration. Boundary110XML1,031cases1stylefailure only;9controller/4UI pass. Resource correction3style/lint/4APK pass3m32s;4ZIP16KiBexit0/app manifest+DEX verified. No clean whole-check exit claimed. LIVE-ENGLISH-DOWNLOADS-LOCAL-20261014.md.",
     "k3_live_english_native": "Firstd7 run38621711127 FAILED pre-emulator AndroidTestAarMetadata (network consumes desugared storage), downstream skipped. Root local4s diagnostic scopes network/catalog/rules;12f8980 flags+existing2.1.5 pin reviewedACK. All-testAPK assembleSUCCESS2m12s/361tasks/7ZIP16KiBexit0. Corrected frozen run38623690607 in_progress exact12f898004c809b7e7584d3e388e64135d7d1778a Androidtree65868ad77e71fcae19e2fd2c2ba7f157b0391f93 on agent/cx-english-downloads-integration-r1-20261014, continuity38623690832SUCCESS. No duplicate/CI edit/merge/release/native-pass claim. NATIVE-CONSUMER-DESUGAR-20261014.md.",
     "k3_ruling_record_decoder": "f161fbf independent exactsource ACK;32focused3XML0failures/errors/skips17s/19tasks.8newrecord/13metadata/11framing. StrictUnicode/raw128KiB,known+unknownstrings64KiB/keys256bytes/depth16; exactsource/calendar/prose, no inventedID/instant/language/provenance. RULING-RECORD-LOCAL-20261014.md. No schema/DI/fullfeed/native.",
-    "k3_rulings_data_read_contract": "fe48e56: source/public exactreviewACK;79core incl6new+32relatedcatalog/16XML0failures/errors/skips25s. Actualdecoder nowRulingContent; sharedGregorian/Oracle/Unicodevalidation, localgeneration+ordinal, separatepublisher/provenance, unassertedlanguage andreaddeclarations. No schema/readerimpl/authority/DI/UI/APK/native. RULINGS-DATA-READ-LOCAL-20261014.md."
+    "k3_rulings_data_read_contract": "fe48e56: source/public exactreviewACK;79core incl6new+32relatedcatalog/16XML0failures/errors/skips25s. Actualdecoder nowRulingContent; sharedGregorian/Oracle/Unicodevalidation, localgeneration+ordinal, separatepublisher/provenance, unassertedlanguage andreaddeclarations. No schema/readerimpl/authority/DI/UI/APK/native. RULINGS-DATA-READ-LOCAL-20261014.md.",
+    "rulings_storage_local": "Implementation acb05ac correctedcf33f57; actualKSP7 pass44s/all24oldentitiesidentical. Initial broad check5m34 failed8fixtureNPEs,4newmigrationpass; fixture and2source-review issues corrected. Corrected broad boundary running; see RULINGS-STORAGE-READER-LOCAL-20261014.md. No native7 acceptance."
   },
-  "last_completed": "Ruling data/read models fe48e56 exactsourceACK;111focused16XML0failures/errors/skips25s,6new core/all8record assertions retained. No schema/readerimpl/authority/DI/UI yet. Continue additive schema/localreader design. Corrected frozen native38623690607 pending exact12f8980, excludeslatermodels; no duplicate/merge/release. Full K3/v1/physical open, GameService HOLD.",
-  "updated_utc": "2026-10-14T19:33:46Z",
+  "last_completed": "Root exclusive. Ruling schema7/reader draftcf33f57, designACK/actualKSP24oldidentical+3new; corrected broad boundary running after fixture/review fixes. Collect log before moreGradle. Frozen12f native JVM1039pass/API36pending; no schema7/native/fullv1/finishedAPK acceptance. Continue.",
+  "updated_utc": "2026-10-14T20:09:53Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

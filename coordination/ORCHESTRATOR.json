@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T19:33:46Z",
-  "expires_utc": "2026-10-14T20:18:46Z",
-  "checkpoint_id": "cp-20261014-rulings-data-read-134",
+  "heartbeat_utc": "2026-10-14T20:09:53Z",
+  "expires_utc": "2026-10-14T20:54:53Z",
+  "checkpoint_id": "cp-20261014-rulings-storage-draft-135",
   "note": "Root sole development/finalmerge. Ruling data/read models fe48e56 exactreviewACK/111focusedpass25s; next reviewed additive schema/localreader. Corrected frozen native38623690607 pending exact12f8980, excludeslatermodels; do not retrigger/move. D-28/no finished APK/GameService HOLD."
 }
