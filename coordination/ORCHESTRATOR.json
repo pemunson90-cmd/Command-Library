@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T13:27:14Z",
-  "expires_utc": "2026-10-14T14:12:14Z",
-  "checkpoint_id": "cp-20261014-life-native-routing-120",
-  "note": "Root sole active life/shared orchestration/finalmerge. Facade1dc4390 reviewed950JVM localverified; next exactheadfocusedRoom/calendar nativeverification. FreezePR21 isolatedprepACK/finalmergeHOLD."
+  "heartbeat_utc": "2026-10-14T13:53:53Z",
+  "expires_utc": "2026-10-14T14:38:53Z",
+  "checkpoint_id": "cp-20261014-life-platform-active-121",
+  "note": "Root active life/shared development/finalmerge. Platform944bcdb reviewed, SDK34rerun/fullgatepending; gameplaybindingHOLD. Next approved independent profileCRUD UI. PR21 finalmergeHOLD."
 }

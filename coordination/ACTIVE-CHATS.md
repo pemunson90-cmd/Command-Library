@@ -4,7 +4,7 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Root codex-thread-recovery-20261013 owns active life-functional/shared orchestration on agent/cx-thread-recovery-20261013; cx-m2-life-action-engine-01 TAKEN. Persisted facade1dc4390 reviewed/whole950JVM95XML0failure/error/skip608s, debug/testAPK/16KiBZIPverified. Seven actualhostSQLite port tests and nativeRoomprobecompiled; runtimepending. Next one exactheadfocusedAPI36verification; API23not_run. Namedsource/manifestpersist/platform/DI/UI incomplete.
+Root codex-thread-recovery-20261013 owns active life/shared orchestration on agent/cx-thread-recovery-20261013; life-action-engine TAKEN. Workspace restored; platform sources944bcdb reviewed, local SDK34 rerun/fullgate pending after SDK36/JDK17 harness failure. Prior facade1dc4390 whole950JVM passed; no new native run. Gameplay AppGraph binding remains HOLD on retained named variant/source prerequisite. Next independently approved player-profile CRUD library, spec/plan in currenttaskdelta; no profileUI source yet. Root owns these app/shell paths; no overlapping writer.
 
 PMfreeze decision770e835 ACK authorizes secondCodex isolatedtestedPRprep only. DraftPR21 head e9cb72b75bddc832eb1c8b702878e4c74bec25cc exactmain+freezeparents/producttreeverified; hostedAndroid/continuitysuccessreported. NativeXML/mainmetadatareconciliationpending, finalmergeHOLD/rootexclusiveauthority. No activecheckout/staleglobalcoord takeover/newerrootwork/unfinishedAPKdelivery. Rules coordination/integration/FREEZE-5a88846-20261014.md.
 

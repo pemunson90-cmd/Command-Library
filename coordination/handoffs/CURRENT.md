@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-native-routing-120
+Checkpoint-ID: cp-20261014-life-platform-active-121
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. inspect-focused-workflow-availability-without-duplicate-runs
+Next step: 3. finish-platform-provider-sdk34-and-local-whole-gate
 
-Updated UTC: 2026-10-14T13:27:14Z
+Updated UTC: 2026-10-14T13:53:53Z
 Status: in_progress; lease: active.
-Verified base: d3beaae07354c394ace8f3f7ce1a78373843744b.
+Verified base: 944bcdbb75103eb9905a142b0a2bf6dc4b0c8399.
 
-Published service950JVM checkpointd3beaae; exactsourceverification refs onlycontinuity observed, gh dispatch blocked at workflow GET Forbidden; native not_run, PR21 finalmergeHOLD.
+Active local execution restored; platform944bcdb reviewed, SDK34 rerun/fullgate pending after SDK36/JDK17 harness failure; gameplay binding HOLD; profile CRUD library reviewed next.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

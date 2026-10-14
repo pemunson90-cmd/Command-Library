@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-native-routing-120",
-  "verified_base_head": "d3beaae07354c394ace8f3f7ce1a78373843744b",
+  "checkpoint_id": "cp-20261014-life-platform-active-121",
+  "verified_base_head": "944bcdbb75103eb9905a142b0a2bf6dc4b0c8399",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "inspect-focused-workflow-availability-without-duplicate-runs",
+  "first_action": "finish-platform-provider-sdk34-and-local-whole-gate",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Persisted facade architecture/exactsource/expandedtests/nativeprobe APPROVE;950JVM localgate passed. Real Room/calendar probes compiled but not_run. FreezePR21 prepared, finalmergeHOLD.",
+  "review_status": "Platformproviders944bcdb architecture/exactsource/nativeprobe APPROVE, localverification PENDING after SDK36/JDK17 harnessfailure correctedSDK34. GameplaybindingHOLD sourcegate preserved; independent profilelibraryarchitecture APPROVE.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -93,9 +93,10 @@
     "integration_freeze_decision": "PMrequest ACK770e835 for isolatedtested PRprep ONLY from5a888461a4af5185054152420d46b0e2bfd24bd4; independentreviewconcurred. FinalmergeHOLD/rootexclusiveactiveownership. Separateclone, exactcandidatefreshchecks, exclude staleglobalauthority/newerrootwork. Rules coordination/integration/FREEZE-5a88846-20261014.md. No merge/delivery.",
     "life_persisted_service_local": "Source1dc4390 reviewed complete unbound serviceport;7actual hostSQLite tests/concurrency/CUSTOM/status/cancellation. Whole950JVM95XML0fail/error/skip608s; check/debug/storageTestAPK, both16KiBZIPexit0. Appabb96caa1c90966e25e7e36aa1ab38014b89ab20bd351a68af9885b54eda6ff0; test2a940792c5431f2b0d6e65f86c51718b3c2bfb0c558c171d9cb939cd658b2b8d. Nativeprobecompiled/not_run; no DI/UI/fullserviceacceptance. PERSISTED-SERVICE-LOCAL-20261014.md.",
     "integration_freeze_candidate": "DraftPR21 e9cb72b75bddc832eb1c8b702878e4c74bec25cc exactparents main6f841cc4+freeze5a88846; root verified byteidentical android-app/workflows/scripts. HostedAndroid38565369384/continuity38565369459 successreported; detailednativeXML/mainmetadatareconciliationpending. FinalmergeHOLD; isolatedprepACK retained.",
-    "life_persisted_service_native": "Native verification attempt: pushed source1dc43908b81a3869fc064ea29ad3f5375f69640a to agent/cx-native-life-service-source-20261014 (Android tree identical to checkpointd3beaae). Only continuity38571765761 observed success; no focused Android run observed. Earlier checkpoint-only ref agent/cx-native-life-service-20261014 likewise only continuity38571695707. Manual gh workflow run failed at GET workflow endpoint with Forbidden; no dispatch/queued/runtime claim. Existing GitHub App GET remains usable. No CI edits, duplicate emulator runs or product changes. Next diagnose workflow availability/trigger using read-only Actions API, then execute exactly one focused run when callable; native and API23 remain not_run."
+    "life_persisted_service_native": "Native verification attempt: pushed source1dc43908b81a3869fc064ea29ad3f5375f69640a to agent/cx-native-life-service-source-20261014 (Android tree identical to checkpointd3beaae). Only continuity38571765761 observed success; no focused Android run observed. Earlier checkpoint-only ref agent/cx-native-life-service-20261014 likewise only continuity38571695707. Manual gh workflow run failed at GET workflow endpoint with Forbidden; no dispatch/queued/runtime claim. Existing GitHub App GET remains usable. No CI edits, duplicate emulator runs or product changes. Next diagnose workflow availability/trigger using read-only Actions API, then execute exactly one focused run when callable; native and API23 remain not_run.",
+    "life_platform_sources_local": "Source944bcdb; APIabsenceRED293s. Firstcandidate558s failedbeforemethods: RobolectricSDK36requiresJava21. CorrectedSDK34matchesexistingshell/JDK17; rerunpending. Nativeprobe Kotlincompiled, APKassembly/fullgatepending; no deviceexecution. ActualAppGraph/productionDAGunchanged; earlier950JVM relates priorfacadeonly."
   },
-  "last_completed": "Published service950JVM checkpointd3beaae; exactsourceverification refs onlycontinuity observed, gh dispatch blocked at workflow GET Forbidden; native not_run, PR21 finalmergeHOLD.",
-  "updated_utc": "2026-10-14T13:27:14Z",
+  "last_completed": "Active local execution restored; platform944bcdb reviewed, SDK34 rerun/fullgate pending after SDK36/JDK17 harness failure; gameplay binding HOLD; profile CRUD library reviewed next.",
+  "updated_utc": "2026-10-14T13:53:53Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
