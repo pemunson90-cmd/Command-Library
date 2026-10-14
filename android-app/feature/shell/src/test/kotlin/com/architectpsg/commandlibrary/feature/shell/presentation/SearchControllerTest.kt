@@ -13,6 +13,8 @@ import com.architectpsg.commandlibrary.feature.shell.SYNTHETIC_PROVIDER
 import com.architectpsg.commandlibrary.feature.shell.SyntheticCatalog
 import com.architectpsg.commandlibrary.feature.shell.failure
 import com.architectpsg.commandlibrary.feature.shell.syntheticCard
+import com.architectpsg.commandlibrary.feature.shell.OracleTextFixture
+import com.architectpsg.commandlibrary.core.model.CatalogTextField
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -27,6 +29,31 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SearchControllerTest {
+    @Test fun optionalTextCapabilityRoutesSelectedFieldAndFieldSwitchCancelsOldWork() = runTest {
+        val text = OracleTextFixture(catalog)
+        val controller = SearchController(ownerScope(), catalog, StandardTestDispatcher(testScheduler), textLookup = text) {}
+        controller.onQueryChange("draw")
+        catalog.lookupGate = CompletableDeferred()
+        controller.submit(); runCurrent()
+        controller.onFieldChange(CatalogTextField.ORACLE_TEXT)
+        assertTrue(catalog.lookupTokens.single().isCancelled)
+        assertEquals("draw", controller.queryInput); assertFalse(controller.state.value.searched)
+        controller.submit(); advanceUntilIdle()
+        assertEquals(listOf(CatalogTextField.ORACLE_TEXT to "draw"), text.requests)
+        assertEquals(CatalogTextField.ORACLE_TEXT, controller.state.value.queryField)
+        assertEquals("Synthetic text-only match", controller.state.value.results.single().name)
+        catalog.lookupGate!!.complete(Unit); advanceUntilIdle()
+        assertEquals("Synthetic text-only match", controller.state.value.results.single().name)
+        controller.onFieldChange(CatalogTextField.NAME)
+        assertTrue(controller.state.value.results.isEmpty()); assertEquals("draw", controller.queryInput)
+    }
+    @Test fun absentTextCapabilityCannotSelectUnsupportedField() = runTest {
+        val controller = controller()
+        assertFalse(controller.supportsOracleText)
+        controller.onFieldChange(CatalogTextField.ORACLE_TEXT)
+        assertEquals(CatalogTextField.NAME, controller.fieldInput)
+        assertTrue(catalog.lookupRequests.isEmpty())
+    }
     @Test fun typingCancelsSubmittedWorkWithoutSubmittingTheDraft() = runTest {
         val controller = controller()
         controller.onActiveGeneration(catalog.active!!.id)

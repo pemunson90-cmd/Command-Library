@@ -114,6 +114,11 @@
 
     <!-- Card search -->
     <string name="search_field_label">Card name</string>
+    <string name="search_text_title">Search cards</string>
+    <string name="search_oracle_text_label">Oracle text</string>
+    <string name="search_oracle_text_empty">Enter some Oracle text.</string>
+    <string name="search_oracle_text_help">Search recorded card text on this device. Words stay in order; the last word can be a prefix. Nothing is sent online.</string>
+    <string name="search_matching_field">Matching in %1$s</string>
     <string name="search_field_help">Searches the catalog stored on this device. Nothing is sent online.</string>
     <string name="search_action">Search</string>
     <string name="search_problem_empty">Enter a card name.</string>

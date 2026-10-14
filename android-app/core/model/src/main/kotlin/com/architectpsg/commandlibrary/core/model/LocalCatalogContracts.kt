@@ -6,6 +6,13 @@ import kotlinx.coroutines.flow.Flow
 public interface CatalogLookup {
     public suspend fun lookupName(input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>>
 }
+public enum class CatalogTextField { NAME, ORACLE_TEXT }
+/** Indexed ordered token phrase, final-token prefix, over recorded local card/face text.
+ * This capability executes no QueryAst or online search. Cursors bind field/query/generation.
+ */
+public interface CatalogTextLookup {
+    public suspend fun lookupText(field: CatalogTextField, input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>>
+}
 public data class LocalCatalogStatus(
     public val mode: StorageMode,
     public val defaultLanguage: LanguageTag,

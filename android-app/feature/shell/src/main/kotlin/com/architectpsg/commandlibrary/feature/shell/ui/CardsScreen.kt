@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -43,6 +44,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.architectpsg.commandlibrary.core.model.CardRecord
+import com.architectpsg.commandlibrary.core.model.CatalogTextField
 import com.architectpsg.commandlibrary.core.model.Knowledge
 import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.presentation.CatalogStatusUiState
@@ -142,22 +144,29 @@ private fun SearchForm(controller: SearchController, state: SearchUiState) {
     }
     Column(Modifier.fillMaxWidth().padding(bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(stringResource(R.string.search_eyebrow), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
-        SectionHeading(stringResource(R.string.search_idle_title), style = MaterialTheme.typography.headlineMedium)
+        SectionHeading(stringResource(if (controller.supportsOracleText) R.string.search_text_title else R.string.search_idle_title), style = MaterialTheme.typography.headlineMedium)
+        if (controller.supportsOracleText) ActionRow {
+            CatalogTextField.entries.forEach { field ->
+                FilterChip(selected = controller.fieldInput == field, onClick = { controller.onFieldChange(field) },
+                    label = { Text(stringResource(if (field == CatalogTextField.NAME) R.string.search_field_label else R.string.search_oracle_text_label)) },
+                    modifier = Modifier.heightIn(min = 48.dp).testTag("search-field-${field.name}"))
+            }
+        }
         val problem = state.queryProblem
         OutlinedTextField(
             value = controller.queryInput,
             onValueChange = controller::onQueryChange,
-            label = { Text(stringResource(R.string.search_field_label)) },
+            label = { Text(stringResource(if (controller.fieldInput == CatalogTextField.NAME) R.string.search_field_label else R.string.search_oracle_text_label)) },
             supportingText = {
                 Text(
                     when (problem) {
-                        QueryProblem.EMPTY -> stringResource(R.string.search_problem_empty)
+                        QueryProblem.EMPTY -> stringResource(if (controller.fieldInput == CatalogTextField.NAME) R.string.search_problem_empty else R.string.search_oracle_text_empty)
                         QueryProblem.TOO_LONG -> pluralStringResource(
                             R.plurals.search_problem_too_long,
                             SearchController.MAX_QUERY_CODE_POINTS,
                             SearchController.MAX_QUERY_CODE_POINTS,
                         )
-                        null -> stringResource(R.string.search_field_help)
+                        null -> stringResource(if (controller.fieldInput == CatalogTextField.NAME) R.string.search_field_help else R.string.search_oracle_text_help)
                     },
                 )
             },
@@ -175,6 +184,8 @@ private fun SearchForm(controller: SearchController, state: SearchUiState) {
 private fun SearchStatus(state: SearchUiState, catalogMissing: Boolean, onOpenCatalog: () -> Unit, controller: SearchController) {
     Column(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val firstPageSettled = state.searched && state.loading != SearchLoad.FIRST_PAGE && state.failedLoad != SearchLoad.FIRST_PAGE
+        if (state.searched && controller.supportsOracleText) Text(stringResource(R.string.search_matching_field,
+            stringResource(if (state.queryField == CatalogTextField.NAME) R.string.search_field_label else R.string.search_oracle_text_label)))
         when {
             state.loading == SearchLoad.FIRST_PAGE -> Busy(stringResource(R.string.search_loading))
             state.failedLoad == SearchLoad.FIRST_PAGE && state.problem != null -> MessageBlock(

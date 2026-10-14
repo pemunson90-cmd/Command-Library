@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.architectpsg.commandlibrary.core.model.CardRecord
 import com.architectpsg.commandlibrary.core.model.CatalogLookup
+import com.architectpsg.commandlibrary.core.model.CatalogTextLookup
+import com.architectpsg.commandlibrary.core.model.CatalogTextField
 import com.architectpsg.commandlibrary.core.model.GenerationId
 import com.architectpsg.commandlibrary.core.model.OracleId
 import com.architectpsg.commandlibrary.core.model.PageRequest
@@ -28,6 +30,7 @@ internal enum class SearchLoad { FIRST_PAGE, NEXT_PAGE }
  */
 internal data class SearchUiState(
     val query: String? = null,
+    val queryField: CatalogTextField = CatalogTextField.NAME,
     val queryProblem: QueryProblem? = null,
     val results: List<CardRecord> = emptyList(),
     val generation: GenerationId? = null,
@@ -54,6 +57,7 @@ internal class SearchController(
     private val scope: CoroutineScope,
     private val lookup: CatalogLookup,
     private val portDispatcher: CoroutineDispatcher,
+    private val textLookup: CatalogTextLookup? = null,
     private val onStaleCursor: () -> Unit,
 ) {
     private val mutableState = MutableStateFlow(SearchUiState())
@@ -63,6 +67,16 @@ internal class SearchController(
 
     /** Text field contents; snapshot state so typing never waits for a flow emission. */
     var queryInput: String by mutableStateOf("")
+    var fieldInput: CatalogTextField by mutableStateOf(CatalogTextField.NAME)
+        private set
+    val supportsOracleText: Boolean get() = textLookup != null
+
+    fun onFieldChange(field: CatalogTextField) {
+        if (field == fieldInput || (field == CatalogTextField.ORACLE_TEXT && textLookup == null)) return
+        fieldInput = field
+        invalidateRequest()
+        clearSearch()
+    }
 
     fun onQueryChange(text: String) {
         if (text == queryInput) return
@@ -75,6 +89,7 @@ internal class SearchController(
 
     fun search(input: String) {
         val ticket = invalidateRequest()
+        val field = fieldInput
         val trimmed = input.trim()
         val problem = when {
             trimmed.isEmpty() -> QueryProblem.EMPTY
@@ -88,12 +103,13 @@ internal class SearchController(
         mutableState.update {
             SearchUiState(
                 query = trimmed,
+                queryField = field,
                 loading = SearchLoad.FIRST_PAGE,
                 activeGenerationKnown = it.activeGenerationKnown,
                 activeGeneration = it.activeGeneration,
             )
         }
-        job = scope.launch { load(trimmed, cursor = null, kind = SearchLoad.FIRST_PAGE, ticket = ticket) }
+        job = scope.launch { load(trimmed, field, cursor = null, kind = SearchLoad.FIRST_PAGE, ticket = ticket) }
     }
 
     fun loadMore() {
@@ -103,7 +119,7 @@ internal class SearchController(
         if (!current.canLoadMore) return
         val ticket = invalidateRequest()
         mutableState.update { it.copy(loading = SearchLoad.NEXT_PAGE, problem = null, failedLoad = null) }
-        job = scope.launch { load(query, cursor, SearchLoad.NEXT_PAGE, ticket) }
+        job = scope.launch { load(query, current.queryField, cursor, SearchLoad.NEXT_PAGE, ticket) }
     }
 
     fun retry() {
@@ -128,6 +144,7 @@ internal class SearchController(
     fun reset() {
         invalidateRequest()
         queryInput = ""
+        fieldInput = CatalogTextField.NAME
         clearSearch()
     }
 
@@ -146,8 +163,11 @@ internal class SearchController(
     fun onActiveGeneration(generation: GenerationId?) =
         mutableState.update { it.copy(activeGenerationKnown = true, activeGeneration = generation) }
 
-    private suspend fun load(query: String, cursor: String?, kind: SearchLoad, ticket: Long) {
-        val result = callPort(portDispatcher) { lookup.lookupName(query, PageRequest(PAGE_SIZE, cursor), it) }
+    private suspend fun load(query: String, field: CatalogTextField, cursor: String?, kind: SearchLoad, ticket: Long) {
+        val result = callPort(portDispatcher) {
+            if (field == CatalogTextField.NAME) lookup.lookupName(query, PageRequest(PAGE_SIZE, cursor), it)
+            else requireNotNull(textLookup).lookupText(field, query, PageRequest(PAGE_SIZE, cursor), it)
+        }
         if (ticket != requestTicket) return
         when (result) {
             is PortResult.Ok -> mutableState.update { current ->

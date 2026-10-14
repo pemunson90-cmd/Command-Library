@@ -22,7 +22,7 @@ public class LocalCatalog(
     private val clock: Clock,
     private val ids: IdSource,
     private val limits: CatalogImportLimits = CatalogImportLimits(),
-) : CatalogImport, CatalogLookup, CatalogStatus {
+) : CatalogImport, CatalogLookup, CatalogTextLookup, CatalogStatus {
     @Volatile private var initialized = false
     private val dataset = "scryfall:en"
     private val cleanupCancel = object : CancelToken {
@@ -47,10 +47,13 @@ public class LocalCatalog(
         } catch (failure: Exception) { corrupt(failure) }
     }
 
-    override suspend fun lookupName(input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>> {
+    override suspend fun lookupName(input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>> =
+        lookupText(CatalogTextField.NAME, input, page, cancel)
+
+    override suspend fun lookupText(field: CatalogTextField, input: String, page: PageRequest, cancel: CancelToken): Outcome<Page<CardRecord>> {
         when (val ready = initialize(cancel)) { is Outcome.Success -> Unit; else -> return ready.nonSuccess() }
         val trimmed = input.trim()
-        if (trimmed.codePointCount(0, trimmed.length) > 128) return invalid("Name query exceeds 128 code points")
+        if (trimmed.codePointCount(0, trimmed.length) > 128) return invalid("Catalog text query exceeds 128 code points")
         val active = when (val result = activeRow(cancel)) {
             is Outcome.Success -> result.value
             else -> return result.nonSuccess()
@@ -60,10 +63,11 @@ public class LocalCatalog(
         val reference = SnapshotReference(active?.let { ProviderId(it.text("provider")) } ?: ProviderId("scryfall"),
             active?.let { GenerationId(it.text("generation_id")) }, null, LanguageTag.ENGLISH)
         val words = Regex("[\\p{L}\\p{M}\\p{N}]+").findAll(ScryfallCodec.normalize(trimmed)).map { it.value }.toList()
-        if (active == null || words.isEmpty()) return Outcome.Success(Page(SnapshotList.empty(), null, reference))
-        val expression = "name : \"${words.joinToString(" ") { it.replace("\"", "\"\"") }}\"*"
+        val column = when (field) { CatalogTextField.NAME -> "name"; CatalogTextField.ORACLE_TEXT -> "text" }
+        val expression = "$column : \"${words.joinToString(" ") { it.replace("\"", "\"\"") }}\"*"
         val queryKey = digest(expression).take(24)
         if (cursor != null && cursor.query != queryKey) return invalid("Cursor belongs to a different query")
+        if (active == null || words.isEmpty()) return Outcome.Success(Page(SnapshotList.empty(), null, reference))
         val rows = when (val result = database.query(sql("""SELECT c.record_payload AS payload,c.normalized_name AS sort_name,c.provider AS provider,c.oracle_id AS oracle_id FROM catalog_name_fts JOIN oracle_card c ON c.generation_id=catalog_name_fts.generation_id AND c.provider=catalog_name_fts.provider AND c.oracle_id=catalog_name_fts.oracle_id AND c.language=catalog_name_fts.language WHERE catalog_name_fts MATCH :match AND c.generation_id=:generation AND c.language='en' AND (c.normalized_name>:name OR (c.normalized_name=:name AND (c.provider>:provider OR (c.provider=:provider AND c.oracle_id>:oracle)))) ORDER BY c.normalized_name,c.provider,c.oracle_id LIMIT :limit""", page.limit + 1,
             "match" to expression, "generation" to active.text("generation_id"), "name" to (cursor?.name ?: ""), "provider" to (cursor?.provider ?: ""), "oracle" to (cursor?.oracle ?: ""), "limit" to (page.limit + 1).toLong()), cancel)) {
             is Outcome.Success -> result.value
