@@ -1,6 +1,6 @@
 # Live English catalog download and install
 
-Status: independent public/security/composition design APPROVE; batch1 source approved and six focused real-host cases pass; controller/UI batch2 next. Parent: orch-kotlin-k3-offline-data-01. Root owns app/shell/shared files. Pat delegates implementation and D-28 batches verification at meaningful risk boundaries.
+Status: independent source/public/security/composition APPROVE; batch1 six real-host cases and batch2 thirteen functional cases pass, corrected style/lint/packaging follow-up pass. Local controls implemented; actual approved transfer/pinned activation/native/full-corpus evidence remains separate and pending. Parent: orch-kotlin-k3-offline-data-01. Root owns app/shell/shared files. Pat delegates implementation and D-28 batches verification at meaningful risk boundaries.
 
 ## Result and scope
 
@@ -24,8 +24,9 @@ Provide working English-card download/install controls over the existing Android
 ## Implementation batches and evidence
 
 1. [x] Review the public/lazy-root/security composition. Implement access/session types, real app binding and verified install delegation together with focused concurrency/cancellation/failure/no-wire-before-consent checks.
-2. [ ] Implement scoped download controller and screen/navigation together with meaningful consent/CAS/pause/resume/cancel/recovery/atomic-install/error/large-font cases. Reuse real existing acquisition tests; do not duplicate them per button.
-3. [ ] At this integration/security boundary, run one combined local check and affected packaging tests, actual root composition/pinned-artifact probe where host supports it, and final independent review. Device-only behavior gets one justified combined modern native run when available, never a fabricated pass. No genuine full-corpus/device/Fold7/release claim without actual evidence; no unfinished APK delivery.
+2. [x] Implement scoped download controller and screen/navigation together with meaningful consent/CAS/pause/resume/cancel/recovery/atomic-install/error/large-font cases. Reuse real existing acquisition tests; do not duplicate them per button.
+3. [x] Run combined local boundary check, correct actual failure with affected tests/packaging, and independent source review. Whole1,031cases had one resource-style failure; corrected3style cases/lint/4APK pass, no clean whole-check exit asserted. Actual root host admission/recovery/denial checks remain scoped to their filesystem support. Evidence LIVE-ENGLISH-DOWNLOADS-LOCAL-20261014.md.
+4. [ ] Obtain remaining actual approved transfer/pinned activation/native/full-corpus evidence. Device-only behavior gets one justified combined modern native run when available, never a fabricated pass. No genuine full-corpus/device/Fold7/release claim without actual evidence; no unfinished APK delivery.
 
 
 Review requirements applied: dedicated lazy mutex; recover exactly once before publishing a successful session, not on every screen entry; clean only newly owned transport on initialization failure/cancellation. Exact persisted-intent consent, authoritative revisions and independently runnable pause/cancel, same-session pinned install and acknowledged catalog refresh remain required in the controller/UI batch. Owner close disables only this access transport and never shared storage/settings.

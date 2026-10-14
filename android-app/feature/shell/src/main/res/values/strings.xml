@@ -391,7 +391,7 @@
     <string name="downloads_waiting_network">Waiting for a network</string>
     <string name="downloads_waiting_wifi">Waiting for Wi-Fi</string>
     <string name="downloads_waiting_consent">Approval required</string>
-    <string name="downloads_interrupted">Interrupted — resume when ready</string>
+    <string name="downloads_interrupted">Interrupted. Resume when ready.</string>
     <string name="downloads_failed">Download failed</string>
     <string name="downloads_cancelled">Download cancelled</string>
     <string name="downloads_complete">Verified download ready</string>
