@@ -23,10 +23,12 @@ import com.architectpsg.commandlibrary.core.model.CardRecord
 import com.architectpsg.commandlibrary.core.model.CardStats
 import com.architectpsg.commandlibrary.core.model.Knowledge
 import com.architectpsg.commandlibrary.feature.shell.R
+import com.architectpsg.commandlibrary.feature.shell.presentation.RulingsController
 
 /** Oracle text and game fields only; no card art is requested. Absent stats are omitted, unknown ones say so. */
 @Composable
-internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: WidthClass, modifier: Modifier = Modifier) {
+internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: WidthClass, modifier: Modifier = Modifier,
+    rulings: RulingsController? = null, onOpenCatalog: (() -> Unit)? = null) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -54,6 +56,7 @@ internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: Wid
                 StatFields(card.stats)
             }
             CardArtworkFrame()
+            if(rulings != null) CardRulings(card.oracleId, rulings, onOpenCatalog)
             FeaturePanel {
                 SectionHeading(stringResource(R.string.detail_metadata_title))
                 DetailField(stringResource(R.string.detail_colors), knowledgeText(card.colors) { colorNames(it) })

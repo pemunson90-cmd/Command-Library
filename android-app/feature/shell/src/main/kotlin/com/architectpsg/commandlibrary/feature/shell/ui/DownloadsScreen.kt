@@ -23,6 +23,8 @@ internal object DownloadTags {
     const val LIST = "downloads-list"
     const val BACK = "downloads-back"
     const val NEW = "downloads-new"
+    const val RULINGS_NEW = "downloads-rulings-new"
+    const val RULINGS_REVIEW = "downloads-rulings-review"
     const val WIFI = "downloads-wifi"
     const val REFRESH = "downloads-refresh"
     const val MORE = "downloads-more"
@@ -58,7 +60,7 @@ internal fun DownloadsScreen(controller: DownloadsController, widthClass: WidthC
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     SectionHeading(stringResource(R.string.downloads_title), style = MaterialTheme.typography.headlineMedium)
-                    Text(stringResource(R.string.downloads_intro))
+                    Text(stringResource(if(controller.rulingsEnabled) R.string.downloads_all_intro else R.string.downloads_intro))
                     Text(stringResource(R.string.downloads_lifecycle))
                     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag(DownloadTags.WIFI)
                         .toggleable(state.wifiOnly, enabled = !state.planning && state.approval == null, role = Role.Checkbox, onValueChange = controller::changeWifiOnly),
@@ -67,9 +69,12 @@ internal fun DownloadsScreen(controller: DownloadsController, widthClass: WidthC
                     }
                     Text(stringResource(R.string.downloads_settings_apply))
                     val name = stringResource(R.string.downloads_english_name)
+                    val rulingName = stringResource(R.string.downloads_rulings_metadata_name)
                     ActionRow {
                         Button(onClick = { controller.plan(name) }, enabled = state.ready && !state.planning && state.approval == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.NEW)) { Text(stringResource(R.string.downloads_new)) }
+                        if(controller.rulingsEnabled) OutlinedButton(onClick = { controller.planRulings(rulingName) }, enabled = state.ready && !state.planning && state.approval == null,
+                            modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.RULINGS_NEW)) { Text(stringResource(R.string.downloads_rulings_new)) }
                         OutlinedButton(onClick = controller::load, enabled = !state.loading,
                             modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.REFRESH)) { Text(stringResource(R.string.profiles_refresh)) }
                         OutlinedButton(onClick = onBack, modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.BACK)) { Text(stringResource(R.string.downloads_back_catalog)) }
@@ -77,7 +82,8 @@ internal fun DownloadsScreen(controller: DownloadsController, widthClass: WidthC
                     DownloadNotice(state)
                     if (state.loading || state.planning) DownloadBusy(stringResource(R.string.downloads_loading))
                     if (!state.loading && state.ready && state.problem == null && state.items.isEmpty()) Text(stringResource(
-                        if (state.nextCursor == null) R.string.downloads_empty else R.string.downloads_empty_page))
+                        if(controller.rulingsEnabled) { if(state.nextCursor == null) R.string.downloads_all_empty else R.string.downloads_all_empty_page }
+                        else if (state.nextCursor == null) R.string.downloads_empty else R.string.downloads_empty_page))
                     Text(stringResource(R.string.downloads_live_detail))
                 }
             }
@@ -99,11 +105,16 @@ internal fun DownloadsScreen(controller: DownloadsController, widthClass: WidthC
     state.approval?.let { shown ->
         val busy = shown.plan.jobId in state.controls
         AlertDialog(onDismissRequest = controller::dismissApproval,
-            title = { Text(stringResource(R.string.downloads_approve_title)) },
+            title = { Text(stringResource(when(catalogDownloadStage(shown)) {
+                CatalogDownloadStage.RULINGS_METADATA -> R.string.downloads_rulings_metadata_approve
+                CatalogDownloadStage.RULINGS_FILE -> R.string.downloads_rulings_file_approve
+                else -> R.string.downloads_approve_title
+            })) },
             text = {
                 Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     DownloadRequestDetails(shown)
-                    Text(stringResource(if (busy) R.string.downloads_starting else R.string.downloads_approve_body))
+                    Text(stringResource(if (busy) R.string.downloads_starting else if(catalogDownloadStage(shown) == CatalogDownloadStage.RULINGS_METADATA)
+                        R.string.downloads_rulings_metadata_body else R.string.downloads_approve_body))
                     DownloadProblem(state.problem)
                     if (state.problem == Problem.STALE_REVISION) OutlinedButton(onClick = { controller.prepare(shown.plan.jobId) }, enabled = !busy,
                         modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.RELOAD_APPROVAL)) { Text(stringResource(R.string.downloads_reload_job)) }
@@ -143,6 +154,7 @@ private fun DownloadDetail(state: DownloadsUiState, controller: DownloadsControl
             val id = row.plan.jobId
             val installing = id in state.installing
             val queued = id in state.queuedInstalls
+            val stage = catalogDownloadStage(row)
             Text(row.plan.request.displayName, style = MaterialTheme.typography.titleLarge)
             Text(stringResource(when { installing -> R.string.downloads_installing; queued -> R.string.downloads_waiting_install; else -> downloadStateResource(row) }))
             Text(stringResource(R.string.downloads_progress, formatBytes(row.transferredBytes), formatCount(row.acquiredRecords),
@@ -150,8 +162,11 @@ private fun DownloadDetail(state: DownloadsUiState, controller: DownloadsControl
             if (row.state == AcquisitionState.RUNNING || installing) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             state.installProgress[id]?.let { Text(stringResource(R.string.downloads_processed, formatCount(it.completedUnits))) }
             row.failure?.let { DownloadProblem(it.code.toProblem()) }
-            if (artifactMatchesCatalog(row, state.catalog)) Text(stringResource(R.string.downloads_matches_installed))
+            if (stage == CatalogDownloadStage.ENGLISH && artifactMatchesCatalog(row, state.catalog)) Text(stringResource(R.string.downloads_matches_installed))
+            if(stage == CatalogDownloadStage.RULINGS_FILE && artifactMatchesRulings(row, state.rulings)) Text(stringResource(R.string.downloads_rulings_matches))
+            if(stage == CatalogDownloadStage.RULINGS_METADATA && row.state == AcquisitionState.COMPLETED) Text(stringResource(R.string.downloads_rulings_metadata_ready))
             val enabled = id !in state.controls && !installing && !queued
+            val rulingFileName = stringResource(R.string.downloads_rulings_file_name)
             ActionRow {
                 if (row.state == AcquisitionState.PLANNED || row.state in ResumableDownloads) Button(onClick = { controller.prepare(id) }, enabled = enabled,
                     modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.START)) { Text(stringResource(
@@ -160,7 +175,9 @@ private fun DownloadDetail(state: DownloadsUiState, controller: DownloadsControl
                     modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.PAUSE)) { Text(stringResource(R.string.downloads_pause)) }
                 if (row.state !in setOf(AcquisitionState.CANCELLED, AcquisitionState.COMPLETED)) OutlinedButton(onClick = { controller.requestCancel(id) }, enabled = enabled,
                     modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.CANCEL)) { Text(stringResource(R.string.downloads_cancel)) }
-                if (row.state == AcquisitionState.COMPLETED && !installing && !queued) Button(onClick = { controller.install(id) }, enabled = enabled && state.installing.isEmpty(),
+                if (row.state == AcquisitionState.COMPLETED && stage == CatalogDownloadStage.RULINGS_METADATA) Button(onClick = { controller.planRulingsFile(id, rulingFileName) },
+                    enabled = enabled && !state.planning && state.approval == null, modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.RULINGS_REVIEW)) { Text(stringResource(R.string.downloads_rulings_review)) }
+                if (row.state == AcquisitionState.COMPLETED && stage != CatalogDownloadStage.RULINGS_METADATA && !installing && !queued) Button(onClick = { controller.install(id) }, enabled = enabled && state.installing.isEmpty(),
                     modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.INSTALL)) { Text(stringResource(R.string.downloads_install)) }
                 if (installing || queued) OutlinedButton(onClick = { controller.stopInstall(id) },
                     modifier = Modifier.heightIn(min = 48.dp).testTag(DownloadTags.STOP_INSTALL)) { Text(stringResource(R.string.downloads_stop_install)) }
@@ -182,13 +199,15 @@ private fun DownloadRequestDetails(row: AcquisitionSnapshot) {
     val request = row.plan.request
     DetailField(stringResource(R.string.downloads_source), request.intent.source.value)
     DetailField(stringResource(R.string.downloads_url), request.intent.resource.value)
-    DetailField(stringResource(R.string.catalog_field_default_language), languageName(requireNotNull(request.intent.language)))
+    if(request.languageScope == AcquisitionLanguageScope.RULINGS_LANGUAGE_NOT_ASSERTED)
+        DetailField(stringResource(R.string.rulings_language), stringResource(R.string.rulings_language_unknown))
+    else DetailField(stringResource(R.string.catalog_field_default_language), languageName(requireNotNull(request.intent.language)))
     DetailField(stringResource(R.string.downloads_source_version), knowledgeText(request.sourceVersion) { it })
     DetailField(stringResource(R.string.catalog_field_source_date), knowledgeText(request.sourceDate) { formatTimestamp(it) })
     DetailField(stringResource(R.string.downloads_expected_size), knowledgeText(request.intent.expectedBytes) { formatBytes(it) })
     DetailField(stringResource(R.string.downloads_budget), formatBytes(request.limits.maxTransferBytes))
     Text(stringResource(if (request.wifiOnly) R.string.downloads_wifi_required else R.string.downloads_network_allowed))
-    Text(stringResource(R.string.downloads_mutable_source))
+    Text(stringResource(if(request.source is AcquisitionSource.EnglishSearch) R.string.downloads_mutable_source else R.string.downloads_rulings_source_note))
 }
 
 @Composable
@@ -196,6 +215,8 @@ private fun DownloadNotice(state: DownloadsUiState) {
     DownloadProblem(state.problem)
     if (state.running.isNotEmpty()) Text(stringResource(R.string.downloads_running, formatCount(state.running.size.toLong())))
     state.installed?.let { Text(stringResource(R.string.downloads_installed, formatCount(it.installed.counts.oracleCards), formatCount(it.installed.counts.printings))) }
+    state.rulingsInstalled?.let { Text(stringResource(R.string.downloads_rulings_installed, formatCount(it.generation.recordCount))) }
+    state.rulings?.active?.let { Text(stringResource(R.string.downloads_rulings_status, formatCount(it.recordCount))) }
 }
 @Composable
 private fun DownloadProblem(problem: Problem?) {
@@ -214,6 +235,12 @@ private fun artifactMatchesCatalog(row: AcquisitionSnapshot, catalog: LocalCatal
             hash.algorithm.equals(artifact.sha256.algorithm, true) && hash.hex.equals(artifact.sha256.hex, true)
         } == true
     } == true
+}
+private fun artifactMatchesRulings(row: AcquisitionSnapshot, status: RulingsStatus?): Boolean {
+    val artifact = (row.artifact as? Knowledge.Known)?.value ?: return false
+    val source = status?.active?.provenance ?: return false
+    return source.provider == artifact.provenance.provider && source.source == artifact.provenance.requestedUri &&
+        source.checksum?.let { it.algorithm.equals(artifact.sha256.algorithm, true) && it.hex.equals(artifact.sha256.hex, true) } == true
 }
 @Composable
 private fun downloadStateText(row: AcquisitionSnapshot): String = stringResource(downloadStateResource(row))

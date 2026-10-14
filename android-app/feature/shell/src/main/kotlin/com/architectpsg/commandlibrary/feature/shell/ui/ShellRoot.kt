@@ -183,6 +183,8 @@ private fun DestinationContent(
             widthClass = widthClass,
             onOpenCatalog = { onNavigate(ShellDestination.CATALOG) },
             modifier = modifier,
+            rulings = controllers.rulings,
+            onManageRulings = if(controllers.downloads?.rulingsEnabled == true) ({ onNavigate(ShellDestination.CATALOG) }) else null,
         )
         ShellDestination.CATALOG -> {
             var downloadsOpen by rememberSaveable { mutableStateOf(false) }

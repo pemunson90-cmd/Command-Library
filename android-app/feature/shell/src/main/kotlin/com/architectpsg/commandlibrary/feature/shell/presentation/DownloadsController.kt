@@ -4,6 +4,8 @@ import com.architectpsg.commandlibrary.core.common.CoroutineCancelToken
 import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.feature.shell.EnglishCatalogAccess
 import com.architectpsg.commandlibrary.feature.shell.EnglishCatalogDownloads
+import com.architectpsg.commandlibrary.feature.shell.RulingsCatalogAccess
+import com.architectpsg.commandlibrary.feature.shell.RulingsCatalogDownloads
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -17,7 +19,21 @@ internal data class DownloadsUiState(
     val controls: Set<EntityId> = emptySet(), val running: Set<EntityId> = emptySet(), val installing: Set<EntityId> = emptySet(),
     val queuedInstalls: Set<EntityId> = emptySet(), val installProgress: Map<EntityId, JobProgress> = emptyMap(), val installed: CatalogBulkImportResult? = null,
     val catalog: LocalCatalogStatus? = null, val problem: Problem? = null,
+    val rulings: RulingsStatus? = null, val rulingsInstalled: RulingsImportResult? = null,
 )
+
+/** Display routing only; trusted source/consent admission remains with the actual root ports. */
+internal enum class CatalogDownloadStage { ENGLISH, RULINGS_METADATA, RULINGS_FILE }
+internal fun catalogDownloadStage(row: AcquisitionSnapshot): CatalogDownloadStage? = row.plan.request.let { r ->
+    if(r.intent.source != ProviderId("scryfall") || r.intent.kind != DownloadKind.CATALOG) return@let null
+    when(val source = r.source) {
+        is AcquisitionSource.EnglishSearch -> if(r.languageScope == AcquisitionLanguageScope.ENGLISH_CARDS && r.intent.language == LanguageTag.ENGLISH) CatalogDownloadStage.ENGLISH else null
+        is AcquisitionSource.RemoteFile -> if(r.languageScope != AcquisitionLanguageScope.RULINGS_LANGUAGE_NOT_ASSERTED || r.intent.language != null) null
+            else when { source.framing == ArtifactFraming.TEXT && source.compression == ArtifactCompression.NONE -> CatalogDownloadStage.RULINGS_METADATA
+                source.framing == ArtifactFraming.JSONL && source.compression == ArtifactCompression.GZIP -> CatalogDownloadStage.RULINGS_FILE
+                else -> null }
+    }
+}
 
 /** One observed detail, bounded real pages, and independently controlled structured workers. */
 internal class DownloadsController(
@@ -27,7 +43,10 @@ internal class DownloadsController(
     private val catalogStatus: CatalogStatus,
     private val dispatcher: CoroutineDispatcher,
     private val refreshCatalog: () -> Unit,
+    private val rulingsAccess: RulingsCatalogAccess? = null,
+    private val rulingsPort: CatalogRulings? = null,
 ) {
+    val rulingsEnabled: Boolean = rulingsAccess != null && rulingsPort != null
     private val mutableState = MutableStateFlow(DownloadsUiState())
     val state: StateFlow<DownloadsUiState> = mutableState.asStateFlow()
     private var session: EnglishCatalogDownloads? = null
@@ -44,7 +63,7 @@ internal class DownloadsController(
         is PortResult.Failed -> { problem(result.problem); null }
     }
     private fun problem(value: Problem) = mutableState.update { it.copy(problem = value) }
-    fun dismissProblem() = mutableState.update { it.copy(problem = null, installed = null) }
+    fun dismissProblem() = mutableState.update { it.copy(problem = null, installed = null, rulingsInstalled = null) }
     fun changeWifiOnly(value: Boolean) {
         if (!state.value.planning && state.value.approval == null) mutableState.update { it.copy(wifiOnly = value) }
     }
@@ -73,13 +92,18 @@ internal class DownloadsController(
     }
     private suspend fun readCatalog() {
         val ticket = ++catalogTicket
-        mutableState.update { it.copy(catalog = null) }
+        mutableState.update { it.copy(catalog = null, rulings = null) }
         val latest = port { catalogStatus.status(it) }
         if (ticket == catalogTicket) mutableState.update { it.copy(catalog = latest) }
+        if(rulingsEnabled) {
+            val rulingStatus = port { requireNotNull(rulingsPort).status(it) }
+            if(ticket == catalogTicket) mutableState.update { it.copy(rulings = rulingStatus) }
+        }
     }
-    private fun supported(row: AcquisitionSnapshot): Boolean = row.plan.request.let {
-        it.source is AcquisitionSource.EnglishSearch && it.languageScope == AcquisitionLanguageScope.ENGLISH_CARDS &&
-            it.intent.source == ProviderId("scryfall") && it.intent.language == LanguageTag.ENGLISH
+    private fun supported(row: AcquisitionSnapshot): Boolean = when(catalogDownloadStage(row)) {
+        CatalogDownloadStage.ENGLISH -> true
+        CatalogDownloadStage.RULINGS_METADATA, CatalogDownloadStage.RULINGS_FILE -> rulingsEnabled
+        null -> false
     }
     private fun merge(row: AcquisitionSnapshot, insert: Boolean = false) {
         if (!supported(row)) return
@@ -127,12 +151,43 @@ internal class DownloadsController(
     }
     fun plan(displayName: String) {
         val current = session ?: return
-        if (state.value.planning || state.value.approval != null) return
         val wifi = state.value.wifiOnly
-        mutableState.update { it.copy(planning = true, problem = null, installed = null) }
+        planRequest { Outcome.Success(current.request(displayName, wifi)) }
+    }
+    fun planRulings(displayName: String) {
+        if(!rulingsEnabled) return
+        val wifi = state.value.wifiOnly
+        planRequest { token -> when(val current = rulingSession(token)) {
+            is Outcome.Success -> Outcome.Success(current.value.discoveryRequest(displayName, wifi))
+            is Outcome.Failure -> current
+            is Outcome.Unavailable -> current
+            is Outcome.Unknown -> current
+        } }
+    }
+    fun planRulingsFile(metadataJobId: EntityId, displayName: String) {
+        if(!rulingsEnabled) return
+        val wifi = state.value.wifiOnly
+        planRequest { token -> when(val current = rulingSession(token)) {
+            is Outcome.Success -> current.value.fileRequest(metadataJobId, displayName, wifi, token)
+            is Outcome.Failure -> current
+            is Outcome.Unavailable -> current
+            is Outcome.Unknown -> current
+        } }
+    }
+    private suspend fun rulingSession(cancel: CancelToken): Outcome<RulingsCatalogDownloads> = when(val result = requireNotNull(rulingsAccess).openRulings(cancel)) {
+        is Outcome.Success -> if(result.value.jobs === session?.jobs && result.value.runner === session?.runner) result
+            else Outcome.Failure(DomainFailure(FailureCode.SOURCE_MISMATCH, "Catalog download owners differ", SnapshotList.empty()))
+        is Outcome.Failure -> result
+        is Outcome.Unavailable -> result
+        is Outcome.Unknown -> result
+    }
+    private fun planRequest(build: suspend (CancelToken) -> Outcome<AcquisitionRequest>) {
+        val current = session ?: return
+        if (state.value.planning || state.value.approval != null) return
+        mutableState.update { it.copy(planning = true, problem = null, installed = null, rulingsInstalled = null) }
         scope.launch {
             try {
-                val request = port { Outcome.Success(current.request(displayName, wifi)) } ?: return@launch
+                val request = port(build) ?: return@launch
                 val row = port { token -> current.jobs.plan(request, token) } ?: return@launch
                 if (!supported(row) || row.plan.request != request) { problem(Problem.SOURCE_MISMATCH); return@launch }
                 merge(row, true); mutableState.update { it.copy(approval = row) }
@@ -190,7 +245,7 @@ internal class DownloadsController(
         val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
                 when (val result = callPort(dispatcher) { current.runner.run(id, it) }) {
-                    is PortResult.Ok -> { merge(result.value); if (result.value.state == AcquisitionState.COMPLETED) beginInstall(id, true) }
+                    is PortResult.Ok -> { merge(result.value); if (result.value.state == AcquisitionState.COMPLETED && catalogDownloadStage(result.value) != CatalogDownloadStage.RULINGS_METADATA) beginInstall(id, true) }
                     is PortResult.Failed -> {
                         // The engine's deliberately cancelled worker may surface interruption to its still-live caller.
                         if (result.problem == Problem.UNEXPECTED) {
@@ -220,10 +275,22 @@ internal class DownloadsController(
         }
         val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
-                val installed = port { token -> current.install(id, { progress ->
+                val row = port { current.jobs.status(id, it) } ?: return@launch
+                val stage = catalogDownloadStage(row)
+                if(!supported(row) || stage == CatalogDownloadStage.RULINGS_METADATA || row.state != AcquisitionState.COMPLETED) {
+                    problem(Problem.INVALID_INPUT); return@launch
+                }
+                val progress: (JobProgress) -> Unit = { progress ->
                     mutableState.update { if (id in it.installing) it.copy(installProgress = it.installProgress + (id to progress)) else it }
-                }, token) }
-                if (installed != null) { mutableState.update { it.copy(installed = installed) }; refreshCatalog() }
+                }
+                if(stage == CatalogDownloadStage.ENGLISH) {
+                    val installed = port { current.install(id, progress, it) }
+                    if(installed != null) { mutableState.update { it.copy(installed = installed) }; refreshCatalog() }
+                } else {
+                    val ruling = port { rulingSession(it) } ?: return@launch
+                    val installed = port { ruling.install(id, progress, it) }
+                    if(installed != null) { mutableState.update { it.copy(rulingsInstalled = installed) }; refreshCatalog() }
+                }
                 readCatalog()
             } finally {
                 installers.remove(id)
@@ -235,7 +302,7 @@ internal class DownloadsController(
             }
         }
         installers[id] = job
-        mutableState.update { it.copy(installing = it.installing + id, problem = null, installed = null) }; job.start()
+        mutableState.update { it.copy(installing = it.installing + id, problem = null, installed = null, rulingsInstalled = null) }; job.start()
     }
     fun stopInstall(id: EntityId) {
         if (id in state.value.queuedInstalls) {

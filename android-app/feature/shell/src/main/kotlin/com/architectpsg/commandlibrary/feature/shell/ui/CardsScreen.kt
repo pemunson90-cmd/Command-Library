@@ -50,6 +50,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.QueryProblem
 import com.architectpsg.commandlibrary.feature.shell.presentation.SearchController
 import com.architectpsg.commandlibrary.feature.shell.presentation.SearchLoad
 import com.architectpsg.commandlibrary.feature.shell.presentation.SearchUiState
+import com.architectpsg.commandlibrary.feature.shell.presentation.RulingsController
 import com.architectpsg.commandlibrary.feature.shell.presentation.installed
 
 /**
@@ -63,6 +64,8 @@ internal fun CardsScreen(
     widthClass: WidthClass,
     onOpenCatalog: () -> Unit,
     modifier: Modifier = Modifier,
+    rulings: RulingsController? = null,
+    onManageRulings: (() -> Unit)? = null,
 ) {
     val state by controller.state.collectAsState()
     val listState = rememberLazyListState()
@@ -76,7 +79,7 @@ internal fun CardsScreen(
             VerticalDivider()
             Box(Modifier.weight(0.55f).fillMaxHeight().testTag(ShellTags.DETAIL_PANE)) {
                 if (selected != null) {
-                    CardDetail(selected, onBack = null, widthClass = widthClass)
+                    CardDetail(selected, onBack = null, widthClass = widthClass, rulings = rulings, onOpenCatalog = onManageRulings)
                 } else {
                     Text(
                         text = stringResource(R.string.detail_select_prompt),
@@ -90,7 +93,7 @@ internal fun CardsScreen(
     } else {
         BackHandler(enabled = selected != null) { controller.clearSelection() }
         if (selected != null) {
-            CardDetail(selected, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE))
+            CardDetail(selected, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE), rulings = rulings, onOpenCatalog = onManageRulings)
         } else {
             Box(modifier.fillMaxSize().testTag(ShellTags.RESULTS_PANE)) {
                 SearchPane(controller, state, catalogMissing, widthClass, showSelection = false, onOpenCatalog, listState)

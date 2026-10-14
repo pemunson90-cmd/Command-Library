@@ -40,7 +40,9 @@ internal class ShellControllers(
 
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
-    val downloads = ports.englishCatalog?.let { DownloadsController(scope, it, ports.settings, ports.catalogStatus, ioDispatcher, status::refresh) }
+    val rulings = ports.rulings?.let { RulingsController(scope, it, ioDispatcher) }
+    val downloads = ports.englishCatalog?.let { DownloadsController(scope, it, ports.settings, ports.catalogStatus, ioDispatcher,
+        { status.refresh(); rulings?.refresh() }, ports.rulingsDownloads, ports.rulings) }
 
     init {
         scope.launch {

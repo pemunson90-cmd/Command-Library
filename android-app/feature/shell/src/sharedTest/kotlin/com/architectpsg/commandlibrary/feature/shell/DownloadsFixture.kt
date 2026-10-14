@@ -123,6 +123,10 @@ internal class DownloadsFixture : DownloadService, DownloadRunner, CatalogStatus
     override fun openArtifact(jobId: EntityId, cancel: CancelToken): Flow<ByteChunk> = error("Synthetic UI fixture has no artifact bytes")
     private fun artifact(id: EntityId): VerifiedArtifact {
         val request = rows.getValue(id).plan.request; val unknown = Knowledge.Unknown("Synthetic", SnapshotList.empty())
+        val remote = request.source as? AcquisitionSource.RemoteFile
+        if (remote != null) return VerifiedArtifact(id, remote.framing, remote.compression, 2, hash, false, unknown, 0,
+            AcquisitionProvenance(request.intent.source, remote.uri, remote.uri, request.sourceVersion, request.sourceDate, SYNTHETIC_TIME,
+                SYNTHETIC_TIME, unknown, unknown, AcquisitionConsistency.FILE_REPRESENTATION, request.languageScope, request.notice))
         return VerifiedArtifact(id, ArtifactFraming.JSONL, ArtifactCompression.NONE, 2, hash, false, Knowledge.Known(1), 1,
             AcquisitionProvenance(ProviderId("scryfall"), request.intent.resource, request.intent.resource, unknown, unknown, SYNTHETIC_TIME,
                 SYNTHETIC_TIME, unknown, unknown, AcquisitionConsistency.NON_ATOMIC_TRAVERSAL, AcquisitionLanguageScope.ENGLISH_CARDS, unknown))

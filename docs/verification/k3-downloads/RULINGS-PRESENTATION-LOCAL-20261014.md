@@ -1,0 +1,21 @@
+# Two-stage ruling controls and bounded local card reader
+
+Status: implemented and independently source/consent/presentation reviewed ACK. Focused controller/real Compose checks pass; broad integration gate pending. Full live feed, publisher TLS, device execution and full-v1 delivery are not claimed.
+
+The existing download owner/controller now routes English search, ruling metadata and ruling file jobs. Ruling controls require a complete access+reader pair; opened facades must expose the same jobs/runner. These display classifications grant no wire authority. Actual plans, approvals and verified source/import remain the reviewed root implementations.
+
+“Check ruling download” exposes a metadata-only exact approval. Metadata completion never auto-plans a file or installs. “Review ruling file” explicitly admits that completed metadata and plans the exact dated file for a second visible approval; dismissing it does not start a request. A newly completed approved ruling file installs through the real verified binding; manual retry/stop and old-corpus preservation remain. Common revision/consent/pause/resume/cancel/detail observation and install serialization preserve English behavior. Ruling language is explicitly not specified rather than dereferencing a null English language.
+
+Card details use a pure local reader/controller:10-row replacement pages, literal untrimmed Unicode comments/publisher/publication days and separate corpus source/retrieval metadata. Absent corpus, installed-empty match, corrupt/unavailable and stale generation remain different. Selection/disposal cancels reads and tickets reject late noncooperative replies. First/next-page generation/provider/language/Oracle checks avoid mismatched publication. Reader-only graphs have accurate absence copy and no unavailable management command. Opening a card never fetches/imports. Management navigates to the actual Catalog destination.
+
+## Actual local evidence
+
+- Initial production compilation failed8s on cross-module smart casts of nullable RulingsStatus.active. Captured a stable active value; no test execution at that failure.
+- First compiled focused gate1m23:23tests/1navigation assertion failure. The test scrolled the preceding absence text and clicked the following management control; its Catalog assertion failed. Corrected it to explicitly scroll the actual button before clicking, retaining actual navigation/48dp/no-consent assertions. Production navigation was unchanged.
+- Corrected focused gate SUCCESS44s,89tasks18executed71cached:5XML/23tests,0failure/error/skip. DownloadsController9cases0.870s, existing DownloadsUi4cases4.897s, ruling downloads4cases0.093s, reader3cases0.069s, ruling Compose3cases23.790s. Source consent/revision/metadata no-install/file second approval/mismatched owner/admission unknown/failed+cancelled install/old corpus/retry and English regression covered. Reader absence/empty/corrupt/stale/late Oracle/disposal/bounded paging/literal fields and narrow double-font management covered.
+- Native shell counterparts and actual app Kotlin compile. Native tests not executed. Log `/tmp/rulings-presentation-ui-corrected.log`, focused XML `/tmp/rulings-presentation-focused-xml`.
+- Independent frozen-source review against643e13a ACK, including complete-capability management guard, no blockers. Synthetic fixture bodies/ports are test-only, not publisher/source authority or authentic byte ingestion evidence.
+
+Broader `check lintDebug assembleDebug assembleDebugAndroidTest` is running in `/tmp/rulings-presentation-boundary.log` at this snapshot. Inspect completion/XML/artifacts before claiming it passes. Prior1a4f43b119XML/1096whole/APK proof and root6809f426focused proof remain scoped historical evidence, not proof for this new UI. Current filtered shell XML is23, not a whole-suite count.
+
+Next: finish the broad risk-boundary gate, freeze one justified API36 integration snapshot covering schema8/source pins/shared root/new controls and the prior native Back correction, preserve old frozen branches, and continue local K3 work while that run proceeds. No unfinished APK delivery or new merge/release. Current environment policy still denies live Scryfall access; no bypass.
