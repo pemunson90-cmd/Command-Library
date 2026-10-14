@@ -16,3 +16,5 @@ Counter step2 completed: RED132life10fail49s→GREEN57s; exact-source APPROVE. W
 Table step3a completed: architecture/exact-source APPROVE; RED142life10fail73s→GREEN71s. Whole790JVM/75XML0fail/error/skip,check/debug175s,16KiBZIPpass. Evidence TABLE-ENGINE-LOCAL-20261014.md. Result/semantic-undo/initializer/random/variant/orchestration still pending; next result design before code.
 
 Result single-action slice design independently APPROVE; supplied next event/revision keeps result proposal coherent and is reused by later orchestration. Finish/reopen RED next; semantic undo/mixed groups remain separate.
+
+Result step3b complete: architecture/exact-source APPROVE, RED151life9fail113s→GREEN95s; expanded final799JVM/76XML0failure/error/skip,check/debug133s,16KiBZIPpass. Evidence RESULT-ENGINE-LOCAL-20261014.md. Initializer design reviewed next; semantic undo remains pending.
