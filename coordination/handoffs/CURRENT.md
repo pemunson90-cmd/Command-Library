@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-initializer-102
+Checkpoint-ID: cp-20261014-life-semantic-undo-103
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. review-life-semantic-undo-composition
+Next step: 3. implement-reviewed-life-random-resolution-replay
 
-Updated UTC: 2026-10-14T08:46:24Z
+Updated UTC: 2026-10-14T08:56:02Z
 Status: in_progress; lease: active.
-Verified base: c52c7545f0816eca0dcf88ab2a13720a6dd63f81.
+Verified base: 2834ded2fb8d55b0834779c7b126adb1b6ed9ab7.
 
-Initializer c52c754 approved and verified806JVM; semantic undo design review resolving retained-definition behavior; umbrella TAKEN.
+Semantic undo2834ded approved and verified816JVM; random engine design approved with historical predecessor context; umbrella TAKEN.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
