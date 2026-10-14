@@ -28,6 +28,8 @@ Claude Code packets should fit a 10–15minute bounded unit: one file or one clo
 
 ## Fast resume path
 
+Testing cadence follows [D-28](docs/gauntlet/DECISIONS.md): batch related implementation; reserve lengthy suites for meaningful risk/integration boundaries instead of every small edit.
+
 For a normal clean resume:
 
 1. Verify current `main` head and the published continuation branch named by `state.working_branch` (read the live state; recovery currently uses `agent/cx-thread-recovery-20261013`). Accepted main and unfinished continuation work are different heads; read the continuation branch's pointers before resuming. Preserve any dirty checkout or unpublished commits before switching.
