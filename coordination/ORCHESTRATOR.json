@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T19:27:37Z",
-  "expires_utc": "2026-10-14T20:12:37Z",
-  "checkpoint_id": "cp-20261014-rulings-parser-native-fix-133",
-  "note": "Root sole development/finalmerge. Parser f161fbf/32focusedpass sourceACK;12f8980 desugar consumer fix compatibilityACK/7testAPKs build+ZIPpass. Corrected frozen native38623690607 pending, do not move/retrigger. Continue reviewed public ruling data/read models. D-28/no finished APK/GameService HOLD."
+  "heartbeat_utc": "2026-10-14T19:33:46Z",
+  "expires_utc": "2026-10-14T20:18:46Z",
+  "checkpoint_id": "cp-20261014-rulings-data-read-134",
+  "note": "Root sole development/finalmerge. Ruling data/read models fe48e56 exactreviewACK/111focusedpass25s; next reviewed additive schema/localreader. Corrected frozen native38623690607 pending exact12f8980, excludeslatermodels; do not retrigger/move. D-28/no finished APK/GameService HOLD."
 }
