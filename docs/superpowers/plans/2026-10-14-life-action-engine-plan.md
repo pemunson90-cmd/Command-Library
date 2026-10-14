@@ -14,3 +14,5 @@ First-counter-slice architecture approved after clarifications in design: all ma
 Counter step2 completed: RED132life10fail49s→GREEN57s; exact-source APPROVE. Whole780JVM/74XML0fail/error/skip,check/debug185s,16KiBZIPpass. Evidence COUNTER-ENGINE-LOCAL-20261014.md. Umbrella task stays TAKEN; table/participation design under separate review before code.
 
 Table step3a completed: architecture/exact-source APPROVE; RED142life10fail73s→GREEN71s. Whole790JVM/75XML0fail/error/skip,check/debug175s,16KiBZIPpass. Evidence TABLE-ENGINE-LOCAL-20261014.md. Result/semantic-undo/initializer/random/variant/orchestration still pending; next result design before code.
+
+Result single-action slice design independently APPROVE; supplied next event/revision keeps result proposal coherent and is reused by later orchestration. Finish/reopen RED next; semantic undo/mixed groups remain separate.
