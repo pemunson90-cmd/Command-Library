@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T11:11:13Z",
-  "expires_utc": "2026-10-14T11:56:13Z",
-  "checkpoint_id": "cp-20261014-life-codec-v2-goldens-113",
-  "note": "Recovery retains sole life/shared orchestration. Atomic mutation helper complete; modern timing engine TAKEN. History audit OPEN, no component writer."
+  "heartbeat_utc": "2026-10-14T11:41:22Z",
+  "expires_utc": "2026-10-14T12:26:22Z",
+  "checkpoint_id": "cp-20261014-life-variant-shuffle-audit-114",
+  "note": "Recovery retains sole life/shared orchestration. Shuffle924JVM verified; Claude history audit DONE/consumed. Close audited command regressions then reviewed CUSTOM factory; variant-source audit OPEN."
 }
