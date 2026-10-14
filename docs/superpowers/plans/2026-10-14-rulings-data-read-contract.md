@@ -1,0 +1,28 @@
+# Source-preserving ruling data and read contract
+
+Status: independent public/source design ACK/APPROVE; implementation next after native-consumer packaging fix. Parent orch-kotlin-k3-offline-data-01. Root owns core/catalog/shared contract files; routine technical design is delegated by D-17. Existing decoder f161fbf passes32focused tests; frozen Android run38621711127 is a separate earlier source d7e864f.
+
+## Purpose and boundaries
+
+Downloaded rulings must retain oracle_id, literal wotc/scryfall publisher source, canonical publication day and untrimmed Unicode comment. The existing unused Ruling DTO has a ProviderIdentity and UTC instant but no explicit publisher field; a repository source search finds no consumers. Leave that legacy declaration unchanged and do not populate it by guessing a publisher ID, midnight instant, language or provenance. Add explicit source-preserving models used by the real decoder now and by storage/read consumers next. This unit adds no schema, importer/authority, DI binding, download action or fake service.
+
+## Types in core:model/RulingsContracts.kt
+
+- RulingPublicationDay(value:String): exact ASCIIYYYY-MM-DD, proleptic Gregorian years0001–9999 with actual leap/day checks, retained verbatim. No clock, timezone or Android/JavaTime dependency. It is a date, not corpus freshness or an instant.
+- RulingPublisher enum with exact upstreamValue wotc/scryfall. This records a supplied publisher label; it does not authenticate the body or assert officialness.
+- RulingContent(oracleId:OracleId,publisher:RulingPublisher,publishedAt:RulingPublicationDay,comment:String): require Scryfall source-qualified canonical lowercase UUID and nonblank valid-Unicode comment. Preserve all accepted characters/whitespace including escaped NUL. Named128KiB record/64KiB text/256byte key acquisition bounds stay internal to decoder, not guessed public corpus sizes. Core validates Unicode, not per-source transfer policy.
+- RulingId(generation:GenerationId,ordinal:Long): ordinal>=1, explicitly local immutable generation/row identity, never a provider ruling ID. Duplicate source records remain separate ordinals. No hash synthesized as publisher identity.
+- StoredRuling(id:RulingId,content:RulingContent,provenance:Provenance): require Scryfall retrieval provider and provenance.generation==id.generation. Provenance is separately supplied by actual importer/storage; publisher comes from content and may differ from retrieval provider. Construction validates consistency only, not acquisition authority.
+- RulingsGeneration(id,provenance,recordCount:Long,status:GenerationStatus,languageScope:AcquisitionLanguageScope=RULINGS_LANGUAGE_NOT_ASSERTED): count>=0, same-generation Scryfall provenance, only unasserted rulings language scope. No foreign printing requirement or all-English assertion. Corpus source/fetched dates stay separate from each ruling publication day.
+- RulingsStatus(active:RulingsGeneration?): nullable means actually no installed corpus, not read failure. A nonnull active generation must have ACTIVE status. Read errors remain Outcome failure/unknown/unavailable.
+- CatalogRulings public interface: suspend status(CancelToken):Outcome<RulingsStatus>; suspend rulings(OracleId,PageRequest,CancelToken):Outcome<Page<StoredRuling>>. No implementation or ShellPorts registration in this unit.
+
+## Read semantics to carry into implementation
+
+Only local reads, no automatic network/initialization/install. Non-Scryfall/malformed Oracle identity returns INVALID_INPUT. With no corpus, status returns Success(RulingsStatus(null)) and rulings returns NOT_INSTALLED; an installed corpus with no matching Oracle yields a genuine empty page. Every page belongs to one active rulings generation, source=scryfall, revision=null, language=null (no invented English claim). Stable order: publication day descending then ordinal ascending. Cursor binds generation and requested Oracle plus full order key; reject stale-generation cursors with STALE_GENERATION and malformed/wrong-Oracle cursors with INVALID_INPUT. PageRequest/Page already bound page/cursor sizes. Independent dataset generation permits a new English-card generation without deleting unmatched ruling Oracle IDs. No new database requirement is silently satisfied by DTO construction.
+
+## Implementation and checks
+
+Implement all related data/read declarations, validation tests and update the internal ScryfallRulingRecordCodec to produce RulingContent directly, centralizing calendar/Oracle/Unicode validation instead of duplicating it. Existing raw UTF8/JSON/unknown-field/depth bounds stay in the decoder. Existing parser tests adapt to the typed publisher/day without dropping assertions; add meaningful core consistency/invalid Unicode/identical-content/distinct-ordinal identity equality, status/language/provenance cases. One combined core:model tests and focused related catalog run at this public/consumer boundary, with independent source review. Do not run absence/red/fullAPK/emulator loops for each declaration. Next actual storage/schema/atomic read integration gets its own required durability review and broader gate. Full acquisition authority/gzip/source/persistence/UI/full K3/v1/native acceptance remain open.
+
+Review clarification: DTOs validate local identity shape/equality; corpus-wide row-ID uniqueness is the future storage implementation’s responsibility. Independent rulings_contract_review ACK has no blocking findings; it separately verified parser f161fbf and retained32passing XML cases. Future acquisition must share process-owned recovery across source families so opening a new source never recovers another active source worker. That acquisition composition is outside this read-contract unit.

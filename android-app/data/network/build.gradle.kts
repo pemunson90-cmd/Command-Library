@@ -10,12 +10,14 @@ android {
     }
     lint { fatal += "NewApi" }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
 kotlin { jvmToolchain(17); explicitApi() }
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     api(project(":core:model"))
     implementation(libs.coroutines.core)
     implementation(libs.okhttp)
