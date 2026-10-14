@@ -3,23 +3,24 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-private-artifacts-keywords-143",
-  "verified_base_head": "ef7eddd990f6a4e1dc113519c71268668f509fab",
+  "checkpoint_id": "cp-20261014-private-artifacts-boundary-144",
+  "verified_base_head": "d508b402cab7abbf3d42cee6646ee7476fabced2",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "inspect-private-artifact-keyword-boundary-then-corrected-native-freeze",
+  "first_action": "implement-search-edit-supersession-local-publication-blocked",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
   "blockers": [
     "Full live-source completeness, indexed search/FullLean and M2\u2013M9 remain incomplete; ruling source/root/UI local integration is implemented but source/native/final acceptance pending.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence.",
-    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
+    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues.",
+    "GitHub rejected configured token: source de135ae/ef7eddd and subsequent checkpoints retained locally; publication/corrected native run blocked pending credential refresh. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "ef7eddd private permissions independent security/durability ACK; focused fresh0022 12pass49s. de135ae keyword 15pass37s. Whole combined boundary pending; frozen native9a failed predevice.",
+  "review_status": "ef7eddd reviewed private permissions; de135ae keyword. Combined fresh0022 whole123XML1113pass/lint/all8APK ZIPpass6m5s. Frozen9a native failed predevice. Local unpublished: GitHub token rejected.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -116,10 +117,10 @@
     "rulings_root_access_local": "Source6809f42 ownership ACK; actual host root6cases/1XML0fail/error/skip SUCCESS27s,139tasks3exec136cached; native counterpartcompile, no runtime/fullsuite/APK extrapolation. Mixed families shareonefactory/recovery/transport; pureoffline reader bound. Report RULINGS-ROOT-ACCESS-LOCAL-20261014.md.",
     "rulings_presentation_local": "Exact4a4241b independent ACK;23focused44s then122XML/1108whole0fail/error/skip check/lint/debug/alltestAPKs SUCCESS3m17/588tasks80exec508cached. All8APK ZIP16KiBpass, actual main/testDEX checked. Source/root/UI/schema8 integrated locally; no liveTLS/fullfeed/native/physical/release claim. Report RULINGS-PRESENTATION-LOCAL-20261014.md.",
     "rulings_native_integration": "Frozen9a2f625/run38647074457 FAILED: JVM116136458354 four ruling source failures; native116138976177 and promotion skipped. Local fresh umask0022 reproduces four/five source cases52s; permission fix under review/check. Hosted counts log-based, artifact download policy-blocked. Frozen branch preserved/no rerun. Report RULINGS-NATIVE-INTEGRATION-20261014.md.",
-    "artifact_private_permissions_local": "ef7eddd reviewed; fresh0022 five actual source+seven durable/twoXML0fail/error/skip49s. Combined whole/lint/APKs running, no native claim. ARTIFACT-PRIVATE-PERMISSIONS-LOCAL-20261014.md.",
+    "artifact_private_permissions_local": "ef7eddd reviewed;12affected fresh0022pass49s. Whole at d508b402 fresh0022 SUCCESS6m5s/123XML1113tests0fail/error/skip/check/lint/allAPKs;8ZIP16KiBpass. Local unpublished/token rejected; no native claim. ARTIFACT-PRIVATE-PERMISSIONS-LOCAL-20261014.md.",
     "card_keyword_lookup_local": "de135ae15focused/twoXML0fail/error/skip37s, app/native-test compile. Literal local text search, no guessed canonical RuleId/import. CARD-KEYWORD-LOOKUP-LOCAL-20261014.md."
   },
-  "last_completed": "Keyword navigation de135ae verified15; private artifacts ef7eddd reviewed12fresh0022pass; combined whole running. Frozen9a native failed before device; preserved.",
-  "updated_utc": "2026-10-14T22:42:28Z",
+  "last_completed": "Fresh0022 whole1113/check/lint/all8APKs ZIPpass6m5s; private fix reviewed. Token rejected, commits local only. Continue search edit lifecycle.",
+  "updated_utc": "2026-10-14T22:48:37Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

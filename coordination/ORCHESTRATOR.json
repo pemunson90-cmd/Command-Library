@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T22:42:28Z",
-  "expires_utc": "2026-10-14T23:27:28Z",
-  "checkpoint_id": "cp-20261014-private-artifacts-keywords-143",
-  "note": "Root sole writer/final merge. ef7eddd owner-only artifact permissions/recovery reviewed+12fresh0022pass49s; de135ae keyword15pass37s. Combined fresh0022 whole/lint/APKs session27627 RUNNING, no pass claimed. Frozen9a2f625/run38647074457 FAILED pre-native; preserve/no blind rerun. Fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-14T22:48:37Z",
+  "expires_utc": "2026-10-14T23:33:37Z",
+  "checkpoint_id": "cp-20261014-private-artifacts-boundary-144",
+  "note": "Root sole writer/final merge. ef7eddd reviewed private permissions+de135ae keywords; combined fresh0022 whole1113/lint/all8APKs ZIPpass6m5s. LOCAL unpublished/token rejected; remote91ce357. Frozen9a failed pre-native/preserved. Continue search-edit supersession locally; credential refresh pending for versioning/native. Fullv1 incomplete/GameService HOLD/no finished APK."
 }
