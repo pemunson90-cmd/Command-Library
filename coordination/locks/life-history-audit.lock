@@ -1,0 +1,14 @@
+{
+  "component": "life-history-audit",
+  "orchestrator": "claude-code-life-history-audit-20261014",
+  "agent_task": "cx-m2-life-history-audit-01",
+  "branch": "component/life-history-audit-20261014",
+  "base_commit": "e489af7",
+  "owner": "Claude Code documentation-only audit; not the root orchestrator",
+  "owned_paths": [
+    "docs/verification/m2-life/HISTORY-SERVICE-AUDIT-20261014.md",
+    "coordination/tasks/cx-m2-life-history-audit-01.md",
+    "coordination/locks/life-history-audit.lock"
+  ],
+  "status": "released"
+}

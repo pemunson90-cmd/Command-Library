@@ -6,7 +6,7 @@ Current assignment board,2026-10-14. Base your checkout on the latest published 
 |---|---|---|---|---|
 | life-profiles | Real SQLite player profile persistence and model codec port | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-profiles-01.md) |
 | scryfall-integrate | Bring the completed reviewed metadata decoder and13 tests onto the recovery baseline; verify locally | DONE | codex-scryfall-integration-20261014 / ad3f9aa | [details](tasks/cx-k3-scryfall-integration-01.md) |
-| life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | OPEN | — | [details](tasks/cx-m2-life-history-audit-01.md) |
+| life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | DONE | claude-code-life-history-audit-20261014 / component/life-history-audit-20261014 | [details](tasks/cx-m2-life-history-audit-01.md) |
 | life-variant-source-audit | Inventory authentic variant rules/cards/placement/source gaps without code edits | OPEN | — | [details](tasks/cx-m2-life-variant-source-audit-01.md) |
 | life-game-store | Checked game creation/read persistence foundation | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-game-store-01.md) |
 | life-snapshot-graph | Structural snapshot validation before mutation/service binding | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-snapshot-graph-01.md) |
@@ -24,4 +24,4 @@ Current assignment board,2026-10-14. Base your checkout on the latest published 
 4. Work locally; use the task's meaningful verification. Record actual commands/results and limitations. No routine emulator/CI dispatch. Do not copy inherited old global pointers from component branches.
 5. When done, mark your row DONE on your published branch, update the task/handoff with exact commit/evidence/next step and release the dedicated lock. Root consumes scoped changes and reconciles the canonical board. If blocked, mark BLOCKED with the concrete reason. Refresh the replaceable Latest continuation delta; do not leave obsolete next actions mixed with live instructions.
 
-No automatic takeover from lease expiry. If two branches claim the same task, stop overlapping writes and ask root to reconcile. Completed Scryfall boundary-test task0db3298 and integration ad3f9aa are DONE; history and variant-source audits are OPEN.
+No automatic takeover from lease expiry. If two branches claim the same task, stop overlapping writes and ask root to reconcile. Completed Scryfall boundary-test task0db3298 and integration ad3f9aa are DONE; history audit a47d1cc is DONE and consumed; variant-source audit remains OPEN.
