@@ -14,6 +14,10 @@ Session: `codex-thread-recovery-20261013`. Branch: `agent/cx-thread-recovery-202
 
 Reserved next unit: real player profile repository in `android-app/feature/life`, model `LifePayloadCodecPort`, codec implementation of that port, storage test-only life dependency and actual SQLite/codec integration tests. Design reviewed; no implementation edits have started. Recovery chat holds code writes while the revived chat's assignment is clarified. Do not duplicate this unit or change these shared contracts without reconciling ownership. No GameService/DI/UI acceptance is claimed.
 
+## Last observed status
+
+Checked2026-10-14T00:26:01Z after Pat requested a one-minute delay. Fetch of original branch still returned20a9283; no newly published assignment/completion notice was visible there. Recovery remote remained7aa55c0; collision notice commit47522e8 is local only because push authentication failed. These are observations, not proof of either chat's current unpublished activity. Refresh original branch and its task/lease/locks before resuming writes; replace this status when new evidence arrives.
+
 ## Revived original chat
 
 Branch `agent/cx-native-20261013` was read back at `20a92836a11c70dc11776fa469688c0e1dcc6b4e`. Its latest handoff says private feature/life binary codec, then schema6/service next. That overlaps completed recovery work and uses a different codec placement. Its newer unpublished work is unknown. Preserve it; compare contracts/designs/bytes and review before selecting an integration direction.
