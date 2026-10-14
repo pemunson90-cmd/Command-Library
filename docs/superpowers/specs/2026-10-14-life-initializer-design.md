@@ -1,6 +1,6 @@
 # Life game initializer — proposed next bounded slice
 
-Parent cx-m2-life-action-engine-01 stays TAKEN. Timing/counter/table helpers are complete; finish/reopen helper is under final local gate. This proposal requires independent review before code. Actual variant rule/source backend and complete semantic undo/event/service/UI remain incomplete. No schema/coreport/DI/UI changes assumed.
+Parent cx-m2-life-action-engine-01 stays TAKEN. Timing/counter/table helpers are complete; finish/reopen helper is verified. This initializer is implemented and independently reviewed. Actual variant rule/source backend and complete semantic undo/event/service/UI remain incomplete. No schema/coreport/DI/UI changes assumed.
 
 Internal LifeGameInitializer.initialize(GameCreation, GameId, GameTimeObservation, openingLineage: EntityId, optional LifeVariantInitializer) -> Outcome<GameCheckpoint>. All IDs are caller allocations, never derived from display labels or generated secretly. Later service invokes this only inside SqlLifeGameStore's lazy new-operation callback, so committed operation retries do not initialize again or consume new IDs. The existing store bounds/encodes canonical input before the callback; helper itself remains pure and returns no committed state.
 
@@ -17,3 +17,5 @@ Tests: real valid inputs1..6 and every clock mode; Known opening lineage accepte
 Plan sequencing clarification: initializer is independent foundation needed by actual create and fixes the already-reviewed fresh Known lineage obligation. Complete it before final semantic undo/event assembly; the latter still must combine original action/result/timing provenance coherently and is not claimed by finish/reopen alone. Random/variant backend and service/history/publication remain mandatory later packets.
 
 Independent architecture APPROVE (life_contract_review,2026-10-14): exact scopes, metadata and fresh lineage align creation contract; absent real variant placement backend correctly returns unsupported. No broader variant/service completion implied. Source/tests not_run.
+
+Implemented/exact-source APPROVE; final whole806JVM/77XML0fail/error/skip,check/debug189s,16KiBZIPpass. Evidence INITIALIZER-LOCAL-20261014.md. Earlier source/tests-not_run reflects design-time only.
