@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-rulings-presentation-141",
-  "verified_base_head": "4a4241be9e51c469f4fae9016bd7e358047a7301",
+  "checkpoint_id": "cp-20261014-rulings-native-freeze-142",
+  "verified_base_head": "341ed23a9eb1972ad9f3dfa8bcb4c5159102a177",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "freeze-rulings-modern-native-and-continue-keyword-rule-links",
+  "first_action": "continue-keyword-rule-links-and-follow-native-38647074457",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -114,9 +114,10 @@
     "rulings_receipt_foundation": "8226b02: actualKSP8 SUCCESS23s,27oldentitiesidentical/one receipt table; corrected9receipt+3migration tests/2XML0failure/error/skip passed20s. Intermediate exact-source review ACK; no Android issuer/shared-factory/v3/APK/native acceptance. RULINGS-RECEIPT-FOUNDATION-LOCAL-20261014.md.",
     "rulings_source_admission_local": "Exact1a4f43b independent ACK; focused13pass36s, whole119XML/1096tests0fail/error/skip andcheck/lint/debug/alltestAPKs SUCCESS4m59/588tasks80exec508cached. All8APK ZIP16KiBpass; main/test actualDEX checked, hostshadowexcluded. Schema8foundation accepted. No native execution/liveTLS/fullfeed/physical/release claim. Evidence RULINGS-SOURCE-ADMISSION-LOCAL-20261014.md.",
     "rulings_root_access_local": "Source6809f42 ownership ACK; actual host root6cases/1XML0fail/error/skip SUCCESS27s,139tasks3exec136cached; native counterpartcompile, no runtime/fullsuite/APK extrapolation. Mixed families shareonefactory/recovery/transport; pureoffline reader bound. Report RULINGS-ROOT-ACCESS-LOCAL-20261014.md.",
-    "rulings_presentation_local": "Exact4a4241b independent ACK;23focused44s then122XML/1108whole0fail/error/skip check/lint/debug/alltestAPKs SUCCESS3m17/588tasks80exec508cached. All8APK ZIP16KiBpass, actual main/testDEX checked. Source/root/UI/schema8 integrated locally; no liveTLS/fullfeed/native/physical/release claim. Report RULINGS-PRESENTATION-LOCAL-20261014.md."
+    "rulings_presentation_local": "Exact4a4241b independent ACK;23focused44s then122XML/1108whole0fail/error/skip check/lint/debug/alltestAPKs SUCCESS3m17/588tasks80exec508cached. All8APK ZIP16KiBpass, actual main/testDEX checked. Source/root/UI/schema8 integrated locally; no liveTLS/fullfeed/native/physical/release claim. Report RULINGS-PRESENTATION-LOCAL-20261014.md.",
+    "rulings_native_integration": "Frozen9a2f625 onagent/cx-rulings-source-integration-r2-20261014:run38647074457 IN_PROGRESS, JVM/build116136458354 compilingtestAPKs; native notbegun. Samecompiledinputs aslocal4a4241b/1108pass plusuncompilednote. Continuity38647074573pass. No duplicate emulator run/frozenbranchmove/sourceTLS/fullfeed/physical/release claim. Report RULINGS-NATIVE-INTEGRATION-20261014.md."
   },
-  "last_completed": "Ruling UI4a4241b source/consent ACK, whole1108/lint/allAPKs/ZIPpass. Freeze one justifiedAPI36 integration snapshot and continue local K3.",
-  "updated_utc": "2026-10-14T22:15:19Z",
+  "last_completed": "One frozen modernAndroid run38647074457 is inprogress at9a2f625, samecompiledinputs aslocal4a/1108pass. Continue localkeyword/rules work.",
+  "updated_utc": "2026-10-14T22:24:06Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T22:15:19Z",
-  "expires_utc": "2026-10-14T23:00:19Z",
-  "checkpoint_id": "cp-20261014-rulings-presentation-141",
-  "note": "Root exclusive writer/final merge. Ruling source/root/UI4a4241b independently ACK andwhole1108/lint/allAPKs/ZIPpass3m17. Next one newAPI36 freeze for schema8/pins/controls/priorBack, continue localkeyword\u2192rules navigation. Livefeed policy-blocked/fullv1 incomplete/no finished APK/GameService HOLD."
+  "heartbeat_utc": "2026-10-14T22:24:06Z",
+  "expires_utc": "2026-10-14T23:09:06Z",
+  "checkpoint_id": "cp-20261014-rulings-native-freeze-142",
+  "note": "Root sole writer/final merge. Local ruling4a source/root/UI ACK+1108wholepass. Frozen9a2f625/run38647074457 IN_PROGRESS (build compiling, native notbegun), samecompiledinputs; preserve snapshots. Continue local cardkeyword\u2192rules navigation, follow exact run/no duplicate. Livefeed blocked/fullv1 incomplete/GameService HOLD/no finished APK."
 }

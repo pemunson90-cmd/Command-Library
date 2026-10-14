@@ -12,7 +12,7 @@ Pat explicitly approved frozenPR21 merge: guardedbe663b2b48a83c35f52586a3f804ca1
 
 Fetched `component/scryfall-rulings-metadata-20261013` at `0db3298cc752a8433c72416a0f75cfd0fdb45d45`. Its task `cx-k3-scryfall-rulings-boundary-tests-02` completed2026-10-14T00:26:41Z, released its dedicated lock, and explicitly retained global coordination with the life orchestrator. Six additional test methods bring focused metadata coverage to13 passing cases per its recorded local XML evidence. Production decoder source remained unchanged. Recovery verified source/test hashes and consumed scoped integration bf731d8/ad3f9aa; coherent local wholecheck/debug passed667JVM cases including173 catalog/13 metadata cases. Dedicated component claim is released; source integrated without historical global pointers.
 
-Component's reviewed decoder commit is e45d573, claim6f57ef5, completion0db3298. Preserve only its four scoped source/test/handoff/task files when integrating; its inherited global pointers are historical. Trusted discovery retrieval, authority issuance and gzip installation remain unimplemented. See that branch's `coordination/handoffs/cx-k3-scryfall-rulings-metadata-01.md`.
+Component's reviewed decoder commit is e45d573, claim6f57ef5, completion0db3298. Preserve only its four scoped source/test/handoff/task files when integrating; its inherited global pointers are historical. At that component checkpoint trusted discovery/issuance/gzip installation were unimplemented. Root subsequently implemented/reviewed source admission, pinned installation, shared process access and actual ruling UI at1a4f43b/6809f42/4a4241b; see the current K3 task. The component claim remains released. See that branch's `coordination/handoffs/cx-k3-scryfall-rulings-metadata-01.md`.
 
 ## Completed history audit readback
 
@@ -23,3 +23,8 @@ Claude Code claude-code-life-history-audit-20261014 published component/life-his
 The original `agent/cx-native-20261013` remains20a9283 with a historical codec/schema next step. It was the wrong branch to inspect for this completed disjoint assignment. It is not current ownership evidence. The earlier possible-collision hold is resolved by the component completion above; preserve all branches and do not blindly merge competing life contracts/codecs.
 
 Keep this file a replaceable current status. Refresh actual branch/task/lock evidence before new assignments; lease expiry alone does not establish that a chat stopped. GitHub is for versioning and genuinely useful unavailable verification; implementation/checks stay local where possible.
+
+
+## Current root integration snapshot
+
+Root alone continues development on agent/cx-thread-recovery-20261013. Frozen ruling integration-r2 at9a2f625 runs38647074457 (in progress), same compiled inputs as accepted local4a4241b plus one uncompiled note; not a second writer or takeover lease. Earlier ruling ref-only snapshots triggered continuity only and are preserved. No native/live-source/final-app pass is inferred; current K3 task/report controls follow-up.

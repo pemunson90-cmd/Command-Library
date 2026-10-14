@@ -525,3 +525,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T21:53:11Z | codex | cp-20261014-rulings-root-access-140 | containing commit | Shared root6809f42 owns both source families, pure offline reader bound; independent ownership ACK and6focusedpass. Continue actual ruling UI.
 
 2026-10-14T22:15:19Z | codex | cp-20261014-rulings-presentation-141 | containing commit | Ruling UI4a4241b source/consent ACK, whole1108/lint/allAPKs/ZIPpass. Freeze one justifiedAPI36 integration snapshot and continue local K3.
+
+2026-10-14T22:24:06Z | codex | cp-20261014-rulings-native-freeze-142 | containing commit | One frozen modernAndroid run38647074457 is inprogress at9a2f625, samecompiledinputs aslocal4a/1108pass. Continue localkeyword/rules work.
