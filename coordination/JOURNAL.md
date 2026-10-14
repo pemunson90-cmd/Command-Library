@@ -521,3 +521,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T20:54:22Z | codex | cp-20261014-rulings-receipt-foundation-138 | containing commit | Root exclusive. Receipt foundation8226b02 actualKSP8/27oldidentical+1table and12focusedpass; exactsource review pending. Next actual v3 context/Android metadata-file pins/SAME factory owner. Prior1075whole excludes8. No Gradle running/nativefix/livefeed/finishedAPK acceptance; continue local-first underD28.
 
 2026-10-14T21:15:43Z | codex | cp-20261014-rulings-source-admission-139 | containing commit | Rulings source1a4f43b independently ACK; full1096/lint/allAPKs/ZIP pass. Continue shared root capability/offline reader and UI.
+
+2026-10-14T21:53:11Z | codex | cp-20261014-rulings-root-access-140 | containing commit | Shared root6809f42 owns both source families, pure offline reader bound; independent ownership ACK and6focusedpass. Continue actual ruling UI.

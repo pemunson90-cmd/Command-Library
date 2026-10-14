@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T21:15:43Z",
-  "expires_utc": "2026-10-14T22:00:43Z",
-  "checkpoint_id": "cp-20261014-rulings-source-admission-139",
-  "note": "Root exclusive development/final merge. Source1a4f43b security/durability ACK, whole1096/lint/allAPKs/ZIPpass4m59. Next shared root ruling access/offline reader using SAME cached engine/recovery owner, then UI. Livefeed policy-blocked/native Back correction not_run. No finished APK/GameService HOLD."
+  "heartbeat_utc": "2026-10-14T21:53:11Z",
+  "expires_utc": "2026-10-14T22:38:11Z",
+  "checkpoint_id": "cp-20261014-rulings-root-access-140",
+  "note": "Root exclusive writer/final merge. Shared root ruling/English source6809f42 ownership ACK and6focusedpass27s; prior1a4whole1096/lint/allAPKs. Next actual two-stage ruling download/approval/install and local ruling UI using SAME owner. Livefeed policy-blocked/native Back correction not_run. Fullv1 incomplete/no finished APK/GameService HOLD."
 }
