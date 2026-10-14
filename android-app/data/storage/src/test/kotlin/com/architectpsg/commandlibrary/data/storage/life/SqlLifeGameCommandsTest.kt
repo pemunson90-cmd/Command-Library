@@ -178,4 +178,114 @@ class SqlLifeGameCommandsTest {
             assertEquals(7L,db.scalar("SELECT delivery_mask FROM life_alert")); assertEquals(1L,db.scalar("SELECT count(*) FROM life_alert"))
         }
     }
+    @Test fun switchUndoAcrossLaterCheckpointPreservesElapsedAndUsesSelectedClockPolicy() = runBlocking<Unit> {
+        for (mode in listOf(SeatClockMode.CHESS, SeatClockMode.PER_TURN)) {
+            for (policy in ClockUndoPolicy.entries) {
+                HostLifeDatabase(folder.newFile()).use { db ->
+                    val ids=Ids(); val lifecycle=life(db,ids); val commands=SqlLifeGameCommands(db,codec,ids,Random())
+                    val base=f.input()
+                    val input=base.copy(settings=base.settings.copy(clockMode=mode),clock=base.clock.copy(mode=mode,
+                        undoPolicy=policy,seats=SnapshotList.copyOf(base.seats.map { SeatTime(it.id,20.seconds,20.seconds) })))
+                    var current=ok(lifecycle.create(input,reading(),f.token))
+                    current=ok(commands.dispatch(f.id,GameAction.Group(SnapshotList.of(GameAction.SwitchTurn(f.other),
+                        GameAction.ClockPause(false),GameAction.SetElapsedPaused(false)),EntityId("start")),current.rev(),reading(),f.token))
+                    current=ok(commands.dispatch(f.id,GameAction.SwitchTurn(f.seat),current.rev(),reading(3),f.token))
+                    val lineage=current.checkpoint.snapshot.elapsed.turnLineageId
+                    current=ok(commands.dispatch(f.id,GameAction.SwitchTurn(f.other),current.rev(),reading(5),f.token))
+                    val archive=ok(SqlLifeEventReader(db,codec).archive(f.id,2,f.token))
+                    val switchedSequence=current.sequence
+                    current=ok(lifecycle.resume(f.id,reading(9),f.token))
+                    assertTrue(current.sequence>switchedSequence)
+                    assertEquals(3L,db.scalar("SELECT count(*) FROM life_event"))
+                    current=ok(commands.undo(f.id,current.rev(),reading(11),f.token))
+                    val snapshot=current.checkpoint.snapshot
+                    assertEquals(f.seat,snapshot.activeSeatId)
+                    assertEquals(lineage,snapshot.elapsed.turnLineageId)
+                    assertEquals(11.seconds,snapshot.elapsed.gameElapsed)
+                    assertEquals(2.seconds,snapshot.elapsed.turnElapsed)
+                    assertEquals(if(policy==ClockUndoPolicy.KEEP_ELAPSED)18.seconds else 12.seconds,
+                        snapshot.clock.seats.single { it.seatId==f.seat }.remaining)
+                    assertEquals(if(policy==ClockUndoPolicy.KEEP_ELAPSED)11.seconds else 17.seconds,
+                        snapshot.clock.seats.single { it.seatId==f.other }.remaining)
+                    assertEquals(archive,ok(SqlLifeEventReader(db,codec).archive(f.id,2,f.token)))
+                    assertEquals(Knowledge.Known(2L),ok(SqlLifeEventReader(db,codec).archive(f.id,3,f.token)).event.undoOfEventId)
+                }
+            }
+        }
+    }
+    @Test fun switchUndoAfterFileReopenAndForeignProcessRecoveryDoesNotChargeWallGap() = runBlocking<Unit> {
+        val file=folder.newFile(); val ids=Ids(); lateinit var lineage: Knowledge<EntityId>
+        HostLifeDatabase(file).use { db ->
+            val lifecycle=life(db,ids); val commands=SqlLifeGameCommands(db,codec,ids,Random())
+            var current=ok(lifecycle.create(f.input(),reading(),f.token))
+            current=ok(commands.dispatch(f.id,GameAction.Group(SnapshotList.of(GameAction.SwitchTurn(f.seat),
+                GameAction.SetElapsedPaused(false)),EntityId("start")),current.rev(),reading(),f.token))
+            lineage=current.checkpoint.snapshot.elapsed.turnLineageId
+            current=ok(commands.dispatch(f.id,GameAction.SwitchTurn(f.other),current.rev(),reading(5),f.token))
+            ok(lifecycle.resume(f.id,reading(9),f.token))
+        }
+        HostLifeDatabase(file,false).use { db ->
+            val lifecycle=life(db,ids); val commands=SqlLifeGameCommands(db,codec,ids,Random())
+            val foreign=EntityId("restarted-process")
+            val recovered=ok(lifecycle.resume(f.id,GameTimeObservation(0.seconds,UtcTimestamp(9_000_000),foreign),f.token))
+            assertEquals(9.seconds,recovered.checkpoint.snapshot.elapsed.gameElapsed)
+            val undone=ok(commands.undo(f.id,recovered.rev(),GameTimeObservation(1.seconds,UtcTimestamp(1),foreign),f.token))
+            assertEquals(f.seat,undone.checkpoint.snapshot.activeSeatId)
+            assertEquals(lineage,undone.checkpoint.snapshot.elapsed.turnLineageId)
+            assertEquals(9.seconds,undone.checkpoint.snapshot.elapsed.gameElapsed)
+            assertEquals(5.seconds,undone.checkpoint.snapshot.elapsed.turnElapsed)
+            assertTrue(undone.checkpoint.snapshot.elapsed.paused)
+            assertEquals(Knowledge.Known(1L),ok(SqlLifeEventReader(db,codec).archive(f.id,2,f.token)).event.undoOfEventId)
+        }
+    }
+    @Test fun commandReopenUndoAndRefinishKeepStableResultAndPausedTimers() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val lifecycle=life(db,ids); val commands=SqlLifeGameCommands(db,codec,ids,Random())
+            var current=ok(lifecycle.create(f.input(),reading(),f.token))
+            current=ok(commands.dispatch(f.id,GameAction.SetElapsedPaused(false),current.rev(),reading(),f.token))
+            current=ok(commands.dispatch(f.id,GameAction.Finish(SnapshotList.of(f.seat),"First"),current.rev(),reading(5),f.token))
+            val result=(current.checkpoint.snapshot.result as Knowledge.Known).value
+            current=ok(commands.dispatch(f.id,GameAction.Reopen("Correction"),current.rev(),reading(9),f.token))
+            assertTrue((current.checkpoint.snapshot.result as Knowledge.Known).value.retracted)
+            assertTrue(current.checkpoint.snapshot.elapsed.paused); assertTrue(current.checkpoint.snapshot.clock.paused)
+            assertEquals(5.seconds,current.checkpoint.snapshot.elapsed.gameElapsed)
+            current=ok(commands.undo(f.id,current.rev(),reading(10),f.token))
+            assertEquals(GameStatus.COMPLETED,current.checkpoint.snapshot.status)
+            assertEquals(result.id,(current.checkpoint.snapshot.result as Knowledge.Known).value.id)
+            assertEquals(result.copy(revision=current.rev()),(current.checkpoint.snapshot.result as Knowledge.Known).value)
+            current=ok(commands.dispatch(f.id,GameAction.Reopen("Correction again"),current.rev(),reading(11),f.token))
+            current=ok(commands.dispatch(f.id,set(12),current.rev(),reading(12),f.token))
+            current=ok(commands.dispatch(f.id,GameAction.Finish(SnapshotList.empty(),"Corrected draw"),current.rev(),reading(13),f.token))
+            val final=(current.checkpoint.snapshot.result as Knowledge.Known).value
+            assertEquals(result.id,final.id); assertEquals(current.rev(),final.revision)
+            assertEquals(5.seconds,current.checkpoint.snapshot.elapsed.gameElapsed)
+            assertEquals(setOf(f.seat,f.other),final.seatResults.map { it.seatId }.toSet())
+            assertEquals(2,final.seatResults.size)
+            assertTrue(final.seatResults.all { it.result==SeatResultKind.DRAW })
+            assertEquals(1L,db.scalar("SELECT count(*) FROM life_result"))
+        }
+    }
+    @Test fun duplicateAcknowledgementPreservesFirstTimestampAndUnknownIdDoesNotCommit() = runBlocking<Unit> {
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val ids=Ids(); val lifecycle=life(db,ids); val commands=SqlLifeGameCommands(db,codec,ids,Random())
+            val base=f.input(); val input=base.copy(settings=base.settings.copy(elapsedTimers=ElapsedTimerSettings(gameWarning=1.seconds)))
+            var current=ok(lifecycle.create(input,reading(),f.token))
+            current=ok(commands.dispatch(f.id,GameAction.SetElapsedPaused(false),current.rev(),reading(),f.token))
+            current=ok(lifecycle.resume(f.id,reading(2),f.token))
+            val alert=current.checkpoint.snapshot.alerts.single()
+            current=ok(commands.dispatch(f.id,GameAction.AcknowledgeGameAlert(alert.id),current.rev(),reading(3),f.token))
+            val timestamp=current.checkpoint.snapshot.alerts.single().acknowledgedAt
+            assertEquals(reading(3).wall,timestamp)
+            current=ok(commands.dispatch(f.id,GameAction.AcknowledgeGameAlert(alert.id),current.rev(),reading(4),f.token))
+            assertEquals(timestamp,current.checkpoint.snapshot.alerts.single().acknowledgedAt)
+            assertEquals(1L,db.scalar("SELECT count(*) FROM life_alert"))
+            val events=db.scalar("SELECT count(*) FROM life_event")
+            val unknown=commands.dispatch(f.id,GameAction.AcknowledgeGameAlert(EntityId("unknown")),current.rev(),reading(5),f.token)
+            assertTrue("Expected unavailable, got $unknown",unknown is Outcome.Unavailable)
+            assertEquals(UnavailableReason.NOT_FOUND,(unknown as Outcome.Unavailable).reason)
+            assertEquals(current,ok(lifecycle.read(f.id,f.token)))
+            assertEquals(events,db.scalar("SELECT count(*) FROM life_event"))
+        }
+    }
+
 }
