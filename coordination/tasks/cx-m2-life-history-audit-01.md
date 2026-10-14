@@ -1,4 +1,4 @@
-# Life history and recovery requirement audit — TAKEN
+# Life history and recovery requirement audit — DONE
 
 Parent: cx-m2-life-functional-01. Candidate branch component/life-history-audit-20261014 from latest recovery. Claim through coordination/CHAT-TASKS.md before writes; lock life-history-audit.lock.
 
@@ -10,4 +10,8 @@ Acceptance: every cited path/requirement exists; gaps are concrete and nonduplic
 
 ## Latest continuation delta
 
-TAKEN by claude-code-life-history-audit-20261014 on component/life-history-audit-20261014 (base e489af7 of agent/cx-thread-recovery-20261013). Writing docs/verification/m2-life/HISTORY-SERVICE-AUDIT-20261014.md; no source edits. Next: publish report, mark DONE, release lock.
+DONE by claude-code-life-history-audit-20261014 on component/life-history-audit-20261014 (base e489af7). Report: docs/verification/m2-life/HISTORY-SERVICE-AUDIT-20261014.md. Documentation only; nothing built or run. Verified by reading cited paths/lines; `git diff --check` clean.
+
+Material gaps for root: (A1/A2) no SQLite test undoes an action across a later checkpoint or a process restart; (B1) `GameAction.Reopen` has only JVM domain tests, none through SqlLifeGameCommands; (C1/C2) no duplicate/unknown ack or markDelivered-vs-command race test, markDelivered has no caller; (D1) no rule for calendar day to UTC bounds; (E1) force-stop is only host rollback, no process-kill test. PersistedGameService is unimplemented and GameService.undo/dispatch omit the clock reading.
+
+Next: root consumes the report and reconciles the board; no service implementation is assigned by this task.

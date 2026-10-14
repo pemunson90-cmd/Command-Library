@@ -10,5 +10,5 @@
     "coordination/tasks/cx-m2-life-history-audit-01.md",
     "coordination/locks/life-history-audit.lock"
   ],
-  "status": "active"
+  "status": "released"
 }
