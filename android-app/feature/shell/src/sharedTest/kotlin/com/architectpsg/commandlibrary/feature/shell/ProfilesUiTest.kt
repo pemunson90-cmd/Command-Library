@@ -135,7 +135,7 @@ class ProfilesUiTest {
     }
 }
 
-private class UiProfilesFixture:PlayerProfileRepository {
+internal class UiProfilesFixture:PlayerProfileRepository {
     val rows=ConcurrentHashMap<EntityId,PlayerProfileSnapshot>()
     @Volatile var writeStatus:Outcome<Nothing>?=null
     @Volatile var listStatus:Outcome<Nothing>?=null

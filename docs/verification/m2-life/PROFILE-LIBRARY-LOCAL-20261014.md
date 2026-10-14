@@ -2,7 +2,7 @@
 
 Architecture/composition independently APPROVE: complete PlayerProfileRepository CRUD is independent of the retained GameService binding gate. Full gameplay/source/variant/advanced profile editor/application acceptance remains incomplete. Root implements the reviewed plan inline and retains active ownership/final merge. No APK delivery.
 
-## Current status
+## Verified profile-library baseline22d2230
 
 Controller, accessible profile CRUD UI/navigation and actual AppGraph profile repository are implemented and independently source-approved. Focused18controller/UI tests and full98shell tests pass with0failures/errors/skips; shelllint passes. Actual shared AppGraph/Room integration test passes21.323s (containing60s/1m command),1test0failures/errors/skips. It exercises real cached Application ports/SQLite file, exact profile create/read/list/update, stale CAS rejection with unchanged readback, delete/missing read, and ownrow-only cleanup. No new fake database or production seam. GameService remains unbound. Whole-project check/debug plus app/shell/storage testAPK compilation passed616s/10m16s,441tasks59executed382up-to-date. Current99XML report973JVM tests,0failures/errors/skips (includes unchanged cached modules); app5/2XML,shell98/13XML,storage198/21XML. All4APK16KiB ZIP alignment checks exit0. New native/physical execution remains not_run and no finished APK is delivered.
 
@@ -54,3 +54,5 @@ Each artifact independently passed `zipalign -c -P 16 4` (exit0):
 | storage-debug-androidTest.apk |10273143|2a940792c5431f2b0d6e65f86c51718b3c2bfb0c558c171d9cb939cd658b2b8d|
 
 DEX independently contains actual SqlPlayerProfileRepository in app, ProfilesAppGraphIntegrationTest in appTest, and ProfilesUiTest in shellTest. Compiled/packaged is not device execution. Actual host Room/JNI proof is separately the passed graph probe. Native23/36/16KiB/OSkill/physicalFold7/TalkBack for this slice remain not_run; prior frozen main evidence is not borrowed. Advanced counter/commander/appearance editing, profile application, complete gameplay/source/variant/platform acceptance and full Androidv1 remain open. No finished APK delivery. Root continues directly into the reviewed bounded custom-counter draft editor.
+
+Later custom OTHER counter editing is tracked in PROFILE-COUNTERS-LOCAL-20261014.md; this report’s973JVM/APK hashes remain the exact22d2230 basic-library baseline, not evidence for later modifications.

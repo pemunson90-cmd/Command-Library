@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
 
+    testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

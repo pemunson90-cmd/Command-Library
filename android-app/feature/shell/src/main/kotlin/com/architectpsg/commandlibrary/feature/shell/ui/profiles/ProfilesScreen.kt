@@ -25,6 +25,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.*
 import com.architectpsg.commandlibrary.feature.shell.ui.*
 
 internal object ProfileTags {
+    const val LIST="profiles-list"
     const val NEW="profiles-new"
     const val NAME="profile-name"
     const val LIFE="profile-life"
@@ -45,12 +46,19 @@ internal object ProfileTags {
 internal fun ProfilesScreen(controller:ProfilesController,widthClass:WidthClass,modifier:Modifier=Modifier) {
     val state by controller.state.collectAsState()
     BackHandler(enabled=state.editor!=null || state.pendingDelete!=null) {
-        if(state.pendingDelete!=null)controller.dismissDelete()else if(!state.busy)controller.closeEditor()
+        when {
+            state.pendingDelete != null -> controller.dismissDelete()
+            state.editor?.pendingCounterDelete != null -> controller.dismissCounterDelete()
+            state.editor?.counterEditor != null -> controller.closeCounterEditor()
+            state.editor?.counterManager == true -> controller.showProfile()
+            !state.busy -> controller.closeEditor()
+        }
     }
     Box(modifier.fillMaxSize().imePadding(),contentAlignment=Alignment.TopCenter) {
         val editor=state.editor
-        if(editor!=null) ProfileEditorScreen(state,editor,controller,widthClass)
-        else LazyColumn(Modifier.widthIn(max=ReadingWidth).fillMaxSize().padding(horizontal=widthClass.gutter),
+        if(editor?.counterManager == true) ProfileCountersScreen(state,editor,controller,widthClass)
+        else if(editor!=null) ProfileEditorScreen(state,editor,controller,widthClass)
+        else LazyColumn(Modifier.widthIn(max=ReadingWidth).fillMaxSize().padding(horizontal=widthClass.gutter).testTag(ProfileTags.LIST),
             contentPadding=PaddingValues(vertical=16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
             item {
                 Column(verticalArrangement=Arrangement.spacedBy(12.dp)) {
@@ -116,7 +124,11 @@ private fun ProfileEditorScreen(state:ProfilesUiState,editor:ProfileEditor,contr
         }
         ProfileField(editor.step,controller::changeStep,stringResource(R.string.profiles_step),ProfileTags.STEP,!state.busy,
             if(state.validation==ProfileValidation.STEP)stringResource(R.string.profiles_invalid_step)else null,KeyboardType.Number)
-        if(original!=null)Text(stringResource(R.string.profiles_retained,original.counterDefinitions.size,original.commanders.size))
+        OutlinedButton(onClick=controller::showCounters,enabled=!state.busy,
+            modifier=Modifier.heightIn(min=48.dp).testTag(ProfileCounterTags.MANAGE)) {
+            Text(stringResource(R.string.profile_counters_manage,editor.counterDefinitions.size))
+        }
+        if(original!=null)Text(stringResource(R.string.profiles_retained,editor.counterDefinitions.size,original.commanders.size))
         if(state.busy)ProfileProgress(stringResource(R.string.profiles_working))
         ActionRow {
             Button(onClick=controller::save,enabled=!state.busy,modifier=Modifier.heightIn(min=48.dp).testTag(ProfileTags.SAVE)) {Text(stringResource(R.string.profiles_save))}
@@ -130,13 +142,13 @@ private fun ProfileEditorScreen(state:ProfilesUiState,editor:ProfileEditor,contr
 }
 
 @Composable
-private fun ProfileField(value:String,onChange:(String)->Unit,label:String,tag:String,enabled:Boolean,error:String?,keyboard:KeyboardType=KeyboardType.Text) {
+internal fun ProfileField(value:String,onChange:(String)->Unit,label:String,tag:String,enabled:Boolean,error:String?,keyboard:KeyboardType=KeyboardType.Text) {
     val support:(@Composable ()->Unit)?=error?.let { message -> {Text(message)} }
     OutlinedTextField(value=value,onValueChange=onChange,label={Text(label)},singleLine=true,enabled=enabled,isError=error!=null,
         supportingText=support,keyboardOptions=KeyboardOptions(keyboardType=keyboard),modifier=Modifier.fillMaxWidth().testTag(tag))
 }
 @Composable
-private fun ProfileProblem(problem:Problem?) {
+internal fun ProfileProblem(problem:Problem?) {
     problem?.let {MessageBlock(title=stringResource(R.string.profiles_notice),body=listOf(stringResource(problemText(it))),tone=MessageTone.ERROR)}
 }
 @Composable

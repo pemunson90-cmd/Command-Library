@@ -1,6 +1,7 @@
 package com.architectpsg.commandlibrary.feature.shell.presentation
 
 import com.architectpsg.commandlibrary.core.model.*
+import java.util.UUID
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,6 +12,12 @@ internal enum class ProfileValidation { NAME, LIFE, STEP }
 internal data class ProfileEditor(
     val original: PlayerProfileSnapshot?, val lifeLabel: String,
     val name: String = "", val life: String = "20", val step: String = "1",
+    val counterDefinitions: SnapshotList<CounterDefinition> = original?.value?.counterDefinitions
+        ?: SnapshotList.of(CounterDefinition(EntityId("life"), lifeLabel, null, null, 20,
+            CounterLossPolicy.AtOrBelow(0), false, CounterRole.LIFE)),
+    val counterManager: Boolean = false,
+    val counterEditor: ProfileCounterEditor? = null,
+    val pendingCounterDelete: CounterDefinition? = null,
 )
 internal data class ProfilesUiState(
     val items: SnapshotList<PlayerProfileSnapshot> = SnapshotList.empty(),
@@ -24,6 +31,7 @@ internal class ProfilesController(
     private val scope: CoroutineScope,
     private val repository: PlayerProfileRepository,
     private val portDispatcher: CoroutineDispatcher,
+    private val counterIds: () -> EntityId = { EntityId(UUID.randomUUID().toString()) },
 ) {
     private val mutableState = MutableStateFlow(ProfilesUiState())
     val state: StateFlow<ProfilesUiState> = mutableState.asStateFlow()
@@ -81,6 +89,66 @@ internal class ProfilesController(
     private fun change(update:(ProfileEditor)->ProfileEditor) {
         if (!mutableState.value.busy) mutableState.update { it.copy(editor=it.editor?.let(update),validation=null,problem=null) }
     }
+    fun showCounters() = change { it.copy(counterManager = true) }
+    fun showProfile() = change { it.copy(counterManager = false, counterEditor = null, pendingCounterDelete = null) }
+    fun addCounter() {
+        val state = mutableState.value
+        val editor = state.editor ?: return
+        if (state.busy || !editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null ||
+            editor.counterDefinitions.size >= MaxProfileCounterDefinitions) return
+        val id = try { counterIds() } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { mutableState.update { it.copy(problem = Problem.INTERNAL) }; return }
+        if (id.value.isBlank() || editor.counterDefinitions.any { it.id == id }) {
+            mutableState.update { it.copy(problem = Problem.INTERNAL) }; return
+        }
+        change { it.copy(counterEditor = ProfileCounterEditor(id)) }
+    }
+    fun editCounter(id: EntityId) = change { editor ->
+        val value = editor.counterDefinitions.find { it.id == id }
+        if (!editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || value?.editableInProfile != true) editor
+        else editor.copy(counterEditor = value.profileCounterEditor())
+    }
+    private fun changeCounter(update: (ProfileCounterEditor) -> ProfileCounterEditor) = change { editor ->
+        editor.copy(counterEditor = editor.counterEditor?.let { update(it).copy(validation = null) })
+    }
+    fun changeCounterLabel(value: String) = changeCounter { it.copy(label = value) }
+    fun changeCounterInitial(value: String) = changeCounter { it.copy(initial = value) }
+    fun changeCounterMinimum(value: String) = changeCounter { it.copy(minimum = value) }
+    fun changeCounterMaximum(value: String) = changeCounter { it.copy(maximum = value) }
+    fun changeCounterLoss(value: ProfileCounterLoss) = changeCounter { it.copy(loss = value) }
+    fun changeCounterThreshold(value: String) = changeCounter { it.copy(threshold = value) }
+    fun changeCounterUseColor(value: Boolean) = changeCounter { it.copy(useColor = value) }
+    fun changeCounterColor(value: String) = changeCounter { it.copy(color = value) }
+    fun changeCounterReset(value: CounterResetPolicy) = changeCounter { it.copy(reset = value) }
+    fun closeCounterEditor() = change { it.copy(counterEditor = null) }
+    fun applyCounter() = change { editor ->
+        val counter = editor.counterEditor
+        if (!editor.counterManager || counter == null) editor else when (val parsed = counter.parse()) {
+            is ProfileCounterEditResult.Invalid -> editor.copy(counterEditor = counter.copy(validation = parsed.field))
+            is ProfileCounterEditResult.Valid -> {
+                val old = counter.original
+                val index = editor.counterDefinitions.indexOfFirst { it.id == counter.id }
+                if ((old != null && (index < 0 || !old.editableInProfile || editor.counterDefinitions[index] != old)) ||
+                    (old == null && (index >= 0 || editor.counterDefinitions.size >= MaxProfileCounterDefinitions))) editor
+                else {
+                    val definitions = editor.counterDefinitions.toMutableList()
+                    if (old == null) definitions.add(parsed.value) else definitions[index] = parsed.value
+                    editor.copy(counterDefinitions = SnapshotList.copyOf(definitions), counterEditor = null)
+                }
+            }
+        }
+    }
+    fun requestCounterDelete(id: EntityId) = change { editor ->
+        val value = editor.counterDefinitions.find { it.id == id }
+        if (!editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || value?.editableInProfile != true) editor
+        else editor.copy(pendingCounterDelete = value)
+    }
+    fun dismissCounterDelete() = change { it.copy(pendingCounterDelete = null) }
+    fun confirmCounterDelete() = change { editor ->
+        val target = editor.pendingCounterDelete
+        if (!editor.counterManager || target?.editableInProfile != true || editor.counterEditor != null) editor
+        else editor.copy(counterDefinitions = SnapshotList.copyOf(editor.counterDefinitions.filter { it.id != target.id }), pendingCounterDelete = null)
+    }
     fun closeEditor() {
         if (!mutableState.value.busy) mutableState.update { it.copy(editor=null,validation=null,problem=null) }
     }
@@ -94,6 +162,7 @@ internal class ProfilesController(
         val current = mutableState.value
         if (current.busy) return
         val editor = current.editor ?: return
+        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null) return
         val life = editor.life.toIntOrNull()
         val step = editor.step.toIntOrNull()
         val validation = when {
@@ -105,11 +174,9 @@ internal class ProfilesController(
         if (validation != null) { mutableState.update { it.copy(validation=validation) };return }
         val value = try {
             val old = editor.original?.value
-            if (old == null) PlayerProfileDraft(editor.name,life!!,
-                SnapshotList.of(CounterDefinition(EntityId("life"),editor.lifeLabel,null,null,life,
-                    CounterLossPolicy.AtOrBelow(0),false,CounterRole.LIFE)),SeatAppearance(null,null),SnapshotList.empty(),step!!)
-            else old.copy(name=editor.name,preferredLife=life!!,adjustmentStep=step!!,
-                counterDefinitions=SnapshotList.copyOf(old.counterDefinitions.map { if(it.role==CounterRole.LIFE)it.copy(initial=life)else it }))
+            val definitions = SnapshotList.copyOf(editor.counterDefinitions.map { if(it.role==CounterRole.LIFE)it.copy(initial=life!!)else it })
+            if (old == null) PlayerProfileDraft(editor.name,life!!,definitions,SeatAppearance(null,null),SnapshotList.empty(),step!!)
+            else old.copy(name=editor.name,preferredLife=life!!,adjustmentStep=step!!,counterDefinitions=definitions)
         } catch (_: IllegalArgumentException) {
             mutableState.update { it.copy(validation=ProfileValidation.LIFE) };return
         }
