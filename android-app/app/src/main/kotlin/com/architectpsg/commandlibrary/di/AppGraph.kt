@@ -36,7 +36,8 @@ internal class AppGraph(context: Context) {
                 val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
                 val profiles = SqlPlayerProfileRepository(opened.value, LifePayloadCodec(), SystemUtcClock, RandomUuidIdSource)
                 val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
-                    rulesImport = rules, rulesLookup = rules, playerProfiles = profiles)
+                    rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
+                    englishCatalog = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator))
                 ready = ports
                 Outcome.Success(ports)
             }

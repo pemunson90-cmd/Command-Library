@@ -47,6 +47,8 @@ kotlin {
 // Reuse the storage task output; a clean app test build prepares the actual host JNI.
 val storageProject = project(":data:storage")
 tasks.withType<Test>().configureEach {
+    // The scoped host directory bridge reads the JDK channel's real descriptor for fstat.
+    jvmArgs("--add-opens=java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens=java.base/java.io=ALL-UNNAMED")
     dependsOn(":data:storage:prepareHostSqliteNative")
     doFirst {
         val prepared = storageProject.tasks.named("prepareHostSqliteNative").get()
@@ -59,6 +61,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":data:storage"))
+    implementation(project(":data:network"))
     implementation(project(":feature:life"))
     implementation(project(":feature:catalog"))
     implementation(project(":feature:rules"))

@@ -30,4 +30,6 @@ public class ShellPorts(
     public val rulesLookup: LocalRulesLookup? = null,
     /** Complete reusable-profile capability; absence hides the destination. No game service implied. */
     public val playerProfiles: PlayerProfileRepository? = null,
+    /** Complete lazy English download/install access; no wire activity during shell startup. */
+    public val englishCatalog: EnglishCatalogAccess? = null,
 )

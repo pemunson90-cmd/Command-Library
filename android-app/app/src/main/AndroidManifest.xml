@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- K2 has no reviewed backup or restore policy, so app data is not backed up. -->
     <application
         android:name=".CommandLibraryApplication"
