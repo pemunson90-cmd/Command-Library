@@ -13,7 +13,7 @@ import kotlinx.coroutines.withTimeout
 /** A required trusted platform consumer owns job/source/consent checks and keeps its pin alive. */
 internal fun interface RulingsVerifiedInputBinding {
     suspend fun withPinnedInput(jobId: EntityId, cancel: CancelToken,
-        consume: suspend (VerifiedArtifact, EntityId, Flow<ByteChunk>) -> RulingsImportResult): RulingsImportResult
+        consume: suspend (VerifiedArtifact, EntityId, Flow<ByteChunk>, RulingsTrustedInputProof?) -> RulingsImportResult): RulingsImportResult
 }
 
 /** Safety ceilings, not source estimates; callers cannot change language/source admission. */
@@ -43,11 +43,12 @@ internal class LocalRulingsImport(
             var committed: RulingsImportResult? = null
             var candidate: RulingsImportResult? = null
             var envelope: String? = null
+            var payloadVersion = 2
             var acknowledgement: RulingActivation? = null
             var invoked = false
             try {
                 boundedIdentity(jobId.value)
-                val returned = binding.withPinnedInput(jobId, cancel) { artifact, consentId, chunks ->
+                val returned = binding.withPinnedInput(jobId, cancel) { artifact, consentId, chunks, trusted ->
                     check(!invoked); invoked = true
                     try {
                         require(artifact.jobId == jobId && artifact.bytes in 1..policy.maxRawBytes)
@@ -57,6 +58,7 @@ internal class LocalRulingsImport(
                         require(source.consistency == AcquisitionConsistency.FILE_REPRESENTATION)
                         require(RULINGS_URI.matches(source.requestedUri.value) && RULINGS_URI.matches(source.finalUri.value))
                         boundedIdentity(consentId.value)
+                        trusted?.validate(artifact, consentId)
                         val generationId = GenerationId(ids.nextId().also(::boundedIdentity))
                         val prior = LocalCatalogRulings(database).status(cancel).bulkValue().active?.id
                         val provenance = Provenance(source.provider, source.requestedUri, source.sourceVersion, source.sourceDate,
@@ -114,16 +116,18 @@ internal class LocalRulingsImport(
                         require(actual.bulkLong("n") == records && actual.bulkLong("first") == 1L && actual.bulkLong("last") == records)
                         val generation = RulingsGeneration(generationId, provenance.copy(checksum = proof.rawHash), records, GenerationStatus.ACTIVE)
                         val result = RulingsImportResult(generation, proof.rawBytes, proof.rawHash, proof.decodedBytes, proof.decodedHash, clock.utcNow(), artifact)
-                        val payload = AcquisitionPayloadCodec.encodeRulingsInstallation(result, consentId).also(::requireMetadata)
+                        payloadVersion = if (trusted == null) 2 else 3
+                        val payload = if (trusted == null) AcquisitionPayloadCodec.encodeRulingsInstallation(result, consentId).also(::requireMetadata)
+                            else RulingsTrustedInstallationCodec.encode(RulingsTrustedInstallation(StoredRulingsInstallation(result, consentId), trusted))
                         cancel.throwIfCancelled(); currentCoroutineContext().ensureActive()
                         candidate = result; envelope = payload
                         database.transaction({ tx ->
                             val pointers = tx.query(bulkSql("SELECT singleton_id,generation_id FROM rulings_active LIMIT 2", 2), cancel).bulkValue()
                             val current = pointers.singleOrNull()?.also { require(it.bulkLong("singleton_id") == 1L) }?.bulkText("generation_id")
                             if (pointers.size > 1 || current != prior?.value) tx.abort(bulkError(FailureCode.STALE_GENERATION, "Active ruling generation changed"))
-                            if (tx.bulkWrite("""UPDATE rulings_generation SET status='ACTIVE',provenance_payload=:payload,record_count=:count,payload_schema_version=2
+                            if (tx.bulkWrite("""UPDATE rulings_generation SET status='ACTIVE',provenance_payload=:payload,record_count=:count,payload_schema_version=:version
                                 WHERE generation_id=:g AND status='STAGING' AND NOT EXISTS (SELECT 1 FROM rulings_active WHERE generation_id=:g)""", cancel,
-                                "payload" to payload, "count" to records, "g" to generationId.value) != 1L) tx.abort(bulkError(FailureCode.STALE_GENERATION, "Ruling staging generation changed"))
+                                "payload" to payload, "count" to records, "version" to payloadVersion, "g" to generationId.value) != 1L) tx.abort(bulkError(FailureCode.STALE_GENERATION, "Ruling staging generation changed"))
                             if (prior != null && tx.bulkWrite("UPDATE rulings_generation SET status='RETIRED' WHERE generation_id=:g AND status='ACTIVE'", cancel,
                                     "g" to prior.value) != 1L) tx.abort(bulkError(FailureCode.CORRUPT_DATA, "Previous ruling generation inconsistent"))
                             val changed = if (prior == null) tx.bulkWrite("INSERT INTO rulings_active(singleton_id,generation_id) SELECT 1,:g WHERE NOT EXISTS (SELECT 1 FROM rulings_active)", cancel, "g" to generationId.value)
@@ -134,7 +138,7 @@ internal class LocalRulingsImport(
                         result
                     } catch (failure: Exception) {
                         // Still inside the trusted pin: the binding may release it only after this finishes.
-                        if (committed == null) candidate?.let { acknowledgement = acknowledge(it, requireNotNull(envelope)) }
+                        if (committed == null) candidate?.let { acknowledgement = acknowledge(it, requireNotNull(envelope), payloadVersion) }
                         throw failure
                     }
                 }
@@ -167,22 +171,23 @@ internal class LocalRulingsImport(
             }
         }
 
-    private suspend fun acknowledge(candidate: RulingsImportResult, payload: String): RulingActivation = withContext(NonCancellable) {
+    private suspend fun acknowledge(candidate: RulingsImportResult, payload: String, version: Int): RulingActivation = withContext(NonCancellable) {
         try {
             withTimeout(500) {
                 val row = database.query(bulkSql("""SELECT status,payload_schema_version,record_count,
-                    CASE WHEN length(CAST(provenance_payload AS BLOB))<=:max THEN provenance_payload END AS provenance_payload,
+                    CASE WHEN (payload_schema_version IN (1,2) AND length(CAST(provenance_payload AS BLOB))<=:max)
+                        OR (payload_schema_version=3 AND length(CAST(provenance_payload AS BLOB))<=:trustedMax) THEN provenance_payload END AS provenance_payload,
                     (SELECT count(*) FROM rulings_active) AS pointers,
                     (SELECT generation_id FROM rulings_active WHERE singleton_id=1) AS active_generation
                     FROM rulings_generation WHERE generation_id=:g""", 1,
-                    "max" to LocalCatalogRulings.MAX_METADATA_BYTES, "g" to candidate.generation.id.value), BULK_NO_CANCEL).bulkValue().singleOrNull()
+                    "max" to LocalCatalogRulings.MAX_METADATA_BYTES, "trustedMax" to RulingsTrustedInstallationCodec.MAX_BYTES, "g" to candidate.generation.id.value), BULK_NO_CANCEL).bulkValue().singleOrNull()
                     ?: return@withTimeout RulingActivation.INCONCLUSIVE
                 if (row.bulkLong("pointers") > 1) return@withTimeout RulingActivation.INCONCLUSIVE
                 val active = row.bulkOptionalText("active_generation")
                 if (active != candidate.generation.id.value && row.bulkText("status") in setOf("STAGING", "FAILED")) RulingActivation.ROLLED_BACK
-                else if (active == candidate.generation.id.value && row.bulkText("status") == "ACTIVE" && row.bulkLong("payload_schema_version") == 2L &&
-                    row.bulkLong("record_count") == candidate.generation.recordCount && row.bulkText("provenance_payload") == payload &&
-                    AcquisitionPayloadCodec.decodeRulingsInstallation(payload).result == candidate) RulingActivation.INSTALLED
+                // Exact equality with the fully validated pre-write envelope avoids parsing up to3MiB inside the bounded acknowledgement.
+                else if (active == candidate.generation.id.value && row.bulkText("status") == "ACTIVE" && row.bulkLong("payload_schema_version") == version.toLong() &&
+                    row.bulkLong("record_count") == candidate.generation.recordCount && row.bulkText("provenance_payload") == payload) RulingActivation.INSTALLED
                 else RulingActivation.INCONCLUSIVE
             }
         } catch (_: TimeoutCancellationException) { RulingActivation.INCONCLUSIVE }

@@ -70,18 +70,19 @@ internal class LocalCatalogRulings(private val database: Database) : CatalogRuli
             CASE WHEN length(CAST(provider AS BLOB))<=64 THEN provider END AS provider,
             CASE WHEN length(CAST(status AS BLOB))<=64 THEN status END AS status,
             CASE WHEN length(CAST(language_scope AS BLOB))<=64 THEN language_scope END AS language_scope,
-            CASE WHEN length(CAST(provenance_payload AS BLOB))<=:max THEN provenance_payload END AS provenance_payload,
+            CASE WHEN (payload_schema_version IN (1,2) AND length(CAST(provenance_payload AS BLOB))<=:max)
+                OR (payload_schema_version=3 AND length(CAST(provenance_payload AS BLOB))<=:trustedMax) THEN provenance_payload END AS provenance_payload,
             record_count,payload_schema_version FROM rulings_generation WHERE generation_id=:g""", 1,
-            "max" to MAX_METADATA_BYTES, "g" to id.value), cancel).bulkValue().single()
+            "max" to MAX_METADATA_BYTES, "trustedMax" to RulingsTrustedInstallationCodec.MAX_BYTES, "g" to id.value), cancel).bulkValue().single()
         require(row.bulkText("provider") == PROVIDER.value)
         val payload = row.bulkText("provenance_payload")
         val installation = when (row.bulkLong("payload_schema_version")) {
             1L -> null
-            2L -> AcquisitionPayloadCodec.decodeRulingsInstallation(payload).also {
-                require(it.result.generation.id == id && it.result.generation.recordCount == row.bulkLong("record_count"))
-            }
+            2L -> AcquisitionPayloadCodec.decodeRulingsInstallation(payload)
+            3L -> RulingsTrustedInstallationCodec.decode(payload).installation
             else -> error("Unsupported ruling payload")
         }
+        installation?.let { require(it.result.generation.id == id && it.result.generation.recordCount == row.bulkLong("record_count")) }
         val provenance = installation?.result?.generation?.provenance ?: AcquisitionPayloadCodec.decodeStoredProvenance(payload)
         val result = RulingsGeneration(id, provenance,
             row.bulkLong("record_count"), GenerationStatus.valueOf(row.bulkText("status")),

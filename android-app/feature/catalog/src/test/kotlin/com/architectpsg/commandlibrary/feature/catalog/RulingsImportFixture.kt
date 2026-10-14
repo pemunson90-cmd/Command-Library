@@ -49,7 +49,7 @@ internal class RulingsImportFixture(path: String = ":memory:") : AutoCloseable {
             Knowledge.Unknown("License not asserted", SnapshotList.of(Evidence("Synthetic notice evidence", null, null)))))
     fun binding(artifact: VerifiedArtifact, input: Flow<ByteChunk>) = RulingsVerifiedInputBinding { _, _, consume ->
         check(!pinHeld); pinHeld = true
-        try { consume(artifact, EntityId("consent"), input) } finally { pinHeld = false }
+        try { consume(artifact, EntityId("consent"), input, null) } finally { pinHeld = false }
     }
     fun importer(artifact: VerifiedArtifact, input: Flow<ByteChunk>, database: Database = db, policy: RulingsImportPolicy = RulingsImportPolicy(), idSource: IdSource = ids) =
         LocalRulingsImport(database, clock, idSource, binding(artifact, input), policy)

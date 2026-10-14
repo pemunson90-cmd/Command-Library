@@ -55,6 +55,7 @@ internal object RulingsSourceReceiptCodec {
         add("artifact", component(AcquisitionPayloadCodec.encodeArtifact(value.metadataArtifact)))
     }
     fun read(root: JsonObject): RulingsSourceReceipt {
+        BoundedRulingsJson.encode(root, MAX_BYTES)
         BoundedRulingsJson.fields(root, "version", "type", "id", "consentId", "issuedSeconds", "issuedNanos", "metadataBody", "plan", "artifact")
         require(BoundedRulingsJson.number(root["version"]) == 1L && BoundedRulingsJson.text(root["type"]) == "scryfallRulingsReceipt")
         val plan = AcquisitionPayloadCodec.decodePlan(BoundedRulingsJson.encode(root.getAsJsonObject("plan"), MAX_COMPONENT_BYTES))

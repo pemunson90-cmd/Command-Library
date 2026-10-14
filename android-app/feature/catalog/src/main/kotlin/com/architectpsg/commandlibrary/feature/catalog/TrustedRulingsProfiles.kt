@@ -70,6 +70,7 @@ internal class TrustedCatalogProfiles(initial: List<RulingsProfileFacts> = empty
         require(old != null || facts.size < RulingsReceiptBudgets.MAX_RECEIPTS)
         facts[value.receiptId.value] = value
     }
+    fun matchesVerified(value: RulingsProfileFacts): Boolean = facts[value.receiptId.value] == value
     fun validate(request: AcquisitionRequest): Outcome<Unit> {
         if(request.source is AcquisitionSource.EnglishSearch) return TrustedEnglishSearchProfile.validate(request)
         val canonical = runCatching {

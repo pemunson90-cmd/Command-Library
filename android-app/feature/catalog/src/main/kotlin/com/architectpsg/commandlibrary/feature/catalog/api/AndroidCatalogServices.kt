@@ -17,7 +17,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 
-/** Real English-acquisition assembly used by the root's lazy EnglishCatalogAccess binding.
+/** Shared catalog acquisition assembly used by the root's lazy EnglishCatalogAccess binding.
  * Database and settings are caller-owned. Closing disables this factory's wire authorizer and
  * closes only the transport it created, not those stores or the exposed offline lookup ports.
  */
@@ -27,12 +27,23 @@ public class AndroidCatalogServices private constructor(
     public val bulkImport: CatalogBulkImport,
     public val printingLookup: CatalogPrintingLookup,
     public val oracleLookup: CatalogOracleLookup,
+    public val rulingsImport: CatalogRulingsImport,
+    public val rulings: CatalogRulings,
+    private val rulingsAdmission: AndroidRulingsSourceAdmission,
     private val binding: AndroidCatalogVerifiedInputBinding,
     private val transport: NetworkClient,
     private val guard: FactoryWireGuard,
 ) {
     public fun englishSearchRequest(displayName: String, wifiOnly: Boolean): AcquisitionRequest =
         TrustedEnglishSearchProfile.request(displayName, wifiOnly)
+
+    /** Planning never fetches metadata or grants execution consent. */
+    public fun rulingsDiscoveryRequest(displayName: String, wifiOnly: Boolean): AcquisitionRequest =
+        TrustedRulingsProfiles.discovery(displayName, wifiOnly)
+
+    /** Pins completed metadata and durably admits its exact file; the file needs its own approval. */
+    public suspend fun rulingsFileRequest(metadataJobId: EntityId, displayName: String, wifiOnly: Boolean, cancel: CancelToken): Outcome<AcquisitionRequest> =
+        rulingsAdmission.fileRequest(metadataJobId, displayName, wifiOnly, cancel)
 
     /** Metadata survives this call; its private content URI requires a new trusted pin to read. */
     public suspend fun catalogSource(jobId: EntityId, cancel: CancelToken): Outcome<CatalogBulkImportSource> =
@@ -62,17 +73,23 @@ public class AndroidCatalogServices private constructor(
                 return withContext(Dispatchers.IO) {
                     val app = context.applicationContext
                     val files = androidArtifactFiles(privateArtifactChild(app))
+                    val receipts = RulingsReceiptStore(database)
+                    val profiles = TrustedCatalogProfiles(receipts.loadFacts(BULK_NO_CANCEL).bulkValue())
                     val transport = transportBuilder(guard::authorize)
                     owned = transport
                     currentCoroutineContext().ensureActive()
                     guard.checkNoPrematureCall()
                     val engine = LocalAcquisition(database, transport, settings, consentCoordinator, clock, ids, files,
-                        TrustedEnglishSearchProfile::validate, TrustedEnglishSearchProfile::endpointFor,
+                        profiles::validate, profiles::endpointFor,
                         { currentConnection(app) })
                     val binding = AndroidCatalogVerifiedInputBinding(app, engine)
                     val bulk = LocalBulkCatalog(database, clock, ids, binding, bulkLimits)
                     val identities = LocalCatalogIdentities(database)
-                    val facade = AndroidCatalogServices(engine, engine, bulk, identities, identities, binding, transport, guard)
+                    val rulingsBinding = AndroidRulingsVerifiedInputBinding(app, engine, receipts, profiles)
+                    val rulingsImporter = LocalRulingsImport(database, clock, ids, rulingsBinding)
+                    val admission = AndroidRulingsSourceAdmission(app, engine, receipts, profiles, clock, ids)
+                    val facade = AndroidCatalogServices(engine, engine, bulk, identities, identities, rulingsImporter,
+                        LocalCatalogRulings(database), admission, binding, transport, guard)
                     guard.ready(engine)
                     currentCoroutineContext().ensureActive()
                     facade
