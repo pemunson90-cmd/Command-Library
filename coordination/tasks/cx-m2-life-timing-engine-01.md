@@ -1,6 +1,6 @@
-# Modern life timing and recovery engine — TAKEN
+# Modern life timing and recovery engine — DONE
 
-Owner codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013. Parent cx-m2-life-functional-01; root life-functional/shared lock retained. Other chat may claim disjoint read-only history audit; no overlapping writer authorized.
+Completed by codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013. Historical implementation brief below; current assignments are authoritative in [CHAT-TASKS](../CHAT-TASKS.md). Parent cx-m2-life-functional-01; root life-functional/shared lock retained. Other chat may claim disjoint read-only history audit; no overlapping writer authorized.
 
 Next prerequisite before PersistedGameService/UI: complete reviewed pure timing calculations for explicit turn vs clock ownership, SHARED countdown, elapsed game/turn timers and immutable action-time undo across checkpoints. Read actual SPEC G07/G13, retained dispositions, accepted persistence timing decisions and existing SeatClockReducer four-argument undo tests before design. Its SHARED unsupported description is a legacy implementation limit, not absence of modern core contract. Reuse accepted CHESS/PER_TURN semantics where correct; do not silently replace accepted undo/charge behavior or conflate priority pass with turn switch/refill.
 
@@ -12,8 +12,4 @@ Owned pure feature/life domain helpers/tests and root-reviewed necessary model/c
 
 ## Latest continuation delta
 
-TAKEN after transactional mutation adapter source review findings resolved and final local wholecheck/debug743JVM/72XML0failure/error/skip124s,110storage incl27mutator; alignment pass. See GAME-MUTATIONS-LOCAL-20261014.md. Timing design/API/code/tests for this NEW unit not_run. Exact next action read retained G07/G13/dispositions and accepted legacy clock reducer/undo cases, settle modern clock/elapsed/recovery/occurrence design, obtain independent review before code. History audit OPEN; root sole life/shared orchestration retained.
-
-## Active work — 2026-10-14, after checkpoint 97
-
-Concrete design and inline plan written at docs/superpowers/specs/2026-10-14-life-timing-engine-design.md and docs/superpowers/plans/2026-10-14-life-timing-engine-plan.md. Independent architecture review APPROVE with accepted missing-lineage undo/repair and warning/provenance clarifications recorded in design. Boundary RED tests in progress locally: bounded legacy alert identity, exact canonical undo occurrence matching, Known opening elapsed lineage persistence; implementation not yet changed. This task stays TAKEN; no overlapping timing/service writer. Completion evidence will replace this active-work note rather than assuming success from design approval.
+DONE: modern pure timing engine plus bounded legacy zero identity and Known opening-lineage compatibility. Independent architecture/source reviews and requested group/finish/legacy/acknowledged-replay regressions passed. Final122life/111storage focused GREEN131s; whole770JVM/73XML0fail/error/skip, check/debug104s,16KiBZIPpass;31coordinationtests/continuitypass. Evidence docs/verification/m2-life/TIMING-ENGINE-LOCAL-20261014.md. No GameService/initializer/DI/UI/device/cadence acceptance. Root TAKES cx-m2-life-action-engine-01 next for concrete reviewed semantic/initialization design; history audit OPEN. Completed brief above is historical, not a current work claim.

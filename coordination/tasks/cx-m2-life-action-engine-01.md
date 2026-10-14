@@ -1,0 +1,13 @@
+# Modern life semantic actions and initialization — TAKEN
+
+Owner codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013. Parent cx-m2-life-functional-01; root retains life-functional/shared orchestration lock. No overlapping component writer. Other chat may claim disjoint life-history-audit through central CHAT-TASKS.
+
+Next prerequisite after reviewed timing helpers: inspect accepted CounterReducer/RandomTools, all GameAction families, GameCreation/variant/source contracts and retained G01–G14/PX07/dispositions before designing modern semantic reductions and actual initialization. Existing private legacy reducers are accepted math, not complete current GameService. Preserve explicit roles, scope/slot semantics, bounds/hiding and loss candidates; confirmed elimination/restoration, designations, appearance/preferences, turn-reset counters, flat atomic groups(maxoneSwitchTurn), finish/reopen with explicit coherent outcomes and stable result identity, recorded random resolution and variant authority all need concrete mapping. Do not infer missing variant initial-zone/rules/source metadata or silently declare unsupported retained features complete.
+
+First action is a concrete design/inline plan and independent architecture review, not unreviewed implementation. Determine smallest coherent internal initializer/action engine units and required later source-backed variant/random adapters. Reuse LifeTimingEngine same observation and typed undo composition, allocate fresh known lineage at creation/each switch, preserve settled-current audit, acks/fired history and no gameElapsed refund. Keep semantic result/event allocation separate from transactional persistence without registering a partial service. No new shared contracts/schema/DI/UI change assumed; root reviews any actual gap before patch.
+
+Meaningful local pure JVM RED→GREEN and actual SQLite integration only where relevant. Continue local-first; no routine emulator. Later service still must provide full authoritative transactional spine/ledger read, revision+sequence CAS, unconditional undo within one serialization, and after-commit ordered publication before UI integration. History/source/UI and platform acceptance remain separate.
+
+## Latest continuation delta
+
+TAKEN after timing engine122life/111storage focused GREEN131s and whole770JVM/73XML0fail/error/skip, check/debug104s,16KiBZIPpass. See TIMING-ENGINE-LOCAL-20261014.md. Semantic design/code/tests for this new task not_run. Exact next action read current action vocabulary vs accepted reducers and original contract/disposition decisions; produce reviewed action/initialization plan. Task remains TAKEN until separately verified completion; no full-v1 claim.

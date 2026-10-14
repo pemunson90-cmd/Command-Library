@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261014-life-game-mutations-97. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
+Checkpoint-ID: cp-20261014-life-timing-engine-98. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
@@ -17,7 +17,7 @@ This file lists runnable or conditionally runnable work. Completed and supersede
 
 ## Concurrent chat assignments
 
-See [CHAT-TASKS.md](CHAT-TASKS.md): life-profiles DONE; life-game-store DONE; life-snapshot-graph DONE; life-event-reads DONE; life-game-mutations DONE; life-timing-engine TAKEN by recovery; scryfall-integrate DONE on ad3f9aa; life-history-audit OPEN with disjoint task cards. Claims/completions must be published before another chat relies on them.
+See [CHAT-TASKS.md](CHAT-TASKS.md): life-profiles DONE; life-game-store DONE; life-snapshot-graph DONE; life-event-reads DONE; life-game-mutations DONE; life-timing-engine DONE; life-action-engine TAKEN by recovery; scryfall-integrate DONE on ad3f9aa; life-history-audit OPEN with disjoint task cards. Claims/completions must be published before another chat relies on them.
 
 ## Accepted history summary
 
