@@ -12,4 +12,4 @@ Acceptance: meaningful RED→GREEN with actual SQLite reopen, duplicate operatio
 
 ## Latest continuation delta
 
-TAKEN after completed profile foundation. Design/implementation/tests not_run for this new unit. Next: review existing GameCreation/GameCheckpoint, schema6 and domain graph rules, write concrete creation/read spec/plan, obtain independent review, then write failing actual integration tests. History audit remains separately OPEN on the chat board.
+TAKEN. Profiles and Scryfall publishedb8b103e; clean repository verified after environment restart. Lazy initializer rationale independently reviewed: lookup before initialization, semantic retry equality, current checkpoint returned without comparing current settings to original input; callback can repeat only after uncommitted failures. Concrete spec/plan written2026-10-14-life-game-store; exact written spec/plan independently approved; absence/complete variant invariants clarified. Public concrete visibility enables actual storage integration tests, no new core port/DI. Implementation/tests not_run. Next: actual SQLite RED tests and code; keep result/alert/event/full graph/service obligations explicit.
