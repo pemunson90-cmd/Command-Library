@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-private-artifacts-boundary-144",
-  "verified_base_head": "d508b402cab7abbf3d42cee6646ee7476fabced2",
+  "checkpoint_id": "cp-20261014-search-edit-parser-plan-145",
+  "verified_base_head": "7fbffc5179fb4911e222fdf0cc21a515657b721b",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "implement-search-edit-supersession-local-publication-blocked",
+  "first_action": "review-and-implement-local-card-query-parser-foundation",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -118,9 +118,11 @@
     "rulings_presentation_local": "Exact4a4241b independent ACK;23focused44s then122XML/1108whole0fail/error/skip check/lint/debug/alltestAPKs SUCCESS3m17/588tasks80exec508cached. All8APK ZIP16KiBpass, actual main/testDEX checked. Source/root/UI/schema8 integrated locally; no liveTLS/fullfeed/native/physical/release claim. Report RULINGS-PRESENTATION-LOCAL-20261014.md.",
     "rulings_native_integration": "Frozen9a2f625/run38647074457 FAILED: JVM116136458354 four ruling source failures; native116138976177 and promotion skipped. Local fresh umask0022 reproduces four/five source cases52s; permission fix under review/check. Hosted counts log-based, artifact download policy-blocked. Frozen branch preserved/no rerun. Report RULINGS-NATIVE-INTEGRATION-20261014.md.",
     "artifact_private_permissions_local": "ef7eddd reviewed;12affected fresh0022pass49s. Whole at d508b402 fresh0022 SUCCESS6m5s/123XML1113tests0fail/error/skip/check/lint/allAPKs;8ZIP16KiBpass. Local unpublished/token rejected; no native claim. ARTIFACT-PRIVATE-PERMISSIONS-LOCAL-20261014.md.",
-    "card_keyword_lookup_local": "de135ae15focused/twoXML0fail/error/skip37s, app/native-test compile. Literal local text search, no guessed canonical RuleId/import. CARD-KEYWORD-LOOKUP-LOCAL-20261014.md."
+    "card_keyword_lookup_local": "de135ae15focused/twoXML0fail/error/skip37s, app/native-test compile. Literal local text search, no guessed canonical RuleId/import. CARD-KEYWORD-LOOKUP-LOCAL-20261014.md.",
+    "search_edit_supersession_local": "7fbffc5:12controller/oneXML0failure/error/skip SUCCESS14s. Ticket/cancel/draft preservation, no automatic lookup. Newer than1113 whole; no repeat native/full claim. SEARCH-EDIT-SUPERSESSION-LOCAL-20261014.md.",
+    "rulings_native_r3_prepared": "LOCAL isolated d5d3026 onagent/cx-rulings-source-integration-r3-20261014; actualruntime/compile inputs identical toef7eddd/1113fresh0022whole. Not published/not run; credential refresh pending. Later7fbffc5 excluded; no oldsnapshotmove."
   },
-  "last_completed": "Fresh0022 whole1113/check/lint/all8APKs ZIPpass6m5s; private fix reviewed. Token rejected, commits local only. Continue search edit lifecycle.",
-  "updated_utc": "2026-10-14T22:48:37Z",
+  "last_completed": "Search-edit7fbffc5 verified12pass14s; corrected native r3d5d3026 local/not run, token blocked. Continue reviewed typed query parser foundation.",
+  "updated_utc": "2026-10-14T22:51:59Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
