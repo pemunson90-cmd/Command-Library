@@ -1,0 +1,13 @@
+# Root merge acceptance and continuation route —2026-10-14
+
+Pat explicitly authorized merge. Root and independent life_contract_review approved the exact frozen candidate and isolated route-only metadata follow-up. PR21 head e9cb72b75bddc832eb1c8b702878e4c74bec25cc had unchanged main base6f841cc4f42c84e1db6bd3fb1a0c0b7b4d3a5e31, clean mergeability and exact main+freeze parents. It became ready and was merged through GitHub with expected_head_sha guard, merge commit be663b2b48a83c35f52586a3f804ca16a0fbf2cc. Fresh remote fetch confirmed that exact main head and git diff --exit-code verified product/workflow/script trees equal the approved candidate/freeze. No active checkout switch/reset/rebase or newer product copying occurred.
+
+Frozen source5a888461a4af5185054152420d46b0e2bfd24bd4. Hosted run38565369384 tested synthetic PR mergee94d22d37d2e8a6132380622cebbc22b6b05f10b; fresh job readback showed JVM/build, defaultAPI36 emulator and internal artifact promotion allsuccess. Root read decoded logs:87XML/908JVM,134nativeAPI36 across app4/network3/storage32/catalog31/rules6/shell58,0failures/errors/skips. Logs report36/36 captures retained; root has not independently inspected those images or re-extracted artifact XML. Continuity38565369459 success. Main product/workflow/script trees equal this tested tree. Main postmerge jobs are separate and must not be assumed passed from the PR run.
+
+Second Codex excluded85 mutable coordination/entry paths and did not claim root ownership. Root reconciliation is documentation-only in an isolated checkout: main state.working_branch and AGENTS/CONTINUE/README/task/generated mirrors route to agent/cx-thread-recovery-20261013. The main lease record is released/integration-only; the actual root active lease/locks/dirty source remain unchanged on that branch. Historical main component cards/locks are not current assignments. No current root global metadata or untested newer source is blindly copied into the frozen product.
+
+Scope remains internal foundation, not fullv1/M2/authentic named variant/source/gameplayUI/physicalFold7/TalkBack/canonical release acceptance. No APK delivered. Schema6 binary downgrade remains unsafe; preserve data and use reviewed forward fixes. Previous PR-preparation HOLD is historical and superseded by Pat's explicit merge approval for this exact candidate, not for future branches.
+
+Verify this docs-only follow-up with continuity and31Python tests plus diff check; no product rebuild/emulator needed for routing prose. Resume actual live task on the named working branch immediately after publishing.
+
+Published documentation-only route commit: ed76f72ee2195d032f27d3520b37f490f14e6136. Root active checkout and work remain on recovery, not this routing worktree.

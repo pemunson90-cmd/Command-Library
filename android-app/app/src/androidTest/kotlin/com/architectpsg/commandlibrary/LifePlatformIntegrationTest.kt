@@ -64,7 +64,7 @@ class LifePlatformIntegrationTest {
             val undoAnchor = requireNotNull(undone.elapsed.anchor)
             assertEquals(processId,undoAnchor.processSessionId)
             assertTrue(undoAnchor.monotonicElapsed.isFinite())
-            assertSame(processId,ProcessLifeIdentity.id)
+            assertEquals(processId,ProcessLifeIdentity.id)
             assertEquals(2,ok(service.events(created.id,PageRequest(10),token)).items.size)
             opened.close(); db = null
             val reopened = ok(StorageDatabase.open(context,file)); db = reopened

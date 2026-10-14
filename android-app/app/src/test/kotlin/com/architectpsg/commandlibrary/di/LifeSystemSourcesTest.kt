@@ -40,7 +40,7 @@ class LifeSystemSourcesTest {
 
     @Test fun processIdentityIsOneStableUuidAcrossIndependentReads() {
         val first = ProcessLifeIdentity.id
-        repeat(100) { assertSame(first, ProcessLifeIdentity.id) }
+        repeat(100) { assertEquals(first, ProcessLifeIdentity.id) }
         assertEquals(4, UUID.fromString(first.value).version())
         assertEquals(2, UUID.fromString(first.value).variant())
     }

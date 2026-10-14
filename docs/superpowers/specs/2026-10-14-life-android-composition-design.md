@@ -14,7 +14,7 @@ Independent life_contract_review architecture/exact provider source and correcte
 
 The actual Android probe creates/reads a synthetic game, records dice using real random source, undoes without redraw, closes/reopens its own database and checks exact recorded outcome. Undo legitimately reanchors elapsed timing even when previously paused: assert unchanged totals/lineage/paused state and correct process identity/finite new anchor, not whole elapsed DTO equality. Reviewer caught and root corrected that test expectation; no production timing change.
 
-Test-first API-absence RED293s, expected unresolved three providers. Implemented sources; first candidate compiled provider/native probe but failed558s before test methods: SDK36 sandbox requiresJava21. Corrected test to SDK34 matching existing shell/JDK17; focused rerun pending. Whole local gate must pass before accepted completion. Native execution remains not_run, including OS process-kill/physical sleep/API23 runtime. Detailed evidence will record actual results.
+Test-first API-absence RED293s. Initial SDK36/JDK17 harness failure558s corrected to existing SDK34; next4methods318s exposed boxed value-class assertSame error, corrected to value equality. Final whole local gate passed474s:954JVM96XML0failures/errors/skips, debug/appTestAPK/storageTestAPK and all3independent16KiBZIP checks. Evidence: docs/verification/m2-life/PLATFORM-SOURCES-LOCAL-20261014.md. Native probes compiled/packaged but not_run, including OS process-kill/physical sleep/API23 runtime.
 
 ## Deferred binding remains HOLD
 
