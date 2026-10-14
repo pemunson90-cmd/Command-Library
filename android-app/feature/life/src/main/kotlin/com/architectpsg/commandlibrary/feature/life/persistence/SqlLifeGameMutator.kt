@@ -9,6 +9,30 @@ public class SqlLifeGameMutator(private val db: Database, private val codec: Lif
     private val games = SqlLifeGameStore(db, codec)
     private val events = SqlLifeEventReader(db, codec)
 
+    /** Full operational/spine read remains available even when append capacity is exhausted. */
+    public suspend fun readCurrent(id: GameId, cancel: CancelToken): Outcome<StoredLifeGame> = gameTransaction(db, cancel) { tx ->
+        val current = current(tx, id, null, null, cancel, writable = false)
+        loadLifeOperational(tx, current.checkpoint.snapshot, cancel)
+        current
+    }
+
+    /** Authoritative system settlement; exact no-op avoids encoding, writes and sequence churn. */
+    public suspend fun systemCurrent(id: GameId, updatedAt: UtcTimestamp, build: (StoredLifeGame) -> Outcome<GameCheckpoint>, cancel: CancelToken): Outcome<StoredLifeGame> = gameTransaction(db, cancel) { tx ->
+        val current = current(tx, id, null, null, cancel, writable = false)
+        val operational = loadLifeOperational(tx, current.checkpoint.snapshot, cancel)
+        val next = gameValue(build(current))
+        mutationGraph(next.snapshot, FailureCode.INVALID_INPUT)
+        lifeSettlement(current.checkpoint.snapshot, next.snapshot, FailureCode.INVALID_INPUT)
+        requireGame(next.lastSettledEventId == current.checkpoint.lastSettledEventId, FailureCode.INVALID_INPUT, "System checkpoint changed settled event identity")
+        if (next == current.checkpoint) return@gameTransaction current
+        requireGame(current.sequence < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Checkpoint sequence exhausted")
+        val bytes = checkpointBytes(next)
+        val change = prepareLifeOperational(tx, current.checkpoint.snapshot, next.snapshot, operational, cancel)
+        cas(tx, current, next, bytes, updatedAt, cancel)
+        writeLifeOperational(tx, id, operational, change, cancel)
+        StoredLifeGame(current.creation, next, current.sequence + 1)
+    }
+
     /** Awaited local callback; nullable expected is legacy authoritative-in-transaction mode. */
     public suspend fun actionWithContext(id: GameId, expected: Revision?, build: suspend (LifeActionContext) -> Outcome<LifeActionWrite>, cancel: CancelToken): Outcome<StoredLifeGame> =
         actionTransaction(id, expected, null, { tx, current, nextId ->
@@ -77,11 +101,11 @@ public class SqlLifeGameMutator(private val db: Database, private val codec: Lif
             *lifeIdentityParameters(id), "occurrence" to gameText(occurrenceId.value), "bits" to gameNumber(channels.toLong())), cancel)))
     }
 
-    private suspend fun current(tx: DbTransaction, id: GameId, expected: Revision?, sequence: Long?, cancel: CancelToken): StoredLifeGame {
+    private suspend fun current(tx: DbTransaction, id: GameId, expected: Revision?, sequence: Long?, cancel: CancelToken, writable: Boolean = true): StoredLifeGame {
         requireGame(sequence == null || sequence >= 0, FailureCode.INVALID_INPUT, "Negative checkpoint sequence")
         val stored = games.readWithin(tx, id, cancel)
         requireGame((expected == null || stored.checkpoint.snapshot.revision == expected) && (sequence == null || stored.sequence == sequence), FailureCode.STALE_REVISION, "Game revision/checkpoint changed")
-        requireGame(stored.sequence < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Checkpoint sequence exhausted")
+        if (writable) requireGame(stored.sequence < Long.MAX_VALUE, FailureCode.INVALID_INPUT, "Checkpoint sequence exhausted")
         val game = stored.checkpoint.snapshot
         val revision = game.revision
         val latest = gameValue(tx.query(gameRequest("SELECT ${typedGameInteger("revision")} FROM life_event WHERE game_source=:source AND game_id=:id ORDER BY revision DESC LIMIT 1", *lifeIdentityParameters(id), maxRows = 1), cancel))

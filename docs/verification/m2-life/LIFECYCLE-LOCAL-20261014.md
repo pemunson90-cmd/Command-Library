@@ -1,0 +1,11 @@
+# SQLite lifecycle — local evidence, 2026-10-14
+
+Root cx-m2-life-action-engine-01 remains TAKEN. Independent architecture and exact-source APPROVE. SqlLifeGameLifecycle composes actual initializer and SQLite lazy creation, checked full current/operational reads, same-observation recovery then timing settlement, explicit checkpoint and authoritative system checkpoint. Committed creation retries consume no identities. Invalid identity sources fail typed; cancellation propagates. Missing authentic variant backend remains UNSUPPORTED.
+
+Read capacity is separate from write capacity. Exact system no-op validates spine/operational state before returning, without encoding, CAS or sequence churn, including exhausted sequence. Changed system checkpoint requires capacity; maximum revision permits system timing updates with sequence capacity. Foreign-process recovery pauses both ledgers at durable values without charging wall gaps or inventing lineage. Result, acknowledgement, delivery and immutable archives remain preserved.
+
+Declared API RED148storage8fail135s; implemented148storageGREEN182s. Expanded thirteen host SQLite methods cover initializer scopes and durable reopen; retry identities and malformed/throwing/cancelled sources; same-process settlement/alerts once; process recovery and no-op; sequence/revision exhaustion; operational corruption despite no-op; stale explicit checkpoint and reversed monotonic time; real late SQL alert failure and cancellation rollback; result/ack/delivery preservation; unsafe legacy lineage and invalid process identity.
+
+Final repository-root `bash android-app/gradlew -p android-app --no-daemon --console=plain check :app:assembleDebug`: BUILD SUCCESSFUL182s,336tasks14executed. Actual84XML878JVM0failures/errors/skips,188life/153storage. Log /tmp/life-lifecycle-whole.log. Standalone build-tools36.0.0 zipalign `-c -P 16 4` exit0. Debug APK SHA2569b668e3fb4ba720276e3a3e4cfb7cbf53cebbb7ca4a1ac9cfa2a044ddd702d4c, unchanged unbound artifact.
+
+No registered GameService/DI/UI, real Room concurrency, OS cadence/force-stop/device or full-v1 acceptance. Next: independently architecture-approved SqlLifeGameCommands actual dispatch/undo integration; authentic variants and ordered publication/watch remain incomplete.
