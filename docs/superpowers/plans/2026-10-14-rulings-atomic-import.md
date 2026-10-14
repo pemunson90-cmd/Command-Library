@@ -1,6 +1,6 @@
 # Atomic installation from pinned ruling input
 
-Status: independent architecture/durability/public-boundary design ACK; implementation next. Parent orch-kotlin-k3-offline-data-01; root sole writer under D-17/D-28. Prior schema7/localreader cf33f57 independently ACK/1058wholelocalpass. ProfileBack test-precondition29d64ee passed19focusedhost cases; native correction remains not_run.
+Status: implemented; independent design/exact-source durability ACK and whole local gate1075tests/lint/APKs passed. Parent orch-kotlin-k3-offline-data-01; root sole writer under D-17/D-28. Prior schema7/localreader cf33f57 independently ACK/1058wholelocalpass. ProfileBack test-precondition29d64ee passed19focusedhost cases; native correction remains not_run.
 
 Review clarification: cleanup uses resumable bounded row batches with status/active-pointer guards. Cancellation cleanup is capped by both transaction budget and timeout; unfinished nonactive data remains recoverable. Never perform an unbounded cascading corpus delete under NonCancellable. Exact-source review remains required.
 
@@ -25,3 +25,5 @@ Cancellation before durable activation rolls back current transaction and reclai
 ## One coherent verification boundary
 
 Independent design/exact-source durability and public-contract review; real SQLite stream/install/reopen/paging/duplicates/unmatchedOracle/independent card generations, invalid/truncated/multi-member gzip/UTF8/limits/raw hash and count mismatches, cancellation rollback, stale pointer/zero affected writes, crash staging recovery, late-commit acknowledgement and inconclusive no-cleanup. Retain complete metadata through artifact deletion. Batch implementation and meaningful tests; one combined affected core/catalog gate and broader check/APKs at final integrated persistence boundary, no per-edit red/fullsuite rituals. Device execution only at a justified future integration point, separate from known failed earlier frozen12f.
+
+Actual evidence: docs/verification/k3-downloads/RULINGS-ATOMIC-IMPORT-LOCAL-20261014.md. No live complete-feed or device/source-authority acceptance. Next design: docs/superpowers/plans/2026-10-14-rulings-source-admission.md.

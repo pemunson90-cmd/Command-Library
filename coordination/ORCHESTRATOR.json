@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T20:17:41Z",
-  "expires_utc": "2026-10-14T21:02:41Z",
-  "checkpoint_id": "cp-20261014-rulings-reader-back-136",
-  "note": "Root retains exclusive development and final merge authority. Schema7/reader cf33f57 passed independent review and local 1058-test/lint/APK boundary. Native r1 failed three Back tests; correction29d64ee passed19localtests, device correction not_run. Next: review and implement atomic ruling import. Frozen testing branches preserved; no finished APK/GameService HOLD."
+  "heartbeat_utc": "2026-10-14T20:39:37Z",
+  "expires_utc": "2026-10-14T21:24:37Z",
+  "checkpoint_id": "cp-20261014-rulings-atomic-import-137",
+  "note": "Root exclusive development and final merge. Atomic ruling importer90c3a70/tests5ea27c9 independently ACK; whole1075tests/lint/APKsZIPpass. Next trusted source admission design ACK, implement locally. Live feed blocked by enforced host policy; native Back correction not_run. No finished APK/GameService HOLD."
 }

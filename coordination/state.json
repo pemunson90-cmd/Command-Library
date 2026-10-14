@@ -3,22 +3,23 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-rulings-reader-back-136",
-  "verified_base_head": "29d64ee611c99d07eb7602c5a12b6ca2e7d29137",
+  "checkpoint_id": "cp-20261014-rulings-atomic-import-137",
+  "verified_base_head": "5ea27c946af73d941c04330c5d4380686c21d6d9",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "review-and-implement-atomic-rulings-pinned-import",
+  "first_action": "implement-reviewed-rulings-source-admission-shared-factory",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
   "blockers": [
     "Full-corpus/download/ruling/search and M2\u2013M9 features remain incomplete; no finished-app delivery claim.",
-    "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
+    "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence.",
+    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Schema7/reader cf33f57 design+exactsource durabilityACK/whole1058pass. Native12f173cases3Backtestfail; testprecondition29d64ee exactdiffACK/19localpass, devicecorrectionnot_run. Nextatomicrulingsimport designreview.",
+  "review_status": "Atomic ruling import90c3a70 (+tests5ea27c9) independently design/exact-source ACK; whole1075tests/lint/APKs/ZIP passed. Next trusted source-admission design ACK, implementation next. Native/source full-feed acceptance remain open.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -107,9 +108,11 @@
     "k3_ruling_record_decoder": "f161fbf independent exactsource ACK;32focused3XML0failures/errors/skips17s/19tasks.8newrecord/13metadata/11framing. StrictUnicode/raw128KiB,known+unknownstrings64KiB/keys256bytes/depth16; exactsource/calendar/prose, no inventedID/instant/language/provenance. RULING-RECORD-LOCAL-20261014.md. No schema/DI/fullfeed/native.",
     "k3_rulings_data_read_contract": "fe48e56: source/public exactreviewACK;79core incl6new+32relatedcatalog/16XML0failures/errors/skips25s. Actualdecoder nowRulingContent; sharedGregorian/Oracle/Unicodevalidation, localgeneration+ordinal, separatepublisher/provenance, unassertedlanguage andreaddeclarations. No schema/readerimpl/authority/DI/UI/APK/native. RULINGS-DATA-READ-LOCAL-20261014.md.",
     "rulings_storage_local": "cf33f57 actualKSP7/all24oldentitiesidentical/exact3new. Corrected check/lintDebug/debug/alltestAPK SUCCESS4m56,114XML1058tests0fail/error/skip,8APKsZIP16KiBpass;9reader+4realSQLmigrationcases. Source/designACK; native7not_run. RULINGS-STORAGE-READER-LOCAL-20261014.md.",
-    "english_downloads_native_r1": "Frozen12f8980/run38623690607 FAILED: JVM111XML1039pass;API36/x86_64/page4096sixXML173cases3profileBackfail/0skip,170passed,36capturesretainednotinspected,promotion skipped. Correction29d64ee independentACK/19focusedlocalpass1m40+testAPKZIPpass; nativecorrectionnot_run/no retrigger. ENGLISH-DOWNLOADS-NATIVE-R1-20261014.md."
+    "english_downloads_native_r1": "Frozen12f8980/run38623690607 FAILED: JVM111XML1039pass;API36/x86_64/page4096sixXML173cases3profileBackfail/0skip,170passed,36capturesretainednotinspected,promotion skipped. Correction29d64ee independentACK/19focusedlocalpass1m40+testAPKZIPpass; nativecorrectionnot_run/no retrigger. ENGLISH-DOWNLOADS-NATIVE-R1-20261014.md.",
+    "rulings_atomic_import_local": "Source90c3a70/tests5ea27c9: independent design+exact-source durabilityACK. Core/catalog284tests passed51s; final wholecheck/lint/debug/alltestAPK SUCCESS9m40,115XML1075tests0failure/error/skip,8APKsZIP16KiBpass.15actualSQLite importer tests incl500ms ack timeout/recoverablecleanup. Schema7 unchanged; real importer unbound, no Android/sourceauthority/DI/UI/native acceptance. RULINGS-ATOMIC-IMPORT-LOCAL-20261014.md.",
+    "rulings_full_feed": "not_run: bounded fixedmetadata GET403 at2026-10-14T20:28:59Z. Current runtime observation confirms restricted/enforced network policy excludes Scryfall; no corpus downloaded/no bypass. Local implementation continues; supported host access required before actual full-feed proof."
   },
-  "last_completed": "Root exclusive. Ruling schema7/reader cf33f57 exactreviewACK/whole1058tests+lint+APKsZIPpass. Native12f runfailed3Backtests; correction29d64ee reviewACK/19focusedlocalpass, nativefixnot_run. Nextatomicrulingsimport designreview/batchimplementation. No Gradle running/no finishedAPK/GameService HOLD.",
-  "updated_utc": "2026-10-14T20:17:41Z",
+  "last_completed": "Root exclusive. Atomic ruling importer90c3a70/tests5ea27c9 exactreviewACK; whole1075tests/lint/APKsZIPpass. Next reviewed source admission/shared factory/schema8. Full live feed policy-blocked; native Back correction not_run. No Gradle running, no finished APK/GameService HOLD; continue local-first under D-28.",
+  "updated_utc": "2026-10-14T20:39:37Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
