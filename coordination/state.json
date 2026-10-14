@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-profiles-92",
-  "verified_base_head": "07fdbd038072e89460d4baef6fc75a29655bd45f",
+  "checkpoint_id": "cp-20261014-life-game-store-93",
+  "verified_base_head": "4e447a8c94c896869a28d2be29264753b1967f2f",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "complete-profiles-and-integrate-scryfall",
+  "first_action": "complete-checked-game-store",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Profile codec port/repository design and source reviewed; API23 Base64 and metadata/UTF8 corruption findings fixed with actual tests/bytecode. Final whole667 cases pass; actual game store/service/UI remain pending.",
+  "review_status": "Bounded game creation/read persistence exact design/source APPROVE; local682 JVM/check/debug0fail/error/skip. Full structural graph/event/result/alert/undo/source guards and real service/UI remain pending.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -62,9 +62,10 @@
     "life_payload_codec": "Design/exactsource approved; local APIabsenceRED82s, firstGREEN100s; final63XML627JVM0failure/error/skip, check/lint/debugassemble9m3s, APK9fe70edf16KiBZIPalignmentpassed.13codec tests include separatearchive>4MiBcombined. No schema6/service/native/physical claim.",
     "life_schema6_local": "Source/design approved. Actual KSP6 c46511a5:18priorentitiesidentical/24total. Host31storage0failure/error/skip91s incl5realSQLite migration/reopen/constraints/CAS/rollback. Wholecheck/debug+focusedtestAPKs235s64XML632JVM0fail/error/skip;16KiBZIPpass. Native pending at that historical checkpoint, subsequently passed focused35 cases; see life_schema6_native. No service/UI.",
     "life_profiles_local": "Final wholecheck/debug113s67XML667JVM0failure/error/skip; storage49 including13profile realSQLite/codec cases, catalog173 including13metadata cases. Portable Base64 bytecode and APK16KiBZIP alignment checked. SQLmetadata/UTF8 RED-to-GREEN, cancellation rollback/CAS/reopen/paging/history preservation. No service/UI/native claim.",
-    "life_schema6_native": "Frozen c997c773 focused API36 run38484784441 success:3network32storage0failure/error/skip, Room migration/open checks. Detailed report SCHEMA6-LOCAL-20261013.md."
+    "life_schema6_native": "Frozen c997c773 focused API36 run38484784441 success:3network32storage0failure/error/skip, Room migration/open checks. Detailed report SCHEMA6-LOCAL-20261013.md.",
+    "life_game_store_local": "Exact bounded design/source APPROVE. APIabsence52s/behavior9RED55s then9GREEN73s; full storage64/8XML incl15Store0fail/error/skip125s. Final wholecheck/debug76s68XML682JVM0fail/error/skip,16KiBZIPalignment pass. No source/event/full-domain/Room/concurrency/service/UI acceptance."
   },
-  "last_completed": "Reviewed checked profile repository/codec port and scoped Scryfall integration; final local667JVM/check/debug0failure/error/skip. SQL UTF8 replacement and API23 linkage fixed. Profiles DONE; root TAKES checked game creation/read store next; history audit OPEN.",
-  "updated_utc": "2026-10-14T04:29:40Z",
+  "last_completed": "Reviewed actual lazy idempotent game creation/read; local64storage incl15Store and whole682JVM/check/debug pass0fail/error/skip. Game-store DONE; root TAKES structural snapshot graph guards, history audit OPEN. No operational service/UI acceptance.",
+  "updated_utc": "2026-10-14T05:42:10Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

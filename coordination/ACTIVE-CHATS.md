@@ -1,12 +1,12 @@
 # Cross-chat coordination — current readback 2026-10-14
 
-Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles and Scryfall integration are DONE. Checked game creation/read persistence is TAKEN by recovery; history/service audit is OPEN.
+Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles and Scryfall integration are DONE. Checked game creation/read persistence is DONE; structural snapshot graph validation is TAKEN by recovery; history/service audit is OPEN.
 
 ## Recovery orchestrator
 
-Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Completed codec2/schema6 and checked profile persistence. Final coherent local wholecheck/debug667JVMtests,0failures/errors/skips; schema6 focused API36 previously passed3network/32storage. Evidence docs/verification/m2-life/PROFILES-LOCAL-20261014.md and SCHEMA6-LOCAL-20261013.md. No operational service/UI/full-v1 claim.
+Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Completed codec2/schema6 and checked profile persistence. Final coherent local wholecheck/debug682JVMtests,0failures/errors/skips; schema6 focused API36 previously passed3network/32storage. Evidence docs/verification/m2-life/GAME-STORE-LOCAL-20261014.md, PROFILES-LOCAL-20261014.md and SCHEMA6-LOCAL-20261013.md. No operational service/UI/full-v1 claim.
 
-Next unit cx-m2-life-game-store-01 is TAKEN: internal checked creation/read persistence design/review then actual SQLite implementation. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
+Next unit cx-m2-life-snapshot-graph-01 is TAKEN: design/review and pure structural graph guards before event/checkpoint mutation and real service binding. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
 
 ## Other chat — completed, no active claim
 

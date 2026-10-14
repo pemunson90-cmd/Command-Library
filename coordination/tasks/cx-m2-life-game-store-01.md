@@ -1,4 +1,4 @@
-# Checked game creation/read persistence — TAKEN
+# Checked game creation/read persistence — DONE
 
 Owner: codex-thread-recovery-20261013; branch agent/cx-thread-recovery-20261013. Parent cx-m2-life-functional-01. Root life-functional lock continues; no component writer owns these files.
 
@@ -12,4 +12,6 @@ Acceptance: meaningful RED→GREEN with actual SQLite reopen, duplicate operatio
 
 ## Latest continuation delta
 
-TAKEN. Profiles and Scryfall publishedb8b103e; clean repository verified after environment restart. Lazy initializer rationale independently reviewed: lookup before initialization, semantic retry equality, current checkpoint returned without comparing current settings to original input; callback can repeat only after uncommitted failures. Concrete spec/plan written2026-10-14-life-game-store; exact written spec/plan independently approved; absence/complete variant invariants clarified. Public concrete visibility enables actual storage integration tests, no new core port/DI. Implementation/tests not_run. Next: actual SQLite RED tests and code; keep result/alert/event/full graph/service obligations explicit.
+DONE bounded foundation: SqlLifeGameStore/StoredLifeGame and focused SQL/row/initial-state helpers implement actual lazy idempotent create/read, exact original input/hash storage, current core/seat projection checks, bounded strict UTF8/nullable metadata and atomic rollback. Exact written design/source independently APPROVED. APIabsence52s/behavior9fail55s then9GREEN73s; expanded64storage incl15Store cases125s; final whole68XML682JVM/check/debug0failure/error/skip76s and16KiB alignment passed. Evidence docs/verification/m2-life/GAME-STORE-LOCAL-20261014.md.
+
+No event/result/alert/full domain/undo/source authority or operational service/UI acceptance. Next root TAKEN cx-m2-life-snapshot-graph-01 before event/checkpoint mutation adapters. History audit remains OPEN for other chat. Existing root life-functional lock continues; this bounded unit is complete and no separate writer remains.

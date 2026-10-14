@@ -34,7 +34,6 @@ internal class HostLifeDatabase(file: File, initialize: Boolean = true) : Databa
     }
     private fun rows(r: SqlRequest, cancel: CancelToken): SnapshotList<RowData> {
         cancel.throwIfCancelled()
-        if (r.statement.contains("SELECT payload")) blobQueries++
         return connection.prepare(r.statement).use { s ->
             bind(s,r)
             val rows = mutableListOf<RowData>()
@@ -44,7 +43,10 @@ internal class HostLifeDatabase(file: File, initialize: Boolean = true) : Databa
                     val v = when(s.getColumnType(i)) {
                         1 -> SqlValue.Integer(s.getLong(i))
                         3 -> SqlValue.Text(s.getText(i))
-                        4 -> SqlValue.Blob(SnapshotBytes(s.getBlob(i)))
+                        4 -> {
+                            if(s.getColumnName(i) in setOf("payload","creation_payload","checkpoint_payload")) blobQueries++
+                            SqlValue.Blob(SnapshotBytes(s.getBlob(i)))
+                        }
                         5 -> SqlValue.Null
                         else -> error("Unexpected SQL type")
                     }

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T04:29:40Z",
-  "expires_utc": "2026-10-14T05:14:40Z",
-  "checkpoint_id": "cp-20261014-life-profiles-92",
-  "note": "Recovery retains sole shared/life orchestration. Profiles and disjoint Scryfall integration complete; checked game creation/read store TAKEN next, history audit OPEN. No other active component claim."
+  "heartbeat_utc": "2026-10-14T05:42:10Z",
+  "expires_utc": "2026-10-14T06:27:10Z",
+  "checkpoint_id": "cp-20261014-life-game-store-93",
+  "note": "Recovery retains shared/life orchestration. Checked game creation/read store complete; structural snapshot graph validation TAKEN next. History audit OPEN, no active component writer."
 }
