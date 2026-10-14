@@ -1,5 +1,11 @@
 # Frozen development integration — merge HOLD
 
+Current status: MERGED after Pat's explicit approval, exact guarded PR21 merge `be663b2b48a83c35f52586a3f804ca16a0fbf2cc`. Root acceptance and live-branch routing: [ROOT-MERGE-20261014.md](ROOT-MERGE-20261014.md). Android v1 remains incomplete; no APK delivery.
+
+The following preparation report is retained as historical evidence. Its old HOLD and next-action text is superseded by that acceptance record; use the named live continuation branch for current assignments.
+
+## Historical preparation report
+
 Authorized by Pat's relayed orchestrator ACK on 2026-10-14 for isolated PR preparation and testing only. Final merge remains HOLD for the live orchestrator's review of the exact candidate. This is an internal development checkpoint; no unfinished APK delivery or complete-v1 acceptance is authorized.
 
 ## Scope and immutable inputs
