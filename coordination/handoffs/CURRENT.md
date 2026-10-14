@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-random-predecessor-107
+Checkpoint-ID: cp-20261014-life-history-query-108
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. review-life-offline-history-query
+Next step: 3. implement-reviewed-life-sqlite-lifecycle
 
-Updated UTC: 2026-10-14T09:51:18Z
+Updated UTC: 2026-10-14T10:04:14Z
 Status: in_progress; lease: active.
-Verified base: e925f9ba646a4477fd065f0fe1aaec302586b44a.
+Verified base: 084d79f610751995abfc6bff3490c9e3640a08c7.
 
-Random predecessore925f9b approved verified855JVM; offline history query design review next, umbrella TAKEN; audits OPEN.
+History084d79f approved verified865JVM; approved actual SQLite creation/read/recovery/checkpoint lifecycle next, umbrella TAKEN; audits OPEN.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

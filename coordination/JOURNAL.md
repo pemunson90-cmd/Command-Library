@@ -459,3 +459,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T09:38:03Z | codex | cp-20261014-life-action-context-106 | containing commit | Action context73b3e17 approved verified846JVM; reviewed same-tx random predecessor scan next, umbrella TAKEN; audits OPEN.
 
 2026-10-14T09:51:18Z | codex | cp-20261014-life-random-predecessor-107 | containing commit | Random predecessore925f9b approved verified855JVM; offline history query design review next, umbrella TAKEN; audits OPEN.
+
+2026-10-14T10:04:14Z | codex | cp-20261014-life-history-query-108 | containing commit | History084d79f approved verified865JVM; approved actual SQLite creation/read/recovery/checkpoint lifecycle next, umbrella TAKEN; audits OPEN.
