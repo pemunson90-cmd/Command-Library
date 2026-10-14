@@ -1,5 +1,9 @@
 # Shared continuation protocol
 
+## Main integration routing
+
+This main checkout contains the accepted frozen foundation. Active development, state, lease and component assignments live on `agent/cx-thread-recovery-20261013`. Fetch that branch and read its entrypoint and live coordination before any write or assignment. This main routing snapshot and historical locks are not a takeover invitation; root retains exclusive active development and final merge authority. Newer recovery product work is not yet integrated, and Android v1 is incomplete.
+
 Applies to Codex, GPT, Claude and Claude Code. The repository must remain resumable without chat history, but normal resume should be fast and should not require rereading the whole project.
 
 See `docs/gauntlet/DOCUMENTATION_POLICY.md` for documentation authority and duplication rules.

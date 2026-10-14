@@ -1,5 +1,7 @@
 # Command Library
 
+Active development and live coordination are on `agent/cx-thread-recovery-20261013`; read that branch before picking work. Main is a frozen foundation checkpoint. Android v1 remains incomplete; no unfinished APK delivery.
+
 Personal-first, offline-first Magic: The Gathering companion for Android phones, foldables and tablets. Android version 1 is Kotlin. Windows is a separate Flutter version 2 after Android v1 is accepted, and Android/Windows sync is deferred until both offline apps run. English is the default dataset; non-English downloads require explicit user approval.
 
 ## Current status

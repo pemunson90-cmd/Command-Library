@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261013-life-integrated-56
+Checkpoint-ID: cp-20261014-main-freeze-route-122
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. Implement guarded K3 platform/drainer bindings; next life contracts task active under newlock
+Next step: 3. Fetch agent/cx-thread-recovery-20261013 and resume its live state/lease/task; main is an integration-only routing snapshot.
 
-Updated UTC: 2026-10-13T01:51:50Z
-Status: Full Android v1 execution active; incomplete; lease: active.
-Verified base: bebf6f0dd223567098be5ca1c928610952e828c3.
+Updated UTC: 2026-10-14T14:11:00Z
+Status: integration_checkpoint_incomplete_app; lease: released.
+Verified base: be663b2b48a83c35f52586a3f804ca16a0fbf2cc.
 
-PR17 expectedhead6fa6043 mergedmain3cc82c25 after428JVM/66nativeeach pass; oldlife lock released/newfunctional task assigned. Bulk/settings source reviewed and integrated,172 combined JVM and56 DataStore tests pass; bindings pending
+PR21 approved by Pat and mergedbe663b2; frozen tested product retained. Live root development/lease/locks remain exclusively on agent/cx-thread-recovery-20261013; no newer product or unfinished APK delivery.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

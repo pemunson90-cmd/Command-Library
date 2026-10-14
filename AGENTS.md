@@ -1,5 +1,9 @@
 # Command Library agent entrypoint
 
+## Main integration routing
+
+This main checkout contains the accepted frozen foundation. Active development, state, lease and component assignments live on `agent/cx-thread-recovery-20261013`. Fetch that branch and read its entrypoint and live coordination before any write or assignment. This main routing snapshot and historical locks are not a takeover invitation; root retains exclusive active development and final merge authority. Newer recovery product work is not yet integrated, and Android v1 is incomplete.
+
 Android version 1 is Kotlin. Windows is a separate Flutter version 2 after Android v1 is accepted. Sync is later, after both offline apps run and explicit authorization is recorded.
 
 Do not maintain a separate Codex protocol here. The active cross-model protocol is `CONTINUE.md`, and documentation authority is defined by `docs/gauntlet/DOCUMENTATION_POLICY.md`.

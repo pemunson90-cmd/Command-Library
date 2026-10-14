@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "active",
+  "status": "released",
   "session_id": "codex-full-v1-execution-20261012",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-13T01:51:50Z",
-  "expires_utc": "2026-10-13T02:36:50Z",
-  "checkpoint_id": "cp-20261013-life-integrated-56",
-  "note": "Codex full-v1 orchestration; Claude life and full-framing assignments disjoint; earlier workers complete, hosted gates pending."
+  "heartbeat_utc": "2026-10-14T14:11:00Z",
+  "expires_utc": "2026-10-14T14:11:00Z",
+  "checkpoint_id": "cp-20261014-main-freeze-route-122",
+  "note": "Fetch agent/cx-thread-recovery-20261013 and read its AGENTS/state/ORCHESTRATOR/current task before any assignment or write; this main snapshot is integration-only. Active root lease on that branch is retained; this released main routing record does not release it."
 }
