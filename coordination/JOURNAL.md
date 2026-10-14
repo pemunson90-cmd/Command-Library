@@ -537,3 +537,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T22:58:49Z | codex | cp-20261014-query-parser-146 | containing commit | Parser8509659 design/source ACK90pass+81model. Next expose actual indexed Oracle text capability/UI, focused checks. Local unpublished/GitHub token rejected.
 
 2026-10-14T23:06:45Z | codex | cp-20261014-oracle-text-search-147 | containing commit | Oracle text cda372d reviewed/actualSQLite/controller/UI/compilepass; continue local name suggestions. Local unpublished/token rejected, native r3prepared/notrun.
+
+2026-10-14T23:14:45Z | codex | cp-20261014-name-suggestions-148 | containing commit | Autocomplete46d143d36focused/nativecompilepass53s. Next reviewed exact glossary links, no guessed IDs. Local unpublished/token rejected; native r3notrun.

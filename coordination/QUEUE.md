@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261014-oracle-text-search-147. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
+Checkpoint-ID: cp-20261014-name-suggestions-148. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

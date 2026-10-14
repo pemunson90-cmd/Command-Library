@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T23:06:45Z",
-  "expires_utc": "2026-10-14T23:51:45Z",
-  "checkpoint_id": "cp-20261014-oracle-text-search-147",
-  "note": "Root sole writer/final merge. Local cda372d Oracle text reviewed/SQLite/controller/UI+compile51s/copy29s; parser8509659 reviewed90pass. Next existing-index local name suggestions, presentation-only focused batch. Native r3d5d3026 not run; token rejected/remote91ce357, userrefreshpending. Prior ef7 1113whole retained. Fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-14T23:14:45Z",
+  "expires_utc": "2026-10-14T23:59:45Z",
+  "checkpoint_id": "cp-20261014-name-suggestions-148",
+  "note": "Root sole writer/final merge. Local46d143d autocomplete36focused/nativecompilepass53s; prior Oracle text/parser reviewed. Next exact installed glossary-link capability plan under required review. LOCAL unpublished/token rejected remote91ce357; native r3d5d3026 prepared/notrun/prior ef7 1113whole retained. Fullv1 incomplete/GameService HOLD/no finished APK."
 }
