@@ -177,6 +177,46 @@ class SqlLifeGameStoreTest {
                 fails(store.read(first.checkpoint.snapshot.id,token),FailureCode.CORRUPT_DATA);assertEquals(0,db.blobQueries)
             }
     }
+    @Test fun contradictoryCurrentGraphsBlockReadAndLazyRetry()=runBlocking {
+        val original=initial().snapshot
+        val missing=EntityId("missing")
+        val invalid=listOf(
+            original.copy(settings=original.settings.copy(counterDefinitions=SnapshotList.copyOf(original.settings.counterDefinitions.map{it.copy(role=CounterRole.OTHER)}))),
+            original.copy(counters=SnapshotList.of(CounterState(EntityId("life"),missing,null,20,false))),
+            original.copy(clock=original.clock.copy(paused=false)),
+            original.copy(designations=GameDesignations(monarch=missing)),
+            original.copy(result=Knowledge.Known(GameResult(EntityId("result"),original.id,SnapshotList.of(missing),stamp,"bad",Revision(0),false))),
+            original.copy(elapsed=original.elapsed.copy(paused=false)))
+        for(snapshot in invalid) HostLifeDatabase(folder.newFile()).use { db ->
+            val store=SqlLifeGameStore(db,codec);create(store)
+            val bytes=ok(codec.encodeCheckpoint(initial().copy(snapshot=snapshot))).copyBytes()
+            db.connection.prepare("UPDATE life_game SET checkpoint_payload=?").use {it.bindBlob(1,bytes);it.step()}
+            fails(store.read(original.id,token),FailureCode.CORRUPT_DATA)
+            fails(store.create(input(),{throw AssertionError("Corrupt retry initialized")},token),FailureCode.CORRUPT_DATA)
+            assertEquals(1L,db.scalar("SELECT count(*) FROM life_game"))
+        }
+    }
+    @Test fun invalidVariantPhaseFromInitializerLeavesNoRows()=runBlocking {
+        val (input,checkpoint)=variant()
+        val bad=checkpoint.copy(snapshot=checkpoint.snapshot.copy(variants=SnapshotList.of(checkpoint.snapshot.variants.single().copy(phase="missing"))))
+        HostLifeDatabase(folder.newFile()).use { db ->
+            fails(SqlLifeGameStore(db,codec).create(input,{Outcome.Success(bad)},token),FailureCode.INVALID_INPUT)
+            assertEquals(0L,db.scalar("SELECT count(*) FROM life_game"))
+            assertEquals(0L,db.scalar("SELECT count(*) FROM life_seat_search"))
+        }
+    }
+    @Test fun corruptedVariantGraphIsRejectedButUnknownElapsedLineageIsPreserved()=runBlocking {
+        val (input,checkpoint)=variant()
+        HostLifeDatabase(folder.newFile()).use { db ->
+            val store=SqlLifeGameStore(db,codec);ok(store.create(input,{Outcome.Success(checkpoint)},token))
+            val legacy=checkpoint.copy(snapshot=checkpoint.snapshot.copy(elapsed=checkpoint.snapshot.elapsed.copy(turnLineageId=Knowledge.Unknown("Legacy",SnapshotList.empty()))))
+            fun write(value:GameCheckpoint) { db.connection.prepare("UPDATE life_game SET checkpoint_payload=?").use {it.bindBlob(1,ok(codec.encodeCheckpoint(value)).copyBytes());it.step()} }
+            write(legacy);assertEquals(legacy,ok(store.read(checkpoint.snapshot.id,token)).checkpoint)
+            val badState=legacy.snapshot.variants.single().copy(drawn=SnapshotList.of(ProviderIdentity(provider,"variant-card","missing")))
+            write(legacy.copy(snapshot=legacy.snapshot.copy(variants=SnapshotList.of(badState))))
+            fails(store.read(checkpoint.snapshot.id,token),FailureCode.CORRUPT_DATA)
+        }
+    }
     private fun variant():Pair<GameCreation,GameCheckpoint> {
         val unknown=Knowledge.Absent("Synthetic source absence")
         val provenance=Provenance(provider,null,unknown,unknown,stamp,unknown,null,null,null)

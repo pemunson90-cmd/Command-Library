@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261014-life-game-store-93
+Checkpoint-ID: cp-20261014-life-snapshot-graph-94
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. complete-checked-game-store
+Next step: 3. design-checked-life-event-reads
 
-Updated UTC: 2026-10-14T05:42:10Z
+Updated UTC: 2026-10-14T06:08:11Z
 Status: in_progress; lease: active.
-Verified base: 4e447a8c94c896869a28d2be29264753b1967f2f.
+Verified base: b8bbe7d75085297bf061d044a4c70ca3c411b9cc.
 
-Reviewed actual lazy idempotent game creation/read; local64storage incl15Store and whole682JVM/check/debug pass0fail/error/skip. Game-store DONE; root TAKES structural snapshot graph guards, history audit OPEN. No operational service/UI acceptance.
+Current structural graph guards reviewed and integrated; local698JVM/check/debug0fail/error/skip,67storage incl18Store,alignment pass. Snapshot-graph DONE; root TAKES bounded immutable event/archive reads before mutation/CAS/service. History audit OPEN; no operational UI/full-v1 claim.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -4,7 +4,7 @@
   "agent_task": "cx-m2-life-functional-01",
   "branch": "agent/cx-thread-recovery-20261013",
   "base_commit": "bebf6f0dd223567098be5ca1c928610952e828c3",
-  "owner": "Recovery root; checked game creation/read complete, structural snapshot graph guards TAKEN next; no component writer.",
+  "owner": "Recovery root; structural snapshot guards complete, checked immutable event/archive reads TAKEN next; no component writer.",
   "owned_paths": [
     "android-app/feature/life/**",
     "coordination/tasks/cx-m2-life-functional-01.md",

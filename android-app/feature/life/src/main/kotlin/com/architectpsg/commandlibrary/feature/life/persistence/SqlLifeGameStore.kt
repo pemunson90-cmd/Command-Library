@@ -2,13 +2,14 @@ package com.architectpsg.commandlibrary.feature.life.persistence
 
 import com.architectpsg.commandlibrary.core.model.*
 import java.security.MessageDigest
+import com.architectpsg.commandlibrary.feature.life.domain.SnapshotGraphValidator
 
 public data class StoredLifeGame(public val creation: GameCreation, public val checkpoint: GameCheckpoint, public val sequence: Long) {
     init { require(sequence >= 0) }
 }
 
 /**
- * Creation and core/seat projection persistence only. Full event/result/alert/domain lineage guards
+ * Creation, structural graph and core/seat projection persistence. Full event/result/alert lineage guards
  * and operational GameService binding remain separate. Initializer runs only for a new operation;
  * it must be local and must not perform nested database transactions or external durable effects.
  */
@@ -61,7 +62,7 @@ public class SqlLifeGameStore(private val db: Database, private val codec: LifeP
         corruptGame(creation.operationId.value == meta.operation, "Game operation/payload mismatch")
         val checkpoint = gameValue(codec.decodeCheckpoint(blob(tx, meta.id, "checkpoint_payload", meta.checkpointLength, cancel)))
         val game = checkpoint.snapshot
-        if (game.version != 1) throw GameStoreProblem(Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Unsupported game model version"))
+        gameValue(SnapshotGraphValidator.validate(game))
         val ended = (game.endedAt as? Knowledge.Known)?.value
         corruptGame(game.id == meta.id && game.revision.value == meta.revision && game.status == meta.status &&
             game.startedAt == meta.started && ended == meta.ended, "Game checkpoint/projection mismatch")

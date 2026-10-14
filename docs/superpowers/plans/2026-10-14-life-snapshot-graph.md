@@ -20,11 +20,13 @@ Files: feature/life domain/SnapshotGraphValidator.kt, SnapshotVariantValidator.k
 
 Files: persistence/SqlLifeGameStore.kt and LifeGameInitialState.kt; data/storage test/.../life/SqlLifeGameStoreTest.kt.
 
-- [ ] Add real SQLite adversarial checkpoint tests (invalid role, dangling counter, malformed clock/result/variant) with actual encoded payloads; prove caller-invalid initialization leaves no rows and current corrupt graph blocks read/idempotent retry.
-- [ ] Observe behavioral RED in :data:storage:testDebugUnitTest. Invoke validator on new initialized snapshot and decoded current checkpoint. Preserve UNSUPPORTED for reads, map rejected new initializer to INVALID_INPUT. Remove duplicated version guard only if equivalent. Preserve all existing metadata limits/lazy retry/transaction behavior.
-- [ ] GREEN focused life/storage regression with existing actual bundled SQLite; independent integration review.
-- [ ] Run local check :app:assembleDebug, count actual XML, APK ZIP alignment. Record evidence and task delta, checkpoint/continuity/Python checks and publish. Then claim next prerequisite, do not stop at component completion.
+- [x] Add real SQLite adversarial checkpoint tests (invalid role, dangling counter, malformed clock/result/variant) with actual encoded payloads; prove caller-invalid initialization leaves no rows and current corrupt graph blocks read/idempotent retry.
+- [x] Observe behavioral RED in :data:storage:testDebugUnitTest. Invoke validator on new initialized snapshot and decoded current checkpoint. Preserve UNSUPPORTED for reads, map rejected new initializer to INVALID_INPUT. Remove duplicated version guard only if equivalent. Preserve all existing metadata limits/lazy retry/transaction behavior.
+- [x] GREEN focused life/storage regression with existing actual bundled SQLite; independent integration review.
+- [x] Run local check :app:assembleDebug, count actual XML, APK ZIP alignment. Record evidence and task delta, checkpoint/continuity/Python checks and publish. Then claim next prerequisite, do not stop at component completion.
 
 ## Review focus
 
 Legacy OTHER-only metadata remains codec-readable but cannot be silently rebound; missing roles must fail guard. Paused retained anchors are valid; unknown lineage does not authorize charging. Negative ALERT overtime remains finite and representable. Current alerts are not entire historical delivery ledger. Mutable definition and wall-clock changes do not rewrite historical loss evidence or impose UTC chronology. Each is covered in Task1 positive/adversarial cases, not deferred to physical testing.
+
+Final execution evidence: SNAPSHOT-GRAPH-LOCAL-20261014.md. Independent design/source/integration approved; whole698localJVM/check/debug pass, no deferred review findings. Next event-read prerequisite is a separate task, not an extension of this plan.

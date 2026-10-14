@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T05:42:10Z",
-  "expires_utc": "2026-10-14T06:27:10Z",
-  "checkpoint_id": "cp-20261014-life-game-store-93",
-  "note": "Recovery retains shared/life orchestration. Checked game creation/read store complete; structural snapshot graph validation TAKEN next. History audit OPEN, no active component writer."
+  "heartbeat_utc": "2026-10-14T06:08:11Z",
+  "expires_utc": "2026-10-14T06:53:11Z",
+  "checkpoint_id": "cp-20261014-life-snapshot-graph-94",
+  "note": "Recovery retains sole life/shared orchestration. Structural snapshot graph validation complete; checked event/archive reads TAKEN. History audit OPEN, no component writer."
 }
