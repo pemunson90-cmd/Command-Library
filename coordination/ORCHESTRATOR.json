@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T14:30:06Z",
-  "expires_utc": "2026-10-14T15:15:06Z",
-  "checkpoint_id": "cp-20261014-profile-controller-124",
-  "note": "Root active life/app/shell/shared ownership/finalmerge. Controller0a6dbff full87shell verified; next profileUI/navigationRED then actualprofilesappassembly. GameplaybindingHOLD sourceprereqs. FrozenPR21 merged/mainpostmergeSUCCESS; mainreleasedroutingrecord is not rootleaserelease."
+  "heartbeat_utc": "2026-10-14T15:06:01Z",
+  "expires_utc": "2026-10-14T15:51:01Z",
+  "checkpoint_id": "cp-20261014-profile-ui-review-125",
+  "note": "Root retains exclusive life/app/shell/shared development/finalmerge. Dirty profile UI candidate reviewed/fixesapplied; combined9controller+9UI tests running (prior initialhostidle failures notstale evidence). Next actualAppGraph RED/wiring/fulllocalgate. No overlapping app/shell writer. GameService remainsHOLD; no finishedAPK."
 }

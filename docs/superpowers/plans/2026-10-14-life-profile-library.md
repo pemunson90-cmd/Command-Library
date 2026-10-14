@@ -44,9 +44,9 @@ Files: shell ui/profiles/ProfilesScreen.kt, ui/ShellRoot.kt, presentation/ShellC
 
 Interfaces: consumes task1 controller/state; add ShellPorts.playerProfiles:PlayerProfileRepository?=null tail parameter. Conditional Profiles destination only when supplied; controller initializes refresh in existing scope.
 
-- [ ] Write failing Compose tests for absence without port, create/edit validation and retained input on failure, explicit delete confirmation/cancel, empty/loading/retry/load-more, narrow/large-font/wide scrolling/touch semantics.
-- [ ] Run named UI tests and observe RED before screen/navigation changes.
-- [ ] Implement labelled list/editor/dialog using existing adaptive scaffold and Problem resource mapping. No advanced edit controls that do nothing; retained advanced values may display as summaries. Busy write is visible; screen back cannot misreport a committed operation as unsaved.
+- [x] Write failing Compose tests for absence without port, create/edit validation and retained input on failure, explicit delete confirmation/cancel, empty/loading/retry/load-more, narrow/large-font/wide scrolling/touch semantics.
+- [x] Run named UI tests and observe RED before screen/navigation changes.
+- [x] Implement labelled list/editor/dialog using existing adaptive scaffold and Problem resource mapping. No advanced edit controls that do nothing; retained advanced values may display as summaries. Busy write is visible; screen back cannot misreport a committed operation as unsaved.
 - [ ] Run full shell suite and lint; resolve actual failures.
 - [ ] Commit UI and truthful continuation delta.
 
@@ -69,3 +69,7 @@ Task1 BASE6587568; controller APIabsenceRED131s → focused7GREEN88s → fullshe
 Pre-flight task1→task2: controller draft/cursor/status methods match screen needs. Ruling: create takes lifeLabel:String from the caller's actual string resource, so the pure controller never hardcodes persisted user-facing English. Explicit reloadEditor() rereads only the current existing profile after user requests discarding edits; failed reload retains draft. Needed to make stale-write reconciliation concrete rather than force endless retries against an old revision. Cost if wrong: internal controller/UI signature change only, no core API/migration.
 
 Pre-flight task2→task3: optional tail PlayerProfileRepository?=null preserves existing shell callers and absent destination; app supplies full real profile repository only. GameService gate stays unchanged. Ruling: use a text keyboard for signed life input if the existing numeric IME omits minus; step remains positive numeric. Validation uses full signed Int range and retained LIFE bounds, never an invented positive-life rule.
+
+Task2 candidate implemented after APIabsence RED125s. First UI run completed9m2s:7tests,6pass/1initial setContent AppNotIdleException before stale-edit actions; isolated same-case rerun pending. No claim of complete UI success. Task3 actual Application/Room shared probe and host-JNI preparation configuration added before binding; intended missing-profile-port RED pending. SDK34 host probe and compiled device probe remain separate; no device runtime claim. Existing independent reviewer inspecting exact current source.
+
+Review follow-up: global navigation remains actionable during nonmodal save and does not cancel shared controller scope. Busy delete modal must close independently while deletion continues; accepted correction with regressions. Unchanged legacy blank names remain valid when changing only numeric fields; newly blank rename still rejects. First app probe attempt10m32s scriptcachelock (concurrentGradle mistake), subsequent3m36s configuration identified eager crossproject task lookup before storage evaluation; changed to string task dependency plus actual task output resolved at testexecution. No expected app behavioral RED or JNI pass yet. Remaining builds serial.

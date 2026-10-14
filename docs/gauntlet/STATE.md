@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-profile-controller-124. Updated UTC: 2026-10-14T14:30:06Z.
+Checkpoint: cp-20261014-profile-ui-review-125. Updated UTC: 2026-10-14T15:06:01Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-implement-reviewed-profile-library-ui-red-green
+verify-profile-ui-then-wire-real-app-repository
 
-Profilecontroller0a6dbff7focused/full87shell passed; finalUIreview/appassembly pending. Mainpostmergebe663b2 success; continue actualprofileUI RED without GameServicebinding or APKdelivery.
+Profile UI candidate review corrections approved; local combined tests running, app assembly and full gate next. Preserve dirty source and exclusive root ownership.
 
 Read CURRENT, machine state and task card.

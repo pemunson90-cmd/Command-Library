@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-profile-controller-124",
-  "verified_base_head": "0a6dbff9e6f4a043ff20631c23fff702b7a03b05",
+  "checkpoint_id": "cp-20261014-profile-ui-review-125",
+  "verified_base_head": "1018d9e7eeb8fa314d2b8dfb295a0c2caf1122d3",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "implement-reviewed-profile-library-ui-red-green",
+  "first_action": "verify-profile-ui-then-wire-real-app-repository",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Profilelibraryarchitecture/compositionAPPROVE; controller0a6dbff7focused/full87shell passed, finalwholefeatureexact/UIreviewpending. Platform954JVM verified; gameplaybindingHOLD. FrozenPR21merged/mainpostmergesuccess.",
+  "review_status": "Profile UI/controller exact-source corrections independently APPROVE; combined GREEN pending. AppGraph complete profile binding still pending, GameService HOLD unchanged. Frozen PR21 merge/mainchecks passed.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -96,9 +96,10 @@
     "life_persisted_service_native": "Native verification attempt: pushed source1dc43908b81a3869fc064ea29ad3f5375f69640a to agent/cx-native-life-service-source-20261014 (Android tree identical to checkpointd3beaae). Only continuity38571765761 observed success; no focused Android run observed. Earlier checkpoint-only ref agent/cx-native-life-service-20261014 likewise only continuity38571695707. Manual gh workflow run failed at GET workflow endpoint with Forbidden; no dispatch/queued/runtime claim. Existing GitHub App GET remains usable. No CI edits, duplicate emulator runs or product changes. Next diagnose workflow availability/trigger using read-only Actions API, then execute exactly one focused run when callable; native and API23 remain not_run.",
     "life_platform_sources_local": "Sourcef0eff04 includes corrected boxedEntityId valueassertions; full check/debug/app+storageTestAPK954JVM96XML0failures/errors/skips474s/409tasks37executed.4providerSDK34shadowtests pass; app04df5b798ee206d297eef75cf2545bab34daa832a8be5b0e9df1e9ec86d6de6e, appTest8974d2cba41522badadae30f7d439194aab5246f35cf1135b9497b54a16a0011, storageTestunchanged2a940792; all3ZIP16KiBexit0. NativeprobeDEXincluded/not_run; no GameServicebinding. PLATFORM-SOURCES-LOCAL-20261014.md.",
     "life_profile_library_controller": "Source0a6dbff, APIabsenceRED131s\u21927focusedGREEN88s\u2192fullshell87tests12XML0failures/errors/skips290s. Realrevision/draftadvancedpreservation/validation/typedstatus/cancel/paginggeneration/confirmdelete. Internalunwiredcontroller; UI/appassemblynotyetimplemented, finalreviewpending. PROFILE-LIBRARY-LOCAL-20261014.md.",
-    "integration_main_postmerge": "Exactbe663b2 run38577738249 completedSUCCESS: JVM/build,API36emulator,internaldebugpromotion allsuccess; no manualduplicate. Actualcounts/imagesnotreextracted; frozenPRproof908JVM134native separate. Docs-onlymainrouteed76f72 andhistoricalHOLDannotation4a14703 continuity38578408988/38579249931success. Mainproductfreeze5a88846, notlatestrecovery."
+    "integration_main_postmerge": "Exactbe663b2 run38577738249 completedSUCCESS: JVM/build,API36emulator,internaldebugpromotion allsuccess; no manualduplicate. Actualcounts/imagesnotreextracted; frozenPRproof908JVM134native separate. Docs-onlymainrouteed76f72 andhistoricalHOLDannotation4a14703 continuity38578408988/38579249931success. Mainproductfreeze5a88846, notlatestrecovery.",
+    "life_profile_library_ui": "Dirty candidate: APIabsence RED125s; first UI7=6pass/1initialsetContentidle9m2s, isolatedsameidle7m38s (no stale-action evidence). Reviewregressions9controllerRED2expectedfails70s beforefix. Blanklegacyname/busydeletedismiss corrected/sourceAPPROVE. Combined9controller+9UI run active, notGREEN. AppJNI config fixed after scriptcachelock10m32s/eagertasklookup3m36s; app behaviorRED/realJNI/wiring/fullcheck/APKs pending. No native/device or finalapp claim."
   },
-  "last_completed": "Profilecontroller0a6dbff7focused/full87shell passed; finalUIreview/appassembly pending. Mainpostmergebe663b2 success; continue actualprofileUI RED without GameServicebinding or APKdelivery.",
-  "updated_utc": "2026-10-14T14:30:06Z",
+  "last_completed": "Profile UI candidate review corrections approved; local combined tests running, app assembly and full gate next. Preserve dirty source and exclusive root ownership.",
+  "updated_utc": "2026-10-14T15:06:01Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
