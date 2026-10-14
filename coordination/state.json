@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-life-counter-engine-99",
-  "verified_base_head": "83a7fc16d9195d52e6e78358831fe405c43e62c2",
+  "checkpoint_id": "cp-20261014-life-table-engine-100",
+  "verified_base_head": "56c116ac14660dc41cabefce317c17aba3159612",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "implement-reviewed-life-table-actions",
+  "first_action": "design-life-result-finish-reopen-actions",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Timing and first counter semantic slice architecture/source reviewed and verified780JVM/check/debug0fail/error/skip. Table slice design approved; remaining semantic/initializer/source/service/UI incomplete.",
+  "review_status": "Timing/counter/table slices independently reviewed and verified790JVM/check/debug0fail/error/skip. Result design next; semantic undo/event/initializer/source/service/UI incomplete.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -69,9 +69,10 @@
     "life_clock_graph_policy_local": "Accepted originalTiming policy gap corrected after2newtests RED96tests2fail56s; boundary/exactsource APPROVE.96life/83storageGREEN92s, wholecheck/debug100s71XML716JVM0fail/error/skip,16KiBZIPpass. ALERT/paused/inactivezero/elapsed preserved; no archivecodec change.",
     "life_game_mutations_local": "APIabsence64s/declaration92tests9fail88s. MAX unsafe65537byte and deliveryprojection bugs RED then100storageGREEN123s; legacyUndoUnknownRED58s then repaired. Expanded96life/108storageGREEN251s; final124s72XML743JVM0fail/error/skip,110storage incl27mutator,16KiBZIPpass. Reviewed static boundedexistence fix, no actual concurrentRoom/semanticengine/OS/UI acceptance.",
     "life_timing_engine_local": "Boundary98life2RED193s;99lifeGREEN/111storage1KnownlineageRED238s then111storageGREEN. Settlement103life4RED150s\u2192GREEN110s; controls110life4RED130s\u2192GREEN75s; undo115life5RED105s\u2192GREEN85s. Expanded122life/111storageGREEN131s; whole104s73XML770JVM0fail/error/skip,16KiBZIPpass. Independent reviews and requested group/finish/legacy/ackreplay cases passed. Pure helper only; no service/cadence/device acceptance.",
-    "life_counter_engine_local": "Declared132life10expectedRED49s\u2192implementedGREEN57s; exact-source APPROVE. Final185s74XML780JVM0fail/error/skip,check/debug,16KiBZIPpass. Exactnumeric canonicaldeltas, old/finalcandidate membership, globalturnreset and literal-vs-helperdamage covered. Parent semantic task remainsTAKEN; no service/UI/sourceauthority."
+    "life_counter_engine_local": "Declared132life10expectedRED49s\u2192implementedGREEN57s; exact-source APPROVE. Final185s74XML780JVM0fail/error/skip,check/debug,16KiBZIPpass. Exactnumeric canonicaldeltas, old/finalcandidate membership, globalturnreset and literal-vs-helperdamage covered. Parent semantic task remainsTAKEN; no service/UI/sourceauthority.",
+    "life_table_engine_local": "Architecture/exact-source APPROVE. RED142life10expectedfail73s\u2192GREEN71s; final175s75XML790JVM0fail/error/skip,check/debug,16KiBZIPpass. Settled explicit participation/designations/observationdismissal/ack/presentation; no automaticloss/result/sourceauthority or service/UI binding."
   },
-  "last_completed": "First semantic counter slice reviewed/verified:132life and whole780JVM/74XML0fail/error/skip,check/debug185s,alignmentpass. Semantic umbrella remains TAKEN; reviewed table/participation/ack slice RED next. History audit OPEN; no service/UI/full-v1 claim.",
-  "updated_utc": "2026-10-14T08:08:26Z",
+  "last_completed": "Table slice reviewed/verified:142life and whole790JVM/75XML0fail/error/skip,check/debug175s,alignmentpass. Semantic umbrella stays TAKEN; concrete finish/reopen result design next. History audit OPEN; no service/UI/full-v1 claim.",
+  "updated_utc": "2026-10-14T08:19:30Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

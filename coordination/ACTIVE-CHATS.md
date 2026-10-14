@@ -4,9 +4,9 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Final coherent local wholecheck/debug780JVMtests/74XML,0failure/error/skip;132life and111storage XML green;16KiBZIPalignmentpass. Timing source075736e; first counter slice83a7fc1. Evidence docs/verification/m2-life/COUNTER-ENGINE-LOCAL-20261014.md and TIMING-ENGINE-LOCAL-20261014.md. Schema6 focused API36 previously passed3network/32storage; no new native run. No operational service/UI/full-v1 claim.
+Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Final coherent local wholecheck/debug790JVMtests/75XML,0failure/error/skip;142life and111storage XML green;16KiBZIPalignmentpass. Timing source075736e; first counter83a7fc1 and table56c116a. Evidence docs/verification/m2-life/TABLE-ENGINE-LOCAL-20261014.md, COUNTER-ENGINE-LOCAL-20261014.md and TIMING-ENGINE-LOCAL-20261014.md. Schema6 focused API36 previously passed3network/32storage; no new native run. No operational service/UI/full-v1 claim.
 
-Current cx-m2-life-action-engine-01 TAKEN: first counter slice complete; table/participation/ack design approved, meaningful RED next before service binding. Timing architecture/source reviewed with requested grouped priority/finish/legacy/acknowledged replay tests passed. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
+Current cx-m2-life-action-engine-01 TAKEN: counter/table slices complete; result finish/reopen design next before service binding. Timing architecture/source reviewed with requested grouped priority/finish/legacy/acknowledged replay tests passed. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
 
 ## Other chat — completed, no active claim
 
