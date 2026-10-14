@@ -1,6 +1,6 @@
 # Frozen modern ruling integration run
 
-Status: run38647074457 in progress. JVM/build job116136458354 is compiling test APKs; native execution has not begun. Do not report device/source/live-feed acceptance before actual results.
+Status: run38647074457 FAILED before native execution. JVM/build116136458354 failed four of the five ruling source integration cases (21 app tests, four failures in the hosted log). Emulator116138976177 and debug promotion116138977128 were skipped. No device execution, captures or native acceptance.
 
 - Frozen branch: agent/cx-rulings-source-integration-r2-20261014.
 - Frozen head:9a2f6252789f98fb0ca9637c2425772b4f7c6634, parent341ed23a9eb1972ad9f3dfa8bcb4c5159102a177.
@@ -12,4 +12,6 @@ First ref-only snapshots agent/cx-rulings-source-integration-20261014 at341ed23 
 
 Purpose: actual Android private filesystem/provider UID/file pins, schema8/Room receipt integration, shared root recovery ownership, two-stage ruling UI and prior three profile system-Back corrections need a coherent device batch after local source/root/presentation work. New tests use synthetic wire bodies/ports; this is not publisher TLS/full-corpus or physical Fold7/canonical-package proof. Live Scryfall validation remains policy-blocked in the local environment.
 
-Root keeps development/final merge authority and continues local work on agent/cx-thread-recovery-20261013. Do not push later changes to the frozen branch. Read back this exact run's jobs, XML/artifacts/captures and retain truthful results; no blind rerun. Isolated worktree /workspace/rulings-native-snapshot-20261014 is preserved. Older English frozen runs remain historical; do not replace their failed evidence with this pending result.
+Root keeps development/final merge authority and continues local work on agent/cx-thread-recovery-20261013. Do not push later changes to the frozen branch. Read back this exact run's jobs, XML/artifacts/captures and retain truthful results; no blind rerun. Isolated worktree /workspace/rulings-native-snapshot-20261014 is preserved. Older English frozen runs remain historical; do not replace their failed evidence with this failed result.
+
+Local diagnosis: a fresh single-use Gradle daemon under umask0022 reproduced exactly four source integration failures (five cases total,52s). The former local0077 environment masked artifact-directory/file permissions that the private locator correctly rejects. Root is correcting explicit private creation permissions; no locator guard is relaxed and the frozen snapshot remains unchanged. Hosted log retained at /tmp/rulings-native-jvm-116136458354.log. Artifact11933550682 exists, but the FileService download was blocked by the enforced proxy; no XML ZIP was extracted and the hosted test count is log-based. No bypass or blind rerun.

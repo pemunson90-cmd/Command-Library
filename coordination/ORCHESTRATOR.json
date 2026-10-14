@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T22:24:06Z",
-  "expires_utc": "2026-10-14T23:09:06Z",
-  "checkpoint_id": "cp-20261014-rulings-native-freeze-142",
-  "note": "Root sole writer/final merge. Local ruling4a source/root/UI ACK+1108wholepass. Frozen9a2f625/run38647074457 IN_PROGRESS (build compiling, native notbegun), samecompiledinputs; preserve snapshots. Continue local cardkeyword\u2192rules navigation, follow exact run/no duplicate. Livefeed blocked/fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-14T22:42:28Z",
+  "expires_utc": "2026-10-14T23:27:28Z",
+  "checkpoint_id": "cp-20261014-private-artifacts-keywords-143",
+  "note": "Root sole writer/final merge. ef7eddd owner-only artifact permissions/recovery reviewed+12fresh0022pass49s; de135ae keyword15pass37s. Combined fresh0022 whole/lint/APKs session27627 RUNNING, no pass claimed. Frozen9a2f625/run38647074457 FAILED pre-native; preserve/no blind rerun. Fullv1 incomplete/GameService HOLD/no finished APK."
 }
