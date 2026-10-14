@@ -127,17 +127,17 @@ private fun CounterEditorScreen(counter: ProfileCounterEditor, controller: Profi
             counter.error(ProfileCounterValidation.MAXIMUM, R.string.profile_counter_invalid_integer))
         Text(stringResource(R.string.profile_counter_loss_title), style = MaterialTheme.typography.titleMedium)
         Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            CounterLossChoice(counter.loss == ProfileCounterLoss.NONE, { controller.changeCounterLoss(ProfileCounterLoss.NONE) },
+            ProfileRadioChoice(counter.loss == ProfileCounterLoss.NONE, { controller.changeCounterLoss(ProfileCounterLoss.NONE) },
                 stringResource(R.string.profile_counter_loss_none), ProfileCounterTags.LOSS_NONE, enabled)
-            CounterLossChoice(counter.loss == ProfileCounterLoss.ABOVE, { controller.changeCounterLoss(ProfileCounterLoss.ABOVE) },
+            ProfileRadioChoice(counter.loss == ProfileCounterLoss.ABOVE, { controller.changeCounterLoss(ProfileCounterLoss.ABOVE) },
                 stringResource(R.string.profile_counter_loss_above), ProfileCounterTags.LOSS_ABOVE, enabled)
-            CounterLossChoice(counter.loss == ProfileCounterLoss.BELOW, { controller.changeCounterLoss(ProfileCounterLoss.BELOW) },
+            ProfileRadioChoice(counter.loss == ProfileCounterLoss.BELOW, { controller.changeCounterLoss(ProfileCounterLoss.BELOW) },
                 stringResource(R.string.profile_counter_loss_below), ProfileCounterTags.LOSS_BELOW, enabled)
         }
         if (counter.loss != ProfileCounterLoss.NONE) ProfileField(counter.threshold, controller::changeCounterThreshold,
             stringResource(R.string.profile_counter_threshold), ProfileCounterTags.THRESHOLD, enabled,
             counter.error(ProfileCounterValidation.THRESHOLD, R.string.profile_counter_invalid_integer))
-        CounterToggle(counter.useColor, controller::changeCounterUseColor, stringResource(R.string.profile_counter_use_color), ProfileCounterTags.USE_COLOR, enabled)
+        ProfileToggle(counter.useColor, controller::changeCounterUseColor, stringResource(R.string.profile_counter_use_color), ProfileCounterTags.USE_COLOR, enabled)
         if (counter.useColor) {
             ProfileField(counter.color, controller::changeCounterColor, stringResource(R.string.profile_counter_color), ProfileCounterTags.COLOR, enabled,
                 counter.error(ProfileCounterValidation.COLOR, R.string.profile_counter_invalid_color), KeyboardType.Ascii)
@@ -147,7 +147,7 @@ private fun CounterEditorScreen(counter: ProfileCounterEditor, controller: Profi
                     .border(1.dp, MaterialTheme.colorScheme.outline).semantics { contentDescription = description })
             }
         } else Text(stringResource(R.string.profile_counter_color_unset))
-        CounterToggle(counter.reset == CounterResetPolicy.ON_TURN_START,
+        ProfileToggle(counter.reset == CounterResetPolicy.ON_TURN_START,
             { controller.changeCounterReset(if (it) CounterResetPolicy.ON_TURN_START else CounterResetPolicy.MANUAL) },
             stringResource(R.string.profile_counter_reset_turn), ProfileCounterTags.RESET_TURN, enabled)
         ActionRow {
@@ -164,7 +164,7 @@ private fun ProfileCounterEditor.error(field: ProfileCounterValidation, message:
     if (validation == field) stringResource(message) else null
 
 @Composable
-private fun CounterLossChoice(selected: Boolean, onClick: () -> Unit, label: String, tag: String, enabled: Boolean) {
+internal fun ProfileRadioChoice(selected: Boolean, onClick: () -> Unit, label: String, tag: String, enabled: Boolean) {
     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag(tag).selectable(selected, enabled = enabled, role = Role.RadioButton, onClick = onClick),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         RadioButton(selected, onClick = null, enabled = enabled); Text(label, Modifier.weight(1f))
@@ -172,7 +172,7 @@ private fun CounterLossChoice(selected: Boolean, onClick: () -> Unit, label: Str
 }
 
 @Composable
-private fun CounterToggle(value: Boolean, onChange: (Boolean) -> Unit, label: String, tag: String, enabled: Boolean) {
+internal fun ProfileToggle(value: Boolean, onChange: (Boolean) -> Unit, label: String, tag: String, enabled: Boolean) {
     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag(tag).toggleable(value, enabled = enabled, role = Role.Checkbox, onValueChange = onChange),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Checkbox(value, onCheckedChange = null, enabled = enabled); Text(label, Modifier.weight(1f))

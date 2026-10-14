@@ -127,3 +127,10 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
         const val PICKED_URI = "content://synthetic.documents/document/catalog.json"
     }
 }
+
+/** Host-only cold SDK initialization budget; never changes instrumentation/device policy. */
+internal fun profileHostIdleBudget(seconds: Long) {
+    if (android.os.Build.FINGERPRINT.contains("robolectric")) Class.forName("androidx.test.espresso.IdlingPolicies")
+        .getMethod("setMasterPolicyTimeout", Long::class.javaPrimitiveType, java.util.concurrent.TimeUnit::class.java)
+        .invoke(null, seconds, java.util.concurrent.TimeUnit.SECONDS)
+}

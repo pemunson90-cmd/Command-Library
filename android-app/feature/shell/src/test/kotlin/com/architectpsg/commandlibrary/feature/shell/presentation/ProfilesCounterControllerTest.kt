@@ -10,7 +10,7 @@ import org.junit.Test
 
 /** Draft-only behavior through the actual controller; SQLite readback is a separate integration gate. */
 class ProfilesCounterControllerTest {
-    private fun TestScope.controller(repo: CounterProfilesFixture, ids: () -> EntityId = { EntityId("fresh") }) =
+    private fun TestScope.controller(repo: DraftProfilesFixture, ids: () -> EntityId = { EntityId("fresh") }) =
         ProfilesController(ownerScope(), repo, StandardTestDispatcher(testScheduler), counterIds = ids)
 
     private fun original(): PlayerProfileSnapshot {
@@ -28,7 +28,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun newCounterOnlyChangesDraftUntilWholeProfileSaveAndLifeStaysConsistent() = runTest {
-        val repo = CounterProfilesFixture(original()); val c = controller(repo)
+        val repo = DraftProfilesFixture(original()); val c = controller(repo)
         c.create("Life"); c.changeName("New profile"); c.showCounters(); c.addCounter()
         c.changeCounterLabel("  Custom charge  "); c.changeCounterInitial("-5")
         c.changeCounterMinimum("-10"); c.changeCounterMaximum("10")
@@ -48,7 +48,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun editingPreservesIdentityPresetOrderAndEveryUntouchedProfileField() = runTest {
-        val old = original(); val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val old = original(); val repo = DraftProfilesFixture(old); val c = controller(repo)
         c.edit(old); c.showCounters(); c.editCounter(EntityId("charge")); c.changeCounterInitial("7"); c.applyCounter()
         val definitions = c.state.value.editor!!.counterDefinitions
         assertEquals(old.value.counterDefinitions.map { it.id }, definitions.map { it.id })
@@ -59,7 +59,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun invalidCounterInputNeverChangesDefinitionsAndThresholdMayBeOutsideBounds() = runTest {
-        val old = original(); val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val old = original(); val repo = DraftProfilesFixture(old); val c = controller(repo)
         val invalid: List<(ProfilesController) -> Unit> = listOf(
             { it.changeCounterLabel(" ") }, { it.changeCounterInitial("2147483648") },
             { it.changeCounterMinimum("2147483648") }, { it.changeCounterMaximum("-2147483649") },
@@ -87,7 +87,7 @@ class ProfilesCounterControllerTest {
     @Test fun unchangedLegacyBlankCounterLabelCanKeepItsNameDuringNumericEdit() = runTest {
         val old = original().let { p -> p.copy(value = p.value.copy(counterDefinitions = SnapshotList.copyOf(
             p.value.counterDefinitions.map { if (it.id == EntityId("charge")) it.copy(label = "  ") else it }))) }
-        val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val repo = DraftProfilesFixture(old); val c = controller(repo)
         c.edit(old); c.showCounters(); c.editCounter(EntityId("charge")); c.changeCounterInitial("4"); c.applyCounter()
         assertNull(c.state.value.editor!!.counterEditor)
         assertEquals("  ", c.state.value.editor!!.counterDefinitions[1].label)
@@ -95,7 +95,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun roleAndCustomGuardsProtectReservedAndStandardCountersEvenThroughControllerCalls() = runTest {
-        val old = original(); val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val old = original(); val repo = DraftProfilesFixture(old); val c = controller(repo)
         c.edit(old); c.showCounters()
         for (id in listOf("life", "tax", "poison", "missing")) {
             c.editCounter(EntityId(id)); assertNull(c.state.value.editor!!.counterEditor)
@@ -111,7 +111,7 @@ class ProfilesCounterControllerTest {
             CounterDefinition(EntityId("extra-$it"), "Extra $it", null, null, 0, CounterLossPolicy.None, true)
         }
         val full = base.copy(value = base.value.copy(counterDefinitions = SnapshotList.copyOf(definitions)))
-        val repo = CounterProfilesFixture(full); var allocated = 0
+        val repo = DraftProfilesFixture(full); var allocated = 0
         val c = controller(repo) { allocated++; EntityId("fresh") }
         c.edit(full); c.showCounters(); c.addCounter()
         assertNull(c.state.value.editor!!.counterEditor); assertEquals(0, allocated)
@@ -127,7 +127,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun dialogCancelDeleteConfirmationAndWholeCancelNeverWriteTheRepository() = runTest {
-        val old = original(); val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val old = original(); val repo = DraftProfilesFixture(old); val c = controller(repo)
         c.edit(old); c.showCounters(); c.editCounter(EntityId("charge")); c.changeCounterInitial("9"); c.closeCounterEditor()
         assertEquals(old.value.counterDefinitions, c.state.value.editor!!.counterDefinitions)
         c.requestCounterDelete(EntityId("charge")); c.dismissCounterDelete()
@@ -140,7 +140,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun failureAndStaleRevisionRetainCounterDraftAndOnlyReloadReplacesIt() = runTest {
-        val old = original(); val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val old = original(); val repo = DraftProfilesFixture(old); val c = controller(repo)
         c.edit(old); c.showCounters(); c.editCounter(EntityId("charge")); c.changeCounterInitial("9"); c.applyCounter(); c.showProfile()
         val edited = c.state.value.editor!!.counterDefinitions
         for (status in listOf(failure(FailureCode.PERSISTENCE), Outcome.Unknown("Synthetic", SnapshotList.empty()),
@@ -159,7 +159,7 @@ class ProfilesCounterControllerTest {
     }
 
     @Test fun busyWholeProfileSaveBlocksEveryConcurrentCounterMutation() = runTest {
-        val old = original(); val repo = CounterProfilesFixture(old); val c = controller(repo)
+        val old = original(); val repo = DraftProfilesFixture(old); val c = controller(repo)
         c.edit(old); repo.gate = CompletableDeferred(); c.save(); runCurrent()
         c.showCounters(); c.addCounter(); c.editCounter(EntityId("charge")); c.requestCounterDelete(EntityId("charge"))
         c.changeCounterLabel("Racing"); c.applyCounter(); c.confirmCounterDelete()
@@ -170,7 +170,7 @@ class ProfilesCounterControllerTest {
     }
 }
 
-private class CounterProfilesFixture(var row: PlayerProfileSnapshot): PlayerProfileRepository {
+internal class DraftProfilesFixture(var row: PlayerProfileSnapshot): PlayerProfileRepository {
     val writes = mutableListOf<PlayerProfileDraft>()
     val expected = mutableListOf<Revision>()
     var writeStatus: Outcome<Nothing>? = null

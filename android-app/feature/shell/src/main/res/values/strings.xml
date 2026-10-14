@@ -306,4 +306,15 @@
     <string name="profile_counter_invalid_color">Use # followed by eight hexadecimal digits: alpha, red, green, blue.</string>
     <string name="profile_counter_delete_title">Remove counter from profile?</string>
     <string name="profile_counter_delete_body">Remove %1$s from this draft? Existing games stay unchanged. Save the profile to keep this change.</string>
+    <string name="profile_appearance_title">Player color and orientation</string>
+    <string name="profile_appearance_draft_notice">These changes are saved only when you save the whole profile.</string>
+    <string name="profile_appearance_use_color">Use player color</string>
+    <string name="profile_appearance_preview">Player color preview</string>
+    <string name="profile_appearance_unset">No player color is set.</string>
+    <string name="profile_appearance_orientation">Seat orientation (clockwise from upright)</string>
+    <string name="profile_appearance_upright">Upright · 0°</string>
+    <string name="profile_appearance_clockwise">Right · 90°</string>
+    <string name="profile_appearance_inverted">Upside down · 180°</string>
+    <string name="profile_appearance_counterclockwise">Left · 270°</string>
+    <string name="profile_appearance_kept">Existing artwork, fit and crop are kept.</string>
 </resources>

@@ -12,6 +12,8 @@ internal enum class ProfileValidation { NAME, LIFE, STEP }
 internal data class ProfileEditor(
     val original: PlayerProfileSnapshot?, val lifeLabel: String,
     val name: String = "", val life: String = "20", val step: String = "1",
+    val appearance: SeatAppearance = original?.value?.appearance ?: SeatAppearance(null, null),
+    val appearanceEditor: ProfileAppearanceEditor? = null,
     val counterDefinitions: SnapshotList<CounterDefinition> = original?.value?.counterDefinitions
         ?: SnapshotList.of(CounterDefinition(EntityId("life"), lifeLabel, null, null, 20,
             CounterLossPolicy.AtOrBelow(0), false, CounterRole.LIFE)),
@@ -89,7 +91,27 @@ internal class ProfilesController(
     private fun change(update:(ProfileEditor)->ProfileEditor) {
         if (!mutableState.value.busy) mutableState.update { it.copy(editor=it.editor?.let(update),validation=null,problem=null) }
     }
-    fun showCounters() = change { it.copy(counterManager = true) }
+    fun editAppearance() = change { editor ->
+        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || editor.appearanceEditor != null) editor
+        else editor.copy(appearanceEditor = editor.appearance.draftAppearanceEditor())
+    }
+    private fun changeAppearance(update: (ProfileAppearanceEditor) -> ProfileAppearanceEditor) = change { editor ->
+        editor.copy(appearanceEditor = editor.appearanceEditor?.let { update(it).copy(invalidColor = false) })
+    }
+    fun changeAppearanceUseColor(value: Boolean) = changeAppearance { it.copy(useColor = value) }
+    fun changeAppearanceColor(value: String) = changeAppearance { it.copy(color = value) }
+    fun changeAppearanceOrientation(value: SeatOrientation) = changeAppearance { it.copy(orientation = value) }
+    fun closeAppearanceEditor() = change { it.copy(appearanceEditor = null) }
+    fun applyAppearance() = change { editor ->
+        val form = editor.appearanceEditor
+        if (form == null || editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null) editor
+        else {
+            val color = if (form.useColor) parseProfileColor(form.color) else null
+            if (form.useColor && color == null) editor.copy(appearanceEditor = form.copy(invalidColor = true))
+            else editor.copy(appearance = editor.appearance.copy(color = color, orientation = form.orientation), appearanceEditor = null)
+        }
+    }
+    fun showCounters() = change { if(it.appearanceEditor == null) it.copy(counterManager = true) else it }
     fun showProfile() = change { it.copy(counterManager = false, counterEditor = null, pendingCounterDelete = null) }
     fun addCounter() {
         val state = mutableState.value
@@ -162,7 +184,7 @@ internal class ProfilesController(
         val current = mutableState.value
         if (current.busy) return
         val editor = current.editor ?: return
-        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null) return
+        if (editor.counterManager || editor.counterEditor != null || editor.pendingCounterDelete != null || editor.appearanceEditor != null) return
         val life = editor.life.toIntOrNull()
         val step = editor.step.toIntOrNull()
         val validation = when {
@@ -175,8 +197,8 @@ internal class ProfilesController(
         val value = try {
             val old = editor.original?.value
             val definitions = SnapshotList.copyOf(editor.counterDefinitions.map { if(it.role==CounterRole.LIFE)it.copy(initial=life!!)else it })
-            if (old == null) PlayerProfileDraft(editor.name,life!!,definitions,SeatAppearance(null,null),SnapshotList.empty(),step!!)
-            else old.copy(name=editor.name,preferredLife=life!!,adjustmentStep=step!!,counterDefinitions=definitions)
+            if (old == null) PlayerProfileDraft(editor.name,life!!,definitions,editor.appearance,SnapshotList.empty(),step!!)
+            else old.copy(name=editor.name,preferredLife=life!!,adjustmentStep=step!!,counterDefinitions=definitions,appearance=editor.appearance)
         } catch (_: IllegalArgumentException) {
             mutableState.update { it.copy(validation=ProfileValidation.LIFE) };return
         }

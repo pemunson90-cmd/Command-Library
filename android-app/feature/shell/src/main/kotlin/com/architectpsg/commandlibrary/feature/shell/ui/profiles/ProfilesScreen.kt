@@ -49,6 +49,7 @@ internal fun ProfilesScreen(controller:ProfilesController,widthClass:WidthClass,
         when {
             state.pendingDelete != null -> controller.dismissDelete()
             state.editor?.pendingCounterDelete != null -> controller.dismissCounterDelete()
+            state.editor?.appearanceEditor != null -> controller.closeAppearanceEditor()
             state.editor?.counterEditor != null -> controller.closeCounterEditor()
             state.editor?.counterManager == true -> controller.showProfile()
             !state.busy -> controller.closeEditor()
@@ -56,7 +57,8 @@ internal fun ProfilesScreen(controller:ProfilesController,widthClass:WidthClass,
     }
     Box(modifier.fillMaxSize().imePadding(),contentAlignment=Alignment.TopCenter) {
         val editor=state.editor
-        if(editor?.counterManager == true) ProfileCountersScreen(state,editor,controller,widthClass)
+        if(editor?.appearanceEditor != null) ProfileAppearanceScreen(state,editor,controller,widthClass)
+        else if(editor?.counterManager == true) ProfileCountersScreen(state,editor,controller,widthClass)
         else if(editor!=null) ProfileEditorScreen(state,editor,controller,widthClass)
         else LazyColumn(Modifier.widthIn(max=ReadingWidth).fillMaxSize().padding(horizontal=widthClass.gutter).testTag(ProfileTags.LIST),
             contentPadding=PaddingValues(vertical=16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
@@ -127,6 +129,10 @@ private fun ProfileEditorScreen(state:ProfilesUiState,editor:ProfileEditor,contr
         OutlinedButton(onClick=controller::showCounters,enabled=!state.busy,
             modifier=Modifier.heightIn(min=48.dp).testTag(ProfileCounterTags.MANAGE)) {
             Text(stringResource(R.string.profile_counters_manage,editor.counterDefinitions.size))
+        }
+        OutlinedButton(onClick=controller::editAppearance,enabled=!state.busy,
+            modifier=Modifier.heightIn(min=48.dp).testTag(ProfileAppearanceTags.MANAGE)) {
+            Text(stringResource(R.string.profile_appearance_title))
         }
         if(original!=null)Text(stringResource(R.string.profiles_retained,editor.counterDefinitions.size,original.commanders.size))
         if(state.busy)ProfileProgress(stringResource(R.string.profiles_working))

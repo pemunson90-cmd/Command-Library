@@ -10,8 +10,6 @@ import com.architectpsg.commandlibrary.feature.shell.ui.problemText
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfileTags
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.CompletableDeferred
-import android.os.Build
-import java.util.concurrent.TimeUnit
 import org.junit.Before
 import org.junit.After
 import org.junit.Assert.*
@@ -34,14 +32,8 @@ class ProfilesUiTest {
         shell.close()
         hostIdleBudget(60)
     }
-    private fun hostIdleBudget(seconds:Long) {
-        if(Build.FINGERPRINT.contains("robolectric")) {
-            // Compose supplies Espresso at runtime, without exposing it on this compile classpath.
-            Class.forName("androidx.test.espresso.IdlingPolicies")
-                .getMethod("setMasterPolicyTimeout",Long::class.javaPrimitiveType,TimeUnit::class.java)
-                .invoke(null,seconds,TimeUnit.SECONDS)
-        }
-    }
+    private fun hostIdleBudget(seconds: Long) = profileHostIdleBudget(seconds)
+
     private fun open() { rule.onNodeWithTag("shell-nav-profiles").performClick();shell.waitForText(shell.string(R.string.profiles_title)) }
     private fun saved(name:String) {
         // Draft text is already in the editor: wait for actual accepted write/list before matching it.

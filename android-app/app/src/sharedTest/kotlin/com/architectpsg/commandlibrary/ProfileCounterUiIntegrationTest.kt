@@ -75,6 +75,45 @@ class ProfileCounterUiIntegrationTest {
         return result
     }
 
+    @Test fun appearanceEditorChangesOnlyColorAndOrientationThroughRealAppGraphRoom() {
+        val name = "Appearance probe ${UUID.randomUUID()}"
+        val app = rule.activity.application as CommandLibraryApplication
+        rule.waitUntil(20_000) { rule.onAllNodesWithTag("shell-nav-profiles").fetchSemanticsNodes().isNotEmpty() }
+        val repo = runBlocking { requireNotNull(ok(app.graph.ports()).playerProfiles) }
+        try {
+            val card = CardIdentity(Knowledge.Absent("Synthetic"), Knowledge.Absent("Synthetic"),
+                ProviderIdentity(ProviderId("synthetic"), "card", "one"), Knowledge.Known("Commander"), LanguageTag.ENGLISH)
+            val life = CounterDefinition(EntityId("life"), "Life", null, null, 40, CounterLossPolicy.AtOrBelow(0), false, CounterRole.LIFE)
+            val charge = CounterDefinition(EntityId("charge"), "Charge", -10, 10, 3, CounterLossPolicy.None, true,
+                CounterRole.OTHER, DisplayColor(0xff112233), CounterPreset.CHARGE, CounterResetPolicy.ON_TURN_START)
+            // Stored metadata exercises preservation; this probe makes no art-loading claim.
+            val appearance = SeatAppearance(DisplayColor(0x01234567), GameArtReference.CachedCard(card, EntityId("cached-art")),
+                ArtFit.CONTAIN, ArtCrop(0.1, 0.2, 0.8, 0.9), SeatOrientation.INVERTED)
+            val created = runBlocking { ok(repo.create(PlayerProfileDraft(name, 40, SnapshotList.of(life, charge), appearance,
+                SnapshotList.of(CommanderSlot(EntityId("partner"), card, "Partner")), 3), token)) }
+            rule.onNodeWithTag("shell-nav-profiles").performClick()
+            rule.waitUntil(20_000) {
+                rule.onAllNodesWithTag("profiles-refresh").fetchSemanticsNodes().any { !it.config.contains(SemanticsProperties.Disabled) }
+            }
+            click("profiles-refresh"); waitSaved()
+            revealProfileAction("profile-edit-${created.id.value}")
+            click("profile-edit-${created.id.value}"); click("profile-appearance")
+            click("profile-appearance-use-color"); click("profile-appearance-counterclockwise"); click("profile-appearance-apply")
+            assertEquals(created, runBlocking { ok(repo.read(created.id, token)) })
+            click("profile-save"); waitSaved()
+            val updated = runBlocking { ok(repo.read(created.id, token)) }
+            assertEquals(created.revision.next(), updated.revision)
+            assertEquals(created.value.copy(appearance = appearance.copy(color = null, orientation = SeatOrientation.COUNTERCLOCKWISE)), updated.value)
+        } finally {
+            runBlocking {
+                for (row in ownedRows(repo, name)) {
+                    val latest = repo.read(row.id, token)
+                    if (latest is Outcome.Success) ok(repo.delete(row.id, latest.value.revision, token))
+                }
+            }
+        }
+    }
+
     @Test fun actualCounterEditorSavesAndEditsExactCounterThroughRealAppGraphRoom() {
         val name = "Counter probe ${UUID.randomUUID()}"
         val app = rule.activity.application as CommandLibraryApplication

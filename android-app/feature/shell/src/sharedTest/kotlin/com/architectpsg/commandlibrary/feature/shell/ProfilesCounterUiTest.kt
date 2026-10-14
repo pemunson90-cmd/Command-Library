@@ -1,6 +1,5 @@
 package com.architectpsg.commandlibrary.feature.shell
 
-import android.os.Build
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
@@ -8,7 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfileCounterTags
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfileTags
-import java.util.concurrent.TimeUnit
 import org.junit.After
 import org.junit.Before
 import org.junit.Assert.*
@@ -24,11 +22,8 @@ class ProfilesCounterUiTest {
     private val shell = ShellUiHarness(rule, profiles)
     @Before fun hostBudget() = idleBudget(300)
     @After fun close() { shell.close(); idleBudget(60) }
-    private fun idleBudget(seconds: Long) {
-        if (Build.FINGERPRINT.contains("robolectric")) Class.forName("androidx.test.espresso.IdlingPolicies")
-            .getMethod("setMasterPolicyTimeout", Long::class.javaPrimitiveType, TimeUnit::class.java)
-            .invoke(null, seconds, TimeUnit.SECONDS)
-    }
+    private fun idleBudget(seconds: Long) = profileHostIdleBudget(seconds)
+
     private fun click(tag: String) { rule.onNodeWithTag(tag).performScrollTo().performClick() }
     private fun change(tag: String, text: String) { rule.onNodeWithTag(tag).performScrollTo().performTextReplacement(text) }
     private fun managerClick(tag: String) {

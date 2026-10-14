@@ -1,7 +1,6 @@
 package com.architectpsg.commandlibrary.feature.shell.presentation
 
 import com.architectpsg.commandlibrary.core.model.*
-import java.util.Locale
 
 // Matches the persisted profile definition list bound in LifeCoreWires.profileWire.
 internal const val MaxProfileCounterDefinitions = 128
@@ -19,7 +18,7 @@ internal data class ProfileCounterEditor(
     val loss: ProfileCounterLoss = ProfileCounterLoss.NONE,
     val threshold: String = "0",
     val useColor: Boolean = false,
-    val color: String = "#FF1976D2",
+    val color: String = DefaultProfileColor,
     val reset: CounterResetPolicy = CounterResetPolicy.MANUAL,
     val validation: ProfileCounterValidation? = null,
 )
@@ -38,7 +37,7 @@ internal fun CounterDefinition.profileCounterEditor(): ProfileCounterEditor = Pr
         is CounterLossPolicy.AtOrBelow -> policy.threshold.toString()
     },
     useColor = color != null,
-    color = color?.let { String.format(Locale.ROOT, "#%08X", it.argb) } ?: "#FF1976D2",
+    color = color?.profileColorText() ?: DefaultProfileColor,
     reset = resetPolicy,
 )
 
@@ -62,8 +61,7 @@ internal fun ProfileCounterEditor.parse(): ProfileCounterEditResult {
         ProfileCounterLoss.BELOW -> CounterLossPolicy.AtOrBelow(threshold.toIntOrNull() ?: return invalid(ProfileCounterValidation.THRESHOLD))
     }
     val displayColor = if (!useColor) null else {
-        if (!Regex("#[0-9a-fA-F]{8}").matches(color)) return invalid(ProfileCounterValidation.COLOR)
-        DisplayColor(color.substring(1).toLong(16))
+        parseProfileColor(color) ?: return invalid(ProfileCounterValidation.COLOR)
     }
     val value = original?.copy(label = label, initial = start, minimum = low, maximum = high,
         lossPolicy = policy, color = displayColor, resetPolicy = reset)
