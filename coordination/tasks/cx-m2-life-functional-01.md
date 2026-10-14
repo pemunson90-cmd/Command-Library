@@ -20,6 +20,6 @@ New life-functional.lock is owned by root for this task: feature/life production
 
 ## Latest continuation delta
 
-Modern timing, counter and table helpers complete and unregistered. Table architecture/exact-source APPROVE;142lifeGREEN, whole790JVM/75XML0fail/error/skip,check/debug175s,alignmentpass. Evidence docs/verification/m2-life/TABLE-ENGINE-LOCAL-20261014.md, prior counter/timing reports retained. No real semantic GameService/UI/device claim.
+Modern timing/counter/table/result/initializer/semantic-undo/random pure helpers independently reviewed and verified. Latest source03ecfdc; final177life/111storage, whole825JVM79XML0fail/error/skip,check/debug119s,16KiBZIPpass. Latest evidence docs/verification/m2-life/RANDOM-ENGINE-LOCAL-20261014.md; earlier bounded-unit evidence retained.
 
-Current TAKEN cx-m2-life-action-engine-01 continues with concrete reviewed finish/reopen result design; result code/tests not_run. Full semantic undo/event composition, actual initializer, recorded random/variant source-backed adapters, authoritative service/history/publication and UI remain incomplete. History audit OPEN; root life/shared lock retained. Continue local-first, no checkpoint stop.
+Current TAKEN cx-m2-life-action-engine-01 continues with pure action/event packet assembly design under architecture review, source/tests not_run. Actual variant source/rules/placement backend, authoritative transactional service/undo selection/random ledger/history/publication, UI/device/cadence/full-v1 remain incomplete. History audit and variant-source inventory OPEN as disjoint read-only tasks. Root life/shared lock retained; local-first, no checkpoint stop.

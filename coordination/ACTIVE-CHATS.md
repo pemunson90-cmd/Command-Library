@@ -1,12 +1,12 @@
 # Cross-chat coordination — current readback 2026-10-14
 
-Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integration, game creation/read persistence, structural graph validation, checked event reads, atomic mutation adapter and modern timing engine are DONE. Modern semantic actions/actual initialization is TAKEN by recovery; history/service audit is OPEN.
+Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integration, game creation/read persistence, structural graph validation, checked event reads, atomic mutation adapter and modern timing engine are DONE. Modern semantic actions/actual initialization is TAKEN by recovery; history/service and variant-source audits are OPEN.
 
 ## Recovery orchestrator
 
-Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Final coherent local wholecheck/debug816JVMtests/78XML,0failure/error/skip;168life and111storage XML green;16KiBZIPalignmentpass. Timing source075736e; first counter83a7fc1 and table56c116a. Evidence docs/verification/m2-life/TABLE-ENGINE-LOCAL-20261014.md, COUNTER-ENGINE-LOCAL-20261014.md and TIMING-ENGINE-LOCAL-20261014.md. Schema6 focused API36 previously passed3network/32storage; no new native run. No operational service/UI/full-v1 claim.
+Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Modern timing/counter/table/result/initializer/semantic-undo/random pure helpers independently reviewed and verified. Latest source03ecfdc; final177life/111storage, whole825JVM79XML0fail/error/skip,check/debug119s,16KiBZIPpass. Latest evidence docs/verification/m2-life/RANDOM-ENGINE-LOCAL-20261014.md; earlier bounded-unit evidence retained.
 
-Current cx-m2-life-action-engine-01 TAKEN: counter/table/result slices complete; initializer/semantic undo pure helpers complete; reviewed random engine implementation next before service binding. Timing architecture/source reviewed with requested grouped priority/finish/legacy/acknowledged replay tests passed. Root life-functional lock remains; no other active component writer. Workers need disjoint published claims; do not run a second shared orchestrator.
+Current TAKEN cx-m2-life-action-engine-01 continues with pure action/event packet assembly design under architecture review, source/tests not_run. Actual variant source/rules/placement backend, authoritative transactional service/undo selection/random ledger/history/publication, UI/device/cadence/full-v1 remain incomplete. History audit and variant-source inventory OPEN as disjoint read-only tasks. Root life/shared lock retained; local-first, no checkpoint stop.
 
 ## Other chat — completed, no active claim
 
