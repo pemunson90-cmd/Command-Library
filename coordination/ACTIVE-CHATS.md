@@ -4,7 +4,7 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Root codex-thread-recovery-20261013 retains exclusive active life/app/shell/shared orchestration on agent/cx-thread-recovery-20261013; life-action-engine TAKEN. Ruling schema7/reader acb05ac correctedcf33f57 under exact-source review and corrected broader local verification; actualKSP7 preserves24oldentities/adds3. Native frozen38623690607 exact12f8980 JVM1039pass, API36instrumentation pending; excludes later ruling models/schema. Do not retrigger/move frozen branches. No native7/full-v1/physical acceptance or finished APK; GameService HOLD. D-28 batch verification.
+Root codex-thread-recovery-20261013 retains exclusive life/app/shell/shared orchestration on agent/cx-thread-recovery-20261013; life-action-engine TAKEN. Ruling schema7/reader cf33f57 independently ACK/whole1058tests+lint/APKs/ZIPpass; next atomic ruling importdesignreview. Frozen12f native38623690607 FAILED3profileBacktests/173cases; JVM1039pass. Testkeyboardprecondition29d64ee ACK/19localpass; devicecorrectionnot_run/no rerunstarted. Preserve frozenbranches. No fullv1/native7/physical/finishedAPK acceptance; GameService HOLD. D-28 batchverification.
 
 Pat explicitly approved frozenPR21 merge: guardedbe663b2b48a83c35f52586a3f804ca16a0fbf2cc and docs-onlymainrouteed76f72ee2195d032f27d3520b37f490f14e6136 published. Main product exactlyfreeze5a88846/testedcandidate; freshrun38565369384 logs908JVM/134nativeAPI36pass; no newerrootproduct copied, no APKdelivery. Main releasedrouting-only lease does not release rootactivelease; read recoverybranch beforeclaiming. See integration/FREEZE-5a88846-20261014.md and ROOT-MERGE-20261014.md.
 
