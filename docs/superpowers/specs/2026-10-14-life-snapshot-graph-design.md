@@ -12,11 +12,11 @@ Clock mode must match settings. NONE has no banks/shared/active/anchor and is pa
 
 Elapsed anchors have the same scalar checks. Running elapsed requires an anchor and enabled elapsed settings; turn lineage Unknown/Absent is preserved and does not authorize charging. COMPLETED means both countdown and elapsed paused. Do not impose status PAUSED => both paused without established reducer/service semantics. No UTC ordering is inferred across clock changes; no turnElapsed <= gameElapsed constraint because undo/lineage accounting is separate.
 
-Designation holders/blessed seats must exist; blessing IDs unique. Alerts have unique IDs, same game, and seat targets exist; shared targets require SHARED mode. No requirement that alert timestamp precedes acknowledgment or remains on the current clock fired-ID list.
+Designation holders/blessed seats must exist; blessing IDs unique. Alerts have unique IDs, same game, and seat targets exist. No requirement that alert timestamp precedes acknowledgment or remains on the current clock fired-ID list.
 
 Known results match game, reference roster seats, and revision <= snapshot revision. Model constructor already checks duplicate/coherent outcomes; incomplete legacy outcomes remain representable. COMPLETED cannot carry a known retracted result; a known nonretracted result requires COMPLETED. A known result's finishedAt must agree with known endedAt; Unknown/Absent result/end metadata remains preserved for legacy reading. Event IDs, when known, are nonnegative; actual event/checkpoint/undo lineage requires the later database guard.
 
-Variants have unique definitions/states with exact coverage and matching versions, unique declared zone/card/action/phase IDs, defined action zone/card references, exact state zone coverage/capacity, known card references in all storage locations/properties, unique property and action-count keys, known action-count IDs within their declared maximumPerPhase and declared current phase when phases exist (empty phase otherwise). Repeated card identities across locations are not prohibited: multiplicity/automation and authentic source semantics are engine responsibilities.
+Variants have unique definitions/states with exact coverage and matching versions, unique declared zone/card/action/phase IDs, defined action zone/card references, exact state zone coverage/capacity, known card references in all storage locations/properties, unique property and action-count keys, known action-count IDs within their declared maximumPerPhase and declared current phase when phases exist. Repeated card identities across locations are not prohibited: multiplicity/automation and authentic source semantics are engine responsibilities.
 
 ## Alternatives
 
@@ -27,3 +27,9 @@ Store-only inline validation duplicates domain rules and is hard to test. Reusin
 Observe API-absence and adversarial behavior RED, then pure JVM GREEN. Cover valid legacy unknown metadata, negative life/overtime, partners/own commander damage, eliminated retained state, independent owner, paused anchor, shared running and wall-clock reversal; reject role ambiguity, duplicate/dangling keys, clock/elapsed contradictions, invalid result/alerts/variants. Run actual bundled SQLite store regressions when integrating; run coherent local check/debug build and continuity checks before checkpoint. Independent design/source review required. No Room/concurrency/source authority/live timing/final app acceptance claim.
 
 Independent design review: life_contract_review APPROVE direction; incorporated maximumPerPhase count bound before implementation.
+
+Review refinement: retained shared alert occurrences do not require current SHARED mode; undeclared phase vocabulary does not force empty phase. Enforce these at new action creation only if required. This avoids erasing valid historical/configuration metadata.
+
+Count interpretation: actionCounts is current-phase accounting, matching maximumPerPhase; later engine must reset on phase transitions. No implemented accepted engine defines cumulative semantics. A future cumulative import needs explicit conversion, not silent bypass.
+
+Pure exact-source review: APPROVE, no blocking findings. Local feature:life:test actual5XML/94tests0failure/error/skip after correcting cross-module smartcasts. Storage tests not yet executed (syntax corrected); integration remains pending.

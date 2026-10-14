@@ -11,10 +11,10 @@ Spec: ../specs/2026-10-14-life-snapshot-graph-design.md. Kotlin/JVM, existing mo
 Files: feature/life domain/SnapshotGraphValidator.kt, SnapshotVariantValidator.kt; modify CounterReducer.kt with internal validateState(snapshot, roles): Outcome<Unit>; tests domain/SnapshotGraphValidatorTest.kt and SnapshotVariantValidatorTest.kt.
 
 - [x] Independent spec review, incorporate concrete findings before implementation.
-- [ ] Add positive/adversarial tests calling SnapshotGraphValidator.validate(GameSnapshot): Outcome<CounterRoles>. Observe missing API RED via :feature:life:test. Add declaration returning success to observe behavior RED before implementation.
-- [ ] Implement role extraction and CounterBoard reuse, seat references, structural clock/elapsed checks, designation/alert/result checks. Add separate internal validateSnapshotVariants(GameSnapshot): Outcome<Unit> for exact variant graph references/keys; no source authority or automation claim.
-- [ ] Cover legacy unknown lineage/result, eliminated retained counters, own-slot commander damage, independent owners, finite overtime and backwards UTC; mode/bank/anchor errors; duplicate and dangling identities; result revision/retraction and exact variant coverage/reference/capacity failures. Test future model UNSUPPORTED without recoding it as corruption.
-- [ ] Run :feature:life:test, inspect XML zero failures/errors/skips. Independent exact source review; fix concrete findings with regression tests.
+- [x] Add positive/adversarial tests calling SnapshotGraphValidator.validate(GameSnapshot): Outcome<CounterRoles>. Observe missing API RED via :feature:life:test. Add declaration returning success to observe behavior RED before implementation.
+- [x] Implement role extraction and CounterBoard reuse, seat references, structural clock/elapsed checks, designation/alert/result checks. Add separate internal validateSnapshotVariants(GameSnapshot): Outcome<Unit> for exact variant graph references/keys; no source authority or automation claim.
+- [x] Cover legacy unknown lineage/result, eliminated retained counters, own-slot commander damage, independent owners, finite overtime and backwards UTC; mode/bank/anchor errors; duplicate and dangling identities; result revision/retraction and exact variant coverage/reference/capacity failures. Test future model UNSUPPORTED without recoding it as corruption.
+- [x] Run :feature:life:test, inspect XML zero failures/errors/skips. Independent exact source review; fix concrete findings with regression tests.
 
 ## Task 2: Checked store integration
 
