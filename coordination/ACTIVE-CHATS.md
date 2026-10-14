@@ -4,9 +4,9 @@ Pick/claim work using [CHAT-TASKS.md](CHAT-TASKS.md). Profiles, Scryfall integra
 
 ## Recovery orchestrator
 
-Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Pure modern life helpers/event packets and checked same-transaction action context independently reviewed and verified. Latest source73b3e17; final188life/121storage, whole846JVM81XML0fail/error/skip,check/debug250s,16KiBZIPpass. Latest evidence docs/verification/m2-life/ACTION-CONTEXT-LOCAL-20261014.md; earlier bounded-unit reports retained.
+Session codex-thread-recovery-20261013 on agent/cx-thread-recovery-20261013 retains sole shared/life orchestration. Modern pure engines/event packets plus checked transaction-local action and random predecessor context independently reviewed and verified. Latest sourcee925f9b; final188life/130storage, whole855JVM82XML0fail/error/skip,check/debug181s,16KiBZIPpass. Latest evidence docs/verification/m2-life/RANDOM-PREDECESSOR-LOCAL-20261014.md; earlier reports retained.
 
-Current TAKEN cx-m2-life-action-engine-01 continues with architecture-approved transaction-local random predecessor scan; source/tests not_run. Same-context bounded metadata/byte pages, actual archive checks and no-draw replay will validate requested chain; legacy all-OTHER roles require repair. Actual service/recovery/history/ordered publication, authentic named-variant source/backend, operational UI/device/cadence/full-v1 remain incomplete. History and variant-source audits OPEN as disjoint read-only tasks. Root life/shared lock retained; local-first, no checkpoint stop.
+Current TAKEN cx-m2-life-action-engine-01 continues with real offline history query design under architecture review; source/tests not_run. G11 counts/player/deck/date matching, exact stored snapshot entries, bounded byte/keyset pages and compact long-ID cursors before actual service history binding. Actual lifecycle recovery/checkpoint/command/ordered publication, authentic named-variant source/backend, operational UI/device/cadence/full-v1 remain incomplete. History audit and variant-source inventory OPEN as disjoint read-only tasks. Root retains life/shared lock; local-first, no checkpoint stop.
 
 ## Other chat — completed, no active claim
 
