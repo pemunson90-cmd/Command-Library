@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-profile-counters-127",
-  "verified_base_head": "8759b61fe9df4be0a3b702043977bffb1a3845d1",
+  "checkpoint_id": "cp-20261014-profile-appearance-128",
+  "verified_base_head": "efa6955229e4820db9fbda57dbe1c767f8887405",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "implement-profile-color-orientation-red-green",
+  "first_action": "implement-profile-commander-manager-batch",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -18,7 +18,7 @@
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Customcountereditor8759b61 finalsource/UI/durability/compositionAPPROVE; whole989JVM/check/4APKs/ZIPpassed. Nextboundedprofilecolor/orientationdesignAPPROVE. GameServicebindingHOLD unchanged.",
+  "review_status": "Appearance efa6955 independently APPROVE; combined1,001JVM/check/affected4APK ZIP pass. Next bounded commander-manager design APPROVE. GameService binding HOLD unchanged.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -98,9 +98,10 @@
     "life_profile_library_controller": "Source0a6dbff, APIabsenceRED131s\u21927focusedGREEN88s\u2192fullshell87tests12XML0failures/errors/skips290s. Realrevision/draftadvancedpreservation/validation/typedstatus/cancel/paginggeneration/confirmdelete. Internalunwiredcontroller; UI/appassemblynotyetimplemented, finalreviewpending. PROFILE-LIBRARY-LOCAL-20261014.md.",
     "integration_main_postmerge": "Exactbe663b2 run38577738249 completedSUCCESS: JVM/build,API36emulator,internaldebugpromotion allsuccess; no manualduplicate. Actualcounts/imagesnotreextracted; frozenPRproof908JVM134native separate. Docs-onlymainrouteed76f72 andhistoricalHOLDannotation4a14703 continuity38578408988/38579249931success. Mainproductfreeze5a88846, notlatestrecovery.",
     "life_profile_library_ui": "Source22d2230 independently APPROVE. Focused18GREEN186s, full98shell13XML0fail/errors/skips, shelllintpass; actualAppGraph/Room CRUD1GREEN21.323s. Whole616s441tasks59executed382cached passed check/debug/app+shell+storageTestAPK,973JVM99XML0fail/errors/skips (app5/shell98/storage198). Fourindependent16KiBZIPexit0; app9e7dce13a01fc53ddc14010c87055d3aa398ba6560ffa9cc5e4593c5e16254ca/appTest11d9c2a406e1973036e92a202b8eca27170ddbc54f98eb6ea63cee994d5cf0b3/shellTest108edb3b9707c50b5948c7e22a47c1dde5991f9fc50847dfcd22f7caaa110f9a/storageTest2a940792unchanged; actualDEXprobes included. PROFILE-LIBRARY-LOCAL-20261014.md. Native/physicalnot_run, no GameServicebinding or finishedapp/APKdelivery. Nextcustomcounterdrafteditor reviewed; rootcontinues.",
-    "life_profile_counter_editor": "Source8759b61 reviewedcustomOTHERdrafteditor. RED22s\u219218controllerGREEN20s; UIRED8s\u21926UIGREEN66s; actualUI/AppGraphRoom1GREEN22.391s andfinaladjusted49.485s inwhole. Whole231s441tasks48executed393cached check/debug/app+shell+storageTestAPKs,989JVM102XML0failures/errors/skips (app6/shell113/storage198). Fourindependent16KiBZIPexit0; appa81d6e5720511e905693e9f670d7f6f50d52c597a0c26e7dc0dad2e942baba0b/appTesta98793e3742d370fd4e2573d8410b13033fc4a4ddb614f81207beff8dea718e9/shellTest32b9fa3516e4bfd6182090ea63adad65f508bdccf3b3b62d5e3e5d89cea410fc/storageTest2a940792unchanged. ActualDEXprobes. PROFILE-COUNTERS-LOCAL-20261014.md. No native/physical/GameService/fullapp/APKdeliveryclaim. Nextboundedcolor/orientation approved."
+    "life_profile_counter_editor": "Source8759b61 reviewedcustomOTHERdrafteditor. RED22s\u219218controllerGREEN20s; UIRED8s\u21926UIGREEN66s; actualUI/AppGraphRoom1GREEN22.391s andfinaladjusted49.485s inwhole. Whole231s441tasks48executed393cached check/debug/app+shell+storageTestAPKs,989JVM102XML0failures/errors/skips (app6/shell113/storage198). Fourindependent16KiBZIPexit0; appa81d6e5720511e905693e9f670d7f6f50d52c597a0c26e7dc0dad2e942baba0b/appTesta98793e3742d370fd4e2573d8410b13033fc4a4ddb614f81207beff8dea718e9/shellTest32b9fa3516e4bfd6182090ea63adad65f508bdccf3b3b62d5e3e5d89cea410fc/storageTest2a940792unchanged. ActualDEXprobes. PROFILE-COUNTERS-LOCAL-20261014.md. No native/physical/GameService/fullapp/APKdeliveryclaim. Nextboundedcolor/orientation approved.",
+    "life_profile_appearance_local": "efa6955: one combined local boundary7m36s441tasks72executed369cached;1,001JVM104XML0failures/errors/skips, app7/shell124/storage198, check/lint/debug/app+shell+storageTestAPKs,4ZIP16KiBexit0. ActualAppRoom appearance whole-row preservation2.858s;5sharedUI/6controllerpass. Independent APPROVE. PROFILE-APPEARANCE-LOCAL-20261014.md. Native/physicalnot_run; no finished APK."
   },
-  "last_completed": "Customcountereditor8759b61 verified989JVM/check/debug/4APKZIP, reviewedactualUI/Room proof; continue approvedprofilecolor/orientation drafts locally.",
-  "updated_utc": "2026-10-14T16:05:58Z",
+  "last_completed": "Appearance efa6955 approved and verified1,001JVM104XML/check/debug/affectedtestAPKs/4ZIP16KiB. D-28 batching recorded; continue reviewed commander-manager controller/UI batch with focused verification. GameService HOLD, no finished APK.",
+  "updated_utc": "2026-10-14T17:14:59Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

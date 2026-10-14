@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-14T17:05:37Z",
-  "expires_utc": "2026-10-14T17:50:37Z",
-  "checkpoint_id": "cp-20261014-profile-counters-127",
-  "note": "Root continues sole life/app/shell/shared work. D-28 recorded: batch implementation and verification at meaningful risk boundaries. Profile appearance screen/controller/Room preservation probe being integrated; not yet verified. Prior customcounter8759b61 evidence unchanged. GameServiceHOLD; no final APK."
+  "heartbeat_utc": "2026-10-14T17:14:59Z",
+  "expires_utc": "2026-10-14T17:59:59Z",
+  "checkpoint_id": "cp-20261014-profile-appearance-128",
+  "note": "Root retains exclusive life/app/shell/shared development and final merge. Appearance efa6955 verified1,001JVM/check/4APK ZIP; next reviewed commander-manager controller/UI batch. D-28 batching/focused verification. GameService HOLD; no finished APK."
 }

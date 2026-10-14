@@ -497,3 +497,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-14T15:35:14Z | codex | cp-20261014-profile-library-126 | containing commit | Profile library22d2230 verified973JVM/check/debug/4APKZIP with independent approval; continue reviewed custom-counter draft editing locally.
 
 2026-10-14T16:05:58Z | codex | cp-20261014-profile-counters-127 | containing commit | Customcountereditor8759b61 verified989JVM/check/debug/4APKZIP, reviewedactualUI/Room proof; continue approvedprofilecolor/orientation drafts locally.
+
+2026-10-14T17:14:59Z | codex | cp-20261014-profile-appearance-128 | containing commit | Appearance efa6955 approved and verified1,001JVM104XML/check/debug/affectedtestAPKs/4ZIP16KiB. D-28 batching recorded; continue reviewed commander-manager controller/UI batch with focused verification. GameService HOLD, no finished APK.

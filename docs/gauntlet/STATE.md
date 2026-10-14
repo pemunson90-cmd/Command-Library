@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-profile-counters-127. Updated UTC: 2026-10-14T16:05:58Z.
+Checkpoint: cp-20261014-profile-appearance-128. Updated UTC: 2026-10-14T17:14:59Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-implement-profile-color-orientation-red-green
+implement-profile-commander-manager-batch
 
-Customcountereditor8759b61 verified989JVM/check/debug/4APKZIP, reviewedactualUI/Room proof; continue approvedprofilecolor/orientation drafts locally.
+Appearance efa6955 approved and verified1,001JVM104XML/check/debug/affectedtestAPKs/4ZIP16KiB. D-28 batching recorded; continue reviewed commander-manager controller/UI batch with focused verification. GameService HOLD, no finished APK.
 
 Read CURRENT, machine state and task card.
