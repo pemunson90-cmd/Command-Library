@@ -13,6 +13,11 @@ public sealed interface RandomRequest {
         init { require(!opponentsOnly || asker != null) { "Opponent selection needs an asking seat" } }
     }
     public data class SeatOrder(public val requestId: EntityId) : RandomRequest
+    /** Explicit authored shuffle request; installed manager authority is required for a new draw. */
+    public data class VariantZoneShuffle(public val requestId: EntityId, public val definitionId: ProviderIdentity,
+        public val actionId: String, public val zoneId: String, public val policyKey: String, public val policyValue: String) : RandomRequest {
+        init { require(actionId.isNotBlank() && zoneId.isNotBlank() && policyKey.isNotBlank() && policyValue.isNotBlank()) }
+    }
 }
 
 /** Recorded data contains the actual result; replay consumes no random source. */
@@ -49,5 +54,17 @@ public sealed interface RecordedRandomValue {
     public data class SeatOrder(public val seatIds: SnapshotList<EntityId>) : RecordedRandomValue {
         init { require(seatIds.toSet().size == seatIds.size) { "Seat order must not repeat a seat" } }
     }
+    /** Actual occurrence-conserving card order; never a seed or an inferred source permission. */
+    public data class VariantZoneShuffle(public val definitionId: ProviderIdentity, public val definitionVersion: String,
+        public val actionId: String, public val zoneId: String, public val policyKey: String, public val policyValue: String,
+        public val beforeOrder: SnapshotList<ProviderIdentity>, public val afterOrder: SnapshotList<ProviderIdentity>) : RecordedRandomValue {
+        init {
+            require(definitionVersion.isNotBlank() && actionId.isNotBlank() && zoneId.isNotBlank() && policyKey.isNotBlank() && policyValue.isNotBlank())
+            require(beforeOrder.size <= MAX_CARDS && afterOrder.size <= MAX_CARDS) { "Variant shuffle exceeds card bound" }
+            require(beforeOrder.size == afterOrder.size && beforeOrder.groupingBy { it }.eachCount() == afterOrder.groupingBy { it }.eachCount()) { "Variant shuffle must preserve every card occurrence" }
+        }
+        public companion object { public const val MAX_CARDS: Int = 10_000 }
+    }
+
 }
 public data class RecordedRandomResult(public val requestId: EntityId, public val at: UtcTimestamp, public val value: RecordedRandomValue)

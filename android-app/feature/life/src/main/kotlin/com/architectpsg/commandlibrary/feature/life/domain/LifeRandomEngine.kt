@@ -9,7 +9,7 @@ internal data class RandomReduction(val snapshot: GameSnapshot, val action: Game
 /** Proposed recorded values only. Service owns request uniqueness, durable retries and predecessor lookup. */
 internal object LifeRandomEngine {
     fun resolve(snapshot: GameSnapshot, action: GameAction, at: UtcTimestamp, random: RandomSource,
-        context: RandomRequestContext? = null): Outcome<RandomReduction> {
+        context: RandomRequestContext? = null, variants: LifeVariantShuffleAuthority? = null): Outcome<RandomReduction> {
         val plan = prepare(snapshot, action, context).valueOr { return it }
         val value: RecordedRandomValue = when (val request = plan.action.request) {
             is RandomRequest.Dice, is RandomRequest.ContinueDice -> {
@@ -25,6 +25,14 @@ internal object LifeRandomEngine {
             is RandomRequest.SeatOrder -> {
                 val ordered = RandomTools.randomizeSeats(snapshot, random).valueOr { return it }
                 RecordedRandomValue.SeatOrder(ordered.action.seatIds)
+            }
+            is RandomRequest.VariantZoneShuffle -> {
+                val authority = variants ?: return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Variant shuffle requires installed authored manager")
+                authority.authorizeShuffle(snapshot, request).valueOr { return it }
+                val facts = LifeVariantShuffle.prepare(snapshot, request).valueOr { return it }
+                val order = RandomTools.shuffle(random, facts.zone.cardIds).valueOr { return it }
+                RecordedRandomValue.VariantZoneShuffle(request.definitionId, facts.definition.version, request.actionId, request.zoneId,
+                    request.policyKey, request.policyValue, facts.zone.cardIds, order)
             }
         }
         // Apply the same checked recorded representation used by replay; no second random draw.
@@ -53,6 +61,7 @@ internal object LifeRandomEngine {
                 val value = recorded.value as? RecordedRandomValue.SeatOrder ?: return invalidInput("Recorded result is not a seat order")
                 next = RandomTools.reorderSeats(snapshot, GameAction.ReorderSeats(value.seatIds)).valueOr { return it }.snapshot
             }
+            is RandomRequest.VariantZoneShuffle -> next = LifeVariantShuffle.replay(snapshot, plan.action.request as RandomRequest.VariantZoneShuffle, recorded.value).valueOr { return it }
         }
         return Outcome.Success(RandomReduction(next, plan.action, recorded))
     }
@@ -83,7 +92,7 @@ internal object LifeRandomEngine {
                 }.map { it.id })
                 Outcome.Success(Plan(command, eligible = eligible))
             }
-            is RandomRequest.Coin, is RandomRequest.SeatOrder -> Outcome.Success(Plan(command))
+            is RandomRequest.Coin, is RandomRequest.SeatOrder, is RandomRequest.VariantZoneShuffle -> Outcome.Success(Plan(command))
             is RandomRequest.ContinueDice -> return invalidInput("Missing continuation predecessor")
         }
     }
@@ -94,5 +103,6 @@ internal object LifeRandomEngine {
         is RandomRequest.Coin -> requestId
         is RandomRequest.SeatPick -> requestId
         is RandomRequest.SeatOrder -> requestId
+        is RandomRequest.VariantZoneShuffle -> requestId
     }
 }

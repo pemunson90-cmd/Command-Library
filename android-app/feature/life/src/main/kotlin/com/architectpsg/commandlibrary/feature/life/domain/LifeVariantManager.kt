@@ -4,6 +4,7 @@ import com.architectpsg.commandlibrary.core.model.*
 
 internal sealed interface VariantManagerSelection {
     data object None : VariantManagerSelection
+    data object Shuffle : VariantManagerSelection
     data class Top(val count: Int) : VariantManagerSelection
     data class Explicit(val minimum: Int, val maximum: Int) : VariantManagerSelection
 }
@@ -16,7 +17,7 @@ internal data class VariantManagerPlan(val definition: VariantDefinition, val in
     val policyKey: String, val policyValue: String, val transitions: SnapshotList<VariantManagerTransition>)
 
 /** Trusted authored deterministic plans only; neither source authentication nor hidden randomization. */
-internal class LifeVariantManager(plans: Iterable<VariantManagerPlan>) : LifeVariantInitializer, LifeVariantActionBackend {
+internal class LifeVariantManager(plans: Iterable<VariantManagerPlan>) : LifeVariantInitializer, LifeVariantActionBackend, LifeVariantShuffleAuthority {
     private val plans = SnapshotList.copyOf(plans)
 
     override fun initialize(input: GameCreation): Outcome<SnapshotList<VariantState>> {
@@ -52,6 +53,7 @@ internal class LifeVariantManager(plans: Iterable<VariantManagerPlan>) : LifeVar
         if (command.maximumPerPhase?.let { oldCount >= it } == true) return invalidInput("Variant action reached current phase limit")
         val source = transition.fromZone?.let { id -> current.zones.single { it.zoneId == id }.cardIds }
         val selected = when (val selection = transition.selection) {
+            VariantManagerSelection.Shuffle -> return unsupported("Use recorded random request for authored shuffle")
             VariantManagerSelection.None -> {
                 if (action.selectedCards.isNotEmpty()) return invalidInput("Variant action accepts no selected cards")
                 emptyList()
@@ -103,6 +105,26 @@ internal class LifeVariantManager(plans: Iterable<VariantManagerPlan>) : LifeVar
         return Outcome.Success(next)
     }
 
+    override fun authorizeShuffle(snapshot: GameSnapshot, request: RandomRequest.VariantZoneShuffle): Outcome<Unit> {
+        validatePlans().valueOr { return it }
+        validateSnapshotVariants(snapshot).valueOr { return it }
+        if (snapshot.status == GameStatus.COMPLETED) return invalidInput("Reopen before variant shuffle")
+        val definition = snapshot.settings.variantDefinitions.singleOrNull { it.id == request.definitionId } ?: return invalidInput("Unknown shuffle variant")
+        val plan = matched(definition).valueOr { return it }
+        val current = snapshot.variants.single { it.definitionId == definition.id }
+        if (request.policyKey != plan.policyKey || request.policyValue != plan.policyValue ||
+            current.properties.singleOrNull { it.key == plan.policyKey }?.value != VariantValue.Text(plan.policyValue)) return unsupported("Shuffle policy requires exact installed manager")
+        for (property in plan.initial.properties) {
+            val stored = current.properties.singleOrNull { it.key == property.key }
+            if (stored == null || stored.value::class != property.value::class) return corruptData("Variant manager property missing or changed type")
+        }
+        val transition = plan.transitions.singleOrNull { it.actionId == request.actionId } ?: return invalidInput("Unknown authored shuffle action")
+        if (transition.selection != VariantManagerSelection.Shuffle) return unsupported("Authored action is not a recorded shuffle")
+        if (current.phase !in transition.phases || request.zoneId != transition.fromZone) return invalidInput("Shuffle phase or zone differs from authored policy")
+        LifeVariantShuffle.prepare(snapshot, request).valueOr { return it }
+        return Outcome.Success(Unit)
+    }
+
     private fun matched(definition: VariantDefinition): Outcome<VariantManagerPlan> {
         val plan = plans.singleOrNull { it.definition.id == definition.id && it.definition.version == definition.version }
             ?: return unsupported("Variant requires an installed authored manager version")
@@ -128,6 +150,8 @@ internal class LifeVariantManager(plans: Iterable<VariantManagerPlan>) : LifeVar
                     (!moving && (transition.selection != VariantManagerSelection.None || transition.appendDrawn || transition.appendDiscarded))) return invalidInput("Selection must match explicit movement policy")
                 when (val selection = transition.selection) {
                     VariantManagerSelection.None -> Unit
+                    VariantManagerSelection.Shuffle -> if (transition.fromZone != transition.toZone || transition.reset || transition.nextPhase != null ||
+                        transition.properties.isNotEmpty() || transition.appendDrawn || transition.appendDiscarded) return invalidInput("Shuffle may change only full zone order and current action count")
                     is VariantManagerSelection.Top -> if (selection.count !in 1..10_000) return invalidInput("Top count must be bounded")
                     is VariantManagerSelection.Explicit -> if (selection.minimum < 0 || selection.maximum < selection.minimum || selection.maximum > 10_000) return invalidInput("Explicit selection must be bounded")
                 }

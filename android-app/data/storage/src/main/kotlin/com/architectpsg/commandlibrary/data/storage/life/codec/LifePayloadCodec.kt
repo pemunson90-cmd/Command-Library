@@ -6,7 +6,8 @@ import java.io.IOException
 internal const val SNAPSHOT_LIMIT = 4 * 1024 * 1024
 private const val EVENT_LIMIT = 16 * 1024 * 1024
 private const val MAGIC = 0x434c4946 // CLIF
-private const val CODEC_VERSION = 2
+private const val CODEC_VERSION = 3
+private class UnsupportedLifeFrame : IllegalArgumentException("Life payload requires a newer codec")
 
 internal fun <T> encodeLifeFrame(root: Int, limit: Int, codec: LifeWire<T>, value: T): ByteArray {
     val writer = LifeWriter(limit)
@@ -18,6 +19,7 @@ internal fun <T> decodeLifeFrame(bytes: ByteArray, root: Int, limit: Int, codec:
     val reader = LifeReader(bytes)
     require(reader.int() == MAGIC) { "Unsupported life payload magic" }
     val version = reader.int()
+    if (version > CODEC_VERSION) throw UnsupportedLifeFrame()
     require(version in 1..CODEC_VERSION && reader.byte() == root && (root != 6 || version >= 2)) { "Unsupported life payload frame" }
     reader.formatVersion = version
     val value = reader.v(codec)
@@ -49,6 +51,8 @@ public class LifePayloadCodec : LifePayloadCodecPort {
         }
     private inline fun <T> guard(code: FailureCode, operation: () -> T): Outcome<T> = try {
         Outcome.Success(operation())
+    } catch (error: UnsupportedLifeFrame) {
+        Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Life payload requires a newer codec")
     } catch (error: IllegalArgumentException) {
         failure(code, error)
     } catch (error: IOException) {

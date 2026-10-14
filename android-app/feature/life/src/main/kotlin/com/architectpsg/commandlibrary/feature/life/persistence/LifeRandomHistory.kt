@@ -88,4 +88,5 @@ private fun RandomRequest.randomIdentity(): EntityId = when (this) {
     is RandomRequest.Coin -> requestId
     is RandomRequest.SeatPick -> requestId
     is RandomRequest.SeatOrder -> requestId
+    is RandomRequest.VariantZoneShuffle -> requestId
 }

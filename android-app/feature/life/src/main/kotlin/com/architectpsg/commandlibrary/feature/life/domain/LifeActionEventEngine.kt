@@ -61,7 +61,7 @@ internal object LifeActionEventEngine {
                 }
                 is GameAction.RequestRandom -> {
                     val reduced = when (random) {
-                        is RandomExecution.Resolve -> LifeRandomEngine.resolve(working, item, reading.wall, random.source, random.context)
+                        is RandomExecution.Resolve -> LifeRandomEngine.resolve(working, item, reading.wall, random.source, random.context, variants as? LifeVariantShuffleAuthority)
                         is RandomExecution.Replay -> LifeRandomEngine.replay(working, item, random.recorded, random.context)
                         null -> return invalidInput("Random request requires explicit resolution or recorded replay")
                     }.valueOr { return it }

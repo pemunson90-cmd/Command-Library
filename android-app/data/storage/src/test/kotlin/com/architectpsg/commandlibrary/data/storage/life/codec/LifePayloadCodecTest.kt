@@ -135,7 +135,7 @@ class LifePayloadCodecTest {
         val bytes = success(codec.encodeSnapshot(snapshot())).copyBytes()
         failure(codec.decodeSnapshot(SnapshotBytes(bytes + byteArrayOf(0))), FailureCode.CORRUPT_DATA)
         failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf().also { it[0] = 0 })), FailureCode.CORRUPT_DATA)
-        failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf().also { it[7] = 3 })), FailureCode.CORRUPT_DATA)
+        failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf().also { it[7] = 0 })), FailureCode.CORRUPT_DATA)
         failure(codec.decodeProfile(SnapshotBytes(bytes)), FailureCode.CORRUPT_DATA)
         for (size in 0 until bytes.size) failure(codec.decodeSnapshot(SnapshotBytes(bytes.copyOf(size))), FailureCode.CORRUPT_DATA)
     }
@@ -210,10 +210,10 @@ class LifePayloadCodecTest {
         assertEquals(snapshot(), decoded)
         assertTrue((decoded.result as Knowledge.Known).value.seatResults.isEmpty())
         val current = success(codec.encodeSnapshot(decoded)).copyBytes()
-        assertEquals(2, ByteBuffer.wrap(current, 4, 4).int)
+        assertEquals(3, ByteBuffer.wrap(current, 4, 4).int)
         assertEquals(decoded, success(codec.decodeSnapshot(SnapshotBytes(current))))
     }
-    @Test fun creationInputHasStableExactCanonicalBytesAndFormatTwoOnly() {
+    @Test fun creationInputHasStableExactCanonicalBytesAndFormatTwoMinimum() {
         val original = creation(); val encoded = success(codec.encodeCreation(original))
         assertEquals(original, success(codec.decodeCreation(encoded)))
         assertEquals(encoded, success(codec.encodeCreation(original)))
@@ -280,5 +280,54 @@ class LifePayloadCodecTest {
             assertEquals(2, ByteBuffer.wrap(bytes).getInt(4))
             validate(SnapshotBytes(bytes))
         }
+    }
+
+    @Test fun formatThreeShuffleRoundtripsAndCannotBeSmuggledIntoOlderFrames() {
+        val id = EntityId("request")
+        val request = RandomRequest.VariantZoneShuffle(id, variantId, "shuffle", "deck", "policy", "plan-v1")
+        val order = SnapshotList.of(variantId, variantId)
+        val value = RecordedRandomValue.VariantZoneShuffle(variantId, "version", "shuffle", "deck", "policy", "plan-v1", order, order)
+        val original = event(GameAction.RequestRandom(request)).copy(randomResults = SnapshotList.of(RecordedRandomResult(id, stamp, value)))
+        val bytes = success(codec.encodeEvent(original)).copyBytes()
+        assertEquals(3, ByteBuffer.wrap(bytes).getInt(4)); assertEquals(original, success(codec.decodeEvent(SnapshotBytes(bytes))))
+        for (oldVersion in listOf(1,2)) {
+            val forged = bytes.copyOf(); ByteBuffer.wrap(forged).putInt(4, oldVersion)
+            failure(codec.decodeEvent(SnapshotBytes(forged)), FailureCode.CORRUPT_DATA)
+        }
+        val recordOnly = success(codec.encodeEvent(original.copy(action = GameAction.RequestRandom(RandomRequest.Coin(id))))).copyBytes()
+        ByteBuffer.wrap(recordOnly).putInt(4,2)
+        failure(codec.decodeEvent(SnapshotBytes(recordOnly)), FailureCode.CORRUPT_DATA)
+        val before = snapshot(); val after = before.copy(revision = original.revision, lastEventId = Knowledge.Known(original.id))
+        val archive = GameEventArchive(1, original, GameActionProvenance(original.id, before, after, GameTimeObservation(1.seconds, stamp, EntityId("process"))))
+        assertEquals(archive, success(codec.decodeArchive(success(codec.encodeArchive(archive)))))
+    }
+    @Test fun futureOuterAndNestedFramesAreUnsupportedWithoutPretendingDataCorruption() {
+        val bytes = success(codec.encodeEvent(event())).copyBytes(); ByteBuffer.wrap(bytes).putInt(4,4)
+        val outer = codec.decodeEvent(SnapshotBytes(bytes)); assertTrue(outer is Outcome.Unavailable)
+        assertEquals(UnavailableReason.UNSUPPORTED, (outer as Outcome.Unavailable).reason)
+        val before = snapshot(); val original = event(); val after = before.copy(revision = original.revision, lastEventId = Knowledge.Known(original.id))
+        val archive = GameEventArchive(1, original, GameActionProvenance(original.id, before, after, GameTimeObservation(1.seconds, stamp, EntityId("process"))))
+        val encoded = success(codec.encodeArchive(archive)).copyBytes()
+        val magic = byteArrayOf(0x43,0x4c,0x49,0x46)
+        val nested = (1..encoded.size-8).first { index -> magic.indices.all { encoded[index+it] == magic[it] } }
+        ByteBuffer.wrap(encoded).putInt(nested+4,4)
+        assertTrue(codec.decodeArchive(SnapshotBytes(encoded)) is Outcome.Unavailable)
+    }
+    @Test fun shufflePayloadBudgetsTruncationAndMalformedOccurrenceDataStayTyped() {
+        val id=EntityId("request")
+        val request=RandomRequest.VariantZoneShuffle(id,variantId,"shuffle","deck","policy","plan-v1")
+        val order=SnapshotList.of(variantId,variantId)
+        val value=RecordedRandomValue.VariantZoneShuffle(variantId,"version","shuffle","deck","policy","plan-v1",order,order)
+        val original=event(GameAction.RequestRandom(request)).copy(randomResults=SnapshotList.of(RecordedRandomResult(id,stamp,value)))
+        val encoded=success(codec.encodeEvent(original)).copyBytes()
+        for(end in listOf(0,8,encoded.size-1)) failure(codec.decodeEvent(SnapshotBytes(encoded.copyOf(end))),FailureCode.CORRUPT_DATA)
+        failure(codec.decodeEvent(SnapshotBytes(encoded+byteArrayOf(0))),FailureCode.CORRUPT_DATA)
+        assertEquals('1'.code.toByte(),encoded.last())
+        val malformed=encoded.copyOf(); malformed[malformed.lastIndex]='2'.code.toByte()
+        failure(codec.decodeEvent(SnapshotBytes(malformed)),FailureCode.CORRUPT_DATA)
+        val huge=ProviderIdentity(provider,"synthetic-card","x".repeat(65_536)); val many=SnapshotList.copyOf(List(10_000) { huge })
+        failure(codec.encodeEvent(original.copy(randomResults=SnapshotList.of(RecordedRandomResult(id,stamp,value.copy(beforeOrder=many,afterOrder=many))))),FailureCode.INVALID_INPUT)
+        val malformedText=request.copy(policyValue=charArrayOf(0xd800.toChar()).concatToString())
+        failure(codec.encodeEvent(original.copy(action=GameAction.RequestRandom(malformedText))),FailureCode.INVALID_INPUT)
     }
 }

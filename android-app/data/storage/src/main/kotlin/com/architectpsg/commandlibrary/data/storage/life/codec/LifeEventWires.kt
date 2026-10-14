@@ -8,10 +8,15 @@ private val requestWire = wire<RandomRequest>({ value -> when (value) {
     is RandomRequest.Coin -> { byte(3); v(entityWire, value.requestId) }
     is RandomRequest.SeatPick -> { byte(4); v(entityWire, value.requestId); v(nullable(entityWire), value.asker); bool(value.opponentsOnly) }
     is RandomRequest.SeatOrder -> { byte(5); v(entityWire, value.requestId) }
+    is RandomRequest.VariantZoneShuffle -> { byte(6); v(entityWire, value.requestId); v(providerIdentityWire, value.definitionId);
+        string(value.actionId); string(value.zoneId); string(value.policyKey); string(value.policyValue) }
 } }, { when (byte()) {
     1 -> RandomRequest.Dice(v(entityWire), long(), int()); 2 -> RandomRequest.ContinueDice(v(entityWire), long())
     3 -> RandomRequest.Coin(v(entityWire)); 4 -> RandomRequest.SeatPick(v(entityWire), v(nullable(entityWire)), bool())
-    5 -> RandomRequest.SeatOrder(v(entityWire)); else -> errorTag()
+    5 -> RandomRequest.SeatOrder(v(entityWire))
+    6 -> { require(formatVersion >= 3) { "Variant shuffle request requires format3" }
+        RandomRequest.VariantZoneShuffle(v(entityWire), v(providerIdentityWire), string(), string(), string(), string()) }
+    else -> errorTag()
 } })
 private val randomValueWire = wire<RecordedRandomValue>({ value -> when (value) {
     is RecordedRandomValue.Dice -> { byte(1); int(value.sides); v(list(intWire, 10_000), value.faces); long(value.sum);
@@ -19,10 +24,19 @@ private val randomValueWire = wire<RecordedRandomValue>({ value -> when (value) 
     is RecordedRandomValue.Coin -> { byte(2); bool(value.heads) }
     is RecordedRandomValue.SeatPick -> { byte(3); v(nullable(entityWire), value.selected); v(list(entityWire), value.eligible) }
     is RecordedRandomValue.SeatOrder -> { byte(4); v(list(entityWire), value.seatIds) }
+    is RecordedRandomValue.VariantZoneShuffle -> { byte(5); v(providerIdentityWire, value.definitionId); string(value.definitionVersion);
+        string(value.actionId); string(value.zoneId); string(value.policyKey); string(value.policyValue);
+        v(list(providerIdentityWire, RecordedRandomValue.VariantZoneShuffle.MAX_CARDS), value.beforeOrder);
+        v(list(providerIdentityWire, RecordedRandomValue.VariantZoneShuffle.MAX_CARDS), value.afterOrder) }
 } }, { when (byte()) {
     1 -> RecordedRandomValue.Dice(int(), v(list(intWire, 10_000)), long(), long(), long(), long())
     2 -> RecordedRandomValue.Coin(bool()); 3 -> RecordedRandomValue.SeatPick(v(nullable(entityWire)), v(list(entityWire)))
-    4 -> RecordedRandomValue.SeatOrder(v(list(entityWire))); else -> errorTag()
+    4 -> RecordedRandomValue.SeatOrder(v(list(entityWire)))
+    5 -> { require(formatVersion >= 3) { "Variant shuffle result requires format3" }
+        RecordedRandomValue.VariantZoneShuffle(v(providerIdentityWire), string(), string(), string(), string(), string(),
+            v(list(providerIdentityWire, RecordedRandomValue.VariantZoneShuffle.MAX_CARDS)),
+            v(list(providerIdentityWire, RecordedRandomValue.VariantZoneShuffle.MAX_CARDS))) }
+    else -> errorTag()
 } })
 private val randomResultWire = wire<RecordedRandomResult>({ v(entityWire, it.requestId); v(timestampWire, it.at); v(randomValueWire, it.value) },
     { RecordedRandomResult(v(entityWire), v(timestampWire), v(randomValueWire)) })

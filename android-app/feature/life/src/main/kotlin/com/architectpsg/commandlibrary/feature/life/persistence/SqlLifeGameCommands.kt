@@ -23,6 +23,7 @@ public class SqlLifeGameCommands internal constructor(db: Database, codec: LifeP
                 is RandomRequest.Coin -> request.requestId
                 is RandomRequest.SeatPick -> request.requestId
                 is RandomRequest.SeatOrder -> request.requestId
+                is RandomRequest.VariantZoneShuffle -> request.requestId
             }
             val history = gameValue(context.randomPredecessor(requestId))
             RandomExecution.Resolve(random, history?.let { RandomRequestContext(it.original, it.last) })

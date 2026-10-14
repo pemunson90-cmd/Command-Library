@@ -36,6 +36,7 @@ class LifeRandomPredecessorTest {
         is RandomRequest.Coin -> requestId
         is RandomRequest.SeatPick -> requestId
         is RandomRequest.SeatOrder -> requestId
+        is RandomRequest.VariantZoneShuffle -> requestId
     }
     private suspend fun probe(db: HostLifeDatabase, id: EntityId = requestId): Pair<Outcome<LifeRandomHistory?>, Outcome<StoredLifeGame>> {
         lateinit var observed: Outcome<LifeRandomHistory?>
