@@ -1,4 +1,4 @@
-# Deterministic authored variant managers — proposed bounded foundation
+# Deterministic authored variant managers — implemented bounded foundation
 
 Root cx-m2-life-action-engine-01 remains TAKEN; source-backed named managers remain required. This bounded pure/internal foundation executes explicit authored plans through existing LifeVariantInitializer and LifeVariantActionBackend, not guessed zone/action labels. No shared/core/schema/codec change, no registered GameService/DI/UI, source/rights acceptance, card corpus or named-module completion. Existing unsupported automatic shuffle/shared-life/team prerequisites remain visible in life-variant-execution-gap.md.
 
@@ -21,4 +21,4 @@ Meaningful pure JVM RED→GREEN: exact plan/version/content/policy matching and 
 
 Integration correction: retain existing outer current-phase quota preflight for manager-direct parity; test cap-boundary phase/reset through BOTH direct manager and real packet engine. Do not silently move quota authority or permit resetting a capped action by invoking that same capped action. Phase-change/reset final action count includes this accepted transition as explicitly authored policy; use a separately permitted uncapped transition when a source needs phase advancement after another action quota is exhausted.
 
-Independent architecture APPROVE (life_contract_review), including current-phase quota-before-effects correction and exact transition coverage. Source/tests next; source authenticity/named-module completion not approved.
+Independent architecture APPROVE (life_contract_review), including current-phase quota-before-effects correction and exact transition coverage. Exact-source APPROVE; eleven synthetic mechanical methods verified. See docs/verification/m2-life/VARIANT-MANAGER-LOCAL-20261014.md. Source authenticity/named-module completion not approved.
