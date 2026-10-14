@@ -1,4 +1,4 @@
-# Scryfall metadata integration — OPEN
+# Scryfall metadata integration — TAKEN
 
 Parent: orch-kotlin-k3-offline-data-01. Candidate worker branch: component/scryfall-integration-20261014, based on latest agent/cx-thread-recovery-20261013. Claim through coordination/CHAT-TASKS.md before writes; lock scryfall-integration.lock.
 
@@ -14,4 +14,4 @@ Verification locally from android-app: bash gradlew --no-daemon --console=plain 
 
 ## Latest continuation delta
 
-OPEN; decoder/boundary tests complete upstream at0db3298 but not integrated into recovery. Next worker claims, consumes scoped files, runs catalog tests/lint and publishes completion/evidence. Root handles final integration; worker does not merge main or replace global pointers.
+TAKEN by codex-scryfall-integration-20261014 on component/scryfall-integration-20261014, recovery base07fdbd0. Dedicated lock reserves only the named decoder/test/handoff and this task/board row. No implementation begun. Next: publish claim, verify upstream hashes, consume the three scoped files and run catalog tests/lint.

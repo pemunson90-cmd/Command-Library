@@ -5,7 +5,7 @@ Current assignment board,2026-10-14. Base your checkout on the latest published 
 | ID | Task | Status | Owner | Task card |
 |---|---|---|---|---|
 | life-profiles | Real SQLite player profile persistence and model codec port | TAKEN | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-profiles-01.md) |
-| scryfall-integrate | Bring the completed reviewed metadata decoder and13 tests onto the recovery baseline; verify locally | OPEN | — | [details](tasks/cx-k3-scryfall-integration-01.md) |
+| scryfall-integrate | Bring the completed reviewed metadata decoder and13 tests onto the recovery baseline; verify locally | TAKEN | codex-scryfall-integration-20261014 / component/scryfall-integration-20261014 | [details](tasks/cx-k3-scryfall-integration-01.md) |
 | life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | OPEN | — | [details](tasks/cx-m2-life-history-audit-01.md) |
 | life-game-service | Implement transactional persisted game service and operational UI | BLOCKED | Root assigns after persistence/contracts are ready | cx-m2-life-functional-01 |
 
