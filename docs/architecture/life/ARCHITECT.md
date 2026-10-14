@@ -4,6 +4,10 @@
 
 Gate3 contract draft under D17. Historical toolchain instructions are superseded by orch-kotlin-toolchain-01; K2 requires actual compile/runtime proof. This is not a built implementation.
 
+## Current Kotlin custom configuration boundary
+
+The reviewed `SqlLifeGameSessions.withCustomVariants` factory composes immutable user-authored CUSTOM definitions, exact initial placement and bounded typed transitions with the real initializer, action engine, recorded shuffle authority and checked SQLite lifecycle. It computes a pinned canonical SHA256 execution-policy marker; full definition equality and retained policy equality prevent changed configuration from reinterpreting saved games. Configuration validation samples no clock/ID/random source and touches no database. Callers retain/reprovide exact manifests; import/parser/repository/UI remain required later. This adds no GameService/DI binding or official named source acceptance. Current API/framing: KOTLIN_CONTRACTS and docs/superpowers/specs/2026-10-14-life-custom-manifest-factory-design.md. Runtime evidence is in docs/verification/m2-life/CUSTOM-FACTORY-LOCAL-20261014.md.
+
 ## Purpose
 
 Fully offline1-6 seat event-sourced life/counters/designations/commander/timing/variant/results state.

@@ -131,6 +131,8 @@ internal class LifeVariantManager(plans: Iterable<VariantManagerPlan>) : LifeVar
         if (plan.definition != definition) return unsupported("Variant content differs from installed manager manifest")
         return Outcome.Success(plan)
     }
+    internal fun validateConfiguration(): Outcome<Unit> = validatePlans()
+
     private fun validatePlans(): Outcome<Unit> {
         if (plans.map { it.definition.id to it.definition.version }.toSet().size != plans.size) return invalidInput("Duplicate authored manager version")
         for (plan in plans) {

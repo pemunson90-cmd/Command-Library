@@ -1,6 +1,7 @@
 package com.architectpsg.commandlibrary.feature.life.persistence
 
 import com.architectpsg.commandlibrary.core.model.*
+import com.architectpsg.commandlibrary.feature.life.domain.LifeVariantManager
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -11,14 +12,28 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.cancellation.CancellationException
 
 /** Instance-local committed-state ordering; no GameService binding, background jobs or cross-process watch. */
-public class SqlLifeGameSessions(db: Database, codec: LifePayloadCodecPort, ids: IdSource, random: RandomSource,
-    private val clock: Clock, private val processSessionId: EntityId, gameSource: ProviderId) {
+public class SqlLifeGameSessions internal constructor(db: Database, codec: LifePayloadCodecPort, ids: IdSource, random: RandomSource,
+    private val clock: Clock, private val processSessionId: EntityId, gameSource: ProviderId, variants: LifeVariantManager?) {
+    public constructor(db: Database, codec: LifePayloadCodecPort, ids: IdSource, random: RandomSource,
+        clock: Clock, processSessionId: EntityId, gameSource: ProviderId) : this(db, codec, ids, random, clock, processSessionId, gameSource, null)
+
+    public companion object {
+        /** Caller must retain and supply the exact manifest configuration again after reopening saved games. */
+        public fun withCustomVariants(db: Database, codec: LifePayloadCodecPort, ids: IdSource, random: RandomSource,
+            clock: Clock, processSessionId: EntityId, gameSource: ProviderId,
+            manifests: SnapshotList<CustomVariantManifest>): Outcome<SqlLifeGameSessions> {
+            return try {
+                val manager = gameValue(customVariantManager(manifests, processSessionId, gameSource))
+                Outcome.Success(SqlLifeGameSessions(db, codec, ids, random, clock, processSessionId, gameSource, manager))
+            } catch (problem: GameStoreProblem) { problem.status }
+        }
+    }
     private val sourceMonitor = Any()
     private val clockMonitor = Any()
     private val safeIds = object : IdSource { override fun nextId(): String = synchronized(sourceMonitor) { ids.nextId() } }
     private val safeRandom = object : RandomSource { override fun nextInt(upperBound: Int): Int = synchronized(sourceMonitor) { random.nextInt(upperBound) } }
-    private val lifecycle = SqlLifeGameLifecycle(db, codec, safeIds, gameSource)
-    private val commands = SqlLifeGameCommands(db, codec, safeIds, safeRandom)
+    private val lifecycle = SqlLifeGameLifecycle(db, codec, safeIds, gameSource, variants)
+    private val commands = SqlLifeGameCommands(db, codec, safeIds, safeRandom, variants)
     private class Entry {
         val lock = Mutex()
         var references = 0
