@@ -42,6 +42,7 @@ internal data class CollectionUiState(
     val issues: SnapshotList<DomainIssue> = SnapshotList.empty(),
     val mutationBusy: Boolean = false,
     val pending: Boolean = false,
+    val awaitingFresh: Boolean = false,
     val uncertain: Boolean = false,
     val mutationProblem: Problem? = null,
     val savedRevision: Revision? = null,

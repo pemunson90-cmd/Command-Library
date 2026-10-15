@@ -70,6 +70,7 @@ internal fun CollectionScreen(controller: CollectionController, widthClass: Widt
 
 @Composable
 private fun InventoryPane(controller: CollectionController, state: CollectionUiState, modifier: Modifier, abandon: () -> Unit, browseCards: (() -> Unit)?) {
+    val inventoryBusy by controller.inventoryWriterBusy.collectAsState()
     val snapshot = state.bulkSelectionBase ?: state.inventory
     val selected = snapshot?.lots?.firstOrNull { it.id == state.selectedLotId }
     LazyColumn(modifier.fillMaxHeight().testTag(CollectionTags.INVENTORY), verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
@@ -77,7 +78,7 @@ private fun InventoryPane(controller: CollectionController, state: CollectionUiS
             CollectionStatus(controller, state, abandon)
             ActionRow {
                 OutlinedButton(controller::refresh, enabled = !state.loading && !state.mutationBusy, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_refresh)) }
-                OutlinedButton(controller::undo, enabled = snapshot != null && !state.pending && !state.mutationBusy && state.form == null && state.bulkForm == null, modifier = Modifier.touch().testTag("collection-undo")) { Text(stringResource(R.string.collection_undo)) }
+                OutlinedButton(controller::undo, enabled = !inventoryBusy && snapshot != null && !state.pending && !state.mutationBusy && state.form == null && state.bulkForm == null, modifier = Modifier.touch().testTag("collection-undo")) { Text(stringResource(R.string.collection_undo)) }
             }
             if (state.bulkSelectionBase == null) OutlinedButton(controller::beginBulkSelection, enabled = !state.pending && !state.mutationBusy && state.form == null && !state.bulkSelectionPreparing, modifier = Modifier.touch().testTag("collection-bulk-select")) { Text(stringResource(R.string.collection_bulk_select)) }
             else {
@@ -187,15 +188,18 @@ private fun AllocationPane(controller: CollectionController, state: CollectionUi
 
 @Composable
 private fun CollectionStatus(controller: CollectionController, state: CollectionUiState, abandon: () -> Unit) {
+    val inventoryBusy by controller.inventoryWriterBusy.collectAsState()
+    if (inventoryBusy && !controller.hasMutationBarrier)
+        Text(stringResource(R.string.collection_other_writer))
     if (state.checkingCatalog) {
         LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_checking_catalog))
         if (!state.mutationBusy) TextButton(controller::discardForm, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_close)) }
     }
     state.formProblem?.let { if (state.form == null) CollectionProblem(it) }
     if (state.mutationBusy) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_saving)) }
-    else if (state.pending) MessageBlock(null, listOf(stringResource(R.string.collection_pending)), MessageTone.INFO) {
+    else if (state.pending) MessageBlock(null, listOf(stringResource(if (state.awaitingFresh) R.string.collection_awaiting_refresh else R.string.collection_pending)), MessageTone.INFO) {
         OutlinedButton(controller::retry, modifier = Modifier.touch().testTag(CollectionTags.RETRY)) { Text(stringResource(R.string.collection_retry)) }
-        OutlinedButton(abandon, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_abandon)) }
+        if (!state.awaitingFresh) OutlinedButton(abandon, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_abandon)) }
     }
     state.mutationProblem?.let { CollectionProblem(it) }
     state.savedRevision?.let { MessageBlock(null, listOf(stringResource(R.string.collection_saved, it.value)), MessageTone.INFO) }

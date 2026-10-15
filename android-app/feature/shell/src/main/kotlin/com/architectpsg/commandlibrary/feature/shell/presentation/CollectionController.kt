@@ -18,6 +18,7 @@ internal class CollectionController(
     private val dispatcher: CoroutineDispatcher,
     private val nextEntityId: () -> EntityId,
     private val currentCatalogGeneration: () -> GenerationId? = { null },
+    private val inventoryMutationGate: InventoryMutationGate = InventoryMutationGate(),
 ) {
     private data class Preview(val form: CollectionForm, val patch: CollectionPatch, val projection: InventoryProjection)
     private sealed interface Request {
@@ -25,7 +26,7 @@ internal class CollectionController(
         val operation: EntityId
         data class Apply(val preview: Preview, override val operation: EntityId) : Request { override val expected = preview.form.base.revision }
         data class Bulk(val preview: CollectionBulkPreview, override val operation: EntityId) : Request { override val expected = preview.form.base.revision }
-        data class Undo(override val expected: Revision, override val operation: EntityId) : Request
+        data class Undo(val base: InventorySnapshot, override val operation: EntityId) : Request { override val expected = base.revision }
     }
     private val mutable = MutableStateFlow(CollectionUiState())
     val state: StateFlow<CollectionUiState> = mutable.asStateFlow()
@@ -48,6 +49,22 @@ internal class CollectionController(
     private var preview: Preview? = null
     private var request: Request? = null
     private var uncertain = false
+    private var mutationLease: InventoryMutationGate.Lease? = null
+    private data class Readback(val minimum: Revision, val committed: InventoryCommit?)
+    private var readback: Readback? = null
+    val inventoryWriterBusy: StateFlow<Boolean> get() = inventoryMutationGate.busy
+    val hasMutationBarrier: Boolean get() = mutationLease != null || request != null || readback != null || mutable.value.mutationBusy
+
+    private fun acquireMutation(): InventoryMutationGate.Lease? {
+        if (mutationLease != null || request != null || readback != null) return null
+        return inventoryMutationGate.tryAcquire()?.also { mutationLease = it }
+    }
+    private fun releaseUnsubmitted(lease: InventoryMutationGate.Lease) {
+        if (mutationLease === lease && request == null && readback == null) {
+            mutationLease = null
+            lease.release()
+        }
+    }
     private var observedDeckRevision: Revision? = null
     private var allocationDeckRevision: Revision? = null
 
@@ -55,6 +72,8 @@ internal class CollectionController(
         if (mutable.value.inventory == null && !mutable.value.loading) refresh()
         if (mutable.value.deckEpoch == null && !mutable.value.loadingDecks) refreshDecks()
     }
+    private fun ordered(at: UtcTimestamp, base: UtcTimestamp): Boolean = at.epochSeconds > base.epochSeconds ||
+        at.epochSeconds == base.epochSeconds && at.nanoAdjustment >= base.nanoAdjustment
     private fun validSnapshot(value: InventorySnapshot): Boolean = value.complete && value.lots.size <= InventoryProjectionLimits.MAX_LOTS
     private fun invalidateAllocation() {
         ++allocationGeneration; allocationJob?.cancel(); allocationDeckRevision = null
@@ -64,10 +83,18 @@ internal class CollectionController(
         readJob?.cancel(); val generation = ++readGeneration
         invalidateAllocation()
         mutable.update { it.copy(loading = true, loadProblem = null) }
+        val capturedReadback = readback
+        val capturedLease = mutationLease
         readJob = scope.launch {
             try {
                 val result: PortResult<Pair<InventorySnapshot,Map<EntityId,Int>>> = callPort(dispatcher) { token -> when (val loaded = inventory.snapshot(token)) {
-                    is Outcome.Success -> Outcome.Success(loaded.value to if (validSnapshot(loaded.value)) indexLots(loaded.value,token) else emptyMap())
+                    is Outcome.Success -> {
+                        val snapshot = loaded.value
+                        val positions = if (validSnapshot(snapshot)) indexLots(snapshot,token) else emptyMap()
+                        if (validSnapshot(snapshot) && positions.size == snapshot.lots.size && snapshot.lots.all { it.revision.value <= snapshot.revision.value })
+                            Outcome.Success(snapshot to positions)
+                        else Outcome.Failure(DomainFailure(FailureCode.CORRUPT_DATA,"Invalid inventory snapshot",SnapshotList.empty()))
+                    }
                     is Outcome.Failure -> loaded; is Outcome.Unknown -> loaded; is Outcome.Unavailable -> loaded
                 } }
                 currentCoroutineContext().ensureActive()
@@ -77,12 +104,22 @@ internal class CollectionController(
                     is PortResult.Ok -> {
                         val snapshot = result.value.first
                         if (!validSnapshot(snapshot)) mutable.update { it.copy(loadProblem = Problem.CORRUPT_DATA) }
-                        else if (snapshot.revision.value < (mutable.value.inventory?.revision?.value ?: 0L)) mutable.update { it.copy(loadProblem = Problem.STALE_REVISION) }
+                        else if (snapshot.revision.value < maxOf(mutable.value.inventory?.revision?.value ?: 0L,
+                            capturedReadback?.minimum?.value ?: 0L) ||
+                            mutable.value.inventory?.capturedAt?.let { !ordered(snapshot.capturedAt,it) } == true ||
+                            capturedReadback?.committed?.modifiedAt?.let { !ordered(snapshot.capturedAt,it) } == true) mutable.update { it.copy(loadProblem = Problem.STALE_REVISION) }
                         else {
                             indexedInventory = snapshot; inventoryPositions = result.value.second
                             if (preview?.form?.base?.revision != snapshot.revision) { preview = null; mutable.update { it.copy(preview = null) } }
                             if (mutable.value.bulkForm?.base?.revision?.let { it != snapshot.revision } == true) invalidateBulkPreview()
                             mutable.update { s -> s.copy(inventory = snapshot, selectedLotId = s.selectedLotId?.takeIf { id -> snapshot.lots.any { it.id == id } }) }
+                            if (capturedReadback != null && readback === capturedReadback && capturedLease != null &&
+                                mutationLease === capturedLease && capturedLease.owns) {
+                                readback = null
+                                mutable.update { it.copy(awaitingFresh = false, pending = false, uncertain = false,
+                                    mutationProblem = null, savedRevision = capturedReadback.committed?.projection?.resultRevision) }
+                                releaseUnsubmitted(capturedLease)
+                            }
                         }
                     }
                 }
@@ -93,7 +130,7 @@ internal class CollectionController(
         ++selectionGeneration
         mutable.update { it.copy(selectedLotId = id) }
     }
-    private fun canOpen(): Boolean = request == null && !mutable.value.mutationBusy && !mutable.value.previewing && !mutable.value.checkingCatalog && mutable.value.form == null && mutable.value.bulkForm == null
+    private fun canOpen(): Boolean = request == null && readback == null && !mutable.value.mutationBusy && !mutable.value.previewing && !mutable.value.checkingCatalog && mutable.value.form == null && mutable.value.bulkForm == null
     fun beginEdit(id: EntityId, remove: Boolean = false) {
         if (!canOpen()) return
         val base = mutable.value.inventory ?: return
@@ -147,7 +184,7 @@ internal class CollectionController(
     }
     private fun samePrinting(a: PrintingRecord, b: PrintingRecord): Boolean = a.id == b.id && a.language == b.language && a.oracleId == b.oracleId
     private fun change(transform: (CollectionForm) -> CollectionForm) {
-        if (request != null || mutable.value.mutationBusy) return
+        if (request != null || readback != null || mutable.value.mutationBusy) return
         ++formGeneration; formJob?.cancel(); preview = null
         mutable.update { it.copy(form = it.form?.let(transform)?.copy(dirty = true), preview = null, previewing = false,
             invalidForm = false, formProblem = null, issues = SnapshotList.empty()) }
@@ -236,16 +273,17 @@ internal class CollectionController(
         val frozen = preview ?: return
         if (frozen.projection.issues.isNotEmpty()) return
         if (mutable.value.inventory?.revision != frozen.form.base.revision) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return }
+        val lease = acquireMutation() ?: return
         val generation = formGeneration
         val confirmSelectionGeneration = selectionGeneration
         mutable.update { it.copy(mutationBusy = true, formProblem = null) }
-        scope.launch {
+        scope.launch(start = CoroutineStart.UNDISPATCHED) {
             try {
                 if (frozen.form.mode == CollectionFormMode.ADD) {
                     val record = checkNotNull(frozen.form.printing)
                     val result = callPort(dispatcher) { catalog.printing(record.id, it) }
                     currentCoroutineContext().ensureActive()
-                    if (generation != formGeneration) return@launch
+                    if (generation != formGeneration || mutationLease !== lease || !lease.owns) return@launch
                     when (result) {
                         is PortResult.Failed -> { mutable.update { it.copy(formProblem = result.problem) }; return@launch }
                         is PortResult.Ok -> {
@@ -257,7 +295,7 @@ internal class CollectionController(
                         }
                     }
                 }
-                if (mutable.value.inventory?.revision != frozen.form.base.revision || preview !== frozen) {
+                if (mutationLease !== lease || !lease.owns || mutable.value.inventory?.revision != frozen.form.base.revision || preview !== frozen) {
                     mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return@launch
                 }
                 try { request = Request.Apply(frozen, nextEntityId()) }
@@ -265,47 +303,100 @@ internal class CollectionController(
                 requestSelectionGeneration = confirmSelectionGeneration
                 invalidateAllocation(); ++readGeneration; readJob?.cancel()
                 perform(checkNotNull(request))
-            } finally { mutable.update { it.copy(mutationBusy = false) } }
+            } finally { mutable.update { it.copy(mutationBusy = false) }; releaseUnsubmitted(lease) }
         }
     }
     fun undo() {
         if (request != null || mutable.value.mutationBusy || mutable.value.form != null || mutable.value.bulkForm != null) return
         val snapshot = mutable.value.inventory ?: return
         if (snapshot.revision.value == Long.MAX_VALUE) { mutable.update { it.copy(mutationProblem = Problem.PERSISTENCE) }; return }
-        try { request = Request.Undo(snapshot.revision, nextEntityId()) }
-        catch (e: CancellationException) { throw e } catch (_: Exception) { mutable.update { it.copy(mutationProblem = Problem.INTERNAL) }; return }
+        val lease = acquireMutation() ?: return
+        try { request = Request.Undo(snapshot, nextEntityId()) }
+        catch (e: CancellationException) { releaseUnsubmitted(lease); throw e }
+        catch (_: Exception) { releaseUnsubmitted(lease); mutable.update { it.copy(mutationProblem = Problem.INTERNAL) }; return }
         requestSelectionGeneration = selectionGeneration
         attempt()
     }
-    fun retry() { if (request != null && !mutable.value.mutationBusy) attempt() }
+    fun retry() {
+        if (mutable.value.mutationBusy) return
+        if (readback != null) refresh() else if (request != null) attempt()
+    }
     private fun attempt() {
         val frozen = request ?: return
+        val lease = mutationLease?.takeIf { it.owns } ?: return
         mutable.update { it.copy(mutationBusy = true) }
         invalidateAllocation(); ++readGeneration; readJob?.cancel()
-        scope.launch { try { perform(frozen) } finally { mutable.update { it.copy(mutationBusy = false) } } }
+        scope.launch(start = CoroutineStart.UNDISPATCHED) { try { perform(frozen) } finally { mutable.update { it.copy(mutationBusy = false) }; releaseUnsubmitted(lease) } }
+    }
+    private fun validRejection(frozen: Request, rejected: InventoryApplyResult.Rejected): Boolean {
+        if (rejected.actualRevision != frozen.expected || rejected.issues.isEmpty() ||
+            rejected.issues.size > InventoryProjectionLimits.MAX_ISSUES) return false
+        val patch = when (frozen) {
+            is Request.Apply -> frozen.preview.patch
+            is Request.Bulk -> frozen.preview.patch ?: return false
+            is Request.Undo -> return false
+        }
+        val ids = patch.edits.map { when(it) {
+            is CollectionEdit.Add -> it.lot.id; is CollectionEdit.Replace -> it.lot.id
+            is CollectionEdit.Remove -> it.lotId; is CollectionEdit.Adjust -> it.lotId
+        } }.toSet()
+        val codes = setOf(InventoryIssueCodes.DUPLICATE_SELECTION,InventoryIssueCodes.LOT_ALREADY_EXISTS,
+            InventoryIssueCodes.LOT_NOT_FOUND,InventoryIssueCodes.STALE_LOT,InventoryIssueCodes.INVALID_ADD_REVISION,
+            InventoryIssueCodes.QUANTITY_RANGE,InventoryIssueCodes.MERGE_TARGET_SELECTED,InventoryIssueCodes.QUANTITY_OVERFLOW)
+        return rejected.issues.all { it.severity == IssueSeverity.ERROR && it.entryId in ids && it.code in codes }
+    }
+    private fun validUndo(frozen: Request.Undo, commit: InventoryCommit, cancel: CancelToken): Boolean {
+        val projection = commit.projection
+        if (frozen.expected.value == Long.MAX_VALUE || projection.sourceRevision != frozen.expected ||
+            projection.resultRevision.value != frozen.expected.value+1 || projection.changes.isEmpty() ||
+            projection.changes.size > InventoryProjectionLimits.MAX_EDITS || projection.merges.isNotEmpty() ||
+            projection.issues.isNotEmpty() || !ordered(commit.modifiedAt,frozen.base.capturedAt)) return false
+        val before = HashMap<EntityId,OwnedLot>()
+        for ((i,lot) in frozen.base.lots.withIndex()) {
+            if (i % InventoryProjectionLimits.CANCEL_CHECK_INTERVAL == 0) cancel.throwIfCancelled()
+            if (before.put(lot.id,lot) != null) return false
+        }
+        val seen = HashSet<EntityId>()
+        for (change in projection.changes) {
+            cancel.throwIfCancelled()
+            if (!seen.add(change.lotId) || change.before != before[change.lotId] ||
+                change.before?.id?.let { it != change.lotId } == true ||
+                change.after?.let { it.id != change.lotId || it.revision != projection.resultRevision } == true ||
+                change.before == null && change.after == null) return false
+        }
+        return true
     }
     private suspend fun perform(frozen: Request) {
         mutable.update { it.copy(pending = true, mutationProblem = null, savedRevision = null, loading = false) }
+        val lease = mutationLease?.takeIf { it.owns } ?: return
         try {
             val result: PortResult<InventoryApplyResult> = callPort(dispatcher) { cancel -> when (frozen) {
                 is Request.Apply -> inventory.apply(frozen.preview.patch, frozen.expected, frozen.operation, cancel)
                 is Request.Bulk -> inventory.apply(checkNotNull(frozen.preview.patch), frozen.expected, frozen.operation, cancel)
                 is Request.Undo -> when (val undone = inventory.undo(frozen.expected, frozen.operation, cancel)) {
-                    is Outcome.Success -> Outcome.Success(InventoryApplyResult.Committed(undone.value))
+                    is Outcome.Success -> if (validUndo(frozen,undone.value,cancel)) Outcome.Success(InventoryApplyResult.Committed(undone.value))
+                        else Outcome.Failure(DomainFailure(FailureCode.CORRUPT_DATA,"Invalid inventory undo acknowledgement",SnapshotList.empty()))
                     is Outcome.Failure -> undone
                     is Outcome.Unknown -> undone
                     is Outcome.Unavailable -> undone
                 }
             } }
             currentCoroutineContext().ensureActive()
+            if (mutationLease !== lease || !lease.owns || request !== frozen) return
             when (result) {
                 is PortResult.Failed -> {
-                    uncertain = uncertain || result.problem in setOf(Problem.PERSISTENCE, Problem.INTERNAL, Problem.TRANSPORT, Problem.UNKNOWN_RESULT, Problem.UNEXPECTED)
+                    uncertain = uncertain || result.problem in setOf(Problem.PERSISTENCE, Problem.INTERNAL, Problem.TRANSPORT, Problem.UNKNOWN_RESULT, Problem.UNEXPECTED, Problem.CORRUPT_DATA)
                     if (!uncertain) { request = null; if (frozen is Request.Bulk && result.problem == Problem.STALE_REVISION) invalidateBulkPreview(false) }
                     mutable.update { it.copy(pending = uncertain, uncertain = uncertain, mutationProblem = result.problem) }
                 }
                 is PortResult.Ok -> when (val applied = result.value) {
                     is InventoryApplyResult.Rejected -> {
+                        if (!validRejection(frozen,applied)) {
+                            uncertain = true
+                            mutable.update { it.copy(pending = true, uncertain = true, mutationProblem = Problem.CORRUPT_DATA) }
+                            refresh()
+                            return
+                        }
                         if (!uncertain) request = null
                         preview = null
                         invalidateBulkPreview(false)
@@ -316,16 +407,21 @@ internal class CollectionController(
                         val valid = frozen.expected.value < Long.MAX_VALUE && projection.sourceRevision == frozen.expected &&
                             projection.resultRevision.value == frozen.expected.value + 1 && projection.issues.isEmpty() &&
                             projection.changes.size <= InventoryProjectionLimits.MAX_EDITS && projection.merges.size <= InventoryProjectionLimits.MAX_EDITS &&
-                            (frozen !is Request.Bulk || projection == frozen.preview.projection)
+                            when (frozen) {
+                                is Request.Apply -> projection == frozen.preview.projection && ordered(applied.commit.modifiedAt, frozen.preview.form.base.capturedAt)
+                                is Request.Bulk -> projection == frozen.preview.projection && ordered(applied.commit.modifiedAt, frozen.preview.form.base.capturedAt)
+                                is Request.Undo -> ordered(applied.commit.modifiedAt, frozen.base.capturedAt)
+                            }
                         if (!valid) {
                             uncertain = true
                             mutable.update { it.copy(pending = true, uncertain = true, mutationProblem = Problem.CORRUPT_DATA) }
                         } else {
                             request = null; uncertain = false; preview = null
+                            readback = Readback(projection.resultRevision, applied.commit)
                             val survivor = if (selectionGeneration == requestSelectionGeneration && frozen is Request.Apply && frozen.preview.form.mode == CollectionFormMode.ADD) projection.changes.firstOrNull()?.lotId else mutable.value.selectedLotId
                             invalidateBulkPreview(false)
-                            mutable.update { it.copy(bulkForm = if (frozen is Request.Bulk) null else it.bulkForm, bulkSelectionBase = if (frozen is Request.Bulk) null else it.bulkSelectionBase, bulkIds = if (frozen is Request.Bulk) SnapshotList.empty() else it.bulkIds, bulkAnchor = if (frozen is Request.Bulk) null else it.bulkAnchor, bulkDiscardPrompt = false, pending = false, uncertain = false, form = null, preview = null, issues = SnapshotList.empty(),
-                                selectedLotId = survivor, savedRevision = projection.resultRevision, mutationProblem = null) }
+                            mutable.update { it.copy(bulkForm = if (frozen is Request.Bulk) null else it.bulkForm, bulkSelectionBase = if (frozen is Request.Bulk) null else it.bulkSelectionBase, bulkIds = if (frozen is Request.Bulk) SnapshotList.empty() else it.bulkIds, bulkAnchor = if (frozen is Request.Bulk) null else it.bulkAnchor, bulkDiscardPrompt = false, pending = true, uncertain = false, awaitingFresh = true, form = null, preview = null, issues = SnapshotList.empty(),
+                                selectedLotId = survivor, savedRevision = null, mutationProblem = null) }
                         }
                     }
                 }
@@ -340,13 +436,22 @@ internal class CollectionController(
     }
     /** Caller must first display the explicit may-already-have-committed warning. */
     fun abandonConfirmed() {
-        if (request == null || mutable.value.mutationBusy) return
+        if (request == null || mutable.value.mutationBusy || readback != null) return
+        if (mutationLease?.owns != true) return
+        val base = when (val frozen = request) {
+            is Request.Apply -> frozen.preview.form.base.revision
+            is Request.Bulk -> frozen.preview.form.base.revision
+            is Request.Undo -> frozen.expected
+            null -> return
+        }
+        readback = Readback(Revision(maxOf(base.value, mutable.value.inventory?.revision?.value ?: 0L)), null)
         request = null; uncertain = false; preview = null
         ++formGeneration; formJob?.cancel(); invalidateBulkPreview()
-        mutable.update { it.copy(bulkForm = null, bulkSelectionBase = null, bulkIds = SnapshotList.empty(), bulkAnchor = null, bulkDiscardPrompt = false, pending = false, uncertain = false, form = null, preview = null, issues = SnapshotList.empty(), mutationProblem = null) }
+        mutable.update { it.copy(bulkForm = null, bulkSelectionBase = null, bulkIds = SnapshotList.empty(), bulkAnchor = null, bulkDiscardPrompt = false, pending = true, uncertain = false, awaitingFresh = true, form = null, preview = null, issues = SnapshotList.empty(), mutationProblem = null) }
+        // A new read ticket is issued AFTER the abandoned-readback state; old reads cannot release the grant.
         refresh()
     }
-    private fun bulkEditable(): Boolean = request == null && !mutable.value.mutationBusy && mutable.value.form == null && !mutable.value.checkingCatalog
+    private fun bulkEditable(): Boolean = request == null && readback == null && !mutable.value.mutationBusy && mutable.value.form == null && !mutable.value.checkingCatalog
     private fun invalidateBulkPreview(cancelJob: Boolean = true) {
         ++bulkGeneration; if (cancelJob && request == null) bulkJob?.cancel(); bulkProofGeneration = null
         mutable.update { it.copy(bulkPreview = null, bulkPreviewing = false, bulkSelectionPreparing = false) }
@@ -498,12 +603,13 @@ internal class CollectionController(
         val ticket = bulkGeneration
         val finishChange = frozen.form.draft.finish is BulkValue.Set
         if (finishChange && (frozen.generation == null || activeBulkGeneration() != frozen.generation)) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_GENERATION) }; return }
+        val lease = acquireMutation() ?: return
         mutable.update { it.copy(mutationBusy = true, bulkProblem = null) }
-        bulkJob = scope.launch {
+        bulkJob = scope.launch(start = CoroutineStart.UNDISPATCHED) {
             try {
                 val checked = if (finishChange) bulkCandidate(frozen.form,frozen.generation) else frozen
                 currentCoroutineContext().ensureActive()
-                if (ticket != bulkGeneration || mutable.value.bulkForm != frozen.form) return@launch
+                if (ticket != bulkGeneration || mutable.value.bulkForm != frozen.form || mutationLease !== lease || !lease.owns) return@launch
                 if (checked.blocked) { mutable.update { it.copy(bulkPreview = checked) }; return@launch }
                 if (mutable.value.inventory?.revision != frozen.form.base.revision) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return@launch }
                 if (finishChange && activeBulkGeneration() != frozen.generation) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_GENERATION) }; return@launch }
@@ -512,7 +618,7 @@ internal class CollectionController(
                 requestSelectionGeneration = selectionGeneration
                 invalidateAllocation(); ++readGeneration; readJob?.cancel()
                 perform(checkNotNull(request))
-            } finally { mutable.update { it.copy(mutationBusy = false) } }
+            } finally { mutable.update { it.copy(mutationBusy = false) }; releaseUnsubmitted(lease) }
         }
     }
     fun refreshDecks() = pageDecks(null)
@@ -568,7 +674,7 @@ internal class CollectionController(
         invalidateAllocation(); mutable.update { it.copy(ownership = value) }
     }
     fun calculateAllocation() {
-        if (mutable.value.mutationBusy || request != null) return
+        if (mutable.value.mutationBusy || request != null || readback != null) return
         val id = mutable.value.selectedDeckId ?: return
         invalidateAllocation(); val generation = allocationGeneration
         val readTicket = readGeneration

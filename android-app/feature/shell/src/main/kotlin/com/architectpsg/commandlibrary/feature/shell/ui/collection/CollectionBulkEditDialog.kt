@@ -18,12 +18,14 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.*
 import com.architectpsg.commandlibrary.feature.shell.ui.*
 
 @Composable internal fun CollectionBulkEditDialog(controller: CollectionController, form: CollectionBulkForm, state: CollectionUiState) {
+    val inventoryBusy by controller.inventoryWriterBusy.collectAsState()
     val editing = !state.pending && !state.mutationBusy && !state.bulkPreviewing
     val draft = form.draft
     AlertDialog(onDismissRequest = controller::closeBulkForm,
         title = { Text(stringResource(R.string.collection_bulk_edit)) }, text = {
             LazyColumn(Modifier.fillMaxWidth().heightIn(max = 480.dp).testTag("collection-bulk-dialog-list"),verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 item {
+                    if (inventoryBusy && !controller.hasMutationBarrier) Text(stringResource(R.string.collection_other_writer))
                     Text(pluralStringResource(R.plurals.collection_bulk_selected,form.ids.size,form.ids.size))
                     Text(stringResource(R.string.collection_bulk_unsaved))
                     form.ids.indices.filter { form.originals[it] == null }.forEach { Text(stringResource(R.string.collection_bulk_missing_id,form.ids[it].value),color = MaterialTheme.colorScheme.error) }
@@ -78,7 +80,7 @@ import com.architectpsg.commandlibrary.feature.shell.ui.*
         }, confirmButton = {
             when {
                 state.pending -> TextButton(controller::retry,enabled = !state.mutationBusy,modifier = Modifier.touch().testTag("collection-bulk-retry")) { Text(stringResource(R.string.collection_retry)) }
-                state.bulkPreview != null -> TextButton(controller::confirmBulkPreview,enabled = editing && !state.bulkPreview.blocked,modifier = Modifier.touch().testTag("collection-bulk-confirm")) { Text(stringResource(R.string.collection_bulk_confirm)) }
+                state.bulkPreview != null -> TextButton(controller::confirmBulkPreview,enabled = !inventoryBusy && editing && !state.bulkPreview.blocked,modifier = Modifier.touch().testTag("collection-bulk-confirm")) { Text(stringResource(R.string.collection_bulk_confirm)) }
                 else -> TextButton(controller::previewBulkEdit,enabled = editing && draft.changes && form.ids.isNotEmpty(),modifier = Modifier.touch().testTag("collection-bulk-preview")) { Text(stringResource(R.string.collection_bulk_preview)) }
             }
         }, dismissButton = { TextButton(controller::closeBulkForm,enabled = !state.mutationBusy,modifier = Modifier.touch().testTag("collection-bulk-close")) { Text(stringResource(R.string.collection_close)) } })

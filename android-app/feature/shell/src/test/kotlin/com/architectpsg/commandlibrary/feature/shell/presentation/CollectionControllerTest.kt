@@ -51,6 +51,7 @@ class CollectionControllerTest {
         var deckRevision=2L
         var pageCursor:String?=null
         var wrongCommit=false
+        var undoResponse:Outcome<InventoryCommit>?=null
         override suspend fun snapshot(cancel:CancelToken):Outcome<InventorySnapshot> {
             snapshotCalls++;val value=snapshotResponse?:Outcome.Success(stored);val gate=snapshotGate
             if(ignoreReadCancellation)withContext(NonCancellable){gate?.await()} else gate?.await()
@@ -84,10 +85,12 @@ class CollectionControllerTest {
             val receipt=receipts.getOrPut(operationId){
                 val before=stored.lots.first{it.id==unresolved.id};val next=Revision(expected.value+1)
                 val restored=unresolved.copy(revision=next)
-                stored=stored.copy(revision=next,lots=SnapshotList.copyOf(stored.lots.filter{it.id!=restored.id}+restored))
+                // Faithful stored last-modification time must match the undo receipt's time.
+                stored=stored.copy(revision=next,capturedAt=UtcTimestamp(5),lots=SnapshotList.copyOf(stored.lots.filter{it.id!=restored.id}+restored))
                 InventoryCommit(InventoryProjection(expected,next,SnapshotList.of(InventoryLotChange(before.id,before,restored)),SnapshotList.empty(),SnapshotList.empty()),UtcTimestamp(5))
             }
             mutationGate?.await()
+            undoResponse?.let { return it }
             val r=response
             return when(r){is Outcome.Failure->r;is Outcome.Unknown->r;is Outcome.Unavailable->r;else->Outcome.Success(receipt)}
         }
@@ -112,9 +115,9 @@ class CollectionControllerTest {
                 if(uncertainDemand)SnapshotList.of(deck.entries.single().id)else SnapshotList.empty(),!uncertainDemand))
         }
     }
-    private fun TestScope.controller(f:Fixture, owner:CoroutineScope=ownerScope())=CollectionController(owner,f,f,f,f,{base,patch,_,cancel->
+    private fun TestScope.controller(f:Fixture, owner:CoroutineScope=ownerScope(), gate:InventoryMutationGate=InventoryMutationGate())=CollectionController(owner,f,f,f,f,{base,patch,_,cancel->
         cancel.throwIfCancelled();f.projected+=patch;f.projectionResponse?:Outcome.Success(f.projection(base,patch))
-    },StandardTestDispatcher(testScheduler),{EntityId("generated-${++f.ids}")})
+    },StandardTestDispatcher(testScheduler),{EntityId("generated-${++f.ids}")},inventoryMutationGate=gate)
     private fun TestScope.loaded(f:Fixture)=controller(f).also{it.ensureLoaded();advanceUntilIdle()}
     private fun TestScope.preview(c:CollectionController,id:EntityId=unresolved.id,remove:Boolean=false){c.beginEdit(id,remove);c.previewEdit();advanceUntilIdle()}
 
@@ -314,6 +317,160 @@ class CollectionControllerTest {
             assertEquals(Revision(9),raced.state.value.inventory!!.revision);assertNull(raced.state.value.preview)
             assertEquals(Problem.STALE_REVISION,raced.state.value.formProblem);assertTrue(f.calls.isEmpty())
         } finally { release.countDown();owner.cancel() }
+    }
+
+    @Test fun sharedOwnerBlocksInitialApplyBulkAndUndoWithoutCreatingOperations()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();preview(c)
+        val other=checkNotNull(gate.tryAcquire())
+        c.confirmPreview();advanceUntilIdle()
+        assertTrue(f.calls.isEmpty());assertEquals(0,f.ids);assertNotNull(c.state.value.form)
+        c.discardForm();c.undo();advanceUntilIdle()
+        assertTrue(f.undos.isEmpty());assertEquals(0,f.ids)
+        c.beginBulkSelection();advanceUntilIdle();c.toggleBulkLot(unresolved.id);c.beginBulkEdit()
+        c.bulkDraft(CollectionBulkDraft(location=BulkValue.Set("Additional shelf")))
+        c.previewBulkEdit();advanceUntilIdle();assertNotNull(c.state.value.bulkPreview)
+        c.confirmBulkPreview();advanceUntilIdle()
+        assertTrue(f.calls.isEmpty());assertEquals(0,f.ids);assertTrue(other.owns)
+        other.release();c.confirmBulkPreview();advanceUntilIdle()
+        assertEquals(1,f.calls.size);assertFalse(gate.busy.value)
+    }
+
+    @Test fun initialAddOwnsBeforeCatalogAwaitAndReleasesOnPreflightRefusal()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();c.beginAdd(f.currentPrinting);advanceUntilIdle();c.previewEdit();advanceUntilIdle()
+        val proofGate=CompletableDeferred<Unit>();f.catalogGate=proofGate
+        f.catalogResponse=failure(FailureCode.STALE_GENERATION)
+        c.confirmPreview()
+        assertTrue(gate.busy.value);assertNull(gate.tryAcquire())
+        runCurrent();assertTrue(f.calls.isEmpty());assertTrue(c.state.value.mutationBusy)
+        proofGate.complete(Unit);advanceUntilIdle()
+        assertFalse(gate.busy.value);assertFalse(c.hasMutationBarrier)
+        assertEquals(Problem.STALE_GENERATION,c.state.value.formProblem)
+        assertTrue(f.calls.isEmpty());assertEquals(1,f.ids)
+    }
+
+    @Test fun knownCommitWithFailedFreshReadKeepsOwnerAndRetriesReadsOnlyUntilActualNewerSnapshot()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();preview(c);c.notes("Explicit content");c.previewEdit();advanceUntilIdle()
+        f.snapshotResponse=Outcome.Unknown("Synthetic read acknowledgement",SnapshotList.empty())
+        c.confirmPreview();advanceUntilIdle()
+        val frozen=f.calls.single();val ids=f.ids
+        assertTrue(gate.busy.value);assertTrue(c.state.value.awaitingFresh);assertTrue(c.state.value.pending)
+        assertFalse(c.state.value.uncertain);assertNull(c.state.value.savedRevision)
+        assertEquals(Revision(3),c.state.value.inventory!!.revision)
+        c.selectDeck(deck().id);advanceUntilIdle()
+        val readsBeforeAllocation=f.snapshotCalls
+        f.snapshotResponse=Outcome.Success(f.stored.copy(revision=Revision(3),capturedAt=UtcTimestamp(3)))
+        c.calculateAllocation();advanceUntilIdle()
+        assertEquals(readsBeforeAllocation,f.snapshotCalls);assertTrue(f.allocations.isEmpty())
+        assertEquals(Revision(3),c.state.value.inventory!!.revision)
+        f.snapshotResponse=Outcome.Unknown("Still unavailable",SnapshotList.empty())
+        c.abandonConfirmed();c.undo();c.retry();advanceUntilIdle();c.retry();advanceUntilIdle()
+        assertEquals(listOf(frozen),f.calls);assertTrue(f.undos.isEmpty());assertEquals(ids,f.ids)
+        assertTrue(gate.busy.value);assertNull(gate.tryAcquire())
+        f.stored=f.stored.copy(revision=Revision(9),capturedAt=UtcTimestamp(9),lots=SnapshotList.of(unresolved.copy(notes="Actual later inventory",revision=Revision(9))))
+        f.snapshotResponse=null;c.retry();advanceUntilIdle()
+        assertEquals(Revision(9),c.state.value.inventory!!.revision)
+        assertEquals("Actual later inventory",c.state.value.inventory!!.lots.single().notes)
+        assertEquals(Revision(4),c.state.value.savedRevision)
+        assertFalse(c.state.value.pending);assertFalse(c.state.value.awaitingFresh);assertFalse(gate.busy.value)
+        assertEquals(listOf(frozen),f.calls);assertEquals(ids,f.ids)
+    }
+
+    @Test fun exactSourceAndRevisionButForeignSingleApplyProjectionIsHeldAsMalformedAcknowledgement()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();preview(c)
+        val expected=f.projection(f.stored,f.projected.single())
+        val changed=expected.changes.single()
+        val malformed=expected.copy(changes=SnapshotList.of(changed.copy(after=checkNotNull(changed.after).copy(notes="Foreign acknowledgement content"))))
+        f.commitBeforeResponse=false
+        f.response=Outcome.Success(InventoryApplyResult.Committed(InventoryCommit(malformed,UtcTimestamp(4))))
+        c.confirmPreview();advanceUntilIdle()
+        assertTrue(c.state.value.pending);assertTrue(c.state.value.uncertain);assertTrue(gate.busy.value)
+        assertEquals(Problem.CORRUPT_DATA,c.state.value.mutationProblem)
+        assertNull(c.state.value.savedRevision);assertEquals(Revision(3),c.state.value.inventory!!.revision)
+        assertEquals(1,f.calls.size);assertEquals(1,f.ids)
+    }
+
+    @Test fun warningConfirmedUnknownAbandonRequiresNewReadAndOldRefreshCannotReleaseItsGrant()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();preview(c)
+        f.response=Outcome.Unknown("Lost mutation acknowledgement",SnapshotList.empty())
+        c.confirmPreview();advanceUntilIdle();val original=f.calls.single();val ids=f.ids
+        assertTrue(c.state.value.uncertain);assertTrue(gate.busy.value)
+        val old=CompletableDeferred<Unit>();f.snapshotGate=old;f.ignoreReadCancellation=true
+        c.refresh();runCurrent()
+        val fresh=CompletableDeferred<Unit>();f.snapshotGate=fresh
+        c.abandonConfirmed();runCurrent()
+        assertTrue(c.state.value.awaitingFresh);assertFalse(c.state.value.uncertain);assertTrue(gate.busy.value)
+        old.complete(Unit);runCurrent()
+        assertTrue(gate.busy.value);assertNull(gate.tryAcquire())
+        assertEquals(listOf(original),f.calls);assertEquals(ids,f.ids)
+        fresh.complete(Unit);advanceUntilIdle()
+        assertFalse(gate.busy.value);assertFalse(c.state.value.pending);assertNull(c.state.value.savedRevision)
+        assertEquals(listOf(original),f.calls);assertEquals(ids,f.ids)
+    }
+
+    @Test fun knownReceiptCannotBeReleasedByStaleOrDuplicateFreshInventory()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();val before=f.stored;preview(c)
+        f.snapshotResponse=Outcome.Success(before)
+        c.confirmPreview();advanceUntilIdle()
+        assertTrue(c.state.value.awaitingFresh);assertEquals(Problem.STALE_REVISION,c.state.value.loadProblem)
+        assertTrue(gate.busy.value)
+        f.snapshotResponse=Outcome.Success(f.stored.copy(capturedAt=UtcTimestamp(3)))
+        c.retry();advanceUntilIdle()
+        assertTrue(gate.busy.value);assertEquals(Problem.STALE_REVISION,c.state.value.loadProblem)
+        f.snapshotResponse=Outcome.Success(f.stored.copy(lots=SnapshotList.of(unresolved,unresolved)))
+        c.retry();advanceUntilIdle()
+        assertTrue(gate.busy.value);assertEquals(Problem.CORRUPT_DATA,c.state.value.loadProblem)
+        f.snapshotResponse=null;c.retry();advanceUntilIdle()
+        assertFalse(gate.busy.value);assertEquals(1,f.calls.size)
+    }
+
+    @Test fun malformedUndoGraphsCannotReleaseOwnershipOrAppearSaved()=runTest {
+        for (kind in 0..4) {
+            val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+            c.ensureLoaded();advanceUntilIdle()
+            val base=f.stored;val next=Revision(base.revision.value+1)
+            val row=InventoryLotChange(unresolved.id,unresolved,unresolved.copy(revision=next))
+            val graph=InventoryProjection(base.revision,next,SnapshotList.of(row),SnapshotList.empty(),SnapshotList.empty())
+            val malformed=when(kind) {
+                0 -> graph.copy(changes=SnapshotList.empty())
+                1 -> graph.copy(changes=SnapshotList.of(row,row))
+                2 -> graph.copy(changes=SnapshotList.of(row.copy(before=unresolved.copy(notes="Foreign before image"))))
+                3 -> graph.copy(changes=SnapshotList.of(row.copy(after=unresolved)))
+                else -> graph.copy(merges=SnapshotList.of(InventoryMerge(EntityId("foreign-request"),unresolved.id,1)))
+            }
+            f.undoResponse=Outcome.Success(InventoryCommit(malformed,UtcTimestamp(5)))
+            c.undo();advanceUntilIdle()
+            assertTrue("case $kind",gate.busy.value)
+            assertTrue(c.state.value.uncertain);assertTrue(c.state.value.pending)
+            assertEquals(Problem.CORRUPT_DATA,c.state.value.mutationProblem)
+            assertNull(c.state.value.savedRevision);assertEquals(1,f.undos.size)
+            c.abandonConfirmed();advanceUntilIdle();assertFalse(gate.busy.value)
+        }
+    }
+
+    @Test fun malformedRejectionRevisionSeverityIdAndCodeKeepExactRequestHeld()=runTest {
+        for (kind in 0..3) {
+            val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+            c.ensureLoaded();advanceUntilIdle();preview(c);f.commitBeforeResponse=false
+            val valid=DomainIssue(InventoryIssueCodes.QUANTITY_OVERFLOW,IssueSeverity.ERROR,"Synthetic rejection",unresolved.id,SnapshotList.empty())
+            val row=when(kind) {
+                1 -> valid.copy(severity=IssueSeverity.INFORMATION)
+                2 -> valid.copy(entryId=EntityId("not-in-request"))
+                3 -> valid.copy(code="NOT_A_TYPED_INVENTORY_ISSUE")
+                else -> valid
+            }
+            f.response=Outcome.Success(InventoryApplyResult.Rejected(SnapshotList.of(row),Revision(if(kind==0)4 else 3)))
+            c.confirmPreview();advanceUntilIdle()
+            assertTrue("case $kind",gate.busy.value);assertTrue(c.state.value.uncertain)
+            assertEquals(Problem.CORRUPT_DATA,c.state.value.mutationProblem)
+            assertEquals(1,f.calls.size);assertNull(c.state.value.savedRevision)
+            c.abandonConfirmed();advanceUntilIdle();assertFalse(gate.busy.value)
+        }
     }
 
 }

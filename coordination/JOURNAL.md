@@ -663,3 +663,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T13:26:25Z | codex | cp-20261015-inventory-owner-contract-208 | containing commit | Durable draft host source/runtime ACK closes4assembledholds atb653063;16focusedpass/prior1541failure preserved. Root reviewed fresh-grant gate plus2tests ready focusedcontract verification, no controller wiring yet; rootleaseactive.
 
 2026-10-15T13:30:19Z | codex | cp-20261015-mark-owned-ready-dispatch-209 | containing commit | Executable inventory ownership gate independentACK2pass; reviewed bounded5NEWpath mark-owned controller packet TAKEN isolatedec913ad. Root owns existingcollection/shared hardening concurrently, no overlap, no workerbuild; rootleaseactive.
+
+2026-10-15T13:44:59Z | codex | cp-20261015-collection-owner-gate-210 | containing commit | Root8path collection owner/fullACK/readback source02 independentbackend+consumerACK after3admission/1UXholds; coherentlocalintegrationgate next. Isolatedmarkowned26authoredtests source01selfrepair pending02review/notintegrated. Rootsolebuildslot/leaseactive.

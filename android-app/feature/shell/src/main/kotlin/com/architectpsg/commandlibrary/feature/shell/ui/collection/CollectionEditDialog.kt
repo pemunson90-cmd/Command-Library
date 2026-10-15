@@ -19,6 +19,7 @@ import com.architectpsg.commandlibrary.feature.shell.ui.ActionRow
 
 @Composable
 internal fun CollectionEditDialog(controller: CollectionController, form: CollectionForm, state: CollectionUiState) {
+    val inventoryBusy by controller.inventoryWriterBusy.collectAsState()
     val editing = !state.pending && !state.mutationBusy && !state.previewing && state.preview == null
     AlertDialog(onDismissRequest = controller::requestCloseForm,
         title = { Text(stringResource(when (form.mode) {
@@ -28,6 +29,7 @@ internal fun CollectionEditDialog(controller: CollectionController, form: Collec
         })) },
         text = {
             Column(Modifier.fillMaxWidth().heightIn(max = 480.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                if (inventoryBusy && !controller.hasMutationBarrier) Text(stringResource(R.string.collection_other_writer))
                 Text(stringResource(R.string.collection_unsaved))
                 if (form.mode == CollectionFormMode.REMOVE) Text(stringResource(R.string.collection_remove_warning))
                 else {
@@ -80,7 +82,7 @@ internal fun CollectionEditDialog(controller: CollectionController, form: Collec
         confirmButton = {
             when {
                 state.pending -> TextButton(controller::retry, enabled = !state.mutationBusy, modifier = Modifier.touch().testTag(CollectionTags.RETRY)) { Text(stringResource(R.string.collection_retry)) }
-                state.preview != null -> TextButton(controller::confirmPreview, enabled = !state.mutationBusy && state.issues.isEmpty(), modifier = Modifier.touch().testTag(CollectionTags.CONFIRM)) { Text(stringResource(R.string.collection_confirm)) }
+                state.preview != null -> TextButton(controller::confirmPreview, enabled = !inventoryBusy && !state.mutationBusy && state.issues.isEmpty(), modifier = Modifier.touch().testTag(CollectionTags.CONFIRM)) { Text(stringResource(R.string.collection_confirm)) }
                 else -> TextButton(controller::previewEdit, enabled = !state.mutationBusy && !state.previewing, modifier = Modifier.touch().testTag(CollectionTags.PREVIEW)) { Text(stringResource(R.string.collection_preview)) }
             }
         },

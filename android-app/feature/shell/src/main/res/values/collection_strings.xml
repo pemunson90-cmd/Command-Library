@@ -138,4 +138,6 @@
     <string name="collection_bulk_original_missing">Some selected originals are missing. Exclude them explicitly or refresh and rebase.</string>
     <string name="collection_bulk_missing_id">Missing selected lot: %1$s</string>
     <plurals name="collection_bulk_missing_selected"><item quantity="one">%d selected lot is missing. Open Edit selected lots to inspect and explicitly exclude it, or refresh and rebase.</item><item quantity="other">%d selected lots are missing. Open Edit selected lots to inspect and explicitly exclude them, or refresh and rebase.</item></plurals>
+    <string name="collection_other_writer">Another inventory change is being checked. You can review this form; saving will be available when that check finishes.</string>
+    <string name="collection_awaiting_refresh">Refreshing inventory before another change. Retry only refreshes; it will not send the change again.</string>
 </resources>
