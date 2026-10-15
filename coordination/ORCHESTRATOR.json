@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "active",
+  "status": "released",
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T21:57:58Z",
-  "expires_utc": "2026-10-15T22:42:58Z",
-  "checkpoint_id": "cp-20261015-provider-text-wave-251",
-  "note": "Root retains shared/integration/final authority. H08 localhost43casegateaccepted31bfe78/report. Nextprovidertext SOURCE01ACK andcore/existingGsoncompilePASS24s exact1ca7770; HTTP M1+A2 Solmedium +pureCCNEW5 Solhigh isolatedTAKENsamebase, rootauth/UI/historycoord,3writersmax/4children/oneROOTbuildslotFREE. No actualprovider/runtime/eligibility/native/releaseacceptance. D30futuredeckintakerecorded/prioritiespreserved."
+  "heartbeat_utc": "2026-10-15T23:08:16Z",
+  "expires_utc": "2026-10-15T23:08:16Z",
+  "checkpoint_id": "cp-20261015-root-chat-transfer-252",
+  "note": "Explicit voluntary transfer requested by Pat; old root stops implementation. Replacement may claim released lease. Read coordination/handoffs/ROOT-CHAT-TRANSFER-20261015.md; no active native children/build. Frozen HTTP/CC commits unintegrated/untested; auth sourceACK only. Preserve priorities, D30 and all acceptance holds."
 }

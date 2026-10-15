@@ -28,3 +28,8 @@ Publication: normal git transport recovered without credential overrides; latest
 Approved future intake: Pat's PR23/issue24 read at exactdrafthead52335a0a6799ae83e923744d4835ddbfa27c67a6, incorporated underD30 in DECISIONS/detailedtag-awareplan/campaignpointer andexistingdeck-ui/analysis/recommendation outputdependencies. Manualtagpool/multilabel/overrides/bulk→tagfilteredmana/intersections/targets/what-if→boundedauto suggestions/Show auto tags; advancedinference nonblocking. No currentH08assignment/priority/nexttask changed, no tagimplementation, no PR/mainmerge/issueclosure/tests. RevisitwhenexistingB02/B03tasks eligible.
 
 Same campaign-r1/64requirements/213parity194retained19skips/35tasks, no silent deferrals. D28/user cadence: minimal coherent risk-boundary checks; comprehensive final v1/native/physical/Fold7/accessibility/performance/signing/finishedAPK gates retained. Live Scryfall fullsource completeness remains policy-blocked; authentic variants/GameService and other explicit holds remain. Do not touch MarkdownDesk/monitoring/repins/new paid infrastructure. Continue ready work after checkpoints; do not stop for routine approval.
+
+
+## Explicit root chat transfer — current
+
+Pat requested a zero-context replacement chat. See coordination/handoffs/ROOT-CHAT-TRANSFER-20261015.md for exact retained return commits, pending reviews and next steps. Old root deliberately releases lease at this checkpoint and stops implementation. Native child list empty; buildslotFREE. HTTP4b821d4 andCC81001de preserved independently, NOT integrated/tested; rootauth6d0fe4c sourceACK/testsNOT_RUN. New root may claim released lease, review returns, continue provider actualhistory/UI thencoherentgate. D30futureintake/priorities/holds unchanged.
