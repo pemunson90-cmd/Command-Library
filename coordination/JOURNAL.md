@@ -635,3 +635,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T11:00:24Z | codex | cp-20261015-reservation-plain-codec-194 | containing commit | Accept191test namespace gate/public plain contracts; dispatch isolated complete textcodec writer, root continues shared draft framing.
 
 2026-10-15T11:09:28Z | codex | cp-20261015-draft-framing-two-writers-195 | containing commit | Accept117test draft framing; two isolated disjoint completeproducer writers active, root continues actual draft UI/integration criticalpath.
+
+2026-10-15T11:23:18Z | codex | cp-20261015-plain-codec-ui-merge-196 | containing commit | Integrate complete plaincodec and accepted49test combined boundary; root continues actual draft actor/UI while isolatedSQLbackend implements.

@@ -1903,8 +1903,8 @@
         ],
         "verification": "authentic E04 fixtures; multiline/BOM/quotes/collector numbers/oversize/cancel/unknown-version; source terms before URL retrieval",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "application_text_codec_in_progress_acceptance_open",
-        "observed_implementation": "Reviewed application-owned plain-list API/module source a6731fe, actual core compile; transfer module NO-SOURCE before isolated complete parse/render producer cx-campaign-plain-deck-codec-01 (active). No codec implementation accepted yet; vendor fixtures/coverage/native interchange/full TransferService remain open.",
+        "status": "application_text_codec_integrated_acceptance_open",
+        "observed_implementation": "Complete application-owned PlainTextDeckListCodec producer aa00e03 integrated287a552, independent actualsource/runtimeACK26tests2XML. Strict bounded UTF8 streaming parse/unresolved physical rows; deterministic all7board/loss-aware renderer. Root combinedscope separate. Vendor authenticfixtures/coverage/CSV/native interchange/TransferService/importUI remain open.",
         "ownership_group": "transfer",
         "resources": [
           "local-gradle-serial"

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T11:09:28Z",
-  "expires_utc": "2026-10-15T11:54:28Z",
-  "checkpoint_id": "cp-20261015-draft-framing-two-writers-195",
-  "note": "Root shared/contracts/schema/DI/nav/finalmerge; disjoint native plaincodec+a completeSQLdraftrepository writers active exactcanonicalclaims, no buildslot yet. Root draftUI criticalpath. Framing117tests/schema15+namespace accepted. Publicationinvalidtoken/allholds retained."
+  "heartbeat_utc": "2026-10-15T11:23:18Z",
+  "expires_utc": "2026-10-15T12:08:18Z",
+  "checkpoint_id": "cp-20261015-plain-codec-ui-merge-196",
+  "note": "Root shared/contracts/schema/DI/nav/finalmerge. Plaincodec integrated287a552/26tests; root ownACKmerge+ports2241dcf/49combinedtests accepted. CompleteSQLdraftwriter activebased8991aa/no buildslot. Root actualdraftactor/UI next, no runningbuild. Publicationinvalidtoken/allholds."
 }

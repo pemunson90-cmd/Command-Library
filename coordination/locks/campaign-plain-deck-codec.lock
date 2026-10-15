@@ -3,11 +3,14 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-campaign-plain-deck-codec-01",
   "owner": "/root/implement_inventory_projection native isolated writer",
-  "status": "active",
+  "status": "released",
   "branch": "agent/campaign-plain-deck-codec-20261015",
   "worktree": "/workspace/command-library-plain-deck-codec-01",
   "base_commit": "containing accepted boundary/claim commit supplied and verified before edit",
   "owned_paths": "Exact4NEWimplementation/parser-test/renderer-test/handoff paths from packet; allsharedreadonly",
   "authority": "Canonical root localclaim; invalidtokenpublicationblock doesnotrelease ownership",
-  "build_slot": "not granted; request coherent focused test gate fromroot"
+  "build_slot": "released after first successful focused gate",
+  "completion_commit": "aa00e0359fa57e68987a3924e2c1e65edaf79c7c",
+  "integrated_commit": "287a552ed655ab0cf422eb2a17396e7c5020d6fc",
+  "verification": "Independent actualsource/runtimeACK26tests2XML0f/e/s1m16s; pureapplicationcodec only, rootassembledscope checking separately"
 }
