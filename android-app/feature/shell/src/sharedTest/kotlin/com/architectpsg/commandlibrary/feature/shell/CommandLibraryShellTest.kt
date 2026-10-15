@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.architectpsg.commandlibrary.feature.shell.ui.ShellDestination
+import com.architectpsg.commandlibrary.feature.shell.ShellDestination
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test

@@ -1,0 +1,13 @@
+{
+  "component": "retained-durable-draft-editor-actor",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-draft-editor-actor-01",
+  "owner": "/root/implement_inventory_projection native isolated writer",
+  "status": "active",
+  "branch": "agent/campaign-draft-editor-actor-20261015",
+  "worktree": "/workspace/command-library-draft-editor-actor-01",
+  "base_commit": "Containing reviewed, compiled boundary/claim commit supplied and verified before edits",
+  "owned_paths": "Exact4NEW concreteactor/twofocusedtests/handoff paths; existing UI/state/ports/DI/navigation readonly",
+  "authority": "Canonical root local claim; root exclusively owns shared UI/DI/integration/final merge",
+  "build_slot": "Not granted; request coherent focused actor gate"
+}

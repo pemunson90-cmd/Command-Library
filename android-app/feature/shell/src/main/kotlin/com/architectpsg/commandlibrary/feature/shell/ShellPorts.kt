@@ -69,4 +69,8 @@ public class ShellPorts(
     public val localDeckDrafts: com.architectpsg.commandlibrary.core.model.LocalDeckDrafts? = null,
     /** Shared canonical projection; enabled together with the complete durable draft capability. */
     public val deckDraftPlanner: com.architectpsg.commandlibrary.core.model.DeckDraftPlanner? = null,
+    /** Actual pure reducer for full acknowledgement projection, without shell-to-feature coupling. */
+    public val deckPatchProjection: ((com.architectpsg.commandlibrary.core.model.DeckSnapshot,
+        com.architectpsg.commandlibrary.core.model.DeckPatch, com.architectpsg.commandlibrary.core.model.Revision,
+        com.architectpsg.commandlibrary.core.model.UtcTimestamp) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.DeckSnapshot>)? = null,
 )

@@ -33,7 +33,7 @@ import com.architectpsg.commandlibrary.core.model.Revision
 import com.architectpsg.commandlibrary.core.model.ThemePreference
 import com.architectpsg.commandlibrary.feature.shell.ShellUiHarness.Companion.PICKED_URI
 import com.architectpsg.commandlibrary.feature.shell.document.DOCUMENT_CHUNK_BYTES
-import com.architectpsg.commandlibrary.feature.shell.ui.ShellDestination
+import com.architectpsg.commandlibrary.feature.shell.ShellDestination
 import com.architectpsg.commandlibrary.feature.shell.ui.ShellTags
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.After
