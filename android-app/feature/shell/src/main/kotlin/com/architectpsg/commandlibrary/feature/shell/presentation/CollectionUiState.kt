@@ -1,0 +1,50 @@
+package com.architectpsg.commandlibrary.feature.shell.presentation
+
+import com.architectpsg.commandlibrary.core.model.*
+
+internal enum class CollectionFormMode { ADD, EDIT, REMOVE }
+internal data class CollectionForm(
+    val mode: CollectionFormMode,
+    val base: InventorySnapshot,
+    val original: OwnedLot? = null,
+    val printing: PrintingRecord? = null,
+    val newLotId: EntityId? = null,
+    val supportedFinishes: SnapshotList<Finish> = SnapshotList.empty(),
+    val finish: Finish? = null,
+    val quantity: String = original?.quantity?.toString() ?: "1",
+    val condition: CardCondition = original?.condition ?: CardCondition.UNKNOWN,
+    val location: String = original?.location ?: "",
+    val notes: String = original?.notes ?: "",
+    val dirty: Boolean = false,
+)
+internal data class CollectionUiState(
+    val inventory: InventorySnapshot? = null,
+    val loading: Boolean = false,
+    val loadProblem: Problem? = null,
+    val selectedLotId: EntityId? = null,
+    val form: CollectionForm? = null,
+    val checkingCatalog: Boolean = false,
+    val invalidForm: Boolean = false,
+    val formProblem: Problem? = null,
+    val discardPrompt: Boolean = false,
+    val preview: InventoryProjection? = null,
+    val previewing: Boolean = false,
+    val issues: SnapshotList<DomainIssue> = SnapshotList.empty(),
+    val mutationBusy: Boolean = false,
+    val pending: Boolean = false,
+    val uncertain: Boolean = false,
+    val mutationProblem: Problem? = null,
+    val savedRevision: Revision? = null,
+    val decks: SnapshotList<DeckSummary> = SnapshotList.empty(),
+    val deckCursor: String? = null,
+    val deckEpoch: Revision? = null,
+    val loadingDecks: Boolean = false,
+    val decksProblem: Problem? = null,
+    val selectedDeckId: DeckId? = null,
+    val selectedDeck: DeckSnapshot? = null,
+    val boards: SnapshotList<BoardRole> = SnapshotList.of(BoardRole.MAIN),
+    val ownership: OwnershipPolicy = OwnershipPolicy.SAME_ORACLE,
+    val allocating: Boolean = false,
+    val allocation: OwnedQuantityPlan? = null,
+    val allocationProblem: Problem? = null,
+)
