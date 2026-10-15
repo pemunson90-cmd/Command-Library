@@ -661,3 +661,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T13:19:06Z | codex | cp-20261015-draft-focused-gate-207 | containing commit | Attempt2 actual154/1testdisplayphasefailure preserved; reviewed exacttestonly correction integrated. Root focused5dialog+actualapp and instrumentationcompile gate next;10newheadrefresh alreadypass, unchangedproduction. Rootleaseactive.
 
 2026-10-15T13:26:25Z | codex | cp-20261015-inventory-owner-contract-208 | containing commit | Durable draft host source/runtime ACK closes4assembledholds atb653063;16focusedpass/prior1541failure preserved. Root reviewed fresh-grant gate plus2tests ready focusedcontract verification, no controller wiring yet; rootleaseactive.
+
+2026-10-15T13:30:19Z | codex | cp-20261015-mark-owned-ready-dispatch-209 | containing commit | Executable inventory ownership gate independentACK2pass; reviewed bounded5NEWpath mark-owned controller packet TAKEN isolatedec913ad. Root owns existingcollection/shared hardening concurrently, no overlap, no workerbuild; rootleaseactive.

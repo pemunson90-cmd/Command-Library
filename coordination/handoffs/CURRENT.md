@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-inventory-owner-contract-208
+Checkpoint-ID: cp-20261015-mark-owned-ready-dispatch-209
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. inventory-owner-contract
+Next step: 3. mark-owned-ready-dispatch
 
-Updated UTC: 2026-10-15T13:26:25Z
+Updated UTC: 2026-10-15T13:30:19Z
 Status: in_progress; lease: active.
-Verified base: b6530631f0637cbd2c42996eb8ed1ef33cf7798b.
+Verified base: ec913ad0eb6c0e6e9a07872b9a9107d0ef3360ea.
 
-Durable draft host source/runtime ACK closes4assembledholds atb653063;16focusedpass/prior1541failure preserved. Root reviewed fresh-grant gate plus2tests ready focusedcontract verification, no controller wiring yet; rootleaseactive.
+Executable inventory ownership gate independentACK2pass; reviewed bounded5NEWpath mark-owned controller packet TAKEN isolatedec913ad. Root owns existingcollection/shared hardening concurrently, no overlap, no workerbuild; rootleaseactive.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
