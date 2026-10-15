@@ -105,4 +105,7 @@ tasks.withType<Test>().configureEach {
     val inventoryPrevious = storageProject.file("src/test/resources/inventory-schema12.sql")
     inputs.file(inventoryPrevious)
     systemProperty("commandlibrary.schema12.fixture", inventoryPrevious.absolutePath)
+    val versionsPrevious = storageProject.file("src/test/resources/inventory-schema13.sql")
+    inputs.file(versionsPrevious)
+    systemProperty("commandlibrary.schema13.fixture", versionsPrevious.absolutePath)
 }

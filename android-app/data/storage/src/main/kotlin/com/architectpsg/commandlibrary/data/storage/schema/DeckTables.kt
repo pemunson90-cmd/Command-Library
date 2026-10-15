@@ -48,6 +48,7 @@ internal data class DeckRevisionEntity(
         childColumns = ["provider", "deck_id", "result_revision"], onDelete = ForeignKey.NO_ACTION),
 ], indices = [
     Index(value = ["operation_id"], name = "index_deck_operation_id", unique = true),
+    Index(value = ["provider", "deck_id", "kind", "sequence"], name = "index_deck_operation_version_latest"),
     Index(value = ["provider", "deck_id", "result_revision"], name = "index_deck_operation_result"),
 ])
 internal data class DeckOperationEntity(

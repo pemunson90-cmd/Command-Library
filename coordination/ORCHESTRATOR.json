@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T08:43:07Z",
-  "expires_utc": "2026-10-15T09:28:07Z",
-  "checkpoint_id": "cp-20261015-version-framing-claimed-182",
-  "note": "Root retains shared/schema/contracts/DI/navigation/finalmerge. Localb2ac8de accepted398tests; publish blocked invalidGH_TOKEN, remote f0373af retains activeownership. Native isolated S11versionsUI newpaths claimed; root schema14 next. No activebuild; allholds retained."
+  "heartbeat_utc": "2026-10-15T08:53:16Z",
+  "expires_utc": "2026-10-15T09:38:16Z",
+  "checkpoint_id": "cp-20261015-named-version-schema14-183",
+  "note": "Root schema14 reviewed/9hosttests pass, sharedauthorityretained; isolatedS11+framing writers active, solechildframingGradle8345. PublicationinvalidGH_TOKEN, lastremotef0373af/localcommits preserved; no mainmerge/release."
 }
