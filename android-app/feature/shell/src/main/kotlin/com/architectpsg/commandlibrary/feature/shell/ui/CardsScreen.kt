@@ -84,7 +84,7 @@ internal fun CardsScreen(
     val generation = statusState.status?.activeGeneration()
     val snapshot = generation?.let { com.architectpsg.commandlibrary.core.model.SnapshotReference(it.provenance.provider, it.id, null, com.architectpsg.commandlibrary.core.model.LanguageTag.ENGLISH) }
     val version = (generation?.provenance?.version as? Knowledge.Known)?.value
-    val openAdvanced: (() -> Unit)? = advanced?.let { { it.open(snapshot, version); advancedOpen = true } }
+    val openAdvanced: (() -> Unit)? = advanced?.takeIf { !statusState.loading }?.let { { it.open(snapshot, version); advancedOpen = true } }
     if (advancedOpen && advanced != null) {
         LaunchedEffect(advanced) { advanced.resume() }
         val advancedState by advanced.state.collectAsState()
@@ -141,7 +141,7 @@ private fun SearchPane(
 ) {
     LazyColumn(
         state = listState,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().testTag("card-search-list"),
         contentPadding = PaddingValues(horizontal = widthClass.gutter, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {

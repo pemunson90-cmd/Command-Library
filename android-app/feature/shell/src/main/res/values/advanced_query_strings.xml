@@ -7,6 +7,7 @@
     <string name="advanced_query_import">Manage card data</string>
     <string name="advanced_query_input">Query</string>
     <string name="advanced_query_example">Example: mv&lt;=3 type:creature. Combine filters with AND, OR, NOT and parentheses; quote names containing spaces.</string>
+    <string name="advanced_query_categories">Set, rarity, language and layout ignore ASCII letter case only. Other characters and spaces must match the source token. Card names and rules text use Unicode normalization.</string>
     <string name="advanced_query_printing_scope">Printing filters find a printing that matches all conditions together. A negated printing filter tests that printing; it does not exclude every printing of the card.</string>
     <string name="advanced_query_any_face">Any face</string>
     <string name="advanced_query_same_face">Same face</string>

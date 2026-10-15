@@ -40,6 +40,7 @@ internal fun AdvancedQueryScreen(controller: AdvancedQueryController, widthClass
                     isError = state.diagnostics.isNotEmpty(), modifier = Modifier.fillMaxWidth().testTag("advanced-query-input"))
                 Text(stringResource(R.string.advanced_query_example))
                 Text(stringResource(R.string.advanced_query_printing_scope))
+                Text(stringResource(R.string.advanced_query_categories))
             }
             item {
                 ActionRow {
