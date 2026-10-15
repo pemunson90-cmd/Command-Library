@@ -33,7 +33,7 @@ import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.presentation.SettingsNotice
 import com.architectpsg.commandlibrary.feature.shell.presentation.SettingsUiState
 
-/** Only settings this version actually implements: the persisted theme, plus read-only notices. */
+/** Persisted theme, real provider configuration entry, and read-only source notices. */
 @Composable
 internal fun SettingsScreen(
     state: SettingsUiState,
@@ -43,6 +43,7 @@ internal fun SettingsScreen(
     onRetry: () -> Unit,
     onDismissMessage: () -> Unit,
     modifier: Modifier = Modifier,
+    onProviders: (() -> Unit)? = null,
 ) {
     Box(modifier.fillMaxSize().verticalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
         Column(
@@ -53,6 +54,11 @@ internal fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             SectionHeading(stringResource(R.string.settings_title), style = MaterialTheme.typography.headlineMedium)
+            onProviders?.let { open ->
+                OutlinedButton(onClick = open, modifier = Modifier.heightIn(min = 48.dp)) {
+                    Text(stringResource(R.string.provider_profiles_manage))
+                }
+            }
             val snapshot = state.snapshot
             if (snapshot == null && state.loading) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {

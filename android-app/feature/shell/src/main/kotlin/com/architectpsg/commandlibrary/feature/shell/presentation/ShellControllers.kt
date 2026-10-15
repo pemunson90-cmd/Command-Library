@@ -42,6 +42,9 @@ internal class ShellControllers(
         onFinished = status::refresh,
     )
     val settings = SettingsController(scope, ports.settings, ioDispatcher)
+    val providerProfiles = if (ports.providerProfiles != null && ports.secretVault != null && ports.providerProfileOrigin != null)
+        ProviderProfilesController(scope, ProviderProfileActions(ports.providerProfiles, ports.secretVault, ports.settings),
+            ports.providerProfileOrigin, ioDispatcher) else null
     val rules: RulesController? = if (ports.rulesImport != null && ports.rulesLookup != null) {
         RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher, keywordLookup = ports.keywordRulesLookup)
     } else null

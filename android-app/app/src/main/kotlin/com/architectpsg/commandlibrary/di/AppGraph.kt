@@ -2,6 +2,8 @@ package com.architectpsg.commandlibrary.di
 
 import android.content.Context
 import com.architectpsg.commandlibrary.data.vault.AndroidSecretVault
+import com.architectpsg.commandlibrary.feature.ai.SqlLocalProviderProfiles
+import com.architectpsg.commandlibrary.feature.ai.ProviderProfilePolicy
 import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.Outcome
@@ -80,6 +82,8 @@ internal class AppGraph(
                     val draftPlanner = LocalDeckDraftPlanner()
                     val deckDrafts = SqlLocalDeckDrafts(opened.value, deckCodec, deckPatchCodec, DeckDraftPayloadCodec(), draftPlanner, SystemUtcClock)
                     val inventory = SqlLocalInventory(opened.value, OwnedLotPayloadCodec(), LocalInventoryPatchCodec(), SystemUtcClock, capabilities.maxBoundParameters)
+                    val vault = AndroidSecretVault(appContext)
+                    val providerProfiles = SqlLocalProviderProfiles(opened.value, SystemUtcClock, vault)
                     val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
                     val cardQuery = AndroidCatalogServices.localCardQuery(opened.value, LocalCatalogQueryCompiler())
                     val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
@@ -89,7 +93,7 @@ internal class AppGraph(
                         catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
                         localCardQuery = cardQuery,
-                        secretVault = AndroidSecretVault(appContext),
+                        secretVault = vault, providerProfiles = providerProfiles, providerProfileOrigin = ProviderProfilePolicy::canonicalOrigin,
                 offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
                         catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),
                         cardQueryParser = LocalCardQueryParser()::parse,

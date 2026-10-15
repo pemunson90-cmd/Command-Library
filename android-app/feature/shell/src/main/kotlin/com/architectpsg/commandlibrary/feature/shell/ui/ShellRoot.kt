@@ -58,6 +58,7 @@ import com.architectpsg.commandlibrary.core.model.DeckSnapshot
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportPreview
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
 import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
+import com.architectpsg.commandlibrary.feature.shell.ui.settings.ProviderProfilesDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.OfflinePromptDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.BoardConstraintDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DrawProbabilityDialog
@@ -281,6 +282,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 } }
                 BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                 val widthClass = WidthClass.of(maxWidth)
+                controllers.providerProfiles?.let { ProviderProfilesDialog(it, widthClass, it::dismiss) }
                 val content: @Composable (Modifier) -> Unit = { contentModifier ->
                     DestinationContent(
                         destination = visibleDestination,
@@ -469,6 +471,7 @@ private fun DestinationContent(
                 onSelectTheme = controllers.settings::selectTheme,
                 onRetry = controllers.settings::load,
                 onDismissMessage = controllers.settings::dismissMessage,
+                onProviders = controllers.providerProfiles?.let { it::open },
                 modifier = modifier,
             )
         }
