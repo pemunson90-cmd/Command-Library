@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-plain-import-consumer-wave-219",
-  "verified_base_head": "c69aae7c3dbcbb0a797ef2f1fc81ae417c65df25",
+  "checkpoint_id": "cp-20261015-plain-import-ui-source-220",
+  "verified_base_head": "81db865a597162e94270bc0fde770bdab96e8c45",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "plain-import-consumer-wave",
+  "first_action": "integrate-reviewed-ui",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -156,7 +156,7 @@
     "deck_mark_owned_app_local": "Accepted4ed0c9cfabbf77def1694ec9966532d19bfa89e7 treeb7601dafe3dcf901f0dfd07dc4733178dbff0250,7tests2XML0fail/error/skip2m15/639pinsfrozen, bothinstrumentationKotlincompiledONLY. IndependentSOURCE/RUNTIMEACK. Priorattempt2115/2failed unchangedpassingcollection/controller/app evidence retainedseparately; no allgreen115claim. DECK-MARK-OWNED-APP-INTEGRATION-20261015.md; no native/fullC01/finishedAPK.",
     "plain_deck_import_boundary": "Exactc69aae7c3dbcbb0a797ef2f1fc81ae417c65df25 tree3be6c44a1c5cc2eff317cb1be38a3384f7048ac5,35tests3XML0f/e/s51s/645pins/independentSOURCE-RUNTIMEACK.29scriptedcontroller+5realresource+1actualAppGraphcodec-validator-Roomcontractfixture. NativeKotlincompiledONLY; actualfileimportUI notimplemented/run. PLAIN-DECK-IMPORT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Accept35caseactualcontractboundary; claimtwoREADY-reviewed isolatedUI andrealSAFappjourneys, rootsharedpicker-compositionnext under3writerlimit",
-  "updated_utc": "2026-10-15T15:16:12Z",
+  "last_completed": "Exact plain import UI return integrated source-only, claim released; app hidden-dirty regression in progress, assembled gate pending",
+  "updated_utc": "2026-10-15T15:33:36Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

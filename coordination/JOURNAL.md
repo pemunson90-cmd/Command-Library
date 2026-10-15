@@ -683,3 +683,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T15:03:35Z | codex | cp-20261015-plain-import-contract-gate-218 | containing commit | Reviewedexact4pathproducer and5pathsharedinput integrated; actualcodec-validator-Roomfixture sourceACK; reservecoherent29+5+1localgate beforeconsumerfanout
 
 2026-10-15T15:16:12Z | codex | cp-20261015-plain-import-consumer-wave-219 | containing commit | Accept35caseactualcontractboundary; claimtwoREADY-reviewed isolatedUI andrealSAFappjourneys, rootsharedpicker-compositionnext under3writerlimit
+
+2026-10-15T15:33:36Z | codex | cp-20261015-plain-import-ui-source-220 | containing commit | Exact plain import UI return integrated source-only, claim released; app hidden-dirty regression in progress, assembled gate pending

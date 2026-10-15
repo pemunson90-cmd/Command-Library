@@ -3,11 +3,14 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-plain-deck-import-ui-01",
   "owner": "/root/implement_deck_edit_store native isolated writer",
-  "status": "active",
+  "status": "released",
   "base_commit": "c69aae7c3dbcbb0a797ef2f1fc81ae417c65df25",
   "branch": "agent/campaign-plain-deck-import-ui-20261015",
   "worktree": "/workspace/command-library-plain-deck-import-ui-01",
   "owned_paths": "EXACT4NEWpaths per canonical task; ALL existing/shared forbidden",
   "build_slot": "NOTGRANTED; ROOToneGradleslot",
-  "authority": "accepted35caseproducer-input-contractbaseline/independentpacketREADYACK; rootcanonicalclaimsoleauthority"
+  "authority": "accepted35caseproducer-input-contractbaseline/independentpacketREADYACK; rootcanonicalclaimsoleauthority",
+  "return_commit": "f8f8ff6ee39a70d33a22641fb4122f4d71f43931",
+  "integrated_commit": "81db865",
+  "disposition": "exact4NEWpaths verified/clean original retained; independent inventory_journal_review SOURCEACK all4pins; runtime/compiler NOTRUN; root assembled acceptance pending"
 }
