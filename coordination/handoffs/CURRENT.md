@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-plain-import-ui-source-220
+Checkpoint-ID: cp-20261015-plain-import-assembled-221
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. integrate-reviewed-ui
+Next step: 3. freeze-assembled-import
 
-Updated UTC: 2026-10-15T15:33:36Z
+Updated UTC: 2026-10-15T15:37:18Z
 Status: in_progress; lease: active.
-Verified base: 81db865a597162e94270bc0fde770bdab96e8c45.
+Verified base: 4eb284381687cfd2292e388531152c1e0f0358e7.
 
-Exact plain import UI return integrated source-only, claim released; app hidden-dirty regression in progress, assembled gate pending
+Reviewed exact UI and app returns integrated; both claims released; root-only assembled host gate attempt1 next, no runtime acceptance yet
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T15:33:36Z",
-  "expires_utc": "2026-10-15T16:18:36Z",
-  "checkpoint_id": "cp-20261015-plain-import-ui-source-220",
-  "note": "Plainimportboundaryc69 SOURCE/RUNTIMEACK35; UI f8f8ff6\u219281db865 SOURCEACK/exact4newpaths/clean original/claimreleased. Rootcomposition6c27c80 SOURCEACK. AppSOURCE02 reviewed, SOURCE03 hidden-dirty oracle inprogress; only appconsumer claimactive. No actualUI runtime yet. RootoneGradleslotfree/max3writersincludingroot/4children; publicationinvalidtoken/native/Fold7/finishedAPKholds."
+  "heartbeat_utc": "2026-10-15T15:37:18Z",
+  "expires_utc": "2026-10-15T16:22:18Z",
+  "checkpoint_id": "cp-20261015-plain-import-assembled-221",
+  "note": "Both plainimport consumer returns exactpath verified/sourceACK/integrated81db865+4eb2843/claimsreleased/clean originals retained. Rootshared6c27c80SOURCEACK. Root-only assembledhostgate attempt1 next, Androidsourcefreeze, no runtimeacceptance yet. Acceptedproducer35/markowned7 evidence retained. Publicationinvalidtoken/native/Fold7/finishedAPKholds."
 }

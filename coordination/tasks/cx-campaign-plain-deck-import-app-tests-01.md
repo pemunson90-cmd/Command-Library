@@ -1,3 +1,5 @@
+SOURCE-INTEGRATED / bounded claim RELEASED: exact048fe014df205a4a863b51d7cb4069c32ba902d2→4eb2843, exact2NEWpaths/pins/clean original verified. Independent SOURCE03ACK dcba5fbe including hidden-dirty refusal/recovery and clean admission. Two authored tests/runtime NOTRUN; source01/02 prebuild lineage retained. Root combined gate next.
+
 # Real SAF → new unresolved deck app journeys — attempt01
 
 Status TAKEN /root/implement_inventory_projection after independent packet READYACK; no workerbuild permission. Existing execution.transfer-ui/deck-ui B08/I01/B01 scope, campaign-r1-20261015. Exact accepted base c69aae7c3dbcbb0a797ef2f1fc81ae417c65df25/tree3be6c44a1c5cc2eff317cb1be38a3384f7048ac5: actual35tests3XML0f/e/s51s/SOURCE-RUNTIMEACK, realcodec/validator/Room contract plus29controller/5input cases. No import UI/rootpicker in base yet; separateUIworker+root supply frozen contracts below. Native compiler evidence is not execution.

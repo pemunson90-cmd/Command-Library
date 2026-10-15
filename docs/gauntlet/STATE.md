@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-plain-import-ui-source-220. Updated UTC: 2026-10-15T15:33:36Z.
+Checkpoint: cp-20261015-plain-import-assembled-221. Updated UTC: 2026-10-15T15:37:18Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-integrate-reviewed-ui
+freeze-assembled-import
 
-Exact plain import UI return integrated source-only, claim released; app hidden-dirty regression in progress, assembled gate pending
+Reviewed exact UI and app returns integrated; both claims released; root-only assembled host gate attempt1 next, no runtime acceptance yet
 
 Read CURRENT, machine state and task card.
