@@ -129,7 +129,7 @@ class OfflinePromptAppIntegrationTest {
         click("offline-prompt-include-notes"); click("offline-prompt-render"); assertTrue(copy().contains(privateMarker))
         click("offline-prompt-include-notes"); click("offline-prompt-render"); assertFalse(copy().contains(privateMarker))
         edit("offline-prompt-override", "{{deck}}")
-        click("offline-prompt-render"); await { exists("offline-prompt-problem") }
+        click("offline-prompt-render"); scroll("offline-prompt-list", "offline-prompt-problem")
         compose.onNodeWithTag("offline-prompt-copy").assertDoesNotExist()
         click("offline-prompt-reset"); click("offline-prompt-render"); assertFalse(copy().contains(privateMarker))
         edit("offline-prompt-reply", reply); click("offline-prompt-review")
