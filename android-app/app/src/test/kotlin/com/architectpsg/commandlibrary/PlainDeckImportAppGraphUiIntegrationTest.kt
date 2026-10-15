@@ -379,7 +379,7 @@ class PlainDeckImportAppGraphUiIntegrationTest {
         click("plain-import-dismiss")
         click("deck-open-${saved.id.raw}")
         await { exists("deck-library-overview") }
-        rule.onNodeWithTag("deck-library-overview").performScrollToIndex(0)
+        scroll("deck-library-overview", hasText(saved.name))
         rule.onNode(hasText(saved.name) and hasAnyAncestor(hasTestTag("deck-library-overview"))).assertIsDisplayed()
         assertEquals(saved, reopened(saved.id)); assertEquals(committed, decks())
     }
