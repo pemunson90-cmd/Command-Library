@@ -1,7 +1,7 @@
 {
   "owner": "/root/implement_provider_app_proof",
   "orchestrator": "codex-root-replacement-20261015",
-  "status": "active",
+  "status": "released",
   "base_commit": "d96e2d12",
   "branch": "agent/campaign-provider-anthropic-app-proof-20261015",
   "worktree": "/workspace/command-library-provider-anthropic-app-proof-01",
@@ -9,5 +9,6 @@
     "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/AnthropicProviderGenerationAppIntegrationTest.kt",
     "coordination/handoffs/cx-campaign-provider-anthropic-app-proof-01.md"
   ],
-  "build_slot": "ROOT ONLY"
+  "build_slot": "ROOT ONLY",
+  "note": "Exact independently source-reviewed frozen return integrated unchanged; scoped runtime accepted d96da539. Original worktree/drafts retained. No full provider/native/release acceptance."
 }

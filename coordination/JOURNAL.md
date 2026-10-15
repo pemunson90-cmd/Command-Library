@@ -757,3 +757,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T23:27:34Z | codex | cp-20261015-provider-text-host-255 | containing commit | CustomHTTPS provider text bounded source/runtime ACK6519bff1:79scoped cases11XML0f/e/s,69unchangedreused+10fresh/774pins. All failure lineage retained; originals preserved/buildslotfree. Continue narrow nativeAnthropic sourcefacts, all final gates open.
 
 2026-10-15T23:39:48Z | codex | cp-20261015-anthropic-source-packets-256 | containing commit | NativeAnthropic existing-scope boundary SOURCE02ACK4424646d; rootdraftd96e2d12 and frozenNEW5 await source review, actualappNEW2 inprogress. RootbuildslotFREE/no nativecompile-runtimeclaim; customHTTPS79case host acceptance retained. All holds preserved.
+
+2026-10-15T23:46:19Z | codex | cp-20261015-anthropic-text-host-257 | containing commit | NativeAnthropic bounded source/shared/runtime ACKd96da539:102scopedcases14XML0f/e/s,23networkreused+79fresh/781pins. Original heldSOURCE01cf1e16d preserved/claimsreleased/buildslotfree. Continue narrowResponses sourcefacts; all final holds remain.

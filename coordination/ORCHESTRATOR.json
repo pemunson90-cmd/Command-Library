@@ -4,8 +4,8 @@
   "session_id": "codex-root-replacement-20261015",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T23:39:48Z",
-  "expires_utc": "2026-10-16T00:24:48Z",
-  "checkpoint_id": "cp-20261015-anthropic-source-packets-256",
-  "note": "Replacement root active. CustomHTTPS bounded host accepted6519bff1. NativeAnthropic boundary4424646d ACK; rootdraftd96e2d12+frozencodec pendingSOURCEreviews, appproof inprogress. ROOTbuildslotFREE; no currentnativecompile/runtimeclaim. All final holds retained."
+  "heartbeat_utc": "2026-10-15T23:46:19Z",
+  "expires_utc": "2026-10-16T00:31:19Z",
+  "checkpoint_id": "cp-20261015-anthropic-text-host-257",
+  "note": "Rootactive. CustomHTTPS/nativeAnthropic bounded hostaccepted d96da539; claimsreleased/buildslotFREE/originaldrafts preserved. Next read-onlyResponses exactsourcefacts; no productwriter/newpaidcalls. All fullprovider/fidelity/device/release holds remain."
 }
