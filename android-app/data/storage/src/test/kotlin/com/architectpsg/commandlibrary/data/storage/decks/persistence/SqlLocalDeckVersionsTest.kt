@@ -57,6 +57,32 @@ class SqlLocalDeckVersionsTest {
     private suspend fun restore(db: Database, source: DeckSnapshot, target: DeckVersion, operation: String = "restore") =
         ok(versions(db).restore(source.id, target.id, source.revision, "Recovery", op(operation), cancel))
 
+    @Test fun everyLegacyMutationRejectsAllDraftReservationStatusesBeforeClockIdsOrPayloadReads() = runBlocking {
+        HostDeckVersionDatabase(file()).use { db ->
+            val a = create(db); val checkpoint = capture(db, a)
+            val current = rename(db, a, "Current")
+            val zero = "0".repeat(64)
+            // Physical reservation fixtures intentionally have opaque noncanonical payloads.
+            // Reservation lookup must not load or certify draft metadata/body/status semantics.
+            db.sql("INSERT INTO deck_draft_state VALUES('local-decks','deck',1,3,0,1,1,'$zero',X'00',NULL,'WRITE','$zero','$zero')")
+            for ((index,status) in listOf("PREPARED","COMMITTED","ABANDONED").withIndex()) {
+                val operation = op("reserved-$status")
+                db.sql("INSERT INTO deck_draft_intent VALUES('${operation.value}','local-decks','deck',1,${index+1},0,1,1,'$zero',X'00','TEXT',1,1,'$zero',X'00',1,'$zero','$status',NULL,NULL,NULL,NULL,NULL,NULL,'$zero')")
+                val before = db.state(); val beforeTicks = ticks; val beforeIds = generated
+                db.queries.clear()
+                failure(library(db).create(a.copy(id=DeckId(a.id.source,"new-$status")),operation,cancel),FailureCode.INVALID_INPUT)
+                failure(library(db).duplicate(a.id,current.revision,"Copy",operation,cancel),FailureCode.INVALID_INPUT)
+                failure(edits(db).apply(a.id,patch(DeckEdit.Rename("Blocked")),current.revision,operation,cancel),FailureCode.INVALID_INPUT)
+                failure(edits(db).undo(a.id,current.revision,operation,cancel),FailureCode.INVALID_INPUT)
+                failure(versions(db).capture(a.id,current.revision,"Blocked",operation,cancel),FailureCode.INVALID_INPUT)
+                failure(versions(db).restore(a.id,checkpoint.id,current.revision,"Blocked",operation,cancel),FailureCode.INVALID_INPUT)
+                assertEquals(before,db.state()); assertEquals(beforeTicks,ticks); assertEquals(beforeIds,generated)
+                assertEquals(6,db.queries.size)
+                assertTrue(db.queries.all { it.statement == "SELECT 1 AS reserved FROM deck_draft_intent WHERE operation_id=:operation LIMIT 1" })
+            }
+        }
+    }
+
     @Test fun captureOnlyAddsReceiptAndMetadataDuplicateLabelsRemainDistinct() = runBlocking {
         HostDeckVersionDatabase(file()).use { db ->
             val a = create(db); val before = db.state(); val first = capture(db, a)

@@ -6,10 +6,10 @@ import java.io.Closeable
 import java.io.File
 import kotlinx.coroutines.CancellationException
 
-/** Actual bundled SQLite/schema14; observation wraps real transactions, never substitutes rows. */
+/** Actual bundled SQLite/schema15; observation wraps real transactions, never substitutes rows. */
 internal class HostDeckVersionDatabase private constructor(val host: HostLifeDatabase) : Database by host, Closeable {
     constructor(file: File, initialize: Boolean = true) : this(HostLifeDatabase(file, initialize = false)) {
-        if (initialize) javaClass.getResourceAsStream("/deck-versions-schema14.sql")!!.bufferedReader().useLines { lines ->
+        if (initialize) javaClass.getResourceAsStream("/deck-drafts-schema15.sql")!!.bufferedReader().useLines { lines ->
             lines.filter { it.startsWith("CREATE TABLE IF NOT EXISTS `deck_") || it.startsWith("CREATE UNIQUE INDEX IF NOT EXISTS `index_deck_") || it.startsWith("CREATE INDEX IF NOT EXISTS `index_deck_") }
                 .forEach { host.sql(it) }
         }
@@ -66,7 +66,7 @@ internal class HostDeckVersionDatabase private constructor(val host: HostLifeDat
     }
     override fun close() = host.close()
     companion object {
-        val TABLES = listOf("deck_head", "deck_revision", "deck_operation", "deck_undo_link", "deck_undo_state", "deck_named_version", "sqlite_sequence")
+        val TABLES = listOf("deck_head", "deck_revision", "deck_operation", "deck_undo_link", "deck_undo_state", "deck_named_version", "deck_draft_state", "deck_draft_intent", "sqlite_sequence")
         private fun hex(bytes: ByteArray): String {
             val alphabet = "0123456789abcdef"
             return CharArray(bytes.size * 2).also { out -> bytes.forEachIndexed { i, byte ->

@@ -1,0 +1,613 @@
+{
+  "assumptions": [
+    "PROPOSAL ONLY: root must accept tags/domains/layout before production compatibility claims.",
+    "Scope TEXT_AUTOSAVE=0 EXPLICIT_CONFIRMED=1. Mutation WRITE=0 DISCARD_INPUT=1 DISCARD_PREP=2 COMMIT=3.",
+    "Intent PREPARED=0 COMMITTED=1 ABANDONED=2. Effect CLEARED=0 RESIDUAL=1 PRESERVED_LATER=2.",
+    "No null sentinels: nullable rawdescriptor/latestoperation/expectedpending use 0 absent or 1 present.",
+    "Hashes in frames are raw32bytes; persisted hash text must be exactly64 lowercasehex.",
+    "Raw request SHA excludes operationId; CLDI binds operationId and exact immutable request metadata.",
+    "All current headers version1; old CLDR tags0..5 imported unchanged, never regenerated.",
+    "Residual fixture is a separate valid TEXT scenario, not an impossible residual from explicit REMOVE.",
+    "Source qualified deck and scalar invariants checked. Wire fixtures do not certify SQLite associations, planner behavior, catalog authority, or persistence.",
+    "Independent decoder consumes full outer frames. Legacy nested CLDK/CLDP in tags0/2 are header-checked opaque bytes; no complete nested snapshot parser claim."
+  ],
+  "cases": {
+    "discard_input_named": {
+      "bytes": 58,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDM",
+        "expected_or_source_generation": 3,
+        "expected_pending_operation": "draft-op",
+        "tag": 1,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444d0001010000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b0000000000000003010000000864726166742d6f70",
+      "scenario": "INPUT expectedgeneration3 explicitly abandoning draft-op.",
+      "sha256": "d945f901e39c76d43e20d8fefa7501775062748989049ee129d9367a654918ad"
+    },
+    "discard_input_null": {
+      "bytes": 46,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDM",
+        "expected_or_source_generation": 4,
+        "expected_pending_operation": null,
+        "tag": 1,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444d0001010000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000400",
+      "scenario": "INPUT expectedgeneration4, no expected pending intent.",
+      "sha256": "03e657ee756caeaf5f3021510e8674adb9ede30b0240aa92f5e939aa951b9b21"
+    },
+    "discard_preparation_only": {
+      "bytes": 58,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDM",
+        "expected_or_source_generation": 3,
+        "expected_pending_operation": "draft-op",
+        "tag": 2,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444d0001020000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b0000000000000003010000000864726166742d6f70",
+      "scenario": "PREPARATION_ONLY expectedgeneration3/draft-op; preserves raw body but advances generation.",
+      "sha256": "1fd6db6ca139e50ef03f7ea5b1f83b26ea734361cd9f13f664a268563ae02369"
+    },
+    "intent_abandoned": {
+      "bytes": 176,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDI",
+        "operation_id": "draft-op",
+        "patch_length": 33,
+        "patch_sha256": "0b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa09004",
+        "patch_version": 1,
+        "raw": {
+          "base_revision": 2,
+          "raw_length": 24,
+          "raw_sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867",
+          "raw_version": 1
+        },
+        "request_sha256": "3443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83",
+        "request_version": 1,
+        "scope": 1,
+        "source_generation": 3,
+        "status": 2,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444900010000000864726166742d6f700000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000300000000000000020001000000182e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867010001000000210b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa0900400013443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce8302",
+      "scenario": "Same immutable request ABANDONED; no completion bytes.",
+      "sha256": "ddf0e19aca1d58eeab86bdb2b39f4fde37b48216b88af4be7cfc39969d92720a"
+    },
+    "intent_committed_cleared": {
+      "bytes": 201,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDI",
+        "effect": {
+          "generation": 4,
+          "tag": 0
+        },
+        "operation_id": "draft-op",
+        "patch_length": 33,
+        "patch_sha256": "0b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa09004",
+        "patch_version": 1,
+        "raw": {
+          "base_revision": 2,
+          "raw_length": 24,
+          "raw_sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867",
+          "raw_version": 1
+        },
+        "receipt_sequence": 42,
+        "request_sha256": "3443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83",
+        "request_version": 1,
+        "result_revision": 3,
+        "scope": 1,
+        "source_generation": 3,
+        "status": 1,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444900010000000864726166742d6f700000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000300000000000000020001000000182e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867010001000000210b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa0900400013443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce8301000000000000002a0000000000000003000000000000000004",
+      "scenario": "Remove commits revision3, receipt42, clears exactsource to generation4.",
+      "sha256": "ab7b37397c8babe25339e2225167e9e7f95162e7c829d41bc329ab1c1cc5c496"
+    },
+    "intent_committed_preserved_later": {
+      "bytes": 241,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDI",
+        "effect": {
+          "base_revision": 2,
+          "generation": 4,
+          "raw_sha256": "043585b724694a0030ca85c01951487e1d131f9482b6d372515feab9a019be8f",
+          "tag": 2
+        },
+        "operation_id": "draft-op",
+        "patch_length": 33,
+        "patch_sha256": "0b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa09004",
+        "patch_version": 1,
+        "raw": {
+          "base_revision": 2,
+          "raw_length": 24,
+          "raw_sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867",
+          "raw_version": 1
+        },
+        "receipt_sequence": 42,
+        "request_sha256": "3443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83",
+        "request_version": 1,
+        "result_revision": 3,
+        "scope": 1,
+        "source_generation": 3,
+        "status": 1,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444900010000000864726166742d6f700000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000300000000000000020001000000182e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867010001000000210b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa0900400013443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce8301000000000000002a00000000000000030200000000000000040000000000000002043585b724694a0030ca85c01951487e1d131f9482b6d372515feab9a019be8f",
+      "scenario": "Old remove commit publishes revision3; raw generation4/base2 remains byte-for-byte unchanged.",
+      "sha256": "3faa219b54641323bbd560fa329b624ff42a68623d73af153835692910c01a1d"
+    },
+    "intent_committed_residual": {
+      "bytes": 240,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDI",
+        "effect": {
+          "base_revision": 3,
+          "generation": 4,
+          "raw_sha256": "25ebd98955f726e096b938eefe130ab54bbc594fb072511cceaeefc441392551",
+          "tag": 1
+        },
+        "operation_id": "text-op",
+        "patch_length": 40,
+        "patch_sha256": "7bec5c897b940eb8a43adc6737f626855bff38d542ca1fa5f067b1d172c7aa53",
+        "patch_version": 1,
+        "raw": {
+          "base_revision": 2,
+          "raw_length": 35,
+          "raw_sha256": "e0dadd48c86f3e91ddd198cfb0a8c20013d8e08e1bc3b55afc2972e507922b92",
+          "raw_version": 1
+        },
+        "receipt_sequence": 43,
+        "request_sha256": "7afe22ce303a35bf0b03c31b1088a7bdef4b41993b1269285ad984c4edc9ae18",
+        "request_version": 1,
+        "result_revision": 3,
+        "scope": 0,
+        "source_generation": 3,
+        "status": 1,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c4449000100000007746578742d6f700000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b00000000000000030000000000000002000100000023e0dadd48c86f3e91ddd198cfb0a8c20013d8e08e1bc3b55afc2972e507922b92000001000000287bec5c897b940eb8a43adc6737f626855bff38d542ca1fa5f067b1d172c7aa5300017afe22ce303a35bf0b03c31b1088a7bdef4b41993b1269285ad984c4edc9ae1801000000000000002b0000000000000003010000000000000004000000000000000325ebd98955f726e096b938eefe130ab54bbc594fb072511cceaeefc441392551",
+      "scenario": "Text commit receipt43/result3 leaves residual generation4/base3.",
+      "sha256": "8aa53558bfc94bbb964375c2b1aa2c433b128a0d11cf701a105e7c4f050dea2e"
+    },
+    "intent_pending": {
+      "bytes": 176,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDI",
+        "operation_id": "draft-op",
+        "patch_length": 33,
+        "patch_sha256": "0b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa09004",
+        "patch_version": 1,
+        "raw": {
+          "base_revision": 2,
+          "raw_length": 24,
+          "raw_sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867",
+          "raw_version": 1
+        },
+        "request_sha256": "3443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83",
+        "request_version": 1,
+        "scope": 1,
+        "source_generation": 3,
+        "status": 0,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444900010000000864726166742d6f700000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000300000000000000020001000000182e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867010001000000210b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa0900400013443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce8300",
+      "scenario": "Immutable remove request PREPARED; no completion bytes.",
+      "sha256": "a18c5e62b525edaf75880906672a6996760bdc57f5cd4838ba207afe9daa146a"
+    },
+    "legacy_cldr_tag_0": {
+      "bytes": 142,
+      "decoded": {
+        "domain": "CLDR",
+        "payload_length": 131,
+        "payload_sha256": "17ef0b77e9a7a381bbf4412a6db857df5a051d5e02d268ed4aac2f3e44a98631",
+        "tag": 0,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c445200010000000083434c444b00010000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b00000006476f6c64656e01000000046e6f6e650000000001000000046e6f6e650000000000000000000000010000000000000000000000010000000000000000000000000000000001000000046e6f6e650000000000000000000000000000",
+      "scenario": "Read-only existing immutable CLDR1 fixture; payloads in tags0/2 checked as opaque CLDK1/CLDP1 frames.",
+      "sha256": "0bf4039c80f2fdd23f327777b9aefed7e551ca134c86bca5575c1b10fa9ad992"
+    },
+    "legacy_cldr_tag_1": {
+      "bytes": 53,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "expected_revision": 0,
+        "label": "Copy",
+        "tag": 1,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001010000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000000000004436f7079",
+      "scenario": "Read-only existing immutable CLDR1 fixture; payloads in tags0/2 checked as opaque CLDK1/CLDP1 frames.",
+      "sha256": "fa97cc32d7cf59bd9270430c0de1027ec74363a1b6bd320d20b1cb59d8a5687f"
+    },
+    "legacy_cldr_tag_2": {
+      "bytes": 86,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "expected_revision": 0,
+        "patch_length": 37,
+        "patch_sha256": "802320dfa9cd8ff917755274b7181d3f2eba325313b651ed687b0f09fa51272e",
+        "tag": 2,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001020000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000000000025434c4450000100000001000000000752656e616d65640000000b557365722072656e616d65",
+      "scenario": "Read-only existing immutable CLDR1 fixture; payloads in tags0/2 checked as opaque CLDK1/CLDP1 frames.",
+      "sha256": "be04a1397477cd86e650456b59779ca03433213d912ed77c13bc45195f34deb6"
+    },
+    "legacy_cldr_tag_3": {
+      "bytes": 45,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "expected_revision": 1,
+        "tag": 3,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001030000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b0000000000000001",
+      "scenario": "Read-only existing immutable CLDR1 fixture; payloads in tags0/2 checked as opaque CLDK1/CLDP1 frames.",
+      "sha256": "3bd8ad4995520ec512f0c628aebda433116d7e6a0bafb5382384c5a13ee49977"
+    },
+    "legacy_cldr_tag_4": {
+      "bytes": 62,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "expected_revision": 7,
+        "label": "Checkpoint \u03a9",
+        "tag": 4,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001040000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b00000000000000070000000d436865636b706f696e7420cea9",
+      "scenario": "Read-only existing immutable CLDR1 fixture; payloads in tags0/2 checked as opaque CLDK1/CLDP1 frames.",
+      "sha256": "d7b72fe3171ad465a6a133f77315603798d0951d5e794ef0e5b1a00ecd22680a"
+    },
+    "legacy_cldr_tag_5": {
+      "bytes": 78,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "expected_revision": 7,
+        "label": "Before restore \u03a9",
+        "tag": 5,
+        "target_version_id": "target-1",
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001050000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b0000000000000007000000087461726765742d31000000114265666f726520726573746f726520cea9",
+      "scenario": "Read-only existing immutable CLDR1 fixture; payloads in tags0/2 checked as opaque CLDK1/CLDP1 frames.",
+      "sha256": "395ece893325b8e57f50b96520f52596db6b1376c9f3cce5645383dbe2f03c9f"
+    },
+    "patch_remove": {
+      "bytes": 33,
+      "decoded": {
+        "domain": "CLDP",
+        "edits": [
+          {
+            "tag": 9,
+            "text": "entry"
+          }
+        ],
+        "reason": "Edit deck",
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44500001000000010900000005656e7472790000000945646974206465636b",
+      "scenario": "CLDP1 [Remove(entry)] with reason Edit deck.",
+      "sha256": "0b186dd3ed217714bb4d619cdcf948c0a98c83f035c14aaecfcbca15ffa09004"
+    },
+    "patch_text_primer": {
+      "bytes": 40,
+      "decoded": {
+        "domain": "CLDP",
+        "edits": [
+          {
+            "tag": 2,
+            "text": "new"
+          }
+        ],
+        "reason": "Autosave deck text",
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c445000010000000102000000036e6577000000124175746f73617665206465636b2074657874",
+      "scenario": "Canonical text patch only Primer(new); invalid raw name is not committed.",
+      "sha256": "7bec5c897b940eb8a43adc6737f626855bff38d542ca1fa5f067b1d172c7aa53"
+    },
+    "prepared_request": {
+      "bytes": 123,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "patch": {
+          "domain": "CLDP",
+          "edits": [
+            {
+              "tag": 9,
+              "text": "entry"
+            }
+          ],
+          "reason": "Edit deck",
+          "version": 1
+        },
+        "raw_sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867",
+        "scope": 1,
+        "source_base_revision": 2,
+        "source_generation": 3,
+        "tag": 6,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001060000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000300000000000000022e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe08670100000021434c44500001000000010900000005656e7472790000000945646974206465636b",
+      "scenario": "CLDR tag6 sourcegeneration3/base2/explicit; operation ID deliberately excluded.",
+      "sha256": "3443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83"
+    },
+    "prepared_text_request": {
+      "bytes": 130,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDR",
+        "patch": {
+          "domain": "CLDP",
+          "edits": [
+            {
+              "tag": 2,
+              "text": "new"
+            }
+          ],
+          "reason": "Autosave deck text",
+          "version": 1
+        },
+        "raw_sha256": "e0dadd48c86f3e91ddd198cfb0a8c20013d8e08e1bc3b55afc2972e507922b92",
+        "scope": 0,
+        "source_base_revision": 2,
+        "source_generation": 3,
+        "tag": 6,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c44520001060000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b00000000000000030000000000000002e0dadd48c86f3e91ddd198cfb0a8c20013d8e08e1bc3b55afc2972e507922b920000000028434c445000010000000102000000036e6577000000124175746f73617665206465636b2074657874",
+      "scenario": "TEXT_AUTOSAVE sourcegeneration3/base2 binds independent valid-primer patch.",
+      "sha256": "7afe22ce303a35bf0b03c31b1088a7bdef4b41993b1269285ad984c4edc9ae18"
+    },
+    "raw_commit_effect": {
+      "bytes": 89,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDM",
+        "expected_or_source_generation": 3,
+        "operation_id": "draft-op",
+        "request_sha256": "3443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83",
+        "tag": 3,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444d0001030000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b00000000000000030000000864726166742d6f703443e5fae53eb9cb002293f7a0a97377f72f5eceb92bb99a12af3f728997ce83",
+      "scenario": "COMMIT sourcegeneration3/draft-op/preparedrequest SHA.",
+      "sha256": "03cbdba1066cca6a7941a5dacb76d901254b5cc7460f1583a2f74e82004177b8"
+    },
+    "raw_later_details": {
+      "bytes": 37,
+      "decoded": {
+        "base_revision": 2,
+        "description": "",
+        "domain": "CLDF",
+        "mode": 0,
+        "name": "Later",
+        "primer": "",
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c4446000100000000000000000200000005004c00610074006500720000000000000000",
+      "scenario": "Independent newer raw generation4/base2; not silently rebased by old commit.",
+      "sha256": "043585b724694a0030ca85c01951487e1d131f9482b6d372515feab9a019be8f"
+    },
+    "raw_remove": {
+      "bytes": 24,
+      "decoded": {
+        "base_revision": 2,
+        "domain": "CLDF",
+        "entry_id": "entry",
+        "mode": 3,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c4446000103000000000000000200000005656e747279",
+      "scenario": "Existing independently frozen CLDF REMOVE/base2/entry payload.",
+      "sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867"
+    },
+    "raw_text_residual": {
+      "bytes": 35,
+      "decoded": {
+        "base_revision": 3,
+        "description": "x",
+        "domain": "CLDF",
+        "mode": 0,
+        "name": "",
+        "primer": "new",
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444600010000000000000000030000000000000001007800000003006e00650077",
+      "scenario": "After revision3: blank name retained exactly; description x and primer new canonical.",
+      "sha256": "25ebd98955f726e096b938eefe130ab54bbc594fb072511cceaeefc441392551"
+    },
+    "raw_text_source": {
+      "bytes": 35,
+      "decoded": {
+        "base_revision": 2,
+        "description": "x",
+        "domain": "CLDF",
+        "mode": 0,
+        "name": "",
+        "primer": "new",
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444600010000000000000000020000000000000001007800000003006e00650077",
+      "scenario": "Base2 canonical name Base/description x/primer old assumed; blank raw name invalid, primer new promotable.",
+      "sha256": "e0dadd48c86f3e91ddd198cfb0a8c20013d8e08e1bc3b55afc2972e507922b92"
+    },
+    "raw_write": {
+      "bytes": 73,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDM",
+        "expected_or_source_generation": 2,
+        "raw": {
+          "base_revision": 2,
+          "domain": "CLDF",
+          "entry_id": "entry",
+          "mode": 3,
+          "version": 1
+        },
+        "tag": 0,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c444d0001000000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000200000018434c4446000103000000000000000200000005656e747279",
+      "scenario": "WRITE expectedgeneration2 carrying exact raw_remove.",
+      "sha256": "42aa8e5d7be79861119a80d482924bc5039aa5adec985d7f4845aa5d308ea4c5"
+    },
+    "slot_pending": {
+      "bytes": 137,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDS",
+        "generation": 3,
+        "last_mutation_sha256": "42aa8e5d7be79861119a80d482924bc5039aa5adec985d7f4845aa5d308ea4c5",
+        "last_mutation_tag": 0,
+        "latest_operation_id": "draft-op",
+        "raw": {
+          "base_revision": 2,
+          "raw_length": 24,
+          "raw_sha256": "2e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867",
+          "raw_version": 1
+        },
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c445300010000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b00000000000000030100000000000000020001000000182e6ebdbfa35015417d17950f6435b67f725346c397d2dc4c9f0cf25824fe0867010000000864726166742d6f700042aa8e5d7be79861119a80d482924bc5039aa5adec985d7f4845aa5d308ea4c5",
+      "scenario": "Generation3/raw present/latest draft-op/last mutation WRITE.",
+      "sha256": "09cd7c8b507f4b08ca434fe2207b324795ad91fb1f98eb4561bcb7f0b0b4eb2e"
+    },
+    "slot_tombstone": {
+      "bytes": 91,
+      "decoded": {
+        "deck": {
+          "deck_id": "golden-deck",
+          "provider": "local-decks"
+        },
+        "domain": "CLDS",
+        "generation": 4,
+        "last_mutation_sha256": "03cbdba1066cca6a7941a5dacb76d901254b5cc7460f1583a2f74e82004177b8",
+        "last_mutation_tag": 3,
+        "latest_operation_id": "draft-op",
+        "raw": null,
+        "version": 1
+      },
+      "decoder_consumed_exact_eof": true,
+      "hex": "434c445300010000000b6c6f63616c2d6465636b730000000b676f6c64656e2d6465636b000000000000000400010000000864726166742d6f700303cbdba1066cca6a7941a5dacb76d901254b5cc7460f1583a2f74e82004177b8",
+      "scenario": "After committed clear: generation4/tombstone/latest terminal draft-op.",
+      "sha256": "6c1d842286b515eeca2810bc1fe958a859b8019c2a5ce5d55511a52879001103"
+    }
+  },
+  "generator_sha256": "c1f214c84cb4f705df712953fa08f8d6ac3596ff1f455db51b1c0471a3ad973a",
+  "source_inputs_sha256": {
+    "android-app/data/storage/src/test/resources/decks/draft-v1-oracles.json": "a893f08249601b09151829b801c0b0e89fc7a9a00fa5c1ac6de854e177a3e580",
+    "docs/verification/deck-codec/apply-request-v1.hex": "b8c2c01414b313882a22dcd39787fd3b55e72b5334a55ae2cbf0625ae8fe83c6",
+    "docs/verification/deck-codec/create-request-v1.hex": "334242f02a1fc299b1e3673f96de85d21ae318d38070796249ff1d95b2067f92",
+    "docs/verification/deck-codec/duplicate-request-v1.hex": "a50c8138626700bd3c5e9c30646d977a5c674fbfe7b497d941c0ca54f17f32dc",
+    "docs/verification/deck-codec/named-version-proposed-v1-oracles.json": "a273cff2e544afdb21190ad6ca3437de07cd36c4c3c26bb796a3907a3ca61c09",
+    "docs/verification/deck-codec/undo-request-v1.hex": "08bc48604875d6833235ee06722e550628fefc8fba212cc3a1dc94a2ab12525f"
+  },
+  "status": "PROPOSAL_ONLY",
+  "verification": {
+    "all_frames_exact_eof": true,
+    "all_frames_truncation_and_trailing_rejected": true,
+    "commit_source_generation_zero_rejected": true,
+    "legacy_tags_0_to_5_unchanged": true,
+    "seed_hashes_equal_prior_independent_proposal": true,
+    "write_discard_expected_generation_zero_accepted": true
+  }
+}

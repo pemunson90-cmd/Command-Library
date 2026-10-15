@@ -9,7 +9,7 @@ import kotlinx.coroutines.CancellationException
 /** Composition over the shared actual host SQLite adapter; distinct from Room/native evidence. */
 internal class HostDeckDatabase private constructor(val host: HostLifeDatabase) : Database by host, Closeable {
     constructor(file: File, initialize: Boolean = true) : this(HostLifeDatabase(file, initialize = false)) {
-        if (initialize) javaClass.getResourceAsStream("/deck-library-schema10.sql")!!.bufferedReader().useLines { lines ->
+        if (initialize) javaClass.getResourceAsStream("/deck-drafts-schema15.sql")!!.bufferedReader().useLines { lines ->
             lines.filter { it.startsWith("CREATE TABLE IF NOT EXISTS `deck_") || it.startsWith("CREATE UNIQUE INDEX IF NOT EXISTS `index_deck_") || it.startsWith("CREATE INDEX IF NOT EXISTS `index_deck_") }
                 .forEach { host.sql(it) }
         }

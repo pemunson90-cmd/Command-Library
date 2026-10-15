@@ -122,6 +122,7 @@ public class SqlLocalDeckVersions(db: Database, codec: DeckPayloadCodecPort, pri
         rows.find(tx, id, version, cancel) ?: throw DeckLibraryProblem(Outcome.Unavailable(UnavailableReason.NOT_FOUND, "Deck version not found"))
 
     private suspend fun replay(tx: DbTransaction, id: DeckId, expected: Revision, operation: EntityId, sha: String, kind: String, cancel: CancelToken): DeckNamedVersionRows.Named? {
+        DeckOperationReservations.requireUnreserved(tx, operation, cancel)
         val receipt = rows.receipt(tx, operation, cancel) ?: return null
         if (receipt.sha != sha || receipt.kind != kind) reject(FailureCode.INVALID_INPUT, "Operation identity was reused with different input")
         corrupt(receipt.deck == id)

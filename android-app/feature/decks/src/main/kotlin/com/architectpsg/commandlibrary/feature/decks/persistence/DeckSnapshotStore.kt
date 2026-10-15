@@ -22,6 +22,7 @@ internal class DeckSnapshotStore(private val db: Database, private val codec: De
     }
 
     suspend fun replay(tx: DbTransaction, operationId: EntityId, sha: String, kind: String, cancel: CancelToken): DeckSnapshot? {
+        DeckOperationReservations.requireUnreserved(tx, operationId, cancel)
         val columns = listOf(DeckLibraryRows.integer("sequence", "sequence"), DeckLibraryRows.integer("request_version", "request_version"),
             DeckLibraryRows.integer("result_revision", "result_revision"), DeckLibraryRows.text("request_sha256", 64, "request_sha256"),
             DeckLibraryRows.text("kind", 16, "kind"), DeckLibraryRows.text("provider", 1024, "provider"), DeckLibraryRows.text("deck_id", 1024, "deck_id")).joinToString(",")

@@ -6,10 +6,10 @@ import java.io.Closeable
 import java.io.File
 import kotlinx.coroutines.CancellationException
 
-/** Actual host SQLite composition using the accepted KSP schema11 fixture; no Room/device claim. */
+/** Actual host SQLite composition using the accepted KSP schema15 fixture; no Room/device claim. */
 internal class HostDeckEditDatabase private constructor(val host: HostLifeDatabase) : Database by host, Closeable {
     constructor(file: File, initialize: Boolean = true) : this(HostLifeDatabase(file, initialize = false)) {
-        if (initialize) javaClass.getResourceAsStream("/deck-edits-schema11.sql")!!.bufferedReader().useLines { lines ->
+        if (initialize) javaClass.getResourceAsStream("/deck-drafts-schema15.sql")!!.bufferedReader().useLines { lines ->
             lines.filter { it.startsWith("CREATE TABLE IF NOT EXISTS `deck_") || it.startsWith("CREATE UNIQUE INDEX IF NOT EXISTS `index_deck_") || it.startsWith("CREATE INDEX IF NOT EXISTS `index_deck_") }
                 .forEach { host.sql(it) }
         }
