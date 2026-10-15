@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -43,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.selected
@@ -53,6 +56,7 @@ import com.architectpsg.commandlibrary.feature.shell.ui.collection.DeckMarkOwned
 import com.architectpsg.commandlibrary.core.model.DeckId
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.PlainDeckImportSurface
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DraftExitDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DraftRecoveryBanner
 import com.architectpsg.commandlibrary.feature.shell.presentation.DeferredDeckAction
@@ -151,9 +155,57 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 true
             }
         }
+        var pendingPlainPick by rememberSaveable { mutableStateOf<Long?>(null) }
+        var plainPickerUnavailable by rememberSaveable { mutableStateOf(false) }
+        val context = LocalContext.current
+        fun libraryAllowsPlainPick(): Boolean {
+            val library = controllers.deckLibrary?.state?.value ?: return false
+            val editor = controllers.deckDraftEditor
+            return !library.pending && !library.mutationBusy && library.form == null &&
+                editor?.state?.value?.session == null && editor?.hasMutationBarrier != true
+        }
+        // One outstanding request avoids aliasing identical OpenDocument intents. Its frame ticket
+        // survives activity recreation; a late result never replaces a different form or request.
+        val plainPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            val ticket = pendingPlainPick
+            pendingPlainPick = null
+            val importer = controllers.plainDeckImport
+            val current = importer?.state?.value
+            if (uri != null && ticket != null && importer != null && current != null &&
+                current.formTicket == ticket && !current.submitting && !current.uncertain &&
+                !current.awaitingFresh && libraryAllowsPlainPick()) {
+                val input = controllers.plainDeckInputs.document(DocumentRef(uri.toString()),
+                    com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()),
+                    context.getString(R.string.plain_import_selected_file))
+                importer.parse(input)
+            }
+        }
+        val choosePlainFile: () -> Unit = {
+            val importer = controllers.plainDeckImport
+            val current = importer?.state?.value
+            if (importer != null && current != null && pendingPlainPick == null && libraryAllowsPlainPick() &&
+                !current.submitting && !current.uncertain && !current.awaitingFresh) {
+                if (current.parsing) importer.cancelParse()
+                pendingPlainPick = current.formTicket
+                try {
+                    plainPicker.launch(arrayOf("text/plain"))
+                    plainPickerUnavailable = false
+                } catch (_: ActivityNotFoundException) {
+                    pendingPlainPick = null; plainPickerUnavailable = true
+                } catch (_: SecurityException) {
+                    pendingPlainPick = null; plainPickerUnavailable = true
+                }
+            }
+        }
+        val importPlainEntry: (() -> Unit)? = controllers.plainDeckImport?.let { importer -> {
+            if (pendingPlainPick == null && libraryAllowsPlainPick()) {
+                if (importer.state.value.inputName != null) importer.resume() else choosePlainFile()
+            }
+        } }
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
+                controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
                 controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
                 draft?.let { editor -> DraftRecoveryBanner(editor) {
                     val session = editor.state.value.session
@@ -182,6 +234,8 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             else controllers.deckVersions?.let { it.openDeck(id); versionsOpen = true }
                         },
                         onCloseVersions = { versionsOpen = false },
+                        onImportPlain = importPlainEntry,
+                        importPlainEnabled = pendingPlainPick == null && draftState?.session == null && draft?.hasMutationBarrier != true,
                         modifier = contentModifier,
                     )
                 }
@@ -252,6 +306,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         draft?.let { DraftExitDialog(it) }
+        if (plainPickerUnavailable) AlertDialog(onDismissRequest = { plainPickerUnavailable = false },
+            text = { Text(stringResource(R.string.plain_import_pick_unavailable)) },
+            confirmButton = { TextButton({ plainPickerUnavailable = false }) { Text(stringResource(android.R.string.ok)) } })
     }
 }
 
@@ -269,6 +326,8 @@ private fun DestinationContent(
     onOpenVersions: (DeckId) -> Unit,
     onCloseVersions: () -> Unit,
     modifier: Modifier,
+    onImportPlain: (() -> Unit)?,
+    importPlainEnabled: Boolean,
 ) {
     val statusState by controllers.status.state.collectAsState()
     when (destination) {
@@ -314,7 +373,8 @@ private fun DestinationContent(
             val versions = controllers.deckVersions
             if (versionsOpen && versions != null) Box(modifier) { DeckVersionsScreen(versions, widthClass, onCloseVersions, controllers.deckDraftEditor) }
             else DeckLibraryScreen(library, widthClass, modifier, controllers.deckEditorSearch,
-                onOpenVersions = if (versions != null) onOpenVersions else null)
+                onOpenVersions = if (versions != null) onOpenVersions else null,
+                onImportText = onImportPlain, importTextEnabled = importPlainEnabled)
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },

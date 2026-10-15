@@ -3,6 +3,7 @@ package com.architectpsg.commandlibrary.feature.shell.presentation
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.feature.shell.ShellPorts
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentSource
+import com.architectpsg.commandlibrary.feature.shell.document.PlainDeckInputSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -88,6 +89,17 @@ internal class ShellControllers(
                     if (library.state.value.selectedId == id) library.select(id)
                     library.refresh()
                 }
+            }) else null
+    val plainDeckInputs = PlainDeckInputSource(documents, ioDispatcher)
+    val plainDeckImport: PlainDeckImportController? = if (ports.plainDeckLists != null && ports.localDecks != null &&
+        ports.utcClock != null && ports.deckSnapshotValidation != null)
+        PlainDeckImportController(scope, ports.plainDeckLists, ports.localDecks, ioDispatcher,
+            { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
+            ports.utcClock::utcNow, ports.deckSnapshotValidation,
+            onCommitted = {
+                // Import creates a separate deck: refresh browsers without replacing an editor.
+                deckLibrary?.refresh()
+                collection?.refreshDecks()
             }) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }

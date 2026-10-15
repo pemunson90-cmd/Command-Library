@@ -34,7 +34,8 @@ internal object DeckLibraryTags {
 
 /** Real library with optional complete version navigation and whole-snapshot undo. */
 @Composable
-internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null, onOpenVersions: ((DeckId) -> Unit)? = null) {
+internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null, onOpenVersions: ((DeckId) -> Unit)? = null,
+    onImportText: (() -> Unit)? = null, importTextEnabled: Boolean = true) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -53,9 +54,14 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                 ActionRow {
                     Button(controller::create, enabled = !state.pending && !state.mutationBusy,
                         modifier = Modifier.heightIn(min = 48.dp).testTag(DeckLibraryTags.NEW)) { Text(stringResource(R.string.decks_new)) }
+                    if (onImportText != null) OutlinedButton(onImportText,
+                        enabled = importTextEnabled && !state.pending && !state.mutationBusy && state.form == null,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("deck-plain-import")) { Text(stringResource(R.string.plain_import_open)) }
                     OutlinedButton(controller::refresh, enabled = !state.loading, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.decks_refresh)) }
                 }
             }
+            if (onImportText != null && (!importTextEnabled || state.pending || state.mutationBusy || state.form != null))
+                item { Text(stringResource(R.string.plain_import_finish_edits)) }
             item { status() }
             state.listProblem?.let { problem -> item { LibraryProblem(problem) } }
             if (state.loading) item { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.decks_loading)) }
