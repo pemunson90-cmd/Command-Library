@@ -25,6 +25,7 @@ internal class ShellControllers(
     ioDispatcher: CoroutineDispatcher,
     documentWriter: PlainDeckDocumentWriter? = null,
 ) {
+    val drawProbability = DrawProbabilityController(scope, kotlinx.coroutines.Dispatchers.Default)
     val importLimits: CatalogImportLimits = ports.importLimits
     val status = CatalogStatusController(scope, ports.catalogStatus, ioDispatcher)
     val search = SearchController(scope, ports.catalogLookup, ioDispatcher, textLookup = ports.catalogTextLookup, enableSuggestions = true, onStaleCursor = status::refresh)

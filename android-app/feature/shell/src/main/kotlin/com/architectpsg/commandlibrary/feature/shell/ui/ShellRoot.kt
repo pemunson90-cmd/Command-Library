@@ -58,6 +58,7 @@ import com.architectpsg.commandlibrary.core.model.DeckSnapshot
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportPreview
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
 import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.DrawProbabilityDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.PlainDeckExportSurface
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
@@ -245,6 +246,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
+                DrawProbabilityDialog(controllers.drawProbability)
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
                 controllers.plainDeckExport?.let { PlainDeckExportSurface(it, choosePlainExport, pendingPlainExport != null) }
                 controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
@@ -420,7 +422,8 @@ private fun DestinationContent(
             else DeckLibraryScreen(library, widthClass, modifier, controllers.deckEditorSearch,
                 onOpenVersions = if (versions != null) onOpenVersions else null,
                 onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
-                onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled)
+                onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled,
+                onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) })
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },

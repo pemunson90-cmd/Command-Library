@@ -1,0 +1,14 @@
+<resources>
+    <string name="draw_probability_title">Draw probabilities</string>
+    <string name="draw_probability_explanation">Draw without replacement from a fixed pile. Only the main deck supplies the initial pile size; other boards are excluded. Set the matching-card count yourself. This calculator does not simulate mulligans or play rules and never edits your deck.</string>
+    <string name="draw_probability_population">Cards in draw pile</string>
+    <string name="draw_probability_successes">Matching cards in pile</string>
+    <string name="draw_probability_draws">Cards drawn</string>
+    <string name="draw_probability_invalid">Use whole numbers: pile size 0–1,000,000, matching cards 0–pile size, and cards drawn 0–1,000 and no more than the pile size.</string>
+    <string name="draw_probability_working">Calculating…</string>
+    <string name="draw_probability_rounded">Percentages are rounded to six decimal places. Counts are calculated exactly.</string>
+    <string name="draw_probability_at_least_one">At least one matching card: %1$s%%</string>
+    <string name="draw_probability_row">Exactly %1$d matching cards: %2$s%%</string>
+    <string name="draw_probability_calculate">Calculate</string>
+    <string name="draw_probability_close">Close</string>
+</resources>
