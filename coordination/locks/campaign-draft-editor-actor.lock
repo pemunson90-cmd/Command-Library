@@ -9,6 +9,6 @@
   "base_commit": "Containing reviewed, compiled boundary/claim commit supplied and verified before edits",
   "owned_paths": "Exact4NEW concreteactor/twofocusedtests/handoff paths; existing UI/state/ports/DI/navigation readonly",
   "authority": "Canonical root local claim; root exclusively owns shared UI/DI/integration/final merge",
-  "build_slot": "ACTIVE attempt02 same four classes after attempt01 test-fixture smartcast compile failure (production compile passed, runtime0/XML0); actor/recovery unchanged, test03eec862; root no Gradle",
+  "build_slot": "RETAINED for coherent repair/source rereview then attempt03; no active Gradle now. Attempt02 actual81tests/4XML/8failures/0errors/skips, independently diagnosed queued-text suppression; malformed ACK authority HOLD also repair. Root no build.",
   "source_review": "HOLD after earlier r4 ACK: independently confirmed malformed discovered ACK loses exact rejected/Prepare authority in3callers; no edits during frozen attempt02, coherent repair after exit."
 }
