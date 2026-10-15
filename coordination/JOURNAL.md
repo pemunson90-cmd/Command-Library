@@ -677,3 +677,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T14:36:47Z | codex | cp-20261015-mark-owned-import-215 | containing commit | Reviewed UI integrated/sourceACK; actualapp test repairs pending coherentgate; claim READY-reviewed isolated next importproducer under 3writerlimit
 
 2026-10-15T14:39:11Z | codex | cp-20261015-mark-owned-assembled-gate-216 | containing commit | Exact reviewed UI and app-test scopedreturns integrated; ROOT reserves sole frozen assembledlocalgate, actualruntimepending; isolatedplainimportproducer continues
+
+2026-10-15T14:56:12Z | codex | cp-20261015-mark-owned-host-accepted-217 | containing commit | Actual7focused UI/AppGraph/Room SOURCE-RUNTIMEACK; preserve115/2failedlineage; proceed reviewed5path isolated sharedimportprereq and29caseproducer source review
