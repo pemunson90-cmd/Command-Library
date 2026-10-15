@@ -57,7 +57,7 @@ internal fun DeckEditorDialog(controller: DeckLibraryController, form: DeckEdito
                 Box {
                     OutlinedButton({ finishMenu = true }, enabled = enabled, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_finish, stringResource(finishLabel(form.finish)))) }
                     DropdownMenu(finishMenu, { finishMenu = false }) {
-                        DropdownMenuItem(text = { Text(stringResource(R.string.deck_finish_any)) }, onClick = { controller.editorChange { it.copy(finish = Knowledge.Absent("No finish restriction")) }; finishMenu = false })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.deck_finish_any)) }, onClick = { controller.clearFinishRestriction(); finishMenu = false })
                         Finish.entries.forEach { finish -> DropdownMenuItem(text = { Text(stringResource(finishLabel(Knowledge.Known(finish)))) }, onClick = {
                             controller.editorChange { it.copy(finish = Knowledge.Known(finish)) }; finishMenu = false
                         }) }

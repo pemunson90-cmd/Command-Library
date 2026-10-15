@@ -75,6 +75,7 @@ internal class DeckLibraryController(
     fun editorChange(change: (DeckEditorForm) -> DeckEditorForm) {
         if (request == null && !mutable.value.mutationBusy) mutable.update { state -> state.copy(editor = state.editor?.let(change), invalidEdit = false) }
     }
+    fun clearFinishRestriction() { editorChange { it.copy(finish = Knowledge.Absent("No finish restriction")) } }
     fun closePendingEditor() { if (mutable.value.pending && !mutable.value.mutationBusy) mutable.update { it.copy(editor = null) } }
     fun discardEditor() { if (request == null && !mutable.value.mutationBusy) mutable.update { it.copy(editor = null, invalidEdit = false) } }
     fun moveEntry(entryId: EntityId, direction: Int) {
