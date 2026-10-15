@@ -77,6 +77,16 @@ class DeckDraftAppGraphUiIntegrationTest {
         await {runBlocking {ok(library.load(id,cancel)).revision.value==saved.revision.value+1}}
         val undone=runBlocking {ok(library.load(id,cancel))}
         assertEquals(before.copy(revision=undone.revision,modifiedAt=undone.modifiedAt),undone)
+        // Reopen the clean hidden actor against undo's real successor head, then mutate once.
+        awaitEnabled("deck-edit-details")
+        overviewClick("deck-edit-details")
+        awaitEnabled("deck-editor-name")
+        assertEquals(undone.name,rule.onNodeWithTag("deck-editor-name").fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
+        replace("deck-editor-description","Successor after undo")
+        await {runBlocking {ok(library.load(id,cancel)).description=="Successor after undo"}}
+        val successor=runBlocking {ok(library.load(id,cancel))}
+        assertEquals(undone.revision.value+1,successor.revision.value)
+        assertEquals(undone.name,successor.name)
         assertTrue(runBlocking {ok(ports.settings.read(cancel)).consents.isEmpty()})
     }
 }

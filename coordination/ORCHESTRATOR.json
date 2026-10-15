@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T12:50:14Z",
-  "expires_utc": "2026-10-15T13:35:14Z",
-  "checkpoint_id": "cp-20261015-draft-app-candidate-204",
+  "heartbeat_utc": "2026-10-15T13:10:58Z",
+  "expires_utc": "2026-10-15T13:55:58Z",
+  "checkpoint_id": "cp-20261015-draft-consumer-repairs-205",
   "note": "Actor d2df02b integratedf7427f8 exact4paths/clean retained original/final94tests4XML independent source-runtime ACK, claim released. Root app/UI/Room candidatea4fddd9 sourceACK but runtime unverified; root reserves sole Gradle slot for coherent assembled gate. Accepted SQL backend5807a11 final248 ACK. Publication invalidtoken/all native/Fold7/canonical/finishedAPK holds remain."
 }

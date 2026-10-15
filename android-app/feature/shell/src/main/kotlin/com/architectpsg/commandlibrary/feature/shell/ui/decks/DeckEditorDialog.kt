@@ -103,7 +103,7 @@ internal fun DeckCardPicker(search: SearchController, ownerKey: String, selected
     var offset by rememberSaveable(ownerKey, search.queryInput) { mutableIntStateOf(0) }
     OutlinedTextField(search.queryInput, { value -> if (canInteract()) { search.onQueryChange(value); onClearSelection() } }, enabled = enabled,
         singleLine = true, label = { Text(stringResource(R.string.deck_edit_search)) }, modifier = Modifier.fillMaxWidth().testTag("deck-editor-search"))
-    OutlinedButton({ if (canInteract()) { onClearSelection(); search.submit() } }, enabled = enabled && state.loading == null, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_search_action)) }
+    OutlinedButton({ if (canInteract()) { onClearSelection(); search.submit() } }, enabled = enabled && state.loading == null, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-editor-search-submit")) { Text(stringResource(R.string.deck_edit_search_action)) }
     state.queryProblem?.let { problem -> Text(when (problem) {
         QueryProblem.EMPTY -> stringResource(R.string.search_problem_empty)
         QueryProblem.TOO_LONG -> pluralStringResource(R.plurals.search_problem_too_long, SearchController.MAX_QUERY_CODE_POINTS, SearchController.MAX_QUERY_CODE_POINTS)

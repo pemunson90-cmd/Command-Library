@@ -86,15 +86,19 @@ internal fun DurableDeckEditorDialog(editor: DeckDraftEditor, search: SearchCont
             }
         },
         confirmButton = {
-            val retry = state.hasFrozenCall || state.uncertain
-            TextButton({ sessionCommand(editor,session.ticket) { current ->
-                if (current.phase==DraftPhase.IDLE && current.exit==null && current.body!=null) {
-                    if (current.hasFrozenCall || current.uncertain) editor.retryExact() else editor.confirmExplicit()
+            Column {
+                TextButton({ sessionCommand(editor,session.ticket) { current ->
+                    if (canRetry(current) && current.exit==null) editor.retryExact()
+                } }, enabled=canRetry(state) && state.exit==null,
+                    modifier=Modifier.heightIn(min=48.dp).testTag("deck-draft-retry")) {
+                    Text(stringResource(R.string.decks_retry))
                 }
-            } },
-                enabled=state.phase==DraftPhase.IDLE && state.exit==null && body!=null,
-                modifier=Modifier.heightIn(min=48.dp).testTag("deck-editor-save")) {
-                Text(stringResource(if (retry) R.string.decks_retry else R.string.deck_edit_save))
+                TextButton({ sessionCommand(editor,session.ticket) { current ->
+                    if (canConfirm(current)) editor.confirmExplicit()
+                } }, enabled=canConfirm(state),
+                    modifier=Modifier.heightIn(min=48.dp).testTag("deck-editor-save")) {
+                    Text(stringResource(R.string.deck_edit_save))
+                }
             }
         },
         dismissButton = {
@@ -109,6 +113,13 @@ private inline fun sessionCommand(editor: DeckDraftEditor, ticket: Long, action:
     val current=editor.state.value
     if (current.session?.ticket==ticket && current.visible) action(current)
 }
+
+private fun canRetry(state: DraftEditorState): Boolean = state.phase==DraftPhase.IDLE &&
+    (state.rawProblem!=null || state.contentProblem!=null || state.hasFrozenCall || state.uncertain ||
+        state.durable?.latestPreparation is DeckDraftPreparation.Pending)
+
+private fun canConfirm(state: DraftEditorState): Boolean = state.phase==DraftPhase.IDLE &&
+    state.exit==null && state.body!=null && !state.conflict && !state.uncertain
 
 private fun acceptsInput(state: DraftEditorState): Boolean = state.visible && state.exit==null &&
     state.phase !in setOf(DraftPhase.CLOSED,DraftPhase.LOADING,DraftPhase.DISCARDING)
@@ -135,11 +146,29 @@ private fun DraftEntryFields(editor: DeckDraftEditor, state: DraftEditorState, s
     val structural=enabled && !state.structuralLocked && !state.conflict
     if (body is DeckDraftBody.Add && search!=null) {
         DeckCardPicker(search,session.ticket.toString(),(body.selection?.identity?.originalName as? Knowledge.Known)?.value,
-            structural,onClearSelection={ editBody(editor,session.ticket,true) { if(it is DeckDraftBody.Add) it.copy(selection=null) else it } },
+            enabled && !state.conflict,onClearSelection={ editBody(editor,session.ticket,true) { if(it is DeckDraftBody.Add) it.copy(selection=null) else it } },
             onSelect={ card -> sessionCommand(editor,session.ticket) { current ->
-                if (acceptsInput(current) && !current.structuralLocked && !current.conflict) editor.provideCurrentCard(card)
+                val latestSearch=search.state.value
+                val add=current.body as? DeckDraftBody.Add
+                if (acceptsInput(current) && !current.conflict && add!=null &&
+                    currentDeckCard(card,latestSearch,latestSearch.activeGeneration)) {
+                    val selection=DeckDraftSelection(CardIdentity(Knowledge.Known(card.oracleId),
+                        Knowledge.Absent("No printing selected"),null,Knowledge.Known(card.name),card.language),card.provenance.generation)
+                    if (!current.structuralLocked) {
+                        editor.change(add.copy(selection=selection))
+                        editor.provideCurrentCard(card)
+                    } else {
+                        val pinned=add.selection
+                        if (pinned!=null && pinned.generation==selection.generation &&
+                            pinned.identity.oracleId==selection.identity.oracleId &&
+                            pinned.identity.originalName==selection.identity.originalName &&
+                            pinned.identity.language==selection.identity.language &&
+                            pinned.identity.printingId is Knowledge.Absent && pinned.identity.raw==null)
+                            editor.provideCurrentCard(card)
+                    }
+                }
             } }, canInteract={ editor.state.value.let { current ->
-                current.session?.ticket==session.ticket && acceptsInput(current) && !current.structuralLocked && !current.conflict
+                current.session?.ticket==session.ticket && acceptsInput(current) && !current.conflict
             } })
         if (state.recovered && body.selection!=null) Text(stringResource(R.string.deck_draft_selection_evidence))
     }
@@ -217,6 +246,10 @@ internal fun DraftExitDialog(editor: DeckDraftEditor) {
         }},
         confirmButton={TextButton({editor.chooseExit(exit.ticket,DraftExitChoice.STAY)},modifier=Modifier.heightIn(min=48.dp)) {Text(stringResource(R.string.deck_draft_stay))}},
         dismissButton={if(exit.phase==DraftExitPhase.NEEDS_CHOICE) Column {
+            TextButton({
+                val current=editor.state.value
+                if(current.exit?.ticket==exit.ticket && current.exit?.phase==DraftExitPhase.NEEDS_CHOICE && canRetry(current)) editor.retryExact()
+            },enabled=canRetry(state),modifier=Modifier.heightIn(min=48.dp).testTag("deck-draft-exit-retry")) {Text(stringResource(R.string.decks_retry))}
             TextButton({editor.chooseExit(exit.ticket,DraftExitChoice.CONTINUE)},enabled=editor.canContinueExit,modifier=Modifier.heightIn(min=48.dp)) {Text(stringResource(R.string.deck_draft_continue))}
             TextButton({editor.chooseExit(exit.ticket,DraftExitChoice.DISCARD_INPUT)},modifier=Modifier.heightIn(min=48.dp)) {Text(stringResource(R.string.deck_draft_discard_input))}
         }},

@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-draft-app-candidate-204. Updated UTC: 2026-10-15T12:50:14Z.
+Checkpoint: cp-20261015-draft-consumer-repairs-205. Updated UTC: 2026-10-15T13:10:58Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-verify-assembled-durable-editor-app-candidate
+draft-consumer-repairs
 
-Accepted actor integrated with root16file reviewed app wiring; worker claims released, root reserves sole build slot for actual assembled UI/Room gate.
+Assembled149pass remains historical source-held; reviewed clean-hidden successor repair integrated; reviewed UI repair and real ADD/successor tests complete, isolated recovery-dialog tests pending combined gate. Root lease retained, local publication blocked.
 
 Read CURRENT, machine state and task card.
