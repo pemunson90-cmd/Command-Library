@@ -1,0 +1,15 @@
+{
+  "component": "links",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-links-01",
+  "branch": "agent/campaign-links-20261015",
+  "base_commit": "43f258295cfb946983d1f35cab80fedf4f105978",
+  "owner": "Root-reserved native worker links; task packet r1; root publishes claims/results",
+  "owned_paths": [
+    "android-app/feature/links/src/main/**",
+    "android-app/feature/links/src/test/**",
+    "coordination/handoffs/cx-campaign-links-01.md"
+  ],
+  "status": "reserved",
+  "authority": "Live root continuation branch only; inherited worktree lock copies are not independent authority"
+}

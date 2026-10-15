@@ -8,7 +8,11 @@
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
       "acceptance": "AC-A01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "data-finish"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A02",
@@ -17,7 +21,12 @@
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
       "acceptance": "AC-A02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "data-finish",
+        "settings-onboarding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A03",
@@ -26,7 +35,11 @@
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
       "acceptance": "AC-A03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "settings-onboarding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A04",
@@ -35,7 +48,11 @@
       "architecture": "docs/architecture/rules/ARCHITECT.md",
       "acceptance": "AC-A04",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "rules-finish"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A05",
@@ -44,7 +61,11 @@
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
       "acceptance": "AC-A05",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "images"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A06",
@@ -53,7 +74,11 @@
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
       "acceptance": "AC-A06",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "data-finish"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A07",
@@ -62,7 +87,12 @@
       "architecture": "docs/architecture/search/ARCHITECT.md",
       "acceptance": "AC-A07",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "query-execution",
+        "query-context"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "A08",
@@ -71,7 +101,12 @@
       "architecture": "docs/architecture/search/ARCHITECT.md",
       "acceptance": "AC-A08",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "query-execution",
+        "query-context"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B01",
@@ -80,7 +115,14 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "user-storage-contracts",
+        "deck-edits",
+        "deck-persistence",
+        "deck-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B02",
@@ -89,7 +131,14 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "user-storage-contracts",
+        "deck-edits",
+        "deck-persistence",
+        "deck-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B03",
@@ -98,7 +147,11 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "analysis"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B04",
@@ -107,7 +160,11 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B04",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "playtest"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B05",
@@ -116,7 +173,14 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B05",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "user-storage-contracts",
+        "deck-edits",
+        "deck-persistence",
+        "deck-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B06",
@@ -125,7 +189,11 @@
       "architecture": "docs/architecture/validation/ARCHITECT.md",
       "acceptance": "AC-B06",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "validation"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B07",
@@ -134,7 +202,12 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B07",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "deck-persistence",
+        "deck-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B08",
@@ -143,7 +216,12 @@
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
       "acceptance": "AC-B08",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "transfer-codecs",
+        "transfer-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "C01",
@@ -152,7 +230,12 @@
       "architecture": "docs/architecture/collection/ARCHITECT.md",
       "acceptance": "AC-C01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "user-storage-contracts",
+        "collection"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "C02",
@@ -161,7 +244,11 @@
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
       "acceptance": "AC-C02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "pricing"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "C03",
@@ -170,7 +257,11 @@
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
       "acceptance": "AC-C03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "pricing"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "C04",
@@ -179,7 +270,11 @@
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
       "acceptance": "AC-C04",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "pricing"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "D01",
@@ -188,7 +283,11 @@
       "architecture": "docs/architecture/recommendations/ARCHITECT.md",
       "acceptance": "AC-D01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "recommendations"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "D02",
@@ -197,7 +296,11 @@
       "architecture": "docs/architecture/recommendations/ARCHITECT.md",
       "acceptance": "AC-D02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "recommendations"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "E01",
@@ -206,7 +309,11 @@
       "architecture": "docs/architecture/brackets/ARCHITECT.md",
       "acceptance": "AC-E01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "brackets"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "E02",
@@ -215,7 +322,11 @@
       "architecture": "docs/architecture/brackets/ARCHITECT.md",
       "acceptance": "AC-E02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "brackets"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "F01",
@@ -224,7 +335,12 @@
       "architecture": "docs/architecture/links/ARCHITECT.md",
       "acceptance": "AC-F01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "links",
+        "links-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G01",
@@ -233,7 +349,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G02",
@@ -242,7 +362,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G03",
@@ -251,7 +375,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G04",
@@ -260,7 +388,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G04",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G05",
@@ -269,7 +401,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G05",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G06",
@@ -278,7 +414,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G06",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G07",
@@ -287,7 +427,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G07",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G08",
@@ -296,7 +440,12 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G08",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui",
+        "images"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G09",
@@ -305,7 +454,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G09",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G10",
@@ -314,7 +467,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G10",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G11",
@@ -323,7 +480,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G11",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H01",
@@ -332,7 +493,11 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-prompts-grounding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H02",
@@ -341,7 +506,11 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-providers"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H03",
@@ -350,7 +519,11 @@
       "architecture": "docs/architecture/inference/ARCHITECT.md",
       "acceptance": "AC-H03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "engine-v1.1"
+      ],
+      "execution_status": "approved_deferred_D26"
     },
     {
       "requirement_id": "H04",
@@ -359,7 +532,11 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H04",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-prompts-grounding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H05",
@@ -368,7 +545,11 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H05",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-prompts-grounding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H06",
@@ -377,7 +558,11 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H06",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-providers"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H07",
@@ -386,7 +571,11 @@
       "architecture": "docs/architecture/vault/ARCHITECT.md",
       "acceptance": "AC-H07",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "vault"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H08",
@@ -395,7 +584,12 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H08",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-providers",
+        "ai-history"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "H09",
@@ -404,7 +598,12 @@
       "architecture": "docs/architecture/ai/ARCHITECT.md",
       "acceptance": "AC-H09",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "ai-prompts-grounding",
+        "ai-history"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "I01",
@@ -413,7 +612,13 @@
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
       "acceptance": "AC-I01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "transfer-codecs",
+        "transfer-ui",
+        "backup-restore"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "I02",
@@ -422,7 +627,12 @@
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
       "acceptance": "AC-I02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "user-storage-contracts",
+        "backup-restore"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "J01",
@@ -431,7 +641,11 @@
       "architecture": "docs/architecture/shell/ARCHITECT.md",
       "acceptance": "AC-J01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "adaptive-input"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "J02",
@@ -440,7 +654,11 @@
       "architecture": "docs/architecture/shell/ARCHITECT.md",
       "acceptance": "AC-J02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "adaptive-input"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "J03",
@@ -449,7 +667,12 @@
       "architecture": "docs/architecture/shell/ARCHITECT.md",
       "acceptance": "AC-J03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "adaptive-input",
+        "release-acceptance"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "J04",
@@ -458,7 +681,11 @@
       "architecture": "docs/architecture/shell/ARCHITECT.md",
       "acceptance": "AC-J04",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "release-acceptance"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "K01",
@@ -467,7 +694,11 @@
       "architecture": "docs/architecture/settings/ARCHITECT.md",
       "acceptance": "AC-K01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "settings-onboarding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "K02",
@@ -476,7 +707,11 @@
       "architecture": "docs/architecture/settings/ARCHITECT.md",
       "acceptance": "AC-K02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "settings-onboarding"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "N01",
@@ -485,7 +720,11 @@
       "architecture": "docs/architecture/shell/ARCHITECT.md",
       "acceptance": "AC-N01",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "release-acceptance"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "N02",
@@ -494,7 +733,11 @@
       "architecture": "docs/architecture/network/ARCHITECT.md",
       "acceptance": "AC-N02",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "release-acceptance"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "N03",
@@ -503,7 +746,11 @@
       "architecture": "docs/architecture/shell/ARCHITECT.md",
       "acceptance": "AC-N03",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "release-acceptance"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B09",
@@ -512,7 +759,11 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B09",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "packages"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B10",
@@ -521,7 +772,15 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B10",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "user-storage-contracts",
+        "deck-edits",
+        "deck-persistence",
+        "deck-ui",
+        "collection"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B11",
@@ -530,7 +789,11 @@
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
       "acceptance": "AC-B11",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "optimizer"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B12",
@@ -539,7 +802,11 @@
       "architecture": "docs/architecture/decks/ARCHITECT.md",
       "acceptance": "AC-B12",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "playtest"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "B13",
@@ -548,7 +815,11 @@
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
       "acceptance": "AC-B13",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "qr-sharing"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G12",
@@ -557,7 +828,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G12",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-source-variants"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G13",
@@ -566,7 +841,11 @@
       "architecture": "docs/architecture/life/ARCHITECT.md",
       "acceptance": "AC-G13",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "life-service-ui"
+      ],
+      "execution_status": "acceptance_open"
     },
     {
       "requirement_id": "G14",
@@ -575,7 +854,11 @@
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
       "acceptance": "AC-G14",
       "status": "planned",
-      "evidence": []
+      "evidence": [],
+      "execution_tasks": [
+        "profile-game-transfer"
+      ],
+      "execution_status": "acceptance_open"
     }
   ],
   "parity_source": "docs/gauntlet/PARITY_ACCEPTANCE.md",

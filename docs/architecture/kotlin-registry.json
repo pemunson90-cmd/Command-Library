@@ -1155,5 +1155,1543 @@
       ]
     },
     "note": "Envelope permits later edges; import only accepted consumed subset. UI only implemented destinations. No future adapters/stubs."
+  },
+  "execution": {
+    "revision": "campaign-r1-20261015",
+    "baseline": "43f258295cfb946983d1f35cab80fedf4f105978",
+    "plan": "docs/superpowers/plans/2026-10-15-dependency-aware-campaign.md",
+    "review": "ACK gpt-6-astra high; docs/verification/full-v1-audit/CAMPAIGN-REVIEW-20261015.md",
+    "tasks": [
+      {
+        "id": "data-finish",
+        "component": "catalog",
+        "requirements": [
+          "A01",
+          "A02",
+          "A06"
+        ],
+        "prerequisites": [],
+        "outcome": "Finish source-specific Full English/rulings acquisition, resume/background recovery and atomic activation; additional-language explicit consent.",
+        "consumes": [
+          "DownloadService",
+          "CatalogBulkImport",
+          "SettingsRepository",
+          "CatalogRulings"
+        ],
+        "produces": [
+          "installed source-qualified generations"
+        ],
+        "affected_paths": [
+          "android-app/feature/catalog/**",
+          "android-app/app/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "actual source bytes/hash/counts; interruption/reopen/consent; real Room/native acquisition journey",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "LocalAcquisition, LocalBulkCatalog, AndroidCatalogServices, AppEnglishCatalogAccess, DownloadsController; local reviewed tests; live Scryfall policy denied; no full-feed/device acceptance",
+        "ownership_group": "catalog",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "rules-finish",
+        "component": "rules",
+        "requirements": [
+          "A04"
+        ],
+        "prerequisites": [],
+        "outcome": "Complete permitted official rules acquisition/import, offline glossary/crosslinks/keyword+ruling journey.",
+        "consumes": [
+          "LocalRulesImport",
+          "LocalRulesLookup",
+          "KeywordRulesLookup",
+          "CatalogRulings"
+        ],
+        "produces": [
+          "complete offline official rules journey"
+        ],
+        "affected_paths": [
+          "android-app/feature/rules/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "genuine corpus reacquisition and exact counts; invalid corpus rollback; offline links/native UI",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "LocalRules/RulesController, exact glossary and rulings UI; earlier genuine corpus report scoped; private input no longer present",
+        "ownership_group": "rules",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "query-execution",
+        "component": "search",
+        "requirements": [
+          "A07",
+          "A08"
+        ],
+        "prerequisites": [],
+        "outcome": "Pin executable AST truth/face/printing/unknown semantics, implement indexed generation-bound local execution and autocomplete.",
+        "consumes": [
+          "QueryAst",
+          "CatalogSearchPreparation",
+          "schema9 facts",
+          "DecimalComparisonKeys"
+        ],
+        "produces": [
+          "typed local query capability and real UI"
+        ],
+        "affected_paths": [
+          "android-app/feature/search/**",
+          "android-app/feature/catalog/**",
+          "android-app/core/model/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "reference-vs-SQL differential fixtures; unknown/NOT/face/printing/cursor cancellation; real schema9; full corpus P02-P04",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "LocalCardQueryParser/SearchTruth/numeric keys, CatalogSearchPreparationStore, CatalogTextLookup/name suggestions implemented; no typed executor",
+        "ownership_group": "search",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "user-storage-contracts",
+        "component": "storage",
+        "requirements": [
+          "B01",
+          "B02",
+          "B05",
+          "B10",
+          "C01",
+          "I02"
+        ],
+        "prerequisites": [],
+        "outcome": "Review minimal durable deck/inventory codecs, revision/undo/version contracts and additive schema ordering.",
+        "consumes": [
+          "DeckSnapshot",
+          "OwnedLot",
+          "Database",
+          "schema9"
+        ],
+        "produces": [
+          "reviewed persistence boundary; deck and inventory migrations"
+        ],
+        "affected_paths": [
+          "android-app/core/model/**",
+          "android-app/data/storage/**",
+          "android-app/database/registry/**"
+        ],
+        "verification": "independent durability review; actual migration old/new preservation and failure atomicity",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "No deck/inventory user tables or codecs; shared single root writer",
+        "ownership_group": "storage",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "deck-edits",
+        "component": "decks",
+        "requirements": [
+          "B01",
+          "B02",
+          "B05",
+          "B10"
+        ],
+        "prerequisites": [],
+        "outcome": "Pure atomic edit proposal and entry-identity diff using accepted DTOs; no fabricated repository.",
+        "consumes": [
+          "DeckSnapshot",
+          "DeckPatch",
+          "CardChange",
+          "Revision"
+        ],
+        "produces": [
+          "validated immutable proposal and full entry-field diff"
+        ],
+        "affected_paths": [
+          "android-app/feature/decks/**"
+        ],
+        "verification": "focused identity/order/quantity/atomic rejection/stale revision/diff fixtures",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "ready_after_review",
+        "observed_implementation": "DTOs/ports only; RestoreVersion/ApplyPackage require later resolved context",
+        "ownership_group": "decks",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "deck-persistence",
+        "component": "decks",
+        "requirements": [
+          "B01",
+          "B02",
+          "B05",
+          "B07",
+          "B10"
+        ],
+        "prerequisites": [
+          "user-storage-contracts",
+          "deck-edits"
+        ],
+        "outcome": "Real create/list/load/edit/autosave/grouped undo/duplicate/version/restore/library repository.",
+        "consumes": [
+          "reviewed deck persistence boundary",
+          "pure edit proposals"
+        ],
+        "produces": [
+          "durable complete deck capabilities"
+        ],
+        "affected_paths": [
+          "android-app/feature/decks/**",
+          "android-app/data/storage/**"
+        ],
+        "verification": "real SQLite CAS/restart/grouped undo/immutable version/pre-restore recovery; cancellations",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "DeckRepository lacks create/list/version-list/undo; additive reviewed capability required before consumers",
+        "ownership_group": "decks",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "deck-ui",
+        "component": "shell",
+        "requirements": [
+          "B01",
+          "B02",
+          "B05",
+          "B07",
+          "B10"
+        ],
+        "prerequisites": [
+          "deck-persistence"
+        ],
+        "outcome": "S05-S07/S11 actual deck library/editor/version workflow, categories/notes/primer/order/views, accessible bulk editing.",
+        "consumes": [
+          "durable deck capabilities",
+          "CatalogLookup/printing lookup"
+        ],
+        "produces": [
+          "real offline deck editing/version UI"
+        ],
+        "affected_paths": [
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "create/edit/version/restore/restart; externalized strings/keyboard/200%/resize; native UI",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "No deck UI or binding",
+        "ownership_group": "shell",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "packages",
+        "component": "decks",
+        "requirements": [
+          "B09"
+        ],
+        "prerequisites": [
+          "deck-persistence"
+        ],
+        "outcome": "Immutable packages, copied/linked contribution lineage, preview update/remove and undo.",
+        "consumes": [
+          "deck mutation/version capability"
+        ],
+        "produces": [
+          "package library and real contribution-safe UI"
+        ],
+        "affected_paths": [
+          "android-app/feature/decks/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "overlapping same-card independent quantity conservation; copied isolation; restart/restore",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Package DTOs only; do not use generic reducer rejection as feature implementation",
+        "ownership_group": "decks",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "collection",
+        "component": "collection",
+        "requirements": [
+          "C01",
+          "B10"
+        ],
+        "prerequisites": [
+          "user-storage-contracts"
+        ],
+        "outcome": "Inventory CRUD/list/mark-owned/bulk preview/apply/undo preserving exact lots and foreign unresolved identities.",
+        "consumes": [
+          "OwnedLot",
+          "CollectionPatch",
+          "reviewed inventory durability"
+        ],
+        "produces": [
+          "durable inventory capability and S12/quick-add UI"
+        ],
+        "affected_paths": [
+          "android-app/feature/collection/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "real DB revision/atomic bulk/ineligible rows/nonnegative/unknown/no language transfer/restart",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "CollectionRepository/DTOs only",
+        "ownership_group": "collection",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "pricing",
+        "component": "pricing",
+        "requirements": [
+          "C02",
+          "C03",
+          "C04"
+        ],
+        "prerequisites": [
+          "collection"
+        ],
+        "outcome": "Exact source/unit/statistic quote snapshots, owned-once allocation, market/owned/acquisition totals and policy UI.",
+        "consumes": [
+          "DeckSnapshot",
+          "InventorySnapshot",
+          "QuoteSnapshot",
+          "PricePolicy"
+        ],
+        "produces": [
+          "acquisition calculator; quote adapters and inline n"
+        ],
+        "affected_paths": [
+          "android-app/feature/pricing/**",
+          "android-app/core/model/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "q4/o2/USD3=6; fully-owned missing quote=0; unowned unknown; shared-lot conservation; no TIX FX; source terms",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Ports only; provider selection gap needs reviewed additive boundary; pure calculator may start before collection adapter",
+        "ownership_group": "pricing",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "optimizer",
+        "component": "pricing",
+        "requirements": [
+          "B11"
+        ],
+        "prerequisites": [
+          "pricing",
+          "deck-persistence"
+        ],
+        "outcome": "Deterministic eligible printing optimization preview and atomic versioned apply/undo.",
+        "consumes": [
+          "quotes/owned allocations",
+          "deck revision/pins"
+        ],
+        "produces": [
+          "eligible cost plan and deck patch"
+        ],
+        "affected_paths": [
+          "android-app/feature/pricing/**",
+          "android-app/feature/decks/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "source/finish/language/pinning/quantity and unknown optimality fixtures",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "DTOs only",
+        "ownership_group": "pricing",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "analysis",
+        "component": "decks",
+        "requirements": [
+          "B03"
+        ],
+        "prerequisites": [],
+        "outcome": "Catalog-backed curve/pips/source/type/average/token analysis with explicit face/X/unknown policies and S09.",
+        "consumes": [
+          "DeckSnapshot",
+          "CatalogSnapshot"
+        ],
+        "produces": [
+          "reviewed complete analysis inputs/results; deterministic analysis"
+        ],
+        "affected_paths": [
+          "android-app/core/model/**",
+          "android-app/feature/decks/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "known multi-face/hybrid/X/conditional production fixtures; textual chart summary",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "DeckAnalysis input lacks card records/results omit required dimensions; review additions first; actual UI waits deck-persistence",
+        "ownership_group": "decks",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-ui"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "playtest",
+        "component": "decks",
+        "requirements": [
+          "B04",
+          "B12"
+        ],
+        "prerequisites": [
+          "deck-persistence"
+        ],
+        "outcome": "Exact probability/opening hands/London mulligan/manual goldfish/interactions replay/reset/undo with persisted scenarios.",
+        "consumes": [
+          "DeckSnapshot",
+          "PlaytestScenario",
+          "RandomSource"
+        ],
+        "produces": [
+          "conserved manual zone engine and S10"
+        ],
+        "affected_paths": [
+          "android-app/feature/decks/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "small exact reference distributions; every action conserves instances; seeded tests/fresh ordinary RNG; restart/group undo",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Scenario/action DTOs only; probability pure work independent of persistence",
+        "ownership_group": "decks",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-ui"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "validation",
+        "component": "validation",
+        "requirements": [
+          "B06"
+        ],
+        "prerequisites": [],
+        "outcome": "Versioned all-format source registry and local constraints, manual/unknown evidence plus live deck warnings.",
+        "consumes": [
+          "DeckSnapshot",
+          "CatalogSnapshot",
+          "FormatDefinition"
+        ],
+        "produces": [
+          "deterministic validator; permitted versioned format sources"
+        ],
+        "affected_paths": [
+          "android-app/feature/validation/**",
+          "android-app/core/model/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "known good/bad/unknown per actual format; basic/text exceptions/pairs/companion/limited pools; no false legal",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Ports only; deterministic snapshot engine independent; actual sources and deck UI needed for acceptance",
+        "ownership_group": "validation",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-ui",
+          "data-finish",
+          "rules-finish"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "brackets",
+        "component": "brackets",
+        "requirements": [
+          "E01",
+          "E02"
+        ],
+        "prerequisites": [
+          "validation"
+        ],
+        "outcome": "Versioned reconciled criteria/Game Changers/combos; confidence/intent/evidence/target assessment and download/UI.",
+        "consumes": [
+          "validation",
+          "BracketData",
+          "IntentAnswers"
+        ],
+        "produces": [
+          "attributed source dataset and assessed constraints"
+        ],
+        "affected_paths": [
+          "android-app/feature/brackets/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "authentic set reconciliation/conflict retains prior; unknown intent/no official certainty; constrained targets",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Ports only; source evidence E03 required, not a deferral",
+        "ownership_group": "brackets",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "data-finish",
+          "deck-ui"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "recommendations",
+        "component": "recommendations",
+        "requirements": [
+          "D01",
+          "D02"
+        ],
+        "prerequisites": [
+          "query-context",
+          "pricing",
+          "validation",
+          "brackets",
+          "analysis"
+        ],
+        "outcome": "Offline role/enabler/payoff/curve/identity recommendations with overrides, all budget levels, explainable patch preview/apply.",
+        "consumes": [
+          "query candidates",
+          "quotes/inventory",
+          "validation/brackets",
+          "deck revision"
+        ],
+        "produces": [
+          "deterministic constrained suggestions and S13/S14"
+        ],
+        "affected_paths": [
+          "android-app/feature/recommendations/**",
+          "android-app/core/model/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "exact budget equality/unknown exclusion/owned toggle; override persistence; stale fences; apply revalidation",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Ports only; per-card/pass/deck caps need explicit reviewed contract",
+        "ownership_group": "recommendations",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "links",
+        "component": "links",
+        "requirements": [
+          "F01"
+        ],
+        "prerequisites": [],
+        "outcome": "Safe complete supplied-link/template resolver first; evidence-backed default target adapters/settings and card-detail launch follow.",
+        "consumes": [
+          "CardLinks",
+          "PrintingRecord.suppliedLinks",
+          "LinkPreferences"
+        ],
+        "produces": [
+          "atomic supplied/template resolution capability; F01 default adapters/prefs remain follow-up"
+        ],
+        "affected_paths": [
+          "android-app/feature/links/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "strict http(s)/origin/encoding/unknown tokens/missing IDs/selected printing/unsafe authority fixtures; actual UI launch; source E05; atomic per-target batch outcome, no silent omission; UI one target per call",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "ready_after_review",
+        "observed_implementation": "CardLinks port only; R17 route HTTP behavior UNVERIFIED; no guessed seller shortcuts",
+        "ownership_group": "links",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "links-ui"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "life-source-variants",
+        "component": "life",
+        "requirements": [
+          "G12"
+        ],
+        "prerequisites": [],
+        "outcome": "Resolve authentic Planechase/Archenemy/Bounty instructions/card data/rights; persist imported/custom execution definitions and all required managers.",
+        "consumes": [
+          "VariantDefinition",
+          "SqlLifeGameSessions.withCustomVariants"
+        ],
+        "produces": [
+          "accepted named variant source/execution authority"
+        ],
+        "affected_paths": [
+          "android-app/feature/life/**",
+          "android-app/core/model/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "authentic each-module draw/action/reset/undo/restart; rights review E13",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Custom manifest factory/domain/persistence exists; named-source authority remains unresolved; root life lock active",
+        "ownership_group": "life",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "life-service-ui",
+        "component": "life",
+        "requirements": [
+          "G01",
+          "G02",
+          "G03",
+          "G04",
+          "G05",
+          "G06",
+          "G07",
+          "G08",
+          "G09",
+          "G10",
+          "G11",
+          "G13"
+        ],
+        "prerequisites": [
+          "life-source-variants"
+        ],
+        "outcome": "Complete retained game service platform/DI/setup/live tools/history/results, clocks/alerts and linked statistics.",
+        "consumes": [
+          "SqlPersistedGameService",
+          "SqlLifeGameCommands",
+          "CalendarGameHistoryFilter",
+          "AndroidLifeClock",
+          "SystemGameRandom"
+        ],
+        "produces": [
+          "real S20-S23 offline game journey"
+        ],
+        "affected_paths": [
+          "android-app/feature/life/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "create/play/hold/group undo/checkpoint/restart/finish/reopen/history/unique result;1-6 seats; modern native process kill; physical fold/alert evidence",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Real persisted domain/service/clock/random providers; profiles actual UI wired; GameService HOLD/unbound until named family completeness; native probes compile only",
+        "ownership_group": "life",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-persistence",
+          "pricing",
+          "images",
+          "adaptive-input",
+          "profile-game-transfer"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "profile-game-transfer",
+        "component": "transfer",
+        "requirements": [
+          "G14"
+        ],
+        "prerequisites": [
+          "life-service-ui",
+          "transfer-codecs"
+        ],
+        "outcome": "Privacy-reviewed standalone profile and public game CSV/JSON exchange, collision preview/copy default and unique result reconciliation.",
+        "consumes": [
+          "PlayerProfileRepository",
+          "GameSnapshot/events",
+          "versioned public transfer codec"
+        ],
+        "produces": [
+          "S17/S20/S23 actual local exchange"
+        ],
+        "affected_paths": [
+          "android-app/feature/transfer/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "roundtrip/preferences/art refs/no private defaults/no download/duplicate result; CSV loss preview",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Internal bounded CLIF codec is not public exchange",
+        "ownership_group": "transfer",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "transfer-codecs",
+        "component": "transfer",
+        "requirements": [
+          "B08",
+          "I01"
+        ],
+        "prerequisites": [],
+        "outcome": "Bounded authentic text/Arena/vendor CSV and stable native transfer codecs, unresolved preview, loss-aware exports/guided retrieval.",
+        "consumes": [
+          "TransferInput",
+          "ImportPreview",
+          "existing CSV compatibility probe"
+        ],
+        "produces": [
+          "real codecs and versioned native interchange"
+        ],
+        "affected_paths": [
+          "android-app/feature/transfer/**",
+          "android-app/core/model/**"
+        ],
+        "verification": "authentic E04 fixtures; multiline/BOM/quotes/collector numbers/oversize/cancel/unknown-version; source terms before URL retrieval",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Ports only; CSV dependency compatibility is narrow probe, not TransferService",
+        "ownership_group": "transfer",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "transfer-ui",
+        "component": "transfer",
+        "requirements": [
+          "B08",
+          "I01"
+        ],
+        "prerequisites": [
+          "transfer-codecs",
+          "deck-persistence",
+          "collection"
+        ],
+        "outcome": "Real file/paste/mapping/identity preview, atomic selected deck/collection apply, export/share feedback.",
+        "consumes": [
+          "transfer codecs",
+          "real deck/inventory repositories"
+        ],
+        "produces": [
+          "S08/S17 offline transfer workflow"
+        ],
+        "affected_paths": [
+          "android-app/feature/transfer/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "all represented identities/boards/quantity retained; unresolved editable; cancel none/commit all; authentic round trips",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "No deck/collection transfer UI",
+        "ownership_group": "transfer",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "backup-restore",
+        "component": "transfer",
+        "requirements": [
+          "I01",
+          "I02"
+        ],
+        "prerequisites": [
+          "transfer-ui",
+          "profile-game-transfer",
+          "ai-history",
+          "user-storage-contracts"
+        ],
+        "outcome": "One-file validated full user archive, preview/recovery and atomic selected restore excluding secrets/consent activation.",
+        "consumes": [
+          "all user serializers",
+          "Database",
+          "bounded archive codecs"
+        ],
+        "produces": [
+          "S17 full backup/recovery journey"
+        ],
+        "affected_paths": [
+          "android-app/feature/transfer/**",
+          "android-app/data/storage/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "byte/hash/identity integrity; traversal/zip bomb/interrupt stage+commit; complete old/new; no secrets/download side effects",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "No backup adapter; schema includes no deck/inventory/AI state yet; partial serializer work may proceed as each boundary stabilizes",
+        "ownership_group": "transfer",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "qr-sharing",
+        "component": "transfer",
+        "requirements": [
+          "B13"
+        ],
+        "prerequisites": [
+          "transfer-codecs",
+          "deck-persistence"
+        ],
+        "outcome": "Privacy preview, selected-field image export and hashed single/multi-frame local QR image/camera import.",
+        "consumes": [
+          "native interchange",
+          "deck snapshot"
+        ],
+        "produces": [
+          "actual S08/S17 image/QR workflow"
+        ],
+        "affected_paths": [
+          "android-app/feature/transfer/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "E13 real native encoder/scanner roundtrip; missing/malformed/oversized frames; no silent card loss",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "ShareManifest/QrFrame DTOs only; native dependency trial needed before pin",
+        "ownership_group": "transfer",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "query-context",
+        "component": "search",
+        "requirements": [
+          "A07",
+          "A08"
+        ],
+        "prerequisites": [
+          "query-execution",
+          "deck-persistence",
+          "collection",
+          "pricing"
+        ],
+        "outcome": "Owned/in-deck/price context filters against real exact revision/source/unit snapshots.",
+        "consumes": [
+          "typed local executor",
+          "real deck/inventory/pricing snapshots"
+        ],
+        "produces": [
+          "complete local held-field query workflow"
+        ],
+        "affected_paths": [
+          "android-app/feature/search/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "revision/generation fences; unknown vs zero; source-qualified IDs; cancellation; no fake empty context",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Parser clauses only; absent context must remain explicitly unsupported",
+        "ownership_group": "search",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "ai-prompts-grounding",
+        "component": "ai",
+        "requirements": [
+          "H01",
+          "H04",
+          "H05",
+          "H09"
+        ],
+        "prerequisites": [],
+        "outcome": "All retained lab modes, versioned/editable prompt export/pasteback and deterministic local grounded suggestion validation.",
+        "consumes": [
+          "DeckContext",
+          "PromptTemplate",
+          "local card identity"
+        ],
+        "produces": [
+          "provider-free prompt/pasteback capability"
+        ],
+        "affected_paths": [
+          "android-app/feature/ai/**",
+          "android-app/core/model/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "mode/roast intensity/template errors/provenance/unresolved vs invented refs; no silent apply; real deck path waits deck-persistence",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "DTOs only; LabMode mismatches explicit retained modes and must be reviewed, not silently renamed",
+        "ownership_group": "ai",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-ui",
+          "query-context",
+          "validation",
+          "pricing",
+          "recommendations"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "vault",
+        "component": "vault",
+        "requirements": [
+          "H07"
+        ],
+        "prerequisites": [],
+        "outcome": "Android Keystore origin/provider scoped encrypted credentials, deletion/corruption and backup exclusions.",
+        "consumes": [
+          "SecretVault",
+          "SecretScope",
+          "network origin"
+        ],
+        "produces": [
+          "real credential capability"
+        ],
+        "affected_paths": [
+          "android-app/data/vault/**",
+          "android-app/app/**"
+        ],
+        "verification": "independent security review; native Keystore reinstall/corruption/origin/redaction; no secrets in logs or archive",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "SecretVault declaration only; local JVM cannot establish Android Keystore acceptance",
+        "ownership_group": "vault",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "ai-providers",
+        "component": "ai",
+        "requirements": [
+          "H02",
+          "H06",
+          "H08"
+        ],
+        "prerequisites": [
+          "vault",
+          "ai-prompts-grounding"
+        ],
+        "outcome": "Retained eight cloud/six local/custom provider dialects, manual model ID/listing, bounded read tools/stream/cancel/retry.",
+        "consumes": [
+          "NetworkClient",
+          "vault",
+          "provider contracts E06/E07",
+          "grounding"
+        ],
+        "produces": [
+          "real retained provider adapters and S16/S24"
+        ],
+        "affected_paths": [
+          "android-app/feature/ai/**",
+          "android-app/data/network/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "authentic codec/error/tool/partial stream/cancel8calls50rows5s; no unsafe retry; actual eligibility unavailable shown",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "DTOs only; terms/schema evidence still required; no on-device runtime dependency",
+        "ownership_group": "ai",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "query-context",
+          "recommendations",
+          "ai-history"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "ai-history",
+        "component": "ai",
+        "requirements": [
+          "H08",
+          "H09"
+        ],
+        "prerequisites": [
+          "ai-prompts-grounding"
+        ],
+        "outcome": "Persist per-deck conversations/status/partial replies/usage and prompt overrides with deletion and backup serializers.",
+        "consumes": [
+          "reviewed conversation schema",
+          "prompt/grounding state"
+        ],
+        "produces": [
+          "durable AI/history UI"
+        ],
+        "affected_paths": [
+          "android-app/feature/ai/**",
+          "android-app/data/storage/**",
+          "android-app/feature/shell/**"
+        ],
+        "verification": "restart/interrupted vs final/deletion/stale deck/cancel/privacy/backup; actual provider path after ai-providers",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "No persistence/app wiring",
+        "ownership_group": "ai",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-ui",
+          "ai-providers"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "images",
+        "component": "catalog",
+        "requirements": [
+          "A05",
+          "G08"
+        ],
+        "prerequisites": [],
+        "outcome": "Actual on-view bounded art cache and approved pinned resumable packs, readable life/card presentation.",
+        "consumes": [
+          "PrintingRecord image refs",
+          "existing Coil compatibility probe",
+          "DownloadService"
+        ],
+        "produces": [
+          "cache/pack capability and real art controls"
+        ],
+        "affected_paths": [
+          "android-app/feature/catalog/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "P06/P12 decoded/disk caps; pin survives eviction/no consent no pack; native image/cancel/offline fallback",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "CardArtworkFrame is text fallback; Coil probe not production cache; G08 actual UI waits game path",
+        "ownership_group": "catalog",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "data-finish",
+          "deck-ui"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "settings-onboarding",
+        "component": "settings",
+        "requirements": [
+          "K01",
+          "K02",
+          "A02",
+          "A03"
+        ],
+        "prerequisites": [
+          "data-finish"
+        ],
+        "outcome": "Actual Full English first-run/offline path, consent/mode/retention/on-demand, module settings, notices and redacted diagnostics.",
+        "consumes": [
+          "SettingsRepository",
+          "real acquisition/status",
+          "retention references from deck/collection"
+        ],
+        "produces": [
+          "S01/S18/S19/S24 real settings"
+        ],
+        "affected_paths": [
+          "android-app/feature/settings/**",
+          "android-app/feature/catalog/**",
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "Full/Lean switching interruption preserves all user state; no implicit foreign download; diagnostic redaction; actual offline notices",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "DataStore theme/consent/removal requests and download UI exist; onboarding/FullLean consumption/removal coordinator incomplete; retention acceptance also needs deck-persistence/collection",
+        "ownership_group": "settings",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-persistence",
+          "collection",
+          "images"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "adaptive-input",
+        "component": "shell",
+        "requirements": [
+          "J01",
+          "J02",
+          "J03"
+        ],
+        "prerequisites": [],
+        "outcome": "Five width/height/posture safe-region layouts, preserved state, accessible keyboard/context/drag alternatives and shared tokens/resources.",
+        "consumes": [
+          "WindowGeometry",
+          "real current feature state"
+        ],
+        "produces": [
+          "integrated adaptive/input design"
+        ],
+        "affected_paths": [
+          "android-app/feature/shell/**",
+          "android-app/app/**"
+        ],
+        "verification": "breakpoints +/-1/200%/compact height/fold/keyboard/focus/state; actual TalkBack/physical evidence separately",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "Only3 WidthClass values; tokens/basic semantic controls/profile UI exist; no complete hinge/desktop acceptance; each feature must apply same tokens",
+        "ownership_group": "shell",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [
+          "deck-ui",
+          "life-service-ui",
+          "ai-providers",
+          "transfer-ui"
+        ],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "release-acceptance",
+        "component": "shell",
+        "requirements": [
+          "J03",
+          "J04",
+          "N01",
+          "N02",
+          "N03"
+        ],
+        "prerequisites": [
+          "data-finish",
+          "rules-finish",
+          "query-context",
+          "deck-ui",
+          "packages",
+          "collection",
+          "pricing",
+          "optimizer",
+          "analysis",
+          "playtest",
+          "validation",
+          "brackets",
+          "recommendations",
+          "links",
+          "life-service-ui",
+          "profile-game-transfer",
+          "transfer-ui",
+          "backup-restore",
+          "qr-sharing",
+          "ai-providers",
+          "ai-history",
+          "images",
+          "settings-onboarding",
+          "adaptive-input",
+          "links-ui"
+        ],
+        "outcome": "Assembled complete retained user journeys, modern native remediation, physical Fold7/TalkBack/performance, canonical signed install/update.",
+        "consumes": [
+          "all actual feature capabilities",
+          "existing canonical certificate/CI"
+        ],
+        "produces": [
+          "evidence-backed full professional Android v1 acceptance"
+        ],
+        "affected_paths": [
+          "android-app/**",
+          "docs/verification/**",
+          ".github/workflows/**"
+        ],
+        "verification": "exact-head assembled checks; P01-P12 excluding D26 engines; source/secret/restore audit; physical screenshots/aesthetic review and canonical certificate; finishedAPKhold until passed",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "K2/older PR21 accepted scoped evidence; frozen9c1573b native FAILED historical, local snapshot fix not native executed; no release claim",
+        "ownership_group": "shell",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "engine-v1.1",
+        "component": "inference",
+        "requirements": [
+          "H03"
+        ],
+        "prerequisites": [],
+        "outcome": "On-device engines/runtime/model manager only, explicitly D26 deferred to1.1.",
+        "consumes": [
+          "later accepted engine/toolchain/license decision"
+        ],
+        "produces": [
+          "future working runtime not inert v1 control"
+        ],
+        "affected_paths": [
+          "android-app/feature/inference/**"
+        ],
+        "verification": "deferred P10/native benchmark/model lifecycle only",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "approved_deferred_D26",
+        "observed_implementation": "No runtime/module; preserve retained other AI tasks",
+        "ownership_group": "inference",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      },
+      {
+        "id": "links-ui",
+        "component": "shell",
+        "requirements": [
+          "F01"
+        ],
+        "prerequisites": [
+          "links"
+        ],
+        "outcome": "Bind actual CatalogPrintingLookup and links; ticketed selected-printing page/selection plus per-target unavailable/launch states in S03; persistent template editor requires reviewed settings addition.",
+        "consumes": [
+          "CatalogPrintingLookup.printings/printing",
+          "CardLinks",
+          "LinkPreferences"
+        ],
+        "produces": [
+          "real selected-printing/card-link workflow"
+        ],
+        "affected_paths": [
+          "android-app/feature/shell/**",
+          "android-app/app/**",
+          "android-app/feature/settings/**",
+          "android-app/core/model/**"
+        ],
+        "verification": "actual catalog\u2192printing\u2192selection\u2192supplied links host/Compose checks; missing IDs visible; http(s) platform launch only explicit tap; preferences no secret/cross-origin bypass",
+        "integration_owner": "codex-thread-recovery-20261013",
+        "status": "planned",
+        "observed_implementation": "all consumers absent at baseline",
+        "ownership_group": "shell",
+        "resources": [
+          "local-gradle-serial"
+        ],
+        "acceptance_prerequisites": [],
+        "parity_join": "execution.parity rows whose tasks include this id"
+      }
+    ],
+    "parity": [
+      {"id": "PX05-001","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-002","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-003","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-004","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-005","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-006","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-007","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-008","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-009","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-010","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-011","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-012","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-013","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-014","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-015","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-016","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-017","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-018","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-019","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-020","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-021","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-022","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-023","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-024","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-025","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-026","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-027","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-028","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-029","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-030","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-031","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-032","disposition": "adapt","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-033","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-034","disposition": "adapt","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-035","disposition": "build","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-036","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-037","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-038","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-039","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-040","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-041","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-042","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-043","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-044","disposition": "skip","requirements": ["B08","I01"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-045","disposition": "adapt","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-046","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-047","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-048","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-049","disposition": "adapt","requirements": ["E01","E02","B07"],"tasks": ["deck-persistence","deck-ui","brackets"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-050","disposition": "adapt","requirements": ["B09"],"tasks": ["packages"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-051","disposition": "build","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-052","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","collection","transfer-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-053","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-054","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-055","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-056","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-057","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-058","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-059","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-060","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-061","disposition": "build","requirements": ["A07","A08","B07"],"tasks": ["query-execution","deck-persistence","deck-ui","query-context"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-062","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","query-execution"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-063","disposition": "build","requirements": ["A04","B07"],"tasks": ["rules-finish","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-064","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","adaptive-input"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-065","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-066","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-067","disposition": "build","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-001","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-002","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-003","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-004","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-005","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-006","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-007","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-008","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-009","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-010","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-011","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-012","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-013","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-014","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-015","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-016","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-017","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-018","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-019","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-020","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-021","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-022","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-023","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-024","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-025","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-026","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-027","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-028","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-029","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-030","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-031","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-032","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-033","disposition": "build","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-034","disposition": "adapt","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-035","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-036","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-037","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-038","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-039","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-040","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-041","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-042","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-043","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-044","disposition": "adapt","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-045","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-046","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-047","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-048","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-049","disposition": "build","requirements": ["B10","C01"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","collection"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-050","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-051","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-052","disposition": "adapt","requirements": ["B11"],"tasks": ["optimizer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-053","disposition": "adapt","requirements": ["E01","E02","B07"],"tasks": ["deck-persistence","deck-ui","brackets"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-054","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-055","disposition": "adapt","requirements": ["B12"],"tasks": ["playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-056","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-057","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-058","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-059","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-060","disposition": "adapt","requirements": ["B13"],"tasks": ["qr-sharing"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-061","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","links","transfer-ui","pricing","links-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-062","disposition": "adapt","requirements": ["D02","B07"],"tasks": ["deck-persistence","deck-ui","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-063","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-064","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-001","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-002","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-003","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-004","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-005","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-006","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-007","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-008","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-009","disposition": "build","requirements": ["G03","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-010","disposition": "build","requirements": ["G03","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-011","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-012","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-013","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-014","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-015","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-016","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-017","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-018","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-019","disposition": "adapt","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-020","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-021","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-022","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-023","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-024","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-025","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-026","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-027","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-028","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-029","disposition": "build","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-030","disposition": "adapt","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-031","disposition": "build","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-032","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-033","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-034","disposition": "adapt","requirements": ["G09","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-035","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-036","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-037","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-038","disposition": "adapt","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-039","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-040","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-041","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-042","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-043","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-044","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-045","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-046","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-047","disposition": "adapt","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-048","disposition": "adapt","requirements": ["G14"],"tasks": ["profile-game-transfer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-049","disposition": "skip","requirements": ["G01","G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-050","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-051","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-052","disposition": "adapt","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-053","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-054","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-055","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-056","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-057","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-058","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-059","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-060","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-061","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-062","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-063","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-064","disposition": "adapt","requirements": ["G14"],"tasks": ["profile-game-transfer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-065","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-066","disposition": "adapt","requirements": ["G09","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-067","disposition": "adapt","requirements": ["G13"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-068","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-069","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-070","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-071","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-072","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-073","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-074","disposition": "skip","requirements": ["G08","G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-075","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-076","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-077","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui","query-context","pricing","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-078","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-079","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-080","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-081","disposition": "build","requirements": ["I02","G11"],"tasks": ["user-storage-contracts","life-service-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-082","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"}
+    ],
+    "constraints": {
+      "max_writers_including_root": 3,
+      "max_subagents_all_roles": 4,
+      "after_usage_limit_event": 2,
+      "gradle_build_slots": 1,
+      "shared_single_writer": "codex-thread-recovery-20261013",
+      "root_owned_groups": [
+        "shared-contracts",
+        "schema-migrations",
+        "build-dependencies",
+        "app-DI-navigation",
+        "coordination"
+      ],
+      "writer_conflicts": "Same component group or overlapping paths serialize; listed shell/app/storage paths are proposed consumer work owned by root, not worker permissions."
+    },
+    "constraint_semantics": {
+      "prerequisites": "producer prerequisites before implementation starts; exact packet may consume an accepted subset",
+      "acceptance_prerequisites": "cross-feature evidence before whole-task acceptance; cyclic journeys assessed together, not producer DAG",
+      "ownership_group": "same-component semantic exclusion plus root shared-path ownership",
+      "resources": "scarce runtime slot independent from implementation dependencies"
+    },
+    "acceptance_dimensions": [
+      "backend implementation",
+      "actual app wiring",
+      "assembled integration verification",
+      "executed native verification",
+      "physical device evidence",
+      "release readiness"
+    ],
+    "acceptance_policy": "All task acceptance remains open (H03 explicitly deferred). Observed_implementation is scoped source/historical evidence, never task completion. Native probes compiled are not executed. Each accepted task handoff must report all six dimensions."
   }
 }

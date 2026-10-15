@@ -35,6 +35,8 @@ Conflicts between orchestrators, or between GAUNTLET.md and Appendix A, are logg
 | D-25 | Life contract rulings and delegated shared-clock semantics | Ruled 2026-10-13 |
 | D-26 | On-device AI engines deferred to v1.1 | Ruled 2026-10-13 |
 | D-27 | Fold7-focused, minimum sufficient verification | Ruled 2026-10-13 |
+| D-28 | Batch implementation and verification at risk boundaries | Ruled 2026-10-14 |
+| D-29 | Dependency-aware parallel campaign under surviving root | Ruled 2026-10-15 |
 
 ## Open
 
@@ -277,3 +279,10 @@ Applied: model-neutral sequential orchestration and repository-first bounded ses
 - Pat, 2026-10-14: "Yes I'd rather make more progress and run larger tests at risky points and then have to fix it, vs running lengthy tests for every single action."
 - Applied: batch related implementation before expensive verification. Use quick compilation or focused checks when they resolve a concrete uncertainty; run broader tests at meaningful integration, shared-behavior, persistence/migration and release boundaries. Do not run lengthy suites or emulator jobs after each small edit, or repeat unchanged passing checks without a new reason. Fix failures discovered at the batch boundary before claiming that batch verified.
 - This explicit testing-cadence preference supersedes per-action test-first/full-suite rituals in skills. It does not waive honest evidence, required reviews, final acceptance or D-24 scope. Keep untested work labeled unverified, and retain useful regression coverage for meaningful risks.
+
+## D-29 Dependency-aware parallel campaign
+
+- Pat, 2026-10-15: "Act as the existing Command Library root orchestrator"; "perform a comprehensive remaining-scope planning pass, obtain the required engineering review, and execute the first safe parallel implementation wave"; "Continue through subsequent ready work rather than stopping after presenting the plan."
+- Applied: preserve surviving root ownership and published continuation; extend existing registry/coverage/queue with complete retained-scope dependency map. Routine technical resequencing and bounded native subagent delegation are authorized without renewed plan approval. Use verified isolated worktrees per writer, accepted executable interfaces, explicit disjoint claims and resource serialization. Root retains shared contracts/schema/configuration/DI/navigation/coordination, exact-source integration decisions and final merge authority. Existing main approvals apply only to their exact recorded candidates.
+- D08 remains maximum3 writers including root,4 subagents all roles; reduce to2 after a usage-limit event. Use actual available models/tools; strongest capable architecture/high-risk review and least expensive capable bounded implementers. No paid infrastructure changes. Preserve D26/D27/D28, all explicit holds, finished-APK gate and physical Fold7 obligations. No Markdown Desk or monitoring-task changes.
+- Current campaign: docs/superpowers/plans/2026-10-15-dependency-aware-campaign.md; authoritative task map in docs/architecture/kotlin-registry.json.execution. This replaces stale root-only/per-minute packet preferences only for explicitly assigned disjoint work; it does not create another orchestrator or relax retained product acceptance.

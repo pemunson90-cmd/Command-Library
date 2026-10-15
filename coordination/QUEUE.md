@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261015-selected-printing-links-159. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
+Checkpoint-ID: cp-20261015-parallel-campaign-160. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
@@ -17,7 +17,7 @@ This file lists runnable or conditionally runnable work. Completed and supersede
 
 ## Concurrent chat assignments
 
-See [CHAT-TASKS.md](CHAT-TASKS.md): life-profiles DONE; life-game-store DONE; life-snapshot-graph DONE; life-event-reads DONE; life-game-mutations DONE; life-timing-engine DONE; life-action-engine TAKEN by recovery; scryfall-integrate DONE on ad3f9aa; life-history-audit OPEN with disjoint task cards. Claims/completions must be published before another chat relies on them.
+See [CHAT-TASKS.md](CHAT-TASKS.md): life-profiles DONE; life-game-store DONE; life-snapshot-graph DONE; life-event-reads DONE; life-game-mutations DONE; life-timing-engine DONE; life-action-engine TAKEN by recovery; scryfall-integrate DONE on ad3f9aa; life-history-audit DONE with disjoint task cards. Claims/completions must be published before another chat relies on them.
 
 ## Accepted history summary
 
@@ -25,8 +25,12 @@ G3-A architecture planning/review, K0 Kotlin plan audit, K1 Kotlin/toolchain rea
 
 Historical Flutter/Dart version-1 tasks are superseded by the Kotlin Android direction and are not runnable. Do not resurrect them from old handoffs or GAUNTLET text.
 
+## Reviewed campaign
+
+D29 permits dependency-ready producers across milestones. The complete35-task dependency/ownership/resource map is `docs/architecture/kotlin-registry.json.execution`, explained in [campaign](../docs/superpowers/plans/2026-10-15-dependency-aware-campaign.md). First exact packets: [deck edits](tasks/cx-campaign-deck-edits-01.md) and [links](tasks/cx-campaign-links-01.md); see board/locks for live assignment. Root owns shared setup and selected-printing/link composition; only explicitly claimed worker paths are writable. Producer readiness and cross-feature acceptance prerequisites are separate.
+
 ## Later roadmap
 
-K4/K5 and M2-M9 remain defined in `docs/gauntlet/V1_KOTLIN_EXECUTION_SPEC.md` and `docs/gauntlet/MILESTONES.md`. Add a concrete task row when a later section becomes the accepted next bounded task instead of pre-populating the live queue with speculative worker rows.
+K4/K5 and M2-M9 remain defined in `docs/gauntlet/V1_KOTLIN_EXECUTION_SPEC.md` and `docs/gauntlet/MILESTONES.md`. D29 campaign records every retained obligation at scope level; detail concrete packets as accepted producer contracts stabilize. No milestone label blocks an otherwise independent ready producer.
 
 At most three component workers may run only when the orchestrator has explicit disjoint locks/worktrees and merged dependency interfaces. Active assignments are recorded in component locks and task cards; inspect their branch/handoff before reassigning.

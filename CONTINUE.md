@@ -24,7 +24,7 @@ Pat reaffirmed on2026-10-13: do as much work locally in the configured environme
 
 Keep live README/task/CURRENT/machine pointers synchronized at meaningful changes. Move completed directions to clearly marked historical archives; never destroy their evidence or leave obsolete next actions mixed with live ones. Publish code and its truthful handoff together before another lease needs them. Name the exact published branch/head and pending run; do not start duplicate workflows.
 
-Claude Code packets should fit a 10–15minute bounded unit: one file or one closely related fix/review, named owned paths and one exact check. Reserve the last few minutes to write the result/next action before usage ends. Do not expand into adjacent work; finish the packet or record a concrete blocker. Root retains shared contract/schema/configuration/coordination ownership unless explicitly delegated.
+D-29 authorizes coherent dependency-aware parallel packets, bounded by an independently testable outcome and handoff reserve rather than an arbitrary minute limit. Exact baseline, interfaces, allowed paths, isolation, verification and return protocol belong in each task card. Root retains shared contract/schema/configuration/DI/navigation/coordination ownership unless explicitly delegated. Root publishes native child claims/completions; workers return only their owned code/handoff. Independent external chats must still publish their disjoint claim before starting.
 
 ## Fast resume path
 
