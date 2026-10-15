@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-15T01:19:25Z",
-  "expires_utc": "2026-10-15T02:04:25Z",
-  "checkpoint_id": "cp-20261015-preparation-capability-158",
-  "note": "Root sole writer/final merge. Complete publicpreparation contract/adapter/purelocalfactory design+source ACK102tests/17XMLpass50s inclrealRoom9READY/nativecompile/noacquisition. No query/ShellPorts/DI. Next typedexecution semantics/boundedaccess review. Internalenginea6ba6f8269pass; frozen9cfailed/no rerun; fullv1incomplete/GameServiceHOLD."
+  "heartbeat_utc": "2026-10-15T01:29:35Z",
+  "expires_utc": "2026-10-15T02:14:35Z",
+  "checkpoint_id": "cp-20261015-selected-printing-links-159",
+  "note": "Rootsolewriter/finalmerge. Selectedtiny printing-link regression reproduced/fixed design+sourceACK48focused/Room9rootpass30s/nativecompile; sourcepreserved/fullproofstrict. Publicprep b003b0d102pass; nexttypedsemantic/boundedexecution design. No query/DI/nativeacceptance; frozen9cfailed/no rerun/fullv1incomplete/GameServiceHOLD."
 }

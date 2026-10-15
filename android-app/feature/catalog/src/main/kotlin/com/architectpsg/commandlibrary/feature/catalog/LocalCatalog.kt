@@ -137,6 +137,16 @@ public class LocalCatalog(
                             if (!sameCanonicalGameData(first, card)) tx.abort(DomainFailure(FailureCode.INVALID_INPUT, "Canonical game data conflict", SnapshotList.empty()))
                         }
                         tx.insertPrinting(generation, printing, raw, cancel)
+                        // Bulk import resolves its own delayed FACE/WHOLE links. This tiny
+                        // whole-Oracle path must commit its actual link with the printing.
+                        val membership = tx.execute(sql("""INSERT INTO printing_oracle_membership(generation_id,printing_provider,printing_id,source_slot,source_kind,oracle_provider,oracle_id,oracle_language) VALUES(:generation,:provider,:printing,-1,'WHOLE',:oracle_provider,:oracle,'en')""", 1,
+                            "generation" to generation.value, "provider" to printing.id.source.value, "printing" to printing.id.raw,
+                            "oracle_provider" to card.oracleId.source.value, "oracle" to card.oracleId.raw), cancel)
+                        when (membership) {
+                            is Outcome.Success -> if (membership.value.affectedRows != 1L) tx.abort(DomainFailure(FailureCode.PERSISTENCE, "Printing membership insert did not take effect", SnapshotList.empty()))
+                            is Outcome.Failure -> tx.abort(membership.error)
+                            else -> tx.abort(DomainFailure(FailureCode.PERSISTENCE, "Printing membership insert failed", SnapshotList.empty()))
+                        }
                     }
                 }, cancel)
                 if (writing !is Outcome.Success) throw CatalogFailure(writing.nonSuccess())

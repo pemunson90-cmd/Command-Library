@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-preparation-capability-158
+Checkpoint-ID: cp-20261015-selected-printing-links-159
 
 Next task: orch-kotlin-k3-offline-data-01
 Next step: 3. design-typed-query-semantics-and-bounded-local-execution
 
-Updated UTC: 2026-10-15T01:19:25Z
+Updated UTC: 2026-10-15T01:29:35Z
 Status: in_progress; lease: active.
-Verified base: a6ba6f8964787f123216ad298d424e8cc47fb6bf.
+Verified base: b003b0dffc236a5e1c5f22d6db9a85d4c3dda9cf.
 
-Complete public local preparation capability independently reviewed;85model+5adapter+12actualRoom9root=102tests/17XMLpass50s/nativeappcompile. RealRoom9READY+freshfactory/noacquisition proof. No query/ShellPorts/DI/device claim. Continue typedexecution semantics/boundedaccess design; fullv1incomplete/frozennativefailurepreserved.
+Actual selected-import printing link regression reproduced/fixed with independent source/durabilityACK;48focusedcatalog/actualRoom9root tests pass30s/nativecompile. NewatomicWHOLE/readonlylegacyexactdirectfallback, fullproofstrict. Resume typedquery semantic/boundedexecution design; publicprepimplemented/noqueryDI/fullv1incomplete.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

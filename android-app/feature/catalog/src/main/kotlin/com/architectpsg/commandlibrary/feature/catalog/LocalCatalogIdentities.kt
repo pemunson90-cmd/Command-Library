@@ -46,7 +46,7 @@ internal class LocalCatalogIdentities(private val database: Database) : CatalogP
         val reference = SnapshotReference(ProviderId("scryfall"), generation?.let(::GenerationId), null, LanguageTag.ENGLISH)
         if (active == null) return@bulkAttempt Page(SnapshotList.empty(), null, reference)
         // Identity page contains no raw payloads; load at most one bounded printing at a time.
-        val rows = database.query(bulkSql("""SELECT DISTINCT printing_provider,printing_id FROM printing_oracle_membership WHERE generation_id=:g AND oracle_provider=:op AND oracle_id=:oi AND oracle_language='en' AND (printing_provider,printing_id)>(:p,:id) ORDER BY printing_provider,printing_id LIMIT :limit""", page.limit + 1,
+        val rows = database.query(bulkSql("""SELECT provider AS printing_provider,printing_id FROM printing WHERE generation_id=:g AND oracle_provider=:op AND oracle_id=:oi AND oracle_language='en' AND (provider,printing_id)>(:p,:id) UNION SELECT printing_provider,printing_id FROM printing_oracle_membership WHERE generation_id=:g AND oracle_provider=:op AND oracle_id=:oi AND oracle_language='en' AND (printing_provider,printing_id)>(:p,:id) ORDER BY printing_provider,printing_id LIMIT :limit""", page.limit + 1,
             "g" to generation, "op" to id.source.value, "oi" to id.raw, "p" to (cursor?.provider ?: ""), "id" to (cursor?.printing ?: ""), "limit" to page.limit + 1), cancel).bulkValue()
         val shown = rows.take(page.limit)
         val records = ArrayList<PrintingRecord>()
@@ -79,13 +79,19 @@ internal class LocalCatalogIdentities(private val database: Database) : CatalogP
         val expected = oracle?.let { listOf(-1 to it) } ?: printing.faceAssets.map { it.identity.index to requireNotNull(it.relationships.single().relatedOracle.bulkKnown()) }
         val counts = database.query(bulkSql("SELECT (SELECT count(*) FROM printing_face_asset WHERE generation_id=:g AND provider=:p AND printing_id=:id) AS assets,(SELECT count(*) FROM printing_oracle_membership WHERE generation_id=:g AND printing_provider=:p AND printing_id=:id) AS memberships", 1,
             "g" to state.generation.value, "p" to printing.id.source.value, "id" to printing.id.raw), cancel).bulkValue().single()
-        require(counts.bulkLong("assets") == printing.faceAssets.size.toLong() && counts.bulkLong("memberships") == expected.size.toLong())
+        // Older tiny imports predate their WHOLE-link write. Their validated raw/direct
+        // relation remains actual evidence; do not rewrite retained source rows to read it.
+        val legacyWhole = oracle != null && active.bulkOptionalText("source_payload") == null &&
+            state.source.inputKind == SourceInputKind.USER_CONTENT_URI && counts.bulkLong("memberships") == 0L
+        require(counts.bulkLong("assets") == printing.faceAssets.size.toLong() && (counts.bulkLong("memberships") == expected.size.toLong() || legacyWhole))
+        if (legacyWhole) require(database.query(bulkSql("SELECT oracle_id FROM oracle_card WHERE generation_id=:g AND provider=:p AND oracle_id=:id AND language='en'", 1,
+            "g" to state.generation.value, "p" to requireNotNull(oracle).source.value, "id" to oracle.raw), cancel).bulkValue().size == 1)
         for (asset in printing.faceAssets) {
             val f = database.query(bulkSql("SELECT * FROM printing_face_asset WHERE generation_id=:g AND provider=:p AND printing_id=:id AND face_index=:i", 1,
                 "g" to state.generation.value, "p" to printing.id.source.value, "id" to printing.id.raw, "i" to asset.identity.index), cancel).bulkValue().single()
             require(f.bulkText("asset_payload") == raw && f.bulkOptionalText("provider_face_id") == asset.identity.providerFaceId.bulkKnown() && f.bulkText("language") == asset.language.value && f.bulkOptionalText("printed_name") == asset.printedName.bulkKnown())
         }
-        for ((slot, target) in expected) {
+        for ((slot, target) in if (legacyWhole) emptyList() else expected) {
             val member = database.query(bulkSql("SELECT m.*,c.oracle_id AS target_id FROM printing_oracle_membership m JOIN oracle_card c ON c.generation_id=m.generation_id AND c.provider=m.oracle_provider AND c.oracle_id=m.oracle_id AND c.language=m.oracle_language WHERE m.generation_id=:g AND m.printing_provider=:p AND m.printing_id=:id AND m.source_slot=:slot", 1,
                 "g" to state.generation.value, "p" to printing.id.source.value, "id" to printing.id.raw, "slot" to slot), cancel).bulkValue().single()
             require(member.bulkText("source_kind") == if (slot == -1) "WHOLE" else "FACE")

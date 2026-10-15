@@ -4,8 +4,69 @@ import com.architectpsg.commandlibrary.core.model.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
+import kotlin.time.Duration
 
 class LocalCatalogIdentitiesTest {
+    @Test fun selectedTinyImportExposesActualPrintingIdentityAndOraclePage() = runBlocking {
+        SearchProjectionSqlDatabase().use { db ->
+            val clock = object : Clock { override fun utcNow() = UtcTimestamp(3); override fun monotonicNow() = Duration.ZERO }
+            var sequence = 0
+            LocalCatalog(db, clock, object : IdSource { override fun nextId() = "selected-${++sequence}" })
+                .`import`(bulkSelected().legacySource(), bulkChunks("[${bulkRecord("selected-p", "selected-o")}]") , {}, BULK_NO_CANCEL).bulkValue()
+            val lookup = LocalCatalogIdentities(db)
+            val printing = lookup.printing(CardId(ProviderId("scryfall"), "selected-p"), BULK_NO_CANCEL).bulkValue()
+            assertEquals("selected-p", printing.id.raw)
+            assertEquals(listOf("selected-p"), lookup.printings(OracleId(ProviderId("scryfall"), "selected-o"), PageRequest(10), BULK_NO_CANCEL).bulkValue().items.map { it.id.raw })
+            assertEquals("WHOLE", db.rows("SELECT source_kind FROM printing_oracle_membership").single().bulkText("source_kind"))
+        }
+    }
+
+    @Test fun retainedSelectedDirectRelationWorksWithoutRepairButStillRequiresActualOracle() = runBlocking {
+        SearchProjectionSqlDatabase().use { db ->
+            val clock = object : Clock { override fun utcNow() = UtcTimestamp(3); override fun monotonicNow() = Duration.ZERO }
+            var sequence = 0
+            LocalCatalog(db, clock, object : IdSource { override fun nextId() = "legacy-${++sequence}" })
+                .`import`(bulkSelected().legacySource(), bulkChunks("[${bulkRecord("a", "o")},${bulkRecord("b", "o")}]") , {}, BULK_NO_CANCEL).bulkValue()
+            val lookup = LocalCatalogIdentities(db)
+            // Before simulating legacy rows, direct+WHOLE membership must deduplicate too.
+            assertEquals(listOf("a", "b"), lookup.printings(OracleId(ProviderId("scryfall"), "o"), PageRequest(10), BULK_NO_CANCEL).bulkValue().items.map { it.id.raw })
+            db.exec("DELETE FROM printing_oracle_membership")
+            val first = lookup.printings(OracleId(ProviderId("scryfall"), "o"), PageRequest(1), BULK_NO_CANCEL).bulkValue()
+            assertEquals("a", first.items.single().id.raw)
+            assertEquals("b", lookup.printings(OracleId(ProviderId("scryfall"), "o"), PageRequest(1, first.nextCursor), BULK_NO_CANCEL).bulkValue().items.single().id.raw)
+            assertEquals("a", lookup.printing(CardId(ProviderId("scryfall"), "a"), BULK_NO_CANCEL).bulkValue().id.raw)
+            assertTrue(db.rows("SELECT * FROM printing_oracle_membership").isEmpty())
+            db.exec("PRAGMA foreign_keys=OFF"); db.exec("DELETE FROM oracle_card")
+            assertEquals(FailureCode.CORRUPT_DATA, (lookup.printing(CardId(ProviderId("scryfall"), "a"), BULK_NO_CANCEL) as Outcome.Failure).error.code)
+        }
+    }
+
+    @Test fun missingFullProofMembershipCannotHideBehindDirectFallback() = runBlocking {
+        BulkSqlTestDatabase().use { db ->
+            db.install(listOf(bulkRecord("a", "o")))
+            db.exec("DELETE FROM printing_oracle_membership")
+            val lookup = LocalCatalogIdentities(db)
+            assertEquals(FailureCode.CORRUPT_DATA, (lookup.printing(CardId(ProviderId("scryfall"), "a"), BULK_NO_CANCEL) as Outcome.Failure).error.code)
+            assertEquals(FailureCode.CORRUPT_DATA, (lookup.printings(OracleId(ProviderId("scryfall"), "o"), PageRequest(10), BULK_NO_CANCEL) as Outcome.Failure).error.code)
+        }
+    }
+
+    @Test fun failedTinyMembershipWriteNeverActivatesPartialDataOrDamagesPriorActive() = runBlocking {
+        SearchProjectionSqlDatabase().use { db ->
+            val active = db.install(listOf(bulkRecord("old-p", "old-o")))
+            db.beforeWrite = { if (it.statement.startsWith("INSERT INTO printing_oracle_membership")) error("Injected membership write failure") }
+            val clock = object : Clock { override fun utcNow() = UtcTimestamp(3); override fun monotonicNow() = Duration.ZERO }
+            var sequence = 0
+            val result = LocalCatalog(db, clock, object : IdSource { override fun nextId() = "failed-selected-${++sequence}" })
+                .`import`(bulkSelected().legacySource(), bulkChunks("[${bulkRecord("new-p", "new-o")}]") , {}, BULK_NO_CANCEL)
+            assertTrue(result is Outcome.Failure)
+            db.beforeWrite = null
+            assertEquals(active.value, db.rows("SELECT generation_id FROM catalog_active").single().bulkText("generation_id"))
+            assertEquals("old-p", LocalCatalogIdentities(db).printing(CardId(ProviderId("scryfall"), "old-p"), BULK_NO_CANCEL).bulkValue().id.raw)
+            assertTrue(db.rows("SELECT printing_id FROM printing WHERE printing_id='new-p'").isEmpty())
+            assertEquals(1, db.rows("SELECT generation_id FROM catalog_generation").size)
+        }
+    }
     @Test fun reversibleHasNoWholeOracleAndDistinctPortablePageCursor() = runBlocking {
         BulkSqlTestDatabase().use { db ->
             db.install(listOf(bulkReversible("a","o","o"),bulkRecord("b","o"),bulkRecord("c","o")))
