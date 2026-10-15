@@ -709,3 +709,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T17:18:32Z | codex | cp-20261015-indexed-query-wave-231 | containing commit | Reviewed/compiled query-v1 ABI atc00f8ec; exact isolated compiler6NEW/reader5NEW claims atsamebase; root actual advanced-search/preparation consumer next; no query runtime yet
 
 2026-10-15T17:45:32Z | codex | cp-20261015-indexed-query-integrated-232 | containing commit | Reviewed compiler and reader integrated; scoped claims released; actual app consumer source review and combined host gate pending; Git publication restored
+
+2026-10-15T17:53:15Z | codex | cp-20261015-indexed-query-host-accepted-233 | containing commit | Actual typed offline query workflow host SOURCE/RUNTIME ACK;39feature checks plus1source-equivalent app journey; preserve failed run lineage; next ready validation boundary

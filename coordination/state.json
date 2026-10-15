@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-indexed-query-integrated-232",
-  "verified_base_head": "8fac9146b8b2bf1c36daad02c9d0371e74b689cd",
+  "checkpoint_id": "cp-20261015-indexed-query-host-accepted-233",
+  "verified_base_head": "5bef3ae2e5794200af37336dc313d82cb3cc9233",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "indexed-query-host-gate",
+  "first_action": "indexed-query-host-accepted",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -156,9 +156,10 @@
     "plain_deck_import_boundary": "Exactc69aae7c3dbcbb0a797ef2f1fc81ae417c65df25 tree3be6c44a1c5cc2eff317cb1be38a3384f7048ac5,35tests3XML0f/e/s51s/645pins/independentSOURCE-RUNTIMEACK.29scriptedcontroller+5realresource+1actualAppGraphcodec-validator-Roomcontractfixture. NativeKotlincompiledONLY; Atthatproducercheckpoint UIwasunimplemented; laterboundedHOST acceptedcbff7ac, see plain_deck_import_app_host. PLAIN-DECK-IMPORT-BOUNDARY-20261015.md.",
     "plain_deck_import_app_host": "Acceptedcbff7ac059b70084884a25d50cd797373df37bf0 tree dc6b48199d1718cf00842191bba826996e888086; focused17tests2XML0f/e/s1m47/651pinsfrozen/log1208922e106c45714ec116845ada15015caeafa853e301009721f670a0aae7b2.2actualprovider-registry-AppGraph-Room importjourneys plus15writer tests, separateindependentSOURCE-RUNTIMEACKscopes. BothinstrumentationKotlincompiledONLY. Earlier44/1failed unchanged39shell+3priorapp passes separate; overlapnotadditive. PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md. No fullB08/I01/native/Fold7/finishedAPK.",
     "plain_deck_output_boundary": "Writer616abf39\u21922029b71 exact3NEWpaths/sourceACK; acceptedcbff7ac actual15provider-PFD/fault/cancel/closure tests pass (samefocused17run, notadditional17).651pinsfrozen/independentinventorySOURCE-RUNTIMEACK. No exportconsumer/UI/remote-durability/native acceptance; report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.",
-    "plain_deck_export_boundary": "Acceptedb545f411ec691e12d354f2a39eddcd401bc3c84b tree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460 actual30tests2XML0f/e/s1m18/655pins/log795d346306a89014bae52848e8ff6eb666e10d9a54de52bf655b9dfac322813c.29faithfulcontroller+1actualAppGraph229byte81loss7board8entry18copies/validator/Roomfixture, independentSOURCE02/runtimeACK. ActualVMfactory/nativeKotlincompiledONLY, noUI/picker/actualcontroller-writer/deviceexecution. SOURCE01zero-byteprebuildHOLDfixedbeforeonlyactualsuccessfulrun. PLAIN-DECK-EXPORT-BOUNDARY-20261015.md."
+    "plain_deck_export_boundary": "Acceptedb545f411ec691e12d354f2a39eddcd401bc3c84b tree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460 actual30tests2XML0f/e/s1m18/655pins/log795d346306a89014bae52848e8ff6eb666e10d9a54de52bf655b9dfac322813c.29faithfulcontroller+1actualAppGraph229byte81loss7board8entry18copies/validator/Roomfixture, independentSOURCE02/runtimeACK. ActualVMfactory/nativeKotlincompiledONLY, noUI/picker/actualcontroller-writer/deviceexecution. SOURCE01zero-byteprebuildHOLDfixedbeforeonlyactualsuccessfulrun. PLAIN-DECK-EXPORT-BOUNDARY-20261015.md.",
+    "indexed_query_host": "Source1c81bfa39featurechecks5XML0f/e/s; unchanged production5bef3ae actual app journey1test0f/e/s44s; independent SOURCE/RUNTIME ACK/681pins. Prior overall compile/SQL/fixture failures retained. INDEXED-QUERY-APP-INTEGRATION-20261015.md. No native/fullcorpus/fullA07-A08."
   },
-  "last_completed": "Reviewed compiler and reader integrated; scoped claims released; actual app consumer source review and combined host gate pending; Git publication restored",
-  "updated_utc": "2026-10-15T17:45:32Z",
+  "last_completed": "Actual typed offline query workflow host SOURCE/RUNTIME ACK;39feature checks plus1source-equivalent app journey; preserve failed run lineage; next ready validation boundary",
+  "updated_utc": "2026-10-15T17:53:15Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
