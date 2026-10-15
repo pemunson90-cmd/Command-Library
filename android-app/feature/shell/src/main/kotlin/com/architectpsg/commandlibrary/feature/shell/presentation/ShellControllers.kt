@@ -73,7 +73,7 @@ internal class ShellControllers(
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
     val offlinePrompts = ports.offlineDeckPrompts?.let {
-        OfflinePromptController(scope, ioDispatcher, it, ::currentPromptDeck)
+        OfflinePromptController(scope, ioDispatcher, it, ::currentPromptDeck, savedTemplates = ports.promptOverrides)
     }
     /** Live admission for rendering/copying/reviewing committed snapshots, including draft state. */
     fun currentPromptDeck(): com.architectpsg.commandlibrary.core.model.DeckSnapshot? {
