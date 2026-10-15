@@ -1,3 +1,5 @@
+SOURCE-INTEGRATED / bounded claim RELEASED: exact616abf39d42ec0762843253f220828a8a32bccf8→2029b71, exact3NEWpaths/pins/clean original verified, independent inventory_journal_review SOURCEACK.15hostcases authored/runtimeNOTRUN; rootproducer gate pending. No outputconsumerbinding/acceptance.
+
 # Selected-document plain-list writer — proposed attempt01
 
 TAKEN native /root/implement_deck_edit_store; independent READYACK frozen packet02974503; verified isolated worktree provisioned; root canonical claim active. Root packet for existing execution.transfer-codecs/transfer-ui B08/I01. Exact integration base 3d202db78b37d00886f9fa5fd04dcf0dfdcce64c; accepted consumed models/limits are unchanged c69aae7. Assembled import runtime attempt2 is in flight, not accepted: attempt1 at6622ba9 failed compile40s/0tests; guarded nullable fix8234a42 independentlySOURCEACK. No other baseline failure known. Independent output work needs no UI/import acceptance. Plan campaign-r1-20261015; existing toolchain/dependency pins/schema remain unchanged.
