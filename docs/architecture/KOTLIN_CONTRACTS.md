@@ -128,3 +128,8 @@ The pure JVM `feature:search.LocalCardQueryParser` returns additive `CardQueryPa
 ## Exact numeric search comparison foundation
 
 Pure `feature:search.SearchNumericComparison` supplies bounded source-versus-query BINARY text keys and `evaluate` for all six comparisons. `SearchTruth` preserves UNKNOWN under NOT/AND/OR. Source stats accept only ASCII fixed decimals; symbols/absence stay unknown, oversize input throws. Direct BigDecimal queries are validated before expansion and must have a canonical shortest plain representation within the parser's64-character budget. Keys preserve comparisons to admitted thresholds, not source equality/sorting/uniqueness; long source values can collide. Existing pinned bundled SQLite is test-only. No projection/schema/backfill/AST executor/DI/context capability is added. Reviewed plan/evidence: `docs/superpowers/plans/2026-10-15-exact-search-numeric-comparisons.md`, `docs/verification/k3-downloads/EXACT-SEARCH-NUMERIC-LOCAL-20261015.md`.
+
+
+## Derived search storage foundation (schema9)
+
+Storage schema9 adds seven versioned derived build/card/face/printing/legality/text/FTS entities (35total), preserving every28schema8 entity definition. Actual FK/version/nullable evidence semantics and empty migration are reviewed; no backfill or readiness on open, no indexed AST executor/DI capability. FTS mirrors require explicit future owner cleanup/completeness checks. Evidence `docs/verification/k3-downloads/SEARCH-PROJECTION-SCHEMA9-LOCAL-20261015.md`; preparation/compiler design `docs/superpowers/plans/2026-10-15-indexed-query-projection-design.md`. Catalog may use core-owned numeric encoding, never depend back on search.

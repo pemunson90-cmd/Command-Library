@@ -155,6 +155,10 @@ class AcquisitionStorageMigrationTest {
                 connection.execute("ROLLBACK")
             }
             connection.prepare("PRAGMA user_version").use { assertTrue(it.step()); assertEquals(2L, it.getLong(0)) }
+            connection.prepare(legacyDdlQuery).use { statement ->
+                val afterRollback = buildList { while (statement.step()) add((0 until statement.getColumnCount()).map { statement.value(it) }) }
+                assertEquals("Rollback retains the full baseline and leaves no newer objects", fixture.ddl, afterRollback)
+            }
             connection.prepare("SELECT count(*) FROM sqlite_master WHERE name LIKE 'acquisition_%' OR name LIKE 'index_acquisition_%'").use {
                 assertTrue(it.step()); assertEquals(0L, it.getLong(0))
             }
@@ -320,7 +324,7 @@ class AcquisitionStorageMigrationTest {
             ))
         }
         // Schema4 changes exactly the listed provenance columns; preserve every prior DDL byte.
-        val restoredDdl = rows(legacyDdlQuery).map { row ->
+        val restoredDdl = rows(legacyDdlQueryFor(fixture.ddl)).map { row ->
             val table = (row[1] as SqlValue.Text).value
             if (row[0] == SqlValue.Text("table") && table in setOf("catalog_generation", "rules_corpus")) {
                 var ddl = (row[3] as SqlValue.Text).value
@@ -413,5 +417,5 @@ class AcquisitionStorageMigrationTest {
         return (outcome as Outcome.Success).value
     }
 
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'acquisition_%' AND name NOT LIKE 'index_acquisition_%' AND name NOT LIKE 'sqlite_autoindex_acquisition_%' AND name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' AND tbl_name NOT IN ('life_game','life_event','life_seat_search','life_result','life_alert','life_profile') ORDER BY type,name"
+    private val legacyDdlQuery = LEGACY_DDL_SNAPSHOT_QUERY
 }

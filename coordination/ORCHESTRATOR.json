@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-15T00:05:54Z",
-  "expires_utc": "2026-10-15T00:50:54Z",
-  "checkpoint_id": "cp-20261015-exact-search-numeric-152",
-  "note": "Root sole writer/final merge. Pure exact numeric/Kleene foundation design/source ACK99pass13s, published with current checkpoint. Prior source8908e46 whole1233pass/8ZIP16KiB; frozen9c1573b ONE native38657175303 JVM in_progress/no device result. Next projection/backfill design review, no schema9 yet. Fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-15T00:20:54Z",
+  "expires_utc": "2026-10-15T01:05:54Z",
+  "checkpoint_id": "cp-20261015-search-schema9-native-triage-153",
+  "note": "Root sole writer/final merge. Schema9 foundation+legacy native snapshot correction reviewed;212storage/lint/nativecompile/appcompile1m29s+11realroot20spassed. Frozen9c1573b ONE38657175303 FAILED8legacyDDL assertions; JVM1233/app20/network3passed, no fullnative/captures/promotion/rerun. Next core-owned numeric encoding then bounded versioned mapper/preparation. Fullv1 incomplete/GameService HOLD/no finished APK."
 }

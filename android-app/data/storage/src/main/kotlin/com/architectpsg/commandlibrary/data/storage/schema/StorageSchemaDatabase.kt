@@ -38,6 +38,13 @@ import androidx.room3.RoomDatabase
         RulingRecordEntity::class,
         RulingsActiveEntity::class,
         CatalogSourceReceiptEntity::class,
+        CatalogSearchBuildEntity::class,
+        CatalogSearchCardFactEntity::class,
+        CatalogSearchFaceFactEntity::class,
+        CatalogSearchPrintingFactEntity::class,
+        CatalogSearchLegalityFactEntity::class,
+        CatalogSearchTextFactEntity::class,
+        CatalogSearchTextFtsEntity::class,
     ],
     version = StorageSchema.VERSION,
     exportSchema = true,
@@ -46,5 +53,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 8
+    const val VERSION: Int = 9
 }

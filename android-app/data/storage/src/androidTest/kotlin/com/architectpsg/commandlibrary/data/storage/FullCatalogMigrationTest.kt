@@ -298,7 +298,7 @@ class FullCatalogMigrationTest {
             it[2] == SqlValue.Text("acquisition_origin_cooldown") ||
                 (it[0] == SqlValue.Text("table") && it[1] in listOf(SqlValue.Text("catalog_generation"), SqlValue.Text("rules_corpus")))
         }
-        assertEquals(unchanged(fixture.ddl), unchanged(rows(legacyDdlQuery)))
+        assertEquals(unchanged(fixture.ddl), unchanged(rows(legacyDdlQueryFor(fixture.ddl))))
         assertEquals(0L, scalar("SELECT count(*) FROM pragma_foreign_key_check"))
         for (table in listOf("catalog_name_fts", "rules_text_fts")) {
             assertEquals(1L, scalar("SELECT count(*) FROM $table WHERE $table MATCH 'sentinel'"))
@@ -359,5 +359,5 @@ class FullCatalogMigrationTest {
         assertTrue("Expected success, got $outcome", outcome is Outcome.Success)
         return (outcome as Outcome.Success).value
     }
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name != 'room_master_table' AND name NOT LIKE '%printing_oracle_membership%' AND tbl_name NOT IN ('life_game','life_event','life_seat_search','life_result','life_alert','life_profile') ORDER BY type,name"
+    private val legacyDdlQuery = LEGACY_DDL_SNAPSHOT_QUERY
 }

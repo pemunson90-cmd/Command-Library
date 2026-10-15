@@ -167,7 +167,7 @@ class OriginCooldownMigrationTest {
             assertEquals("All schema4 columns in $table", fixture.columns.getValue(table),
                 rows("SELECT * FROM pragma_table_info('$table') ORDER BY cid"))
         }
-        assertEquals("All schema4 DDL", fixture.ddl, rows(legacyDdlQuery))
+        assertEquals("All schema4 DDL", fixture.ddl, rows(legacyDdlQueryFor(fixture.ddl)))
         assertEquals(1L, scalar("SELECT count(*) FROM catalog_name_fts WHERE catalog_name_fts MATCH 'sentinel'"))
         assertEquals(1L, scalar("SELECT count(*) FROM rules_text_fts WHERE rules_text_fts MATCH 'sentinel'"))
         assertEquals(0L, scalar("SELECT count(*) FROM pragma_foreign_key_check"))
@@ -222,5 +222,5 @@ class OriginCooldownMigrationTest {
         assertTrue("Expected success, got $outcome", outcome is Outcome.Success)
         return (outcome as Outcome.Success).value
     }
-    private val legacyDdlQuery = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name != 'room_master_table' AND tbl_name != 'acquisition_origin_cooldown' AND tbl_name NOT IN ('life_game','life_event','life_seat_search','life_result','life_alert','life_profile') ORDER BY type,name"
+    private val legacyDdlQuery = LEGACY_DDL_SNAPSHOT_QUERY
 }
