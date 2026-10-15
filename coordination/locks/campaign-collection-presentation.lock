@@ -1,0 +1,11 @@
+{
+  "component": "collection-presentation",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-collection-presentation-01",
+  "branch": "agent/campaign-collection-presentation-20261015",
+  "base_commit": "bc286f2",
+  "owner": "/root/implement_inventory_projection; root-managed new isolated attempt",
+  "owned_paths": "Exact new controller/state/screen/dialog/dedicated strings/tests/handoff allowlist; root shared/DI/nav untouched",
+  "status": "active",
+  "authority": "Live root only; explicit exclusive new shell paths transfer; no life/shared transfer"
+}

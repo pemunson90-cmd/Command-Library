@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-inventory-producer-codec-173. Updated UTC: 2026-10-15T07:05:33Z.
+Checkpoint: cp-20261015-inventory-contract-ui-claim-174. Updated UTC: 2026-10-15T07:12:11Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-integrate-inventory-producer-codec
+freeze-inventory-contract-claim-presentation
 
-Pure inventory producer integrated/source ACK; assembled81tests8XML pass, complete CLOL codec ACK; five-table journal semantics independently repaired/ACK; root next exact contract/schema. No active writer/build; holds retained.
+Complete inventory/CLIP/CLIR sourceACK63tests pass; isolated collection presentation claimed, root retains dirty schema12 migration work; no active build. Holds retained.
 
 Read CURRENT, machine state and task card.
