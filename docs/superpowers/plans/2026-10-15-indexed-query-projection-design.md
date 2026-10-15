@@ -55,7 +55,7 @@ Cursors bind provider, exact generation/language, projection+compiler versions, 
 3. Typed compiler/complete local execution capability: >=50 pinned synthetic exact-ID queries, multiface/printing scopes, known-empty/unknown, all decimal operators, direct AST/cursor adversaries, actual EXPLAIN indices and bounded stable pages. Compare SQL truth against pure semantic oracle. No fake context.
 4. Real shell integration and truthful preparation/unsupported/empty/stale states, focused UI/lifecycle checks. Full local boundary at actual integration risk; one future native batch only when justified. Genuine full-corpus/physical Fold7/performance/canonical release proof remains separate and unrun until available.
 
-Frozen9c1573b/Android38657175303 remains unchanged: JVM/build passed1233tests by fetched log; API36 emulator116172409775 in progress. Do not duplicate that run for this design or source-only schema packet. Root continues local work; no new PR/merge/release/finished APK authorization.
+Frozen9c1573b/Android38657175303 remains unchanged and FAILED: JVM/build passed1233tests by fetched log; API36 emulator116172409775 failed8legacyDDL snapshot assertions. Root corrected those test-only assertions locally; no corrected device run is scheduled. Do not duplicate that run for source-only packets. Root continues local work; no new PR/merge/release/finished APK authorization.
 
 
 Independent review disposition: rulings_contract_review ACK for schema9-only (7new/35total, all28old definitions unchanged); later packets retain separate review gates. Review fan-out, FTS-candidate safety, dependency direction and deduplicated consensus requirements incorporated above. Exact source/export/migration review remains required after this first implementation.

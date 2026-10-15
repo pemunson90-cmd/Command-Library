@@ -136,3 +136,6 @@ Storage schema9 adds seven versioned derived build/card/face/printing/legality/t
 
 
 `feature:catalog` now has an internal pure version1 CatalogSearchProjector: fixed table enum/immutable RowData/SqlValue facts for schema9, complete bounded source conversion only. No SQL/progress/readiness/executor capability. Actual per-printing legalities/game_changer and face data preserve unknown evidence and source-qualified IDs; no first-printing canonical consensus or invented reversible Oracle. Future owner must bind returned IDs to original stored rows. Reviewed source/semantic evidence: `docs/verification/k3-downloads/CATALOG-SEARCH-PROJECTOR-LOCAL-20261015.md`.
+
+
+Internal `CatalogSearchPreparationStore` owns bounded transactional original-row reads, identity/scalar validation, derived fact/text/FTS writes and matching progress on the same schema9 database. Explicit normal-text/FTS rowid pairing supports later indexed completeness validation. Shared catalog ownership covers exact ambiguous-commit reconciliation; no public prep/query port, startup backfill, READY certification, importer activation change or DI binding is implied. Evidence: `docs/verification/k3-downloads/CATALOG-SEARCH-PREPARATION-STORE-LOCAL-20261015.md`; complete verification/lifecycle remains the next packet.

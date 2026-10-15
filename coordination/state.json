@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-catalog-search-projector-155",
-  "verified_base_head": "eb448240e4c42ed9847449b1517b92d6042ddf88",
+  "checkpoint_id": "cp-20261015-search-preparation-store-156",
+  "verified_base_head": "fd2ccb704613ed7a82baab1c862f4476c1e1a7b0",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "design-bounded-durable-projection-preparation",
+  "first_action": "resolve-bounded-verification-design-then-implement-readiness",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Projector source/semantic ACK236catalogpass26s/nativecompile5s; core key ownership ACK123pass; schema9/legacycorrection ACK212storage+11root. Next bounded durable preparation design. Frozen9c failed8legacy assertions/no rerun.",
+  "review_status": "Bounded transaction store design/exact-source durability ACK251catalogpass30s/nativecompile; next bounded verification design. No READY/public query/DI. Frozen9c failed/no rerun.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -131,9 +131,10 @@
     "exact_search_numeric": "Design/exact-source public-helper ACK; :feature:search:test SUCCESS13s/3XML99tests0failure/error/skip, 4executed2up-to-date. Actual SQLite BINARY all6ops vs BigDecimal/600random+190boundary pairs; pure numeric/Kleene foundation only. EXACT-SEARCH-NUMERIC-LOCAL-20261015.md.",
     "search_projection_schema9": "Design/exact-source ACK; actualKSP9 SHA257e26d0c137cc817c086dc1a6905d45b957615c68b7009d3704770b5fca4624/35entities/all28oldunchanged. Fullstorage25XML212tests/lint/nativecompile/appcompile SUCCESS1m29s; realroot2XML11tests SUCCESS20s, all0failure/error/skip. Nativelegacy snapshot correction actualhost-regression verified; no corrected device run/executor/backfill. SEARCH-PROJECTION-SCHEMA9-LOCAL-20261015.md.",
     "numeric_encoding_ownership": "Exact-source/public ownership ACK; sourceKey/queryKey bodies moved unchanged to core:common.DecimalComparisonKeys with compatible search facade/allowed search\u2192common edge.8XML123tests0failure/error/skip SUCCESS22s; no schema/DI/executor/native change. EXACT-SEARCH-NUMERIC-LOCAL-20261015.md.",
-    "catalog_search_projector": "Internal purev1 source/semantic design+exact-source ACK; fullcatalog24XML236tests0failure/error/skip SUCCESS26s/nativecompile5s.13new synthetic cases+actualschema9six-tableFK/PREPARINGprobe, explicit budgets/unknown/identity. No SQL/preparation/executor/DI claim. CATALOG-SEARCH-PROJECTOR-LOCAL-20261015.md."
+    "catalog_search_projector": "Internal purev1 source/semantic design+exact-source ACK; fullcatalog24XML236tests0failure/error/skip SUCCESS26s/nativecompile5s.13new synthetic cases+actualschema9six-tableFK/PREPARINGprobe, explicit budgets/unknown/identity. No SQL/preparation/executor/DI claim. CATALOG-SEARCH-PROJECTOR-LOCAL-20261015.md.",
+    "catalog_search_preparation_store": "Independent design/exact-source durability ACK; actualschema9/FK/FTS25XML251tests0failure/error/skip + native Kotlin testcompile SUCCESS30s.15new rollback/reopen/budget/sourcebinding/ACK/cancel probes; internal PREPARING only, no READY/public port/executor. CATALOG-SEARCH-PREPARATION-STORE-LOCAL-20261015.md."
   },
-  "last_completed": "Reviewed purev1 catalog projector full236tests pass26s/nativecompile5s; no SQL/readiness/executor. Core keys/schema9 foundations published. Continue bounded durable preparation design with row binding/atomic progress/ack/coverage; frozen native failure preserved/no rerun/fullv1 incomplete.",
-  "updated_utc": "2026-10-15T00:39:05Z",
+  "last_completed": "Bounded source-owned projection transaction store independently reviewed; actualschema9 fullcatalog251tests/nativecompile pass30s. Atomic facts+FTSrowid+progress, exact lostACK/reopen/cancel/sourcebinding/budgets proven locally. PREPARING only/no READY/public query/DI. Continue bounded verification design and complete lifecycle; frozen native failure preserved/no rerun/fullv1 incomplete.",
+  "updated_utc": "2026-10-15T00:54:16Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
