@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T12:03:43Z",
-  "expires_utc": "2026-10-15T12:48:43Z",
-  "checkpoint_id": "cp-20261015-draft-app-source-review-198",
-  "note": "Root retains shared/contracts/schema/DI/navigation/final merge. Complete SQL drafts integrated 5807a11 with final repaired 248-test source/runtime ACK; backend claim released. Isolated actor active, prebuild source HOLDs under repair; no runtime gate yet. Root UI/DI14 files frozen source-only ACK; combined Room/app gate pending actor. No running build, one serial slot free. Publication invalid-token blocker and all release holds remain."
+  "heartbeat_utc": "2026-10-15T12:20:13Z",
+  "expires_utc": "2026-10-15T13:05:13Z",
+  "checkpoint_id": "cp-20261015-draft-actor-focused-gate-199",
+  "note": "Root owns shared/contracts/schema/DI/navigation/final merge. SQL drafts integrated5807a11 final248-test ACK. Isolated actor r4 independently source ACKed; worker has sole Gradle slot ACTIVE attempt01 focused4classes. Root UI/DI15files source ACKed/frozen, combined real app UI/Room gate pending accepted actor. Root runs no concurrent Gradle. Publication blocked invalid token; native/Fold7/signing/finished APK holds."
 }

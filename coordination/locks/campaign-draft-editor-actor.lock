@@ -9,5 +9,6 @@
   "base_commit": "Containing reviewed, compiled boundary/claim commit supplied and verified before edits",
   "owned_paths": "Exact4NEW concreteactor/twofocusedtests/handoff paths; existing UI/state/ports/DI/navigation readonly",
   "authority": "Canonical root local claim; root exclusively owns shared UI/DI/integration/final merge",
-  "build_slot": "Not granted; request coherent focused actor gate"
+  "build_slot": "GRANTED ACTIVE attempt01: shell focused actor58 + queued-input12 + legacy editor11, offline no-daemon max2workers; root runs no Gradle concurrently",
+  "source_review": "Actual Astra r4 source-readiness ACK: deb7dd9417ab2dace599f925004cc885e55a0f1e4f35ecb8405b94b3b1480aef / c31299527347e0ec829aad6ecd8503487447610a2920ef250b806fb6fa159ee0 / 0c3f551f3488ec2f00e15ab2327aa79a1f0c5dc979ba93b26b5e09cdeb464011"
 }
