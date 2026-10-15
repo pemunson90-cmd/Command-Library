@@ -1,0 +1,13 @@
+{
+  "component": "clean-hidden-draft-owner-head-refresh",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-draft-head-refresh-01",
+  "owner": "/root/implement_inventory_projection native isolated writer",
+  "status": "active",
+  "base_commit": "558a02831576c24ecf722ee4d6d0956f9adf57e9",
+  "branch": "agent/campaign-draft-head-refresh-20261015",
+  "worktree": "/workspace/command-library-draft-head-refresh-01",
+  "owned_paths": "Exact existing actor/recoverytest plus NEW ownhandoff in packet; all other paths readonly",
+  "build_slot": "NOT GRANTED; root assembled attempt1 ACTIVE4691",
+  "authority": "Explicit root subdivision; canonical local lock only, publication remains invalidtoken"
+}
