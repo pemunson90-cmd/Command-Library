@@ -170,7 +170,8 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
             dismissButton = { TextButton(controller::dismissForm, enabled = !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.decks_close)) } },
         )
     }
-    state.editor?.let { form -> DeckEditorDialog(controller, form, state, editorSearch) }
+    if (controller.draftEditor != null) DurableDeckEditorDialog(controller.draftEditor, editorSearch)
+    else state.editor?.let { form -> DeckEditorDialog(controller, form, state, editorSearch) }
     if (abandon) AlertDialog(onDismissRequest = { abandon = false }, title = { Text(stringResource(R.string.decks_stop_checking)) },
         text = { Text(stringResource(R.string.decks_abandon_warning)) },
         confirmButton = { TextButton({ abandon = false; controller.abandonConfirmed() }, enabled = !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.decks_stop_checking)) } },

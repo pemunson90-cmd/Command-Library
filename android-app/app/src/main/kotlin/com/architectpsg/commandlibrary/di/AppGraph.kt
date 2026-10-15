@@ -12,6 +12,10 @@ import com.architectpsg.commandlibrary.feature.pricing.LocalOwnedQuantityAllocat
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import com.architectpsg.commandlibrary.data.storage.decks.codec.LocalDeckPatchCodec
 import com.architectpsg.commandlibrary.data.storage.decks.codec.DeckPayloadCodec
+import com.architectpsg.commandlibrary.data.storage.decks.codec.DeckDraftPayloadCodec
+import com.architectpsg.commandlibrary.feature.decks.LocalDeckDraftPlanner
+import com.architectpsg.commandlibrary.feature.decks.DeckPatchReducer
+import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckDrafts
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckEdits
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckVersions
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckLibrary
@@ -66,7 +70,10 @@ internal class AppGraph(
                     val deckCodec = DeckPayloadCodec()
                     val decks = SqlLocalDeckLibrary(opened.value, deckCodec, SystemUtcClock, RandomUuidIdSource)
                     val deckVersions = SqlLocalDeckVersions(opened.value, deckCodec, SystemUtcClock, RandomUuidIdSource)
-                    val deckEdits = SqlLocalDeckEdits(opened.value, deckCodec, LocalDeckPatchCodec(), SystemUtcClock)
+                    val deckPatchCodec = LocalDeckPatchCodec()
+                    val deckEdits = SqlLocalDeckEdits(opened.value, deckCodec, deckPatchCodec, SystemUtcClock)
+                    val draftPlanner = LocalDeckDraftPlanner()
+                    val deckDrafts = SqlLocalDeckDrafts(opened.value, deckCodec, deckPatchCodec, DeckDraftPayloadCodec(), draftPlanner, SystemUtcClock)
                     val inventory = SqlLocalInventory(opened.value, OwnedLotPayloadCodec(), LocalInventoryPatchCodec(), SystemUtcClock, capabilities.maxBoundParameters)
                     val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
                     val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
@@ -74,7 +81,8 @@ internal class AppGraph(
                         englishCatalog = downloads, rulingsDownloads = downloads,
                         rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
                         catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
-                        localDeckVersions = deckVersions, localInventory = inventory, ownedQuantity = LocalOwnedQuantityAllocator(), inventoryProjection = InventoryPatchReducer::propose)
+                        localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
+                        deckPatchProjection = DeckPatchReducer::propose, localInventory = inventory, ownedQuantity = LocalOwnedQuantityAllocator(), inventoryProjection = InventoryPatchReducer::propose)
                     ready = ports
                     transferred = true
                     Outcome.Success(ports)

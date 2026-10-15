@@ -40,8 +40,19 @@ internal class ShellControllers(
 
     val deckEditorSearch = if (ports.localDecks != null && ports.localDeckEdits != null)
         SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh) else null
+    val deckDraftEditor: DeckDraftEditor? = if (ports.localDecks != null && ports.localDeckDrafts != null &&
+        ports.deckDraftPlanner != null && ports.deckPatchProjection != null)
+        RetainedDeckDraftEditor(scope, ports.localDecks, ports.localDeckDrafts, ports.deckDraftPlanner,
+            ports.deckPatchProjection, ioDispatcher,
+            { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
+            { android.os.SystemClock.elapsedRealtime() },
+            cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
+                currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
+            } == true },
+            onCommitted = { id, revision -> deckLibrary?.onDraftCommitted(id, revision) }) else null
     val deckLibrary: DeckLibraryController? = if (ports.localDecks != null && ports.utcClock != null)
         DeckLibraryController(scope, ports.localDecks, ioDispatcher, now = ports.utcClock::utcNow, edits = ports.localDeckEdits,
+            draftEditor = deckDraftEditor,
             onCommitted = { id, revision ->
                 collection?.onDeckChanged(id, revision)
                 if (deckVersions?.state?.value?.deckId == id) deckVersions.refreshHead()
@@ -57,7 +68,9 @@ internal class ShellControllers(
     val deckVersions: DeckVersionsController? = if (ports.localDeckVersions != null && ports.localDecks != null)
         DeckVersionsController(scope, ports.localDeckVersions, ports.localDecks, ioDispatcher,
             { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
+            mutationAllowed = { deckDraftEditor?.hasMutationBarrier != true },
             onCommitted = { id, revision ->
+                deckDraftEditor?.onDeckHeadChanged(id, revision)
                 collection?.onDeckChanged(id, revision)
                 deckLibrary?.let { library ->
                     if (library.state.value.selectedId == id) library.select(id)
@@ -87,6 +100,7 @@ internal class ShellControllers(
                     search.onActiveGeneration(generation)
                     profiles?.commanderSearch?.onActiveGeneration(generation)
                     deckEditorSearch?.onActiveGeneration(generation)
+                    deckDraftEditor?.onActiveGeneration(generation)
                     printings?.onActiveGeneration(generation)
                     collection?.onActiveGeneration(generation)
                 }

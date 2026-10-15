@@ -15,6 +15,7 @@ internal class DeckVersionsController(
     private val dispatcher: CoroutineDispatcher,
     private val nextEntityId: () -> EntityId,
     private val onCommitted: (DeckId, Revision) -> Unit = { _, _ -> },
+    private val mutationAllowed: () -> Boolean = { true },
 ) {
     private sealed interface Request {
         val base: DeckSnapshot
@@ -82,6 +83,7 @@ internal class DeckVersionsController(
         else mutable.update { it.copy(captureForm = false) }
     }
     fun beginCapture() {
+        if (!mutationAllowed()) return
         if (!editing() || mutable.value.captureForm || mutable.value.head == null) return
         if (mutable.value.recoveryLabel.isNotEmpty()) {
             discard = Discard.CAPTURE; mutable.update { it.copy(discardPrompt = true) }; return
@@ -213,12 +215,14 @@ internal class DeckVersionsController(
         ++previewGeneration; previewJob?.cancel(); mutable.update { it.copy(preview = null, previewing = false, previewProblem = null, recoveryLabel = "") }
     }
     fun capture() {
+        if (!mutationAllowed()) return
         if (!editing()) return
         val s = mutable.value; val head = s.head ?: return
         if (!s.captureForm || !validLabel(s.label)) { mutable.update { it.copy(invalidLabel = true) }; return }
         freeze { Request.Capture(head,s.label,nextEntityId()) }
     }
     fun confirmRestore() {
+        if (!mutationAllowed()) return
         if (!editing()) return
         val s = mutable.value; val p = s.preview ?: return
         if (s.head?.revision != p.current.revision || s.selectedId != p.target.id) { mutable.update { it.copy(previewProblem = Problem.STALE_REVISION) }; return }

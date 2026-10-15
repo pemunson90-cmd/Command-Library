@@ -30,16 +30,19 @@ internal object DeckVersionsTags {
 }
 
 @Composable
-internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: WidthClass, onClose: (() -> Unit)? = null) {
+internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: WidthClass, onClose: (() -> Unit)? = null, draftEditor: DeckDraftEditor? = null) {
     val state by controller.state.collectAsState()
+    val draftState = draftEditor?.state?.collectAsState()?.value
+    val mutationsBlocked = draftState != null && draftEditor?.hasMutationBarrier == true
     var abandon by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().padding(horizontal = widthClass.gutter), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SectionHeading(stringResource(R.string.deck_versions_title), style = MaterialTheme.typography.headlineMedium)
+        if (mutationsBlocked) Text(stringResource(R.string.deck_draft_versions_blocked))
         if (onClose != null) TextButton({ if (controller.requestClose()) onClose() }, modifier = Modifier.versionTouch()) { Text(stringResource(R.string.deck_versions_close)) }
-        if (widthClass == WidthClass.COMPACT) VersionsList(controller,state,Modifier.weight(1f),true) { abandon = true }
+        if (widthClass == WidthClass.COMPACT) VersionsList(controller,state,Modifier.weight(1f),true,mutationsBlocked) { abandon = true }
         else Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-            VersionsList(controller,state,Modifier.weight(1f),false) { abandon = true }
-            VersionsDetail(controller,state,Modifier.weight(1f))
+            VersionsList(controller,state,Modifier.weight(1f),false,mutationsBlocked) { abandon = true }
+            VersionsDetail(controller,state,Modifier.weight(1f),mutationsBlocked)
         }
     }
     if (state.captureForm) AlertDialog(onDismissRequest = controller::closeCapture,
@@ -53,7 +56,7 @@ internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: 
                 if (state.pending) Text(stringResource(R.string.deck_versions_pending))
             }
         }, confirmButton = {
-            TextButton(if (state.pending) controller::retry else controller::capture,enabled = !state.mutationBusy,modifier = Modifier.versionTouch().testTag(DeckVersionsTags.CAPTURE)) {
+            TextButton(if (state.pending) controller::retry else controller::capture,enabled = !state.mutationBusy && (state.pending || !mutationsBlocked),modifier = Modifier.versionTouch().testTag(DeckVersionsTags.CAPTURE)) {
                 Text(stringResource(if (state.pending) R.string.deck_versions_retry else R.string.deck_versions_capture))
             }
         }, dismissButton = { TextButton(controller::closeCapture,modifier = Modifier.versionTouch()) { Text(stringResource(R.string.deck_versions_cancel_form)) } })
@@ -67,7 +70,7 @@ internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: 
         dismissButton = { TextButton({ abandon = false },modifier = Modifier.versionTouch()) { Text(stringResource(R.string.deck_versions_keep_checking)) } })
 }
 
-@Composable private fun VersionsList(controller: DeckVersionsController,state: DeckVersionsUiState,modifier: Modifier,detail: Boolean,abandon: () -> Unit) {
+@Composable private fun VersionsList(controller: DeckVersionsController,state: DeckVersionsUiState,modifier: Modifier,detail: Boolean,mutationsBlocked: Boolean,abandon: () -> Unit) {
     LazyColumn(modifier.fillMaxHeight().testTag(DeckVersionsTags.LIST),verticalArrangement = Arrangement.spacedBy(12.dp),contentPadding = PaddingValues(bottom = 24.dp)) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -76,7 +79,7 @@ internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: 
                 state.headProblem?.let { VersionProblem(it) };state.listProblem?.let { VersionProblem(it) };state.mutationProblem?.let { VersionProblem(it) }
                 ActionRow {
                     OutlinedButton({ controller.refreshHead();controller.refreshVersions() },enabled = !state.loadingHead && !state.loadingList,modifier = Modifier.versionTouch()) { Text(stringResource(R.string.deck_versions_refresh)) }
-                    OutlinedButton(controller::beginCapture,enabled = state.head != null && !state.pending && !state.mutationBusy,modifier = Modifier.versionTouch().testTag("deck-versions-new")) { Text(stringResource(R.string.deck_versions_capture)) }
+                    OutlinedButton(controller::beginCapture,enabled = !mutationsBlocked && state.head != null && !state.pending && !state.mutationBusy,modifier = Modifier.versionTouch().testTag("deck-versions-new")) { Text(stringResource(R.string.deck_versions_capture)) }
                 }
                 if (state.pending) MessageBlock(null,listOf(stringResource(R.string.deck_versions_pending)),MessageTone.INFO) {
                     OutlinedButton(controller::retry,enabled = !state.mutationBusy,modifier = Modifier.versionTouch().testTag(DeckVersionsTags.RETRY)) { Text(stringResource(R.string.deck_versions_retry)) }
@@ -85,7 +88,7 @@ internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: 
                 state.captured?.let { Text(stringResource(R.string.deck_versions_saved,it.label)) }
                 state.restored?.let { Text(stringResource(R.string.deck_versions_restored,it.snapshot.revision.value));Text(stringResource(R.string.deck_versions_recovery_saved,it.recoveryVersion.label));RecordedTime(it.recoveryVersion.createdAt) }
                 if (state.head != null && !state.loadingList && state.listProblem == null && state.items.isEmpty()) Text(stringResource(R.string.deck_versions_empty))
-                if (detail) DetailHeader(controller,state)
+                if (detail) DetailHeader(controller,state,mutationsBlocked)
             }
         }
         if (detail) state.preview?.takeIf { !state.pending }?.let { p ->
@@ -104,16 +107,16 @@ internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: 
         item { if (state.cursor != null) OutlinedButton(controller::loadMore,enabled = !state.loadingList,modifier = Modifier.versionTouch().testTag("deck-versions-more")) { Text(stringResource(R.string.deck_versions_more)) } }
     }
 }
-@Composable private fun VersionsDetail(controller: DeckVersionsController,state: DeckVersionsUiState,modifier: Modifier) {
+@Composable private fun VersionsDetail(controller: DeckVersionsController,state: DeckVersionsUiState,modifier: Modifier,mutationsBlocked: Boolean) {
     LazyColumn(modifier.fillMaxHeight().testTag(DeckVersionsTags.DETAIL),verticalArrangement = Arrangement.spacedBy(12.dp),contentPadding = PaddingValues(bottom = 24.dp)) {
-        item { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { DetailHeader(controller,state) } }
+        item { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { DetailHeader(controller,state,mutationsBlocked) } }
         state.preview?.takeIf { !state.pending }?.let { p ->
             item { ManifestDifference(p) }
             items(p.difference.entries) { change -> ChangedEntry(change) }
         }
     }
 }
-@Composable private fun DetailHeader(controller: DeckVersionsController,state: DeckVersionsUiState) {
+@Composable private fun DetailHeader(controller: DeckVersionsController,state: DeckVersionsUiState,mutationsBlocked: Boolean) {
     if (state.loadingTarget || state.previewing) LinearProgressIndicator(Modifier.fillMaxWidth())
     state.targetProblem?.let { VersionProblem(it) };state.previewProblem?.let { VersionProblem(it) }
     state.selected?.let {
@@ -127,7 +130,7 @@ internal fun DeckVersionsScreen(controller: DeckVersionsController, widthClass: 
             label = { Text(stringResource(R.string.deck_versions_recovery_label)) },modifier = Modifier.fillMaxWidth().testTag(DeckVersionsTags.RECOVERY_LABEL))
         if (state.invalidLabel) Text(stringResource(R.string.deck_versions_invalid_label),color = MaterialTheme.colorScheme.error)
         ActionRow {
-            OutlinedButton(controller::confirmRestore,enabled = !state.mutationBusy,modifier = Modifier.versionTouch().testTag(DeckVersionsTags.RESTORE)) { Text(stringResource(R.string.deck_versions_restore)) }
+            OutlinedButton(controller::confirmRestore,enabled = !mutationsBlocked && !state.mutationBusy,modifier = Modifier.versionTouch().testTag(DeckVersionsTags.RESTORE)) { Text(stringResource(R.string.deck_versions_restore)) }
             TextButton(controller::cancelPreview,enabled = !state.mutationBusy,modifier = Modifier.versionTouch()) { Text(stringResource(R.string.deck_versions_cancel_preview)) }
         }
     }

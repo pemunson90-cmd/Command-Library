@@ -94,6 +94,27 @@ class DeckVersionsControllerTest {
         DeckVersionsController(owner,f,f,StandardTestDispatcher(testScheduler),{EntityId("operation-${++f.ids}")},callback)
     private fun TestScope.opened(f:Fixture)=controller(f).also{it.openDeck(deck().id);advanceUntilIdle()}
     private fun TestScope.preview(c:DeckVersionsController,id:EntityId=EntityId("old")){c.selectVersion(id);advanceUntilIdle();c.previewRestore();advanceUntilIdle()}
+    @Test fun retainedDraftBarrierBlocksNewCaptureAndRestoreWithoutConsumingIdsButAllowsExactRetry()=runTest {
+        val f=Fixture();var allowed=true
+        val c=DeckVersionsController(ownerScope(),f,f,StandardTestDispatcher(testScheduler),
+            {EntityId("operation-${++f.ids}")},mutationAllowed={allowed})
+        c.openDeck(deck().id);advanceUntilIdle()
+        allowed=false;c.beginCapture();assertFalse(c.state.value.captureForm)
+        allowed=true;c.beginCapture();c.label("Held label")
+        allowed=false;c.capture();advanceUntilIdle()
+        assertEquals(0,f.ids);assertTrue(f.captureCalls.isEmpty());assertEquals("Held label",c.state.value.label)
+        allowed=true;f.mutationFailure=Outcome.Unknown("Lost response",SnapshotList.empty())
+        c.capture();advanceUntilIdle();assertTrue(c.state.value.pending)
+        val frozen=f.captureCalls.single()
+        allowed=false;f.mutationFailure=null;c.retry();advanceUntilIdle()
+        assertEquals(listOf(frozen,frozen),f.captureCalls);assertEquals(1,f.ids);assertFalse(c.state.value.pending)
+        preview(c);c.recoveryLabel("Held restore")
+        c.confirmRestore();advanceUntilIdle()
+        assertTrue(f.restoreCalls.isEmpty());assertEquals(1,f.ids);assertEquals("Held restore",c.state.value.recoveryLabel)
+        allowed=true;c.confirmRestore();advanceUntilIdle()
+        assertEquals(1,f.restoreCalls.size);assertEquals(2,f.ids)
+    }
+
     @Test fun capturePreservesExactLabelFullManifestAndContentRevisionWithoutCommitCallback()=runTest {
         val f=Fixture();val c=opened(f);c.beginCapture();c.label("  exact é label  ");assertTrue(f.captureCalls.isEmpty());c.capture();advanceUntilIdle()
         assertEquals("  exact é label  ",c.state.value.captured!!.label);assertEquals(deck(),c.state.value.captured!!.manifest)

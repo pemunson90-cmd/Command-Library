@@ -52,6 +52,10 @@ import com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionScr
 import com.architectpsg.commandlibrary.core.model.DeckId
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.DraftExitDialog
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.DraftRecoveryBanner
+import com.architectpsg.commandlibrary.feature.shell.presentation.DeferredDeckAction
+import com.architectpsg.commandlibrary.feature.shell.presentation.DraftExitPhase
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfilesScreen
 import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.ShellDestination
@@ -80,6 +84,8 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         // Keep this deck subroute while another destination is shown: the controller retains
         // unsaved names and a frozen pending mutation rather than silently dropping either.
         var versionsOpen by rememberSaveable { mutableStateOf(false) }
+        val draft = controllers.deckLibrary?.draftEditor
+        val draftState = draft?.state?.collectAsState()?.value
         val destinations = ShellDestination.entries.filter {
             when (it) {
                 ShellDestination.DECKS -> controllers.deckLibrary != null
@@ -94,9 +100,28 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             if (controllers.deckVersions?.requestClose() == true) versionsOpen = false
         }
         val navigate: (ShellDestination) -> Unit = { target ->
-            // Fence any in-flight browser callback in the navigation event, before the next frame.
-            controllers.printings?.setVisible(target == ShellDestination.CARDS)
-            destination = target
+            if (draft != null && draft.state.value.session != null && target != visibleDestination) {
+                draft.requestExit(DeferredDeckAction.Navigate(target))
+            } else {
+                // Fence any in-flight browser callback in the accepted navigation event.
+                controllers.printings?.setVisible(target == ShellDestination.CARDS)
+                destination = target
+            }
+        }
+        LaunchedEffect(draft, draftState?.exit) {
+            val exit = draftState?.exit?.takeIf { it.phase == DraftExitPhase.READY } ?: return@LaunchedEffect
+            if (exit.action is DeferredDeckAction.Navigate || exit.action is DeferredDeckAction.OpenVersions) {
+                when (val action = draft?.takeReadyExit(exit.ticket)) {
+                    is DeferredDeckAction.Navigate -> {
+                        controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
+                        destination = action.destination
+                    }
+                    is DeferredDeckAction.OpenVersions -> controllers.deckVersions?.let {
+                        it.openDeck(action.deckId); versionsOpen = true
+                    }
+                    else -> Unit
+                }
+            }
         }
         LaunchedEffect(visibleDestination, controllers) {
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
@@ -126,7 +151,17 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            BoxWithConstraints(Modifier.fillMaxSize()) {
+            Column(Modifier.fillMaxSize()) {
+                draft?.let { editor -> DraftRecoveryBanner(editor) {
+                    val session = editor.state.value.session
+                    if (session != null && (!versionsOpen || controllers.deckVersions?.requestClose() == true)) {
+                        versionsOpen = false
+                        controllers.printings?.setVisible(false)
+                        destination = ShellDestination.DECKS
+                        editor.open(session.deckId, session.target)
+                    }
+                } }
+                BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                 val widthClass = WidthClass.of(maxWidth)
                 val content: @Composable (Modifier) -> Unit = { contentModifier ->
                     DestinationContent(
@@ -139,7 +174,10 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                         onPickFile = pickFile,
                         onNavigate = navigate,
                         versionsOpen = versionsOpen,
-                        onOpenVersions = { id -> controllers.deckVersions?.let { it.openDeck(id); versionsOpen = true } },
+                        onOpenVersions = { id ->
+                            if (draft != null && draft.state.value.session != null) draft.requestExit(DeferredDeckAction.OpenVersions(id))
+                            else controllers.deckVersions?.let { it.openDeck(id); versionsOpen = true }
+                        },
                         onCloseVersions = { versionsOpen = false },
                         modifier = contentModifier,
                     )
@@ -207,8 +245,10 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                         )
                     }
                 }
+                }
             }
         }
+        draft?.let { DraftExitDialog(it) }
     }
 }
 
@@ -269,7 +309,7 @@ private fun DestinationContent(
         }
         ShellDestination.DECKS -> controllers.deckLibrary?.let { library ->
             val versions = controllers.deckVersions
-            if (versionsOpen && versions != null) Box(modifier) { DeckVersionsScreen(versions, widthClass, onCloseVersions) }
+            if (versionsOpen && versions != null) Box(modifier) { DeckVersionsScreen(versions, widthClass, onCloseVersions, controllers.deckDraftEditor) }
             else DeckLibraryScreen(library, widthClass, modifier, controllers.deckEditorSearch,
                 onOpenVersions = if (versions != null) onOpenVersions else null)
         }

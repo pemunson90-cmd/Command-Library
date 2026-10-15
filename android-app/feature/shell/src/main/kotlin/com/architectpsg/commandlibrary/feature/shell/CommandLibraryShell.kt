@@ -1,6 +1,14 @@
 package com.architectpsg.commandlibrary.feature.shell
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,7 +29,33 @@ import com.architectpsg.commandlibrary.feature.shell.ui.ShellRoot
  */
 @Composable
 public fun CommandLibraryShell(ports: ShellPorts, modifier: Modifier = Modifier) {
-    val resolver = LocalContext.current.applicationContext.contentResolver
+    val context = LocalContext.current
+    val resolver = context.applicationContext.contentResolver
     val viewModel: ShellViewModel = viewModel(factory = ShellViewModel.factory(ports, resolver))
+    val owner = LocalLifecycleOwner.current
+    DisposableEffect(owner, viewModel, context) {
+        val observer = draftBackgroundObserver(context) {
+            viewModel.controllers.deckLibrary?.draftEditor?.onBackground()
+        }
+        owner.lifecycle.addObserver(observer)
+        onDispose { owner.lifecycle.removeObserver(observer) }
+    }
     ShellRoot(viewModel.controllers, modifier)
+}
+
+/** A configuration stop must not promote text or create another undo group. */
+internal fun draftBackgroundObserver(context: Context, onBackground: () -> Unit): LifecycleEventObserver =
+    LifecycleEventObserver { _, event ->
+        if (event == Lifecycle.Event.ON_STOP && !context.draftHostChangingConfigurations()) onBackground()
+    }
+
+private fun Context.draftHostChangingConfigurations(): Boolean {
+    var candidate=this
+    while (candidate is ContextWrapper) {
+        if (candidate is Activity) return candidate.isChangingConfigurations
+        val base=candidate.baseContext
+        if (base===candidate) break
+        candidate=base
+    }
+    return (candidate as? Activity)?.isChangingConfigurations == true
 }

@@ -1,0 +1,27 @@
+<resources>
+    <string name="deck_draft_recovered">Recovered saved input. Review it before confirming changes.</string>
+    <string name="deck_draft_other_target">Saved input for another editor was recovered first. Resolve or discard it before opening the requested editor.</string>
+    <string name="deck_draft_waiting">Changes are waiting to be saved on this device.</string>
+    <string name="deck_draft_raw_saved">A draft is stored on this device.</string>
+    <string name="deck_draft_ready">Ready to edit. Confirm staged choices to apply them.</string>
+    <string name="deck_draft_loading">Checking saved deck input…</string>
+    <string name="deck_draft_conflict">The deck or saved input changed elsewhere. Your input is preserved; resolve the pending save or discard this draft before editing the latest deck.</string>
+    <string name="deck_draft_uncertain">The save may have completed. Retry the exact request before starting another change.</string>
+    <string name="deck_draft_pending">A prepared save needs attention. Discarding its preparation keeps your saved input.</string>
+    <string name="deck_draft_discard_preparation">Discard preparation, keep input</string>
+    <string name="deck_draft_discard_input">Discard saved input</string>
+    <string name="deck_draft_close">Close editor</string>
+    <string name="deck_draft_selection_evidence">A recovered card choice is evidence only. Choose a matching result from the current catalog before adding it.</string>
+    <string name="deck_draft_exit_title">Keep your deck input safe</string>
+    <string name="deck_draft_exit_flushing">Saving the latest input before continuing…</string>
+    <string name="deck_draft_exit_problem">The editor still has input or a save that needs attention. Stay to resolve it. Continuing keeps this editor open in memory; unsaved input may be lost if the app process ends.</string>
+    <string name="deck_draft_stay">Stay in editor</string>
+    <string name="deck_draft_continue">Continue and keep input</string>
+    <plurals name="deck_draft_saved_categories">
+        <item quantity="one">%d category choice is retained in this draft.</item>
+        <item quantity="other">%d category choices are retained in this draft.</item>
+    </plurals>
+    <string name="deck_draft_resume">Resume editor</string>
+    <string name="deck_draft_hidden_attention">A deck editor still needs attention. Return to check whether its input has been saved.</string>
+    <string name="deck_draft_versions_blocked">Resolve the retained deck input before saving or restoring a version. You can still inspect existing versions.</string>
+</resources>

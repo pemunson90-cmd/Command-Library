@@ -59,6 +59,52 @@ class DeckLibraryControllerTest {
         var ids=0
         return DeckLibraryController(ownerScope(),p,StandardTestDispatcher(testScheduler),{"id-${++ids}"},{UtcTimestamp(7,8)})
     }
+    /** Explicit actor read double; no actor or persistence behavior is claimed by this consumer test. */
+    private class ObservedDraft(head: DeckSnapshot): DeckDraftEditor {
+        override val state = kotlinx.coroutines.flow.MutableStateFlow(DraftEditorState(currentHead=head))
+        override val hasMutationBarrier=false
+        override val canContinueExit=false
+        override fun open(id:DeckId,target:DeckEditorTarget):Unit=error("Not used")
+        override fun change(body:DeckDraftBody):Unit=error("Not used")
+        override fun confirmExplicit():Unit=error("Not used")
+        override fun retryExact():Unit=error("Not used")
+        override fun provideCurrentCard(card:CardRecord):Unit=error("Not used")
+        override fun discardInput():Unit=error("Not used")
+        override fun discardPreparation():Unit=error("Not used")
+        override fun requestExit(action:DeferredDeckAction):Long=error("Not used")
+        override fun chooseExit(ticket:Long,choice:DraftExitChoice):Unit=error("Not used")
+        override fun takeReadyExit(ticket:Long):DeferredDeckAction?=error("Not used")
+        override fun onBackground():Unit=error("Not used")
+        override fun onActiveGeneration(generation:GenerationId?):Unit=error("Not used")
+        override fun onDeckHeadChanged(id:DeckId,revision:Revision)=Unit
+    }
+    @Test fun olderActorObservationCannotReplaceNewerSelectedHeadOrNotifyOlderRevision()=runTest {
+        val p=Port();val newer=deck().copy(revision=Revision(3),description="Newer accepted content")
+        p.rows[newer.id]=newer
+        val actor=ObservedDraft(newer.copy(revision=Revision(2),description="Older actor observation"))
+        val notifications=mutableListOf<Pair<DeckId,Revision>>()
+        val c=DeckLibraryController(ownerScope(),p,StandardTestDispatcher(testScheduler),now={UtcTimestamp(7)},
+            draftEditor=actor,onCommitted={id,revision->notifications+=id to revision})
+        c.select(newer.id);advanceUntilIdle();assertEquals(newer,c.state.value.selected)
+        c.onDraftCommitted(newer.id,Revision(2));advanceUntilIdle()
+        assertEquals(newer,c.state.value.selected)
+        assertEquals(listOf(newer.id to Revision(3)),notifications)
+        assertFalse(c.state.value.loadingDetail)
+    }
+
+    @Test fun newerActorHeadFencesSuspendedOlderDetailReadAndClearsLoading()=runTest {
+        val p=Port();val old=deck().copy(revision=Revision(3),description="Suspended old read")
+        val head=old.copy(revision=Revision(4),description="New actor head")
+        p.rows[old.id]=old;p.loadGate=CompletableDeferred();p.ignoreReadCancellation=true
+        val c=DeckLibraryController(ownerScope(),p,StandardTestDispatcher(testScheduler),now={UtcTimestamp(7)},
+            draftEditor=ObservedDraft(head))
+        c.select(old.id);runCurrent();assertTrue(c.state.value.loadingDetail)
+        c.onDraftCommitted(head.id,head.revision);runCurrent()
+        assertEquals(head,c.state.value.selected);assertFalse(c.state.value.loadingDetail)
+        p.loadGate!!.complete(Unit);advanceUntilIdle()
+        assertEquals(head,c.state.value.selected);assertFalse(c.state.value.loadingDetail)
+    }
+
     @Test fun createsOnlyAfterConfirmationAndRetryReusesExactCommittedRequest() = runTest {
         val p=Port();val c=controller(p)
         c.create();c.name(" New deck ");assertTrue(p.creates.isEmpty())

@@ -42,7 +42,9 @@ internal fun DeckEditorDialog(controller: DeckLibraryController, form: DeckEdito
                     label = { Text(stringResource(R.string.decks_primer)) }, modifier = Modifier.fillMaxWidth().testTag("deck-editor-primer"))
             } else if (form.mode == DeckEditorMode.REMOVE) Text(stringResource(R.string.deck_edit_remove_warning))
             else {
-                if (form.mode == DeckEditorMode.ADD && search != null) CardPicker(controller, form, search, enabled)
+                if (form.mode == DeckEditorMode.ADD && search != null) DeckCardPicker(search, form.base.id.raw,
+                    form.card?.name, enabled, onClearSelection = { controller.editorChange { it.copy(card = null) } },
+                    onSelect = { card -> controller.editorChange { it.copy(card = card) } })
                 OutlinedTextField(form.quantity, { v -> controller.editorChange { it.copy(quantity = v) } }, enabled = enabled, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), label = { Text(stringResource(R.string.deck_edit_quantity)) },
                     modifier = Modifier.fillMaxWidth().testTag("deck-editor-quantity"))
@@ -95,12 +97,13 @@ internal fun DeckEditorDialog(controller: DeckLibraryController, form: DeckEdito
 }
 
 @Composable
-private fun CardPicker(controller: DeckLibraryController, form: DeckEditorForm, search: SearchController, enabled: Boolean) {
+internal fun DeckCardPicker(search: SearchController, ownerKey: String, selectedName: String?, enabled: Boolean,
+    onClearSelection: () -> Unit, onSelect: (CardRecord) -> Unit, canInteract: () -> Boolean = { true }) {
     val state by search.state.collectAsState()
-    var offset by rememberSaveable(form.base.id.raw, search.queryInput) { mutableIntStateOf(0) }
-    OutlinedTextField(search.queryInput, { value -> search.onQueryChange(value); controller.editorChange { it.copy(card = null) } }, enabled = enabled,
+    var offset by rememberSaveable(ownerKey, search.queryInput) { mutableIntStateOf(0) }
+    OutlinedTextField(search.queryInput, { value -> if (canInteract()) { search.onQueryChange(value); onClearSelection() } }, enabled = enabled,
         singleLine = true, label = { Text(stringResource(R.string.deck_edit_search)) }, modifier = Modifier.fillMaxWidth().testTag("deck-editor-search"))
-    OutlinedButton({ controller.editorChange { it.copy(card = null) }; search.submit() }, enabled = enabled && state.loading == null, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_search_action)) }
+    OutlinedButton({ if (canInteract()) { onClearSelection(); search.submit() } }, enabled = enabled && state.loading == null, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_search_action)) }
     state.queryProblem?.let { problem -> Text(when (problem) {
         QueryProblem.EMPTY -> stringResource(R.string.search_problem_empty)
         QueryProblem.TOO_LONG -> pluralStringResource(R.plurals.search_problem_too_long, SearchController.MAX_QUERY_CODE_POINTS, SearchController.MAX_QUERY_CODE_POINTS)
@@ -110,19 +113,19 @@ private fun CardPicker(controller: DeckLibraryController, form: DeckEditorForm, 
     if (state.stale) Text(stringResource(R.string.deck_edit_stale_cards))
     if (state.searched && state.loading == null && state.results.isEmpty() && state.problem == null) Text(stringResource(R.string.deck_edit_no_cards))
     state.results.drop(offset).take(20).forEach { card ->
-        OutlinedButton({ controller.editorChange { it.copy(card = card) } }, enabled = enabled && !state.stale,
+        OutlinedButton({ if (canInteract()) onSelect(card) }, enabled = enabled && !state.stale,
             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("deck-add-result-${card.oracleId.raw}")) { Text(card.name.take(512)) }
     }
     if (offset > 0 || offset + 20 < state.results.size || state.canLoadMore) ActionRow {
         OutlinedButton({ offset = (offset - 20).coerceAtLeast(0) }, enabled = offset > 0, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_previous_cards)) }
         if (offset + 20 < state.results.size) OutlinedButton({ offset += 20 }, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_next_cards)) }
-        else if (state.canLoadMore) OutlinedButton(search::loadMore, enabled = enabled, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_more_cards)) }
+        else if (state.canLoadMore) OutlinedButton({ if (canInteract()) search.loadMore() }, enabled = enabled, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_edit_more_cards)) }
     }
-    form.card?.let { Text(stringResource(R.string.deck_edit_card_selected, it.name.take(512))) }
+    selectedName?.let { Text(stringResource(R.string.deck_edit_card_selected, it.take(512))) }
     Text(stringResource(R.string.deck_edit_no_printing))
 }
 
-private fun finishLabel(value: Knowledge<Finish>): Int = when (value) {
+internal fun finishLabel(value: Knowledge<Finish>): Int = when (value) {
     is Knowledge.Absent -> R.string.deck_finish_any
     is Knowledge.Unknown -> R.string.deck_finish_unknown
     is Knowledge.Known -> when (value.value) {

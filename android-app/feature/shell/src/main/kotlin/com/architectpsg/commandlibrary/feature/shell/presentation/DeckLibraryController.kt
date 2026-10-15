@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.collect
 
 internal data class DeckLibraryForm(val source: DeckSnapshot?, val name: String = "")
 internal enum class DeckEditorMode { DETAILS, ENTRY, ADD, REMOVE }
@@ -50,6 +51,7 @@ internal class DeckLibraryController(
     private val edits: LocalDeckEdits? = null,
     private val cardCurrent: (CardRecord) -> Boolean = { false },
     private val onCommitted: (DeckId, Revision) -> Unit = { _, _ -> },
+    val draftEditor: DeckDraftEditor? = null,
 ) {
     private val mutable = MutableStateFlow(DeckLibraryUiState())
     val state: StateFlow<DeckLibraryUiState> = mutable.asStateFlow()
@@ -63,16 +65,69 @@ internal class DeckLibraryController(
     private var requestSelectionGeneration = 0L
     private val seenCursors = mutableSetOf<String>()
 
+    init {
+        draftEditor?.let { editor -> scope.launch {
+            editor.state.collect { current ->
+                val exit = current.exit?.takeIf { it.phase == DraftExitPhase.READY } ?: return@collect
+                // ShellRoot consumes global routes; this owner handles retained library actions.
+                if (exit.action is DeferredDeckAction.Navigate || exit.action is DeferredDeckAction.OpenVersions) return@collect
+                when (val action = editor.takeReadyExit(exit.ticket)) {
+                    DeferredDeckAction.CloseEditor -> Unit
+                    is DeferredDeckAction.SelectDeck -> selectImmediately(action.id)
+                    DeferredDeckAction.ClearDeck -> clearSelectionImmediately()
+                    is DeferredDeckAction.OpenEditor -> editor.open(action.deckId, action.target)
+                    DeferredDeckAction.CreateDeck -> createImmediately()
+                    is DeferredDeckAction.DuplicateDeck -> if (mutable.value.selected?.id == action.id) duplicateImmediately()
+                    is DeferredDeckAction.UndoDeck -> if (mutable.value.selected?.id == action.id) undoImmediately()
+                    is DeferredDeckAction.ReorderEntry -> if (mutable.value.selected?.id == action.deckId) moveEntryImmediately(action.entryId, action.direction)
+                    is DeferredDeckAction.Navigate, is DeferredDeckAction.OpenVersions, null -> Unit
+                }
+            }
+        } }
+    }
+
+    private fun gate(action: DeferredDeckAction): Boolean {
+        val editor = draftEditor ?: return false
+        if (editor.state.value.session == null && !editor.hasMutationBarrier) return false
+        editor.requestExit(action)
+        return true
+    }
+
+    /** The actor has validated its acknowledgement and reread actual current state before this. */
+    fun onDraftCommitted(id: DeckId, revision: Revision) {
+        val head = draftEditor?.state?.value?.currentHead?.takeIf { it.id == id }
+        val known = mutable.value.selected?.takeIf { it.id == id }
+        // Independent actor reads can finish after a newer detail read has already been accepted.
+        val obsolete = head != null && known != null && head.revision.value < known.revision.value
+        if (mutable.value.selectedId == id && !obsolete) {
+            ++detailTicket
+            detailJob?.cancel()
+            if (head != null) mutable.update { it.copy(selected = head, loadingDetail = false, detailProblem = null) }
+            else loadSelection(id)
+        }
+        val observedRevision = listOfNotNull(known?.revision, head?.revision, revision).maxBy { it.value }
+        onCommitted(id, observedRevision)
+        refresh()
+    }
+
     val supportsEditing: Boolean get() = edits != null
     private fun editable(): DeckSnapshot? = mutable.value.selected?.takeIf {
         edits != null && request == null && !mutable.value.mutationBusy && it.packageInstances.isEmpty()
     }
-    fun editDetails() { editable()?.let { base -> mutable.update { it.copy(editor = DeckEditorForm(base, DeckEditorMode.DETAILS), invalidEdit = false, mutationProblem = null) } } }
-    fun editEntry(entryId: EntityId, remove: Boolean = false) { editable()?.let { base ->
+    fun editDetails() {
+        if (draftEditor != null) { editable()?.let { draftEditor.open(it.id, DeckEditorTarget.Details) }; return }
+        editable()?.let { base -> mutable.update { it.copy(editor = DeckEditorForm(base, DeckEditorMode.DETAILS), invalidEdit = false, mutationProblem = null) } } }
+    fun editEntry(entryId: EntityId, remove: Boolean = false) {
+        if (draftEditor != null) { editable()?.let { base ->
+            if (base.entries.any { it.id == entryId }) draftEditor.open(base.id, if (remove) DeckEditorTarget.Remove(entryId) else DeckEditorTarget.Entry(entryId))
+        }; return }
+        editable()?.let { base ->
         base.entries.firstOrNull { it.id == entryId }?.let { entry -> mutable.update { it.copy(
             editor = DeckEditorForm(base, if (remove) DeckEditorMode.REMOVE else DeckEditorMode.ENTRY, entry), invalidEdit = false, mutationProblem = null) } }
     } }
-    fun addEntry() { editable()?.let { base -> mutable.update { it.copy(editor = DeckEditorForm(base, DeckEditorMode.ADD), invalidEdit = false, mutationProblem = null) } } }
+    fun addEntry() {
+        if (draftEditor != null) { editable()?.let { draftEditor.open(it.id, DeckEditorTarget.Add) }; return }
+        editable()?.let { base -> mutable.update { it.copy(editor = DeckEditorForm(base, DeckEditorMode.ADD), invalidEdit = false, mutationProblem = null) } } }
     fun editorChange(change: (DeckEditorForm) -> DeckEditorForm) {
         if (request == null && !mutable.value.mutationBusy) mutable.update { state -> state.copy(editor = state.editor?.let(change), invalidEdit = false) }
     }
@@ -80,6 +135,11 @@ internal class DeckLibraryController(
     fun closePendingEditor() { if (mutable.value.pending && !mutable.value.mutationBusy) mutable.update { it.copy(editor = null) } }
     fun discardEditor() { if (request == null && !mutable.value.mutationBusy) mutable.update { it.copy(editor = null, invalidEdit = false) } }
     fun moveEntry(entryId: EntityId, direction: Int) {
+        val id = mutable.value.selected?.id ?: return
+        if (direction != -1 && direction != 1) return
+        if (!gate(DeferredDeckAction.ReorderEntry(id, entryId, direction))) moveEntryImmediately(entryId, direction)
+    }
+    private fun moveEntryImmediately(entryId: EntityId, direction: Int) {
         if (direction != -1 && direction != 1) return
         val base = editable() ?: return
         val ids = base.entries.map { it.id }.toMutableList(); val index = ids.indexOf(entryId); val target = index + direction
@@ -88,6 +148,10 @@ internal class DeckLibraryController(
         freezeEdit { DeckLibraryRequest.Patch(base, DeckPatch(SnapshotList.of(DeckEdit.ReorderEntries(SnapshotList.copyOf(ids))), "Reorder entries"), EntityId(nextId())) }
     }
     fun undo() {
+        val id = mutable.value.selected?.id ?: return
+        if (!gate(DeferredDeckAction.UndoDeck(id))) undoImmediately()
+    }
+    private fun undoImmediately() {
         // Whole-snapshot undo is contribution-safe even when primitive package edits are not.
         val base = mutable.value.selected?.takeIf { edits != null && request == null && !mutable.value.mutationBusy } ?: return
         if (base.revision.value == Long.MAX_VALUE) { mutable.update { it.copy(mutationProblem = Problem.INVALID_INPUT) }; return }
@@ -180,6 +244,9 @@ internal class DeckLibraryController(
     }
 
     fun select(id: DeckId) {
+        if (!gate(DeferredDeckAction.SelectDeck(id))) selectImmediately(id)
+    }
+    private fun selectImmediately(id: DeckId) {
         ++userSelectionGeneration
         loadSelection(id)
     }
@@ -197,21 +264,32 @@ internal class DeckLibraryController(
                     is PortResult.Ok -> if (result.value.id == id && id.source == LocalDeckLibraryLimits.SOURCE &&
                         result.value.entries.size <= DeckPayloadLimits.MAX_ENTRIES) {
                         mutable.update { it.copy(selected = result.value) }
+                        draftEditor?.onDeckHeadChanged(id, result.value.revision)
                     } else mutable.update { it.copy(detailProblem = Problem.CORRUPT_DATA) }
                 }
             } finally { if (ticket == detailTicket) mutable.update { it.copy(loadingDetail = false) } }
         }
     }
     fun clearSelection() {
+        if (!gate(DeferredDeckAction.ClearDeck)) clearSelectionImmediately()
+    }
+    private fun clearSelectionImmediately() {
         ++userSelectionGeneration
         ++detailTicket; detailJob?.cancel()
         mutable.update { it.copy(selectedId = null, selected = null, loadingDetail = false, detailProblem = null) }
     }
     fun create() {
+        if (!gate(DeferredDeckAction.CreateDeck)) createImmediately()
+    }
+    private fun createImmediately() {
         if (request == null && !mutable.value.mutationBusy)
             mutable.update { it.copy(form = DeckLibraryForm(null), editor = null, invalidName = false, mutationProblem = null, savedId = null) }
     }
     fun duplicate() {
+        val id = mutable.value.selected?.id ?: return
+        if (!gate(DeferredDeckAction.DuplicateDeck(id))) duplicateImmediately()
+    }
+    private fun duplicateImmediately() {
         if (request == null && !mutable.value.mutationBusy) mutable.value.selected?.let { source ->
             mutable.update { it.copy(form = DeckLibraryForm(source, source.name), editor = null, invalidName = false,
                 mutationProblem = null, savedId = null) }
