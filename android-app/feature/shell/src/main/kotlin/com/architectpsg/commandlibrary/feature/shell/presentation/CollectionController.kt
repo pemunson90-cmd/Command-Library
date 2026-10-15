@@ -421,7 +421,7 @@ internal class CollectionController(
                             val survivor = if (selectionGeneration == requestSelectionGeneration && frozen is Request.Apply && frozen.preview.form.mode == CollectionFormMode.ADD) projection.changes.firstOrNull()?.lotId else mutable.value.selectedLotId
                             invalidateBulkPreview(false)
                             mutable.update { it.copy(bulkForm = if (frozen is Request.Bulk) null else it.bulkForm, bulkSelectionBase = if (frozen is Request.Bulk) null else it.bulkSelectionBase, bulkIds = if (frozen is Request.Bulk) SnapshotList.empty() else it.bulkIds, bulkAnchor = if (frozen is Request.Bulk) null else it.bulkAnchor, bulkDiscardPrompt = false, pending = true, uncertain = false, awaitingFresh = true, form = null, preview = null, issues = SnapshotList.empty(),
-                                selectedLotId = survivor, savedRevision = null, mutationProblem = null) }
+                                selectedLotId = survivor, savedRevision = projection.resultRevision, mutationProblem = null) }
                         }
                     }
                 }

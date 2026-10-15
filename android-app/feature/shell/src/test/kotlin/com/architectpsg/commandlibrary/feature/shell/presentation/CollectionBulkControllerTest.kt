@@ -47,7 +47,7 @@ class CollectionBulkControllerTest {
             if(early is Outcome.Success && early.value is InventoryApplyResult.Rejected)return early
             val receipt=receipts.getOrPut(operationId){
                 val delta=project(stored,patch);val after=delta.changes.associateBy{it.lotId}
-                stored=stored.copy(revision=delta.resultRevision,lots=SnapshotList.copyOf(stored.lots.map{after[it.id]?.after?:it}))
+                stored=stored.copy(revision=delta.resultRevision,capturedAt=UtcTimestamp(8),lots=SnapshotList.copyOf(stored.lots.map{after[it.id]?.after?:it}))
                 InventoryCommit(delta,UtcTimestamp(8))
             }
             applyGate?.await()
@@ -55,7 +55,7 @@ class CollectionBulkControllerTest {
         }
         override suspend fun undo(expected:Revision,operationId:EntityId,cancel:CancelToken):Outcome<InventoryCommit> {
             undos+=expected to operationId
-            val next=Revision(expected.value+1);val before=stored;val selected=receipts.values.last().projection.changes.map{it.lotId}.toSet();stored=original.copy(revision=next,lots=SnapshotList.copyOf(original.lots.map{if(it.id in selected)it.copy(revision=next)else it}))
+            val next=Revision(expected.value+1);val before=stored;val selected=receipts.values.last().projection.changes.map{it.lotId}.toSet();stored=original.copy(revision=next,capturedAt=UtcTimestamp(9),lots=SnapshotList.copyOf(original.lots.map{if(it.id in selected)it.copy(revision=next)else it}))
             return Outcome.Success(InventoryCommit(InventoryProjection(expected,next,SnapshotList.copyOf(before.lots.filter{it.id in selected}.map{row->InventoryLotChange(row.id,row,stored.lots.first{it.id==row.id})}),SnapshotList.empty(),SnapshotList.empty()),UtcTimestamp(9)))
         }
         override suspend fun printing(id:CardId,cancel:CancelToken):Outcome<PrintingRecord> {

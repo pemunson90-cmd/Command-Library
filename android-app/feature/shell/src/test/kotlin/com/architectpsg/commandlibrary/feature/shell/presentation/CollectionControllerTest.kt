@@ -338,7 +338,7 @@ class CollectionControllerTest {
 
     @Test fun initialAddOwnsBeforeCatalogAwaitAndReleasesOnPreflightRefusal()=runTest {
         val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
-        c.ensureLoaded();advanceUntilIdle();c.beginAdd(f.currentPrinting);advanceUntilIdle();c.previewEdit();advanceUntilIdle()
+        c.ensureLoaded();advanceUntilIdle();c.beginAdd(f.currentPrinting);advanceUntilIdle();c.finish(Finish.NONFOIL);c.previewEdit();advanceUntilIdle()
         val proofGate=CompletableDeferred<Unit>();f.catalogGate=proofGate
         f.catalogResponse=failure(FailureCode.STALE_GENERATION)
         c.confirmPreview()
@@ -357,7 +357,7 @@ class CollectionControllerTest {
         c.confirmPreview();advanceUntilIdle()
         val frozen=f.calls.single();val ids=f.ids
         assertTrue(gate.busy.value);assertTrue(c.state.value.awaitingFresh);assertTrue(c.state.value.pending)
-        assertFalse(c.state.value.uncertain);assertNull(c.state.value.savedRevision)
+        assertFalse(c.state.value.uncertain);assertEquals(Revision(4),c.state.value.savedRevision)
         assertEquals(Revision(3),c.state.value.inventory!!.revision)
         c.selectDeck(deck().id);advanceUntilIdle()
         val readsBeforeAllocation=f.snapshotCalls

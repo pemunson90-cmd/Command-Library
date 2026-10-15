@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-collection-owner-gate-210
+Checkpoint-ID: cp-20261015-collection-owner-focused-repair-211
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. collection-owner-gate
+Next step: 3. collection-owner-focused-repair
 
-Updated UTC: 2026-10-15T13:44:59Z
+Updated UTC: 2026-10-15T13:55:13Z
 Status: in_progress; lease: active.
-Verified base: 3dd15cbd2aa4e3138c1fec1732de5eba1a73872d.
+Verified base: 77de2ce5c55e56f5f3c6e934953edac322d0069b.
 
-Root8path collection owner/fullACK/readback source02 independentbackend+consumerACK after3admission/1UXholds; coherentlocalintegrationgate next. Isolatedmarkowned26authoredtests source01selfrepair pending02review/notintegrated. Rootsolebuildslot/leaseactive.
+Actual65test/9fail gate preserved; source03 boundedfixture/finishsetup/knownreceiptstatus corrections independentACK withlegacyassertions/inventoryguardsretained. Root59Collection focusedretry+blockedKotlincompile next, app4passedseparate; markownedisolated03source repair ongoing.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

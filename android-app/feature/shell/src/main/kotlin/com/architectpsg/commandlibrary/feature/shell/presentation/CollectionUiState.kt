@@ -45,6 +45,7 @@ internal data class CollectionUiState(
     val awaitingFresh: Boolean = false,
     val uncertain: Boolean = false,
     val mutationProblem: Problem? = null,
+    /** Accepted commit receipt, not the revision of the separately admitted current inventory. */
     val savedRevision: Revision? = null,
     val decks: SnapshotList<DeckSummary> = SnapshotList.empty(),
     val deckCursor: String? = null,

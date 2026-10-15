@@ -50,12 +50,12 @@ class CollectionBulkUiTest {
         override suspend fun snapshot(cancel:CancelToken)=Outcome.Success(stored)
         override suspend fun apply(patch:CollectionPatch,expected:Revision,operationId:EntityId,cancel:CancelToken):Outcome<InventoryApplyResult> {
             calls+=Triple(patch,expected,operationId)
-            val receipt=receipts.getOrPut(operationId){val p=project(stored,patch);val changed=p.changes.associateBy{it.lotId};stored=stored.copy(revision=p.resultRevision,lots=SnapshotList.copyOf(stored.lots.map{changed[it.id]?.after?:it}));InventoryCommit(p,UtcTimestamp(2))}
+            val receipt=receipts.getOrPut(operationId){val p=project(stored,patch);val changed=p.changes.associateBy{it.lotId};stored=stored.copy(revision=p.resultRevision,capturedAt=UtcTimestamp(2),lots=SnapshotList.copyOf(stored.lots.map{changed[it.id]?.after?:it}));InventoryCommit(p,UtcTimestamp(2))}
             return if(unknown)Outcome.Unknown("Synthetic lost acknowledgement",SnapshotList.empty())else Outcome.Success(InventoryApplyResult.Committed(receipt))
         }
         override suspend fun undo(expected:Revision,operationId:EntityId,cancel:CancelToken):Outcome<InventoryCommit> {
             val prior=receipts.values.single().projection;val next=Revision(expected.value+1);val selected=prior.changes.map{it.lotId}.toSet();val before=stored
-            stored=original.copy(revision=next,lots=SnapshotList.copyOf(original.lots.map{if(it.id in selected)it.copy(revision=next)else it}))
+            stored=original.copy(revision=next,capturedAt=UtcTimestamp(3),lots=SnapshotList.copyOf(original.lots.map{if(it.id in selected)it.copy(revision=next)else it}))
             return Outcome.Success(InventoryCommit(InventoryProjection(expected,next,SnapshotList.copyOf(prior.changes.map{InventoryLotChange(it.lotId,before.lots.first{lot->lot.id==it.lotId},stored.lots.first{lot->lot.id==it.lotId})}),SnapshotList.empty(),SnapshotList.empty()),UtcTimestamp(3)))
         }
         override suspend fun printing(id:CardId,cancel:CancelToken)=Outcome.Success(record)

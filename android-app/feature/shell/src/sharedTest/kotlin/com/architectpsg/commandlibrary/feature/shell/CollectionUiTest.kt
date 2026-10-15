@@ -58,7 +58,7 @@ class CollectionUiTest {
             val receipt=receipts.getOrPut(operationId){
                 val p=project(stored,patch);val next=stored.lots.toMutableList()
                 p.changes.forEach{change->next.removeAll{it.id==change.lotId};change.after?.let{next.add(it)}}
-                stored=stored.copy(revision=p.resultRevision,lots=SnapshotList.copyOf(next))
+                stored=stored.copy(revision=p.resultRevision,capturedAt=UtcTimestamp(2),lots=SnapshotList.copyOf(next))
                 InventoryCommit(p,UtcTimestamp(2))
             }
             return if(unknown)Outcome.Unknown("Synthetic unknown acknowledgement",SnapshotList.empty())else Outcome.Success(InventoryApplyResult.Committed(receipt))
