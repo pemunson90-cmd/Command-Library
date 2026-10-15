@@ -35,7 +35,7 @@ internal fun AiHistoryDialog(controller: AiHistoryController, onReview: (Turn) -
                 Text(stringResource(R.string.ai_history_title), style = MaterialTheme.typography.titleLarge)
                 Text(state.deckName, style = MaterialTheme.typography.bodyMedium)
                 LazyColumn(Modifier.weight(1f).testTag("ai-history-list"), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    state.problem?.let { problem -> item { Text(problemText(problem), color = MaterialTheme.colorScheme.error,
+                    state.problem?.let { problem -> item { Text(stringResource(problemText(problem)), color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.testTag("ai-history-problem")) } }
                     if (state.busy || state.writing) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
                     if (capture != null) {
