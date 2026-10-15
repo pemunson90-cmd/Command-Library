@@ -87,7 +87,9 @@ internal class ProviderGenerationController(private val scope: CoroutineScope,
             var acknowledged = false
             try {
                 val result = callPort(dispatcher) { token -> generation.run(selected, header, input, token) { turn ->
-                    if (attemptId == attempt) mutable.value = state.value.copy(turn = turn)
+                    withContext(scope.coroutineContext.minusKey(Job)) {
+                        if (attemptId == attempt) mutable.value = state.value.copy(turn = turn)
+                    }
                 } }
                 if (attemptId != attempt) return@launch
                 mutable.value = when (result) {

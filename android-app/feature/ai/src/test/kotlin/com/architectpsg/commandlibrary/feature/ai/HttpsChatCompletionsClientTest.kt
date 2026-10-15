@@ -53,7 +53,7 @@ class HttpsChatCompletionsClientTest {
     }
     @Test fun missingAttachedCredentialAndHeaderInjectionNeverReachWire() = runBlocking {
         for (key in listOf<Outcome<String>>(
-            Outcome.Failure(DomainFailure(FailureCode.NOT_FOUND, "Private vault diagnostic", SnapshotList.empty())),
+            Outcome.Failure(DomainFailure(FailureCode.PERSISTENCE, "Private vault diagnostic", SnapshotList.empty())),
             Outcome.Success("key\r\nInjected: bad"), Outcome.Success(""), Outcome.Success("white space"))) {
             val vault = Vault().also { it.key = key }; val network = Network()
             val result = HttpsChatCompletionsClient(network, vault).stream(attached(vault), request, cancel).toList()

@@ -19,6 +19,7 @@ import com.architectpsg.commandlibrary.feature.shell.ui.problemText
 internal fun ProviderGenerationDialog(controller: ProviderGenerationController) {
     val state by controller.state.collectAsState()
     if (!state.visible) return
+    val renderedFrame = state.frame
     Dialog(onDismissRequest = controller::hide) {
         Surface(shape = MaterialTheme.shapes.large) {
             Column(Modifier.fillMaxWidth().heightIn(max = 720.dp).padding(16.dp).verticalScroll(rememberScrollState()),
@@ -44,11 +45,11 @@ internal fun ProviderGenerationDialog(controller: ProviderGenerationController) 
                     Text(stringResource(R.string.provider_generation_reload_profiles))
                 }
                 Row {
-                    Checkbox(state.consent, { controller.consent(it, state.frame) }, enabled = state.selected != null && !state.sending && !state.busy && !state.uncertain,
+                    Checkbox(state.consent, { controller.consent(it, renderedFrame) }, enabled = state.selected != null && !state.sending && !state.busy && !state.uncertain,
                         modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp).testTag("provider-generation-consent"))
                     Text(stringResource(R.string.provider_generation_consent), Modifier.padding(top = 12.dp))
                 }
-                Button({ controller.send(state.frame) }, enabled = state.consent && !state.sending && !state.busy && !state.uncertain,
+                Button({ controller.send(renderedFrame) }, enabled = state.consent && !state.sending && !state.busy && !state.uncertain,
                     modifier = Modifier.heightIn(min = 48.dp).testTag("provider-generation-send")) {
                     Text(stringResource(if (state.turn == null) R.string.provider_generation_send else R.string.provider_generation_retry))
                 }
