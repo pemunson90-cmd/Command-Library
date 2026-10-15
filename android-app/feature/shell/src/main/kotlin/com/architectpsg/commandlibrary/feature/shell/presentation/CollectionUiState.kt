@@ -18,6 +18,16 @@ internal data class CollectionForm(
     val dirty: Boolean = false,
 )
 internal data class CollectionUiState(
+    val bulkSelectionPreparing: Boolean = false,
+    val bulkSelectionBase: InventorySnapshot? = null,
+    val bulkIds: SnapshotList<EntityId> = SnapshotList.empty(),
+    val bulkAnchor: EntityId? = null,
+    val bulkSelectionProblem: Problem? = null,
+    val bulkForm: CollectionBulkForm? = null,
+    val bulkPreview: CollectionBulkPreview? = null,
+    val bulkPreviewing: Boolean = false,
+    val bulkProblem: Problem? = null,
+    val bulkDiscardPrompt: Boolean = false,
     val inventory: InventorySnapshot? = null,
     val loading: Boolean = false,
     val loadProblem: Problem? = null,

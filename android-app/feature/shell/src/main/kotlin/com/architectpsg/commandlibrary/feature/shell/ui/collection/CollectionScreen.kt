@@ -9,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
@@ -50,6 +52,11 @@ internal fun CollectionScreen(controller: CollectionController, widthClass: Widt
             AllocationPane(controller, state, Modifier.weight(1f), false, { abandon = true })
         }
     }
+    state.bulkForm?.let { CollectionBulkEditDialog(controller, it, state) }
+    if (state.bulkDiscardPrompt) AlertDialog(onDismissRequest = controller::keepBulkForm,
+        title = { Text(stringResource(R.string.collection_discard_title)) }, text = { Text(stringResource(R.string.collection_bulk_unsaved)) },
+        confirmButton = { TextButton(controller::discardBulkForm, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_discard)) } },
+        dismissButton = { TextButton(controller::keepBulkForm, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_keep_editing)) } })
     state.form?.let { CollectionEditDialog(controller, it, state) }
     if (state.discardPrompt) AlertDialog(onDismissRequest = controller::keepForm,
         title = { Text(stringResource(R.string.collection_discard_title)) }, text = { Text(stringResource(R.string.collection_unsaved)) },
@@ -63,15 +70,29 @@ internal fun CollectionScreen(controller: CollectionController, widthClass: Widt
 
 @Composable
 private fun InventoryPane(controller: CollectionController, state: CollectionUiState, modifier: Modifier, abandon: () -> Unit, browseCards: (() -> Unit)?) {
-    val snapshot = state.inventory
+    val snapshot = state.bulkSelectionBase ?: state.inventory
     val selected = snapshot?.lots?.firstOrNull { it.id == state.selectedLotId }
     LazyColumn(modifier.fillMaxHeight().testTag(CollectionTags.INVENTORY), verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
         item {
             CollectionStatus(controller, state, abandon)
             ActionRow {
                 OutlinedButton(controller::refresh, enabled = !state.loading && !state.mutationBusy, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_refresh)) }
-                OutlinedButton(controller::undo, enabled = snapshot != null && !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-undo")) { Text(stringResource(R.string.collection_undo)) }
+                OutlinedButton(controller::undo, enabled = snapshot != null && !state.pending && !state.mutationBusy && state.form == null && state.bulkForm == null, modifier = Modifier.touch().testTag("collection-undo")) { Text(stringResource(R.string.collection_undo)) }
             }
+            if (state.bulkSelectionBase == null) OutlinedButton(controller::beginBulkSelection, enabled = !state.pending && !state.mutationBusy && state.form == null && !state.bulkSelectionPreparing, modifier = Modifier.touch().testTag("collection-bulk-select")) { Text(stringResource(R.string.collection_bulk_select)) }
+            else {
+                Text(stringResource(R.string.collection_bulk_selection_revision,state.bulkSelectionBase.revision.value))
+                Text(pluralStringResource(R.plurals.collection_bulk_selected,state.bulkIds.size,state.bulkIds.size))
+                Text(stringResource(R.string.collection_bulk_range_hint))
+                val missing = controller.missingBulkIds().size
+                if (missing > 0) Text(pluralStringResource(R.plurals.collection_bulk_missing_selected,missing,missing),color = MaterialTheme.colorScheme.error)
+                ActionRow {
+                    OutlinedButton(controller::beginBulkEdit, enabled = state.bulkIds.isNotEmpty() && !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-bulk-edit")) { Text(stringResource(R.string.collection_bulk_edit)) }
+                    TextButton(controller::endBulkSelection, enabled = !state.pending && !state.mutationBusy && state.bulkForm == null, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_bulk_end)) }
+                }
+            }
+            if (state.bulkSelectionPreparing) LinearProgressIndicator(Modifier.fillMaxWidth())
+            state.bulkSelectionProblem?.let { CollectionProblem(it); Text(stringResource(R.string.collection_bulk_limit)) }
             Text(stringResource(R.string.collection_add_entry))
             if (browseCards != null) OutlinedButton(browseCards, modifier = Modifier.touch().testTag("collection-browse-cards")) { Text(stringResource(R.string.collection_browse_cards)) }
             if (state.loading) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_loading)) }
@@ -89,14 +110,24 @@ private fun InventoryPane(controller: CollectionController, state: CollectionUiS
                     PagedText(stringResource(R.string.collection_location), lot.location, lot.id.value)
                     PagedText(stringResource(R.string.collection_notes), lot.notes, lot.id.value)
                     ActionRow {
-                        OutlinedButton({ controller.beginEdit(lot.id) }, enabled = !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-edit")) { Text(stringResource(R.string.collection_edit)) }
-                        OutlinedButton({ controller.beginEdit(lot.id, true) }, enabled = !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-remove")) { Text(stringResource(R.string.collection_remove)) }
+                        OutlinedButton({ controller.beginEdit(lot.id) }, enabled = !state.pending && !state.mutationBusy && state.form == null && state.bulkForm == null, modifier = Modifier.touch().testTag("collection-edit")) { Text(stringResource(R.string.collection_edit)) }
+                        OutlinedButton({ controller.beginEdit(lot.id, true) }, enabled = !state.pending && !state.mutationBusy && state.form == null && state.bulkForm == null, modifier = Modifier.touch().testTag("collection-remove")) { Text(stringResource(R.string.collection_remove)) }
                     }
                 }
             }
         }
         if (snapshot != null) items(snapshot.lots, key = { it.id.value }) { lot ->
-            OutlinedButton({ controller.selectLot(lot.id) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+            if (state.bulkSelectionBase != null) Column {
+                Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("collection-bulk-lot-${lot.id.value}")
+                    .onPreviewKeyEvent { event ->
+                        if (event.type == KeyEventType.KeyDown && event.isShiftPressed && (event.key == Key.Spacebar || event.key == Key.Enter)) { controller.toggleBulkLot(lot.id,true); true } else false
+                    }.toggleable(lot.id in state.bulkIds, enabled = !state.pending && !state.mutationBusy && state.bulkForm == null, role = Role.Checkbox, onValueChange = { controller.toggleBulkLot(lot.id) }).semantics(mergeDescendants = true) {}) {
+                    Checkbox(lot.id in state.bulkIds,null)
+                    Text(stringResource(R.string.collection_row,lotName(lot),lot.quantity))
+                }
+                if (state.bulkAnchor != null) TextButton({ controller.toggleBulkLot(lot.id,true) }, enabled = !state.pending && !state.mutationBusy && state.bulkForm == null,
+                    modifier = Modifier.touch().testTag("collection-bulk-range-${lot.id.value}")) { Text(stringResource(R.string.collection_bulk_range)) }
+            } else OutlinedButton({ controller.selectLot(lot.id) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                 .semantics { this.selected = lot.id == state.selectedLotId }.testTag("collection-lot-${lot.id.value}")) {
                 Text(stringResource(R.string.collection_row, lotName(lot), lot.quantity))
             }
@@ -179,7 +210,7 @@ private fun CollectionStatus(controller: CollectionController, state: Collection
     else Text(stringResource(R.string.collection_unresolved_printing))
     lot.identity.raw?.let { Text(stringResource(R.string.collection_raw_identity, it.provider.value.take(512), it.kind.take(512), it.rawId.take(512))) }
 }
-@Composable private fun PagedText(label: String, text: String, id: String) {
+@Composable internal fun PagedText(label: String, text: String, id: String) {
     var offset by rememberSaveable(id, label) { mutableIntStateOf(0) }
     val start = offset.coerceIn(0, text.length)
     var end = (start + 4096).coerceAtMost(text.length)

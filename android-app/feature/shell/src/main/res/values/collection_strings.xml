@@ -107,4 +107,35 @@
         <item quantity="one">%d combined addition</item>
         <item quantity="other">%d combined additions</item>
     </plurals>
+    <string name="collection_bulk_select">Select lots for bulk edit</string>
+    <string name="collection_bulk_edit">Edit selected lots</string>
+    <string name="collection_bulk_end">End bulk selection</string>
+    <string name="collection_bulk_selection_revision">Selection uses displayed snapshot revision %1$d. Refreshing keeps this selection until you explicitly rebase it.</string>
+    <string name="collection_bulk_range_hint">Toggle individual lots, or select a range from the last anchor. Shift+Space or Shift+Enter selects a range.</string>
+    <string name="collection_bulk_range">Select range to this lot</string>
+    <string name="collection_bulk_limit">Select at most 1,024 lots. The rejected selection was not truncated.</string>
+    <string name="collection_bulk_unsaved">Bulk values are unsaved local input. Keep preserves each original value; Set replaces that field on every selected lot. Quantity is exact per lot, including zero. Empty Set location clears it.</string>
+    <string name="collection_bulk_keep">Keep</string>
+    <string name="collection_bulk_set">Set</string>
+    <string name="collection_bulk_all_keep">Choose Set for at least one field before previewing.</string>
+    <string name="collection_bulk_preview">Preview every selected lot</string>
+    <string name="collection_bulk_confirm">Apply all selected replacements</string>
+    <string name="collection_bulk_preview_notice">This preview writes nothing. Every issue blocks the complete atomic operation. Excluding a row changes the selection and requires a new preview.</string>
+    <string name="collection_bulk_exclude">Exclude this lot and preview again</string>
+    <string name="collection_bulk_before">Original lot</string>
+    <string name="collection_bulk_after">Proposed lot</string>
+    <string name="collection_bulk_id">Lot identity: %1$s</string>
+    <string name="collection_bulk_missing">This selected lot is missing from the refreshed snapshot.</string>
+    <string name="collection_bulk_quantity_issue">Set quantity must be an exact nonnegative whole number per lot.</string>
+    <string name="collection_bulk_printing_issue">Finish needs a known exact printing identity. Other fields can keep unresolved identity and finish.</string>
+    <string name="collection_bulk_catalog_issue">Printing identity, language, Oracle mapping or active catalog provenance does not match this lot.</string>
+    <string name="collection_bulk_finish_issue">The current printing record does not supply the selected finish as available.</string>
+    <string name="collection_bulk_preserve">All other lot fields and retained identity/evidence remain unchanged.</string>
+    <plurals name="collection_bulk_selected"><item quantity="one">%d selected lot</item><item quantity="other">%d selected lots</item></plurals>
+    <string name="collection_bulk_common">Original values are common:</string>
+    <string name="collection_bulk_mixed">Original values are mixed. Keep preserves each lot.</string>
+    <string name="collection_bulk_empty_location">Original location is empty.</string>
+    <string name="collection_bulk_original_missing">Some selected originals are missing. Exclude them explicitly or refresh and rebase.</string>
+    <string name="collection_bulk_missing_id">Missing selected lot: %1$s</string>
+    <plurals name="collection_bulk_missing_selected"><item quantity="one">%d selected lot is missing. Open Edit selected lots to inspect and explicitly exclude it, or refresh and rebase.</item><item quantity="other">%d selected lots are missing. Open Edit selected lots to inspect and explicitly exclude them, or refresh and rebase.</item></plurals>
 </resources>
