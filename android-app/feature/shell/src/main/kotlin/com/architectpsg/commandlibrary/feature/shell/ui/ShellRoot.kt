@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -75,6 +76,14 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         val visibleDestination = destination.takeIf { it in destinations } ?: ShellDestination.CARDS
+        val navigate: (ShellDestination) -> Unit = { target ->
+            // Fence any in-flight browser callback in the navigation event, before the next frame.
+            controllers.printings?.setVisible(target == ShellDestination.CARDS)
+            destination = target
+        }
+        LaunchedEffect(visibleDestination, controllers) {
+            controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
+        }
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
         val rulesPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri != null) controllers.rules?.start(DocumentRef(uri.toString()))
@@ -111,7 +120,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                         rulesPickerUnavailable = rulesPickerUnavailable,
                         onPickRules = pickRules,
                         onPickFile = pickFile,
-                        onNavigate = { destination = it },
+                        onNavigate = navigate,
                         modifier = contentModifier,
                     )
                 }
@@ -123,7 +132,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                                 destinations.forEach { item ->
                                     NavigationBarItem(
                                         selected = visibleDestination == item,
-                                        onClick = { destination = item },
+                                        onClick = { navigate(item) },
                                         icon = { Icon(painterResource(item.icon), contentDescription = null) },
                                         label = { Text(stringResource(item.label)) },
                                         modifier = Modifier.testTag(item.tag),
@@ -143,7 +152,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             destinations.forEach { item ->
                                 NavigationRailItem(
                                     selected = visibleDestination == item,
-                                    onClick = { destination = item },
+                                    onClick = { navigate(item) },
                                     icon = { Icon(painterResource(item.icon), contentDescription = null) },
                                     label = { Text(stringResource(item.label)) },
                                     modifier = Modifier.testTag(item.tag),
@@ -184,6 +193,7 @@ private fun DestinationContent(
             onOpenCatalog = { onNavigate(ShellDestination.CATALOG) },
             modifier = modifier,
             rulings = controllers.rulings,
+            printings = controllers.printings,
             onManageRulings = if(controllers.downloads?.rulingsEnabled == true) ({ onNavigate(ShellDestination.CATALOG) }) else null,
             onLookupKeyword = controllers.rules?.let { rules -> { keyword: String ->
                 rules.lookupKeyword(keyword); onNavigate(ShellDestination.RULES)

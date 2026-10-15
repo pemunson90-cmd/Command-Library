@@ -1,6 +1,6 @@
 # Retained Android v1 campaign — revision r1
 
-Status: engineering review pending; no new feature acceptance. Root remains `codex-thread-recovery-20261013` on `agent/cx-thread-recovery-20261013`. Pat's complete 2026-10-15 parallel-orchestrator instruction authorizes this resequencing; it does not authorize a new main merge or APK delivery.
+Status: engineering ACK; pilot integrated and locally verified (PARALLEL-PILOT-LOCAL-20261015.md). No complete requirement acceptance. Root remains `codex-thread-recovery-20261013` on `agent/cx-thread-recovery-20261013`. Pat's complete 2026-10-15 parallel-orchestrator instruction authorizes this resequencing; it does not authorize a new main merge or APK delivery.
 
 The execution map is the `execution` extension of [kotlin-registry.json](../../architecture/kotlin-registry.json). [coverage.json](../../architecture/coverage.json) joins each requirement to those tasks. The queue and task cards own live assignments; this document explains scheduling, not a second tracker.
 

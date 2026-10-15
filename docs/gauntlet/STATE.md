@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-parallel-campaign-160. Updated UTC: 2026-10-15T04:25:16Z.
+Checkpoint: cp-20261015-parallel-pilot-integrated-161. Updated UTC: 2026-10-15T04:47:40Z.
 
-Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-dispatch-reviewed-isolated-deck-link-pilot
+Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step2.
+review-durable-deck-domain-codec-contracts-then-dispatch-ready-producers
 
-D29 full64requirement/213parity35task map and two r1 producer packets engineeringACK; sharedbaseline config/core compile28s; newmodules NO-SOURCE notfeatures. Publish claims then dispatch verifiedisolated deck/link workers while root owns printing/UI/sharedprerequisites. All source/native/GameService/finishedAPKholds retained.
+D29 reviewed35task fullscope map executed: isolated deck/link returns exactsourceACK integrated; root actual printing selector/supplied-link UI generation+resize+route fenced.91scopedtests10XML0fail/error/skip, lint/nativeKotlincompile; no device/fullv1 acceptance. Next durabledeck sharedcontract review and next safe parallel producers. Root authority/holds retained.
 
 Read CURRENT, machine state and task card.

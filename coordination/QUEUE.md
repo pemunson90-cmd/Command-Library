@@ -1,13 +1,14 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261015-parallel-campaign-160. Next: orch-kotlin-k3-offline-data-01 step3; in_progress.
+Checkpoint-ID: cp-20261015-parallel-pilot-integrated-161. Next: orch-android-v1-campaign-01 step2; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
 | Task | Stage | Status | Prerequisites | Next |
 |---|---|---|---|---|
+| orch-android-v1-campaign-01 | Retained Android v1 across K3/M2–M9 | active under D29 | reviewed35-task map/first pilot | integrate verified source; durable deck contracts then next ready packets |
 | orch-fold7-functional-01 | Historical internal build | superseded as delivery pointer by D-24 | debug foundation evidence retained | no finished-app delivery claim |
-| orch-kotlin-k3-offline-data-01 | K3 full offline corpus | active; incomplete | reviewed K2 foundation and D-24 complete-app execution | reviewed downloads/full-feed/rulings/search implementation and acceptance |
+| orch-kotlin-k3-offline-data-01 | K3 full offline corpus | incomplete; root campaign retains acceptance | reviewed K2 foundation and D-24 complete-app execution | reviewed downloads/full-feed/rulings/search implementation and acceptance |
 | cx-k3-acquisition-codec-01 | K3 payload persistence | source/hosted accepted | exact schema4/wire hosted gate38328542087 | root platform binding |
 | cx-k3-full-framing-01 | K3 full framing | source/hosted accepted | exact38327108153 | consume in actual full installation |
 | cx-k3-download-engine-01 | K3 durable downloads | source reviewed/integrated on root working branch; lock released | independent134tests+31probes | actual guarded platform binding and hosted acceptance |

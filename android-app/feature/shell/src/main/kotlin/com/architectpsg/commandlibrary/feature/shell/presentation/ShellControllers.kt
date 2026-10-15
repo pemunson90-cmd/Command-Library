@@ -40,6 +40,9 @@ internal class ShellControllers(
 
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
+    val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
+        search.state.value.selected == card && status.state.value.status?.activeGeneration()?.id == card.provenance.generation
+    } }
     val rulings = ports.rulings?.let { RulingsController(scope, it, ioDispatcher) }
     val downloads = ports.englishCatalog?.let { DownloadsController(scope, it, ports.settings, ports.catalogStatus, ioDispatcher,
         { status.refresh(); rulings?.refresh() }, ports.rulingsDownloads, ports.rulings) }
@@ -53,7 +56,11 @@ internal class ShellControllers(
                 .collect { generation ->
                     search.onActiveGeneration(generation)
                     profiles?.commanderSearch?.onActiveGeneration(generation)
+                    printings?.onActiveGeneration(generation)
                 }
+        }
+        scope.launch {
+            search.state.map { it.selected }.distinctUntilChanged().collect { printings?.selectCard(it) }
         }
         status.refresh()
         settings.load()

@@ -11,6 +11,8 @@ import com.architectpsg.commandlibrary.core.model.PlayerProfileRepository
 import com.architectpsg.commandlibrary.core.model.CatalogRulings
 import com.architectpsg.commandlibrary.core.model.CatalogTextLookup
 import com.architectpsg.commandlibrary.core.model.KeywordRulesLookup
+import com.architectpsg.commandlibrary.core.model.CatalogPrintingLookup
+import com.architectpsg.commandlibrary.core.model.CardLinks
 
 /**
  * The accepted core capabilities the shell presents. Root assembly supplies real adapters, created
@@ -43,4 +45,8 @@ public class ShellPorts(
     public val catalogTextLookup: CatalogTextLookup? = null,
     /** Exact installed glossary links, independent of acquisition and literal search fallback. */
     public val keywordRulesLookup: KeywordRulesLookup? = null,
+    /** Independent local printing reader; no acquisition initialization. */
+    public val catalogPrintings: CatalogPrintingLookup? = null,
+    /** Complete supplied/template resolver; rendering never performs network IO. */
+    public val cardLinks: CardLinks? = null,
 )

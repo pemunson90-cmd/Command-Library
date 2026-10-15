@@ -10,6 +10,12 @@
     "android-app/feature/decks/src/test/**",
     "coordination/handoffs/cx-campaign-deck-edits-01.md"
   ],
-  "status": "active",
-  "authority": "Live root continuation branch only; inherited worktree lock copies are not independent authority"
+  "status": "released",
+  "authority": "Live root continuation branch only; inherited worktree lock copies are not independent authority",
+  "completion_commit": "71096d92e11524b77eecf19b2a6405d86f2283a8",
+  "integration_commits": [
+    "3623bcf",
+    "5925081"
+  ],
+  "evidence": "13worker JVM tests0fail/error/skip; independent exact-sourceACK; assembled root batch pending"
 }

@@ -4,8 +4,8 @@ Current assignment board,2026-10-15. Base your checkout on the latest published 
 
 | ID | Task | Status | Owner | Task card |
 |---|---|---|---|---|
-| campaign-deck-edits | Reviewed pure deck edit/entry-diff producer | TAKEN | Root native worker; isolated branch agent/campaign-deck-edits-20261015 | [packet](tasks/cx-campaign-deck-edits-01.md) |
-| campaign-links | Reviewed supplied/template CardLinks producer | TAKEN | Root native worker; isolated branch agent/campaign-links-20261015 | [packet](tasks/cx-campaign-links-01.md) |
+| campaign-deck-edits | Pure deck edit/entry-diff producer | DONE (scoped producer) | 71096d9 → root3623bcf/5925081;13focusedpass/sourceACK | [packet](tasks/cx-campaign-deck-edits-01.md) |
+| campaign-links | Supplied/template CardLinks producer | DONE (scoped producer) | 45b3822 → rootdf1d323/86f692a;35focusedpass; final root integration pending | [packet](tasks/cx-campaign-links-01.md) |
 | life-profiles | Real SQLite player profile persistence and model codec port | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-profiles-01.md) |
 | scryfall-integrate | Bring the completed reviewed metadata decoder and13 tests onto the recovery baseline; verify locally | DONE | codex-scryfall-integration-20261014 / ad3f9aa | [details](tasks/cx-k3-scryfall-integration-01.md) |
 | life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | DONE | claude-code-life-history-audit-20261014 / component/life-history-audit-20261014 | [details](tasks/cx-m2-life-history-audit-01.md) |
@@ -17,7 +17,7 @@ Current assignment board,2026-10-15. Base your checkout on the latest published 
 | life-timing-engine | Modern SHARED/elapsed/priority/recovery/undo timing calculations | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-timing-engine-01.md) |
 | life-action-engine | Modern semantic actions and actual initialization design/implementation | TAKEN | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-action-engine-01.md) |
 | frozen-integration-pr | Prepare isolated tested integration PR from exact freeze5a88846; root retains active development/final merge | DONE / Pat-approved guarded PR21 merge be663b2 | Root merged; live development stays on recovery | [decision](integration/FREEZE-5a88846-20261014.md) |
-| life-game-service | Bind reviewed persisted service to real platform/source providers and operational UI | BLOCKED | Unbound port implemented1dc4390; platform/source/DI/UI prerequisites remain | cx-m2-life-functional-01 |
+| life-game-service | Bind reviewed persisted service to real platform/source providers and operational UI | BLOCKED | Unbound facade/platform providers implemented; named variant/source/DI/UI prerequisites remain | cx-m2-life-functional-01 |
 
 Native campaign workers are root-managed: root publishes their exact disjoint claims/completions; workers write only packet-listed code and own handoff. See [campaign](../docs/superpowers/plans/2026-10-15-dependency-aware-campaign.md).
 

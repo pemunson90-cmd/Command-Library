@@ -57,6 +57,9 @@ public class AndroidCatalogServices private constructor(
         /** Pure local capability: no transport creation, receipt rehydration or job recovery. */
         public fun localRulings(database: Database): CatalogRulings = LocalCatalogRulings(database)
 
+        /** Pure installed-printing reader; no transport, acquisition or job recovery. */
+        public fun localPrintings(database: Database): CatalogPrintingLookup = LocalCatalogIdentities(database)
+
         /** Pure local bounded preparation. Caller owns database/clock; no transport/job recovery. */
         public fun localSearchPreparation(database: Database, clock: Clock): CatalogSearchPreparation =
             LocalCatalogSearchPreparation(database, clock)

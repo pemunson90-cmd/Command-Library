@@ -8,6 +8,7 @@ import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.DeviceConfigurationOverride
@@ -54,7 +55,16 @@ class SyntheticPickerRegistry(private val answer: () -> Uri?) : ActivityResultRe
  */
 internal class ShellUiHarness(private val rule: ComposeContentTestRule, private val profiles: com.architectpsg.commandlibrary.core.model.PlayerProfileRepository? = null,
     private val downloads: DownloadsFixture? = null, private val rulings: RulingsFixture? = null, private val localRules: KeywordRulesFixture? = null,
-    private val indexedText: Boolean = false, private val exactKeywords: Boolean = false) {
+    private val indexedText: Boolean = false, private val exactKeywords: Boolean = false,
+    private val printings: com.architectpsg.commandlibrary.core.model.CatalogPrintingLookup? = null,
+    private val cardLinks: com.architectpsg.commandlibrary.core.model.CardLinks? = null) {
+    private val geometry = mutableStateOf(DpSize(400.dp, 800.dp))
+    private val textScale = mutableStateOf(1f)
+    fun resize(width: Dp, height: Dp, fontScale: Float = 1f) {
+        rule.runOnIdle { geometry.value = DpSize(width, height); textScale.value = fontScale }
+        rule.waitForIdle()
+    }
+
     val catalog = SyntheticCatalog(listOf("Synthetic Existing Card"))
     val textLookup = OracleTextFixture(catalog)
     val settings = SyntheticSettings()
@@ -78,20 +88,21 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
         host(width, height, 1f) { restoration.setContent(it) }
 
     private fun host(width: Dp, height: Dp, fontScale: Float, set: (@Composable () -> Unit) -> Unit) {
+        geometry.value = DpSize(width, height); textScale.value = fontScale
         val ownerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         scope = ownerScope
         // Controllers live outside composition, as they do in the ViewModel.
         controllers = ShellControllers(ownerScope, ShellPorts(catalog, catalog, catalog, downloads?.settings ?: settings,
             playerProfiles = profiles, englishCatalog = downloads?.access, rulings = rulings, rulingsDownloads = rulings?.access,
             rulesImport = localRules, rulesLookup = localRules, catalogTextLookup = textLookup.takeIf { indexedText },
-            keywordRulesLookup = localRules.takeIf { exactKeywords }), documents, Dispatchers.IO)
+            keywordRulesLookup = localRules.takeIf { exactKeywords }, catalogPrintings = printings, cardLinks = cardLinks), documents, Dispatchers.IO)
         val registryOwner = object : ActivityResultRegistryOwner {
             override val activityResultRegistry: ActivityResultRegistry = picker
         }
         set {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 DeviceConfigurationOverride(
-                    DeviceConfigurationOverride.ForcedSize(DpSize(width, height)) then DeviceConfigurationOverride.FontScale(fontScale),
+                    DeviceConfigurationOverride.ForcedSize(geometry.value) then DeviceConfigurationOverride.FontScale(textScale.value),
                 ) {
                     ShellRoot(controllers)
                 }

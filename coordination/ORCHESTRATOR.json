@@ -3,9 +3,9 @@
   "status": "active",
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
-  "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-15T04:25:16Z",
-  "expires_utc": "2026-10-15T05:10:16Z",
-  "checkpoint_id": "cp-20261015-parallel-campaign-160",
-  "note": "D29 reviewed35task full-scope map; root shared/integration/finalmerge owner, disjoint deck/link pilot reserved;3writers includingroot/4subagent cap/1Gradleslot. Preserve GameService/nativefailed/finishedAPKholds."
+  "task_id": "orch-android-v1-campaign-01",
+  "heartbeat_utc": "2026-10-15T04:47:40Z",
+  "expires_utc": "2026-10-15T05:32:40Z",
+  "checkpoint_id": "cp-20261015-parallel-pilot-integrated-161",
+  "note": "D29root retained; pilot deck/link exactreturns integrated/sourceACK;91scopedhosttests0fail/error/skip+lint/nativeKotlincompile. Nextdurabledeck model/codec boundary review+parallel readyproducers. No build/liveworker now; root shared/finalmerge; GameService/nativefailed/finishedAPKholds."
 }

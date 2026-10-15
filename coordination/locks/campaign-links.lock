@@ -10,6 +10,12 @@
     "android-app/feature/links/src/test/**",
     "coordination/handoffs/cx-campaign-links-01.md"
   ],
-  "status": "active",
-  "authority": "Live root continuation branch only; inherited worktree lock copies are not independent authority"
+  "status": "released",
+  "authority": "Live root continuation branch only; inherited worktree lock copies are not independent authority",
+  "completion_commit": "45b38225183e407b4ddb815ddd383cff21fe51ce",
+  "integration_commits": [
+    "df1d323",
+    "86f692a"
+  ],
+  "evidence": "35worker JVM tests0fail/error/skip; independent source preliminaryACK; exact readback/assembled root batch pending"
 }

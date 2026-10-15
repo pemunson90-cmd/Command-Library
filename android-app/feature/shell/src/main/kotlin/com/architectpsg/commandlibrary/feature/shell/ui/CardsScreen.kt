@@ -53,6 +53,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.SearchControll
 import com.architectpsg.commandlibrary.feature.shell.presentation.SearchLoad
 import com.architectpsg.commandlibrary.feature.shell.presentation.SearchUiState
 import com.architectpsg.commandlibrary.feature.shell.presentation.RulingsController
+import com.architectpsg.commandlibrary.feature.shell.presentation.PrintingSelectionController
 import com.architectpsg.commandlibrary.feature.shell.presentation.installed
 
 /**
@@ -67,6 +68,7 @@ internal fun CardsScreen(
     onOpenCatalog: () -> Unit,
     modifier: Modifier = Modifier,
     rulings: RulingsController? = null,
+    printings: PrintingSelectionController? = null,
     onManageRulings: (() -> Unit)? = null,
     onLookupKeyword: ((String) -> Unit)? = null,
 ) {
@@ -82,7 +84,7 @@ internal fun CardsScreen(
             VerticalDivider()
             Box(Modifier.weight(0.55f).fillMaxHeight().testTag(ShellTags.DETAIL_PANE)) {
                 if (selected != null) {
-                    CardDetail(selected, onBack = null, widthClass = widthClass, rulings = rulings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword)
+                    CardDetail(selected, onBack = null, widthClass = widthClass, rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword)
                 } else {
                     Text(
                         text = stringResource(R.string.detail_select_prompt),
@@ -96,7 +98,7 @@ internal fun CardsScreen(
     } else {
         BackHandler(enabled = selected != null) { controller.clearSelection() }
         if (selected != null) {
-            CardDetail(selected, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE), rulings = rulings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword)
+            CardDetail(selected, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE), rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword)
         } else {
             Box(modifier.fillMaxSize().testTag(ShellTags.RESULTS_PANE)) {
                 SearchPane(controller, state, catalogMissing, widthClass, showSelection = false, onOpenCatalog, listState)

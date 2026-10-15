@@ -1,6 +1,6 @@
 # cx-campaign-deck-edits-01 — attempt1, packet r1
 
-Status: TAKEN; engineering ACK and root shared-baseline configuration compile passed. Owner: assigned Sol implementer; integration: recovery root. Requirements B01/B02/B05/B10 and exact parity joins in registry `execution.tasks[deck-edits]`. This is a pure producer, not deck repository/version/UI acceptance.
+Status: DONE scoped producer; returned, independently reviewed and integrated on recovery. Owner: assigned Sol implementer; integration: recovery root. Requirements B01/B02/B05/B10 and exact parity joins in registry `execution.tasks[deck-edits]`. This is a pure producer, not deck repository/version/UI acceptance.
 
 Base: product `43f258295cfb946983d1f35cab80fedf4f105978`; dispatch supplies exact descendant containing reviewed r1 packet and root module config. Branch `agent/campaign-deck-edits-20261015`, worktree `/workspace/command-library-deck-edits-01`. Verify pwd, repository top, branch, HEAD and `git rev-parse --git-common-dir`; inspect only Git directory/worktree/index environment names, never dump credentials. Stop on baseline/path mismatch and report to root.
 
@@ -24,4 +24,4 @@ Return committed code with exact base/head, diff paths, actual command/environme
 
 ## Latest continuation delta
 
-Root assigned exact packet r1; code not_run at claim publication. Dispatch uses this claim commit as exact baseline. Root provisions and verifies isolated worktree before child starts.
+Worker exact return71096d9 integrated and independently source-reviewed; see own handoff and docs/verification/full-v1-audit/PARALLEL-PILOT-LOCAL-20261015.md. Canonical lock released; clean worktree preserved. Root assembled91scopedtests0failure/error/skip plus lint/instrumentation-source compile. Full requirement/UI/persistence/native/physical acceptance remains open as listed in report. Next ownership requires a fresh root claim; do not resume this completed packet.

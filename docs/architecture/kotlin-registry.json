@@ -1327,8 +1327,8 @@
         ],
         "verification": "focused identity/order/quantity/atomic rejection/stale revision/diff fixtures",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "ready_after_review",
-        "observed_implementation": "DTOs/ports only; RestoreVersion/ApplyPackage require later resolved context",
+        "status": "producer_integrated_requirement_acceptance_open",
+        "observed_implementation": "DTOs/ports only; RestoreVersion/ApplyPackage require later resolved context; pilot real producer integrated/source-reviewed; see PARALLEL-PILOT-LOCAL-20261015.md; downstream complete acceptance open",
         "ownership_group": "decks",
         "resources": [
           "local-gradle-serial"
@@ -1751,8 +1751,8 @@
         ],
         "verification": "strict http(s)/origin/encoding/unknown tokens/missing IDs/selected printing/unsafe authority fixtures; actual UI launch; source E05; atomic per-target batch outcome, no silent omission; UI one target per call",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "ready_after_review",
-        "observed_implementation": "CardLinks port only; R17 route HTTP behavior UNVERIFIED; no guessed seller shortcuts",
+        "status": "producer_integrated_requirement_acceptance_open",
+        "observed_implementation": "CardLinks port only; R17 route HTTP behavior UNVERIFIED; no guessed seller shortcuts; pilot real producer integrated/source-reviewed; see PARALLEL-PILOT-LOCAL-20261015.md; downstream complete acceptance open",
         "ownership_group": "links",
         "resources": [
           "local-gradle-serial"

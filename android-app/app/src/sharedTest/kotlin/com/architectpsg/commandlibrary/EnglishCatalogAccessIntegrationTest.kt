@@ -55,7 +55,7 @@ abstract class EnglishCatalogAccessCases {
     @Test fun actualApplicationExposesLazyDownloadAccessAlongsideCachedOfflinePorts() = runBlocking<Unit> {
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as CommandLibraryApplication
         val ports = ok(app.graph.ports())
-        assertNotNull(ports.englishCatalog); assertNotNull(ports.playerProfiles); assertNotNull(ports.rulings)
+        assertNotNull(ports.englishCatalog); assertNotNull(ports.playerProfiles); assertNotNull(ports.rulings); assertNotNull(ports.catalogPrintings); assertNotNull(ports.cardLinks)
         assertSame(ports.englishCatalog, ports.rulingsDownloads)
         assertSame(ports, ok(app.graph.ports()))
         // Opening offline ports does not open acquisition, plan a job or grant download consent.
@@ -70,12 +70,23 @@ abstract class EnglishCatalogAccessCases {
             }
             var next = 0
             val ids = object : IdSource { override fun nextId() = "index-probe-${++next}" }
-            val raw = """[{"object":"card","id":"printing","oracle_id":"oracle","lang":"en","name":"Synthetic","set":"tst","collector_number":"1","keywords":["Flying"],"oracle_text":"Draw a card.","layout":"normal"}]""".toByteArray(Charsets.UTF_8)
+            val raw = """[{"object":"card","id":"printing","oracle_id":"oracle","lang":"en","name":"Synthetic","set":"tst","collector_number":"1","keywords":["Flying"],"scryfall_uri":"https://scryfall.com/card/tst/1/synthetic?utm_source=fixture","oracle_text":"Draw a card.","layout":"normal"}]""".toByteArray(Charsets.UTF_8)
             val source = CatalogImportSource(ResourceUri("content://selected/index-probe"), "Synthetic", ProviderId("scryfall"), LanguageTag.ENGLISH,
                 Knowledge.Unknown("Date not supplied", SnapshotList.empty()), Knowledge.Absent("Source not supplied"), Knowledge.Absent("Hash not supplied"),
                 Knowledge.Known(raw.size.toLong()), Knowledge.Absent("Notice not supplied"))
             val installed = ok(LocalCatalog(f.db, clock, ids).`import`(source, flowOf(ByteChunk(0, 0, SnapshotBytes(raw), null, true)), {}, token))
             val generation = installed.generation.id
+            val printingReader = AndroidCatalogServices.localPrintings(f.db)
+            val printingPage = ok(printingReader.printings(OracleId(ProviderId("scryfall"), "oracle"), PageRequest(10), token))
+            assertEquals(generation, printingPage.snapshot.generation)
+            assertEquals(CardId(ProviderId("scryfall"), "printing"), printingPage.items.single().id)
+            assertEquals(printingPage.items.single(), ok(AndroidCatalogServices.localPrintings(f.db).printing(printingPage.items.single().id, token)))
+            val importedCard = ok(LocalCatalog(f.db, clock, ids).lookupName("Synthetic", PageRequest(10), token)).items.single()
+            val destination = LinkDestination(EntityId("scryfall"), "Scryfall", SnapshotList.of(Origin("https", "scryfall.com", 443)), true)
+            val link = ok(com.architectpsg.commandlibrary.feature.links.LocalCardLinks().resolve(importedCard, printingPage.items.single(),
+                LinkPreferences(SnapshotList.of(destination), SnapshotList.empty(), true, false))).single()
+            assertEquals("https://scryfall.com/card/tst/1/synthetic?utm_source=fixture", link.uri.value)
+            assertEquals(printingPage.items.single().id, link.selectedPrinting)
             val preparation = AndroidCatalogServices.localSearchPreparation(f.db, clock)
             assertEquals(CatalogSearchPreparationReadiness.NOT_PREPARED, ok(preparation.status(generation, token)).readiness)
             var state = ok(preparation.advance(generation, token))
