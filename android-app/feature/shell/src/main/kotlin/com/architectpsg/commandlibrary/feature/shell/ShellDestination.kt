@@ -13,4 +13,3 @@ internal enum class ShellDestination(@param:StringRes val label: Int, @param:Dra
     PROFILES(R.string.profiles_nav, R.drawable.shell_ic_profiles, "shell-nav-profiles"),
     SETTINGS(R.string.shell_nav_settings, R.drawable.shell_ic_settings, "shell-nav-settings"),
 }
-
