@@ -153,6 +153,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize()) {
+                controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
                 draft?.let { editor -> DraftRecoveryBanner(editor) {
                     val session = editor.state.value.session
                     if (session != null && (!versionsOpen || controllers.deckVersions?.requestClose() == true)) {
@@ -249,7 +250,6 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 }
             }
         }
-        controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
         draft?.let { DraftExitDialog(it) }
     }
 }
