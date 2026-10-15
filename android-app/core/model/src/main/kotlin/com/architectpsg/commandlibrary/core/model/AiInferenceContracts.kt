@@ -73,12 +73,12 @@ public data class GenerationMessage(public val role: MessageRole, public val tex
 public data class GenerationRequest(
     public val id: EntityId,
     public val messages: SnapshotList<GenerationMessage>,
-    public val maxTokens: Int,
-    public val temperature: BigDecimal,
-    public val topP: BigDecimal,
+    public val maxTokens: Int?,
+    public val temperature: BigDecimal?,
+    public val topP: BigDecimal?,
     public val seed: Long?,
     public val stopSequences: SnapshotList<String>,
-) { init { require(maxTokens > 0); require(temperature >= BigDecimal.ZERO); require(topP > BigDecimal.ZERO && topP <= BigDecimal.ONE) } }
+) { init { require(maxTokens == null || maxTokens > 0); require(temperature == null || temperature >= BigDecimal.ZERO); require(topP == null || topP > BigDecimal.ZERO && topP <= BigDecimal.ONE) } }
 public enum class GenerationFinishReason { STOP, TOKEN_LIMIT, TOOL_CALL, INTERRUPTED, FAILED }
 public data class TokenChunk(
     public val requestId: EntityId,

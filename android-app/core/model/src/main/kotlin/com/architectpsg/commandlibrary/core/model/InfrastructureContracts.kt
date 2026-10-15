@@ -53,6 +53,15 @@ public data class HttpMetadata(
     public val retryAfter: Knowledge<Duration>,
     public val chargeStatus: Knowledge<Boolean>,
 ) { init { require(statusCode in 100..599) } }
+/** Credential-free non-2xx facts. Status never establishes whether a provider charged a request. */
+public data class HttpFailureMetadata(public val statusCode: Int, public val retryAfter: Knowledge<Duration>,
+    public val chargeStatus: Knowledge<Boolean>) {
+    init {
+        require(statusCode in 100..599)
+        val delay = (retryAfter as? Knowledge.Known)?.value
+        require(delay == null || delay >= Duration.ZERO)
+    }
+}
 public data class ByteResponse(public val metadata: HttpMetadata, public val body: SnapshotBytes)
 public data class ByteChunk(
     public val sequence: Long,

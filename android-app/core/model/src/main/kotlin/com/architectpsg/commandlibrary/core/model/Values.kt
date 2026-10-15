@@ -61,8 +61,11 @@ public sealed interface Knowledge<out T> {
 }
 public enum class UnavailableReason { OFFLINE, NOT_INSTALLED, NOT_FOUND, CONSENT_REQUIRED, REVOKED, UNSUPPORTED, SOURCE_UNAVAILABLE, KEY_MISSING }
 public enum class FailureCode { INVALID_INPUT, STALE_REVISION, STALE_GENERATION, CORRUPT_DATA, TRANSPORT, PERSISTENCE, PERMISSION, SOURCE_MISMATCH, INTERNAL }
-public data class DomainFailure(public val code: FailureCode, public val message: String, public val evidence: SnapshotList<Evidence>) {
-    init { require(message.isNotBlank()) }
+public data class DomainFailure(public val code: FailureCode, public val message: String, public val evidence: SnapshotList<Evidence>,
+    /** Scalar safe HTTP facts only; no response body, URI, headers or credential strings. */
+    public val httpFailure: HttpFailureMetadata? = null,
+) {
+    init { require(message.isNotBlank()); require(httpFailure == null || code == FailureCode.TRANSPORT) }
 }
 public sealed interface Outcome<out T> {
     public data class Success<T>(public val value: T) : Outcome<T>
