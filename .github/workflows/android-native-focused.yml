@@ -75,6 +75,9 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+          # The native emulator loader requires PulseAudio even with -no-audio.
+          sudo apt-get update -qq
+          sudo apt-get install --yes --no-install-recommends libpulse0
           SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           # Reuse a working runner emulator; do not force an unrelated SDK-manager upgrade.
           if [[ ! -x "$ANDROID_HOME/emulator/emulator" ]] || ! "$ANDROID_HOME/emulator/emulator" -version; then
