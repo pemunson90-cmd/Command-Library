@@ -54,7 +54,7 @@ internal class LocalPreparedCardQuery(
         // One transaction owns source proof, READY observation, keyset and every original decode.
         // The Database interface has no read-only transaction mode; this callback only queries.
         return try {
-            when (val outer = database.transaction({ tx -> bulkAttempt {
+            val outer = database.transaction({ tx -> bulkAttempt {
                 checkCancellation(cancel)
                 val installed = tx.installed(generation, capabilities.maxBoundParameters, cancel)
                 val ready = tx.readChecked(bulkSql("SELECT CASE WHEN status='READY' THEN 'READY' ELSE NULL END AS status,projection_version FROM catalog_search_build WHERE generation_id=:g AND projection_version=1", 1,
@@ -89,7 +89,8 @@ internal class LocalPreparedCardQuery(
                 }
                 checkCancellation(cancel)
                 Page(SnapshotList.copyOf(cards), next, reference)
-            } }, cancel)) {
+            } }, cancel)
+            when (outer) {
                 is Outcome.Success -> outer.value
                 is Outcome.Failure -> outer
                 is Outcome.Unavailable -> outer

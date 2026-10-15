@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-indexed-query-reader-01",
   "owner": "/root/implement_indexed_query_reader",
-  "status": "active",
+  "status": "released",
   "base_commit": "c00f8ecfeecba5498fd9ebdbee6e1ef86296d622",
   "contract_revision": "query-v1-20261015",
   "branch": "agent/campaign-indexed-query-reader-20261015",
@@ -16,5 +16,8 @@
     "coordination/handoffs/cx-campaign-indexed-query-reader-01.md"
   ],
   "build_slot": "NOTGRANTED; ROOToneGradleslot",
-  "authority": "independent architecture/API READY ACK; compiled additive core ABI; canonical master packet"
+  "authority": "independent architecture/API READY ACK; compiled additive core ABI; canonical master packet",
+  "return_commit": "8ed4fa4118d3a2bf4a5dfd475a05cfbb97d9e6e0",
+  "integration_commit": "c77a8f9",
+  "disposition": "Exact scoped return verified and integrated; SOURCE02 ACK; combined runtime pending root gate. Original clean worktree retained."
 }

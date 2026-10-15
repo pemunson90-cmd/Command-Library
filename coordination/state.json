@@ -3,24 +3,23 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-indexed-query-wave-231",
-  "verified_base_head": "c00f8ecfeecba5498fd9ebdbee6e1ef86296d622",
+  "checkpoint_id": "cp-20261015-indexed-query-integrated-232",
+  "verified_base_head": "8fac9146b8b2bf1c36daad02c9d0371e74b689cd",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "indexed-query-producers-claimed",
+  "first_action": "indexed-query-host-gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
   "blockers": [
     "Full live-source completeness, indexed search/FullLean and M2\u2013M9 remain incomplete; ruling source/root/UI local integration is implemented but source/native/final acceptance pending.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence.",
-    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues.",
-    "Publication temporarily blocked: configured GH_TOKEN invalid on b2ac8de push, gh authstatus confirms. Last published f0373af; local commits preserved, reconnect requested; implementation continues."
+    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "Acceptedexportproducerb54530passes/655pins/ACK; twoREADYreviewed exportUI/appconsumers nowTAKEN verifiedisolationSAMEbase00556e6/exact4NEW+2NEW. Root+2writers3max/4childrenmax/oneROOTGradleslotFREE. Rootexistingentry/picker/navnext; newUI/app/runtimeNOTRUN. Priorimport/output17acceptedseparately; publicationinvalidtoken/fullreleaseholds/rootsharedauthorityunchanged.",
+  "review_status": "Compiler and reader SOURCE02 ACK/exact scoped returns integrated; root frontend consolidated SOURCE review and combined actual host gate pending. Normal Git publication restored; release/device/source holds retained.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -159,7 +158,7 @@
     "plain_deck_output_boundary": "Writer616abf39\u21922029b71 exact3NEWpaths/sourceACK; acceptedcbff7ac actual15provider-PFD/fault/cancel/closure tests pass (samefocused17run, notadditional17).651pinsfrozen/independentinventorySOURCE-RUNTIMEACK. No exportconsumer/UI/remote-durability/native acceptance; report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.",
     "plain_deck_export_boundary": "Acceptedb545f411ec691e12d354f2a39eddcd401bc3c84b tree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460 actual30tests2XML0f/e/s1m18/655pins/log795d346306a89014bae52848e8ff6eb666e10d9a54de52bf655b9dfac322813c.29faithfulcontroller+1actualAppGraph229byte81loss7board8entry18copies/validator/Roomfixture, independentSOURCE02/runtimeACK. ActualVMfactory/nativeKotlincompiledONLY, noUI/picker/actualcontroller-writer/deviceexecution. SOURCE01zero-byteprebuildHOLDfixedbeforeonlyactualsuccessfulrun. PLAIN-DECK-EXPORT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Reviewed/compiled query-v1 ABI atc00f8ec; exact isolated compiler6NEW/reader5NEW claims atsamebase; root actual advanced-search/preparation consumer next; no query runtime yet",
-  "updated_utc": "2026-10-15T17:18:32Z",
+  "last_completed": "Reviewed compiler and reader integrated; scoped claims released; actual app consumer source review and combined host gate pending; Git publication restored",
+  "updated_utc": "2026-10-15T17:45:32Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -707,3 +707,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T17:09:44Z | codex | cp-20261015-calculator-accepted-230 | containing commit | Accepted exact draw calculator actual app11focusedpasses/source-runtimeACK; no broad repeat; claimreleased; next typed offline query execution dependency
 
 2026-10-15T17:18:32Z | codex | cp-20261015-indexed-query-wave-231 | containing commit | Reviewed/compiled query-v1 ABI atc00f8ec; exact isolated compiler6NEW/reader5NEW claims atsamebase; root actual advanced-search/preparation consumer next; no query runtime yet
+
+2026-10-15T17:45:32Z | codex | cp-20261015-indexed-query-integrated-232 | containing commit | Reviewed compiler and reader integrated; scoped claims released; actual app consumer source review and combined host gate pending; Git publication restored
