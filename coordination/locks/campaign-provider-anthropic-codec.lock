@@ -1,0 +1,16 @@
+{
+  "owner": "/root/implement_anthropic_codec",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "4424646d9be0e797a7d303c341a8e0e69698ac2d",
+  "branch": "agent/campaign-provider-anthropic-codec-20261015",
+  "worktree": "/workspace/command-library-provider-anthropic-codec-01",
+  "owned_paths": [
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/AnthropicMessagesWireCodec.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/AnthropicMessagesJson.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/AnthropicMessagesSse.kt",
+    "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/AnthropicMessagesWireCodecTest.kt",
+    "coordination/handoffs/cx-campaign-provider-anthropic-codec-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
