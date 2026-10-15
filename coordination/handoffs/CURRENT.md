@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-draft-combined-gate-206
+Checkpoint-ID: cp-20261015-draft-focused-gate-207
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. draft-combined-gate
+Next step: 3. draft-focused-gate
 
-Updated UTC: 2026-10-15T13:12:34Z
+Updated UTC: 2026-10-15T13:19:06Z
 Status: in_progress; lease: active.
-Verified base: 8be39f6e2aa681488ea3881a42549ae8f266a8c6.
+Verified base: 067b24ce835b3369a72136e9c9a1d00b9e03a379.
 
-Reviewed UI and isolated clean-head/dialog producers assembled. Root reserves sole local Gradle slot for exact attempt2 including real ADD and undo successor; prior149pass preserved. Claims released, nextlane probe read-only, root lease active.
+Attempt2 actual154/1testdisplayphasefailure preserved; reviewed exacttestonly correction integrated. Root focused5dialog+actualapp and instrumentationcompile gate next;10newheadrefresh alreadypass, unchangedproduction. Rootleaseactive.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

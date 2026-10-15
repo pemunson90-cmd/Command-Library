@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-draft-combined-gate-206",
-  "verified_base_head": "8be39f6e2aa681488ea3881a42549ae8f266a8c6",
+  "checkpoint_id": "cp-20261015-draft-focused-gate-207",
+  "verified_base_head": "067b24ce835b3369a72136e9c9a1d00b9e03a379",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "draft-combined-gate",
+  "first_action": "draft-focused-gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -153,7 +153,7 @@
     "collection_bulk_app_integration": "ExactAndroidtree43ab17db448c9fd991825ebaf4b3746635646d74;300tests43XML0failure/error/skip SUCCESS3m4s/app+shellnativeKotlincompileONLY, independent actualAstra exactsource/runtimeACK. Producer54overlap/lint0errors1inherited. COLLECTION-BULK-APP-INTEGRATION-20261015.md; no native/finishedAPK claim.",
     "deck_draft_pure": "Exact4700542\u219286cf3f5, independent source/runtimeACK140tests13XML0fail/error/skip SUCCESS2m39s;44new+96old, separatebase/bodypreflightrepairbeforefirstonlyrun. Completepurecodec/plannerONLY; noSQLstore/UI/native/fullprojectedCLDKcertificate. RAW-DRAFT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Reviewed UI and isolated clean-head/dialog producers assembled. Root reserves sole local Gradle slot for exact attempt2 including real ADD and undo successor; prior149pass preserved. Claims released, nextlane probe read-only, root lease active.",
-  "updated_utc": "2026-10-15T13:12:34Z",
+  "last_completed": "Attempt2 actual154/1testdisplayphasefailure preserved; reviewed exacttestonly correction integrated. Root focused5dialog+actualapp and instrumentationcompile gate next;10newheadrefresh alreadypass, unchangedproduction. Rootleaseactive.",
+  "updated_utc": "2026-10-15T13:19:06Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -657,3 +657,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T13:10:58Z | codex | cp-20261015-draft-consumer-repairs-205 | containing commit | Assembled149pass remains historical source-held; reviewed clean-hidden successor repair integrated; reviewed UI repair and real ADD/successor tests complete, isolated recovery-dialog tests pending combined gate. Root lease retained, local publication blocked.
 
 2026-10-15T13:12:34Z | codex | cp-20261015-draft-combined-gate-206 | containing commit | Reviewed UI and isolated clean-head/dialog producers assembled. Root reserves sole local Gradle slot for exact attempt2 including real ADD and undo successor; prior149pass preserved. Claims released, nextlane probe read-only, root lease active.
+
+2026-10-15T13:19:06Z | codex | cp-20261015-draft-focused-gate-207 | containing commit | Attempt2 actual154/1testdisplayphasefailure preserved; reviewed exacttestonly correction integrated. Root focused5dialog+actualapp and instrumentationcompile gate next;10newheadrefresh alreadypass, unchangedproduction. Rootleaseactive.

@@ -11,5 +11,7 @@
   "build_slot": "NOT GRANTED; root single assembled risk gate will execute combined changes",
   "authority": "Canonical root local claim, root retains production UI/DI/coordination/integration/final merge",
   "producer_commit": "c2975951739a9abc7d858d7ff3948f93c0e4c9ed",
-  "disposition": "exact2newpaths integrated after independent SOURCE ACK;5authoredtests runtimepending root combinedgate"
+  "disposition": "independent sourceACK correction integrated exact2paths; correctedruntime not_run rootfocusedattempt3 next",
+  "attempt": "02fixture-correction",
+  "repair_commit": "90d1f16f7fd599950d44d475006a9becae8d4c52"
 }
