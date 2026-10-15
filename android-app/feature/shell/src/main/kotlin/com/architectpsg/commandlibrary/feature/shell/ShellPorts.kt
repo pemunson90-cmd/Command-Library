@@ -86,4 +86,8 @@ public class ShellPorts(
     public val cardQueryParser: ((String) -> com.architectpsg.commandlibrary.core.model.CardQueryParseResult)? = null,
     /** Real lazy Android vault; provider credential-use acceptance requires genuine native evidence. */
     public val secretVault: com.architectpsg.commandlibrary.core.model.SecretVault? = null,
+    /** Authoritative saved provider configurations; no generation capability is implied. */
+    public val providerProfiles: com.architectpsg.commandlibrary.core.model.LocalProviderProfiles? = null,
+    /** Same reviewed URI admission used by persistence; no shell-to-provider-module dependency. */
+    public val providerProfileOrigin: ((com.architectpsg.commandlibrary.core.model.ResourceUri) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.Origin>)? = null,
 )
