@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-prompt-overrides-integration-246",
-  "verified_base_head": "e05fe686d2949d1f5ac76d418fd24a509eaa7bfd",
+  "checkpoint_id": "cp-20261015-prompt-overrides-host-247",
+  "verified_base_head": "4ee30f7fa534f475e726e89a29e695016f87e433",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "integrate_prompt_override_store",
+  "first_action": "accept_prompt_override_host",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -161,9 +161,10 @@
     "board_size_checks_host": "Producer10at4e1adbe0f/e/s; originaloverallcompilefailure retained. Unchangedproducer plus3controller/1actualapp atd471e34 SUCCESS1m08/0f/e/s;689pins/independentSOURCE-RUNTIMEACK. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md; noofficial/fullB06/native.",
     "offline_prompt_host": "Engine19cd93917tests2XML0f/e/s24s/702pins; unchangedengine source87e0c81 consumer10controller+1actualAppGraph/Room/clipboard2XML0f/e/s2m23/706pins. Independent SOURCE02/shared/runtime ACK; OFFLINE-PROMPT-APP-INTEGRATION-20261015.md preserves sourceHOLDs/interruptedno-verdictattempt. No native/fullAI.",
     "campaign_android_vault": "SOURCE02/shared/nativeworkflow and independent scoped runtimeACK. fe0c142 combined15host/app tests3XML0f/e/s2m28/714pins pluslint/nativecompile. Native run38802768872 exact29f7b3f 4actualAndroidKeyStore cases0f/e/s logXMLverifier; artifact12005066660 metadata digest retained but download403/no directXML readback. Prior ZIP/missinglibpulse pretest failures preserved. ANDROID-VAULT-INTEGRATION-20261015.md.",
-    "campaign_provider_profiles": "SOURCE02/shared/runtimeACK exact79f9a96ccec6632db5e6fb541cb677530c480257/tree d39221482fd70d8971118c2ac20331fb2d9b53a0:37tests7XML0f/e/s2m18/733pins,8AI+8SQL+19shell+2actualRoom/UI. CompleteactualKSP15\u2192Room16preservation/reopen/CAS/tombstone; SettingsLOCALcreate/edit/rev2ON_STOPkeyclear/recreate/delete/unrelatedconservation. PROVIDER-PROFILES-APP-INTEGRATION-20261015.md preserves SOURCEHOLDs/exact8+6+2returns/cleanoriginals/releasedclaims and scopednative/remainingholds. No executedfailure inassembledattempt1. Boundary2dd7eab oneexistingreferencecase/KSP/717pins separate."
+    "campaign_provider_profiles": "SOURCE02/shared/runtimeACK exact79f9a96ccec6632db5e6fb541cb677530c480257/tree d39221482fd70d8971118c2ac20331fb2d9b53a0:37tests7XML0f/e/s2m18/733pins,8AI+8SQL+19shell+2actualRoom/UI. CompleteactualKSP15\u2192Room16preservation/reopen/CAS/tombstone; SettingsLOCALcreate/edit/rev2ON_STOPkeyclear/recreate/delete/unrelatedconservation. PROVIDER-PROFILES-APP-INTEGRATION-20261015.md preserves SOURCEHOLDs/exact8+6+2returns/cleanoriginals/releasedclaims and scopednative/remainingholds. No executedfailure inassembledattempt1. Boundary2dd7eab oneexistingreferencecase/KSP/717pins separate.",
+    "campaign_prompt_overrides": "SOURCE02/shared/runtimeACK exact4ee30f7fa534f475e726e89a29e695016f87e433/treef2ea2b2b3199440297dae71e0412067c173c0e62:34hosttests6XML0f/e/s1m25/741pins;10SQL11newcontroller10oldcontroller3actualapp. Room16to17 oldDDL/opaqueuserbytes preservation, fourmodeexplicitSave/preview/independentRoom/recreation/reset/otherstateconservation and prioroffline/Room15to17regression. PROMPT-OVERRIDES-APP-INTEGRATION-20261015.md preserves SOURCE01HOLD, attempt1db67c8ecompilefailure0XML and equivalentlyfixed4ee30f7. Exact3/5/2returns verified/originalclean/claimsreleased. No native/provider/H08/fullAI/releaseclaim."
   },
-  "last_completed": "Reviewed exact SQL return integrated e05fe68; root real binding prepared; editor frozen under independent review and isolated actual Room17/app proof taken. One assembled gate next; no broad/native repeat.",
-  "updated_utc": "2026-10-15T21:10:25Z",
+  "last_completed": "H09 actual store/editor/Room17 journey SOURCE02/shared/runtime ACK4ee30f7:34tests6XML0f/e/s1m25/741pins. Claims released; next H08 history boundary review. No broad/native rerun.",
+  "updated_utc": "2026-10-15T21:17:02Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

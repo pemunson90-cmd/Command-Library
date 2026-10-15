@@ -737,3 +737,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T21:00:46Z | codex | cp-20261015-prompt-overrides-wave-245 | containing commit | Providerconfig accepted37host andvault4native; reviewedcompiled H09durableoverride boundary/schema17 frozen, economical exact3 isolatedSQLproducer TAKEN; existingpromptUIpersistence next
 
 2026-10-15T21:10:25Z | codex | cp-20261015-prompt-overrides-integration-246 | containing commit | Reviewed exact SQL return integrated e05fe68; root real binding prepared; editor frozen under independent review and isolated actual Room17/app proof taken. One assembled gate next; no broad/native repeat.
+
+2026-10-15T21:17:02Z | codex | cp-20261015-prompt-overrides-host-247 | containing commit | H09 actual store/editor/Room17 journey SOURCE02/shared/runtime ACK4ee30f7:34tests6XML0f/e/s1m25/741pins. Claims released; next H08 history boundary review. No broad/native rerun.

@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-prompt-overrides-integration-246. Updated UTC: 2026-10-15T21:10:25Z.
+Checkpoint: cp-20261015-prompt-overrides-host-247. Updated UTC: 2026-10-15T21:17:02Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-integrate_prompt_override_store
+accept_prompt_override_host
 
-Reviewed exact SQL return integrated e05fe68; root real binding prepared; editor frozen under independent review and isolated actual Room17/app proof taken. One assembled gate next; no broad/native repeat.
+H09 actual store/editor/Room17 journey SOURCE02/shared/runtime ACK4ee30f7:34tests6XML0f/e/s1m25/741pins. Claims released; next H08 history boundary review. No broad/native rerun.
 
 Read CURRENT, machine state and task card.

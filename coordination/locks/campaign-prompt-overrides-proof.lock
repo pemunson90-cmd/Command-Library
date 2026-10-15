@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-prompt-overrides-proof-01",
   "owner": "/root/verify_provider_room",
-  "status": "active",
+  "status": "released",
   "base_commit": "bb06734e40716b3d1cd1dbfa424798f005e23160",
   "contract_revision": "prompt-overrides-v1-20261015/schema17-7fd1f6ea",
   "branch": "agent/campaign-prompt-overrides-proof-20261015",
@@ -12,5 +12,7 @@
     "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/PromptOverridesAppIntegrationTest.kt",
     "coordination/handoffs/cx-campaign-prompt-overrides-proof-01.md"
   ],
-  "build_slot": "NOTGRANTED; ROOTonly"
+  "build_slot": "NOTGRANTED; ROOTonly",
+  "worker_commit": "9ac90feb8f04b6bb2bf30a81e0f5913e166e87f8",
+  "release_reason": "Exact source-reviewed return verified clean and integrated; one root assembled gate active db67c8e."
 }
