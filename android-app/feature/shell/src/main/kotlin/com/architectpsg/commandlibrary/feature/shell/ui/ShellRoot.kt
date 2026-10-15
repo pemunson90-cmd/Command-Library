@@ -235,7 +235,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         val exportPlainEntry: ((DeckSnapshot) -> Unit)? = controllers.plainDeckExport?.let { exporter -> { selected ->
             val library = controllers.deckLibrary?.state?.value
             if (pendingPlainExport == null && libraryAllowsPlainPick() && library != null &&
-                !library.loadingDetail && library.selected == selected) {
+                !library.loadingDetail && library.editor == null && library.selected == selected) {
                 val current = exporter.state.value
                 if (current.preview != null || current.preparing || current.pendingPicker != null ||
                     current.writePhase != PlainDeckExportWritePhase.IDLE) exporter.resume()

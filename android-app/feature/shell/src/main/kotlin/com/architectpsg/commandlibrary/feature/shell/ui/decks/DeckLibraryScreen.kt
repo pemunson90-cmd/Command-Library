@@ -107,7 +107,7 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                             modifier = Modifier.heightIn(min = 48.dp).testTag("deck-open-versions")) { Text(stringResource(R.string.decks_open_versions)) }
                     }
                     if (onExportText != null) OutlinedButton({ onExportText(selected) },
-                        enabled = exportTextEnabled && !state.pending && !state.mutationBusy && state.form == null && !state.loadingDetail,
+                        enabled = exportTextEnabled && !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-plain-export")) {
                         Text(stringResource(R.string.plain_export_open))
                     }
