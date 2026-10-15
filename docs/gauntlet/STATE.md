@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-mark-owned-host-accepted-217. Updated UTC: 2026-10-15T14:56:12Z.
+Checkpoint: cp-20261015-plain-import-contract-gate-218. Updated UTC: 2026-10-15T15:03:35Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-mark-owned-host-accepted
+plain-import-contract-gate
 
-Actual7focused UI/AppGraph/Room SOURCE-RUNTIMEACK; preserve115/2failedlineage; proceed reviewed5path isolated sharedimportprereq and29caseproducer source review
+Reviewedexact4pathproducer and5pathsharedinput integrated; actualcodec-validator-Roomfixture sourceACK; reservecoherent29+5+1localgate beforeconsumerfanout
 
 Read CURRENT, machine state and task card.

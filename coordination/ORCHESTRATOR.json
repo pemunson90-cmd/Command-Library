@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T14:56:12Z",
-  "expires_utc": "2026-10-15T15:41:12Z",
-  "checkpoint_id": "cp-20261015-mark-owned-host-accepted-217",
-  "note": "Markowned actualboundedHOSTSOURCE/RUNTIMEACK4ed0c9c7tests/2XML0f/e/s; prior115/2failedretained, unaffectedscopeseparate. OneROOTbuildslotfree. Plainimportproducer29authored/notrun/source01underreview isolatedbase65bffe6 active. Rootshared5pathprereqa07230d independentSOURCEACK isolated/notcompiled/notintegrated; exact5pathintegrationnext. Root+producer2writers/4childrenmax. Publicationinvalidtoken/native/Fold7/finishedAPKholds."
+  "heartbeat_utc": "2026-10-15T15:03:35Z",
+  "expires_utc": "2026-10-15T15:48:35Z",
+  "checkpoint_id": "cp-20261015-plain-import-contract-gate-218",
+  "note": "Markowned HOSTaccepted4ed0c9c7focused; prior115/2failedretained. Plainimportproducerd55f927\u2192daa9c65 exact4NEWpaths/sourceACK/29authored, shared5paths\u21921175ae5 sourceACK, actualcontractfixtureba32cfe sourceACK/1authored; rootcoherent29+5+1gate next/runtimeNOTRUN. Workerclaimsreleased/cleanoriginalsretained. Rootsolewriter/onebuildslot/4childrenmax. No importUI/native/Fold7/finishedAPKacceptance; publicationinvalidtoken."
 }

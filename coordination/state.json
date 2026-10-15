@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-mark-owned-host-accepted-217",
-  "verified_base_head": "4ed0c9cfabbf77def1694ec9966532d19bfa89e7",
+  "checkpoint_id": "cp-20261015-plain-import-contract-gate-218",
+  "verified_base_head": "ba32cfed31abc5e4bb4fcd648f0156c5165a49a6",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "mark-owned-host-accepted",
+  "first_action": "plain-import-contract-gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -155,7 +155,7 @@
     "mark_owned_controller": "Exact65bffe6f9a471275c71e8c02ec35082e5eabae1e focused38tests2XML0failures/errors/skips1m14, all37sourcepins unchanged, independentinventoryreviewSOURCE/RUNTIMEACK. Log53f3d2c09980f663ee7766c770ef22979faca958f6ffba2a4f96e3f82aa829f9; /tmp/cl-deck-mark-owned-01/evidence/runtime-attempt1. Faithfulports ONLY, no UI/AppGraph/SQL/native acceptance. Earlier01\u201303sourceHOLDs/prelaunchharness0test error retained.",
     "deck_mark_owned_app_local": "Accepted4ed0c9cfabbf77def1694ec9966532d19bfa89e7 treeb7601dafe3dcf901f0dfd07dc4733178dbff0250,7tests2XML0fail/error/skip2m15/639pinsfrozen, bothinstrumentationKotlincompiledONLY. IndependentSOURCE/RUNTIMEACK. Priorattempt2115/2failed unchangedpassingcollection/controller/app evidence retainedseparately; no allgreen115claim. DECK-MARK-OWNED-APP-INTEGRATION-20261015.md; no native/fullC01/finishedAPK."
   },
-  "last_completed": "Actual7focused UI/AppGraph/Room SOURCE-RUNTIMEACK; preserve115/2failedlineage; proceed reviewed5path isolated sharedimportprereq and29caseproducer source review",
-  "updated_utc": "2026-10-15T14:56:12Z",
+  "last_completed": "Reviewedexact4pathproducer and5pathsharedinput integrated; actualcodec-validator-Roomfixture sourceACK; reservecoherent29+5+1localgate beforeconsumerfanout",
+  "updated_utc": "2026-10-15T15:03:35Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
