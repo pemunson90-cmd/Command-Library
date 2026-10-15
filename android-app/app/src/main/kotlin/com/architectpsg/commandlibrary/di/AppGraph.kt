@@ -80,13 +80,15 @@ internal class AppGraph(
                     val deckDrafts = SqlLocalDeckDrafts(opened.value, deckCodec, deckPatchCodec, DeckDraftPayloadCodec(), draftPlanner, SystemUtcClock)
                     val inventory = SqlLocalInventory(opened.value, OwnedLotPayloadCodec(), LocalInventoryPatchCodec(), SystemUtcClock, capabilities.maxBoundParameters)
                     val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
+                    val cardQuery = AndroidCatalogServices.localCardQuery(opened.value, LocalCatalogQueryCompiler())
                     val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
                         rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
                         englishCatalog = downloads, rulingsDownloads = downloads,
                         rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
                         catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
-                        localCardQuery = AndroidCatalogServices.localCardQuery(opened.value, LocalCatalogQueryCompiler()),
+                        localCardQuery = cardQuery,
+                        offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
                         catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),
                         cardQueryParser = LocalCardQueryParser()::parse,
                         plainDeckLists = PlainTextDeckListCodec(), deckSnapshotValidation = DeckSnapshotValidator::validate,

@@ -38,7 +38,8 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
     onImportText: (() -> Unit)? = null, importTextEnabled: Boolean = true,
     onExportText: ((DeckSnapshot) -> Unit)? = null, exportTextEnabled: Boolean = true,
     onDrawProbabilities: ((DeckSnapshot) -> Unit)? = null,
-    onBoardChecks: ((DeckSnapshot) -> Unit)? = null) {
+    onBoardChecks: ((DeckSnapshot) -> Unit)? = null,
+    onOfflinePrompt: ((DeckSnapshot) -> Unit)? = null, offlinePromptEnabled: Boolean = true) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -108,6 +109,9 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                             enabled = !state.pending && !state.mutationBusy && state.editor == null && state.form == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("deck-open-versions")) { Text(stringResource(R.string.decks_open_versions)) }
                     }
+                    if (onOfflinePrompt != null) OutlinedButton({ onOfflinePrompt(selected) },
+                        enabled = offlinePromptEnabled && !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("deck-offline-prompt")) { Text(stringResource(R.string.offline_prompt_title)) }
                     if (onBoardChecks != null) OutlinedButton({ onBoardChecks(selected) },
                         enabled = !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-board-checks")) { Text(stringResource(R.string.board_checks_title)) }

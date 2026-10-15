@@ -69,6 +69,29 @@ internal class ShellControllers(
             cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
+    val offlinePrompts = ports.offlineDeckPrompts?.let {
+        OfflinePromptController(scope, ioDispatcher, it, ::currentPromptDeck)
+    }
+    /** Live admission for rendering/copying/reviewing committed snapshots, including draft state. */
+    fun currentPromptDeck(): com.architectpsg.commandlibrary.core.model.DeckSnapshot? {
+        val state = deckLibrary?.state?.value ?: return null
+        return state.selected.takeIf { !state.loadingDetail && !state.pending && !state.mutationBusy &&
+            state.editor == null && state.form == null && deckDraftEditor?.state?.value?.session == null }
+    }
+    fun currentPromptSnapshot(): com.architectpsg.commandlibrary.core.model.SnapshotReference? {
+        val generation = status.state.value.status?.activeGeneration() ?: return null
+        val english = com.architectpsg.commandlibrary.core.model.LanguageTag.ENGLISH
+        if (generation.provenance.provider.value != "scryfall" || english !in generation.languages) return null
+        return com.architectpsg.commandlibrary.core.model.SnapshotReference(generation.provenance.provider, generation.id, null, english)
+    }
+    init {
+        if (deckLibrary != null && offlinePrompts != null) scope.launch {
+            val drafts = deckDraftEditor
+            if (drafts == null) deckLibrary.state.collect { offlinePrompts.observe(currentPromptDeck()) }
+            else combine(deckLibrary.state, drafts.state) { _, _ -> currentPromptDeck() }
+                .collect { offlinePrompts.observe(it) }
+        }
+    }
     val inventoryMutationGate = InventoryMutationGate()
     val collection = if (ports.localInventory != null && ports.localDecks != null && ports.ownedQuantity != null &&
         ports.catalogPrintings != null && ports.inventoryProjection != null)

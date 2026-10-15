@@ -58,6 +58,7 @@ import com.architectpsg.commandlibrary.core.model.DeckSnapshot
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportPreview
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
 import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.OfflinePromptDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.BoardConstraintDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DrawProbabilityDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.PlainDeckExportSurface
@@ -117,7 +118,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
                 if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-                if (target != ShellDestination.DECKS) controllers.boardConstraints?.hide()
+                if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide() }
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
                 destination = target
             }
@@ -128,7 +129,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
                         if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-                        if (action.destination != ShellDestination.DECKS) controllers.boardConstraints?.hide()
+                        if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide() }
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
                         destination = action.destination
                     }
@@ -141,7 +142,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         LaunchedEffect(visibleDestination, controllers) {
             if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-            if (visibleDestination != ShellDestination.DECKS) controllers.boardConstraints?.hide()
+            if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide() }
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
         }
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
@@ -253,6 +254,17 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
+                controllers.offlinePrompts?.let { prompt ->
+                    OfflinePromptDialog(prompt, onCopy = { text ->
+                        try {
+                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager
+                            if (clipboard == null) false else {
+                                clipboard.setPrimaryClip(android.content.ClipData.newPlainText(context.getString(R.string.offline_prompt_title), text))
+                                true
+                            }
+                        } catch (_: Exception) { false }
+                    }, onUseCurrentData = { prompt.setSnapshot(controllers.currentPromptSnapshot()) })
+                }
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
@@ -385,6 +397,7 @@ private fun DestinationContent(
     exportPlainEnabled: Boolean,
 ) {
     val statusState by controllers.status.state.collectAsState()
+    val promptDraftState = controllers.deckDraftEditor?.state?.collectAsState()?.value
     when (destination) {
         ShellDestination.CARDS -> CardsScreen(
             controller = controllers.search,
@@ -433,6 +446,10 @@ private fun DestinationContent(
                 onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
                 onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled,
                 onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) },
+                offlinePromptEnabled = promptDraftState?.session == null,
+                onOfflinePrompt = controllers.offlinePrompts?.let { prompt -> { deck ->
+                    if (controllers.currentPromptDeck() == deck) prompt.open(deck, controllers.currentPromptSnapshot())
+                } },
                 onBoardChecks = controllers.boardConstraints?.let { checker -> { deck ->
                     val current = library.state.value
                     if (current.selected == deck && !current.loadingDetail && current.editor == null && !current.pending && !current.mutationBusy && current.form == null) checker.open(deck)
