@@ -1,0 +1,18 @@
+{
+  "component": "ai-history-proof",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-ai-history-proof-01",
+  "owner": "/root/verify_provider_room",
+  "status": "released",
+  "base_commit": "201dc5e645a5fdd33c5417451b9de8cf9a6eaf8c",
+  "contract_revision": "ai-history-v1-20261015/schema18-fb97ec30",
+  "branch": "agent/campaign-ai-history-proof-20261015",
+  "worktree": "/workspace/command-library-ai-history-proof-01",
+  "owned_paths": [
+    "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/AiHistoryAppIntegrationTest.kt",
+    "coordination/handoffs/cx-campaign-ai-history-proof-01.md"
+  ],
+  "build_slot": "NOT GRANTED; root only",
+  "worker_commit": "7f8a656db229617680fee1d7a11201e9df6624fb",
+  "release_reason": "Exact source-reviewed return verified parent/path/live/hash/clean and integrated; root assembled gate executing8c0c03b."
+}

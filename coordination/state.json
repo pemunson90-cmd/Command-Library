@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-ai-history-wave-248",
-  "verified_base_head": "a9e746b91374b36e99d4748b2ecb6a8c98558d50",
+  "checkpoint_id": "cp-20261015-ai-history-integration-249",
+  "verified_base_head": "31bfe7884db56b0f4b704e25a525ff7a08d6d2cf",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "dispatch_ai_history_producers",
+  "first_action": "integrate_ai_history_and_record_deck_intake",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -164,7 +164,7 @@
     "campaign_provider_profiles": "SOURCE02/shared/runtimeACK exact79f9a96ccec6632db5e6fb541cb677530c480257/tree d39221482fd70d8971118c2ac20331fb2d9b53a0:37tests7XML0f/e/s2m18/733pins,8AI+8SQL+19shell+2actualRoom/UI. CompleteactualKSP15\u2192Room16preservation/reopen/CAS/tombstone; SettingsLOCALcreate/edit/rev2ON_STOPkeyclear/recreate/delete/unrelatedconservation. PROVIDER-PROFILES-APP-INTEGRATION-20261015.md preserves SOURCEHOLDs/exact8+6+2returns/cleanoriginals/releasedclaims and scopednative/remainingholds. No executedfailure inassembledattempt1. Boundary2dd7eab oneexistingreferencecase/KSP/717pins separate.",
     "campaign_prompt_overrides": "SOURCE02/shared/runtimeACK exact4ee30f7fa534f475e726e89a29e695016f87e433/treef2ea2b2b3199440297dae71e0412067c173c0e62:34hosttests6XML0f/e/s1m25/741pins;10SQL11newcontroller10oldcontroller3actualapp. Room16to17 oldDDL/opaqueuserbytes preservation, fourmodeexplicitSave/preview/independentRoom/recreation/reset/otherstateconservation and prioroffline/Room15to17regression. PROMPT-OVERRIDES-APP-INTEGRATION-20261015.md preserves SOURCE01HOLD, attempt1db67c8ecompilefailure0XML and equivalentlyfixed4ee30f7. Exact3/5/2returns verified/originalclean/claimsreleased. No native/provider/H08/fullAI/releaseclaim."
   },
-  "last_completed": "H08 source boundary ACK/KSP18PASS21s; isolated codec and SQL producers TAKEN exacta9e746b. Root actual UI/shared integration;3writers ceiling/one build slot. H09 accepted; no H08runtime yet.",
-  "updated_utc": "2026-10-15T21:28:25Z",
+  "last_completed": "H08 source-reviewed codec/SQL/UI/app proof integrated; exact31bfe78 assembled gate active after scoped compile repair. Claims released. D30 incorporates approved PR23/issue24 future deck dependencies without reprioritizing/implementation/merge.",
+  "updated_utc": "2026-10-15T21:43:10Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

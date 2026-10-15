@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-ai-history-codec-01",
   "owner": "/root/implement_ai_history_codec",
-  "status": "active",
+  "status": "released",
   "base_commit": "a9e746b91374b36e99d4748b2ecb6a8c98558d50",
   "contract_revision": "ai-history-v1-20261015/schema18-fb97ec30",
   "branch": "agent/campaign-ai-history-codec-20261015",
@@ -15,5 +15,7 @@
     "android-app/data/storage/src/test/kotlin/com/architectpsg/commandlibrary/data/storage/ai/AiHistoryPayloadCodecTest.kt",
     "coordination/handoffs/cx-campaign-ai-history-codec-01.md"
   ],
-  "build_slot": "NOT GRANTED; root only"
+  "build_slot": "NOT GRANTED; root only",
+  "worker_commit": "6ef3eaf8107bd7d1ee1316c17f97ee73373c0f18",
+  "release_reason": "Exact source-reviewed return verified parent/path/live/hash/clean and integrated; root assembled gate executing8c0c03b."
 }

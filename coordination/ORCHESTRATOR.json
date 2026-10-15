@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T21:28:25Z",
-  "expires_utc": "2026-10-15T22:13:25Z",
-  "checkpoint_id": "cp-20261015-ai-history-wave-248",
-  "note": "Root retains shared/integration/final authority. H09 host accepted4ee30f7 report/cp247. H08 core/schema18 SOURCE01ACK/compileKSP21s, actualexportfb97ec30 all50oldentitiesunchanged. Exactbasea9e746b codecNEW5 Solmedium andSQLNEW3 Solhigh isolatedTAKEN; root actualUI/DI,3writersmax/4children; rootonebuildslotfree. No H08runtime/provider/native/releaseacceptance."
+  "heartbeat_utc": "2026-10-15T21:43:10Z",
+  "expires_utc": "2026-10-15T22:28:10Z",
+  "checkpoint_id": "cp-20261015-ai-history-integration-249",
+  "note": "Root retains authority; H08 codec/SQL SOURCE02 and actualUI/shared/proof SOURCE01 ACK integrated exact5/3/2returns/cleanoriginals/releasedclaims. Gateattempt18c0c03b compileFAILED19s0XML, resourcefix31bfe78 attempt2running/rootbuildslotbusy/sourcefrozen. D30 PR23/issue24 approvedfuturedeckrequirements incorporateda62f24b, nopriority/assignment/tagimplementation/mergechange."
 }

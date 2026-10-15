@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-ai-history-sql-01",
   "owner": "/root/implement_ai_history_sql",
-  "status": "active",
+  "status": "released",
   "base_commit": "a9e746b91374b36e99d4748b2ecb6a8c98558d50",
   "contract_revision": "ai-history-v1-20261015/schema18-fb97ec30",
   "branch": "agent/campaign-ai-history-sql-20261015",
@@ -13,5 +13,7 @@
     "android-app/data/storage/src/test/kotlin/com/architectpsg/commandlibrary/data/storage/ai/SqlLocalAiHistoryTest.kt",
     "coordination/handoffs/cx-campaign-ai-history-sql-01.md"
   ],
-  "build_slot": "NOT GRANTED; root only"
+  "build_slot": "NOT GRANTED; root only",
+  "worker_commit": "d2169abe688ec5ac2e6e38b112fb66d5f7239eb2",
+  "release_reason": "Exact source-reviewed return verified parent/path/live/hash/clean and integrated; root assembled gate executing8c0c03b."
 }
