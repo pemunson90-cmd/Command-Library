@@ -85,6 +85,8 @@ class DeckDraftDialogUiTest {
 
     @Test fun exitRetryKeepsItsTicketAndActionUntilRecoveredRawHasActuallyFlushed() {
         f.raw(DeckDraftBody.Details(Revision(0), "Flush before close", "", ""))
+        val saved = checkNotNull(f.slot.draft)
+        val originalHead = f.head
         f.lose.add("load")
         f.open()
         val session = f.actor.state.value.session
@@ -105,11 +107,22 @@ class DeckDraftDialogUiTest {
         assertEquals(exit.ticket, waiting.ticket)
         assertEquals(exit.action, waiting.action)
         assertEquals(session, f.actor.state.value.session)
-        assertEquals(DraftExitPhase.FLUSHING, waiting.phase)
+        // A failed-read exit can retain its NEEDS_CHOICE display phase during the retry.
+        // Actual COMMITTING work and the unreleasable ticket establish the flush barrier.
+        assertEquals(DraftPhase.COMMITTING, f.actor.state.value.phase)
         assertNull(f.actor.takeReadyExit(exit.ticket))
-        assertEquals("Original", f.head.name)
+        assertEquals(originalHead, f.head)
         assertEquals(1, f.prepares.size)
         assertEquals(1, f.commits.size)
+        val prepared = f.prepares.single()
+        val intent = (f.slot.latestPreparation as DeckDraftPreparation.Pending).intent
+        assertEquals(saved.body, prepared.body)
+        assertEquals(saved.token, prepared.token)
+        assertEquals(DeckDraftCommitScope.TEXT_AUTOSAVE, prepared.scope)
+        assertEquals(intent.patch, prepared.patch)
+        assertEquals(intent.operationId, prepared.operation)
+        assertEquals(listOf(intent.operationId to intent.requestSha256), f.commits)
+        assertEquals(saved, f.slot.draft)
         assertTrue(f.writes.isEmpty())
         assertTrue(f.discards.isEmpty())
 
