@@ -65,4 +65,8 @@ public class ShellPorts(
     public val inventoryProjection: ((com.architectpsg.commandlibrary.core.model.InventorySnapshot,
         com.architectpsg.commandlibrary.core.model.CollectionPatch, com.architectpsg.commandlibrary.core.model.Revision,
         com.architectpsg.commandlibrary.core.model.CancelToken) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.InventoryProjection>)? = null,
+    /** Complete raw recovery/preparation/commit capability; bind only after real adapter acceptance. */
+    public val localDeckDrafts: com.architectpsg.commandlibrary.core.model.LocalDeckDrafts? = null,
+    /** Shared canonical projection; enabled together with the complete durable draft capability. */
+    public val deckDraftPlanner: com.architectpsg.commandlibrary.core.model.DeckDraftPlanner? = null,
 )

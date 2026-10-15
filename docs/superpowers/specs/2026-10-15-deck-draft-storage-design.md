@@ -58,3 +58,6 @@ Physicalimplementation supersedes proposal-only status above: actualKSP15SHAce46
 
 
 Backendpacket independentfailurecase correction: receipt/resultrevision/hashcoherence alone cannotprove canonicalrequestresult. EveryCOMMITTED load/latest/exactpreparereplay/commitreplay must compare ENTIREhistoricalresult toactualreducer projection ofcanonicalpinnedpatch onpinnedhistoricalsource, usingactualresultmodifiedAt fornonempty/validtimestampordering; identity/createdAt/allcontent exact, checkedrevision. Emptypatch exactsourceincludingmodifiedAt/revision. No currentheadforhistoricalreplay. Addcoherentlyreencoded unrelatedresult(payload+summary+SHA) regression, includingCLEARED withnoresidual. This strengthensspecifiedrequest/resultassociation, no wire/schema/publicAPI change.
+
+
+Roottechnicalclarification fromworkerquestion: FRESHprepare requires sourcebase=currenthead=highestretainedrevision; stale rejection preservesraw andcreatesnointent/reservation/clock. Exactexistingprepare replay historical/current-independent beforefreshmutablechecks, includingterminalfullresultvalidation. No reason to reserve an already-uncommittable freshstale request; no public/schema change.
