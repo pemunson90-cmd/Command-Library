@@ -733,3 +733,7 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T20:46:57Z | codex | cp-20261015-provider-profiles-integration-243 | containing commit | Genuine vault native4cases accepted; profile producer exact8 integrated/sourceACK; isolated presentation6 and actualRoomproof2 source reviews, root real app wiring/test authored, one combined gate next
 
 2026-10-15T20:56:13Z | codex | cp-20261015-provider-profiles-accepted-244 | containing commit | Provider configuration assembled37host tests inclactualRoommigration/Settingslifecycle SOURCE02/shared/runtimeACK; exact8/6/2claimsreleased, separateactualvaultnative4 accepted; nextdurablepromptoverride boundaryreview
+
+2026-10-15T21:00:46Z | codex | cp-20261015-prompt-overrides-wave-245 | containing commit | Providerconfig accepted37host andvault4native; reviewedcompiled H09durableoverride boundary/schema17 frozen, economical exact3 isolatedSQLproducer TAKEN; existingpromptUIpersistence next
+
+2026-10-15T21:10:25Z | codex | cp-20261015-prompt-overrides-integration-246 | containing commit | Reviewed exact SQL return integrated e05fe68; root real binding prepared; editor frozen under independent review and isolated actual Room17/app proof taken. One assembled gate next; no broad/native repeat.

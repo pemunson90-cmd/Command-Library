@@ -1,0 +1,20 @@
+{
+  "component": "prompt-overrides",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-prompt-overrides-01",
+  "owner": "/root/implement_prompt_overrides",
+  "status": "released",
+  "base_commit": "23a7f3f643f6ec0a578ecc0b199bd88c97000bdd",
+  "contract_revision": "prompt-overrides-v1-20261015/schema17-7fd1f6ea",
+  "branch": "agent/campaign-prompt-overrides-20261015",
+  "worktree": "/workspace/command-library-prompt-overrides-01",
+  "owned_paths": [
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/SqlLocalPromptOverrides.kt",
+    "android-app/data/storage/src/test/kotlin/com/architectpsg/commandlibrary/data/storage/ai/SqlLocalPromptOverridesTest.kt",
+    "coordination/handoffs/cx-campaign-prompt-overrides-01.md"
+  ],
+  "build_slot": "NOTGRANTED; ROOTonly",
+  "worker_commit": "765b47fa78bb72065194b3304f8311dd4fa25513",
+  "integrated_commit": "e05fe68",
+  "release_reason": "Exact reviewed three-file return verified and integrated; coherent assembled gate pending."
+}

@@ -2196,8 +2196,8 @@
         ],
         "verification": "restart/interrupted vs final/deletion/stale deck/cancel/privacy/backup; actual provider path after ai-providers",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "No persistence/app wiring",
+        "status": "in_progress",
+        "observed_implementation": "H09durablepromptoverride prerequisite READY02/sourceACK; additivecore3method/store schema17actualKSP7fd1f6ea all49schema16entitiesunchanged, compileKSPPASS25s(no testsrequested). Exact3SQLproducer TAKEN baseline23a7f3f, persistentexistingpromptUI/AppGraph/realRoomproof rootnext. No store/UIruntime/H09fullacceptance yet. H08perdeckconversation/partial/retry/usage/history/backup remainsnamednextwork, notdeferred; no providerrequests/newruntime/accounts.",
         "ownership_group": "ai",
         "resources": [
           "local-gradle-serial"

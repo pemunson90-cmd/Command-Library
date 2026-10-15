@@ -104,7 +104,7 @@ class ProviderProfilesRoomIntegrationTest {
 
         // Independent actual Room handle, actual adapter, actual graph vault, real graph clock.
         ok(StorageDatabase.open(context, AppGraph.DATABASE_FILE)).use { db ->
-            assertEquals(16, ok(db.capabilities(token)).schemaVersion)
+            assertEquals(17, ok(db.capabilities(token)).schemaVersion)
             val reader = SqlLocalProviderProfiles(db, checkNotNull(ports.utcClock), vault)
             assertEquals(edited, ok(reader.load(id, token)))
             assertEquals(listOf(edited), ok(reader.list(PageRequest(10), token)).items.toList())

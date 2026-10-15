@@ -2,6 +2,7 @@ package com.architectpsg.commandlibrary.di
 
 import android.content.Context
 import com.architectpsg.commandlibrary.data.vault.AndroidSecretVault
+import com.architectpsg.commandlibrary.feature.ai.SqlLocalPromptOverrides
 import com.architectpsg.commandlibrary.feature.ai.SqlLocalProviderProfiles
 import com.architectpsg.commandlibrary.feature.ai.ProviderProfilePolicy
 import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
@@ -94,7 +95,8 @@ internal class AppGraph(
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
                         localCardQuery = cardQuery,
                         secretVault = vault, providerProfiles = providerProfiles, providerProfileOrigin = ProviderProfilePolicy::canonicalOrigin,
-                offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
+                        promptOverrides = SqlLocalPromptOverrides(opened.value, SystemUtcClock),
+                        offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
                         catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),
                         cardQueryParser = LocalCardQueryParser()::parse,
                         plainDeckLists = PlainTextDeckListCodec(), deckSnapshotValidation = DeckSnapshotValidator::validate,

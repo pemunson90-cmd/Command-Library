@@ -1,0 +1,26 @@
+{
+  "component": "prompt-overrides-ui",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-prompt-overrides-ui-01",
+  "owner": "/root/implement_prompt_override_ui",
+  "status": "active",
+  "base_commit": "bb06734e40716b3d1cd1dbfa424798f005e23160",
+  "contract_revision": "prompt-overrides-v1-20261015/schema17-7fd1f6ea",
+  "branch": "agent/campaign-prompt-overrides-ui-20261015",
+  "worktree": "/workspace/command-library-prompt-overrides-ui-01",
+  "owned_paths": [
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/OfflinePromptController.kt",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/decks/OfflinePromptDialog.kt",
+    "android-app/feature/shell/src/main/res/values/offline_prompt_strings.xml",
+    "android-app/feature/shell/src/test/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/PromptOverrideControllerTest.kt",
+    "coordination/handoffs/cx-campaign-prompt-overrides-ui-01.md"
+  ],
+  "expected_changes": {
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/OfflinePromptController.kt": "M",
+    "android-app/feature/shell/src/main/kotlin/com/architectpsg/commandlibrary/feature/shell/ui/decks/OfflinePromptDialog.kt": "M",
+    "android-app/feature/shell/src/main/res/values/offline_prompt_strings.xml": "M",
+    "android-app/feature/shell/src/test/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/PromptOverrideControllerTest.kt": "A",
+    "coordination/handoffs/cx-campaign-prompt-overrides-ui-01.md": "A"
+  },
+  "build_slot": "NOTGRANTED; ROOTonly"
+}
