@@ -81,5 +81,7 @@ public class ShellPorts(
     /** Complete local-only typed execution, no online acquisition or implicit preparation. */
     public val localCardQuery: com.architectpsg.commandlibrary.core.model.LocalCardQuery? = null,
     public val catalogSearchPreparation: com.architectpsg.commandlibrary.core.model.CatalogSearchPreparation? = null,
+    /** Complete provider-free prompt/render/reply/detail capability; no provider/runtime stubs. */
+    public val offlineDeckPrompts: com.architectpsg.commandlibrary.core.model.OfflineDeckPrompts? = null,
     public val cardQueryParser: ((String) -> com.architectpsg.commandlibrary.core.model.CardQueryParseResult)? = null,
 )
