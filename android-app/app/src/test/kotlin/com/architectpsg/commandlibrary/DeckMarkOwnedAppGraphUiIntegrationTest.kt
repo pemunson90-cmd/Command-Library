@@ -149,17 +149,25 @@ class DeckMarkOwnedAppGraphUiIntegrationTest {
     }
     private fun dialogClick(tag: String) { dialogScroll(tag); enabled(tag); rule.onNodeWithTag(tag).performClick() }
     private fun footerClick(tag: String) { enabled(tag); rule.onNodeWithTag(tag).performClick() }
+    private fun navigate(tag: String) {
+        // Compact navigation keeps secondary destinations in the actual More menu.
+        await { exists(tag) || exists("shell-nav-more") }
+        if (!exists(tag)) {
+            enabled("shell-nav-more")
+            rule.onNodeWithTag("shell-nav-more").performClick()
+        }
+        enabled(tag)
+        rule.onNodeWithTag(tag).performClick()
+    }
     private fun inventoryPane() {
         // Global Resume keeps the originating destination, including Cards, after save.
-        await { exists("shell-nav-collection") }
-        rule.onNodeWithTag("shell-nav-collection").performClick()
+        navigate("shell-nav-collection")
         await { exists("collection-inventory-tab") || exists("collection-inventory") }
         if (exists("collection-inventory-tab")) rule.onNodeWithTag("collection-inventory-tab").performClick()
         await { exists("collection-inventory") }
     }
     private fun awaitCatalogGenerationUi() {
-        await { exists("shell-nav-catalog") }
-        rule.onNodeWithTag("shell-nav-catalog").performClick()
+        navigate("shell-nav-catalog")
         val generation = catalogBefore.activeGenerations.first { it.status == GenerationStatus.ACTIVE }.id.value
         // Observe the actual shared status controller's rendered generation before asking
         // mark-owned for a current finish proof; a direct seed lookup cannot prove UI readiness.
@@ -173,8 +181,7 @@ class DeckMarkOwnedAppGraphUiIntegrationTest {
         await { rule.onAllNodesWithText(label).fetchSemanticsNodes().isNotEmpty() }
     }
     private fun openDeck(deck: DeckSnapshot) {
-        await { exists("shell-nav-collection") }
-        rule.onNodeWithTag("shell-nav-collection").performClick()
+        navigate("shell-nav-collection")
         if (exists("collection-deck-tab")) rule.onNodeWithTag("collection-deck-tab").performClick()
         await { exists("collection-allocation") }
         val deckTag = "collection-deck-${deck.id.raw}"
@@ -250,8 +257,7 @@ class DeckMarkOwnedAppGraphUiIntegrationTest {
         assertEquals(saved, reopenedSnapshot())
         // A real activity recreation rebuilds composition without recording the additions again.
         rule.activityRule.scenario.recreate()
-        await { exists("shell-nav-collection") }
-        rule.onNodeWithTag("shell-nav-collection").performClick()
+        navigate("shell-nav-collection")
         displayedRevision(saved.revision)
         assertEquals(saved, snapshot()); assertEquals(knownDeck, storedDeck(knownDeck.id))
         val undone = undoThroughUi(saved)
@@ -273,12 +279,13 @@ class DeckMarkOwnedAppGraphUiIntegrationTest {
         field(entry.id, "quantity", "-1"); field(entry.id, "notes", notes); field(entry.id, "location", location)
         footerClick("mark-owned-preview")
         val invalid = rule.activity.getString(ShellR.string.shell_problem_invalid_input)
+        rule.onNodeWithTag("mark-owned-list").performScrollToIndex(0)
         await { rule.onAllNodesWithText(invalid).fetchSemanticsNodes().isNotEmpty() }
         assertTrue(rule.onAllNodesWithTag("mark-owned-confirm").fetchSemanticsNodes().none { !it.config.contains(SemanticsProperties.Disabled) })
         assertReadOnlyBaseline()
         footerClick("mark-owned-close")
         await { !exists("mark-owned-list") }
-        rule.onNodeWithTag("shell-nav-cards").performClick()
+        navigate("shell-nav-cards")
         footerClick("mark-owned-resume")
         assertEquals("-1", text(entry.id, "quantity"))
         assertEquals(notes, text(entry.id, "notes")); assertEquals(location, text(entry.id, "location"))

@@ -183,7 +183,7 @@ class CollectionControllerTest {
         val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
         c.ensureLoaded();advanceUntilIdle();c.beginBulkSelection();advanceUntilIdle()
         c.toggleBulkLot(unresolved.id);c.beginBulkEdit()
-        c.bulkDraft(CollectionBulkDraft(notes=BulkValue.Set("Retained submitted notes")))
+        c.bulkDraft(CollectionBulkDraft(location=BulkValue.Set("Retained submitted shelf")))
         c.previewBulkEdit();advanceUntilIdle()
         val blocked=CompletableDeferred<Unit>();f.mutationGate=blocked
         f.response=Outcome.Unknown("Lost acknowledgement",SnapshotList.empty())
