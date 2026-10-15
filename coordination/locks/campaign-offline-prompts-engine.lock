@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-offline-prompts-engine-01",
   "owner": "/root/implement_offline_prompts_engine",
-  "status": "active",
+  "status": "released",
   "base_commit": "6a910a134bf138dd472d477bc53ca2b02fba7b51",
   "contract_revision": "offline-prompts-v1-20261015",
   "branch": "agent/campaign-offline-prompts-engine-20261015",
@@ -21,5 +21,8 @@
     "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/OfflinePromptTextTest.kt",
     "coordination/handoffs/cx-campaign-offline-prompts-engine-01.md"
   ],
-  "build_slot": "NOTGRANTED; rootonly"
+  "build_slot": "NOTGRANTED; rootonly",
+  "return_commit": "678deb4224ae02b2078ff6f9a13a554b134e5a93",
+  "integration_commit": "19cd9390576828c4ab4f206b0afaece7ca6f07a4",
+  "disposition": "SOURCE02 exact11paths verified/integrated.17engine tests pass in scoped host gate; actual UI/AppGraph acceptance pending. Original worktree preserved."
 }
