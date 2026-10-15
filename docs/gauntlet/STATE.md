@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-draft-overdue-read-repair-202. Updated UTC: 2026-10-15T12:37:37Z.
+Checkpoint: cp-20261015-draft-read-deadline-gate-203. Updated UTC: 2026-10-15T12:44:44Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-preserve-overdue-deadline-and-read-exit-recovery
+verify-source-acked-read-and-deadline-repair
 
-Attempt03 actual84tests/2failures diagnosed; worker owns coherent overdue-deadline and initial-load exit repair, slot retained idle. Root16source ACK frozen, combined gate pending.
+Attempt04 both source reviews ACK, focused gate active; exact failed-source snapshots retained. Root16file app source ACK frozen, actual assembled gate next.
 
 Read CURRENT, machine state and task card.

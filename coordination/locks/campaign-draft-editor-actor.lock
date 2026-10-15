@@ -9,6 +9,6 @@
   "base_commit": "Containing reviewed, compiled boundary/claim commit supplied and verified before edits",
   "owned_paths": "Exact4NEW concreteactor/twofocusedtests/handoff paths; existing UI/state/ports/DI/navigation readonly",
   "authority": "Canonical root local claim; root exclusively owns shared UI/DI/integration/final merge",
-  "build_slot": "RETAINED IDLE after attempt03 FAILED84/4XML/2failures/0errors/skips. Coherent deadline+initial-read typed-exit repair/source review before any new gate. Root no Gradle.",
-  "source_review": "Attempt03 earlier source ACK superseded by independently confirmed overdue deadline and initial-load/exit HOLDs; unchanged malformed ACK regressions pass. Next repaired source review pending."
+  "build_slot": "ACTIVE attempt04 session40655 same4classes, offline no-daemon max2workers; root no Gradle, source frozen",
+  "source_review": "Attempt04 independent actual Astra inventory and campaign source ACK: e053d207/85f2a5dc/fa267b3c,71authoredactorcases, runtime pending"
 }

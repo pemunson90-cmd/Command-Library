@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-draft-overdue-read-repair-202
+Checkpoint-ID: cp-20261015-draft-read-deadline-gate-203
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. preserve-overdue-deadline-and-read-exit-recovery
+Next step: 3. verify-source-acked-read-and-deadline-repair
 
-Updated UTC: 2026-10-15T12:37:37Z
+Updated UTC: 2026-10-15T12:44:44Z
 Status: in_progress; lease: active.
-Verified base: fab1f39cf2e260a1f1e3c3c05012173d721eb3a9.
+Verified base: 62755bfe4ff9cd13e5e94d8d1dc331ad4795714a.
 
-Attempt03 actual84tests/2failures diagnosed; worker owns coherent overdue-deadline and initial-load exit repair, slot retained idle. Root16source ACK frozen, combined gate pending.
+Attempt04 both source reviews ACK, focused gate active; exact failed-source snapshots retained. Root16file app source ACK frozen, actual assembled gate next.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
