@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-provider-text-host-255",
-  "verified_base_head": "6519bff16b558356d5f1b3c62194c9b516525dcd",
+  "checkpoint_id": "cp-20261015-anthropic-source-packets-256",
+  "verified_base_head": "921d4c8ff2cbe1e3ddc187d24a569662ca86bc63",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "consume_native_anthropic_source_facts_then_bound_next_provider_packet",
+  "first_action": "review_native_provider_returns_then_assemble_one_gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "Bounded customHTTPS provider text SOURCE ACKs plus independent Solmedium runtimeACK6519bff1/tree3cd772d0:79scopedhostcases11XML0f/e/s,69reused+10fresh,774pins. Source/config/cache/testfixturefailure lineage retained. Native/authenticprovider/eligibility/fullAI/Fold7/release holds retained.",
+  "review_status": "CustomHTTPS boundedSOURCE/runtimeACK6519bff1 retained. Next nativeAnthropic boundarySOURCE02ACK4424646d; rootdraftd96e2d12/frozencodec source reviews pending, appproof inprogress; no nativeimplementationcompile/runtimeyet. All eligibility/terms/H08componentfidelity/native/Fold7/release holds retained.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -166,7 +166,7 @@
     "campaign_ai_history": "SOURCE01core/shared/UI/proof +SOURCE02codec/SQL andindependentSolruntimeACK exact31bfe7884db56b0f4b704e25a525ff7a08d6d2cf/tree553634f69f635c39a476c92aea8f534d952f8f23:43hosttests9XML0f/e/s2m04/758pins;6codec8SQL25controller4actualapp. ActualRoom17to18/50oldentities+physicalbytes preservation, exactprompt/reply/provenance explicitcapture/independentRoom/recreation/perdeckopen/delete/privateprojectionclearing; prioroffline/override/Room15to18regressions. AI-HISTORY-APP-INTEGRATION-20261015.md preserves sourceHOLDs/exact5/3/2returns/cleanoriginals/releasedclaims; attempt18c0c03b compilefailure19s0XML andtinystringResourcefix31bfe78. No provider/socket/native/backup/fullH08/releaseacceptance.",
     "campaign_provider_text": "SOURCE/shared/scopedruntimeACK exact6519bff16b558356d5f1b3c62194c9b516525dcd/tree3cd772d067e712b4f898ae5e4ead9d3157dadea3. Localattempt4SUCCESS21s,79cases11XML0f/e/s:69unchangedAI/network/storage reusedfromattempt3+10freshshell/app,774pins. ActualRoom/MainActivity/AppGraph/coordinator/clientcodec syntheticwire PENDINGbeforePOST/STREAMING/COMPLETE/recreationnoreplay. No native/authenticprovider/fullH02-H08/Fold7/releaseacceptance. PROVIDER-TEXT-APP-INTEGRATION-20261015.md preserves allsource/3failedattempts/repairedtestproxy/exactreturns/drafts."
   },
-  "last_completed": "CustomHTTPS provider text bounded source/runtime ACK6519bff1:79scoped cases11XML0f/e/s,69unchangedreused+10fresh/774pins. All failure lineage retained; originals preserved/buildslotfree. Continue narrow nativeAnthropic sourcefacts, all final gates open.",
-  "updated_utc": "2026-10-15T23:27:34Z",
+  "last_completed": "NativeAnthropic existing-scope boundary SOURCE02ACK4424646d; rootdraftd96e2d12 and frozenNEW5 await source review, actualappNEW2 inprogress. RootbuildslotFREE/no nativecompile-runtimeclaim; customHTTPS79case host acceptance retained. All holds preserved.",
+  "updated_utc": "2026-10-15T23:39:48Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

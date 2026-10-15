@@ -755,3 +755,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T23:21:04Z | codex | cp-20261015-provider-source-integration-254 | containing commit | Exact reviewed HTTP/CC/coordinator/root consent UI/app proof integrated through ddff703b. Source HOLD corrections retained. Single local assembled gate pending; worker claims released and originals preserved; all release holds remain.
 
 2026-10-15T23:27:34Z | codex | cp-20261015-provider-text-host-255 | containing commit | CustomHTTPS provider text bounded source/runtime ACK6519bff1:79scoped cases11XML0f/e/s,69unchangedreused+10fresh/774pins. All failure lineage retained; originals preserved/buildslotfree. Continue narrow nativeAnthropic sourcefacts, all final gates open.
+
+2026-10-15T23:39:48Z | codex | cp-20261015-anthropic-source-packets-256 | containing commit | NativeAnthropic existing-scope boundary SOURCE02ACK4424646d; rootdraftd96e2d12 and frozenNEW5 await source review, actualappNEW2 inprogress. RootbuildslotFREE/no nativecompile-runtimeclaim; customHTTPS79case host acceptance retained. All holds preserved.

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-provider-text-host-255
+Checkpoint-ID: cp-20261015-anthropic-source-packets-256
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. consume_native_anthropic_source_facts_then_bound_next_provider_packet
+Next step: 3. review_native_provider_returns_then_assemble_one_gate
 
-Updated UTC: 2026-10-15T23:27:34Z
+Updated UTC: 2026-10-15T23:39:48Z
 Status: in_progress; lease: active.
-Verified base: 6519bff16b558356d5f1b3c62194c9b516525dcd.
+Verified base: 921d4c8ff2cbe1e3ddc187d24a569662ca86bc63.
 
-CustomHTTPS provider text bounded source/runtime ACK6519bff1:79scoped cases11XML0f/e/s,69unchangedreused+10fresh/774pins. All failure lineage retained; originals preserved/buildslotfree. Continue narrow nativeAnthropic sourcefacts, all final gates open.
+NativeAnthropic existing-scope boundary SOURCE02ACK4424646d; rootdraftd96e2d12 and frozenNEW5 await source review, actualappNEW2 inprogress. RootbuildslotFREE/no nativecompile-runtimeclaim; customHTTPS79case host acceptance retained. All holds preserved.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
