@@ -7,6 +7,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -16,6 +22,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -29,13 +37,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfilesScreen
 import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentRef
@@ -45,6 +59,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.activeGenerati
 /** Only destinations whose screens work in this version; unbuilt features are absent. */
 internal enum class ShellDestination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int, val tag: String) {
     CARDS(R.string.shell_nav_cards, R.drawable.shell_ic_cards, "shell-nav-cards"),
+    DECKS(R.string.decks_title, R.drawable.shell_ic_decks, "shell-nav-decks"),
     CATALOG(R.string.shell_nav_catalog, R.drawable.shell_ic_catalog, "shell-nav-catalog"),
     RULES(R.string.rules_title, R.drawable.shell_ic_catalog, "shell-nav-rules"),
     PROFILES(R.string.profiles_nav, R.drawable.shell_ic_profiles, "shell-nav-profiles"),
@@ -70,6 +85,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         var pickerUnavailable by rememberSaveable { mutableStateOf(false) }
         val destinations = ShellDestination.entries.filter {
             when (it) {
+                ShellDestination.DECKS -> controllers.deckLibrary != null
                 ShellDestination.RULES -> controllers.rules != null
                 ShellDestination.PROFILES -> controllers.profiles != null
                 else -> true
@@ -128,15 +144,33 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                     Scaffold(
                         containerColor = MaterialTheme.colorScheme.background,
                         bottomBar = {
-                            NavigationBar(Modifier.testTag(ShellTags.NAVIGATION_BAR)) {
-                                destinations.forEach { item ->
-                                    NavigationBarItem(
-                                        selected = visibleDestination == item,
-                                        onClick = { navigate(item) },
+                            val largeText = LocalDensity.current.fontScale >= 1.5f
+                            val overflow = controllers.deckLibrary != null && (destinations.size > 5 || (largeText && destinations.size > 3))
+                            val primary = if (!overflow) destinations else
+                                listOf(ShellDestination.CARDS, ShellDestination.DECKS, ShellDestination.RULES, ShellDestination.PROFILES)
+                                    .filter { it in destinations }.take(if (largeText) 2 else 4)
+                            val secondary = destinations.filter { it !in primary }
+                            var menuOpen by remember { mutableStateOf(false) }
+                            NavigationBar(Modifier.heightIn(min = if (largeText && overflow) 112.dp else 80.dp).testTag(ShellTags.NAVIGATION_BAR)) {
+                                val barScope = this
+                                primary.forEach { item ->
+                                    NavigationBarItem(selected = visibleDestination == item, onClick = { navigate(item) },
                                         icon = { Icon(painterResource(item.icon), contentDescription = null) },
-                                        label = { Text(stringResource(item.label)) },
-                                        modifier = Modifier.testTag(item.tag),
-                                    )
+                                        label = { Text(stringResource(item.label)) }, modifier = Modifier.testTag(item.tag))
+                                }
+                                if (secondary.isNotEmpty()) Box(Modifier.weight(1f)) {
+                                    barScope.NavigationBarItem(selected = visibleDestination in secondary, onClick = { menuOpen = true },
+                                        icon = { Icon(painterResource(R.drawable.shell_ic_more), contentDescription = null) },
+                                        label = { Text(stringResource(R.string.shell_nav_more)) },
+                                        modifier = Modifier.fillMaxWidth().testTag("shell-nav-more"))
+                                    DropdownMenu(menuOpen, { menuOpen = false }) {
+                                        secondary.forEach { item -> DropdownMenuItem(
+                                            text = { Text(stringResource(item.label)) },
+                                            leadingIcon = { Icon(painterResource(item.icon), contentDescription = null) },
+                                            onClick = { menuOpen = false; navigate(item) },
+                                            modifier = Modifier.heightIn(min = 48.dp).testTag(item.tag).semantics { selected = visibleDestination == item },
+                                        ) }
+                                    }
                                 }
                             }
                         },
@@ -149,6 +183,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             modifier = Modifier.fillMaxHeight().testTag(ShellTags.NAVIGATION_RAIL),
                             windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.Start),
                         ) {
+                            Column(Modifier.verticalScroll(rememberScrollState())) {
                             destinations.forEach { item ->
                                 NavigationRailItem(
                                     selected = visibleDestination == item,
@@ -157,6 +192,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                                     label = { Text(stringResource(item.label)) },
                                     modifier = Modifier.testTag(item.tag),
                                 )
+                            }
                             }
                         }
                         content(
@@ -221,6 +257,7 @@ private fun DestinationContent(
         ShellDestination.RULES -> controllers.rules?.let { rules ->
             RulesScreen(rules, widthClass, rulesPickerUnavailable, onPickRules, modifier)
         }
+        ShellDestination.DECKS -> controllers.deckLibrary?.let { DeckLibraryScreen(it, widthClass, modifier) }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
         ShellDestination.SETTINGS -> {
             val settingsState by controllers.settings.state.collectAsState()

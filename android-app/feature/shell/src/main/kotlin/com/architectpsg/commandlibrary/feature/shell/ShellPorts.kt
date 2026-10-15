@@ -49,4 +49,8 @@ public class ShellPorts(
     public val catalogPrintings: CatalogPrintingLookup? = null,
     /** Complete supplied/template resolver; rendering never performs network IO. */
     public val cardLinks: CardLinks? = null,
+    /** Complete local library; absent until a real reviewed adapter is bound. */
+    public val localDecks: com.architectpsg.commandlibrary.core.model.LocalDeckLibrary? = null,
+    /** Real platform clock used for explicitly confirmed local deck creation. */
+    public val utcClock: com.architectpsg.commandlibrary.core.model.Clock? = null,
 )

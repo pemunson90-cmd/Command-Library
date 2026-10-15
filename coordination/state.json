@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-deck-library-claim-164",
-  "verified_base_head": "e74755258ba62e576988c1e48906f8cc23cc23cd",
+  "checkpoint_id": "cp-20261015-local-deck-library-integrated-165",
+  "verified_base_head": "0e0ec990fd0bd728074ab1a5f3512493f22af3d7",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "dispatch-isolated-local-deck-library-and-continue-root-presentation",
+  "first_action": "freeze-owned-quantity-contract-dispatch-then-continue-deck-editing",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "Campaign/pilot/deckcodec/diff and LocalDeckLibrary design/exactschema10/export/evidence/packet ACK actual native Astra high.49assembledtests0fail/error/skip; backend packet ready.",
+  "review_status": "ActualAstrahigh exactsource/durability/controller/UI/DI/clock ACK; assembled113tests14XML0fail/error/skip+lint/nativeKotlincompile. QuantitydesignACK; exactport notyetimplemented.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -139,9 +139,10 @@
     "campaign_baseline": "43f2582 published clean before planning; shared core/config compile SUCCESS28s; new deck/link modules NO-SOURCE pending worker implementation; no native/device tests. Exact resolved dependency readback retained /tmp/cl-campaign-resolved-r1.log.",
     "parallel_pilot": "Containing checkpoint Android treee9e32bfbaa0955b0e84563d99a8974e13ed5caa5:91tests10XML0fail/error/skip (deck13/link35/Room12 r2, shell31 finalr4), shelllint/catalog+shell+app nativeKotlincompile. Not deviceexecution/fullv1. PARALLEL-PILOT-LOCAL-20261015.md.",
     "deck_shared_boundary": "Shared compile/focused gate SUCCESS39s plus final decks regression SUCCESS12s; exact-source/golden ACK. SHARED-BOUNDARY-LOCAL-20261015.md; no codec/persistence/native acceptance.",
-    "deck_library_boundary": "ActualKSP10 SHA57e4f6c8db5246ab23e26a9ddef868396c28859fb72936dfc4258d56672ebb8d38entities35oldunchanged;49tests7XML0fail/error/skip SUCCESS51s incl actualhostRoom fresh/9upgrade; testedgecompile10s. DECK-LIBRARY-BOUNDARY-LOCAL-20261015.md; no backend/device acceptance."
+    "deck_library_boundary": "ActualKSP10 SHA57e4f6c8db5246ab23e26a9ddef868396c28859fb72936dfc4258d56672ebb8d38entities35oldunchanged;49tests7XML0fail/error/skip SUCCESS51s incl actualhostRoom fresh/9upgrade; testedgecompile10s. DECK-LIBRARY-BOUNDARY-LOCAL-20261015.md; no backend/device acceptance.",
+    "local_deck_library": "Android tree6d29b98ca3673dfc16a2c9c756a97612bcc43e8c;113scopedtests14XML0fail/error/skip, r5SUCCESS3m/lint/shell+appnativeKotlincompile; actualhostRoom/AppGraph+separatesyntheticCompose360font2/resize. LOCAL-DECK-LIBRARY-INTEGRATION-20261015.md; no device/fullfeature/APKclaim."
   },
-  "last_completed": "Exact verified sharedbaseline e747552; bounded real local library repository claimed for native isolated worker. Root retains presentation/shared/integration; no native/APK acceptance.",
-  "updated_utc": "2026-10-15T05:13:55Z",
+  "last_completed": "Real local deck library/DI/controller/read-only overview integrated,113scopedtests14XML0fail/error/skip+lint/nativeKotlincompile. Next reviewed quantitycontract/isolatedproducer while root advances editing; fullfeature/native/APKholds retained.",
+  "updated_utc": "2026-10-15T05:42:55Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

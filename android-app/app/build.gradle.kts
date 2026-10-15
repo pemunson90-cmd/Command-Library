@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":data:network"))
     implementation(project(":feature:life"))
     implementation(project(":feature:links"))
+    implementation(project(":feature:decks"))
     implementation(project(":feature:catalog"))
     implementation(project(":feature:rules"))
     implementation(project(":feature:settings"))

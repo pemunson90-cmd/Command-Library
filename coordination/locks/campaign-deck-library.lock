@@ -6,6 +6,9 @@
   "base_commit": "e74755258ba62e576988c1e48906f8cc23cc23cd",
   "owner": "/root/implement_deck_library; root canonical claim authority",
   "owned_paths": "Exact narrow production/test/resources/handoff allowlist in packet; excludes all shared paths and existing reducer/codec",
-  "status": "active",
-  "authority": "Only live root continuation claim; inherited copies historical"
+  "status": "released",
+  "authority": "Only live root continuation claim; inherited copies historical",
+  "completion_commit": "3d10a59f6df6d233e1746283f27cf8e91829e212",
+  "integration_commit": "0e0ec99",
+  "evidence": "Exactsource/durability ACK; worker54pass; root assembled113tests14XML0fail/error/skip and realAppGraph/Room+Compose checks; fullfeature/native notclaimed"
 }

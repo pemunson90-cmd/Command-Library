@@ -50,4 +50,36 @@ class DeckSchemaRoomIntegrationTest {
             } finally { context.deleteDatabase(name) }
         }
     }
+    @Test fun actualAppGraphLibraryCreatesDuplicatesAndIndependentRoomReaderReopensExactData() = runBlocking<Unit> {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+        val graph = (context as CommandLibraryApplication).graph
+        val ports = ok(graph.ports())
+        val library = checkNotNull(ports.localDecks)
+        assertSame(library, ok(graph.ports()).localDecks)
+        val suffix = UUID.randomUUID().toString()
+        val entry = DeckEntry(EntityId("entry-$suffix"), CardIdentity(Knowledge.Absent("missing Oracle"), Knowledge.Absent("missing printing"),
+            ProviderIdentity(ProviderId("foreign"),"raw","do-not-coalesce"), Knowledge.Known("Foreign card"), LanguageTag("ja")),
+            2, BoardRole.COMMANDER, Knowledge.Unknown("finish unresolved",SnapshotList.empty()),"notes",SnapshotList.empty(),SnapshotList.empty())
+        val initial = DeckSnapshot(DeckId(LocalDeckLibraryLimits.SOURCE,"room-$suffix"),"Room deck",Knowledge.Absent("none"),"description",
+            Knowledge.Absent("none"),SnapshotList.empty(),UtcTimestamp(1),UtcTimestamp(1),Revision(0),SnapshotList.of(entry),Knowledge.Absent("none"),null,
+            SnapshotList.empty(),SnapshotList.empty(),primer="# Retained primer",categoryOrder=SnapshotList.empty())
+        val operation = EntityId("create-$suffix")
+        assertEquals(initial,ok(library.create(initial,operation,token)))
+        assertEquals(initial,ok(library.create(initial,operation,token)))
+        val copy = ok(library.duplicate(initial.id,Revision(0),"Copy",EntityId("duplicate-$suffix"),token))
+        assertNotEquals(initial.id,copy.id);assertNotEquals(entry.id,copy.entries.single().id)
+        assertEquals(entry.identity,copy.entries.single().identity);assertEquals(initial.primer,copy.primer)
+        assertEquals(initial,ok(library.load(initial.id,token)))
+        val page = ok(library.list(PageRequest(100),token))
+        assertTrue(page.items.any{it.id==initial.id});assertTrue(page.items.any{it.id==copy.id})
+        ok(StorageDatabase.open(context,com.architectpsg.commandlibrary.di.AppGraph.DATABASE_FILE)).use { db ->
+            val reader = com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckLibrary(db,
+                com.architectpsg.commandlibrary.data.storage.decks.codec.DeckPayloadCodec(),
+                object:Clock {override fun utcNow()=UtcTimestamp(1);override fun monotonicNow()=kotlin.time.Duration.ZERO},
+                object:IdSource {override fun nextId():String=error("Independent reader must not generate IDs")})
+            assertEquals(initial,ok(reader.load(initial.id,token)));assertEquals(copy,ok(reader.load(copy.id,token)))
+        }
+        assertTrue(ok(ports.settings.read(token)).consents.isEmpty())
+    }
+
 }

@@ -1365,7 +1365,7 @@
         "verification": "real SQLite CAS/restart/grouped undo/immutable version/pre-restore recovery; cancellations",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "DeckRepository lacks create/list/version-list/undo; additive reviewed capability required before consumers",
+        "observed_implementation": "Real complete LocalDeckLibrary create/load/list/duplicate integrated0e0ec99 over reviewed schema10/CLDK1; actualRoom/AppGraph boundary tested. Editing/groupedundo/drafts/version/restore/package-safe operations and advancedlibraryquery remain open successors; no partial aggregateDeckRepository bound",
         "ownership_group": "decks",
         "resources": [
           "local-gradle-serial"
@@ -1401,7 +1401,7 @@
         "verification": "create/edit/version/restore/restart; externalized strings/keyboard/200%/resize; native UI",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "No deck UI or binding",
+        "observed_implementation": "Root real library create/list/open/duplicate +read-only notes/primer/categoryoverview wired after actualbackend;113scopedcombinedtests0fail/error/skip incl syntheticCompose360font2/resize and separateactualRoom/AppGraph. NoS06editing/fullS05/native/physical/releaseacceptance. LOCAL-DECK-LIBRARY-INTEGRATION-20261015.md",
         "ownership_group": "shell",
         "resources": [
           "local-gradle-serial"
@@ -1504,7 +1504,7 @@
         "verification": "q4/o2/USD3=6; fully-owned missing quote=0; unowned unknown; shared-lot conservation; no TIX FX; source terms",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "Ports only; provider selection gap needs reviewed additive boundary; pure calculator may start before collection adapter",
+        "observed_implementation": "Ports only; source probe0e0ec99 confirms pure quantity allocator need not await collection CRUD, but needs reviewed per-entry pin input (selected printing is not pin), unknown finish/raw identity/language eligibility and incomplete-inventory semantics. Provider/statistic selection is additional full priced-plan prerequisite. ExactDecimalPolicy.multiply already exists; do not duplicate it as progress. Next root contract review then bounded allocator packet.",
         "ownership_group": "pricing",
         "resources": [
           "local-gradle-serial"

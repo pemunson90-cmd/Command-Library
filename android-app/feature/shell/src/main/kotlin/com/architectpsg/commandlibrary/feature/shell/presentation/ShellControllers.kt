@@ -38,6 +38,8 @@ internal class ShellControllers(
         RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher, keywordLookup = ports.keywordRulesLookup)
     } else null
 
+    val deckLibrary = if (ports.localDecks != null && ports.utcClock != null)
+        DeckLibraryController(scope, ports.localDecks, ioDispatcher, now = ports.utcClock::utcNow) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
@@ -66,5 +68,6 @@ internal class ShellControllers(
         settings.load()
         rules?.refresh()
         profiles?.refresh()
+        deckLibrary?.refresh()
     }
 }

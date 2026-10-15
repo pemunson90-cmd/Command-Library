@@ -5,6 +5,8 @@ import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
+import com.architectpsg.commandlibrary.data.storage.decks.codec.DeckPayloadCodec
+import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckLibrary
 import com.architectpsg.commandlibrary.data.storage.life.codec.LifePayloadCodec
 import com.architectpsg.commandlibrary.feature.life.persistence.SqlPlayerProfileRepository
 import com.architectpsg.commandlibrary.feature.links.LocalCardLinks
@@ -37,12 +39,13 @@ internal class AppGraph(context: Context) {
                 val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
                 val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
                 val profiles = SqlPlayerProfileRepository(opened.value, LifePayloadCodec(), SystemUtcClock, RandomUuidIdSource)
+                val decks = SqlLocalDeckLibrary(opened.value, DeckPayloadCodec(), SystemUtcClock, RandomUuidIdSource)
                 val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
                 val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
                     rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
                     englishCatalog = downloads, rulingsDownloads = downloads,
                     rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
-                    catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks())
+                    catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock)
                 ready = ports
                 Outcome.Success(ports)
             }

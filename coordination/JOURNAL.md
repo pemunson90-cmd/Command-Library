@@ -571,3 +571,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T05:13:37Z | codex | cp-20261015-deck-library-boundary-163 | containing commit | Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.
 
 2026-10-15T05:13:55Z | codex | cp-20261015-deck-library-claim-164 | containing commit | Exact verified sharedbaseline e747552; bounded real local library repository claimed for native isolated worker. Root retains presentation/shared/integration; no native/APK acceptance.
+
+2026-10-15T05:42:55Z | codex | cp-20261015-local-deck-library-integrated-165 | containing commit | Real local deck library/DI/controller/read-only overview integrated,113scopedtests14XML0fail/error/skip+lint/nativeKotlincompile. Next reviewed quantitycontract/isolatedproducer while root advances editing; fullfeature/native/APKholds retained.

@@ -219,7 +219,8 @@ class SqlLocalDeckLibraryTest {
         val packaged = original.copy(packageInstances = SnapshotList.of(PackageInstance(EntityId("instance"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED, SnapshotList.empty())))
         val first = original.entries.first()
         val corruptGraphs = listOf(packaged.copy(entries = SnapshotList.of(first, first)),
-            packaged.copy(entries = SnapshotList.of(first.copy(roleOverrides = SnapshotList.of(first.roleOverrides.first().copy(entryId = EntityId("wrong")))))),
+            packaged.copy(entries = SnapshotList.copyOf(original.entries.mapIndexed { index, entry ->
+                if (index == 0) first.copy(roleOverrides = SnapshotList.of(first.roleOverrides.first().copy(entryId = EntityId("wrong")))) else entry })),
             packaged.copy(categoryOrder = SnapshotList.empty()))
         for (graph in corruptGraphs) HostDeckDatabase(file()).use { db ->
             val library = library(db); ok(library.create(original, operation(), cancel)); replacePayload(db, graph)

@@ -55,7 +55,7 @@ abstract class EnglishCatalogAccessCases {
     @Test fun actualApplicationExposesLazyDownloadAccessAlongsideCachedOfflinePorts() = runBlocking<Unit> {
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as CommandLibraryApplication
         val ports = ok(app.graph.ports())
-        assertNotNull(ports.englishCatalog); assertNotNull(ports.playerProfiles); assertNotNull(ports.rulings); assertNotNull(ports.catalogPrintings); assertNotNull(ports.cardLinks)
+        assertNotNull(ports.englishCatalog); assertNotNull(ports.playerProfiles); assertNotNull(ports.rulings); assertNotNull(ports.catalogPrintings); assertNotNull(ports.cardLinks); assertNotNull(ports.localDecks)
         assertSame(ports.englishCatalog, ports.rulingsDownloads)
         assertSame(ports, ok(app.graph.ports()))
         // Opening offline ports does not open acquisition, plan a job or grant download consent.
