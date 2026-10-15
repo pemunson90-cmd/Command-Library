@@ -35,7 +35,8 @@ internal object DeckLibraryTags {
 /** Real library with optional complete version navigation and whole-snapshot undo. */
 @Composable
 internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null, onOpenVersions: ((DeckId) -> Unit)? = null,
-    onImportText: (() -> Unit)? = null, importTextEnabled: Boolean = true) {
+    onImportText: (() -> Unit)? = null, importTextEnabled: Boolean = true,
+    onExportText: ((DeckSnapshot) -> Unit)? = null, exportTextEnabled: Boolean = true) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -104,6 +105,11 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                         if (onOpenVersions != null) OutlinedButton({ onOpenVersions(selected.id) },
                             enabled = !state.pending && !state.mutationBusy && state.editor == null && state.form == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("deck-open-versions")) { Text(stringResource(R.string.decks_open_versions)) }
+                    }
+                    if (onExportText != null) OutlinedButton({ onExportText(selected) },
+                        enabled = exportTextEnabled && !state.pending && !state.mutationBusy && state.form == null && !state.loadingDetail,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("deck-plain-export")) {
+                        Text(stringResource(R.string.plain_export_open))
                     }
                     if (selected.packageInstances.isNotEmpty()) Text(stringResource(R.string.decks_package_edit_unavailable))
                 }

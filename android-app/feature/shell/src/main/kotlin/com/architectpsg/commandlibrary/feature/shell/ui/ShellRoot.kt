@@ -54,6 +54,11 @@ import androidx.compose.ui.res.stringResource
 import com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.collection.DeckMarkOwnedSurface
 import com.architectpsg.commandlibrary.core.model.DeckId
+import com.architectpsg.commandlibrary.core.model.DeckSnapshot
+import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportPreview
+import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
+import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.PlainDeckExportSurface
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.PlainDeckImportSurface
@@ -201,10 +206,47 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 if (importer.state.value.inputName != null) importer.resume() else choosePlainFile()
             }
         } }
+        var pendingPlainExport by rememberSaveable { mutableStateOf<String?>(null) }
+        // Consume every saved ticket, including cancellation and revoked hidden frames. The
+        // controller alone decides whether the frozen preview still authorizes this result.
+        val plainExportPicker = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
+            val ticket = pendingPlainExport
+            pendingPlainExport = null
+            if (ticket != null) controllers.plainDeckExport?.pickerResult(ticket, uri?.let { DocumentRef(it.toString()) })
+        }
+        val choosePlainExport: (PlainDeckExportPreview) -> Unit = { expected ->
+            val exporter = controllers.plainDeckExport
+            if (pendingPlainExport == null && exporter != null) {
+                val ticket = exporter.requestDestination(expected)
+                if (ticket != null) {
+                    pendingPlainExport = ticket
+                    try {
+                        plainExportPicker.launch(context.getString(R.string.plain_export_filename))
+                    } catch (_: ActivityNotFoundException) {
+                        pendingPlainExport = null
+                        exporter.pickerFailed(ticket, Problem.UNSUPPORTED)
+                    } catch (_: SecurityException) {
+                        pendingPlainExport = null
+                        exporter.pickerFailed(ticket, Problem.PERMISSION)
+                    }
+                }
+            }
+        }
+        val exportPlainEntry: ((DeckSnapshot) -> Unit)? = controllers.plainDeckExport?.let { exporter -> { selected ->
+            val library = controllers.deckLibrary?.state?.value
+            if (pendingPlainExport == null && libraryAllowsPlainPick() && library != null &&
+                !library.loadingDetail && library.selected == selected) {
+                val current = exporter.state.value
+                if (current.preview != null || current.preparing || current.pendingPicker != null ||
+                    current.writePhase != PlainDeckExportWritePhase.IDLE) exporter.resume()
+                else exporter.prepare(selected.id, selected.revision)
+            }
+        } }
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
+                controllers.plainDeckExport?.let { PlainDeckExportSurface(it, choosePlainExport, pendingPlainExport != null) }
                 controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
                 draft?.let { editor -> DraftRecoveryBanner(editor) {
                     val session = editor.state.value.session
@@ -233,6 +275,8 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             else controllers.deckVersions?.let { it.openDeck(id); versionsOpen = true }
                         },
                         onCloseVersions = { versionsOpen = false },
+                        onExportPlain = exportPlainEntry,
+                        exportPlainEnabled = pendingPlainExport == null && draftState?.visible != true && draft?.hasMutationBarrier != true,
                         onImportPlain = importPlainEntry,
                         importPlainEnabled = pendingPlainPick == null && draftState?.visible != true && draft?.hasMutationBarrier != true,
                         modifier = contentModifier,
@@ -327,6 +371,8 @@ private fun DestinationContent(
     modifier: Modifier,
     onImportPlain: (() -> Unit)?,
     importPlainEnabled: Boolean,
+    onExportPlain: ((DeckSnapshot) -> Unit)?,
+    exportPlainEnabled: Boolean,
 ) {
     val statusState by controllers.status.state.collectAsState()
     when (destination) {
@@ -373,7 +419,8 @@ private fun DestinationContent(
             if (versionsOpen && versions != null) Box(modifier) { DeckVersionsScreen(versions, widthClass, onCloseVersions, controllers.deckDraftEditor) }
             else DeckLibraryScreen(library, widthClass, modifier, controllers.deckEditorSearch,
                 onOpenVersions = if (versions != null) onOpenVersions else null,
-                onImportText = onImportPlain, importTextEnabled = importPlainEnabled)
+                onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
+                onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled)
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
