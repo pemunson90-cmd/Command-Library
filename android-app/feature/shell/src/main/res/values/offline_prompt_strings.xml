@@ -39,4 +39,13 @@ Finding a card does not establish legality, affordability or ownership.</string>
     <string name="offline_prompt_not_found">Not found in the selected card data</string>
     <string name="offline_prompt_unavailable">Unavailable — existence is unknown</string>
     <string name="offline_prompt_rejected">This field exceeds its input limit or contains invalid text. Correct this same field before continuing. Question, constraints and template: 32 KiB each; reply: 256 KiB UTF-8.</string>
+    <string name="offline_prompt_persistent_help">Edits are unsaved until you choose Save template. Saved templates apply to this mode across decks and app restarts on this device. Keep each required variable exactly once: {{deck}}, {{constraints}}, {{request}}.</string>
+    <string name="offline_prompt_template_version">Current shipped template version: %1$d</string>
+    <string name="offline_prompt_save">Save template</string>
+    <string name="offline_prompt_saved">Saved custom template on this device.</string>
+    <string name="offline_prompt_shipped">Using the shipped template.</string>
+    <string name="offline_prompt_unsaved">Unsaved template edits.</string>
+    <string name="offline_prompt_load_required">Template storage must be loaded before editing, saving or previewing. Retry if loading failed.</string>
+    <string name="offline_prompt_reload">Reload saved template</string>
+    <string name="offline_prompt_version_mismatch">Saved template version %1$d differs from current version %2$d. Review the retained text, then Save template to adopt the current grammar, or Reset template to use the shipped template. Preview is blocked until then.</string>
 </resources>

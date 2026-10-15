@@ -24,6 +24,8 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
     val copy by rememberUpdatedState(onCopy)
     val refresh by rememberUpdatedState(onUseCurrentData)
     if (!state.visible) return
+    val editorMode = state.mode
+    val editorFrame = state.frame
     Dialog(onDismissRequest = controller::hide) {
         Surface(shape = MaterialTheme.shapes.large) {
             Column(Modifier.fillMaxWidth().heightIn(max = 720.dp).padding(16.dp)) {
@@ -66,12 +68,41 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
                                 Text(stringResource(R.string.offline_prompt_include_notes), Modifier.padding(top = 12.dp))
                             }
                         }
-                        item { Text(stringResource(R.string.offline_prompt_session)) }
+                        item {
+                            Text(stringResource(if (state.persistenceAvailable) R.string.offline_prompt_persistent_help else R.string.offline_prompt_session))
+                            Text(stringResource(R.string.offline_prompt_template_version, state.mode.shippedVersion))
+                            if (state.persistenceAvailable) {
+                                if (state.versionMismatch) Text(stringResource(R.string.offline_prompt_version_mismatch,
+                                    checkNotNull(state.baseline.row).shippedVersion, state.mode.shippedVersion),
+                                    Modifier.testTag("offline-prompt-template-version-mismatch"))
+                                if (state.templateSaved) Text(stringResource(if (state.baseline.row?.body == null)
+                                    R.string.offline_prompt_shipped else R.string.offline_prompt_saved),
+                                    Modifier.testTag("offline-prompt-template-saved"))
+                                if (state.mode in state.dirtyModes) Text(stringResource(R.string.offline_prompt_unsaved))
+                                state.templateProblems[state.mode]?.let {
+                                    Text(stringResource(problemText(it)), color = MaterialTheme.colorScheme.error)
+                                }
+                                if (!state.templateReady) {
+                                    Text(stringResource(R.string.offline_prompt_load_required))
+                                    state.baseline.problem?.let { Text(stringResource(problemText(it)), color = MaterialTheme.colorScheme.error) }
+                                    TextButton({ controller.reloadTemplate(editorMode) }, Modifier.heightIn(min = 48.dp)
+                                        .testTag("offline-prompt-template-reload"), enabled = state.writingMode != state.mode) {
+                                        Text(stringResource(R.string.offline_prompt_reload))
+                                    }
+                                }
+                            }
+                        }
                         item { PromptField(state.templateBody, R.string.offline_prompt_template, "offline-prompt-override",
                             OfflinePromptField.OVERRIDE, state, controller) }
                         item {
                             ActionRow {
-                                TextButton(controller::resetTemplate, Modifier.heightIn(min = 48.dp).testTag("offline-prompt-reset")) {
+                                if (state.persistenceAvailable) Button({ controller.saveTemplate(editorMode, editorFrame) },
+                                    Modifier.heightIn(min = 48.dp).testTag("offline-prompt-save-template"),
+                                    enabled = state.templateReady && state.templates[state.mode] != null && state.writingMode == null && state.mode !in state.rejectedOverrides) {
+                                    Text(stringResource(R.string.offline_prompt_save))
+                                }
+                                TextButton({ controller.resetTemplate(editorMode, editorFrame) }, Modifier.heightIn(min = 48.dp).testTag("offline-prompt-reset"),
+                                    enabled = state.templateReady && state.writingMode == null) {
                                     Text(stringResource(R.string.offline_prompt_reset))
                                 }
                                 TextButton({ controller.useCurrentData { refresh() } }, Modifier.heightIn(min = 48.dp).testTag("offline-prompt-current-data")) {
@@ -82,7 +113,7 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
                         }
                         item {
                             Button(controller::render, Modifier.heightIn(min = 48.dp).testTag("offline-prompt-render"),
-                                enabled = !state.busy && state.rejected.isEmpty() && state.templates[state.mode] != null) {
+                                enabled = !state.busy && state.rejected.isEmpty() && state.templates[state.mode] != null && state.templateReady && !state.versionMismatch) {
                                 Text(stringResource(R.string.offline_prompt_render))
                             }
                         }
@@ -123,7 +154,7 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
                                 Text(stringResource(referenceLabel(ref.status)), Modifier.testTag("offline-prompt-reference-status-$index"))
                             } }
                         }
-                        if (state.busy) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
+                        if (state.busy || state.writingMode != null) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
                         if (state.rejected.isNotEmpty()) item {
                             Text(stringResource(R.string.offline_prompt_rejected), Modifier.testTag("offline-prompt-problem"), color = MaterialTheme.colorScheme.error)
                         } else state.problem?.let { problem -> item {
@@ -140,7 +171,8 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
 @Composable
 private fun PromptField(value: String, label: Int, tag: String, field: OfflinePromptField,
     state: OfflinePromptState, controller: OfflinePromptController) {
-    OutlinedTextField(value, { controller.setText(field, it) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag(tag),
+    OutlinedTextField(value, { controller.setText(field, it, state.mode, state.frame) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag(tag),
+        enabled = field != OfflinePromptField.OVERRIDE || state.templateReady,
         label = { Text(stringResource(label)) }, isError = field in state.rejected,
         supportingText = if (field in state.rejected) ({ Text(stringResource(R.string.offline_prompt_rejected)) }) else null)
 }

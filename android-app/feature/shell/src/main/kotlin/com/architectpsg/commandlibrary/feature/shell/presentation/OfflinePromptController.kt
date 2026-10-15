@@ -7,6 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+internal data class PromptOverrideBaseline(
+    val loaded: Boolean = false,
+    val row: StoredPromptOverride? = null,
+    val problem: Problem? = null,
+)
+
 internal enum class OfflinePromptField { QUESTION, CONSTRAINTS, OVERRIDE, REPLY }
 internal data class OfflinePromptState(
     val visible: Boolean = false,
@@ -28,36 +34,58 @@ internal data class OfflinePromptState(
     val busy: Boolean = false,
     val problem: Problem? = null,
     val copied: Boolean? = null,
+    val persistenceAvailable: Boolean = false,
+    val baselines: Map<OfflineLabMode, PromptOverrideBaseline> = emptyMap(),
+    val dirtyModes: Set<OfflineLabMode> = emptySet(),
+    val editGenerations: Map<OfflineLabMode, Long> = emptyMap(),
+    val frame: Long = 0,
+    val writingMode: OfflineLabMode? = null,
+    val templateProblems: Map<OfflineLabMode, Problem> = emptyMap(),
 ) {
-    val templateBody: String get() = overrides[mode] ?: templates[mode]?.body.orEmpty()
+    val baseline: PromptOverrideBaseline get() = baselines[mode] ?: PromptOverrideBaseline()
+    val templateReady: Boolean get() = !persistenceAvailable || baseline.loaded
+    val versionMismatch: Boolean get() = baseline.row?.let { it.body != null && it.shippedVersion != mode.shippedVersion } == true
+    val templateBody: String get() = overrides[mode] ?: baseline.row?.body ?: templates[mode]?.body.orEmpty()
+    val templateSaved: Boolean get() = persistenceAvailable && baseline.loaded && mode !in dirtyModes && !versionMismatch && mode !in rejectedOverrides
+
     val rejected: Set<OfflinePromptField> get() =
         if (mode in rejectedOverrides) rejectedFields + OfflinePromptField.OVERRIDE else rejectedFields
 }
 
-/** Session state belongs to the retained shell owner. No clipboard, persistence or source preparation. */
+/** Retained per-mode template drafts and explicit local persistence; deck work keeps its own fence. */
 internal class OfflinePromptController(
     private val scope: CoroutineScope,
     private val dispatcher: CoroutineDispatcher,
     private val prompts: OfflineDeckPrompts,
     private val currentDeck: () -> DeckSnapshot?,
+    private val savedTemplates: LocalPromptOverrides? = null,
 ) {
-    private val mutable = MutableStateFlow(OfflinePromptState())
+    // Preserve existing trailing-lambda callers while keeping persistence last in the primary API.
+    constructor(scope: CoroutineScope, dispatcher: CoroutineDispatcher, prompts: OfflineDeckPrompts,
+        currentDeck: () -> DeckSnapshot?) : this(scope, dispatcher, prompts, currentDeck, null)
+
+    private val mutable = MutableStateFlow(OfflinePromptState(persistenceAvailable = savedTemplates != null))
     val state: StateFlow<OfflinePromptState> = mutable.asStateFlow()
     private var ticket: Any = Any()
     private var job: Job? = null
+    private var persistenceJob: Job? = null
+    private val loads = mutableMapOf<OfflineLabMode, Job>()
 
     private fun invalidate(next: OfflinePromptState) {
         ticket = Any()
         job?.cancel()
         job = null
-        mutable.value = next.copy(result = null, review = null, detail = null, copied = null, busy = false, problem = null)
+        mutable.value = next.copy(frame = mutable.value.frame + 1, result = null, review = null, detail = null, copied = null, busy = false, problem = null)
     }
 
     fun open(deck: DeckSnapshot, snapshot: SnapshotReference?) {
         val previous = mutable.value
-        if (previous.deck != deck) invalidate(OfflinePromptState(deck = deck, snapshot = snapshot, visible = true))
+        if (previous.deck != deck) invalidate(previous.copy(deck = deck, snapshot = snapshot, visible = true,
+            question = "", constraints = "", reply = "", includePrivateNotes = false, rejectedFields = emptySet()))
         else invalidate(previous.copy(visible = true, snapshot = snapshot))
         if (!live()) return
+        // Reload durable truth on reopen, retaining every dirty draft.
+        if (savedTemplates != null) OfflineLabMode.entries.forEach { reloadTemplate(it) }
         // A complete explicit ID/version join; title and list order have no machine meaning.
         try {
             val templates = prompts.templates()
@@ -116,28 +144,131 @@ internal class OfflinePromptController(
         }
         return true
     }
-    fun setText(field: OfflinePromptField, value: String) {
-        if (!live()) return
+    private fun matches(mode: OfflineLabMode, frame: Long): Boolean =
+        live() && mutable.value.mode == mode && mutable.value.frame == frame
+
+    fun setText(field: OfflinePromptField, value: String, mode: OfflineLabMode = mutable.value.mode,
+        frame: Long = mutable.value.frame) {
+        if (!matches(mode, frame)) return
+        if (field == OfflinePromptField.OVERRIDE && !mutable.value.templateReady) return
         val s = mutable.value
         val limit = if (field == OfflinePromptField.REPLY) 256 * 1024 else 32 * 1024
         if (!fits(value, limit)) {
             invalidate(if (field == OfflinePromptField.OVERRIDE)
-                s.copy(rejectedOverrides = s.rejectedOverrides + s.mode)
+                s.copy(rejectedOverrides = s.rejectedOverrides + s.mode,
+                    dirtyModes = s.dirtyModes + s.mode, editGenerations = s.editGenerations + (s.mode to generation(s.mode) + 1))
             else s.copy(rejectedFields = s.rejectedFields + field))
             return
         }
         val next = if (field == OfflinePromptField.OVERRIDE)
-            s.copy(rejectedOverrides = s.rejectedOverrides - s.mode)
+            s.copy(rejectedOverrides = s.rejectedOverrides - s.mode, templateProblems = s.templateProblems - s.mode)
         else s.copy(rejectedFields = s.rejectedFields - field)
         invalidate(when (field) {
             OfflinePromptField.QUESTION -> next.copy(question = value)
             OfflinePromptField.CONSTRAINTS -> next.copy(constraints = value)
-            OfflinePromptField.OVERRIDE -> next.copy(overrides = next.overrides + (next.mode to value))
+            OfflinePromptField.OVERRIDE -> next.copy(overrides = next.overrides + (next.mode to value),
+                dirtyModes = next.dirtyModes + next.mode,
+                editGenerations = next.editGenerations + (next.mode to generation(next.mode) + 1))
             OfflinePromptField.REPLY -> next.copy(reply = value)
         })
     }
-    fun resetTemplate() = edit {
-        it.copy(overrides = it.overrides - it.mode, rejectedOverrides = it.rejectedOverrides - it.mode)
+    private fun generation(mode: OfflineLabMode): Long = mutable.value.editGenerations[mode] ?: 0
+
+    /** Durable bookkeeping is not a new deck frame when the active render inputs stay identical. */
+    private fun updateTemplates(next: OfflinePromptState) {
+        val previous = mutable.value
+        fun overrideBody(state: OfflinePromptState): String? = state.overrides[state.mode] ?: state.baseline.row?.body
+        if (overrideBody(previous) != overrideBody(next) || previous.templateReady != next.templateReady ||
+            previous.versionMismatch != next.versionMismatch ||
+            (previous.mode in previous.rejectedOverrides) != (next.mode in next.rejectedOverrides)) invalidate(next)
+        else mutable.value = next
+    }
+
+    fun reloadTemplate(mode: OfflineLabMode = mutable.value.mode) {
+        val store = savedTemplates ?: return
+        if (loads[mode]?.isActive == true || mutable.value.writingMode == mode) return
+        val old = mutable.value.baselines[mode] ?: PromptOverrideBaseline()
+        updateTemplates(mutable.value.copy(baselines = mutable.value.baselines + (mode to old.copy(loaded = false, problem = null))))
+        loads[mode] = scope.launch(start = CoroutineStart.LAZY) {
+            try {
+                val result = invokePort { store.load(mode, it) }
+                currentCoroutineContext().ensureActive()
+                val baseline = when (result) {
+                    is PortResult.Failed -> PromptOverrideBaseline(problem = result.problem)
+                    is PortResult.Ok -> if (validRow(mode, result.value)) PromptOverrideBaseline(true, result.value)
+                        else PromptOverrideBaseline(problem = Problem.CORRUPT_DATA)
+                }
+                val s = mutable.value
+                updateTemplates(s.copy(baselines = s.baselines + (mode to baseline)))
+            } finally { loads.remove(mode) }
+        }.also { it.start() }
+    }
+
+    private fun validRow(mode: OfflineLabMode, row: StoredPromptOverride?): Boolean = row == null ||
+        (row.mode == mode && row.shippedVersion > 0 && (row.body == null || fits(row.body, 32 * 1024)))
+
+    private fun validReceipt(mode: OfflineLabMode, expected: Revision?, row: StoredPromptOverride?, body: String?): Boolean {
+        if (!validRow(mode, row)) return false
+        if (row == null) return expected == null && body == null
+        if (row.shippedVersion != mode.shippedVersion || row.body != body) return false
+        return if (expected == null) row.revision.value == 1L else row.revision == expected ||
+            (expected.value < Long.MAX_VALUE && row.revision.value == expected.value + 1)
+    }
+
+    fun saveTemplate(mode: OfflineLabMode = mutable.value.mode, frame: Long = mutable.value.frame) {
+        if (!matches(mode, frame) || savedTemplates == null) return
+        val s = mutable.value
+        if (!s.templateReady || mode in s.rejectedOverrides || s.templates[mode] == null) return
+        mutateTemplate(mode, s.templateBody, false)
+    }
+
+    fun resetTemplate(mode: OfflineLabMode = mutable.value.mode, frame: Long = mutable.value.frame) {
+        if (!matches(mode, frame)) return
+        if (savedTemplates != null) {
+            if (mutable.value.templateReady) mutateTemplate(mode, null, true)
+        } else edit { it.copy(overrides = it.overrides - mode, rejectedOverrides = it.rejectedOverrides - mode,
+            dirtyModes = it.dirtyModes - mode, editGenerations = it.editGenerations + (mode to generation(mode) + 1)) }
+    }
+
+    private fun mutateTemplate(mode: OfflineLabMode, body: String?, reset: Boolean) {
+        val store = savedTemplates ?: return
+        if (mutable.value.writingMode != null) return
+        val captured = generation(mode)
+        val expected = mutable.value.baselines[mode]?.row?.revision
+        mutable.value = mutable.value.copy(writingMode = mode, templateProblems = mutable.value.templateProblems - mode)
+        // invalidate() owns only the render/read job. A possible committed write survives UI changes.
+        persistenceJob = scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            var acknowledged = false
+            try {
+                val result = invokePort { cancel ->
+                    if (reset) store.reset(mode, expected, cancel)
+                    else store.save(mode, expected, checkNotNull(body), cancel)
+                }
+                currentCoroutineContext().ensureActive()
+                val s = mutable.value
+                if (result is PortResult.Ok && validReceipt(mode, expected, result.value, body)) {
+                    acknowledged = true
+                    val unchangedDraft = generation(mode) == captured
+                    updateTemplates(s.copy(baselines = s.baselines + (mode to PromptOverrideBaseline(true, result.value)),
+                        overrides = if (unchangedDraft) s.overrides - mode else s.overrides,
+                        dirtyModes = if (unchangedDraft) s.dirtyModes - mode else s.dirtyModes,
+                        rejectedOverrides = if (unchangedDraft) s.rejectedOverrides - mode else s.rejectedOverrides,
+                        editGenerations = if (unchangedDraft) s.editGenerations + (mode to captured + 1) else s.editGenerations))
+                } else {
+                    val problem = (result as? PortResult.Failed)?.problem ?: Problem.CORRUPT_DATA
+                    updateTemplates(s.copy(templateProblems = s.templateProblems + (mode to problem), baselines = s.baselines + (mode to (s.baselines[mode] ?: PromptOverrideBaseline()).copy(loaded = false, problem = problem))))
+                }
+            } finally {
+                val latest = mutable.value
+                updateTemplates(latest.copy(writingMode = null,
+                    templateProblems = if (acknowledged) latest.templateProblems - mode else latest.templateProblems +
+                        (mode to (latest.templateProblems[mode] ?: Problem.UNKNOWN_RESULT)),
+                    baselines = if (acknowledged) latest.baselines
+                    else latest.baselines + (mode to (latest.baselines[mode] ?: PromptOverrideBaseline()).copy(loaded = false))))
+                // Unknown/stale/cancelled outcomes establish no rollback. Read truth, never replay writes.
+                if (!acknowledged && currentCoroutineContext().isActive) reloadTemplate(mode)
+            }
+        }
     }
 
     private suspend fun <T> invokePort(block: suspend (CancelToken) -> Outcome<T>): PortResult<T> = withContext(dispatcher) {
@@ -172,13 +303,13 @@ internal class OfflinePromptController(
     fun render() {
         if (!live()) return
         val s = mutable.value
-        if (s.rejected.isNotEmpty() || s.templates[s.mode] == null) {
+        if (s.rejected.isNotEmpty() || s.templates[s.mode] == null || !s.templateReady || s.versionMismatch) {
             mutable.value = s.copy(problem = Problem.INVALID_INPUT); return
         }
         invalidate(s)
         val deck = checkNotNull(s.deck)
         val request = OfflinePromptRequest(deck, s.mode, s.intensity, s.question, s.constraints,
-            s.includePrivateNotes, s.snapshot, s.overrides[s.mode])
+            s.includePrivateNotes, s.snapshot, s.overrides[s.mode] ?: s.baseline.row?.body)
         launch({ prompts.render(request, it) }) { result ->
             val a = result.artifact
             if (result.mode != s.mode || result.snapshot != s.snapshot || result.template != s.templates[s.mode] ||
