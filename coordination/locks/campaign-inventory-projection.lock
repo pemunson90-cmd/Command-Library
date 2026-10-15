@@ -1,0 +1,11 @@
+{
+  "component": "collection-inventory-projection",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-inventory-projection-01",
+  "branch": "agent/campaign-inventory-projection-20261015",
+  "base_commit": "b536edba89d38e81373bc5868abca3725eb58ba2",
+  "owner": "/root/implement_inventory_projection; canonical claim controlled by root",
+  "owned_paths": "Exact3production/2test/ownhandoff allowlist in packet; core/rootabstractfixture/build/schema/UI read-only",
+  "status": "active",
+  "authority": "Live root continuation only; inherited copies historical"
+}

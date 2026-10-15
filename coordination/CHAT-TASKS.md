@@ -39,3 +39,5 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 | campaign-owned-quantity | Complete bounded pure owned quantity allocator | DONE scoped producer | Integrated d1b743b; source/evidence ACK, root assembled gate next | [packet](tasks/cx-campaign-owned-quantity-01.md) |
 
 | campaign-deck-edit-store | Real primitive deck apply and grouped persistent undo | DONE scoped producer | Integrated a38a45c; source/evidence ACK, root editor/AppGraph gate running | [packet](tasks/cx-campaign-deck-edits-store-01.md) |
+
+| campaign-inventory-projection | Complete pure collection patch projection and conservative physical merge | TAKEN | Root-managed isolated native worker; reviewed baselineb536edb | [packet](tasks/cx-campaign-inventory-projection-01.md) |

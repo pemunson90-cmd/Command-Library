@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-inventory-projection-boundary-171",
-  "verified_base_head": "cef028589e0202b5275bcde3fe6c8353f72bde6f",
+  "checkpoint_id": "cp-20261015-inventory-projection-claim-172",
+  "verified_base_head": "b536edba89d38e81373bc5868abca3725eb58ba2",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "publish-reviewed-inventory-projection-prerequisite",
+  "first_action": "dispatch-isolated-inventory-projector-and-root-durability",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -143,7 +143,7 @@
     "local_deck_library": "Android tree6d29b98ca3673dfc16a2c9c756a97612bcc43e8c;113scopedtests14XML0fail/error/skip, r5SUCCESS3m/lint/shell+appnativeKotlincompile; actualhostRoom/AppGraph+separatesyntheticCompose360font2/resize. LOCAL-DECK-LIBRARY-INTEGRATION-20261015.md; no device/fullfeature/APKclaim.",
     "owned_quantity_contract": "ActualAstrahigh exactpublicsource/module/7abstractfixtureACK; compileSUCCESS30s3tasks and runtimepinsreadback4s. NO allocatorimplementation or behavior executed yet; dispatchaftersharedbaseline publication. owned-quantity-boundary.md."
   },
-  "last_completed": "ReviewedpurecollectionDTOs/module/8abstractexamplescompileONLY, pinsunchanged; editor186testsevidenceretained; nextisolatedprojectionworker/rootinventorydurability, holdsretained",
-  "updated_utc": "2026-10-15T06:42:16Z",
+  "last_completed": "Claimreviewedpurecollectionprojectionworkerfromb536edb, rootretainsdurableinventorycontracts/codec/schema/DI/UI; nofakebehaviorclaim, allholdsretained",
+  "updated_utc": "2026-10-15T06:42:50Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

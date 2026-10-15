@@ -585,3 +585,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T06:25:36Z | codex | cp-20261015-durable-editor-integration-170 | containing commit | RealSqlLocalDeckEdits/AppGraph/editor integrated;186tests22XML0fail/error/skip+lint/nativeKotlincompile, exactAndroidtree59455097; nextreviewcollectioncontracts/identity/snapshot/previewundo; holdsretained
 
 2026-10-15T06:42:16Z | codex | cp-20261015-inventory-projection-boundary-171 | containing commit | ReviewedpurecollectionDTOs/module/8abstractexamplescompileONLY, pinsunchanged; editor186testsevidenceretained; nextisolatedprojectionworker/rootinventorydurability, holdsretained
+
+2026-10-15T06:42:50Z | codex | cp-20261015-inventory-projection-claim-172 | containing commit | Claimreviewedpurecollectionprojectionworkerfromb536edb, rootretainsdurableinventorycontracts/codec/schema/DI/UI; nofakebehaviorclaim, allholdsretained
