@@ -2,7 +2,7 @@
   "component": "offline-prompts-ui",
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-offline-prompts-ui-01",
-  "owner": "/root/implement_offline_prompts_ui",
+  "owner": "/root/repair_offline_prompts_ui",
   "status": "active",
   "base_commit": "6a910a134bf138dd472d477bc53ca2b02fba7b51",
   "contract_revision": "offline-prompts-v1-20261015",
@@ -15,5 +15,7 @@
     "android-app/feature/shell/src/test/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/OfflinePromptControllerTest.kt",
     "coordination/handoffs/cx-campaign-offline-prompts-ui-01.md"
   ],
-  "build_slot": "NOTGRANTED; rootonly"
+  "build_slot": "NOTGRANTED; rootonly",
+  "previous_owner": "/root/implement_offline_prompts_ui",
+  "resume": "Original exact frozen SOURCE01 retained; no live original child in current runtime. Scoped SOURCE02 repair controller/test/handoff only, same base/worktree/contract; no build grant."
 }

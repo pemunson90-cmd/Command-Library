@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-offline-engine-resumed-237",
-  "verified_base_head": "19cd9390576828c4ab4f206b0afaece7ca6f07a4",
+  "checkpoint_id": "cp-20261015-offline-ui-repair-238",
+  "verified_base_head": "0cdcf23cf8daf3e207c9b8a07932af71ad3177ec",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "offline-engine-host-gate",
+  "first_action": "offline-ui-source-repair",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -160,7 +160,7 @@
     "indexed_query_host": "Source1c81bfa39featurechecks5XML0f/e/s; unchanged production5bef3ae actual app journey1test0f/e/s44s; independent SOURCE/RUNTIME ACK/681pins. Prior overall compile/SQL/fixture failures retained. INDEXED-QUERY-APP-INTEGRATION-20261015.md. No native/fullcorpus/fullA07-A08.",
     "board_size_checks_host": "Producer10at4e1adbe0f/e/s; originaloverallcompilefailure retained. Unchangedproducer plus3controller/1actualapp atd471e34 SUCCESS1m08/0f/e/s;689pins/independentSOURCE-RUNTIMEACK. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md; noofficial/fullB06/native."
   },
-  "last_completed": "Reconciled newer cp236 continuation; interrupted engine run preserved with no verdict;17engine tests pass same source19cd939; frozen UI source review pending before focused actual app gate",
-  "updated_utc": "2026-10-15T19:29:01Z",
+  "last_completed": "Engine17hostpass; root sharedAIwiring SOURCE ACK; freeze UI SOURCE01 and transfer only demonstrated per-mode rejection repair to isolated Solmedium lane; narrow rereview then consumer gate",
+  "updated_utc": "2026-10-15T19:32:30Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

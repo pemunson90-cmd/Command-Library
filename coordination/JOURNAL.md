@@ -719,3 +719,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T18:15:17Z | codex | cp-20261015-offline-prompts-wave-236 | containing commit | Reviewed compiled offline prompt API; isolated Solhigh engine and Solmedium UI claims; root app DI/navigation/clipboard and actual workflow integration
 
 2026-10-15T19:29:01Z | codex | cp-20261015-offline-engine-resumed-237 | containing commit | Reconciled newer cp236 continuation; interrupted engine run preserved with no verdict;17engine tests pass same source19cd939; frozen UI source review pending before focused actual app gate
+
+2026-10-15T19:32:30Z | codex | cp-20261015-offline-ui-repair-238 | containing commit | Engine17hostpass; root sharedAIwiring SOURCE ACK; freeze UI SOURCE01 and transfer only demonstrated per-mode rejection repair to isolated Solmedium lane; narrow rereview then consumer gate
