@@ -1,0 +1,22 @@
+{
+  "component": "provider-profiles",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-provider-profiles-01",
+  "owner": "/root/implement_provider_profiles",
+  "status": "active",
+  "base_commit": "18241833c2db5b707a6a780937c78a628f3010fe",
+  "contract_revision": "provider-profiles-v1-20261015",
+  "branch": "agent/campaign-provider-profiles-20261015",
+  "worktree": "/workspace/command-library-provider-profiles-01",
+  "owned_paths": [
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/SqlLocalProviderProfiles.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/ProviderProfileCodec.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/ProviderProfilePolicy.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/ProviderProfileCursor.kt",
+    "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/ProviderProfileCodecTest.kt",
+    "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/ProviderProfilePolicyTest.kt",
+    "android-app/data/storage/src/test/kotlin/com/architectpsg/commandlibrary/data/storage/ai/SqlLocalProviderProfilesTest.kt",
+    "coordination/handoffs/cx-campaign-provider-profiles-01.md"
+  ],
+  "build_slot": "NOTGRANTED; ROOTonly"
+}

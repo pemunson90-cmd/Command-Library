@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-android-vault-host-241
+Checkpoint-ID: cp-20261015-provider-profiles-wave-242
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. vault-host-accepted-native-running
+Next step: 3. provider-profiles-claimed
 
-Updated UTC: 2026-10-15T20:08:05Z
+Updated UTC: 2026-10-15T20:30:13Z
 Status: in_progress; lease: active.
-Verified base: fe0c142633d88190e9eb505fac1b297e34d3cc46.
+Verified base: 18241833c2db5b707a6a780937c78a628f3010fe.
 
-Scoped Android vault SOURCE02/shared/runtime ACK; combined15host/app tests lint/nativecompile pass exactfe0c142; genuine API36 Keystore job running; provider config boundary review next
+Vault host ACK; repaired native infrastructure job running. Reviewed compiled provider profile contracts and actual additive schema16 frozen; isolated economical bounded profile producer TAKEN
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

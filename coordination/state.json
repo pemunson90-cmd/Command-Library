@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-android-vault-host-241",
-  "verified_base_head": "fe0c142633d88190e9eb505fac1b297e34d3cc46",
+  "checkpoint_id": "cp-20261015-provider-profiles-wave-242",
+  "verified_base_head": "18241833c2db5b707a6a780937c78a628f3010fe",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "vault-host-accepted-native-running",
+  "first_action": "provider-profiles-claimed",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -161,7 +161,7 @@
     "board_size_checks_host": "Producer10at4e1adbe0f/e/s; originaloverallcompilefailure retained. Unchangedproducer plus3controller/1actualapp atd471e34 SUCCESS1m08/0f/e/s;689pins/independentSOURCE-RUNTIMEACK. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md; noofficial/fullB06/native.",
     "offline_prompt_host": "Engine19cd93917tests2XML0f/e/s24s/702pins; unchangedengine source87e0c81 consumer10controller+1actualAppGraph/Room/clipboard2XML0f/e/s2m23/706pins. Independent SOURCE02/shared/runtime ACK; OFFLINE-PROMPT-APP-INTEGRATION-20261015.md preserves sourceHOLDs/interruptedno-verdictattempt. No native/fullAI."
   },
-  "last_completed": "Scoped Android vault SOURCE02/shared/runtime ACK; combined15host/app tests lint/nativecompile pass exactfe0c142; genuine API36 Keystore job running; provider config boundary review next",
-  "updated_utc": "2026-10-15T20:08:05Z",
+  "last_completed": "Vault host ACK; repaired native infrastructure job running. Reviewed compiled provider profile contracts and actual additive schema16 frozen; isolated economical bounded profile producer TAKEN",
+  "updated_utc": "2026-10-15T20:30:13Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
