@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-draft-actor-focused-gate-199
+Checkpoint-ID: cp-20261015-draft-actor-ack-admission-hold-200
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. run-source-acked-actor-focused-gate
+Next step: 3. hold-malformed-ack-authority-until-repair
 
-Updated UTC: 2026-10-15T12:20:13Z
+Updated UTC: 2026-10-15T12:26:31Z
 Status: in_progress; lease: active.
-Verified base: ed6988ba5560ac02c9e84c6dafb9df95dea1da4d.
+Verified base: d45738cbf0da825b583a7264e80ee6d95aa7cf08.
 
-Actor r4 source ACK, first focused worker gate active; root15file app wiring source ACK preserved, combined gate next.
+Frozen actor attempt02 continues; independent late source HOLD requires retaining exact rejected/Prepare requests until full ACK admission. Root16file source ACK, no concurrent build.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T12:20:13Z",
-  "expires_utc": "2026-10-15T13:05:13Z",
-  "checkpoint_id": "cp-20261015-draft-actor-focused-gate-199",
-  "note": "Root owns shared/contracts/schema/DI/navigation/final merge. SQL drafts integrated5807a11 final248-test ACK. Isolated actor r4 independently source ACKed; worker has sole Gradle slot ACTIVE attempt01 focused4classes. Root UI/DI15files source ACKed/frozen, combined real app UI/Room gate pending accepted actor. Root runs no concurrent Gradle. Publication blocked invalid token; native/Fold7/signing/finished APK holds."
+  "heartbeat_utc": "2026-10-15T12:26:31Z",
+  "expires_utc": "2026-10-15T13:11:31Z",
+  "checkpoint_id": "cp-20261015-draft-actor-ack-admission-hold-200",
+  "note": "Actor attempt02 focused4class gate ACTIVE but r4 source now HOLD after earlier source ACK: malformed discovered ACK can lose exact Prepare/rejected authority. Repair all3callers only after job exits, preserve historical run source/results. Root16file UI/DI source ACK/frozen, no root build. SQL backend5807a11 final248test ACK unchanged. Sole Gradle slot worker; publication invalidtoken/release holds."
 }

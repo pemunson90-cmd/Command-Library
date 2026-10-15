@@ -10,5 +10,5 @@
   "owned_paths": "Exact4NEW concreteactor/twofocusedtests/handoff paths; existing UI/state/ports/DI/navigation readonly",
   "authority": "Canonical root local claim; root exclusively owns shared UI/DI/integration/final merge",
   "build_slot": "ACTIVE attempt02 same four classes after attempt01 test-fixture smartcast compile failure (production compile passed, runtime0/XML0); actor/recovery unchanged, test03eec862; root no Gradle",
-  "source_review": "Actual Astra r4 source-readiness ACK: deb7dd9417ab2dace599f925004cc885e55a0f1e4f35ecb8405b94b3b1480aef / c31299527347e0ec829aad6ecd8503487447610a2920ef250b806fb6fa159ee0 / 0c3f551f3488ec2f00e15ab2327aa79a1f0c5dc979ba93b26b5e09cdeb464011"
+  "source_review": "HOLD after earlier r4 ACK: independently confirmed malformed discovered ACK loses exact rejected/Prepare authority in3callers; no edits during frozen attempt02, coherent repair after exit."
 }

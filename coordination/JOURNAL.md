@@ -643,3 +643,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T12:03:43Z | codex | cp-20261015-draft-app-source-review-198 | containing commit | Root UI/DI frozen source-only ACK; isolated actor held for temporal/recovery repair before first runtime gate. Accepted backend unchanged.
 
 2026-10-15T12:20:13Z | codex | cp-20261015-draft-actor-focused-gate-199 | containing commit | Actor r4 source ACK, first focused worker gate active; root15file app wiring source ACK preserved, combined gate next.
+
+2026-10-15T12:26:31Z | codex | cp-20261015-draft-actor-ack-admission-hold-200 | containing commit | Frozen actor attempt02 continues; independent late source HOLD requires retaining exact rejected/Prepare requests until full ACK admission. Root16file source ACK, no concurrent build.
