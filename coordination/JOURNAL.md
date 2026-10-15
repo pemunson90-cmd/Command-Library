@@ -711,3 +711,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T17:45:32Z | codex | cp-20261015-indexed-query-integrated-232 | containing commit | Reviewed compiler and reader integrated; scoped claims released; actual app consumer source review and combined host gate pending; Git publication restored
 
 2026-10-15T17:53:15Z | codex | cp-20261015-indexed-query-host-accepted-233 | containing commit | Actual typed offline query workflow host SOURCE/RUNTIME ACK;39feature checks plus1source-equivalent app journey; preserve failed run lineage; next ready validation boundary
+
+2026-10-15T17:58:32Z | codex | cp-20261015-board-constraints-wave-234 | containing commit | Reviewed bounded board-count workflow claimed in isolated source lane; root actual saved-deck consumer and module wiring; query host accepted

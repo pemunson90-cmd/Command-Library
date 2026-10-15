@@ -48,6 +48,7 @@ dependencies {
     api(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":feature:decks"))
+    implementation(project(":feature:validation"))
     implementation(libs.coroutines.core)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

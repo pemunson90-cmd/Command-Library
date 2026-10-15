@@ -1,0 +1,16 @@
+{
+  "component": "board-constraints",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-board-constraints-01",
+  "owner": "/root/implement_board_constraints",
+  "status": "active",
+  "base_commit": "1965c54dfca511d4a371270d806281e60ed9682a",
+  "branch": "agent/campaign-board-constraints-20261015",
+  "worktree": "/workspace/command-library-board-constraints-01",
+  "owned_paths": [
+    "android-app/feature/validation/src/main/kotlin/com/architectpsg/commandlibrary/feature/validation/LocalBoardConstraintChecks.kt",
+    "android-app/feature/validation/src/test/kotlin/com/architectpsg/commandlibrary/feature/validation/LocalBoardConstraintChecksTest.kt",
+    "coordination/handoffs/cx-campaign-board-constraints-01.md"
+  ],
+  "build_slot": "NOTGRANTED; rootonly"
+}

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-indexed-query-host-accepted-233
+Checkpoint-ID: cp-20261015-board-constraints-wave-234
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. indexed-query-host-accepted
+Next step: 3. board-constraints-claimed
 
-Updated UTC: 2026-10-15T17:53:15Z
+Updated UTC: 2026-10-15T17:58:32Z
 Status: in_progress; lease: active.
-Verified base: 5bef3ae2e5794200af37336dc313d82cb3cc9233.
+Verified base: 1965c54dfca511d4a371270d806281e60ed9682a.
 
-Actual typed offline query workflow host SOURCE/RUNTIME ACK;39feature checks plus1source-equivalent app journey; preserve failed run lineage; next ready validation boundary
+Reviewed bounded board-count workflow claimed in isolated source lane; root actual saved-deck consumer and module wiring; query host accepted
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
