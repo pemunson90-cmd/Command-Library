@@ -65,6 +65,11 @@ public class ShellPorts(
     public val inventoryProjection: ((com.architectpsg.commandlibrary.core.model.InventorySnapshot,
         com.architectpsg.commandlibrary.core.model.CollectionPatch, com.architectpsg.commandlibrary.core.model.Revision,
         com.architectpsg.commandlibrary.core.model.CancelToken) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.InventoryProjection>)? = null,
+    /** Complete application-owned plain list projection; does not assert vendor or backup compatibility. */
+    public val plainDeckLists: com.architectpsg.commandlibrary.core.model.PlainDeckListCodec? = null,
+    /** Existing whole-deck graph validator. Storage remains responsible for CLDK wire admission. */
+    public val deckSnapshotValidation: ((com.architectpsg.commandlibrary.core.model.DeckSnapshot,
+        com.architectpsg.commandlibrary.core.model.CancelToken) -> com.architectpsg.commandlibrary.core.model.Outcome<Unit>)? = null,
     /** Complete raw recovery/preparation/commit capability; bind only after real adapter acceptance. */
     public val localDeckDrafts: com.architectpsg.commandlibrary.core.model.LocalDeckDrafts? = null,
     /** Shared canonical projection; enabled together with the complete durable draft capability. */

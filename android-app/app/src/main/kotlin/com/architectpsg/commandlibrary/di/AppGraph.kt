@@ -15,6 +15,8 @@ import com.architectpsg.commandlibrary.data.storage.decks.codec.DeckPayloadCodec
 import com.architectpsg.commandlibrary.data.storage.decks.codec.DeckDraftPayloadCodec
 import com.architectpsg.commandlibrary.feature.decks.LocalDeckDraftPlanner
 import com.architectpsg.commandlibrary.feature.decks.DeckPatchReducer
+import com.architectpsg.commandlibrary.feature.decks.DeckSnapshotValidator
+import com.architectpsg.commandlibrary.feature.transfer.PlainTextDeckListCodec
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckDrafts
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckEdits
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckVersions
@@ -82,6 +84,7 @@ internal class AppGraph(
                         rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
                         catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
+                        plainDeckLists = PlainTextDeckListCodec(), deckSnapshotValidation = DeckSnapshotValidator::validate,
                         deckPatchProjection = DeckPatchReducer::propose, localInventory = inventory, ownedQuantity = LocalOwnedQuantityAllocator(), inventoryProjection = InventoryPatchReducer::propose)
                     ready = ports
                     transferred = true

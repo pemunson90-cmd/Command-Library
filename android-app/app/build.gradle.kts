@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":feature:life"))
     implementation(project(":feature:links"))
     implementation(project(":feature:decks"))
+    implementation(project(":feature:transfer"))
     implementation(project(":feature:collection"))
     implementation(project(":feature:pricing"))
     implementation(project(":feature:catalog"))
