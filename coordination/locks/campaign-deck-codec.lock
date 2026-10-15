@@ -1,0 +1,11 @@
+{
+  "component": "deck-codec",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-codec-01",
+  "branch": "agent/campaign-deck-codec-20261015",
+  "base_commit": "f3cee12b6de1d1c26edecdbe38791206265e8ab3",
+  "owner": "/root/implement_deck_codec; root controls canonical claim",
+  "owned_paths": "Exact explicit source/test/handoff allowlist in task card; all shared paths root-only",
+  "status": "active",
+  "authority": "Canonical live root continuation only; dispatch uses containing reviewed descendant commit"
+}

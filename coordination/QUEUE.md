@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261015-parallel-pilot-integrated-161. Next: orch-android-v1-campaign-01 step2; in_progress.
+Checkpoint-ID: cp-20261015-deck-contract-wave-162. Next: orch-android-v1-campaign-01 step2; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 

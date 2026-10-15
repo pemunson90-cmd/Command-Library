@@ -29,10 +29,17 @@ public data class DeckSnapshot(
     public val profileId: EntityId?,
     public val catalog: SnapshotList<SnapshotReference>,
     public val packageInstances: SnapshotList<PackageInstance>,
+    public val primer: String = "",
+    /** null preserves legacy implicit entry labels; empty is an explicit empty registry. */
+    public val categoryOrder: SnapshotList<EntryLabel>? = null,
 )
 public sealed interface DeckEdit {
     public data class Rename(public val name: String) : DeckEdit
     public data class Description(public val text: String) : DeckEdit
+    public data class Primer(public val markdown: String) : DeckEdit
+    public data class ReorderEntries(public val entryIds: SnapshotList<EntityId>) : DeckEdit
+    /** Explicit ordered registry; removed categories remove memberships, never card quantities. */
+    public data class Categories(public val categories: SnapshotList<EntryLabel>) : DeckEdit
     public data class Format(public val format: Knowledge<FormatId>) : DeckEdit
     public data class Metadata(
         public val folder: Knowledge<String>,

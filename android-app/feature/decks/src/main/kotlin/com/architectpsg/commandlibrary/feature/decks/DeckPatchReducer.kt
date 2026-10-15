@@ -25,6 +25,7 @@ public object DeckPatchReducer {
             if (entries.put(entry.id, entry) != null) return invalidDeckEdit("Duplicate deck entry ID")
             entryProblem(entry)?.let { return invalidDeckEdit(it) }
         }
+        categoryProblem(deck.categoryOrder, entries.values)?.let { return invalidDeckEdit(it) }
         if (patch.edits.isEmpty()) return Outcome.Success(deck)
         var candidate = deck
         for (edit in patch.edits) {
@@ -34,6 +35,23 @@ public object DeckPatchReducer {
                     candidate = candidate.copy(name = edit.name)
                 }
                 is DeckEdit.Description -> candidate = candidate.copy(description = edit.text)
+                is DeckEdit.Primer -> candidate = candidate.copy(primer = edit.markdown)
+                is DeckEdit.ReorderEntries -> {
+                    if (edit.entryIds.size != entries.size || edit.entryIds.toSet().size != entries.size ||
+                        edit.entryIds.any { it !in entries }) return invalidDeckEdit("Entry order must be an exact permutation")
+                    val reordered = edit.entryIds.map { entries.getValue(it) }
+                    entries.clear()
+                    reordered.forEach { entries[it.id] = it }
+                }
+                is DeckEdit.Categories -> {
+                    categoryDefinitionProblem(edit.categories)?.let { return invalidDeckEdit(it) }
+                    val definitions = edit.categories.associateBy { it.id }
+                    for ((id, entry) in entries.toMap()) {
+                        val labels = SnapshotList.copyOf(entry.labels.mapNotNull { definitions[it.id] })
+                        if (labels != entry.labels) entries[id] = entry.copy(labels = labels)
+                    }
+                    candidate = candidate.copy(categoryOrder = edit.categories)
+                }
                 is DeckEdit.Format -> candidate = candidate.copy(format = edit.format)
                 is DeckEdit.Metadata -> candidate = candidate.copy(folder = edit.folder, tags = edit.tags, budget = edit.budget, profileId = edit.profileId)
                 is DeckEdit.Add -> {
@@ -50,6 +68,7 @@ public object DeckPatchReducer {
                 is DeckEdit.Remove -> if (entries.remove(edit.entryId) == null) return invalidDeckEdit("Removed entry ID does not exist")
                 is DeckEdit.RestoreVersion, is DeckEdit.ApplyPackage -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Unsupported deck edit")
             }
+            categoryProblem(candidate.categoryOrder, entries.values)?.let { return invalidDeckEdit(it) }
         }
         // This helper only calculates a revision here; it makes no persistence claim.
         return when (val revision = revisionForCommittedEdit(expected, deck.revision)) {
@@ -65,6 +84,30 @@ public object DeckPatchReducer {
         entry.labels.map { it.id }.toSet().size != entry.labels.size -> "Duplicate label ID within entry"
         entry.roleOverrides.any { it.entryId != null && it.entryId != entry.id } -> "Role override belongs to another entry"
         else -> null
+    }
+
+    private fun categoryDefinitionProblem(categories: SnapshotList<EntryLabel>): String? = when {
+        categories.size > DeckPayloadLimits.MAX_CATEGORIES -> "Too many categories"
+        categories.any { it.name.isBlank() } -> "Category names must not be blank"
+        categories.map { it.id }.toSet().size != categories.size -> "Duplicate category ID"
+        else -> null
+    }
+
+    /** Null is legacy implicit state. A nonnull empty registry never acquires implicit categories. */
+    private fun categoryProblem(categories: SnapshotList<EntryLabel>?, entries: Collection<DeckEntry>): String? {
+        if (categories != null) categoryDefinitionProblem(categories)?.let { return it }
+        val definitions = categories?.associateBy { it.id }?.toMutableMap() ?: mutableMapOf()
+        for (entry in entries) for (label in entry.labels) {
+            if (label.name.isBlank()) return "Category names must not be blank"
+            val existing = definitions[label.id]
+            if (categories != null && existing != label) return "Entry label does not match explicit category registry"
+            if (categories == null) {
+                if (existing != null && existing != label) return "Conflicting implicit category definitions"
+                definitions[label.id] = label
+                if (definitions.size > DeckPayloadLimits.MAX_CATEGORIES) return "Too many categories"
+            }
+        }
+        return null
     }
 
     private fun UtcTimestamp.precedes(other: UtcTimestamp): Boolean =

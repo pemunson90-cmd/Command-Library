@@ -5,6 +5,91 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class DeckPatchReducerTest {
+    @Test fun primerAndDescriptionAreIndependentAndOldConstructorsRemainLegacy() {
+        val original = deck(entry("a")).copy(description = "Summary")
+        assertNull(original.categoryOrder)
+        assertSame(original, success(propose(original)))
+        val updated = success(propose(original, DeckEdit.Primer("# Primer\nCafé 😀")))
+        assertEquals("Summary", updated.description)
+        assertEquals("# Primer\nCafé 😀", updated.primer)
+        assertEquals("", original.primer)
+        assertEquals(Revision(8), updated.revision)
+    }
+
+    @Test fun explicitEmptyRegistryDoesNotReintroduceImplicitCategoriesLaterInBatch() {
+        val label = EntryLabel(EntityId("x"), "X")
+        val original = deck(entry("a").copy(labels = SnapshotList.of(label)))
+        val cleared = success(propose(original, DeckEdit.Categories(SnapshotList.empty())))
+        assertEquals(SnapshotList.empty<EntryLabel>(), cleared.categoryOrder)
+        assertTrue(cleared.entries.single().labels.isEmpty())
+        assertEquals(1, cleared.entries.single().quantity)
+        assertNull(original.categoryOrder)
+        assertInvalid(propose(original, DeckEdit.Categories(SnapshotList.empty()), DeckEdit.Add(entry("b").copy(labels = SnapshotList.of(label)))))
+        assertInvalid(propose(cleared, DeckEdit.Add(entry("b").copy(labels = SnapshotList.of(label)))))
+        assertEquals(SnapshotList.of(label), original.entries.single().labels)
+    }
+
+    @Test fun registryRenameRemovalAndEmptyCategoriesNeverDuplicateOrDeleteCardDemand() {
+        val x = EntryLabel(EntityId("x"), "Old")
+        val y = EntryLabel(EntityId("y"), "Remove")
+        val empty = EntryLabel(EntityId("empty"), "Empty category")
+        val first = entry("a").copy(quantity = 4, labels = SnapshotList.of(x, y))
+        val second = entry("b").copy(labels = SnapshotList.of(y))
+        val original = deck(first, second)
+        val renamed = x.copy(name = " Renamed ")
+        val result = success(propose(original, DeckEdit.Categories(SnapshotList.of(empty, renamed))))
+        assertEquals(SnapshotList.of(empty, renamed), result.categoryOrder)
+        assertEquals(SnapshotList.of(renamed), result.entries[0].labels)
+        assertTrue(result.entries[1].labels.isEmpty())
+        assertEquals(original.entries.map { it.quantity }, result.entries.map { it.quantity })
+        assertEquals(original.entries.map { it.identity }, result.entries.map { it.identity })
+        val added = entry("c").copy(labels = SnapshotList.of(renamed))
+        assertEquals(added, success(propose(original, DeckEdit.Categories(SnapshotList.of(renamed)), DeckEdit.Add(added))).entries.last())
+    }
+
+    @Test fun reorderingRequiresAnExactPermutationAndPreservesEntryObjectsAndFields() {
+        val a = entry("a"); val b = entry("b"); val c = entry("c")
+        val original = deck(a, b, c)
+        val reordered = success(propose(original, DeckEdit.ReorderEntries(SnapshotList.of(c.id, a.id, b.id))))
+        assertEquals(SnapshotList.of(c, a, b), reordered.entries)
+        assertSame(c, reordered.entries[0]); assertSame(a, reordered.entries[1])
+        for (order in listOf(SnapshotList.of(a.id, b.id), SnapshotList.of(a.id, a.id, c.id), SnapshotList.of(a.id, b.id, EntityId("foreign")))) {
+            assertInvalid(propose(original, DeckEdit.Primer("Changed draft"), DeckEdit.ReorderEntries(order)))
+            assertEquals("", original.primer)
+        }
+    }
+
+    @Test fun replacementMustUseCurrentRegistryNamesAfterAnEarlierRename() {
+        val old = EntryLabel(EntityId("x"), "Old")
+        val renamed = old.copy(name = "New")
+        val original = deck(entry("a").copy(labels = SnapshotList.of(old)))
+            .copy(categoryOrder = SnapshotList.of(old))
+        val replacement = original.entries.single().copy(quantity = 3, labels = SnapshotList.of(renamed))
+        val accepted = success(propose(original, DeckEdit.Categories(SnapshotList.of(renamed)), DeckEdit.Replace(replacement)))
+        assertEquals(replacement, accepted.entries.single())
+        assertEquals(SnapshotList.of(renamed), accepted.categoryOrder)
+        assertInvalid(propose(original, DeckEdit.Categories(SnapshotList.of(renamed)), DeckEdit.Replace(replacement.copy(labels = SnapshotList.of(old)))))
+        assertInvalid(propose(original, DeckEdit.Categories(SnapshotList.of(renamed)), DeckEdit.Replace(replacement.copy(labels = SnapshotList.of(EntryLabel(EntityId("other"), "Other"))))))
+        assertEquals(SnapshotList.of(old), original.categoryOrder)
+        assertEquals(1, original.entries.single().quantity)
+    }
+
+    @Test fun conflictingOrOversizedCategoryDefinitionsRejectWithoutCanonicalizingLegacyInput() {
+        val x = EntryLabel(EntityId("x"), "X")
+        val a = entry("a").copy(labels = SnapshotList.of(x))
+        val b = entry("b").copy(labels = SnapshotList.of(x.copy(name = "Different")))
+        assertInvalid(propose(deck(a, b)))
+        assertInvalid(propose(deck(a).copy(categoryOrder = SnapshotList.empty())))
+        assertInvalid(propose(deck(a), DeckEdit.Categories(SnapshotList.of(x, x))))
+        assertInvalid(propose(deck(a), DeckEdit.Categories(SnapshotList.of(x.copy(name = " ")))))
+        val tooMany = SnapshotList.copyOf(List(DeckPayloadLimits.MAX_CATEGORIES + 1) { EntryLabel(EntityId("c$it"), "Category $it") })
+        assertInvalid(propose(deck(), DeckEdit.Categories(tooMany)))
+        assertInvalid(propose(deck(entry("many").copy(labels = tooMany))))
+        val legacy = deck(a)
+        assertSame(legacy, success(propose(legacy)))
+        assertNull(success(propose(legacy, DeckEdit.Add(entry("new").copy(labels = SnapshotList.of(EntryLabel(EntityId("new-label"), "New")))))).categoryOrder)
+    }
+
     @Test fun sequentialEditsPreserveExactFieldsAndAdvanceOnce() {
         val first = entry("a")
         val second = entry("b")
