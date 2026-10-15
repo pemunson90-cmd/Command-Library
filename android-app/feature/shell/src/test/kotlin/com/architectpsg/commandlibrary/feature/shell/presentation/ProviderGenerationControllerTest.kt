@@ -20,6 +20,7 @@ class ProviderGenerationControllerTest {
         val row = StoredProviderProfile(profiles.profile(), Revision(2), UtcTimestamp(1), UtcTimestamp(2))
         var sends = 0
         val inputs = mutableListOf<NewHistoryTurn>()
+        val requests = mutableListOf<GenerationRequest>()
         var turn: Turn? = null
         var wait: CompletableDeferred<Unit>? = null
         var fail = false
@@ -31,8 +32,10 @@ class ProviderGenerationControllerTest {
             turn?.let { Outcome.Success(it) } ?: Outcome.Unavailable(UnavailableReason.NOT_FOUND, "Synthetic missing")
         } as LocalAiHistory
         val access = AiHistoryAccess { Outcome.Success(history) }
-        val generation = ProviderGenerationAccess { _, header, input, _, progress ->
-            sends++; inputs += input
+        val generation = ProviderGenerationAccess { _, header, input, request, _, progress ->
+            sends++; inputs += input; requests += request
+            assertEquals(input.id, request.id)
+            assertEquals(SnapshotList.of(GenerationMessage(MessageRole.USER, input.prompt.rendered, null)), request.messages)
             val value = Turn(input.id, header.id, Revision(2), 1, HistoryTurnSource.PROVIDER_GENERATION,
                 input.prompt, input.provenance, header.mode, input.providerProfileId, input.modelId, input.retryOf,
                 EntityId("epoch"), TurnStatus.COMPLETE, "Received Ω", Knowledge.Unknown("Unknown", SnapshotList.empty()),
@@ -47,6 +50,41 @@ class ProviderGenerationControllerTest {
             return ProviderGenerationController(backgroundScope, profiles, generation, access,
                 StandardTestDispatcher(testScheduler)) { EntityId("attempt-${++ids}") }
         }
+    }
+    @Test fun explicitTokenLimitInvalidatesPriorConsentAndRejectsMalformedOrOverflow() = runTest {
+        val f = Fixture(); val c = with(f) { controller() }
+        c.open(prompt); runCurrent(); c.select(f.row)
+        val stale = c.state.value.frame
+        c.consent(true, stale); c.maxTokens("77", stale)
+        c.consent(true, stale); c.send(c.state.value.frame); runCurrent()
+        assertFalse(c.state.value.consent); assertEquals(0, f.sends)
+        for (invalid in listOf("0", "-1", "1.5", " 1", "2147483648", "1".repeat(11))) {
+            c.maxTokens(invalid, c.state.value.frame)
+            c.consent(true, c.state.value.frame); c.send(c.state.value.frame); runCurrent()
+            assertEquals(0, f.sends); assertTrue(c.state.value.maxTokensRejected)
+        }
+        c.maxTokens("77", c.state.value.frame)
+        c.consent(true, c.state.value.frame); c.send(c.state.value.frame); runCurrent()
+        assertEquals(77, f.requests.single().maxTokens)
+        assertNull(f.requests.single().temperature); assertNull(f.requests.single().topP)
+    }
+    @Test fun nativeProfileRequiresExplicitPositiveLimitAndKnownVersionWithoutDefault() = runTest {
+        val f = Fixture()
+        val native = f.row.copy(profile = f.row.profile.copy(dialect = ProviderDialect.ANTHROPIC,
+            apiVersion = Knowledge.Known("2023-06-01")))
+        f.profiles.rows[native.profile.id.value] = native
+        val c = with(f) { controller() }; c.open(prompt); runCurrent(); c.select(native)
+        c.consent(true, c.state.value.frame); c.send(c.state.value.frame); runCurrent(); assertEquals(0, f.sends)
+        assertEquals("", c.state.value.maxTokensText)
+        c.maxTokens("77", c.state.value.frame)
+        c.consent(true, c.state.value.frame); c.send(c.state.value.frame); runCurrent()
+        assertEquals(77, f.requests.single().maxTokens)
+        val unknown = native.copy(profile = native.profile.copy(apiVersion = Knowledge.Unknown("Not supplied", SnapshotList.empty())))
+        f.profiles.rows[unknown.profile.id.value] = unknown
+        val other = with(f) { controller() }; other.open(prompt); runCurrent(); other.select(unknown)
+        other.maxTokens("77", other.state.value.frame); other.consent(true, other.state.value.frame)
+        other.send(other.state.value.frame); runCurrent(); assertEquals(1, f.sends)
+        assertFalse(other.state.value.optionsReady)
     }
     @Test fun noSendOnOpenSelectionOrMissingConsentAndExactCapturedInput() = runTest {
         val f = Fixture(); val c = with(f) { controller() }

@@ -37,6 +37,17 @@ internal fun ProviderGenerationDialog(controller: ProviderGenerationController) 
                     Text(stringResource(R.string.provider_generation_destination, selected.profile.baseUri?.value.orEmpty(),
                         selected.profile.selectedModelId, selected.revision.value), Modifier.testTag("provider-generation-destination"))
                 }
+                Text(stringResource(R.string.provider_generation_native_options))
+                state.selected?.let { selected -> Text(stringResource(R.string.provider_generation_version,
+                    (selected.profile.apiVersion as? com.architectpsg.commandlibrary.core.model.Knowledge.Known)?.value
+                        ?: stringResource(R.string.provider_generation_version_missing))) }
+                OutlinedTextField(state.maxTokensText, { controller.maxTokens(it, renderedFrame) },
+                    enabled = !state.sending && !state.busy && !state.uncertain,
+                    isError = state.maxTokensRejected || state.maxTokensText.isNotEmpty() && state.maxTokens == null,
+                    label = { Text(stringResource(if (state.selected?.profile?.dialect ==
+                        com.architectpsg.commandlibrary.core.model.ProviderDialect.ANTHROPIC)
+                        R.string.provider_generation_max_tokens_required else R.string.provider_generation_max_tokens)) },
+                    modifier = Modifier.fillMaxWidth().testTag("provider-generation-max-tokens"))
                 if (state.cursor != null) TextButton({ controller.loadProfiles(true) }, enabled = !state.busy && !state.sending) {
                     Text(stringResource(R.string.provider_generation_more))
                 }
@@ -45,11 +56,11 @@ internal fun ProviderGenerationDialog(controller: ProviderGenerationController) 
                     Text(stringResource(R.string.provider_generation_reload_profiles))
                 }
                 Row {
-                    Checkbox(state.consent, { controller.consent(it, renderedFrame) }, enabled = state.selected != null && !state.sending && !state.busy && !state.uncertain,
+                    Checkbox(state.consent, { controller.consent(it, renderedFrame) }, enabled = state.optionsReady && !state.sending && !state.busy && !state.uncertain,
                         modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp).testTag("provider-generation-consent"))
                     Text(stringResource(R.string.provider_generation_consent), Modifier.padding(top = 12.dp))
                 }
-                Button({ controller.send(renderedFrame) }, enabled = state.consent && !state.sending && !state.busy && !state.uncertain,
+                Button({ controller.send(renderedFrame) }, enabled = state.consent && state.optionsReady && !state.sending && !state.busy && !state.uncertain,
                     modifier = Modifier.heightIn(min = 48.dp).testTag("provider-generation-send")) {
                     Text(stringResource(if (state.turn == null) R.string.provider_generation_send else R.string.provider_generation_retry))
                 }

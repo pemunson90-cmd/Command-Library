@@ -570,4 +570,9 @@
     <string name="provider_generation_uncertain">The attempt or history acknowledgement is uncertain. No automatic resend occurs. Reload the original attempt before retrying; incomplete responses remain unfinished.</string>
     <string name="provider_generation_reload">Reload original attempt (no send)</string>
     <string name="provider_generation_abandon">Leave unresolved attempt; keep any saved history</string>
+    <string name="provider_generation_max_tokens">Output token limit (optional)</string>
+    <string name="provider_generation_native_options">Anthropic requires an explicit positive output token limit and a saved API version in Settings. No token limit or API version is chosen automatically. Changing the limit requires approval again.</string>
+    <string name="provider_generation_version">Saved API version: %1$s</string>
+    <string name="provider_generation_version_missing">Not supplied</string>
+    <string name="provider_generation_max_tokens_required">Output token limit (required)</string>
 </resources>

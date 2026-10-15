@@ -115,8 +115,29 @@ class DurableProviderGenerationTest {
         }
     }
     private suspend fun run(history: History, client: Client, value: NewHistoryTurn = input,
-        parent: NewConversation = conversation, callback: suspend (Turn) -> Unit = {}): Outcome<Turn> =
-        DurableProviderGeneration(client).run(history, epoch, profile, parent, value, noCancel, callback)
+        parent: NewConversation = conversation,
+        request: GenerationRequest = capturedRequest(value), callback: suspend (Turn) -> Unit = {}): Outcome<Turn> =
+        DurableProviderGeneration(client).run(history, epoch, profile, parent, value, request, noCancel, callback)
+    private fun capturedRequest(value: NewHistoryTurn = input): GenerationRequest = GenerationRequest(value.id,
+        SnapshotList.of(GenerationMessage(MessageRole.USER, value.prompt.rendered, null)),
+        null, null, null, null, SnapshotList.empty())
+
+    @Test fun explicitCapturedOptionsReachClientUnchangedWithoutDefaults() = runTest {
+        val h = History(); val c = Client(h) { emit(chunk(0, "ok", GenerationFinishReason.STOP)) }
+        val request = capturedRequest().copy(maxTokens = 77, temperature = java.math.BigDecimal("0.2"),
+            topP = java.math.BigDecimal("0.8"), seed = 42, stopSequences = SnapshotList.of("END"))
+        ok(run(h, c, request = request))
+        assertSame(request, c.request)
+    }
+    @Test fun requestIdentityAndExactCapturedUserMessageAreFencedBeforeWrites() = runTest {
+        for (request in listOf(capturedRequest().copy(id = EntityId("different")),
+            capturedRequest().copy(messages = SnapshotList.of(GenerationMessage(MessageRole.USER, "changed", null))),
+            capturedRequest().copy(messages = SnapshotList.of(GenerationMessage(MessageRole.SYSTEM, input.prompt.rendered, null))))) {
+            val h = History(); val c = Client(h) { error("Must not send") }
+            assertEquals(FailureCode.INVALID_INPUT, (run(h, c, request = request) as Outcome.Failure).error.code)
+            assertTrue(h.events.isEmpty()); assertEquals(0, c.sends)
+        }
+    }
 
     @Test fun pendingAckPrecedesSinglePostWithExactCapturedUserArtifactAndNullOptions() = runTest {
         val h = History(); val c = Client(h) { emit(chunk(0, "reply", GenerationFinishReason.STOP)) }

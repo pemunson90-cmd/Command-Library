@@ -12,7 +12,7 @@ internal class AppProviderGenerationAccess(private val profiles: LocalProviderPr
     private val clientFactory: () -> NetworkClient = { OkHttpNetworkClient(SystemUtcClock,
         userAgent = "CommandLibrary/1 Android (explicit provider request)") }) : ProviderGenerationAccess {
     override suspend fun run(profile: StoredProviderProfile, conversation: NewConversation,
-        input: NewHistoryTurn, cancel: CancelToken, onProgress: suspend (Turn) -> Unit): Outcome<Turn> {
+        input: NewHistoryTurn, request: GenerationRequest, cancel: CancelToken, onProgress: suspend (Turn) -> Unit): Outcome<Turn> {
         cancel.throwIfCancelled()
         when (val current = profiles.load(profile.profile.id, cancel)) {
             is Outcome.Success -> if (current.value != profile) return Outcome.Failure(DomainFailure(
@@ -20,6 +20,18 @@ internal class AppProviderGenerationAccess(private val profiles: LocalProviderPr
             is Outcome.Failure -> return current
             is Outcome.Unavailable -> return current
             is Outcome.Unknown -> return current
+        }
+        // Pure admission precedes even a durable PENDING row; it performs no credential or wire work.
+        val admission = when (profile.profile.dialect) {
+            ProviderDialect.OPENAI_CHAT -> com.architectpsg.commandlibrary.feature.ai.ChatCompletionsWireCodec().encode(profile.profile, request, cancel)
+            ProviderDialect.ANTHROPIC -> com.architectpsg.commandlibrary.feature.ai.AnthropicMessagesWireCodec().encode(profile.profile, request, cancel)
+            else -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Provider text dialect is not implemented")
+        }
+        when (val encoded = admission) {
+            is Outcome.Success -> Unit
+            is Outcome.Failure -> return encoded
+            is Outcome.Unavailable -> return encoded
+            is Outcome.Unknown -> return encoded
         }
         val port = when (val opened = history.open(cancel)) {
             is Outcome.Success -> opened.value
@@ -29,8 +41,13 @@ internal class AppProviderGenerationAccess(private val profiles: LocalProviderPr
         }
         val network = clientFactory()
         try {
-            return DurableProviderGeneration(HttpsChatCompletionsClient(network, vault)).run(port, history.epoch,
-                profile.profile, conversation, input.copy(ownerEpoch = history.epoch), cancel, onProgress)
+            val client: ProviderTextClient = when (profile.profile.dialect) {
+                ProviderDialect.OPENAI_CHAT -> HttpsChatCompletionsClient(network, vault)
+                ProviderDialect.ANTHROPIC -> com.architectpsg.commandlibrary.feature.ai.HttpsAnthropicMessagesClient(network, vault)
+                else -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Provider text dialect is not implemented")
+            }
+            return DurableProviderGeneration(client).run(port, history.epoch,
+                profile.profile, conversation, input.copy(ownerEpoch = history.epoch), request, cancel, onProgress)
         } finally { kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { kotlinx.coroutines.withTimeout(5_000) { network.close() } } }
     }
 }

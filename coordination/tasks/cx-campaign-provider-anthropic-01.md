@@ -1,4 +1,4 @@
-# Native Anthropic text — root boundary draft, not an implementation assignment
+# Native Anthropic text — accepted root boundary SOURCE02
 
 Continue retained ai-providers H02/H08 immediately after bounded customHTTPS text source/runtimeACK6519bff1; no campaign replanning/D30 reprioritization. Native Anthropic is an existing dialect/provider requirement. Exact narrow source register docs/gauntlet/research/R-10A-anthropic-messages-source-20261015.md anchors official SDK bcd55fe1d3f0f1240765f8cef04295b67337f55a, generated source not authentic wire or eligibility/billing proof. No new dependencies/pins/accounts/paidcalls/API requests. Root owns contracts/options/network/auth/DI/UI/coord and integration. SOURCE/security review pending before implementation packets.
 
@@ -16,10 +16,6 @@ After independent boundaryACK: one isolated pure nativecodec producer with exact
 
 ## Latest continuation delta
 
-Source facts exactofficialSDKbcd55fe1d3f0f1240765f8cef04295b67337f55a recorded in2eb0584e; reportSHA3200b2818212134606d09978e2dbfaa18dbc53c6fe41c2c256bf6f9470b294eb. NormalHTTPS GitHubsource retrievalonly, no builds/providercalls/runtime. IndependentAstra boundary/source review pending; no implementationclaim/worker. CustomHTTPS source/runtimeaccepted6519bff1 unaffected. Next consume review, ruleexplicitusage/API/options/terminaldetails, publishaccepted exactpacket/pathclaims thenimplementnativeproducer/rootsharedwork.
+Boundary SOURCE01 at2eb0584e held for unsupportednative temp/topP evidence and cumulative/null/index/starttext/terminalclarifications. Corrected exact4424646d9be0e797a7d303c341a8e0e69698ac2d independentlyAstraSOURCE02ACK. Source/licensefacts fromofficialSDKbcd55fe1 remain generateddeclaration/source evidence only; R-10AreportSHA3200b281. Cachecreation/uncachedcomponentretention remains explicitlyunimplementedH08fidelity beforefullacceptance; no publiccore/schemaexpansion inthisboundedlane.
 
-BoundarySOURCE01 HOLD: reviewer verified currentpinnedSDK omits temperature/top_p declarations/signatures/body mapping. Corrected draft to reject bothnonnull native options asUNSUPPORTED (seedalreadyunsupported), preservingCC semantics. No productimplementationexists and no removedAPIs claim. Cachecreationretention decision stillunderreview.
-
-BoundarySOURCE02: applied independentAstra minimalclarifications: omit/nullupdates retainpriorKnown cumulativecomponent (neverreported→Unknown), nonnegativeexactLong/overflow/decreasefailclosed; blockindices0+, nonemptyblockstarttextpreserved, nocontentafterstopreason. Reviewerrules no additivecore/schemafield needed forboundedlane; separatecachecreation/uncachedcomponentretention stays explicitunimplementedH08fidelity beforefullacceptance. No fullusage/eligibility/terms/providerclaim.
-
-SOURCE02 boundary exact4424646d9be0e797a7d303c341a8e0e69698ac2d independentlyAstraACK allcorrections. NativecodecNEW5 isolatedTAKEN exactsamebase/canonicalrootlock; rootsharedGenerationRequest/options/auth/UI. Root+codecwriter2max3,4children/singleROOTbuildslotFREE. No nativeimplementationruntimeyet.
+NativecodecNEW5 isolatedTAKEN exact4424646d/canonicalrootlock/taskcx-campaign-provider-anthropic-codec-01.md; root shared explicitGenerationRequest capture/optionalpositive outputlimit+consentfence/nativeversionguard/scopedAPIkeyclient/AppGraphdialectdispatch drafted. Rootadded2coordinator+2shell+5nativeauth syntheticoracles, allNOT_RUN; codecdependency notintegrated, no currentcompileclaim. Root+codecwriter2max3/max4children/oneROOTbuildslotFREE. Next freeze/reviewroot+codec, addactualnativeappjourney, onecoherentnative+CCregressiongate; no pereditbroad/native suites. Preserve sourceHOLDs/drafts/holds; continue readywork without routineapprovalstop.

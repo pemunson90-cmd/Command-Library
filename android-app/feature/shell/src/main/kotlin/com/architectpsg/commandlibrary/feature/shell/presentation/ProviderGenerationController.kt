@@ -13,7 +13,16 @@ internal data class ProviderGenerationState(
     val selected: StoredProviderProfile? = null, val busy: Boolean = false, val sending: Boolean = false,
     val consent: Boolean = false, val turn: Turn? = null, val uncertain: Boolean = false,
     val problem: Problem? = null, val frame: Long = 0,
-)
+    val maxTokensText: String = "", val maxTokensRejected: Boolean = false,
+) {
+    val maxTokens: Int? get() = maxTokensText.takeIf { it.matches(Regex("[1-9][0-9]{0,9}")) }?.toIntOrNull()
+    val optionsReady: Boolean get() = !maxTokensRejected && (maxTokensText.isEmpty() || maxTokens != null) &&
+        selected?.profile?.let { profile -> when (profile.dialect) {
+            ProviderDialect.OPENAI_CHAT -> true
+            ProviderDialect.ANTHROPIC -> maxTokens != null && profile.apiVersion is Knowledge.Known
+            else -> false
+        } } == true
+}
 
 /** An immutable preview and explicit send fence; recreation has no remembered dispatch intent. */
 internal class ProviderGenerationController(private val scope: CoroutineScope,
@@ -72,21 +81,31 @@ internal class ProviderGenerationController(private val scope: CoroutineScope,
         if (s.visible && !s.busy && !s.sending && !s.uncertain && s.selected != null && s.frame == frame)
             mutable.value = s.copy(consent = value)
     }
+    fun maxTokens(value: String, frame: Long) {
+        val s = state.value
+        if (!s.visible || s.busy || s.sending || s.uncertain || s.frame != frame) return
+        mutable.value = s.copy(maxTokensText = if (value.length <= 10) value else s.maxTokensText,
+            maxTokensRejected = value.length > 10 || value.isNotEmpty() &&
+                (!value.matches(Regex("[1-9][0-9]{0,9}")) || value.toIntOrNull() == null),
+            consent = false, frame = s.frame + 1)
+    }
     fun cancel() { send?.cancel() }
     fun send(frame: Long) {
         val s = state.value; val capture = s.capture ?: return; val selected = s.selected ?: return
-        if (!s.visible || s.busy || s.sending || s.uncertain || !s.consent || s.frame != frame) return
+        if (!s.visible || s.busy || s.sending || s.uncertain || !s.consent || !s.optionsReady || s.frame != frame) return
         val prior = s.turn
         if (prior != null && prior.status !in setOf(TurnStatus.COMPLETE, TurnStatus.INTERRUPTED, TurnStatus.FAILED)) return
         val header = conversation ?: NewConversation(id(), capture.artifact.deckId, capture.mode, capture.mode.name).also { conversation = it }
         val attempt = id().also { attemptId = it }
         val input = NewHistoryTurn(attempt, HistoryTurnSource.PROVIDER_GENERATION, capture.artifact, capture.provenance,
             "", selected.profile.id, selected.profile.selectedModelId, prior?.id)
+        val request = GenerationRequest(attempt, SnapshotList.of(GenerationMessage(MessageRole.USER, capture.artifact.rendered, null)),
+            s.maxTokens, null, null, null, SnapshotList.empty())
         mutable.value = s.copy(sending = true, consent = false, turn = null, problem = null)
         send = scope.launch(start = CoroutineStart.UNDISPATCHED) {
             var acknowledged = false
             try {
-                val result = callPort(dispatcher) { token -> generation.run(selected, header, input, token) { turn ->
+                val result = callPort(dispatcher) { token -> generation.run(selected, header, input, request, token) { turn ->
                     withContext(scope.coroutineContext.minusKey(Job)) {
                         if (attemptId == attempt) mutable.value = state.value.copy(turn = turn)
                     }

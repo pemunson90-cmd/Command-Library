@@ -22,11 +22,12 @@ public class DurableProviderGeneration(private val client: ProviderTextClient) {
         profile: ProviderProfile,
         conversation: NewConversation,
         input: NewHistoryTurn,
+        request: GenerationRequest,
         cancel: CancelToken,
         onProgress: suspend (Turn) -> Unit,
     ): Outcome<Turn> {
         active(cancel)
-        if (!validInput(epoch, profile, conversation, input)) return invalid()
+        if (!validInput(epoch, profile, conversation, input, request)) return invalid()
         // A read is not an exactly-once receipt: append must still reserve the original ID.
         when (val previous = history.getTurn(input.id, cancel)) {
             is Outcome.Success -> return failure(FailureCode.STALE_REVISION, "Generation attempt already exists")
@@ -61,9 +62,6 @@ public class DurableProviderGeneration(private val client: ProviderTextClient) {
             state.uncertain = false
             onProgress(appended.value)
             active(cancel)
-            val request = GenerationRequest(input.id,
-                SnapshotList.of(GenerationMessage(MessageRole.USER, input.prompt.rendered, null)),
-                null, null, null, null, SnapshotList.empty())
             var sequence = 0L
             var terminal: GenerationFinishReason? = null
             var streamError: Outcome<Nothing>? = null
@@ -222,14 +220,27 @@ public class DurableProviderGeneration(private val client: ProviderTextClient) {
             }
             return size
         }
-        fun validInput(epoch: EntityId, profile: ProviderProfile, conversation: NewConversation, input: NewHistoryTurn): Boolean {
+        fun nativeVersion(value: Knowledge<String>): Boolean {
+            val text = (value as? Knowledge.Known)?.value ?: return false
+            if (!text.matches(Regex("[0-9]{4}-[0-9]{2}-[0-9]{2}"))) return false
+            return try { java.time.LocalDate.parse(text); true } catch (_: java.time.DateTimeException) { false }
+        }
+        fun validInput(epoch: EntityId, profile: ProviderProfile, conversation: NewConversation, input: NewHistoryTurn,
+            request: GenerationRequest): Boolean {
+            if (request.id != input.id || request.messages != SnapshotList.of(
+                    GenerationMessage(MessageRole.USER, input.prompt.rendered, null))) return false
             if (input.source != HistoryTurnSource.PROVIDER_GENERATION || input.rawContent.isNotEmpty() ||
                 input.ownerEpoch != epoch || input.providerProfileId != profile.id || input.modelId != profile.selectedModelId ||
                 input.retryOf == input.id || input.prompt.deckId != conversation.deckId ||
                 input.prompt.templateId != conversation.mode.templateId || input.prompt.templateVersion <= 0) return false
             val normalized = ProviderProfilePolicy.normalize(profile)
-            if (normalized !is Outcome.Success || normalized.value != profile || profile.dialect != ProviderDialect.OPENAI_CHAT ||
-                profile.apiVersion is Knowledge.Known) return false
+            if (normalized !is Outcome.Success || normalized.value != profile) return false
+            when (profile.dialect) {
+                ProviderDialect.OPENAI_CHAT -> if (profile.apiVersion is Knowledge.Known) return false
+                ProviderDialect.ANTHROPIC -> if (!nativeVersion(profile.apiVersion) || request.maxTokens == null ||
+                    request.temperature != null || request.topP != null || request.seed != null) return false
+                else -> return false
+            }
             // Mirror the input frame's byte accounting without allocating a payload or changing contracts.
             var bytes = 8L
             var valid = true
