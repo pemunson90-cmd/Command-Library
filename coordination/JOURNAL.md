@@ -725,3 +725,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T19:40:52Z | codex | cp-20261015-offline-prompts-host-accepted-239 | containing commit | Provider-free four-mode prompt/copy/paste/card-detail workflow host SOURCE/RUNTIME ACK;17engine plus11consumer separate scopes; claimsreleased; continue next retained dependency
 
 2026-10-15T19:50:44Z | codex | cp-20261015-android-vault-wave-240 | containing commit | Reviewed existing H07 scope native vault exact8paths claimed on verified isolated6601f55; root lazy module/AppGraph binding authored; actual source/runtime/native gates pending
+
+2026-10-15T20:08:05Z | codex | cp-20261015-android-vault-host-241 | containing commit | Scoped Android vault SOURCE02/shared/runtime ACK; combined15host/app tests lint/nativecompile pass exactfe0c142; genuine API36 Keystore job running; provider config boundary review next

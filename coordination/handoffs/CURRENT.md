@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-android-vault-wave-240
+Checkpoint-ID: cp-20261015-android-vault-host-241
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. android-vault-claimed
+Next step: 3. vault-host-accepted-native-running
 
-Updated UTC: 2026-10-15T19:50:44Z
+Updated UTC: 2026-10-15T20:08:05Z
 Status: in_progress; lease: active.
-Verified base: 6601f557df26ae7d953a957a19636953157738a6.
+Verified base: fe0c142633d88190e9eb505fac1b297e34d3cc46.
 
-Reviewed existing H07 scope native vault exact8paths claimed on verified isolated6601f55; root lazy module/AppGraph binding authored; actual source/runtime/native gates pending
+Scoped Android vault SOURCE02/shared/runtime ACK; combined15host/app tests lint/nativecompile pass exactfe0c142; genuine API36 Keystore job running; provider config boundary review next
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

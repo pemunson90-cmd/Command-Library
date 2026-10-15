@@ -2121,7 +2121,7 @@
         "verification": "independent security review; native Keystore reinstall/corruption/origin/redaction; no secrets in logs or archive",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "SecretVault declaration only; local JVM cannot establish Android Keystore acceptance",
+        "observed_implementation": "Actual scoped AndroidSecretVault production AES256-GCM/AndroidKeyStore/noBackup AtomicFile source and lazy AppGraph binding integratede3f0691; independent Astra SOURCE02/sharedCI ACK. Exact8 original28e44b3/base6601 verified clean/live. Host harness correctedfe0c142 SDK34 matching existing Java17 host setup after SDK36 initialization failure; focused sourceACK. Combinedfe0c142/tree092599a5 host15tests3XML0f/e/s2m28/714pins +lint/nativecompile PASS and independent Solmedium runtimeACK; API36nativejob38799223425 executing; real nativeKeystore execution, providerkeyconsumer, reinstall/backup/fullH07/security/release acceptance open.",
         "ownership_group": "vault",
         "resources": [
           "local-gradle-serial"

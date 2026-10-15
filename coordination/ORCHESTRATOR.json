@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T19:50:44Z",
-  "expires_utc": "2026-10-15T20:35:44Z",
-  "checkpoint_id": "cp-20261015-android-vault-wave-240",
-  "note": "Root retains shared/integration/final authority. Offline prompts hostaccepted; READY02 native vault exact8 isolated writer claim, root module/factory composition authored but runtimeNOTRUN. One root buildslotfree; no nativeKeystore/fullH07/provider/release claim."
+  "heartbeat_utc": "2026-10-15T20:08:05Z",
+  "expires_utc": "2026-10-15T20:53:05Z",
+  "checkpoint_id": "cp-20261015-android-vault-host-241",
+  "note": "Root retains shared/integration/final authority. Android vault bounded host SOURCE02/runtime ACK,15tests/lint/nativecompile passfe0c142; exact8claimreleased. Genuine API36 Keystore run38799223425 executing; no fullH07/provider/release claim. Root buildslotfree; provider config boundary next."
 }
