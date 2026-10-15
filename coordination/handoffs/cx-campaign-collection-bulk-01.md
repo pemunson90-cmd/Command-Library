@@ -2,7 +2,7 @@
 
 ## Latest continuation delta
 
-Implementation and focused verification are complete. Frozen eight-file source matches attempt04-source.sha256. Runtime stage passed 54 tests in five XML suites with zero failures/errors/skips; lint passed with zero errors and one inherited warning. Sole Gradle slot released. Root reported final independent actual Astra source/runtime/lint ACK matching all eight pins, 54 tests/five XML, zero lint errors/one inherited warning, and both compile-only diffs; every HOLD is released. Next: commit exactly the nine delegated paths, then return exact commit/head to root. Root owns actual binding, assembled S12 and native acceptance.
+Implementation and focused verification are complete. Frozen eight-file source matches attempt04-source.sha256. Runtime stage passed 54 tests in five XML suites with zero failures/errors/skips; lint passed with zero errors and one inherited warning. Sole Gradle slot released. Root reported final independent actual Astra source/runtime/lint ACK matching all eight pins, 54 tests/five XML, zero lint errors/one inherited warning, and both compile-only diffs; every HOLD is released. Implementation commit `b536d87868f7a93955b26ff074eeb62088a5e878` directly descends from the exact dispatch base and changes only the nine delegated paths. This handoff-only provenance pin records that implementation commit; no verified source changes follow it. Next: root consumes the scoped commits and performs actual composition/assembled acceptance. Root owns actual binding, assembled S12 and native acceptance.
 
 ## Isolation and lineage
 
