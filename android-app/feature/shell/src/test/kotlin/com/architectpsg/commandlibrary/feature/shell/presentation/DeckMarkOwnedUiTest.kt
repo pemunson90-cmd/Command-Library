@@ -10,6 +10,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.ui.collection.DeckMarkOwnedSurface
+import com.architectpsg.commandlibrary.feature.shell.ui.collection.markOwnedConfirmAction
+import com.architectpsg.commandlibrary.feature.shell.ui.collection.markOwnedFinishAction
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestScope
@@ -70,7 +72,10 @@ class DeckMarkOwnedUiTest {
 
         click("mark-owned-preview")
         val first = checkNotNull(f.controller.state.value.preview)
-        val oldConfirm = checkNotNull(rule.onNodeWithTag("mark-owned-confirm").fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+        rule.onNodeWithTag("mark-owned-confirm").assertIsEnabled()
+        // Material's semantics OnClick wraps a node and cannot run after detachment.
+        // Capture the same rendered business callback the actual button receives.
+        val oldConfirm = markOwnedConfirmAction(f.controller, f.controller.state.value.formTicket, first, f.gate.busy)
         assertTrue(f.calls.isEmpty())
         type("mark-owned-notes-b", "Latest physical copy note")
         assertNull(f.controller.state.value.preview)
@@ -112,7 +117,7 @@ class DeckMarkOwnedUiTest {
         click("mark-owned-finish-FOIL-b")
         assertEquals(Knowledge.Known(Finish.FOIL), f.row("b").input.finish)
         reveal("mark-owned-finish-FOIL-b")
-        val oldFoil = checkNotNull(rule.onNodeWithTag("mark-owned-finish-FOIL-b").fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+        val oldFoil = markOwnedFinishAction(f.controller, f.controller.state.value.formTicket, f.row("b"), Finish.FOIL)
         // Controlled catalog notification, not an automatic UI downgrade or network refresh.
         rule.runOnIdle { f.active = null; f.controller.onActiveGeneration(null) }; pump()
         reveal("mark-owned-finish-UNKNOWN-b")

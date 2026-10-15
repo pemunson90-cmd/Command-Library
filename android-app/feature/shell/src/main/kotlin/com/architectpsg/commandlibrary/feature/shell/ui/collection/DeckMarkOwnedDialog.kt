@@ -67,6 +67,20 @@ private inline fun changeInput(controller: DeckMarkOwnedController, ticket: Long
 private fun canConfirm(state: DeckMarkOwnedState, preview: DeckMarkOwnedPreview, busy: Boolean): Boolean =
     !busy && editable(state) && !state.previewing && state.preview === preview && state.issues.isEmpty() && preview.projection.issues.isEmpty()
 
+/** The rendered command itself, independent of a Material node's attachment lifetime. */
+internal fun markOwnedConfirmAction(controller: DeckMarkOwnedController, ticket: Long,
+    preview: DeckMarkOwnedPreview, busy: StateFlow<Boolean>): () -> Unit = {
+    formCommand(controller, ticket) { if (canConfirm(it, preview, busy.value)) controller.confirm() }
+}
+
+internal fun markOwnedFinishAction(controller: DeckMarkOwnedController, ticket: Long,
+    row: DeckMarkOwnedRow, finish: Finish): () -> Unit = {
+    rowCommand(controller, ticket, row.entry.id, row.entry.identity) { latest ->
+        if (finish in latest.supportedFinishes)
+            controller.change(latest.entry.id, latest.input, latest.input.copy(finish = Knowledge.Known(finish)))
+    }
+}
+
 @Composable
 private fun MarkOwnedDialog(controller: DeckMarkOwnedController, busyFlow: StateFlow<Boolean>, state: DeckMarkOwnedState,
     busy: Boolean, list: LazyListState) {
@@ -216,7 +230,7 @@ private fun MarkOwnedDialog(controller: DeckMarkOwnedController, busyFlow: State
             when {
                 retry -> TextButton({ formCommand(controller, ticket) { if (!it.submitting && (it.uncertain || it.awaitingFresh)) controller.retry() } },
                     enabled = !state.submitting, modifier = Modifier.touch().testTag("mark-owned-retry")) { Text(stringResource(R.string.mark_owned_retry)) }
-                preview != null -> TextButton({ formCommand(controller, ticket) { if (canConfirm(it, preview, busyFlow.value)) controller.confirm() } },
+                preview != null -> TextButton(markOwnedConfirmAction(controller, ticket, preview, busyFlow),
                     enabled = canConfirm(state, preview, busy), modifier = Modifier.touch().testTag("mark-owned-confirm")) { Text(stringResource(R.string.mark_owned_confirm)) }
                 else -> TextButton({ formCommand(controller, ticket) {
                     if (editable(it) && !it.previewing && !busyFlow.value && it.rows.any { row -> row.selected }) controller.preview()
@@ -260,9 +274,7 @@ private fun MarkOwnedFinishes(controller: DeckMarkOwnedController, ticket: Long,
         FilterChip(row.input.finish is Knowledge.Unknown, { changeInput(controller, ticket, row) { it.copy(finish = DeckMarkOwnedInput().finish) } },
             enabled = editing, label = { Text(stringResource(R.string.mark_owned_finish_unknown)) }, modifier = Modifier.touch().testTag("mark-owned-finish-UNKNOWN-$id"))
         row.supportedFinishes.forEach { finish ->
-            FilterChip(row.input.finish == Knowledge.Known(finish), { rowCommand(controller, ticket, row.entry.id, row.entry.identity) { latest ->
-                if (finish in latest.supportedFinishes) controller.change(latest.entry.id, latest.input, latest.input.copy(finish = Knowledge.Known(finish)))
-            } },
+            FilterChip(row.input.finish == Knowledge.Known(finish), markOwnedFinishAction(controller, ticket, row, finish),
                 enabled = editing, label = { Text(stringResource(finishLabel(Knowledge.Known(finish)))) }, modifier = Modifier.touch().testTag("mark-owned-finish-${finish.name}-$id"))
         }
     }
