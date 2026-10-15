@@ -6,7 +6,7 @@ import java.math.BigInteger
 
 private val providerWire = wire<ProviderId>({ v(idTextWire, it.value) }, { ProviderId(v(idTextWire)) })
 internal val entityWire = wire<EntityId>({ v(idTextWire, it.value) }, { EntityId(v(idTextWire)) })
-private val generationWire = wire<GenerationId>({ v(idTextWire, it.value) }, { GenerationId(v(idTextWire)) })
+internal val generationWire = wire<GenerationId>({ v(idTextWire, it.value) }, { GenerationId(v(idTextWire)) })
 private val languageWire = wire<LanguageTag>({ v(idTextWire, it.value) }, { LanguageTag(v(idTextWire)) })
 private val deckIdWire = wire<DeckId>({ v(providerWire, it.source); v(idTextWire, it.raw) }, { DeckId(v(providerWire), v(idTextWire)) })
 private val oracleWire = wire<OracleId>({ v(providerWire, it.source); v(idTextWire, it.raw) }, { OracleId(v(providerWire), v(idTextWire)) })

@@ -1,0 +1,12 @@
+{
+  "component": "deck-draft-pure-codec-planner",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-draft-pure-01",
+  "owner": "/root/implement_deck_edit_store native isolated writer",
+  "status": "active",
+  "branch": "agent/campaign-deck-draft-pure-20261015",
+  "worktree": "/workspace/command-library-deck-draft-pure-01",
+  "base_commit": "containing reviewedboundary claim commit supplied beforeedit",
+  "owned_paths": "Exact5NEWplanner/codec/tests/handoff paths from packet; allsharedreadonly",
+  "authority": "Canonical root localclaim, authpublicationblock not release"
+}
