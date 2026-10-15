@@ -46,7 +46,7 @@ class ProviderProfilesRoomIntegrationTest {
         assertFalse("Bootstrap must precede first AppGraph.ports()", file.exists())
         assertTrue(file.parentFile!!.isDirectory || file.parentFile!!.mkdirs())
         val old = schema(15)
-        val current = schema(17)
+        val current = schema(18)
         assertEquals(15, old.getInt("version"))
         assertEquals(48, old.getJSONArray("entities").length())
         val driver = BundledSQLiteDriver()
@@ -104,7 +104,7 @@ class ProviderProfilesRoomIntegrationTest {
 
         // Independent actual Room handle, actual adapter, actual graph vault, real graph clock.
         ok(StorageDatabase.open(context, AppGraph.DATABASE_FILE)).use { db ->
-            assertEquals(17, ok(db.capabilities(token)).schemaVersion)
+            assertEquals(18, ok(db.capabilities(token)).schemaVersion)
             val reader = SqlLocalProviderProfiles(db, checkNotNull(ports.utcClock), vault)
             assertEquals(edited, ok(reader.load(id, token)))
             assertEquals(listOf(edited), ok(reader.list(PageRequest(10), token)).items.toList())
@@ -129,7 +129,7 @@ class ProviderProfilesRoomIntegrationTest {
             assertEquals(listOf(SqlValue.Integer(4), SqlValue.Integer(4), SqlValue.Integer(1), SqlValue.Integer(0), SqlValue.Null), tombstone)
         }
         driver.open(file.path).use { connection ->
-            assertEquals(listOf(listOf(SqlValue.Integer(17))), connection.rows("PRAGMA user_version"))
+            assertEquals(listOf(listOf(SqlValue.Integer(18))), connection.rows("PRAGMA user_version"))
             assertEquals(listOf(listOf(SqlValue.Text(current.getString("identityHash")))), connection.rows(IDENTITY))
             val afterObjects = connection.rows(OBJECTS)
             assertEquals(beforeObjects, afterObjects.filter { it[1] !in ADDED_OBJECT_NAMES })
@@ -163,7 +163,7 @@ class ProviderProfilesRoomIntegrationTest {
     private companion object {
         const val OBJECTS = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' AND name<>'room_master_table' ORDER BY type,name"
         const val IDENTITY = "SELECT identity_hash FROM room_master_table WHERE id=42"
-        val ADDED_OBJECT_NAMES = setOf(SqlValue.Text("provider_profile"), SqlValue.Text("index_provider_profile_change_sequence"), SqlValue.Text("prompt_override"))
+        val ADDED_OBJECT_NAMES = setOf(SqlValue.Text("provider_profile"), SqlValue.Text("index_provider_profile_change_sequence"), SqlValue.Text("prompt_override"), SqlValue.Text("ai_conversation"), SqlValue.Text("index_ai_conversation_change_sequence"), SqlValue.Text("index_ai_conversation_deck"), SqlValue.Text("ai_turn"), SqlValue.Text("index_ai_turn_conversation_ordinal"), SqlValue.Text("index_ai_turn_recovery"))
         val LEGACY = listOf("SELECT * FROM life_profile ORDER BY profile_id", "SELECT * FROM deck_head ORDER BY provider,deck_id",
             "SELECT * FROM deck_revision ORDER BY provider,deck_id,revision", "SELECT * FROM deck_operation ORDER BY sequence")
     }

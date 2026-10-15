@@ -146,7 +146,7 @@ class PromptOverridesAppIntegrationTest {
     private fun independentRows(): Map<OfflineLabMode, StoredPromptOverride?> = runBlocking {
         val app = ApplicationProvider.getApplicationContext<CommandLibraryApplication>()
         ok(StorageDatabase.open(app, AppGraph.DATABASE_FILE)).use { db ->
-            assertEquals(17, ok(db.capabilities(token)).schemaVersion)
+            assertEquals(18, ok(db.capabilities(token)).schemaVersion)
             val reader = SqlLocalPromptOverrides(db, checkNotNull(ports.utcClock))
             OfflineLabMode.entries.associateWith { ok(reader.load(it, token)) }
         }
@@ -194,11 +194,11 @@ class PromptOverridesAppIntegrationTest {
         assertEquals(saved + (resetMode to reset), independentRows())
         assertEquals(before, baseline())
         BundledSQLiteDriver().open(file.path).use { connection ->
-            assertEquals(listOf(listOf(SqlValue.Integer(17))), connection.rows("PRAGMA user_version"))
-            assertEquals(listOf(listOf(SqlValue.Text(schema(17).getString("identityHash")))), connection.rows(IDENTITY))
+            assertEquals(listOf(listOf(SqlValue.Integer(18))), connection.rows("PRAGMA user_version"))
+            assertEquals(listOf(listOf(SqlValue.Text(schema(18).getString("identityHash")))), connection.rows(IDENTITY))
             val afterObjects = connection.rows(OBJECTS)
-            assertEquals(oldObjects, afterObjects.filter { it[1] != SqlValue.Text("prompt_override") })
-            assertEquals(setOf(SqlValue.Text("prompt_override")), afterObjects.filter { it !in oldObjects }.map { it[1] }.toSet())
+            assertEquals(oldObjects, afterObjects.filter { it[1] !in ADDED_OBJECT_NAMES })
+            assertEquals(ADDED_OBJECT_NAMES, afterObjects.filter { it !in oldObjects }.map { it[1] }.toSet())
             assertEquals(oldData, LEGACY.map { connection.rows(it) })
             assertTrue(connection.rows("PRAGMA foreign_key_check").isEmpty())
             assertEquals(listOf(listOf(SqlValue.Integer(1), SqlValue.Integer(0), SqlValue.Null)), connection.rows(
@@ -227,6 +227,7 @@ class PromptOverridesAppIntegrationTest {
         }
     }
     private companion object {
+        val ADDED_OBJECT_NAMES = setOf(SqlValue.Text("prompt_override"), SqlValue.Text("ai_conversation"), SqlValue.Text("index_ai_conversation_change_sequence"), SqlValue.Text("index_ai_conversation_deck"), SqlValue.Text("ai_turn"), SqlValue.Text("index_ai_turn_conversation_ordinal"), SqlValue.Text("index_ai_turn_recovery"))
         const val OBJECTS = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' AND name<>'room_master_table' ORDER BY type,name"
         const val IDENTITY = "SELECT identity_hash FROM room_master_table WHERE id=42"
         val LEGACY = listOf("SELECT * FROM life_profile ORDER BY profile_id", "SELECT * FROM provider_profile ORDER BY profile_id")
