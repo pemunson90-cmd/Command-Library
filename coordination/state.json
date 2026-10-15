@@ -20,7 +20,7 @@
     "Publication temporarily blocked: configured GH_TOKEN invalid on b2ac8de push, gh authstatus confirms. Last published f0373af; local commits preserved, reconnect requested; implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "Acceptedmarkowned HOST4ed0c9c7focused andplainimportboundaryc69aae7 actual35tests3XML0f/e/s51s/645pins independentACK, nativeKotlincompiledONLY. TwoREADY-reviewed isolatedimportUI/appSAFtest consumersclaimedbasec69; rootsharedcompositionnext,3writersinclroot/4childrenmax/oneROOTbuildslot. No importUI/fullI01/native/Fold7/finishedAPKacceptance. Publicationinvalidtoken.",
+  "review_status": "Acceptedmarkowned HOST4ed0c9c7focused andplainimportboundaryc69 actual35tests independentACK. UI81db865 androotcomposition6c27c80 independentlySOURCEACK, UIclaimreleased/runtimepending; appSOURCE03 hidden-dirty refusal inprogress. OneROOTbuildslotfree/3writersinclrootmax/4childrenmax. No fullI01/native/Fold7/finishedAPKacceptance. Publicationinvalidtoken.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
