@@ -745,3 +745,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T21:43:10Z | codex | cp-20261015-ai-history-integration-249 | containing commit | H08 source-reviewed codec/SQL/UI/app proof integrated; exact31bfe78 assembled gate active after scoped compile repair. Claims released. D30 incorporates approved PR23/issue24 future deck dependencies without reprioritizing/implementation/merge.
 
 2026-10-15T21:48:19Z | codex | cp-20261015-ai-history-host-250 | containing commit | Local H08 history SOURCE/shared/runtime ACK31bfe78:43tests9XML0f/e/s2m04/758pins. Claims released; next existing provider boundary architecture. D30 approvedfuturedeckintake incorporated without changing priorities.
+
+2026-10-15T21:57:58Z | codex | cp-20261015-provider-text-wave-251 | containing commit | Provider text source boundary ACK/core and existing Gson compilePASS24s1ca7770; isolated HTTP and pureCC producers TAKENsamebase. Root actualauth/UI/history coordinator;3writers/onebuildslot. D30futuredeckrequirements preserved, no provider/runtimecertification.
