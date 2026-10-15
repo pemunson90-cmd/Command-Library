@@ -31,6 +31,7 @@ internal class RetainedDeckDraftEditor(
     private var card: CardRecord? = null
     private var generation: GenerationId? = null
     private var observedHead: Revision? = null
+    private var retiredHead: Pair<DeckId, Revision>? = null
     private var call: Call? = null
     private var rejected: Call? = null
     private var capture: Capture? = null
@@ -86,9 +87,10 @@ internal class RetainedDeckDraftEditor(
             mutable.value = old.copy(visible = true, requestedTarget = target, conflict = true, contentProblem = Problem.STALE_REVISION)
             return
         }
+        val notified = if (old.session?.deckId == id) observedHead else retiredHead?.takeIf { it.first == id }?.second
         timer?.cancel(); readJob?.cancel()
         resetLane()
-        observedHead = null
+        observedHead = notified
         card = null
         val session = DraftSession(++serial, id, target)
         val ticket = ++readTicket
@@ -161,10 +163,35 @@ internal class RetainedDeckDraftEditor(
     override fun onActiveGeneration(generation: GenerationId?) { this.generation = generation }
     override fun onDeckHeadChanged(id: DeckId, revision: Revision) {
         val s = mutable.value
+        val retired = retiredHead
+        if (retired?.first == id && revision.value > retired.second.value) retiredHead = id to revision
         if (s.session?.deckId != id) return
         if (observedHead == null || revision.value > checkNotNull(observedHead).value) observedHead = revision
         val known = knownAck?.snapshot?.revision ?: s.currentHead?.revision ?: return
-        if (revision.value > known.value) mutable.value = s.copy(conflict = true, contentProblem = Problem.STALE_REVISION)
+        if (revision.value > known.value) {
+            if (cleanHiddenOwner(s)) {
+                // No input or mutation authority survives here. Load actual state on the next
+                // open, retaining the notification as a lower bound rather than a snapshot.
+                retiredHead = id to checkNotNull(observedHead)
+                resetLane()
+                mutable.value = DraftEditorState()
+            } else mutable.value = s.copy(conflict = true, contentProblem = Problem.STALE_REVISION)
+        }
+    }
+
+    private fun cleanHiddenOwner(s: DraftEditorState): Boolean {
+        val session = s.session ?: return false
+        val head = s.currentHead ?: return false
+        val durable = s.durable ?: return false
+        return !s.visible && s.phase == DraftPhase.IDLE && s.base == head &&
+            s.body == savedBody && s.body == body(head, session.target) &&
+            durable.draft == null && durable.latestPreparation !is DeckDraftPreparation.Pending &&
+            !s.rawDirty && !s.conflict && !s.uncertain && !s.hasFrozenCall && !s.structuralLocked && !s.explicitlyInvalid &&
+            s.rawProblem == null && s.contentProblem == null && s.exit == null &&
+            call == null && rejected == null && capture == null && frozen == null && prepared == null && recovery == null &&
+            ownLater == null && knownAck == null && abandonedIntent == null && discardWanted == null && textCandidate == null &&
+            !submitted && !paused && !authorizationPaused && !forceFlush && deadline == null &&
+            drainJob?.isActive != true && readJob?.isActive != true && timer?.isActive != true
     }
 
     override fun discardInput() = requestDiscard(DeckDraftDiscardMode.INPUT)
@@ -735,6 +762,9 @@ internal class RetainedDeckDraftEditor(
             requestedTarget = requested, session = session.copy(target = effective), body = body, durable = actual,
             base = head.takeUnless { stale }, currentHead = head, phase = DraftPhase.IDLE, conflict = conflict,
             contentProblem = if (conflict) Problem.STALE_REVISION else null, exit = exit)
+        val retired = retiredHead
+        if (retired?.first == head.id && head.revision.value >= retired.second.value &&
+            observedHead?.let { it.value > head.revision.value } != true) retiredHead = null
         publish()
         if (terminal != null) onCommitted(head.id, head.revision)
     }

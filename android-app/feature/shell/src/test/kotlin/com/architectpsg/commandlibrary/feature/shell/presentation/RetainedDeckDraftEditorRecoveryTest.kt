@@ -693,4 +693,163 @@ class RetainedDeckDraftEditorRecoveryTest {
         }
     }
 
+    @Test fun cleanHiddenDetailsRetiresAndSameTargetLoadsActualNewHead() = runTest {
+        val f=ActorFixture(this);f.open()
+        val prior=f.actor.state.value.session
+        val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent()
+        assertEquals(DeferredDeckAction.CloseEditor,f.actor.takeReadyExit(ticket))
+        f.head=f.head.copy(name="After undo",description="Actual current",revision=Revision(1))
+        f.actor.onDeckHeadChanged(f.head.id,Revision(1))
+        assertNull(f.actor.state.value.session);assertFalse(f.actor.state.value.visible);assertFalse(f.actor.hasMutationBarrier)
+        assertTrue(f.writes.isEmpty());assertTrue(f.prepares.isEmpty());assertTrue(f.commits.isEmpty())
+        f.open()
+        assertNotEquals(prior!!.ticket,f.actor.state.value.session!!.ticket)
+        assertEquals(f.head,f.actor.state.value.base);assertEquals("After undo",f.details.name)
+        assertEquals("Actual current",f.details.description);assertFalse(f.actor.state.value.conflict)
+    }
+    @Test fun retiredOwnerPreservesHighestNoticeAgainstStaleSuccessorRead() = runTest {
+        val f=ActorFixture(this);f.open()
+        val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(ticket)
+        f.actor.onDeckHeadChanged(f.head.id,Revision(4))
+        f.actor.onDeckHeadChanged(f.head.id,Revision(7));f.actor.onDeckHeadChanged(f.head.id,Revision(5))
+        f.head=f.head.copy(name="Actually revision six",revision=Revision(6));f.open()
+        assertEquals(Revision(6),f.actor.state.value.currentHead!!.revision)
+        assertEquals("Actually revision six",f.details.name)
+        assertNull(f.actor.state.value.base);assertTrue(f.actor.state.value.conflict)
+        f.actor.confirmExplicit();f.actor.onBackground();runCurrent()
+        assertTrue(f.prepares.isEmpty());assertTrue(f.writes.isEmpty());assertTrue(f.commits.isEmpty())
+    }
+    @Test fun cleanHiddenEntryAndProvenRemovedNullOwnerCanReloadAfterRestore() = runTest {
+        for(removed in listOf(false,true)) {
+            val f=ActorFixture(this,true)
+            val target=if(removed) DeckEditorTarget.Remove(EntityId("entry")) else DeckEditorTarget.Entry(EntityId("entry"))
+            f.open(target)
+            if(removed) { f.actor.confirmExplicit();runCurrent();assertNull(f.actor.state.value.body) }
+            val committed=f.commits.size
+            val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(ticket)
+            f.head=f.head.copy(revision=Revision(f.head.revision.value+1),entries=SnapshotList.of(f.example.copy(notes="Restored actual")))
+            f.actor.onDeckHeadChanged(f.head.id,f.head.revision)
+            assertNull(f.actor.state.value.session);assertFalse(f.actor.hasMutationBarrier)
+            f.open(target)
+            assertEquals(f.head,f.actor.state.value.base);assertFalse(f.actor.state.value.conflict)
+            assertEquals(target,f.actor.state.value.session!!.target)
+            if(!removed) assertEquals("Restored actual",(f.actor.state.value.body as DeckDraftBody.Entry).notes)
+            else assertEquals(DeckDraftBody.Remove(f.head.revision,EntityId("entry")),f.actor.state.value.body)
+            assertEquals(committed,f.commits.size)
+        }
+    }
+    @Test fun activeOrDirtyOwnerNeverRetiresOnNewerHeadNotice() = runTest {
+        for(dirty in listOf(false,true)) {
+            val f=ActorFixture(this);f.open()
+            if(dirty) f.actor.change(f.details.copy(name="Unsaved exact"))
+            val before=f.actor.state.value
+            f.actor.onDeckHeadChanged(f.head.id,Revision(1))
+            assertEquals(before.session,f.actor.state.value.session);assertEquals(before.body,f.actor.state.value.body)
+            assertEquals(before.editSequence,f.actor.state.value.editSequence);assertTrue(f.actor.state.value.visible)
+            assertTrue(f.actor.state.value.conflict);assertTrue(f.actor.hasMutationBarrier)
+            f.actor.open(f.head.id,DeckEditorTarget.Details)
+            assertEquals(before.session,f.actor.state.value.session);assertEquals(before.body,f.actor.state.value.body)
+            assertTrue(f.writes.isEmpty());assertTrue(f.prepares.isEmpty())
+        }
+    }
+    @Test fun hiddenInvalidRawStagedEntryAndPreparedIntentNeverRetire() = runTest {
+        for(mode in 0..2) {
+            val f=ActorFixture(this,true)
+            val raw=if(mode==1) DeckDraftBody.Entry(Revision(0),EntityId("entry"),"1","",BoardRole.SIDEBOARD,Knowledge.Absent("Exact finish"),SnapshotList.empty())
+                else DeckDraftBody.Details(Revision(0),if(mode==0) "\uD800" else "Prepared","","")
+            if(mode==2) f.prepared(raw) else f.raw(raw)
+            f.open(if(mode==1) DeckEditorTarget.Entry(EntityId("entry")) else DeckEditorTarget.Details)
+            val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent()
+            if(f.actor.state.value.exit!!.phase==DraftExitPhase.NEEDS_CHOICE) f.actor.chooseExit(ticket,DraftExitChoice.CONTINUE)
+            assertEquals(DeferredDeckAction.CloseEditor,f.actor.takeReadyExit(ticket))
+            val before=f.actor.state.value;val slot=f.slot
+            f.actor.onDeckHeadChanged(f.head.id,Revision(1))
+            assertEquals(before.session,f.actor.state.value.session);assertEquals(before.body,f.actor.state.value.body)
+            assertEquals(slot,f.slot);assertFalse(f.actor.state.value.visible);assertTrue(f.actor.state.value.conflict)
+            assertTrue(f.actor.hasMutationBarrier);assertTrue(f.writes.isEmpty());assertTrue(f.commits.isEmpty())
+        }
+    }
+    @Test fun hiddenUncertainAndInFlightRetryRetainExactWriteAuthority() = runTest {
+        val f=ActorFixture(this);f.open();f.lose.add("write")
+        f.actor.change(f.details.copy(name="Exact retained"));advanceTimeBy(500);runCurrent()
+        val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent()
+        f.actor.chooseExit(ticket,DraftExitChoice.CONTINUE);f.actor.takeReadyExit(ticket)
+        val before=f.actor.state.value;val request=f.writes.single();val slot=f.slot
+        f.actor.onDeckHeadChanged(f.head.id,Revision(1))
+        assertEquals(before.session,f.actor.state.value.session);assertEquals(before.body,f.actor.state.value.body)
+        assertTrue(f.actor.state.value.uncertain);assertEquals(slot,f.slot)
+        val gate=f.gate("write.before");f.actor.retryExact();runCurrent()
+        f.actor.onDeckHeadChanged(f.head.id,Revision(2))
+        assertEquals(before.session,f.actor.state.value.session);assertEquals(before.body,f.actor.state.value.body)
+        assertEquals(listOf(request,request),f.writes);assertTrue(f.actor.state.value.hasFrozenCall)
+        gate.complete(Unit);runCurrent()
+        assertEquals(before.body,f.actor.state.value.body);assertTrue(f.actor.state.value.conflict)
+        assertTrue(f.prepares.isEmpty());assertTrue(f.commits.isEmpty())
+    }
+    @Test fun hiddenPendingExitAndFailedReadOwnerAreNeverMistakenForClean() = runTest {
+        val f=ActorFixture(this);f.open()
+        val first=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(first)
+        val session=f.actor.state.value.session
+        val pending=f.actor.requestExit(DeferredDeckAction.UndoDeck(f.head.id))
+        f.actor.onDeckHeadChanged(f.head.id,Revision(1));runCurrent()
+        assertEquals(session,f.actor.state.value.session);assertEquals(pending,f.actor.state.value.exit!!.ticket)
+        assertEquals(DraftExitPhase.NEEDS_CHOICE,f.actor.state.value.exit!!.phase)
+        val failed=ActorFixture(this);failed.lose.add("head.load");failed.open()
+        val ticket=failed.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent()
+        failed.actor.chooseExit(ticket,DraftExitChoice.CONTINUE);failed.actor.takeReadyExit(ticket)
+        val owner=failed.actor.state.value.session;failed.actor.onDeckHeadChanged(failed.head.id,Revision(1))
+        assertEquals(owner,failed.actor.state.value.session);assertNotNull(failed.actor.state.value.rawProblem)
+        assertNull(failed.actor.state.value.body);assertFalse(failed.actor.state.value.visible)
+        assertTrue(failed.actor.hasMutationBarrier)
+    }
+
+    @Test fun newerNoticeDuringSuccessorReadKeepsLoadingOwnerAndFencesReturnedSnapshot() = runTest {
+        val f=ActorFixture(this);f.open()
+        val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(ticket)
+        f.actor.onDeckHeadChanged(f.head.id,Revision(1))
+        f.head=f.head.copy(revision=Revision(1),name="Read revision one")
+        val gate=f.gate("head.load");f.actor.open(f.head.id,DeckEditorTarget.Details);runCurrent()
+        val session=f.actor.state.value.session
+        f.actor.onDeckHeadChanged(f.head.id,Revision(2))
+        assertEquals(session,f.actor.state.value.session);assertEquals(DraftPhase.LOADING,f.actor.state.value.phase)
+        gate.complete(Unit);runCurrent()
+        assertEquals(session,f.actor.state.value.session);assertTrue(f.actor.state.value.visible)
+        assertEquals(Revision(1),f.actor.state.value.currentHead!!.revision);assertNull(f.actor.state.value.base)
+        assertTrue(f.actor.state.value.conflict);assertTrue(f.writes.isEmpty());assertTrue(f.prepares.isEmpty())
+    }
+
+    @Test fun unrelatedDeckOpenDoesNotEraseQualifiedRetiredHeadFence() = runTest {
+        val f=ActorFixture(this);f.open()
+        val first=f.head
+        val ticket=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(ticket)
+        f.actor.onDeckHeadChanged(first.id,Revision(7))
+        f.head=first.copy(id=DeckId(LocalDeckLibraryLimits.SOURCE,"other-deck"),name="Other",revision=Revision(0))
+        f.open();assertEquals(f.head,f.actor.state.value.base);assertFalse(f.actor.state.value.conflict)
+        f.actor.onDeckHeadChanged(first.id,Revision(8))
+        val other=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(other)
+        f.head=first.copy(name="Actual old read",revision=Revision(7));f.open()
+        assertEquals(first.id,f.actor.state.value.session!!.deckId)
+        assertEquals(Revision(7),f.actor.state.value.currentHead!!.revision)
+        assertEquals("Actual old read",f.details.name);assertNull(f.actor.state.value.base)
+        assertTrue(f.actor.state.value.conflict);assertTrue(f.writes.isEmpty());assertTrue(f.commits.isEmpty())
+    }
+
+    @Test fun cancelledSameDeckReloadCannotConsumeRetiredNoticeBeforeActualAdmission() = runTest {
+        val f=ActorFixture(this);f.open();val first=f.head
+        val close=f.actor.requestExit(DeferredDeckAction.CloseEditor);runCurrent();f.actor.takeReadyExit(close)
+        f.actor.onDeckHeadChanged(first.id,Revision(7))
+        val loading=f.gate("head.load");f.actor.open(first.id,DeckEditorTarget.Details);runCurrent()
+        assertEquals(DraftPhase.LOADING,f.actor.state.value.phase)
+        f.actor.onDeckHeadChanged(first.id,Revision(8))
+        f.head=first.copy(id=DeckId(LocalDeckLibraryLimits.SOURCE,"other-after-cancel"));f.open()
+        assertEquals(f.head,f.actor.state.value.base);assertFalse(f.actor.state.value.conflict)
+        loading.complete(Unit);runCurrent()
+        assertEquals(f.head.id,f.actor.state.value.session!!.deckId)
+        f.head=first.copy(revision=Revision(7),name="Stale after cancelled read");f.open()
+        assertEquals(first.id,f.actor.state.value.session!!.deckId)
+        assertEquals(Revision(7),f.actor.state.value.currentHead!!.revision)
+        assertNull(f.actor.state.value.base);assertTrue(f.actor.state.value.conflict)
+        assertTrue(f.writes.isEmpty());assertTrue(f.prepares.isEmpty());assertTrue(f.commits.isEmpty())
+    }
+
 }
