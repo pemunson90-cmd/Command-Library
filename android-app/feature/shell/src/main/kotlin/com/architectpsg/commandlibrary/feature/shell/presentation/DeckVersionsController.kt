@@ -56,8 +56,9 @@ internal class DeckVersionsController(
         ++headGeneration; ++listGeneration; ++targetGeneration; ++previewGeneration
         headJob?.cancel(); listJob?.cancel(); targetJob?.cancel(); previewJob?.cancel()
     }
-    /** Safe close keeps the frozen mutation alive. Caller navigates only when true. */
+    /** Keep deck mutation admission on this route until reconciliation or explicit abandonment. */
     fun requestClose(): Boolean {
+        if (request != null || mutable.value.pending || mutable.value.mutationBusy) return false
         if (editing() && dirty()) { discard = Discard.CLOSE; mutable.update { it.copy(discardPrompt = true) }; return false }
         closeReads(); return true
     }

@@ -55,6 +55,8 @@ public class ShellPorts(
     public val utcClock: com.architectpsg.commandlibrary.core.model.Clock? = null,
     /** Complete persistent primitive edits and grouped undo; bound only with the real adapter. */
     public val localDeckEdits: com.architectpsg.commandlibrary.core.model.LocalDeckEdits? = null,
+    /** Complete named checkpoint/preview/restore capability; absent until the real adapter is bound. */
+    public val localDeckVersions: com.architectpsg.commandlibrary.core.model.LocalDeckVersions? = null,
     /** Complete durable inventory, bound only with the reviewed real adapter. */
     public val localInventory: com.architectpsg.commandlibrary.core.model.LocalInventory? = null,
     /** Pure quantity allocation, without quotes or global reservations. */

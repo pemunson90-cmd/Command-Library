@@ -25,6 +25,7 @@ class DeckEditorControllerTest {
         var mutationResult: Outcome<Nothing>? = null
         var gate: CompletableDeferred<Unit>? = null
         var createCalls = 0
+        var undoTarget: DeckSnapshot? = null
         var wrongResult = false
         var loadFailure: Outcome<Nothing>? = null
         override suspend fun create(initial: DeckSnapshot, operationId: EntityId, cancel: CancelToken): Outcome<DeckSnapshot> { createCalls++; return Outcome.Success(initial) }
@@ -55,7 +56,7 @@ class DeckEditorControllerTest {
         }
         override suspend fun undo(id: DeckId, expected: Revision, operationId: EntityId, cancel: CancelToken): Outcome<DeckSnapshot> {
             undos += listOf(id, expected, operationId)
-            val saved = receipts.getOrPut(operationId) { deck(id.raw).copy(revision = Revision(expected.value + 1), modifiedAt = UtcTimestamp(8)).also { rows[id] = it } }
+            val saved = receipts.getOrPut(operationId) { (undoTarget ?: deck(id.raw)).copy(revision = Revision(expected.value + 1), modifiedAt = UtcTimestamp(8)).also { rows[id] = it } }
             gate?.await(); return mutationResult ?: Outcome.Success(saved)
         }
     }
@@ -163,6 +164,28 @@ class DeckEditorControllerTest {
         c.select(other.id); advanceUntilIdle(); f.gate!!.complete(Unit); advanceUntilIdle()
         assertEquals(other.id, c.state.value.selectedId)
         assertEquals(listOf(deck().id to Revision(1)), acknowledged)
+    }
+
+    @Test fun wholeUndoAcceptsPackageGraphsWhilePrimitiveEditsRemainUnavailable() = runTest {
+        for (currentHasPackage in listOf(false, true)) {
+            val f = Fixture()
+            val instance = PackageInstance(EntityId("instance"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED,
+                SnapshotList.of(PackageContribution(EntityId("package-entry"), entry.id, 1)))
+            val recovered = deck().copy(packageInstances = SnapshotList.of(instance))
+            f.undoTarget = recovered
+            f.rows[deck().id] = deck().copy(revision = Revision(1),
+                packageInstances = if (currentHasPackage) recovered.packageInstances else SnapshotList.empty())
+            val acknowledged = mutableListOf<Pair<DeckId, Revision>>()
+            val c = controller(f, onCommitted = { id, revision -> acknowledged += id to revision })
+            c.select(deck().id); advanceUntilIdle()
+            if (currentHasPackage) { c.editDetails(); assertNull(c.state.value.editor); c.addEntry(); assertNull(c.state.value.editor) }
+            c.undo(); advanceUntilIdle()
+            assertEquals(1, f.undos.size); assertTrue(f.patches.isEmpty())
+            assertEquals(recovered.packageInstances, c.state.value.selected!!.packageInstances)
+            assertEquals(Revision(2), c.state.value.selected!!.revision)
+            assertFalse(c.state.value.pending)
+            assertEquals(listOf(deck().id to Revision(2)), acknowledged)
+        }
     }
 
 }

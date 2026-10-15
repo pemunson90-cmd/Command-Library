@@ -31,7 +31,7 @@
     <string name="deck_versions_saved">Named version saved: %1$s. Capture did not advance the content revision.</string>
     <string name="deck_versions_restored">Restore acknowledged at revision %1$d. Refresh reads the actual current head.</string>
     <string name="deck_versions_recovery_saved">Original recovery checkpoint: %1$s</string>
-    <string name="deck_versions_pending">This operation may already be committed. Check the identical request before starting another operation. You may safely close this screen while keeping the request in this session.</string>
+    <string name="deck_versions_pending">This operation may already be committed. Check the identical request before starting another operation. Other tabs remain available. To return to the deck library, resolve this request or explicitly choose Stop checking.</string>
     <string name="deck_versions_retry">Check same request</string>
     <string name="deck_versions_abandon">Stop checking</string>
     <string name="deck_versions_abandon_question">Stop checking this request?</string>

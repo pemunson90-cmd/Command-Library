@@ -59,7 +59,8 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
     private val printings: com.architectpsg.commandlibrary.core.model.CatalogPrintingLookup? = null,
     private val cardLinks: com.architectpsg.commandlibrary.core.model.CardLinks? = null,
     private val decks: com.architectpsg.commandlibrary.core.model.LocalDeckLibrary? = null,
-    private val deckEdits: com.architectpsg.commandlibrary.core.model.LocalDeckEdits? = null) {
+    private val deckEdits: com.architectpsg.commandlibrary.core.model.LocalDeckEdits? = null,
+    private val deckVersions: com.architectpsg.commandlibrary.core.model.LocalDeckVersions? = null) {
     private val geometry = mutableStateOf(DpSize(400.dp, 800.dp))
     private val textScale = mutableStateOf(1f)
     fun resize(width: Dp, height: Dp, fontScale: Float = 1f) {
@@ -97,7 +98,7 @@ internal class ShellUiHarness(private val rule: ComposeContentTestRule, private 
         controllers = ShellControllers(ownerScope, ShellPorts(catalog, catalog, catalog, downloads?.settings ?: settings,
             playerProfiles = profiles, englishCatalog = downloads?.access, rulings = rulings, rulingsDownloads = rulings?.access,
             rulesImport = localRules, rulesLookup = localRules, catalogTextLookup = textLookup.takeIf { indexedText },
-            keywordRulesLookup = localRules.takeIf { exactKeywords }, catalogPrintings = printings, cardLinks = cardLinks, localDecks = decks, localDeckEdits = deckEdits,
+            keywordRulesLookup = localRules.takeIf { exactKeywords }, catalogPrintings = printings, cardLinks = cardLinks, localDecks = decks, localDeckEdits = deckEdits, localDeckVersions = deckVersions,
             utcClock = object : com.architectpsg.commandlibrary.core.model.Clock {
                 override fun utcNow() = com.architectpsg.commandlibrary.core.model.UtcTimestamp(7)
                 override fun monotonicNow() = kotlin.time.Duration.ZERO

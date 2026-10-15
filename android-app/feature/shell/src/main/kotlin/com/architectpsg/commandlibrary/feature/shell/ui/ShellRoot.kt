@@ -1,6 +1,7 @@
 package com.architectpsg.commandlibrary.feature.shell.ui
 
 import android.content.ActivityNotFoundException
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
@@ -50,6 +51,8 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionScreen
+import com.architectpsg.commandlibrary.core.model.DeckId
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfilesScreen
 import com.architectpsg.commandlibrary.feature.shell.R
@@ -85,6 +88,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
     ShellTheme(settingsState.theme) {
         var destination by rememberSaveable { mutableStateOf(ShellDestination.CARDS) }
         var pickerUnavailable by rememberSaveable { mutableStateOf(false) }
+        // Keep this deck subroute while another destination is shown: the controller retains
+        // unsaved names and a frozen pending mutation rather than silently dropping either.
+        var versionsOpen by rememberSaveable { mutableStateOf(false) }
         val destinations = ShellDestination.entries.filter {
             when (it) {
                 ShellDestination.DECKS -> controllers.deckLibrary != null
@@ -95,6 +101,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         val visibleDestination = destination.takeIf { it in destinations } ?: ShellDestination.CARDS
+        BackHandler(visibleDestination == ShellDestination.DECKS && versionsOpen && controllers.deckVersions != null) {
+            if (controllers.deckVersions?.requestClose() == true) versionsOpen = false
+        }
         val navigate: (ShellDestination) -> Unit = { target ->
             // Fence any in-flight browser callback in the navigation event, before the next frame.
             controllers.printings?.setVisible(target == ShellDestination.CARDS)
@@ -140,6 +149,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                         onPickRules = pickRules,
                         onPickFile = pickFile,
                         onNavigate = navigate,
+                        versionsOpen = versionsOpen,
+                        onOpenVersions = { id -> controllers.deckVersions?.let { it.openDeck(id); versionsOpen = true } },
+                        onCloseVersions = { versionsOpen = false },
                         modifier = contentModifier,
                     )
                 }
@@ -221,6 +233,9 @@ private fun DestinationContent(
     rulesPickerUnavailable: Boolean,
     onPickRules: () -> Unit,
     onNavigate: (ShellDestination) -> Unit,
+    versionsOpen: Boolean,
+    onOpenVersions: (DeckId) -> Unit,
+    onCloseVersions: () -> Unit,
     modifier: Modifier,
 ) {
     val statusState by controllers.status.state.collectAsState()
@@ -263,7 +278,12 @@ private fun DestinationContent(
         ShellDestination.RULES -> controllers.rules?.let { rules ->
             RulesScreen(rules, widthClass, rulesPickerUnavailable, onPickRules, modifier)
         }
-        ShellDestination.DECKS -> controllers.deckLibrary?.let { DeckLibraryScreen(it, widthClass, modifier, controllers.deckEditorSearch) }
+        ShellDestination.DECKS -> controllers.deckLibrary?.let { library ->
+            val versions = controllers.deckVersions
+            if (versionsOpen && versions != null) Box(modifier) { DeckVersionsScreen(versions, widthClass, onCloseVersions) }
+            else DeckLibraryScreen(library, widthClass, modifier, controllers.deckEditorSearch,
+                onOpenVersions = if (versions != null) onOpenVersions else null)
+        }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) }) }
         }

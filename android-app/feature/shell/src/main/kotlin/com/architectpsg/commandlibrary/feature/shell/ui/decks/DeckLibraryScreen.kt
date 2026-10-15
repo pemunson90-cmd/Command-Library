@@ -32,9 +32,9 @@ internal object DeckLibraryTags {
     const val NEXT = "deck-library-next"
 }
 
-/** Real library plus optional complete primitive edit capability; no version/package mutation. */
+/** Real library with optional complete version navigation and whole-snapshot undo. */
 @Composable
-internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null) {
+internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null, onOpenVersions: ((DeckId) -> Unit)? = null) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -85,14 +85,21 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
             if (selected != null) {
                 item {
                     Text(countText(selected.entries.size, selected.entries.sumOf { it.quantity.toLong() }))
-                    OutlinedButton(controller::duplicate, enabled = !state.pending && !state.mutationBusy && selected.packageInstances.isEmpty(),
+                    OutlinedButton(controller::duplicate, enabled = !state.pending && !state.mutationBusy,
                         modifier = Modifier.heightIn(min = 48.dp).testTag(DeckLibraryTags.DUPLICATE)) { Text(stringResource(R.string.decks_duplicate)) }
                     if (controller.supportsEditing && selected.packageInstances.isEmpty()) ActionRow {
                         OutlinedButton(controller::editDetails, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-edit-details")) { Text(stringResource(R.string.deck_edit_details)) }
                         if (editorSearch != null) OutlinedButton({ editorSearch.reset(); controller.addEntry() }, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-add-entry")) { Text(stringResource(R.string.deck_add_card)) }
-                        OutlinedButton(controller::undo, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-undo")) { Text(stringResource(R.string.deck_undo)) }
                     }
-                    if (selected.packageInstances.isNotEmpty()) Text(stringResource(R.string.decks_package_copy_unavailable))
+                    if (controller.supportsEditing || onOpenVersions != null) ActionRow {
+                        if (controller.supportsEditing) OutlinedButton(controller::undo,
+                            enabled = !state.pending && !state.mutationBusy && state.editor == null && state.form == null,
+                            modifier = Modifier.heightIn(min = 48.dp).testTag("deck-undo")) { Text(stringResource(R.string.deck_undo)) }
+                        if (onOpenVersions != null) OutlinedButton({ onOpenVersions(selected.id) },
+                            enabled = !state.pending && !state.mutationBusy && state.editor == null && state.form == null,
+                            modifier = Modifier.heightIn(min = 48.dp).testTag("deck-open-versions")) { Text(stringResource(R.string.decks_open_versions)) }
+                    }
+                    if (selected.packageInstances.isNotEmpty()) Text(stringResource(R.string.decks_package_edit_unavailable))
                 }
                 item {
                     val categories = selected.categoryOrder ?: SnapshotList.copyOf(selected.entries.flatMap { it.labels }.distinctBy { it.id })

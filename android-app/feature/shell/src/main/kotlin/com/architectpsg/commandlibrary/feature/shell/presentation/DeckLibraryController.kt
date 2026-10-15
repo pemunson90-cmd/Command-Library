@@ -88,7 +88,8 @@ internal class DeckLibraryController(
         freezeEdit { DeckLibraryRequest.Patch(base, DeckPatch(SnapshotList.of(DeckEdit.ReorderEntries(SnapshotList.copyOf(ids))), "Reorder entries"), EntityId(nextId())) }
     }
     fun undo() {
-        val base = editable() ?: return
+        // Whole-snapshot undo is contribution-safe even when primitive package edits are not.
+        val base = mutable.value.selected?.takeIf { edits != null && request == null && !mutable.value.mutationBusy } ?: return
         if (base.revision.value == Long.MAX_VALUE) { mutable.update { it.copy(mutationProblem = Problem.INVALID_INPUT) }; return }
         freezeEdit { DeckLibraryRequest.Undo(base, EntityId(nextId())) }
     }
@@ -287,7 +288,7 @@ internal class DeckLibraryController(
                                 is DeckLibraryRequest.Patch -> saved.id == frozen.base.id && saved.createdAt == frozen.base.createdAt &&
                                     saved.revision.value == frozen.base.revision.value + 1 && saved.packageInstances.isEmpty()
                                 is DeckLibraryRequest.Undo -> saved.id == frozen.base.id && saved.createdAt == frozen.base.createdAt &&
-                                    saved.revision.value == frozen.base.revision.value + 1 && saved.packageInstances.isEmpty()
+                                    saved.revision.value == frozen.base.revision.value + 1
                             }
                         if (!valid) {
                             uncertainCommit = true

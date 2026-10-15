@@ -479,7 +479,7 @@
     <string name="decks_back">Back to decks</string>
     <string name="decks_overview">Deck overview</string>
     <string name="decks_duplicate">Duplicate deck</string>
-    <string name="decks_package_copy_unavailable">This deck cannot be duplicated here while preserving its packages.</string>
+    <string name="decks_package_edit_unavailable">Package contents are read-only here. Copy and whole-deck undo preserve the complete deck.</string>
     <string name="decks_description">Description</string>
     <string name="decks_primer">Primer · plain text</string>
     <string name="decks_unknown_card">Unresolved card</string>
@@ -554,4 +554,5 @@
     <string name="deck_edit_remove_warning">Remove this entire entry? Its quantity and notes will be recoverable with Undo.</string>
     <string name="deck_edit_no_printing">This adds the Oracle identity and card language. No printing or finish is selected automatically.</string>
     <string name="printings_add_collection">Add this printing to collection</string>
+    <string name="decks_open_versions">Versions and restore</string>
 </resources>

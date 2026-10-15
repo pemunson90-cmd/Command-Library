@@ -40,9 +40,12 @@ internal class ShellControllers(
 
     val deckEditorSearch = if (ports.localDecks != null && ports.localDeckEdits != null)
         SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh) else null
-    val deckLibrary = if (ports.localDecks != null && ports.utcClock != null)
+    val deckLibrary: DeckLibraryController? = if (ports.localDecks != null && ports.utcClock != null)
         DeckLibraryController(scope, ports.localDecks, ioDispatcher, now = ports.utcClock::utcNow, edits = ports.localDeckEdits,
-            onCommitted = { id, revision -> collection?.onDeckChanged(id, revision) },
+            onCommitted = { id, revision ->
+                collection?.onDeckChanged(id, revision)
+                if (deckVersions?.state?.value?.deckId == id) deckVersions.refreshHead()
+            },
             cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
@@ -50,6 +53,16 @@ internal class ShellControllers(
         ports.catalogPrintings != null && ports.inventoryProjection != null)
         CollectionController(scope, ports.localInventory, ports.localDecks, ports.ownedQuantity, ports.catalogPrintings,
             ports.inventoryProjection, ioDispatcher, { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) }) else null
+    val deckVersions: DeckVersionsController? = if (ports.localDeckVersions != null && ports.localDecks != null)
+        DeckVersionsController(scope, ports.localDeckVersions, ports.localDecks, ioDispatcher,
+            { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
+            onCommitted = { id, revision ->
+                collection?.onDeckChanged(id, revision)
+                deckLibrary?.let { library ->
+                    if (library.state.value.selectedId == id) library.select(id)
+                    library.refresh()
+                }
+            }) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->

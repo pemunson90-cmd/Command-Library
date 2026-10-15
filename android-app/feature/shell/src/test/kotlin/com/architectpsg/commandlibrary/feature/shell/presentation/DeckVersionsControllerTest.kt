@@ -122,13 +122,13 @@ class DeckVersionsControllerTest {
         assertEquals(version().manifest.copy(revision=Revision(5),modifiedAt=UtcTimestamp(40)),result.snapshot)
         assertEquals(version().manifest.packageInstances,result.snapshot.packageInstances);assertFalse(c.state.value.pending)
     }
-    @Test fun lostCaptureAcknowledgementStaysLatchedAcrossLaterFailureAndRetriesExactFrozenInputAfterClose()=runTest {
+    @Test fun lostCaptureAcknowledgementBlocksCloseAndRetriesExactFrozenInputAcrossLaterFailure()=runTest {
         val f=Fixture();val c=opened(f);c.beginCapture();c.label(" exact ");f.mutationFailure=Outcome.Unknown("lost",SnapshotList.empty());c.capture();advanceUntilIdle()
         val original=f.captureCalls.single();assertTrue(c.state.value.pending);c.closeCapture();assertFalse(c.state.value.captureForm)
-        c.label("different");c.beginCapture();c.capture();assertEquals(1,f.ids);assertTrue(c.requestClose())
+        c.label("different");c.beginCapture();c.capture();assertEquals(1,f.ids);assertFalse(c.requestClose())
         f.mutationFailure=failure(FailureCode.STALE_REVISION);c.retry();advanceUntilIdle();assertTrue(c.state.value.pending)
         f.mutationFailure=null;c.retry();advanceUntilIdle();assertEquals(List(3){original},f.captureCalls);assertFalse(c.state.value.pending);assertEquals(1,f.generated)
-        c.openDeck(deck().id);advanceUntilIdle();assertEquals(1,f.generated)
+        assertTrue(c.requestClose());c.openDeck(deck().id);advanceUntilIdle();assertEquals(1,f.generated)
     }
     @Test fun restoreReplayReturnsOriginalRecoveryAndReloadsActualNewerHead()=runTest {
         val f=Fixture();val c=opened(f);preview(c);c.recoveryLabel("recover");f.mutationFailure=failure(FailureCode.PERSISTENCE);c.confirmRestore();advanceUntilIdle()

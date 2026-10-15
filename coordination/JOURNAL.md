@@ -619,3 +619,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T09:38:53Z | codex | cp-20261015-version-producers-integrated-186 | containing commit | Both versionproducers integrated/source-runtimeACK; frozen root653tests pass, lint/nativecompile37296 active and reviewed admissionHOLD repairnext. Bulkpacket reviewed, publicationauthblocked, rootleaseactive.
 
 2026-10-15T09:39:22Z | codex | cp-20261015-collection-bulk-claimed-187 | containing commit | Reviewed collectionbulk consumer claimedisolated; rootnamedversion653tests pass/lint37296active/admissionrepairnext. Sharedwiringrootonly, solebuildslot retained, publicationblocked.
+
+2026-10-15T09:45:34Z | codex | cp-20261015-named-version-app-integrated-188 | containing commit | Actual namedversionAppGraph/S11localworkflow exactsource/runtimeACK653baseline+27focused; admissionHOLD repaired, nativecompiledONLY. Isolatedcollectionbulkactive, draftboundaryreadonly, publicationblocked, continuouswork.
