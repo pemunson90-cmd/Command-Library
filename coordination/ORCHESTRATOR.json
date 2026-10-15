@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T21:43:10Z",
-  "expires_utc": "2026-10-15T22:28:10Z",
-  "checkpoint_id": "cp-20261015-ai-history-integration-249",
-  "note": "Root retains authority; H08 codec/SQL SOURCE02 and actualUI/shared/proof SOURCE01 ACK integrated exact5/3/2returns/cleanoriginals/releasedclaims. Gateattempt18c0c03b compileFAILED19s0XML, resourcefix31bfe78 attempt2running/rootbuildslotbusy/sourcefrozen. D30 PR23/issue24 approvedfuturedeckrequirements incorporateda62f24b, nopriority/assignment/tagimplementation/mergechange."
+  "heartbeat_utc": "2026-10-15T21:48:19Z",
+  "expires_utc": "2026-10-15T22:33:19Z",
+  "checkpoint_id": "cp-20261015-ai-history-host-250",
+  "note": "Root retains authority. H08 localhistory source/shared/runtimeACK31bfe78:43tests9XML0f/e/s2m04/758pins, report preserves priorfailedcompile. All historyclaimsreleased/originalsclean/rootbuildslotfree. Next retainedproviderboundary; no actualprovider/native/backup/fullH08/releaseacceptance. D30 PR23/issue24 recordedfuturedeps withoutreprioritizing/tagimplementation/PRmerge."
 }

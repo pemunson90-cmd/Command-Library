@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-ai-history-integration-249",
+  "checkpoint_id": "cp-20261015-ai-history-host-250",
   "verified_base_head": "31bfe7884db56b0f4b704e25a525ff7a08d6d2cf",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "integrate_ai_history_and_record_deck_intake",
+  "first_action": "accept_local_ai_history_host",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -162,9 +162,10 @@
     "offline_prompt_host": "Engine19cd93917tests2XML0f/e/s24s/702pins; unchangedengine source87e0c81 consumer10controller+1actualAppGraph/Room/clipboard2XML0f/e/s2m23/706pins. Independent SOURCE02/shared/runtime ACK; OFFLINE-PROMPT-APP-INTEGRATION-20261015.md preserves sourceHOLDs/interruptedno-verdictattempt. No native/fullAI.",
     "campaign_android_vault": "SOURCE02/shared/nativeworkflow and independent scoped runtimeACK. fe0c142 combined15host/app tests3XML0f/e/s2m28/714pins pluslint/nativecompile. Native run38802768872 exact29f7b3f 4actualAndroidKeyStore cases0f/e/s logXMLverifier; artifact12005066660 metadata digest retained but download403/no directXML readback. Prior ZIP/missinglibpulse pretest failures preserved. ANDROID-VAULT-INTEGRATION-20261015.md.",
     "campaign_provider_profiles": "SOURCE02/shared/runtimeACK exact79f9a96ccec6632db5e6fb541cb677530c480257/tree d39221482fd70d8971118c2ac20331fb2d9b53a0:37tests7XML0f/e/s2m18/733pins,8AI+8SQL+19shell+2actualRoom/UI. CompleteactualKSP15\u2192Room16preservation/reopen/CAS/tombstone; SettingsLOCALcreate/edit/rev2ON_STOPkeyclear/recreate/delete/unrelatedconservation. PROVIDER-PROFILES-APP-INTEGRATION-20261015.md preserves SOURCEHOLDs/exact8+6+2returns/cleanoriginals/releasedclaims and scopednative/remainingholds. No executedfailure inassembledattempt1. Boundary2dd7eab oneexistingreferencecase/KSP/717pins separate.",
-    "campaign_prompt_overrides": "SOURCE02/shared/runtimeACK exact4ee30f7fa534f475e726e89a29e695016f87e433/treef2ea2b2b3199440297dae71e0412067c173c0e62:34hosttests6XML0f/e/s1m25/741pins;10SQL11newcontroller10oldcontroller3actualapp. Room16to17 oldDDL/opaqueuserbytes preservation, fourmodeexplicitSave/preview/independentRoom/recreation/reset/otherstateconservation and prioroffline/Room15to17regression. PROMPT-OVERRIDES-APP-INTEGRATION-20261015.md preserves SOURCE01HOLD, attempt1db67c8ecompilefailure0XML and equivalentlyfixed4ee30f7. Exact3/5/2returns verified/originalclean/claimsreleased. No native/provider/H08/fullAI/releaseclaim."
+    "campaign_prompt_overrides": "SOURCE02/shared/runtimeACK exact4ee30f7fa534f475e726e89a29e695016f87e433/treef2ea2b2b3199440297dae71e0412067c173c0e62:34hosttests6XML0f/e/s1m25/741pins;10SQL11newcontroller10oldcontroller3actualapp. Room16to17 oldDDL/opaqueuserbytes preservation, fourmodeexplicitSave/preview/independentRoom/recreation/reset/otherstateconservation and prioroffline/Room15to17regression. PROMPT-OVERRIDES-APP-INTEGRATION-20261015.md preserves SOURCE01HOLD, attempt1db67c8ecompilefailure0XML and equivalentlyfixed4ee30f7. Exact3/5/2returns verified/originalclean/claimsreleased. No native/provider/H08/fullAI/releaseclaim.",
+    "campaign_ai_history": "SOURCE01core/shared/UI/proof +SOURCE02codec/SQL andindependentSolruntimeACK exact31bfe7884db56b0f4b704e25a525ff7a08d6d2cf/tree553634f69f635c39a476c92aea8f534d952f8f23:43hosttests9XML0f/e/s2m04/758pins;6codec8SQL25controller4actualapp. ActualRoom17to18/50oldentities+physicalbytes preservation, exactprompt/reply/provenance explicitcapture/independentRoom/recreation/perdeckopen/delete/privateprojectionclearing; prioroffline/override/Room15to18regressions. AI-HISTORY-APP-INTEGRATION-20261015.md preserves sourceHOLDs/exact5/3/2returns/cleanoriginals/releasedclaims; attempt18c0c03b compilefailure19s0XML andtinystringResourcefix31bfe78. No provider/socket/native/backup/fullH08/releaseacceptance."
   },
-  "last_completed": "H08 source-reviewed codec/SQL/UI/app proof integrated; exact31bfe78 assembled gate active after scoped compile repair. Claims released. D30 incorporates approved PR23/issue24 future deck dependencies without reprioritizing/implementation/merge.",
-  "updated_utc": "2026-10-15T21:43:10Z",
+  "last_completed": "Local H08 history SOURCE/shared/runtime ACK31bfe78:43tests9XML0f/e/s2m04/758pins. Claims released; next existing provider boundary architecture. D30 approvedfuturedeckintake incorporated without changing priorities.",
+  "updated_utc": "2026-10-15T21:48:19Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
