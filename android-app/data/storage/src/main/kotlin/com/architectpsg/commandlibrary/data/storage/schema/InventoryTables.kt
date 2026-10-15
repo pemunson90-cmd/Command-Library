@@ -87,7 +87,9 @@ internal data class InventoryLotEntity(
     @ColumnInfo(name = "last_operation_sequence") val last_operation_sequence: Long,
 )
 
-@Entity(tableName = "inventory_change", primaryKeys = ["operation_sequence", "lot_id"], foreignKeys = [
+@Entity(tableName = "inventory_change", primaryKeys = ["operation_sequence", "lot_id"], indices = [
+    Index(value = ["lot_id", "before_present", "after_present", "operation_sequence"], name = "index_inventory_change_introduced_id"),
+], foreignKeys = [
     ForeignKey(entity = InventoryOperationEntity::class, parentColumns = ["sequence"], childColumns = ["operation_sequence"], onDelete = ForeignKey.NO_ACTION),
 ])
 internal data class InventoryChangeEntity(

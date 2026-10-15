@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T07:19:41Z",
-  "expires_utc": "2026-10-15T08:04:41Z",
-  "checkpoint_id": "cp-20261015-inventory-schema-backend-claim-175",
+  "heartbeat_utc": "2026-10-15T07:41:55Z",
+  "expires_utc": "2026-10-15T08:26:55Z",
+  "checkpoint_id": "cp-20261015-inventory-history-index-176",
   "note": "Rootretains shared/schema/codec/DI/UI/integration/finalmerge; editor186scopedtestspasspublishedcef0285. Reviewedcollectionprojectiondeclarations/examples compileONLY, noengineyet; nextisolatedpureworker+rootdurability. Noactivebuild/writer; allholdsretained."
 }
