@@ -85,6 +85,7 @@ internal class AppGraph(
                     val inventory = SqlLocalInventory(opened.value, OwnedLotPayloadCodec(), LocalInventoryPatchCodec(), SystemUtcClock, capabilities.maxBoundParameters)
                     val vault = AndroidSecretVault(appContext)
                     val providerProfiles = SqlLocalProviderProfiles(opened.value, SystemUtcClock, vault)
+                    val aiHistory = AppAiHistoryAccess(opened.value)
                     val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
                     val cardQuery = AndroidCatalogServices.localCardQuery(opened.value, LocalCatalogQueryCompiler())
                     val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
@@ -95,7 +96,7 @@ internal class AppGraph(
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
                         localCardQuery = cardQuery,
                         secretVault = vault, providerProfiles = providerProfiles, providerProfileOrigin = ProviderProfilePolicy::canonicalOrigin,
-                        aiHistory = AppAiHistoryAccess(opened.value),
+                        aiHistory = aiHistory, providerGeneration = AppProviderGenerationAccess(providerProfiles, aiHistory, vault),
                         promptOverrides = SqlLocalPromptOverrides(opened.value, SystemUtcClock),
                         offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
                         catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),

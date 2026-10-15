@@ -20,7 +20,8 @@ import com.architectpsg.commandlibrary.feature.shell.ui.problemText
 
 @Composable
 internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (String) -> Boolean, onUseCurrentData: () -> Unit,
-    onSaveHistory: ((OfflineHistoryCapture) -> Unit)? = null, historySaveEnabled: Boolean = true) {
+    onSaveHistory: ((OfflineHistoryCapture) -> Unit)? = null, historySaveEnabled: Boolean = true,
+    onProvider: ((HistoryPromptCapture) -> Unit)? = null) {
     val state by controller.state.collectAsState()
     val copy by rememberUpdatedState(onCopy)
     val refresh by rememberUpdatedState(onUseCurrentData)
@@ -127,6 +128,13 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
                                 Button({ controller.copyPrompt { copy(it) } }, Modifier.heightIn(min = 48.dp).testTag("offline-prompt-copy"), enabled = !state.busy) {
                                     Text(stringResource(R.string.offline_prompt_copy))
                                 }
+                            }
+                        }
+                        if (onProvider != null) item {
+                            OutlinedButton({ controller.captureHistory(editorMode, editorFrame)?.prompt?.let(onProvider) },
+                                enabled = state.historyPrompt != null && !state.busy && state.rejected.isEmpty(),
+                                modifier = Modifier.heightIn(min = 48.dp).testTag("offline-prompt-provider")) {
+                                Text(stringResource(R.string.provider_generation_open))
                             }
                         }
                         state.copied?.let { copied -> item {

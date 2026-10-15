@@ -13,7 +13,7 @@ private object AiHistoryProcess { val epoch = EntityId(UUID.randomUUID().toStrin
 
 /** Publishes the real capability only after recovery succeeds; failures leave other app ports usable. */
 internal class AppAiHistoryAccess(db: Database, clock: Clock = SystemUtcClock,
-    private val epoch: EntityId = AiHistoryProcess.epoch) : AiHistoryAccess {
+    internal val epoch: EntityId = AiHistoryProcess.epoch) : AiHistoryAccess {
     private val mutex = Mutex()
     private val history = SqlLocalAiHistory(db, AiHistoryPayloadCodec(), clock)
     private var ready = false

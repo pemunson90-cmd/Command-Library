@@ -85,6 +85,7 @@ public class ShellPorts(
     public val offlineDeckPrompts: com.architectpsg.commandlibrary.core.model.OfflineDeckPrompts? = null,
     /** Real local history, exposed only after root process-epoch recovery succeeds. */
     public val aiHistory: AiHistoryAccess? = null,
+    public val providerGeneration: ProviderGenerationAccess? = null,
     /** Complete per-mode custom prompt persistence; absent does not simulate a successful save. */
     public val promptOverrides: com.architectpsg.commandlibrary.core.model.LocalPromptOverrides? = null,
     public val cardQueryParser: ((String) -> com.architectpsg.commandlibrary.core.model.CardQueryParseResult)? = null,

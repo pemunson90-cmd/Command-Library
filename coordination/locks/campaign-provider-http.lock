@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-provider-http-01",
   "owner": "/root/implement_provider_http",
-  "status": "active",
+  "status": "released",
   "base_commit": "1ca7770199bdc5d19ac933ebde73825f9f491f74",
   "contract_revision": "provider-text-v1-20261015/nullable-params-httpFailure",
   "branch": "agent/campaign-provider-http-20261015",
@@ -18,5 +18,6 @@
     "android-app/data/network/src/test/kotlin/com/architectpsg/commandlibrary/data/network/HttpFailureMetadataTest.kt": "A",
     "coordination/handoffs/cx-campaign-provider-http-01.md": "A"
   },
-  "build_slot": "NOT GRANTED; root only"
+  "build_slot": "NOT GRANTED; root only",
+  "note": "Frozen return exact-source reviewed and integrated unchanged; original worktree preserved. Runtime NOT_RUN."
 }

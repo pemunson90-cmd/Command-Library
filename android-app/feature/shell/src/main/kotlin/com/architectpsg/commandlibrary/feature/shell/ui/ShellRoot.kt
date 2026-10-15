@@ -121,7 +121,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
                 if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-                if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide() }
+                if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
                 destination = target
             }
@@ -132,7 +132,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
                         if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-                        if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide() }
+                        if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
                         destination = action.destination
                     }
@@ -145,7 +145,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         LaunchedEffect(visibleDestination, controllers) {
             if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-            if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide() }
+            if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
         }
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
@@ -290,9 +290,14 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                                 history.capture(capture, deck.name)
                                 prompt.hide()
                             }
-                        } }, historySaveEnabled = controllers.aiHistory?.state?.collectAsState()?.value?.let { !it.writing && !it.uncertainSave } == true)
+                        } }, historySaveEnabled = controllers.aiHistory?.state?.collectAsState()?.value?.let { !it.writing && !it.uncertainSave } == true,
+                        onProvider = controllers.providerGeneration?.let { generation -> { capture ->
+                            generation.open(capture)
+                            prompt.hide()
+                        } })
 
                 }
+                controllers.providerGeneration?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ProviderGenerationDialog(it) }
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }

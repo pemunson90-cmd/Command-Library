@@ -73,6 +73,8 @@ internal class ShellControllers(
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
     val aiHistory = ports.aiHistory?.let { AiHistoryController(scope, it, ioDispatcher) }
+    val providerGeneration = if (ports.providerGeneration != null && ports.providerProfiles != null && ports.aiHistory != null)
+        ProviderGenerationController(scope, ports.providerProfiles, ports.providerGeneration, ports.aiHistory, ioDispatcher) else null
     val offlinePrompts = ports.offlineDeckPrompts?.let {
         OfflinePromptController(scope, ioDispatcher, it, ::currentPromptDeck, savedTemplates = ports.promptOverrides)
     }

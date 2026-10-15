@@ -555,4 +555,19 @@
     <string name="deck_edit_no_printing">This adds the Oracle identity and card language. No printing or finish is selected automatically.</string>
     <string name="printings_add_collection">Add this printing to collection</string>
     <string name="decks_open_versions">Versions and restore</string>
+    <string name="provider_generation_open">Send prompt to provider</string>
+    <string name="provider_generation_scope">Custom HTTPS Chat Completions text compatibility. Review the exact captured prompt below. Opening this screen sends nothing.</string>
+    <string name="provider_generation_destination">Destination: %1$s\nModel: %2$s\nSaved profile revision: %3$d</string>
+    <string name="provider_generation_more">More saved profiles</string>
+    <string name="provider_generation_no_profiles">No saved profiles loaded. Configure a provider in Settings first.</string>
+    <string name="provider_generation_reload_profiles">Reload saved profiles</string>
+    <string name="provider_generation_consent">I approve sending this exact prompt, including any private data shown, to this destination and model. This attempt may incur charges. Save the prompt and response in local history. Retrying starts a new attempt and may charge again.</string>
+    <string name="provider_generation_send">Send one attempt</string>
+    <string name="provider_generation_retry">Start a new retry attempt</string>
+    <string name="provider_generation_cancel">Cancel response</string>
+    <string name="provider_generation_status">Response status: %1$s</string>
+    <string name="provider_generation_usage_unknown">Billing is unknown. Reported token usage is retained in history when supplied.</string>
+    <string name="provider_generation_uncertain">The attempt or history acknowledgement is uncertain. No automatic resend occurs. Reload the original attempt before retrying; incomplete responses remain unfinished.</string>
+    <string name="provider_generation_reload">Reload original attempt (no send)</string>
+    <string name="provider_generation_abandon">Leave unresolved attempt; keep any saved history</string>
 </resources>
