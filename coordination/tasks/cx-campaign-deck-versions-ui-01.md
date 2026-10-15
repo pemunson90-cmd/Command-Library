@@ -1,6 +1,6 @@
 # Named deck versions presentation — task/attempt1, packet r1
 
-Status TAKEN, root-managed isolated writer after compiled complete contract/sourceACK. Existing execution.deck-ui/deck-persistence/B05/B07/S11/PX05-034/035/PX06-033/034 joins own scope. Root codex-thread-recovery-20261013 owns integration and actual binding. Exact base b2ac8de263a7455e6989a097f172d81ea006c0c9 to be replaced before dispatch; accepted contract LocalDeckVersionsContracts.kt SHA b8abaf1ca5d75a93063aca63582b5c885b9be42291a116fc4db136a5d5ee7e1c; design docs/superpowers/specs/2026-10-15-named-deck-versions-design.md reviewed r2 plus recovery-target clarification. Actual backend/schema still root prerequisites; no fake production binding.
+Status DONE producer, integrated locally at e6a9c94. 24unique+18fixture rerun UI source/runtimeACK. Root assembled integration/release acceptance remains separate; original packet below is historical dispatch scope.
 
 Outcome: actual S11 save/name/list/select/complete diff/preview/restore/recovery workflow presentation against COMPLETE LocalDeckVersions and LocalDeckLibrary ports. Root later supplies real adapters/entrypoint/composition. Constructor internal DeckVersionsController(scope, versions, decks, dispatcher, nextEntityId, onCommitted:(DeckId,Revision)->Unit default no-op); openDeck(id:DeckId) real selected-deck entry seam. Screen DeckVersionsScreen(controller,widthClass,onClose nullable default). Publish exact signatures in ownhandoff before root composition. No schema/backend/root shared import or replacement model.
 
