@@ -65,6 +65,8 @@ dependencies {
     implementation(project(":feature:life"))
     implementation(project(":feature:links"))
     implementation(project(":feature:decks"))
+    implementation(project(":feature:collection"))
+    implementation(project(":feature:pricing"))
     implementation(project(":feature:catalog"))
     implementation(project(":feature:rules"))
     implementation(project(":feature:settings"))
@@ -100,4 +102,7 @@ tasks.withType<Test>().configureEach {
     val inventoryBase = storageProject.file("src/test/resources/deck-edits-schema11.sql")
     inputs.file(inventoryBase)
     systemProperty("commandlibrary.schema11.fixture", inventoryBase.absolutePath)
+    val inventoryPrevious = storageProject.file("src/test/resources/inventory-schema12.sql")
+    inputs.file(inventoryPrevious)
+    systemProperty("commandlibrary.schema12.fixture", inventoryPrevious.absolutePath)
 }

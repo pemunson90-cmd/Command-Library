@@ -49,6 +49,7 @@ internal class DeckLibraryController(
     private val now: () -> UtcTimestamp,
     private val edits: LocalDeckEdits? = null,
     private val cardCurrent: (CardRecord) -> Boolean = { false },
+    private val onCommitted: (DeckId, Revision) -> Unit = { _, _ -> },
 ) {
     private val mutable = MutableStateFlow(DeckLibraryUiState())
     val state: StateFlow<DeckLibraryUiState> = mutable.asStateFlow()
@@ -293,6 +294,7 @@ internal class DeckLibraryController(
                             mutable.update { it.copy(mutationProblem = Problem.CORRUPT_DATA, pending = true) }
                         }
                         else {
+                            onCommitted(saved.id, saved.revision)
                             request = null; uncertainCommit = false
                             mutable.update { it.copy(pending = false, form = null, editor = null, mutationProblem = null, savedId = saved.id) }
                             // Reconciliation may return an old immutable result; read the actual current head.

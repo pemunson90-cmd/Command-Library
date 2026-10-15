@@ -32,7 +32,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.PrintingSelect
 /** Oracle text and game fields only; no card art is requested. Absent stats are omitted, unknown ones say so. */
 @Composable
 internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: WidthClass, modifier: Modifier = Modifier,
-    rulings: RulingsController? = null, printings: PrintingSelectionController? = null, onOpenCatalog: (() -> Unit)? = null, onLookupKeyword: ((String) -> Unit)? = null) {
+    rulings: RulingsController? = null, printings: PrintingSelectionController? = null, onOpenCatalog: (() -> Unit)? = null, onLookupKeyword: ((String) -> Unit)? = null, onAddPrinting: ((com.architectpsg.commandlibrary.core.model.PrintingRecord) -> Unit)? = null) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -59,7 +59,7 @@ internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: Wid
                 SelectionContainer { Text(knowledgeText(card.originalText) { it }, style = MaterialTheme.typography.bodyLarge) }
                 StatFields(card.stats)
             }
-            if (printings != null) CardPrintings(card, printings)
+            if (printings != null) CardPrintings(card, printings, onAddPrinting)
             CardArtworkFrame()
             if(rulings != null) CardRulings(card.oracleId, rulings, onOpenCatalog)
             FeaturePanel {

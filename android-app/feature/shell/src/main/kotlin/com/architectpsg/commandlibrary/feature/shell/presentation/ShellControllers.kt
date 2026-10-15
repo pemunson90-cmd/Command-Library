@@ -42,9 +42,14 @@ internal class ShellControllers(
         SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh) else null
     val deckLibrary = if (ports.localDecks != null && ports.utcClock != null)
         DeckLibraryController(scope, ports.localDecks, ioDispatcher, now = ports.utcClock::utcNow, edits = ports.localDeckEdits,
+            onCommitted = { id, revision -> collection?.onDeckChanged(id, revision) },
             cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
+    val collection = if (ports.localInventory != null && ports.localDecks != null && ports.ownedQuantity != null &&
+        ports.catalogPrintings != null && ports.inventoryProjection != null)
+        CollectionController(scope, ports.localInventory, ports.localDecks, ports.ownedQuantity, ports.catalogPrintings,
+            ports.inventoryProjection, ioDispatcher, { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) }) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
@@ -55,6 +60,10 @@ internal class ShellControllers(
         { status.refresh(); rulings?.refresh() }, ports.rulingsDownloads, ports.rulings) }
 
     init {
+        if (deckLibrary != null && collection != null) scope.launch {
+            deckLibrary.state.mapNotNull { it.selected?.let { deck -> deck.id to deck.revision } }
+                .distinctUntilChanged().collect { (id, revision) -> collection.onDeckChanged(id, revision) }
+        }
         scope.launch {
             status.state
                 .mapNotNull { it.status }

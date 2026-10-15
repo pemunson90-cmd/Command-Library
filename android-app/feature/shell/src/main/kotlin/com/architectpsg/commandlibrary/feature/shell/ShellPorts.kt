@@ -55,4 +55,12 @@ public class ShellPorts(
     public val utcClock: com.architectpsg.commandlibrary.core.model.Clock? = null,
     /** Complete persistent primitive edits and grouped undo; bound only with the real adapter. */
     public val localDeckEdits: com.architectpsg.commandlibrary.core.model.LocalDeckEdits? = null,
+    /** Complete durable inventory, bound only with the reviewed real adapter. */
+    public val localInventory: com.architectpsg.commandlibrary.core.model.LocalInventory? = null,
+    /** Pure quantity allocation, without quotes or global reservations. */
+    public val ownedQuantity: com.architectpsg.commandlibrary.core.model.OwnedQuantityAllocator? = null,
+    /** The accepted pure projection capability; a proposal never grants write authority. */
+    public val inventoryProjection: ((com.architectpsg.commandlibrary.core.model.InventorySnapshot,
+        com.architectpsg.commandlibrary.core.model.CollectionPatch, com.architectpsg.commandlibrary.core.model.Revision,
+        com.architectpsg.commandlibrary.core.model.CancelToken) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.InventoryProjection>)? = null,
 )

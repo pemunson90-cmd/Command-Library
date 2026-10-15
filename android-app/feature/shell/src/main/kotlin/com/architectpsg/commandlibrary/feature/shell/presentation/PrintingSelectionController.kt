@@ -82,6 +82,14 @@ internal class PrintingSelectionController(
     }
 
     /** Re-resolve the displayed target, then fence AGAIN after dispatcher return before browser IO. */
+    /** Recheck current selection synchronously before a root-owned collection navigation event. */
+    fun withCurrentPrinting(expectedTicket: Long, id: CardId, accept: (PrintingRecord) -> Unit) {
+        val s = state.value
+        if (!visible || expectedTicket != ticket || !currentGeneration() || s.loading || s.problem != null || s.card != card) return
+        val selected = s.selected?.takeIf { it.id == id && s.page?.items?.any { item -> item == it } == true } ?: return
+        accept(selected)
+    }
+
     fun openLink(expectedTicket: Long, target: String, open: (ResourceUri) -> Unit) {
         val s = state.value
         val selected = s.selected ?: return

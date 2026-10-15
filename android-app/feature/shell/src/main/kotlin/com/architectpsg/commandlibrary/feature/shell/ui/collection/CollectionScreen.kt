@@ -53,12 +53,12 @@ internal fun CollectionScreen(controller: CollectionController, widthClass: Widt
     state.form?.let { CollectionEditDialog(controller, it, state) }
     if (state.discardPrompt) AlertDialog(onDismissRequest = controller::keepForm,
         title = { Text(stringResource(R.string.collection_discard_title)) }, text = { Text(stringResource(R.string.collection_unsaved)) },
-        confirmButton = { TextButton(controller::discardForm, modifier = touch()) { Text(stringResource(R.string.collection_discard)) } },
-        dismissButton = { TextButton(controller::keepForm, modifier = touch()) { Text(stringResource(R.string.collection_keep_editing)) } })
+        confirmButton = { TextButton(controller::discardForm, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_discard)) } },
+        dismissButton = { TextButton(controller::keepForm, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_keep_editing)) } })
     if (abandon) AlertDialog(onDismissRequest = { abandon = false },
         title = { Text(stringResource(R.string.collection_abandon_title)) }, text = { Text(stringResource(R.string.collection_abandon_warning)) },
-        confirmButton = { TextButton({ abandon = false; controller.abandonConfirmed() }, enabled = !state.mutationBusy, modifier = touch()) { Text(stringResource(R.string.collection_abandon)) } },
-        dismissButton = { TextButton({ abandon = false }, modifier = touch()) { Text(stringResource(R.string.collection_keep_checking)) } })
+        confirmButton = { TextButton({ abandon = false; controller.abandonConfirmed() }, enabled = !state.mutationBusy, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_abandon)) } },
+        dismissButton = { TextButton({ abandon = false }, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_keep_checking)) } })
 }
 
 @Composable
@@ -69,11 +69,11 @@ private fun InventoryPane(controller: CollectionController, state: CollectionUiS
         item {
             CollectionStatus(controller, state, abandon)
             ActionRow {
-                OutlinedButton(controller::refresh, enabled = !state.loading && !state.mutationBusy, modifier = touch()) { Text(stringResource(R.string.collection_refresh)) }
-                OutlinedButton(controller::undo, enabled = snapshot != null && !state.pending && !state.mutationBusy && state.form == null, modifier = touch().testTag("collection-undo")) { Text(stringResource(R.string.collection_undo)) }
+                OutlinedButton(controller::refresh, enabled = !state.loading && !state.mutationBusy, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_refresh)) }
+                OutlinedButton(controller::undo, enabled = snapshot != null && !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-undo")) { Text(stringResource(R.string.collection_undo)) }
             }
             Text(stringResource(R.string.collection_add_entry))
-            if (browseCards != null) OutlinedButton(browseCards, modifier = touch().testTag("collection-browse-cards")) { Text(stringResource(R.string.collection_browse_cards)) }
+            if (browseCards != null) OutlinedButton(browseCards, modifier = Modifier.touch().testTag("collection-browse-cards")) { Text(stringResource(R.string.collection_browse_cards)) }
             if (state.loading) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_loading)) }
             state.loadProblem?.let { CollectionProblem(it) }
             snapshot?.let { Text(stringResource(R.string.collection_revision, it.revision.value)) }
@@ -89,8 +89,8 @@ private fun InventoryPane(controller: CollectionController, state: CollectionUiS
                     PagedText(stringResource(R.string.collection_location), lot.location, lot.id.value)
                     PagedText(stringResource(R.string.collection_notes), lot.notes, lot.id.value)
                     ActionRow {
-                        OutlinedButton({ controller.beginEdit(lot.id) }, enabled = !state.pending && !state.mutationBusy && state.form == null, modifier = touch().testTag("collection-edit")) { Text(stringResource(R.string.collection_edit)) }
-                        OutlinedButton({ controller.beginEdit(lot.id, true) }, enabled = !state.pending && !state.mutationBusy && state.form == null, modifier = touch().testTag("collection-remove")) { Text(stringResource(R.string.collection_remove)) }
+                        OutlinedButton({ controller.beginEdit(lot.id) }, enabled = !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-edit")) { Text(stringResource(R.string.collection_edit)) }
+                        OutlinedButton({ controller.beginEdit(lot.id, true) }, enabled = !state.pending && !state.mutationBusy && state.form == null, modifier = Modifier.touch().testTag("collection-remove")) { Text(stringResource(R.string.collection_remove)) }
                     }
                 }
             }
@@ -113,7 +113,7 @@ private fun AllocationPane(controller: CollectionController, state: CollectionUi
             SectionHeading(stringResource(R.string.collection_deck_tab))
             Text(stringResource(R.string.collection_deck_intro))
             Text(stringResource(R.string.collection_limit))
-            OutlinedButton(controller::refreshDecks, enabled = !state.loadingDecks, modifier = touch()) { Text(stringResource(R.string.collection_decks_refresh)) }
+            OutlinedButton(controller::refreshDecks, enabled = !state.loadingDecks, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_decks_refresh)) }
             if (state.loadingDecks) LinearProgressIndicator(Modifier.fillMaxWidth())
             state.decksProblem?.let { CollectionProblem(it) }
             if (!state.loadingDecks && state.decks.isEmpty()) Text(stringResource(R.string.collection_no_decks))
@@ -123,7 +123,7 @@ private fun AllocationPane(controller: CollectionController, state: CollectionUi
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics { selected = deck.id == state.selectedDeckId }.testTag("collection-deck-${deck.id.raw}")) { Text(deck.name.take(512)) }
         }
         item {
-            if (state.deckCursor != null) OutlinedButton(controller::nextDeckPage, enabled = !state.loadingDecks, modifier = touch()) { Text(stringResource(R.string.collection_next_decks)) }
+            if (state.deckCursor != null) OutlinedButton(controller::nextDeckPage, enabled = !state.loadingDecks, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_next_decks)) }
             SectionHeading(stringResource(R.string.collection_boards))
             BoardRole.entries.forEach { board ->
                 Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(value = board in state.boards, enabled = !state.mutationBusy && !state.pending, role = Role.Checkbox,
@@ -134,12 +134,12 @@ private fun AllocationPane(controller: CollectionController, state: CollectionUi
             }
             ActionRow {
                 OutlinedButton({ controller.ownership(OwnershipPolicy.SAME_ORACLE) }, enabled = !state.pending && !state.mutationBusy,
-                    modifier = touch().semantics { selected = state.ownership == OwnershipPolicy.SAME_ORACLE }) { Text(stringResource(R.string.collection_same_oracle)) }
+                    modifier = Modifier.touch().semantics { selected = state.ownership == OwnershipPolicy.SAME_ORACLE }) { Text(stringResource(R.string.collection_same_oracle)) }
                 OutlinedButton({ controller.ownership(OwnershipPolicy.EXACT_PRINTING) }, enabled = !state.pending && !state.mutationBusy,
-                    modifier = touch().semantics { selected = state.ownership == OwnershipPolicy.EXACT_PRINTING }) { Text(stringResource(R.string.collection_exact_printing)) }
+                    modifier = Modifier.touch().semantics { selected = state.ownership == OwnershipPolicy.EXACT_PRINTING }) { Text(stringResource(R.string.collection_exact_printing)) }
             }
             OutlinedButton(controller::calculateAllocation, enabled = state.selectedDeckId != null && !state.pending && !state.mutationBusy && !state.allocating,
-                modifier = touch().testTag("collection-calculate")) { Text(stringResource(R.string.collection_calculate)) }
+                modifier = Modifier.touch().testTag("collection-calculate")) { Text(stringResource(R.string.collection_calculate)) }
             if (state.allocating) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_calculating)) }
             state.allocationProblem?.let { CollectionProblem(it) }
             if (state.selectedDeckId != null && plan == null && !state.allocating) Text(stringResource(R.string.collection_plan_stale))
@@ -158,13 +158,13 @@ private fun AllocationPane(controller: CollectionController, state: CollectionUi
 private fun CollectionStatus(controller: CollectionController, state: CollectionUiState, abandon: () -> Unit) {
     if (state.checkingCatalog) {
         LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_checking_catalog))
-        if (!state.mutationBusy) TextButton(controller::discardForm, modifier = touch()) { Text(stringResource(R.string.collection_close)) }
+        if (!state.mutationBusy) TextButton(controller::discardForm, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_close)) }
     }
     state.formProblem?.let { if (state.form == null) CollectionProblem(it) }
     if (state.mutationBusy) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_saving)) }
     else if (state.pending) MessageBlock(null, listOf(stringResource(R.string.collection_pending)), MessageTone.INFO) {
-        OutlinedButton(controller::retry, modifier = touch().testTag(CollectionTags.RETRY)) { Text(stringResource(R.string.collection_retry)) }
-        OutlinedButton(abandon, modifier = touch()) { Text(stringResource(R.string.collection_abandon)) }
+        OutlinedButton(controller::retry, modifier = Modifier.touch().testTag(CollectionTags.RETRY)) { Text(stringResource(R.string.collection_retry)) }
+        OutlinedButton(abandon, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_abandon)) }
     }
     state.mutationProblem?.let { CollectionProblem(it) }
     state.savedRevision?.let { MessageBlock(null, listOf(stringResource(R.string.collection_saved, it.value)), MessageTone.INFO) }
@@ -186,8 +186,8 @@ private fun CollectionStatus(controller: CollectionController, state: Collection
     if (end < text.length && end > start && text[end - 1].isHighSurrogate() && text[end].isLowSurrogate()) end--
     DetailField(label, text.substring(start, end))
     if (start > 0 || end < text.length) ActionRow {
-        TextButton({ offset = 0 }, enabled = start > 0, modifier = touch()) { Text(stringResource(R.string.collection_text_start)) }
-        TextButton({ offset = end }, enabled = end < text.length, modifier = touch()) { Text(stringResource(R.string.collection_text_next)) }
+        TextButton({ offset = 0 }, enabled = start > 0, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_text_start)) }
+        TextButton({ offset = end }, enabled = end < text.length, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_text_next)) }
     }
 }
 @Composable internal fun CollectionIssues(issues: SnapshotList<DomainIssue>) {
@@ -200,11 +200,11 @@ private fun CollectionStatus(controller: CollectionController, state: Collection
         MessageBlock(null, listOf(stringResource(R.string.collection_issue, issue.entryId?.value?.take(512) ?: stringResource(R.string.collection_unknown_name), stringResource(issueLabel(issue.code)))), MessageTone.ERROR)
     }
     if (start > 0 || end < issues.size) ActionRow {
-        TextButton({ offset = (start - 20).coerceAtLeast(0) }, enabled = start > 0, modifier = touch()) { Text(stringResource(R.string.collection_previous)) }
-        TextButton({ offset = end }, enabled = end < issues.size, modifier = touch()) { Text(stringResource(R.string.collection_next)) }
+        TextButton({ offset = (start - 20).coerceAtLeast(0) }, enabled = start > 0, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_previous)) }
+        TextButton({ offset = end }, enabled = end < issues.size, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_next)) }
     }
 }
-internal fun touch(): Modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
+internal fun Modifier.touch(): Modifier = this.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
 private fun issueLabel(code: String): Int = when (code) {
     InventoryIssueCodes.DUPLICATE_SELECTION -> R.string.collection_issue_duplicate
     InventoryIssueCodes.LOT_ALREADY_EXISTS -> R.string.collection_issue_exists

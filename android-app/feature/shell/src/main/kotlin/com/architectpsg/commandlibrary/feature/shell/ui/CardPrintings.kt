@@ -16,7 +16,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.*
 
 /** No composition-owned selection/read jobs: moving this panel across panes preserves its state. */
 @Composable
-internal fun CardPrintings(card: CardRecord, controller: PrintingSelectionController) {
+internal fun CardPrintings(card: CardRecord, controller: PrintingSelectionController, onAddPrinting: ((PrintingRecord) -> Unit)? = null) {
     val state by controller.state.collectAsState()
     val browser = LocalUriHandler.current
     FeaturePanel(modifier = Modifier.testTag("card-printings")) {
@@ -54,6 +54,12 @@ internal fun CardPrintings(card: CardRecord, controller: PrintingSelectionContro
                         else -> knowledgeText(finishes) { "" }
                     }
                     DetailField(stringResource(R.string.printings_finishes), finishText)
+                    if (onAddPrinting != null && (printing.finishes as? Knowledge.Known)?.value?.isNotEmpty() == true) {
+                        TextButton(onClick = { controller.withCurrentPrinting(state.ticket, printing.id, onAddPrinting) },
+                            modifier = Modifier.heightIn(min = 48.dp).testTag("printing-add-collection")) {
+                            Text(stringResource(R.string.printings_add_collection))
+                        }
+                    }
                     if (printing.oracleId !is Knowledge.Known) Text(stringResource(R.string.printings_relation_unknown))
                     if (state.linksLoading) Text(stringResource(R.string.printings_links_loading))
                     state.links.forEach { link ->

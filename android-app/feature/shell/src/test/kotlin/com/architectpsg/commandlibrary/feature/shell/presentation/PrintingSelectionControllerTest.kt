@@ -129,4 +129,30 @@ class PrintingSelectionControllerTest {
         assertEquals(0, launches); assertNull(c.state.value.selected)
     }
 
+    @Test fun collectionEntryAcceptsOnlyExactCurrentPrintingTicketAndVisibleRoute() = runTest {
+        val f = Fixture(); val c = controller(f); advanceUntilIdle()
+        c.selectPrinting(printing("a").id); advanceUntilIdle()
+        val old = c.state.value.ticket; val accepted = mutableListOf<PrintingRecord>()
+        c.withCurrentPrinting(old, printing("b").id) { accepted += it }
+        assertTrue(accepted.isEmpty())
+        c.withCurrentPrinting(old, printing("a").id) { accepted += it }
+        assertEquals(listOf(printing("a")), accepted)
+        c.selectPrinting(printing("b").id)
+        c.withCurrentPrinting(old, printing("a").id) { fail("Old selection must not enter collection") }
+        advanceUntilIdle(); val current = c.state.value.ticket
+        c.setVisible(false)
+        c.withCurrentPrinting(current, printing("b").id) { fail("Closed card route must not enter collection") }
+    }
+
+    @Test fun collectionEntryChecksRootCurrentCardPredicateSynchronously() = runTest {
+        val f = Fixture(); var current = true
+        val c = PrintingSelectionController(ownerScope(), f, StandardTestDispatcher(testScheduler), f) { current }
+        c.onActiveGeneration(generation); c.selectCard(card); c.setVisible(true); advanceUntilIdle()
+        c.selectPrinting(printing("a").id); advanceUntilIdle(); val ticket = c.state.value.ticket
+        current = false
+        c.withCurrentPrinting(ticket, printing("a").id) { fail("Stale root status must block before asynchronous collectors") }
+        current = true
+        var calls = 0; c.withCurrentPrinting(ticket, printing("a").id) { calls++ }; assertEquals(1, calls)
+    }
+
 }

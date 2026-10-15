@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.architectpsg.commandlibrary.core.model.*
@@ -37,18 +38,18 @@ internal fun CollectionEditDialog(controller: CollectionController, form: Collec
                         Text(stringResource(R.string.collection_finish_choice))
                         ActionRow { form.supportedFinishes.forEach { finish ->
                             FilterChip(selected = form.finish == finish, onClick = { controller.finish(finish) }, enabled = editing,
-                                label = { Text(stringResource(finishLabel(Knowledge.Known(finish)))) }, modifier = touch().testTag("collection-finish-${finish.ordinal}"))
+                                label = { Text(stringResource(finishLabel(Knowledge.Known(finish)))) }, modifier = Modifier.touch().testTag("collection-finish-${finish.ordinal}"))
                         } }
                         form.finish?.let { Text(stringResource(R.string.collection_selected_finish, stringResource(finishLabel(Knowledge.Known(it))))) }
                     } else Text(stringResource(R.string.collection_preserve_metadata))
                     Text(stringResource(R.string.collection_condition))
                     var conditionOpen by remember { mutableStateOf(false) }
                     Box {
-                        OutlinedButton({ conditionOpen = true }, enabled = editing, modifier = touch()) { Text(stringResource(conditionLabel(form.condition))) }
+                        OutlinedButton({ conditionOpen = true }, enabled = editing, modifier = Modifier.touch()) { Text(stringResource(conditionLabel(form.condition))) }
                         DropdownMenu(conditionOpen, { conditionOpen = false }) {
                             CardCondition.entries.forEach { condition -> DropdownMenuItem(
                                 text = { Text(stringResource(conditionLabel(condition))) },
-                                onClick = { controller.condition(condition); conditionOpen = false }, modifier = touch()) }
+                                onClick = { controller.condition(condition); conditionOpen = false }, modifier = Modifier.touch()) }
                         }
                     }
                     OutlinedTextField(form.location, controller::location, enabled = editing, label = { Text(stringResource(R.string.collection_location)) }, modifier = Modifier.fillMaxWidth().testTag("collection-location"))
@@ -57,18 +58,20 @@ internal fun CollectionEditDialog(controller: CollectionController, form: Collec
                 if (state.invalidForm) Text(stringResource(R.string.collection_invalid), color = MaterialTheme.colorScheme.error)
                 if (state.inventory?.revision != form.base.revision) {
                     Text(stringResource(R.string.collection_stale_form))
-                    OutlinedButton(controller::useRefreshedInventory, enabled = !state.pending && !state.mutationBusy, modifier = touch()) { Text(stringResource(R.string.collection_use_refreshed)) }
+                    OutlinedButton(controller::useRefreshedInventory, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_use_refreshed)) }
                 }
                 state.formProblem?.let { CollectionProblem(it) }
                 state.mutationProblem?.let { CollectionProblem(it) }
                 if (state.previewing || state.mutationBusy) LinearProgressIndicator(Modifier.fillMaxWidth())
                 state.preview?.takeIf { !state.pending }?.let { preview ->
-                    Text(stringResource(R.string.collection_preview_summary, preview.changes.size, preview.merges.size))
+                    Text(stringResource(R.string.collection_preview_summary,
+                        pluralStringResource(R.plurals.collection_preview_changes, preview.changes.size, preview.changes.size),
+                        pluralStringResource(R.plurals.collection_preview_merges, preview.merges.size, preview.merges.size)))
                     preview.changes.firstOrNull()?.let { change ->
                         if (change.after == null) Text(stringResource(R.string.collection_preview_removed))
                         else Text(stringResource(R.string.collection_preview_quantity, change.before?.quantity ?: 0, change.after!!.quantity))
                     }
-                    if (!state.pending) TextButton(controller::cancelPreview, enabled = !state.mutationBusy, modifier = touch()) { Text(stringResource(R.string.collection_cancel_preview)) }
+                    if (!state.pending) TextButton(controller::cancelPreview, enabled = !state.mutationBusy, modifier = Modifier.touch()) { Text(stringResource(R.string.collection_cancel_preview)) }
                 }
                 CollectionIssues(state.issues)
                 if (state.pending) Text(stringResource(R.string.collection_pending))
@@ -76,12 +79,12 @@ internal fun CollectionEditDialog(controller: CollectionController, form: Collec
         },
         confirmButton = {
             when {
-                state.pending -> TextButton(controller::retry, enabled = !state.mutationBusy, modifier = touch().testTag(CollectionTags.RETRY)) { Text(stringResource(R.string.collection_retry)) }
-                state.preview != null -> TextButton(controller::confirmPreview, enabled = !state.mutationBusy && state.issues.isEmpty(), modifier = touch().testTag(CollectionTags.CONFIRM)) { Text(stringResource(R.string.collection_confirm)) }
-                else -> TextButton(controller::previewEdit, enabled = !state.mutationBusy && !state.previewing, modifier = touch().testTag(CollectionTags.PREVIEW)) { Text(stringResource(R.string.collection_preview)) }
+                state.pending -> TextButton(controller::retry, enabled = !state.mutationBusy, modifier = Modifier.touch().testTag(CollectionTags.RETRY)) { Text(stringResource(R.string.collection_retry)) }
+                state.preview != null -> TextButton(controller::confirmPreview, enabled = !state.mutationBusy && state.issues.isEmpty(), modifier = Modifier.touch().testTag(CollectionTags.CONFIRM)) { Text(stringResource(R.string.collection_confirm)) }
+                else -> TextButton(controller::previewEdit, enabled = !state.mutationBusy && !state.previewing, modifier = Modifier.touch().testTag(CollectionTags.PREVIEW)) { Text(stringResource(R.string.collection_preview)) }
             }
         },
-        dismissButton = { TextButton(controller::requestCloseForm, enabled = !state.mutationBusy, modifier = touch().testTag("collection-close-form")) { Text(stringResource(R.string.collection_close)) } },
+        dismissButton = { TextButton(controller::requestCloseForm, enabled = !state.mutationBusy, modifier = Modifier.touch().testTag("collection-close-form")) { Text(stringResource(R.string.collection_close)) } },
     )
 }
 

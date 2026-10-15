@@ -49,6 +49,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.profiles.ProfilesScreen
 import com.architectpsg.commandlibrary.feature.shell.R
@@ -60,6 +61,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.activeGenerati
 internal enum class ShellDestination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int, val tag: String) {
     CARDS(R.string.shell_nav_cards, R.drawable.shell_ic_cards, "shell-nav-cards"),
     DECKS(R.string.decks_title, R.drawable.shell_ic_decks, "shell-nav-decks"),
+    COLLECTION(R.string.collection_title, R.drawable.shell_ic_cards, "shell-nav-collection"),
     CATALOG(R.string.shell_nav_catalog, R.drawable.shell_ic_catalog, "shell-nav-catalog"),
     RULES(R.string.rules_title, R.drawable.shell_ic_catalog, "shell-nav-rules"),
     PROFILES(R.string.profiles_nav, R.drawable.shell_ic_profiles, "shell-nav-profiles"),
@@ -86,6 +88,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         val destinations = ShellDestination.entries.filter {
             when (it) {
                 ShellDestination.DECKS -> controllers.deckLibrary != null
+                ShellDestination.COLLECTION -> controllers.collection != null
                 ShellDestination.RULES -> controllers.rules != null
                 ShellDestination.PROFILES -> controllers.profiles != null
                 else -> true
@@ -147,7 +150,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             val largeText = LocalDensity.current.fontScale >= 1.5f
                             val overflow = controllers.deckLibrary != null && (destinations.size > 5 || (largeText && destinations.size > 3))
                             val primary = if (!overflow) destinations else
-                                listOf(ShellDestination.CARDS, ShellDestination.DECKS, ShellDestination.RULES, ShellDestination.PROFILES)
+                                listOf(ShellDestination.CARDS, ShellDestination.DECKS, ShellDestination.COLLECTION, ShellDestination.RULES, ShellDestination.PROFILES)
                                     .filter { it in destinations }.take(if (largeText) 2 else 4)
                             val secondary = destinations.filter { it !in primary }
                             var menuOpen by remember { mutableStateOf(false) }
@@ -230,6 +233,9 @@ private fun DestinationContent(
             modifier = modifier,
             rulings = controllers.rulings,
             printings = controllers.printings,
+            onAddPrinting = controllers.collection?.let { collection -> { printing ->
+                collection.beginAdd(printing); onNavigate(ShellDestination.COLLECTION)
+            } },
             onManageRulings = if(controllers.downloads?.rulingsEnabled == true) ({ onNavigate(ShellDestination.CATALOG) }) else null,
             onLookupKeyword = controllers.rules?.let { rules -> { keyword: String ->
                 rules.lookupKeyword(keyword); onNavigate(ShellDestination.RULES)
@@ -258,6 +264,9 @@ private fun DestinationContent(
             RulesScreen(rules, widthClass, rulesPickerUnavailable, onPickRules, modifier)
         }
         ShellDestination.DECKS -> controllers.deckLibrary?.let { DeckLibraryScreen(it, widthClass, modifier, controllers.deckEditorSearch) }
+        ShellDestination.COLLECTION -> controllers.collection?.let {
+            Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) }) }
+        }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
         ShellDestination.SETTINGS -> {
             val settingsState by controllers.settings.state.collectAsState()

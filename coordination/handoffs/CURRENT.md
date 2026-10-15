@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-inventory-backend-integrated-177
+Checkpoint-ID: cp-20261015-collection-app-integrated-178
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-complete-inventory-backend
+Next step: 3. accept-collection-app-integration
 
-Updated UTC: 2026-10-15T07:49:59Z
+Updated UTC: 2026-10-15T08:16:01Z
 Status: in_progress; lease: active.
-Verified base: 461f7af1c635db9888a1f7c03d07d43d08667b9d.
+Verified base: f3784848fc3c49fee18e462c938411636a0ba56c.
 
-Complete durableinventory8840c1b integrated461f7af/released/source-runtimeACK62tests; UI finalfocusedgate active solebuildslot, rootshared/appdraft heldpendingassembledverification; holds retained.
+Reviewed real collection AppGraph/UI/Room13 integration:683tests plus4 corrected UI reruns; next named deck versions boundary review; native/full acceptance open
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

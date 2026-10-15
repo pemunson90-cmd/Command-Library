@@ -1466,8 +1466,8 @@
         ],
         "verification": "real DB revision/atomic bulk/ineligible rows/nonnegative/unknown/no language transfer/restart",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "pure_producer_integrated_storage_ui_open",
-        "observed_implementation": "Complete bounded InventoryPatchReducer integrated62faa9d/6e6a2fd with independent source/evidence ACK and29focusedtests. CLOL1 structural codec reviewed27scopedtests; complete LocalInventory/CLIP/CLIR contract sourceACK63scopedtests. Schema12 five tables reviewed304hosttests; additive13 historyindex reviewed5hosttests. Complete SqlLocalInventory integrated461f7af, independent source/runtimeACK62tests (30actualSQLiteinventory). Real repository exists; productionAppGraph/Room13/UI integration pending, isolated presentation stillactive. Full C01/B10/S12 acceptance open.",
+        "status": "inventory_ui_integrated_acceptance_open",
+        "observed_implementation": "Complete projector/codecs/schema13/SqlLocalInventory integrated; real AppGraph/collection UI/current-printing workflow, deck acknowledgement invalidation and actual host Room verified. Independent source/evidence ACK, assembled683tests plus4correctedUIreruns, lint0errors/1inheritedwarning; native test compilation only. See COLLECTION-INTEGRATION-LOCAL-20261015.md. Full C01/B10/S12 finish editing/mixed bulk/CSV/drafts/native/Fold7 acceptance remains open.",
         "ownership_group": "collection",
         "resources": [
           "local-gradle-serial"
@@ -1504,7 +1504,7 @@
         "verification": "q4/o2/USD3=6; fully-owned missing quote=0; unowned unknown; shared-lot conservation; no TIX FX; source terms",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "Actual LocalOwnedQuantityAllocator integratedd1b743b fromdee85cd with independent Astra source/evidenceACK:25tests2XML0fail/error/skip; root assembled check next. Complete bounded purequantitysubset independently of collectionCRUD. Sourceprobe0e0ec99 and designowned-quantity-boundary define pin/unknown/IGNORE/conservation/determinism/finitework. Full provider/statistic selection, storedpins/pricedplan/FX/optimizer/UI stillopen. ExactDecimalPolicy.multiply alreadyexists; do notduplicate.",
+        "observed_implementation": "Actual LocalOwnedQuantityAllocator integratedd1b743b fromdee85cd with independent Astra source/evidenceACK:25tests2XML0fail/error/skip; root assembled gate passed including real stored deck/inventory allocation. Complete bounded purequantitysubset independently of collectionCRUD. Sourceprobe0e0ec99 and designowned-quantity-boundary define pin/unknown/IGNORE/conservation/determinism/finitework. Full provider/statistic selection, storedpins/pricedplan/FX/optimizer/UI stillopen. ExactDecimalPolicy.multiply alreadyexists; do notduplicate.",
         "ownership_group": "pricing",
         "resources": [
           "local-gradle-serial"

@@ -597,3 +597,7 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T07:41:55Z | codex | cp-20261015-inventory-history-index-176 | containing commit | Schema13 indexed missingreservationguard prerequisite sourceACK5hosttests pass; rootfinishUIliteral fix; twoisolatedwriters active; backendexplicitrefresh/firstgate next then UIfinalgate. Rootintegrationdraft dirty/uncompiled, holds retained.
 
 2026-10-15T07:49:59Z | codex | cp-20261015-inventory-backend-integrated-177 | containing commit | Complete durableinventory8840c1b integrated461f7af/released/source-runtimeACK62tests; UI finalfocusedgate active solebuildslot, rootshared/appdraft heldpendingassembledverification; holds retained.
+
+2026-10-15T08:15:42Z | codex | cp-20261015-collection-app-integrated-178 | containing commit | Reviewed real collection AppGraph/UI/Room13 integration:683tests plus4 corrected UI reruns; next named deck versions boundary review; native/full acceptance open
+
+2026-10-15T08:16:01Z | codex | cp-20261015-collection-app-integrated-178 | containing commit | Reviewed real collection AppGraph/UI/Room13 integration:683tests plus4 corrected UI reruns; next named deck versions boundary review; native/full acceptance open

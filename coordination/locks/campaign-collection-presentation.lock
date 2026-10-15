@@ -6,6 +6,12 @@
   "base_commit": "bc286f2",
   "owner": "/root/implement_inventory_projection; root-managed new isolated attempt",
   "owned_paths": "Exact new controller/state/screen/dialog/dedicated strings/tests/handoff allowlist; root shared/DI/nav untouched",
-  "status": "active",
-  "authority": "Live root only; explicit exclusive new shell paths transfer; no life/shared transfer"
+  "status": "released",
+  "authority": "Live root only; explicit exclusive new shell paths transfer; no life/shared transfer",
+  "result_commit": "a35eb99fb13102f56416e2a98d4133914b95df12",
+  "integration_commits": [
+    "942e2ad",
+    "f378484"
+  ],
+  "verification": "Independent source/runtime ACK; root assembled683tests +4 corrected UI reruns, lint0errors/1inheritedwarning; native compilation only"
 }

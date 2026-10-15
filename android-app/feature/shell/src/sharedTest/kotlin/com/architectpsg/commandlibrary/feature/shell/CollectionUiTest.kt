@@ -103,8 +103,12 @@ class CollectionUiTest {
         rule.onNodeWithTag("collection-edit").performScrollTo().assertHeightIsAtLeast(48.dp).performClick()
         rule.onNodeWithTag(CollectionTags.NOTES).performScrollTo().performTextReplacement("retained draft")
         assertTrue(attempts.isEmpty());rule.onNodeWithTag(CollectionTags.PREVIEW).performClick();await{controller.state.value.preview!=null}
+        val expectedPreview = text(R.string.collection_preview_summary,
+            context.resources.getQuantityString(R.plurals.collection_preview_changes, 1, 1),
+            context.resources.getQuantityString(R.plurals.collection_preview_merges, 0, 0))
+        rule.onNodeWithText(expectedPreview).assertExists()
         assertTrue(attempts.isEmpty());rule.onNodeWithTag(CollectionTags.CONFIRM).performClick();await{controller.state.value.pending&&!controller.state.value.mutationBusy}
-        rule.onAllNodesWithText(text(R.string.collection_preview_summary,1,0)).assertCountEquals(0)
+        rule.onAllNodesWithText(expectedPreview).assertCountEquals(0)
         rule.onNodeWithTag("collection-close-form").performClick();assertTrue(controller.state.value.pending)
         rule.runOnIdle{width.value=900.dp;font.floatValue=1f};rule.waitForIdle();assertEquals(1,attempts.size);assertEquals(1,ids.get())
         unknown=false;rule.onNodeWithTag(CollectionTags.RETRY).performScrollTo().assertHeightIsAtLeast(48.dp).performClick()

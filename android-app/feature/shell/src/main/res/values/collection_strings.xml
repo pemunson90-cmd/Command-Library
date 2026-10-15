@@ -45,7 +45,7 @@
     <string name="collection_preview">Preview change</string>
     <string name="collection_confirm">Confirm change</string>
     <string name="collection_cancel_preview">Return to editing</string>
-    <string name="collection_preview_summary">Preview: %1$d changed lots, %2$d absorbed additions. No inventory has been written.</string>
+    <string name="collection_preview_summary">Preview: %1$s, %2$s. No inventory has been written.</string>
     <string name="collection_preview_quantity">Quantity: %1$d → %2$d</string>
     <string name="collection_preview_removed">The selected lot will be removed.</string>
     <string name="collection_invalid">Enter a whole quantity from 0 through 2,147,483,647 and choose a supported finish for additions.</string>
@@ -99,4 +99,12 @@
     <string name="collection_partner">Partner</string>
     <string name="collection_background">Background</string>
     <string name="collection_companion">Companion</string>
+    <plurals name="collection_preview_changes">
+        <item quantity="one">%d changed lot</item>
+        <item quantity="other">%d changed lots</item>
+    </plurals>
+    <plurals name="collection_preview_merges">
+        <item quantity="one">%d combined addition</item>
+        <item quantity="other">%d combined additions</item>
+    </plurals>
 </resources>

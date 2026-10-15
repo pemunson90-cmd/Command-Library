@@ -553,4 +553,5 @@
     <string name="deck_edit_more_cards">Load more card results</string>
     <string name="deck_edit_remove_warning">Remove this entire entry? Its quantity and notes will be recoverable with Undo.</string>
     <string name="deck_edit_no_printing">This adds the Oracle identity and card language. No printing or finish is selected automatically.</string>
+    <string name="printings_add_collection">Add this printing to collection</string>
 </resources>

@@ -26,9 +26,10 @@ class DeckEditorControllerTest {
         var gate: CompletableDeferred<Unit>? = null
         var createCalls = 0
         var wrongResult = false
+        var loadFailure: Outcome<Nothing>? = null
         override suspend fun create(initial: DeckSnapshot, operationId: EntityId, cancel: CancelToken): Outcome<DeckSnapshot> { createCalls++; return Outcome.Success(initial) }
         override suspend fun duplicate(id: DeckId, expected: Revision, name: String, operationId: EntityId, cancel: CancelToken): Outcome<DeckSnapshot> = error("Not part of synthetic editor scenario")
-        override suspend fun load(id: DeckId, cancel: CancelToken): Outcome<DeckSnapshot> = Outcome.Success(rows.getValue(id))
+        override suspend fun load(id: DeckId, cancel: CancelToken): Outcome<DeckSnapshot> = loadFailure ?: Outcome.Success(rows.getValue(id))
         override suspend fun list(page: PageRequest, cancel: CancelToken): Outcome<Page<DeckSummary>> = Outcome.Success(Page(SnapshotList.copyOf(rows.values.map {
             DeckSummary(it.id, it.name, it.revision, it.createdAt, it.modifiedAt, it.entries.size, it.entries.sumOf { e -> e.quantity.toLong() })
         }), null, SnapshotReference(LocalDeckLibraryLimits.SOURCE, null, Revision(0), null)))
@@ -58,9 +59,9 @@ class DeckEditorControllerTest {
             gate?.await(); return mutationResult ?: Outcome.Success(saved)
         }
     }
-    private fun TestScope.controller(f: Fixture, current: (CardRecord) -> Boolean = { true }): DeckLibraryController {
+    private fun TestScope.controller(f: Fixture, current: (CardRecord) -> Boolean = { true }, onCommitted: (DeckId, Revision) -> Unit = { _, _ -> }): DeckLibraryController {
         var ids = 0
-        return DeckLibraryController(ownerScope(), f, StandardTestDispatcher(testScheduler), { "new-${++ids}" }, { UtcTimestamp(7) }, f, current)
+        return DeckLibraryController(ownerScope(), f, StandardTestDispatcher(testScheduler), { "new-${++ids}" }, { UtcTimestamp(7) }, f, current, onCommitted)
     }
     @Test fun detailsAreOneExplicitGroupAndUnsavedInputNeverWrites() = runTest {
         val f=Fixture(); val c=controller(f); c.select(deck().id); advanceUntilIdle(); c.editDetails()
@@ -113,7 +114,7 @@ class DeckEditorControllerTest {
         c.editDetails(); c.confirmEditor(); advanceUntilIdle(); assertTrue(c.state.value.pending); assertEquals(Problem.CORRUPT_DATA,c.state.value.mutationProblem)
     }
     @Test fun actualSelectedCardIsRequiredCurrentAtConfirmationAndAddNeverInventsPrintingOrCoalescesEntries() = runTest {
-        val f=Fixture(); var current=false; val c=controller(f) { current }
+        val f=Fixture(); var current=false; val c=controller(f, current = { current })
         val card=syntheticCard("Synthetic selected", GenerationId("selected-generation"))
         c.select(deck().id); advanceUntilIdle(); c.addEntry(); c.editorChange { it.copy(card=card,quantity="3") }
         c.confirmEditor(); advanceUntilIdle(); assertTrue(c.state.value.invalidEdit); assertTrue(f.patches.isEmpty())
@@ -141,6 +142,27 @@ class DeckEditorControllerTest {
         assertFalse(currentDeckCard(card,search,second)) // collector still says first, current status already second
         assertFalse(currentDeckCard(card,search,null))
         assertFalse(currentDeckCard(card,search.copy(results=emptyList()),first))
+    }
+
+    @Test fun acknowledgedRevisionIsForwardedEvenWhenCurrentHeadReloadFails() = runTest {
+        val f = Fixture(); val acknowledged = mutableListOf<Pair<DeckId, Revision>>()
+        val c = controller(f, onCommitted = { id, revision -> acknowledged += id to revision })
+        c.select(deck().id); advanceUntilIdle(); c.editDetails(); c.editorChange { it.copy(name = "Edited") }
+        f.gate = CompletableDeferred(); c.confirmEditor(); runCurrent()
+        f.loadFailure = failure(FailureCode.TRANSPORT); f.gate!!.complete(Unit); advanceUntilIdle()
+        assertEquals(listOf(deck().id to Revision(1)), acknowledged)
+        assertEquals(Problem.TRANSPORT, c.state.value.detailProblem)
+    }
+
+    @Test fun acknowledgedDeckRevisionIsForwardedIndependentlyOfNewerUserSelection() = runTest {
+        val f = Fixture(); val other = deck("other"); f.rows[other.id] = other
+        val acknowledged = mutableListOf<Pair<DeckId, Revision>>()
+        val c = controller(f, onCommitted = { id, revision -> acknowledged += id to revision })
+        c.select(deck().id); advanceUntilIdle(); c.editDetails(); c.editorChange { it.copy(name = "Edited") }
+        f.gate = CompletableDeferred(); c.confirmEditor(); runCurrent()
+        c.select(other.id); advanceUntilIdle(); f.gate!!.complete(Unit); advanceUntilIdle()
+        assertEquals(other.id, c.state.value.selectedId)
+        assertEquals(listOf(deck().id to Revision(1)), acknowledged)
     }
 
 }

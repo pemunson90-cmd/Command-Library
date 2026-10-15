@@ -22,9 +22,9 @@ class DeckSchemaRoomIntegrationTest {
         override fun throwIfCancelled() = Unit
     }
     private fun <T> ok(value: Outcome<T>): T = (value as Outcome.Success).value
-    @Test fun actualRoomFreshAndSchema9And11UpgradesPreserveOldBytesAndOpenInventory() = runBlocking<Unit> {
+    @Test fun actualRoomFreshAndSchema9And11And12UpgradesPreserveOldBytesAndOpenInventory() = runBlocking<Unit> {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        for (baseVersion in listOf<Int?>(null, 9, 11)) {
+        for (baseVersion in listOf<Int?>(null, 9, 11, 12)) {
             val name = "deck-schema-${UUID.randomUUID()}.db"
             try {
                 if (baseVersion != null) {

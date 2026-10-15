@@ -4,6 +4,11 @@ import android.content.Context
 import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.core.model.Outcome
+import com.architectpsg.commandlibrary.data.storage.collection.codec.OwnedLotPayloadCodec
+import com.architectpsg.commandlibrary.data.storage.collection.codec.LocalInventoryPatchCodec
+import com.architectpsg.commandlibrary.feature.collection.InventoryPatchReducer
+import com.architectpsg.commandlibrary.feature.collection.persistence.SqlLocalInventory
+import com.architectpsg.commandlibrary.feature.pricing.LocalOwnedQuantityAllocator
 import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import com.architectpsg.commandlibrary.data.storage.decks.codec.LocalDeckPatchCodec
 import com.architectpsg.commandlibrary.data.storage.decks.codec.DeckPayloadCodec
@@ -25,7 +30,15 @@ import kotlinx.coroutines.sync.withLock
  * its store file, catalog/rules/profiles over one opened database, and import limits shared by the
  * catalog importer and the shell so the disclosed limits are the enforced ones.
  */
-internal class AppGraph(context: Context) {
+internal class AppGraph(
+    context: Context,
+    private val inspectDatabase: suspend (StorageDatabase) -> Outcome<com.architectpsg.commandlibrary.core.model.DbCapabilities> = { db ->
+        db.capabilities(object : com.architectpsg.commandlibrary.core.model.CancelToken {
+            override val isCancelled = false
+            override fun throwIfCancelled() = Unit
+        })
+    },
+) {
     private val appContext = context.applicationContext
     private val limits = CatalogImportLimits()
     private val consentCoordinator = ConsentCoordinator()
@@ -38,20 +51,34 @@ internal class AppGraph(context: Context) {
         ready?.let { return@withLock Outcome.Success(it) }
         when (val opened = StorageDatabase.open(appContext, DATABASE_FILE)) {
             is Outcome.Success -> {
-                val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
-                val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
-                val profiles = SqlPlayerProfileRepository(opened.value, LifePayloadCodec(), SystemUtcClock, RandomUuidIdSource)
-                val deckCodec = DeckPayloadCodec()
-                val decks = SqlLocalDeckLibrary(opened.value, deckCodec, SystemUtcClock, RandomUuidIdSource)
-                val deckEdits = SqlLocalDeckEdits(opened.value, deckCodec, LocalDeckPatchCodec(), SystemUtcClock)
-                val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
-                val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
-                    rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
-                    englishCatalog = downloads, rulingsDownloads = downloads,
-                    rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
-                    catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits)
-                ready = ports
-                Outcome.Success(ports)
+                var transferred = false
+                try {
+                    val capabilities = when (val result = inspectDatabase(opened.value)) {
+                        is Outcome.Success -> result.value
+                        is Outcome.Failure -> return@withLock result
+                        is Outcome.Unavailable -> return@withLock result
+                        is Outcome.Unknown -> return@withLock result
+                    }
+                    val catalog = LocalCatalog(opened.value, SystemUtcClock, RandomUuidIdSource, limits)
+                    val rules = LocalRules(opened.value, SystemUtcClock, RandomUuidIdSource)
+                    val profiles = SqlPlayerProfileRepository(opened.value, LifePayloadCodec(), SystemUtcClock, RandomUuidIdSource)
+                    val deckCodec = DeckPayloadCodec()
+                    val decks = SqlLocalDeckLibrary(opened.value, deckCodec, SystemUtcClock, RandomUuidIdSource)
+                    val deckEdits = SqlLocalDeckEdits(opened.value, deckCodec, LocalDeckPatchCodec(), SystemUtcClock)
+                    val inventory = SqlLocalInventory(opened.value, OwnedLotPayloadCodec(), LocalInventoryPatchCodec(), SystemUtcClock, capabilities.maxBoundParameters)
+                    val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
+                    val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
+                        rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
+                        englishCatalog = downloads, rulingsDownloads = downloads,
+                        rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
+                        catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
+                        localInventory = inventory, ownedQuantity = LocalOwnedQuantityAllocator(), inventoryProjection = InventoryPatchReducer::propose)
+                    ready = ports
+                    transferred = true
+                    Outcome.Success(ports)
+                } finally {
+                    if (!transferred) opened.value.close()
+                }
             }
             is Outcome.Failure -> opened
             is Outcome.Unavailable -> opened
