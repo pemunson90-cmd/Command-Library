@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T20:30:13Z",
-  "expires_utc": "2026-10-15T21:15:13Z",
-  "checkpoint_id": "cp-20261015-provider-profiles-wave-242",
-  "note": "Root retains shared/integration/final authority. Androidvault host SOURCE02/runtimeACK; nativeattempt2 failed missing libpulse.so.0 beforetests, targeted infrarepair next. Providerprofile READY02/contracts/schema16 KSP+focusedhostPASS, exact8 isolated Solmedium producer TAKEN baseline1824183. Root+worker2writers, rootsolebuildslotfree. No native/fullH07/provider/release claim."
+  "heartbeat_utc": "2026-10-15T20:46:57Z",
+  "expires_utc": "2026-10-15T21:31:57Z",
+  "checkpoint_id": "cp-20261015-provider-profiles-integration-243",
+  "note": "Root retains shared/integration/final authority. Vault realnative4cases29f7b3f acceptedlogscope; artifacts403 limitation retained. ProfileproducerSOURCEACKintegrated2a61a33/released; UI6 and Roomproof2 isolatedSOURCEreviews, rootactualshared/AppGraphUItest authored. Next oneassembledhostgate; oneROOTbuildslotfree/max3writersinclroot4children. No fullH07/provider/release claim."
 }

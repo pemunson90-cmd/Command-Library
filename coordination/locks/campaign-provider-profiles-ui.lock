@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-provider-profiles-ui-01",
   "owner": "/root/implement_provider_profiles_ui",
-  "status": "active",
+  "status": "released",
   "base_commit": "8d94d7b935614a1dfb86b10a4fc1f540bad84700",
   "contract_revision": "provider-profiles-v1-20261015/actions8d94d7b",
   "branch": "agent/campaign-provider-profiles-ui-20261015",
@@ -16,5 +16,7 @@
     "android-app/feature/shell/src/test/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/ProviderProfileActionsTest.kt",
     "coordination/handoffs/cx-campaign-provider-profiles-ui-01.md"
   ],
-  "build_slot": "NOTGRANTED; ROOTonly"
+  "build_slot": "ROOT assembled integration gate; worker not granted",
+  "return_commit": "c3a3898e92c15efc032b034259a5db44b0052970",
+  "integrated_commit": "8cff190"
 }
