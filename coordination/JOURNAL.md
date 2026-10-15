@@ -595,3 +595,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T07:19:41Z | codex | cp-20261015-inventory-schema-backend-claim-175 | containing commit | Schema12 exactsourceACK304hosttests pass;5consumerexamples compileonly; collection presentation active isolated, complete backend claimed awaiting verifiedprovision. Rootshared/integration retained; no activebuild; holds retained.
 
 2026-10-15T07:41:55Z | codex | cp-20261015-inventory-history-index-176 | containing commit | Schema13 indexed missingreservationguard prerequisite sourceACK5hosttests pass; rootfinishUIliteral fix; twoisolatedwriters active; backendexplicitrefresh/firstgate next then UIfinalgate. Rootintegrationdraft dirty/uncompiled, holds retained.
+
+2026-10-15T07:49:59Z | codex | cp-20261015-inventory-backend-integrated-177 | containing commit | Complete durableinventory8840c1b integrated461f7af/released/source-runtimeACK62tests; UI finalfocusedgate active solebuildslot, rootshared/appdraft heldpendingassembledverification; holds retained.

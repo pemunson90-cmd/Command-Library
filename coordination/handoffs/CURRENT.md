@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-inventory-history-index-176
+Checkpoint-ID: cp-20261015-inventory-backend-integrated-177
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-reservation-history-index-refresh-backend
+Next step: 3. accept-complete-inventory-backend
 
-Updated UTC: 2026-10-15T07:41:55Z
+Updated UTC: 2026-10-15T07:49:59Z
 Status: in_progress; lease: active.
-Verified base: 2542f7efd910e07b62418d13561064565234e881.
+Verified base: 461f7af1c635db9888a1f7c03d07d43d08667b9d.
 
-Schema13 indexed missingreservationguard prerequisite sourceACK5hosttests pass; rootfinishUIliteral fix; twoisolatedwriters active; backendexplicitrefresh/firstgate next then UIfinalgate. Rootintegrationdraft dirty/uncompiled, holds retained.
+Complete durableinventory8840c1b integrated461f7af/released/source-runtimeACK62tests; UI finalfocusedgate active solebuildslot, rootshared/appdraft heldpendingassembledverification; holds retained.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

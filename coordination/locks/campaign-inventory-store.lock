@@ -5,6 +5,9 @@
   "branch": "agent/campaign-inventory-store-20261015",
   "owner": "/root/implement_deck_edit_store; native isolated worker",
   "owned_paths": "Exact4 new collection/persistence backend files+2 storage hosttests+ownhandoff per packet; schema/core/InventoryRequests/codec/rootfixtures readonly",
-  "status": "active",
-  "authority": "Live root canonical claim only; inherited copies historical"
+  "status": "released",
+  "authority": "Live root canonical claim only; inherited copies historical",
+  "result_commit": "8840c1b00e6a90fa27e05ba0f8a337a07c7d57cf",
+  "integration_commit": "461f7af",
+  "verification": "Independent actualAstra source/runtime ACK62tests4XMLpass; rootactualAppGraph/Room13/UIintegration pending"
 }
