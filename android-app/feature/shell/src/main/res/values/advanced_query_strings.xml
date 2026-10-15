@@ -1,0 +1,32 @@
+<resources>
+    <string name="advanced_query_title">Advanced offline search</string>
+    <string name="advanced_query_back">Back to card search</string>
+    <string name="advanced_query_local">Search the installed data selected when you open this screen. Preparation is local and does not download cards.</string>
+    <string name="advanced_query_source_version">Data version: %1$s</string>
+    <string name="advanced_query_current">Use current installed data</string>
+    <string name="advanced_query_import">Manage card data</string>
+    <string name="advanced_query_input">Query</string>
+    <string name="advanced_query_example">Example: mv&lt;=3 type:creature. Combine filters with AND, OR, NOT and parentheses; quote names containing spaces.</string>
+    <string name="advanced_query_printing_scope">Printing filters find a printing that matches all conditions together. A negated printing filter tests that printing; it does not exclude every printing of the card.</string>
+    <string name="advanced_query_any_face">Any face</string>
+    <string name="advanced_query_same_face">Same face</string>
+    <string name="advanced_query_canonical">Card fields</string>
+    <string name="advanced_query_any_face_help">Different face filters may match different faces. Missing values stay unknown, including under NOT.</string>
+    <string name="advanced_query_same_face_help">The full expression must match one face. The complete card name can also match; card-wide fields keep their meaning.</string>
+    <string name="advanced_query_canonical_help">Use original card-level fields, without selecting a front face. Missing card fields stay unknown.</string>
+    <string name="advanced_query_ready">Offline filters are ready.</string>
+    <string name="advanced_query_prepare_needed">Prepare this installed data before using advanced filters.</string>
+    <string name="advanced_query_prepare_partial">Preparation is incomplete. Continue to finish the remaining local work.</string>
+    <string name="advanced_query_prepare_failed">Preparation failed. Review the error before retrying.</string>
+    <string name="advanced_query_progress">Prepared cards: %1$d. Prepared printings: %2$d.</string>
+    <string name="advanced_query_search">Search</string>
+    <string name="advanced_query_prepare">Prepare offline filters</string>
+    <string name="advanced_query_refresh">Refresh preparation status</string>
+    <string name="advanced_query_stop">Stop</string>
+    <string name="advanced_query_preparing">Preparing installed data…</string>
+    <string name="advanced_query_working">Reading installed data…</string>
+    <string name="advanced_query_unsupported">Collection, selected-deck and price filters are not available in this search yet. Other unsupported source or language combinations are also rejected.</string>
+    <string name="advanced_query_diagnostic">Check the query near characters %1$d–%2$d. Verify operators, parentheses and quoted text.</string>
+    <string name="advanced_query_empty">No matching cards in this data.</string>
+    <string name="advanced_query_next">Next page</string>
+</resources>

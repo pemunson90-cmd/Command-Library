@@ -115,6 +115,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 draft.requestExit(DeferredDeckAction.Navigate(target))
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
+                if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
                 destination = target
             }
@@ -124,6 +125,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             if (exit.action is DeferredDeckAction.Navigate || exit.action is DeferredDeckAction.OpenVersions) {
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
+                        if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
                         destination = action.destination
                     }
@@ -135,6 +137,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         LaunchedEffect(visibleDestination, controllers) {
+            if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
         }
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
@@ -385,6 +388,7 @@ private fun DestinationContent(
             onOpenCatalog = { onNavigate(ShellDestination.CATALOG) },
             modifier = modifier,
             rulings = controllers.rulings,
+            advanced = controllers.advancedQuery,
             printings = controllers.printings,
             onAddPrinting = controllers.collection?.let { collection -> { printing ->
                 collection.beginAdd(printing); onNavigate(ShellDestination.COLLECTION)

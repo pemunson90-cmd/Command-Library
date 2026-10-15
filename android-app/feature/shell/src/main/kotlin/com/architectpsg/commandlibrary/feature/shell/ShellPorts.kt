@@ -78,4 +78,8 @@ public class ShellPorts(
     /** Existing whole-deck graph validator. Storage remains responsible for CLDK wire admission. */
     public val deckSnapshotValidation: ((com.architectpsg.commandlibrary.core.model.DeckSnapshot,
         com.architectpsg.commandlibrary.core.model.CancelToken) -> com.architectpsg.commandlibrary.core.model.Outcome<Unit>)? = null,
+    /** Complete local-only typed execution, no online acquisition or implicit preparation. */
+    public val localCardQuery: com.architectpsg.commandlibrary.core.model.LocalCardQuery? = null,
+    public val catalogSearchPreparation: com.architectpsg.commandlibrary.core.model.CatalogSearchPreparation? = null,
+    public val cardQueryParser: ((String) -> com.architectpsg.commandlibrary.core.model.CardQueryParseResult)? = null,
 )

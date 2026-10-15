@@ -7,6 +7,7 @@ import com.architectpsg.commandlibrary.feature.shell.document.PlainDeckInputSour
 import com.architectpsg.commandlibrary.feature.shell.document.PlainDeckDocumentWriter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -29,6 +30,8 @@ internal class ShellControllers(
     val importLimits: CatalogImportLimits = ports.importLimits
     val status = CatalogStatusController(scope, ports.catalogStatus, ioDispatcher)
     val search = SearchController(scope, ports.catalogLookup, ioDispatcher, textLookup = ports.catalogTextLookup, enableSuggestions = true, onStaleCursor = status::refresh)
+    val advancedQuery = if (ports.localCardQuery != null && ports.catalogSearchPreparation != null && ports.cardQueryParser != null)
+        AdvancedQueryController(scope, ports.localCardQuery, ports.catalogSearchPreparation, ports.cardQueryParser, ioDispatcher) else null
     val catalogImport = ImportController(
         scope = scope,
         port = ports.catalogImport,
@@ -112,7 +115,9 @@ internal class ShellControllers(
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
-        search.state.value.selected == card && status.state.value.status?.activeGeneration()?.id == card.provenance.generation
+        val advanced = advancedQuery?.state?.value
+        (if (advanced?.visible == true) advanced.selected else search.state.value.selected) == card &&
+            status.state.value.status?.activeGeneration()?.id == card.provenance.generation
     } }
     val rulings = ports.rulings?.let { RulingsController(scope, it, ioDispatcher) }
     val downloads = ports.englishCatalog?.let { DownloadsController(scope, it, ports.settings, ports.catalogStatus, ioDispatcher,
@@ -146,7 +151,10 @@ internal class ShellControllers(
                 }
         }
         scope.launch {
-            search.state.map { it.selected }.distinctUntilChanged().collect { printings?.selectCard(it) }
+            val advanced = advancedQuery
+            if (advanced == null) search.state.map { it.selected }.distinctUntilChanged().collect { printings?.selectCard(it) }
+            else combine(search.state, advanced.state) { literal, typed -> if (typed.visible) typed.selected else literal.selected }
+                .distinctUntilChanged().collect { printings?.selectCard(it) }
         }
         status.refresh()
         settings.load()

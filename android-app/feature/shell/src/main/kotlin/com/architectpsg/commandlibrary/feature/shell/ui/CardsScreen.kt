@@ -30,6 +30,10 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,6 +59,8 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.SearchUiState
 import com.architectpsg.commandlibrary.feature.shell.presentation.RulingsController
 import com.architectpsg.commandlibrary.feature.shell.presentation.PrintingSelectionController
 import com.architectpsg.commandlibrary.feature.shell.presentation.installed
+import com.architectpsg.commandlibrary.feature.shell.presentation.activeGeneration
+import com.architectpsg.commandlibrary.feature.shell.presentation.AdvancedQueryController
 
 /**
  * Expanded width shows results and details side by side. Narrower widths show one pane; details
@@ -72,7 +78,21 @@ internal fun CardsScreen(
     onManageRulings: (() -> Unit)? = null,
     onLookupKeyword: ((String) -> Unit)? = null,
     onAddPrinting: ((com.architectpsg.commandlibrary.core.model.PrintingRecord) -> Unit)? = null,
+    advanced: AdvancedQueryController? = null,
 ) {
+    var advancedOpen by rememberSaveable { mutableStateOf(false) }
+    val generation = statusState.status?.activeGeneration()
+    val snapshot = generation?.let { com.architectpsg.commandlibrary.core.model.SnapshotReference(it.provenance.provider, it.id, null, com.architectpsg.commandlibrary.core.model.LanguageTag.ENGLISH) }
+    val version = (generation?.provenance?.version as? Knowledge.Known)?.value
+    val openAdvanced: (() -> Unit)? = advanced?.let { { it.open(snapshot, version); advancedOpen = true } }
+    if (advancedOpen && advanced != null) {
+        LaunchedEffect(advanced) { advanced.resume() }
+        val advancedState by advanced.state.collectAsState()
+        AdvancedQueryScreen(advanced, widthClass, { advanced.hide(); advancedOpen = false },
+            { advanced.open(snapshot, version); advanced.refreshPreparation() }, onOpenCatalog, modifier,
+            rulings, printings.takeIf { advancedState.snapshot?.generation == generation?.id }, onLookupKeyword, onAddPrinting)
+        return
+    }
     val state by controller.state.collectAsState()
     val listState = rememberLazyListState()
     val catalogMissing = statusState.status?.installed == false
@@ -80,7 +100,7 @@ internal fun CardsScreen(
     if (widthClass == WidthClass.EXPANDED && LocalDensity.current.fontScale < 1.5f) {
         Row(modifier.fillMaxSize()) {
             Box(Modifier.weight(0.45f).fillMaxHeight().testTag(ShellTags.RESULTS_PANE)) {
-                SearchPane(controller, state, catalogMissing, widthClass, showSelection = true, onOpenCatalog, listState)
+                SearchPane(controller, state, catalogMissing, widthClass, showSelection = true, onOpenCatalog, listState, openAdvanced)
             }
             VerticalDivider()
             Box(Modifier.weight(0.55f).fillMaxHeight().testTag(ShellTags.DETAIL_PANE)) {
@@ -102,7 +122,7 @@ internal fun CardsScreen(
             CardDetail(selected, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE), rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword, onAddPrinting = onAddPrinting)
         } else {
             Box(modifier.fillMaxSize().testTag(ShellTags.RESULTS_PANE)) {
-                SearchPane(controller, state, catalogMissing, widthClass, showSelection = false, onOpenCatalog, listState)
+                SearchPane(controller, state, catalogMissing, widthClass, showSelection = false, onOpenCatalog, listState, openAdvanced)
             }
         }
     }
@@ -117,6 +137,7 @@ private fun SearchPane(
     showSelection: Boolean,
     onOpenCatalog: () -> Unit,
     listState: androidx.compose.foundation.lazy.LazyListState,
+    onAdvanced: (() -> Unit)? = null,
 ) {
     LazyColumn(
         state = listState,
@@ -125,6 +146,9 @@ private fun SearchPane(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item(key = "search-form") { SearchForm(controller, state) }
+        if (onAdvanced != null) item(key = "advanced-query-entry") {
+            OutlinedButton(onAdvanced, modifier = Modifier.heightIn(min = 48.dp).testTag("advanced-query-open")) { Text(stringResource(R.string.advanced_query_title)) }
+        }
         if (state.suggestionsLoading) item(key = "suggestions-loading") { Busy(stringResource(R.string.search_suggestions_loading)) }
         if (state.suggestionProblem != null) item(key = "suggestions-problem") {
             MessageBlock(stringResource(R.string.search_suggestions_failed), listOf(stringResource(problemText(state.suggestionProblem))), tone = MessageTone.INFO)

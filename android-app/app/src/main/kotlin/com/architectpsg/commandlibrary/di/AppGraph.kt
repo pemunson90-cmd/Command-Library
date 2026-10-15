@@ -23,6 +23,8 @@ import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckVer
 import com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckLibrary
 import com.architectpsg.commandlibrary.data.storage.life.codec.LifePayloadCodec
 import com.architectpsg.commandlibrary.feature.life.persistence.SqlPlayerProfileRepository
+import com.architectpsg.commandlibrary.feature.search.LocalCatalogQueryCompiler
+import com.architectpsg.commandlibrary.feature.search.LocalCardQueryParser
 import com.architectpsg.commandlibrary.feature.links.LocalCardLinks
 import com.architectpsg.commandlibrary.feature.catalog.LocalCatalog
 import com.architectpsg.commandlibrary.feature.catalog.api.AndroidCatalogServices
@@ -84,6 +86,9 @@ internal class AppGraph(
                         rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
                         catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
+                        localCardQuery = AndroidCatalogServices.localCardQuery(opened.value, LocalCatalogQueryCompiler()),
+                        catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),
+                        cardQueryParser = LocalCardQueryParser()::parse,
                         plainDeckLists = PlainTextDeckListCodec(), deckSnapshotValidation = DeckSnapshotValidator::validate,
                         deckPatchProjection = DeckPatchReducer::propose, localInventory = inventory, ownedQuantity = LocalOwnedQuantityAllocator(), inventoryProjection = InventoryPatchReducer::propose)
                     ready = ports

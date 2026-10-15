@@ -61,6 +61,9 @@ public class AndroidCatalogServices private constructor(
         public fun localPrintings(database: Database): CatalogPrintingLookup = LocalCatalogIdentities(database)
 
         /** Pure local bounded preparation. Caller owns database/clock; no transport/job recovery. */
+        public fun localCardQuery(database: Database, compiler: CatalogQueryCompiler): LocalCardQuery =
+            LocalPreparedCardQuery(database, compiler)
+
         public fun localSearchPreparation(database: Database, clock: Clock): CatalogSearchPreparation =
             LocalCatalogSearchPreparation(database, clock)
 
