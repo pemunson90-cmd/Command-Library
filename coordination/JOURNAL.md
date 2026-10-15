@@ -697,3 +697,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T16:13:38Z | codex | cp-20261015-export-controller-dispatch-225 | containing commit | Reviewed exact export-controller producer claimed in verified isolated worktree at accepted70989c0; root retains shared composition, one free local build slot
 
 2026-10-15T16:26:54Z | codex | cp-20261015-export-producer-gate-226 | containing commit | Reviewed export controller and actual all-board byte-loss AppGraph fixture integrated; all worker claims released; root focused producer compatibility gate next
+
+2026-10-15T16:32:25Z | codex | cp-20261015-export-producer-accepted-227 | containing commit | Export producer and real seven-board codec-validator-Room oracle independently accepted:30 tests pass; next disjoint export UI and actual-app consumer packets

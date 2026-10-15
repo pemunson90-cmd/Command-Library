@@ -1,3 +1,5 @@
+BOUNDED PRODUCER HOST ACCEPTED b545f41:29controller+1actualcodec-validator-Roomoracle=30tests2XML0f/e/s1m18/655pins/independentSOURCE-RUNTIMEACK. ClaimRELEASED; noactualexportUI/picker/controller-writer/native acceptance. See docs/verification/transfer/PLAIN-DECK-EXPORT-BOUNDARY-20261015.md.
+
 SOURCE-INTEGRATED / bounded claim RELEASED: exact9086017f511471f4db6276365e54f37f5e32057b→436be32, exact4NEWpaths/pins/clean original verified; independentSOURCE02ACK.29authoredtests/runtimeNOTRUN; zero-byteprebuildHOLD+repair snapshots preserved. Rootfocusedproducer+actualcompatibilitygate next.
 
 Historical dispatch below:
