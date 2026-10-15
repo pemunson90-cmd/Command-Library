@@ -1638,8 +1638,8 @@
         ],
         "verification": "known good/bad/unknown per actual format; basic/text exceptions/pairs/companion/limited pools; no false legal",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "Ports only; deterministic snapshot engine independent; actual sources and deck UI needed for acceptance",
+        "status": "custom_board_checks_host_integrated_acceptance_open",
+        "observed_implementation": "Actual saved-deck user-defined board-size checks integrated:bounded helper10tests at4e1adbe; unchanged helper plus retained controller3/actualapp1 atd471e34 pass. SOURCE ACK; original shell helper-name collision and source-only inputrejection HOLD preserved. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md. Official/versioned registry/cardlegality/remaining predicates and persisted custom definitions/native/fullB06 remain open.",
         "ownership_group": "validation",
         "resources": [
           "local-gradle-serial"

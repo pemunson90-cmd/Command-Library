@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-board-constraints-01",
   "owner": "/root/implement_board_constraints",
-  "status": "active",
+  "status": "released",
   "base_commit": "1965c54dfca511d4a371270d806281e60ed9682a",
   "branch": "agent/campaign-board-constraints-20261015",
   "worktree": "/workspace/command-library-board-constraints-01",
@@ -12,5 +12,8 @@
     "android-app/feature/validation/src/test/kotlin/com/architectpsg/commandlibrary/feature/validation/LocalBoardConstraintChecksTest.kt",
     "coordination/handoffs/cx-campaign-board-constraints-01.md"
   ],
-  "build_slot": "NOTGRANTED; rootonly"
+  "build_slot": "NOTGRANTED; rootonly",
+  "return_commit": "5eba0ced3e332df41d009bbe864fbe298f38858c",
+  "integration_commit": "4e1adbe3bb4956005e4a1e4e3b9eb2eec520635e",
+  "disposition": "Independent SOURCE/RUNTIME ACK; producer10 and consumers4 passes separately with unchanged producer. Exact scoped return integrated, original clean worktree retained."
 }

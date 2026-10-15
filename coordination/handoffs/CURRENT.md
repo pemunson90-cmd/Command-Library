@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-board-constraints-wave-234
+Checkpoint-ID: cp-20261015-board-checks-host-accepted-235
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. board-constraints-claimed
+Next step: 3. board-checks-host-accepted
 
-Updated UTC: 2026-10-15T17:58:32Z
+Updated UTC: 2026-10-15T18:07:22Z
 Status: in_progress; lease: active.
-Verified base: 1965c54dfca511d4a371270d806281e60ed9682a.
+Verified base: d471e349f81d89ece0bc9683b0cc8e77704d88b8.
 
-Reviewed bounded board-count workflow claimed in isolated source lane; root actual saved-deck consumer and module wiring; query host accepted
+Actual saved-deck custom size checks host accepted;10producer+4consumer source-equivalent scope; next retained offline AI export/pasteback boundary
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
