@@ -1,0 +1,11 @@
+{
+  "component": "decks-local-edit-store",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-edits-store-01",
+  "branch": "agent/campaign-deck-edit-store-20261015",
+  "base_commit": "66302c414eb6ff769d2a80dab81dcaaf1a6f4359",
+  "owner": "/root/implement_deck_edit_store; canonical claim controlled by root",
+  "owned_paths": "Explicit4featurepersistence/2storagetest/ownhandoff allowlist in packet; sharedrequests/core/schema/UI read-only",
+  "status": "active",
+  "authority": "Live root continuation only; inherited copies historical"
+}

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T06:05:19Z",
-  "expires_utc": "2026-10-15T06:50:19Z",
-  "checkpoint_id": "cp-20261015-durable-edit-boundary-168",
+  "heartbeat_utc": "2026-10-15T06:06:04Z",
+  "expires_utc": "2026-10-15T06:51:04Z",
+  "checkpoint_id": "cp-20261015-deck-edit-store-claim-169",
   "note": "D29root retains shared/schema/DI/UI/integration/finalmerge. Quantityproducer integratedd1b743b source/evidenceACK;111scopedtests0fail/error/skip sharededitcodec/schema11 boundary, finalrequestbounds7testspass. Nextisolateddurableeditbackend/rooteditor; oneGradleslot, finishedAPK/GameService/nativeholds."
 }

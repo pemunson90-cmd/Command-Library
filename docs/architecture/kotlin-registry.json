@@ -1365,7 +1365,7 @@
         "verification": "real SQLite CAS/restart/grouped undo/immutable version/pre-restore recovery; cancellations",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "Real complete LocalDeckLibrary create/load/list/duplicate integrated0e0ec99 over reviewed schema10/CLDK1; actualRoom/AppGraph boundary tested. Editing/groupedundo/drafts/version/restore/package-safe operations and advancedlibraryquery remain open successors; no partial aggregateDeckRepository bound",
+        "observed_implementation": "Real complete LocalDeckLibrary create/load/list/duplicate integrated0e0ec99 over reviewed schema10/CLDK1; actualRoom/AppGraph boundary tested. Reviewedsharedschema11/CLDP1/editrequestboundary66302c4 verified111scopedtests14XML0fail/error/skip; bounded realapply/groupedundo packet cx-campaign-deck-edits-store-01 claimed. Drafts/version/restore/package-safe operations and advancedlibraryquery remain open successors; no partial aggregateDeckRepository bound",
         "ownership_group": "decks",
         "resources": [
           "local-gradle-serial"
