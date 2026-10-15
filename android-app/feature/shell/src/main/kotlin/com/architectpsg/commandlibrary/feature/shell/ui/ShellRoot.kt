@@ -58,6 +58,7 @@ import com.architectpsg.commandlibrary.core.model.DeckSnapshot
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportPreview
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
 import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.BoardConstraintDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DrawProbabilityDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.PlainDeckExportSurface
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
@@ -116,6 +117,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
                 if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
+                if (target != ShellDestination.DECKS) controllers.boardConstraints?.hide()
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
                 destination = target
             }
@@ -126,6 +128,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
                         if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
+                        if (action.destination != ShellDestination.DECKS) controllers.boardConstraints?.hide()
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
                         destination = action.destination
                     }
@@ -138,6 +141,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         LaunchedEffect(visibleDestination, controllers) {
             if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
+            if (visibleDestination != ShellDestination.DECKS) controllers.boardConstraints?.hide()
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
         }
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
@@ -249,6 +253,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
+                controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
                 controllers.plainDeckExport?.let { PlainDeckExportSurface(it, choosePlainExport, pendingPlainExport != null) }
@@ -427,7 +432,11 @@ private fun DestinationContent(
                 onOpenVersions = if (versions != null) onOpenVersions else null,
                 onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
                 onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled,
-                onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) })
+                onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) },
+                onBoardChecks = controllers.boardConstraints?.let { checker -> { deck ->
+                    val current = library.state.value
+                    if (current.selected == deck && !current.loadingDetail && current.editor == null && !current.pending && !current.mutationBusy && current.form == null) checker.open(deck)
+                } })
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },

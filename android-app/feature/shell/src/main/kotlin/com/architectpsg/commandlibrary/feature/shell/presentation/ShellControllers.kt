@@ -26,6 +26,7 @@ internal class ShellControllers(
     ioDispatcher: CoroutineDispatcher,
     documentWriter: PlainDeckDocumentWriter? = null,
 ) {
+    val boardConstraints = ports.deckSnapshotValidation?.let { BoardConstraintController(scope, kotlinx.coroutines.Dispatchers.Default, it) }
     val drawProbability = DrawProbabilityController(scope, kotlinx.coroutines.Dispatchers.Default)
     val importLimits: CatalogImportLimits = ports.importLimits
     val status = CatalogStatusController(scope, ports.catalogStatus, ioDispatcher)
@@ -107,6 +108,14 @@ internal class ShellControllers(
                 deckLibrary?.refresh()
                 collection?.refreshDecks()
             }) else null
+    init {
+        if (deckLibrary != null && boardConstraints != null) scope.launch {
+            deckLibrary.state.collect { state ->
+                boardConstraints.observe(state.selected.takeIf { !state.loadingDetail && state.editor == null })
+            }
+        }
+    }
+
     val plainDeckExport: PlainDeckExportController? = if (documentWriter != null && ports.plainDeckLists != null &&
         ports.localDecks != null && ports.deckSnapshotValidation != null)
         PlainDeckExportController(scope = scope, library = ports.localDecks, codec = ports.plainDeckLists,

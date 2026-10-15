@@ -1,0 +1,19 @@
+<resources>
+    <string name="board_checks_title">Check board sizes</string>
+    <string name="board_checks_explanation">Check this saved deck against limits you enter. Leave both fields blank to leave a board unassessed. Equal minimum and maximum means an exact size. These session-only user rules do not establish official format legality and do not change your deck.</string>
+    <string name="board_checks_minimum">Minimum copies (optional)</string>
+    <string name="board_checks_maximum">Maximum copies (optional)</string>
+    <string name="board_checks_invalid">Enter at least one limit using whole numbers from 0 to 2,147,483,647. Maximum must be at least minimum. The saved deck must be valid.</string>
+    <string name="board_checks_results">Results for your limits</string>
+    <string name="board_checks_pass">%1$s: %2$s copies — passes your limits</string>
+    <string name="board_checks_fail">%1$s: %2$s copies — outside your limits</string>
+    <string name="board_checks_assess">Check sizes</string>
+    <string name="board_checks_close">Close</string>
+    <string name="board_checks_main">Main deck</string>
+    <string name="board_checks_sideboard">Sideboard</string>
+    <string name="board_checks_commander">Commander</string>
+    <string name="board_checks_companion">Companion</string>
+    <string name="board_checks_maybeboard">Maybeboard</string>
+    <string name="board_checks_partner">Partner</string>
+    <string name="board_checks_background">Background</string>
+</resources>

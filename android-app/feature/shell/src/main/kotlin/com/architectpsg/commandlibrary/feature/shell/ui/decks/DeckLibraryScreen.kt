@@ -37,7 +37,8 @@ internal object DeckLibraryTags {
 internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null, onOpenVersions: ((DeckId) -> Unit)? = null,
     onImportText: (() -> Unit)? = null, importTextEnabled: Boolean = true,
     onExportText: ((DeckSnapshot) -> Unit)? = null, exportTextEnabled: Boolean = true,
-    onDrawProbabilities: ((DeckSnapshot) -> Unit)? = null) {
+    onDrawProbabilities: ((DeckSnapshot) -> Unit)? = null,
+    onBoardChecks: ((DeckSnapshot) -> Unit)? = null) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -107,6 +108,9 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                             enabled = !state.pending && !state.mutationBusy && state.editor == null && state.form == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("deck-open-versions")) { Text(stringResource(R.string.decks_open_versions)) }
                     }
+                    if (onBoardChecks != null) OutlinedButton({ onBoardChecks(selected) },
+                        enabled = !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("deck-board-checks")) { Text(stringResource(R.string.board_checks_title)) }
                     if (onDrawProbabilities != null) OutlinedButton({ onDrawProbabilities(selected) },
                         enabled = !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-draw-probabilities")) { Text(stringResource(R.string.draw_probability_title)) }
