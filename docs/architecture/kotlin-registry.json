@@ -1407,6 +1407,16 @@
           "local-gradle-serial"
         ],
         "acceptance_prerequisites": [],
+        "approved_intake": {
+          "decision": "D-30",
+          "sources": [
+            "https://github.com/pemunson90-cmd/Command-Library/pull/23",
+            "https://github.com/pemunson90-cmd/Command-Library/issues/24"
+          ],
+          "detail": "docs/superpowers/plans/2026-10-15-moxfield-tag-aware-deck-design.md",
+          "eligible_outcome": "Persistent searchable personal tag pool CRUD/reuse, arbitrary many-to-many labels, deck/entry overrides/suppressions and accessible bulk tagging with undo/version/backup identity preservation. No active assignment change.",
+          "produces_for_consumers": "Reviewed tag-pool/manual-override snapshot and revision; sourced facts, manual defaults/overrides and derived suggestions remain separate."
+        },
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
@@ -1577,6 +1587,15 @@
         "acceptance_prerequisites": [
           "deck-ui"
         ],
+        "approved_intake": {
+          "decision": "D-30",
+          "detail": "docs/superpowers/plans/2026-10-15-moxfield-tag-aware-deck-design.md",
+          "output_dependencies": {
+            "baseline_mana": "Actual catalog-backed face/mana facts; baseline curve/pips/conditional sources/types/average/token analysis stays independent of tag UI and advanced inference.",
+            "tag_views": "deck-ui manual tag-pool/entry-override contract and real deck revision; tag AND/OR/intersections, board/selection filters, overlapping role totals and editable targets.",
+            "what_if": "Read-only staged DeckSnapshot comparison; deck-persistence for apply/undo, pricing/validation/owned/bracket producers only for their own fields; unknown optional fields do not block base report."
+          }
+        },
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
@@ -1726,6 +1745,14 @@
           "local-gradle-serial"
         ],
         "acceptance_prerequisites": [],
+        "approved_intake": {
+          "decision": "D-30",
+          "detail": "docs/superpowers/plans/2026-10-15-moxfield-tag-aware-deck-design.md",
+          "output_dependencies": {
+            "conservative_auto_roles": "Actual catalog Oracle/type/keyword facts, versioned bounded offline rules and deck-ui manual overrides/suppressions; provenance/review/reject and persistent Show auto tags presentation. No AI provider/runtime dependency.",
+            "advanced_refinements": "Context/commander synergy or freeform brewing only after stable prerequisites and without delaying core tags/analysis/v1 release; manual arbitrary synergy labels remain usable independently."
+          }
+        },
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
