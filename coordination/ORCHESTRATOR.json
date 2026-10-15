@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T16:32:25Z",
-  "expires_utc": "2026-10-15T17:17:25Z",
-  "checkpoint_id": "cp-20261015-export-producer-accepted-227",
-  "note": "Acceptedexportproducerb545f41 actual30tests2XML0f/e/s1m18/655pins/independentSOURCE-RUNTIMEACK:29faithfulcontroller+1realAppGraph229byte81loss7boardRoomoracle. Factory/nativeKotlincompileONLY/noactualexportUI/picker/writerpath. Priorimport/output17acceptedseparately. Allclaimsreleased/noGradle; nextroot2reviewedconsumerpackets/exactbaseline. Rootmax3writersinclroot/4children/onebuildslot; publicationinvalidtoken/fullreleaseholds."
+  "heartbeat_utc": "2026-10-15T16:37:17Z",
+  "expires_utc": "2026-10-15T17:22:17Z",
+  "checkpoint_id": "cp-20261015-export-consumer-wave-228",
+  "note": "Acceptedexportproducerb54530passes/655pins/ACK; twoREADYreviewed exportUI/appconsumers nowTAKEN verifiedisolationSAMEbase00556e6/exact4NEW+2NEW. Root+2writers3max/4childrenmax/oneROOTGradleslotFREE. Rootexistingentry/picker/navnext; newUI/app/runtimeNOTRUN. Priorimport/output17acceptedseparately; publicationinvalidtoken/fullreleaseholds/rootsharedauthorityunchanged."
 }

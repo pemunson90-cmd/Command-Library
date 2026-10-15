@@ -699,3 +699,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T16:26:54Z | codex | cp-20261015-export-producer-gate-226 | containing commit | Reviewed export controller and actual all-board byte-loss AppGraph fixture integrated; all worker claims released; root focused producer compatibility gate next
 
 2026-10-15T16:32:25Z | codex | cp-20261015-export-producer-accepted-227 | containing commit | Export producer and real seven-board codec-validator-Room oracle independently accepted:30 tests pass; next disjoint export UI and actual-app consumer packets
+
+2026-10-15T16:37:17Z | codex | cp-20261015-export-consumer-wave-228 | containing commit | Two disjoint READY-reviewed export UI and actual-app consumers claimed at accepted00556e6; root retains shared picker/navigation, maxthreewriters includingroot

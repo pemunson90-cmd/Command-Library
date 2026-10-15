@@ -1,0 +1,13 @@
+{
+  "component": "plain-deck-export-app-tests",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-plain-deck-export-app-tests-01",
+  "owner": "/root/implement_inventory_projection native isolated writer",
+  "status": "active",
+  "base_commit": "00556e6c9d9d315e8f88c24f14f5c4f902c3a106",
+  "branch": "agent/campaign-plain-deck-export-app-tests-20261015",
+  "worktree": "/workspace/command-library-plain-deck-export-app-tests-01",
+  "owned_paths": "EXACT2NEWpaths per canonical task; ALL existing/shared forbidden",
+  "build_slot": "NOTGRANTED; ROOToneGradleslot",
+  "authority": "independent campaign_engineering_review literalREADYACK; rootcanonicalclaim sole authority"
+}
