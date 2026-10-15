@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="offline_prompt_title">Offline deck prompts</string>
+    <string name="offline_prompt_intro">Create a complete prompt to copy into a service you choose. Nothing is sent automatically.</string>
+    <string name="offline_prompt_roast">Roast</string>
+    <string name="offline_prompt_chat">Chat</string>
+    <string name="offline_prompt_upgrade">Upgrade</string>
+    <string name="offline_prompt_surprise">Surprise</string>
+    <string name="offline_prompt_gentle">Gentle</string>
+    <string name="offline_prompt_medium">Medium</string>
+    <string name="offline_prompt_spicy">Spicy</string>
+    <string name="offline_prompt_question">Your question</string>
+    <string name="offline_prompt_constraints">Budget, bracket, owned cards and other constraints</string>
+    <string name="offline_prompt_include_notes">Include private entry notes, deck description and primer</string>
+    <string name="offline_prompt_session">Template edits apply to this session only. Keep each required variable exactly once: {{deck}}, {{constraints}}, {{request}}.</string>
+    <string name="offline_prompt_template">Edit prompt template</string>
+    <string name="offline_prompt_reset">Reset template</string>
+    <string name="offline_prompt_current_data">Use current card data</string>
+    <string name="offline_prompt_no_snapshot">No card snapshot selected. Export still works; card existence may be unavailable.</string>
+    <string name="offline_prompt_snapshot">Card data is fixed to the selected snapshot. Refresh explicitly to use current data.</string>
+    <string name="offline_prompt_render">Preview complete prompt</string>
+    <string name="offline_prompt_contexts">Optional card contexts included: %1$d; omitted: %2$d. All mandatory deck entries remain in the prompt.</string>
+    <string name="offline_prompt_copy">Copy prompt</string>
+    <string name="offline_prompt_copied">Prompt copied.</string>
+    <string name="offline_prompt_copy_failed">The prompt could not be copied. Try again.</string>
+    <string name="offline_prompt_review_scope">Paste a reply to check only explicit [[exact card name]] references against the selected card data. Unmarked narrative is not reviewed. No deck changes are applied.</string>
+    <string name="offline_prompt_reply">Paste reply</string>
+    <string name="offline_prompt_review">Review card references</string>
+    <string name="offline_prompt_checks">Format legality: Unknown
+Color identity: Unknown
+Budget: Unknown
+Owned cards: Unknown
+Finding a card does not establish legality, affordability or ownership.</string>
+    <string name="offline_prompt_cost">Acquisition cost: Unknown</string>
+    <string name="offline_prompt_angle">Stated Surprise angle: %1$s</string>
+    <string name="offline_prompt_angle_unknown">Not stated</string>
+    <string name="offline_prompt_found">Found — open original card details</string>
+    <string name="offline_prompt_ambiguous">Ambiguous — multiple original matches</string>
+    <string name="offline_prompt_not_found">Not found in the selected card data</string>
+    <string name="offline_prompt_unavailable">Unavailable — existence is unknown</string>
+    <string name="offline_prompt_rejected">This field exceeds its input limit or contains invalid text. Correct this same field before continuing. Question, constraints and template: 32 KiB each; reply: 256 KiB UTF-8.</string>
+</resources>
