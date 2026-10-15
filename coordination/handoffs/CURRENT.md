@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-collection-bulk-app-integrated-191
+Checkpoint-ID: cp-20261015-draft-pure-integrated-192
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-real-collection-bulk-app-workflow
+Next step: 3. accept-draft-pure-helpers
 
-Updated UTC: 2026-10-15T10:37:01Z
+Updated UTC: 2026-10-15T10:41:20Z
 Status: in_progress; lease: active.
-Verified base: abad49ad66623ef3b6d84dcb0076a4243fe9d8a1.
+Verified base: 86cf3f543826028372ffa034f370c3756ade9a0c.
 
-ActualMainActivity/AppGraph/Room bulkworkflow exactsource/runtimeACK300tests43XML; producer54overlap/lintACK. PuredraftsourceACK/solebuild74740active, rootphysicalschema-framingnext; publicationblocked/no nativeAPKclaim.
+Exactpureproducer86cf3f5 source/runtimeACK140tests13XML/claimreleased. Bulkappacceptedabb7f28/300tests. Rootphysical2table9indexshapeACK, actualRoomsource/export/migration/framingnext; no buildactive/publicationblocked.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

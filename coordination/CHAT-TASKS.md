@@ -55,4 +55,4 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 
 | campaign-collection-bulk | Mixed selection/Keep-Set/eligible finish/complete row preview/atomic apply+undo | DONE producer | Integratedc23c033/abad49a source-runtime-lintACK54tests; root actualassembly20928 pending | [packet](tasks/cx-campaign-collection-bulk-01.md) |
 
-| campaign-deck-draft-pure | Complete lossless rawcodec + canonical scope planner | TAKEN native isolated | Reviewed architecture/corecompile/wiregoldens;5NEWpaths only, no buildslot | [packet](tasks/cx-campaign-deck-draft-pure-01.md) |
+| campaign-deck-draft-pure | Complete lossless rawcodec + canonical scope planner | DONE producer | Exact4700542 integrated86cf3f5, source/runtimeACK140tests; store/schema/UI remain dependent | [packet](tasks/cx-campaign-deck-draft-pure-01.md) |

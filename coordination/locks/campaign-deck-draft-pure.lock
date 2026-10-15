@@ -3,10 +3,13 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-campaign-deck-draft-pure-01",
   "owner": "/root/implement_deck_edit_store native isolated writer",
-  "status": "active",
+  "status": "released",
   "branch": "agent/campaign-deck-draft-pure-20261015",
   "worktree": "/workspace/command-library-deck-draft-pure-01",
   "base_commit": "containing reviewedboundary claim commit supplied beforeedit",
   "owned_paths": "Exact5NEWplanner/codec/tests/handoff paths from packet; allsharedreadonly",
-  "authority": "Canonical root localclaim, authpublicationblock not release"
+  "authority": "Canonical root localclaim, authpublicationblock not release",
+  "completion_commit": "47005425418b3818077689a1895a7fc32b8ba6ef",
+  "integrated_commit": "86cf3f543826028372ffa034f370c3756ade9a0c",
+  "verification": "Independent exactsource/runtimeACK140tests13XML44new/96existing; purehelpersONLY, no store/UI binding"
 }

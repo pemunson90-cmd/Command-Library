@@ -1,4 +1,4 @@
-# Draft storage physical proposal — pending independent DDL review
+# Draft storage physical proposal — physical shape ACK; exact entity/export gate next
 
 Root owns implementation/schema/namespace/framing. Read-only actual probe by inventory_journal_review verified8da91d6 schema14/46entities/registrationMigration13To14. This is proposed next additive layout only: no schema15 code/export/migration/runtime accepted. Prerequisite behavior is reviewed 2026-10-15-deck-draft-autosave-design.md; exact core types compiled at8da. Two new tables/nine indexes, all46oldentities unchanged. Root must derive eventual migration from actualKSPexport and retain14/history fixtures immutable.
 
@@ -31,3 +31,5 @@ Current-adapter harnesses HostDeckDatabase(schema10),HostDeckEditDatabase(schema
 ## Remaining exact root gates
 
 Freeze newreceiptkind/additiveCLDRtag preserving0..5; request/slot/intent/completion/rawmutation canonicalframes +independentgoldens, explicitnull/status/effecttags. WRITEfingerprint bindsexpectedgeneration/exactCLDF; DISCARD bindsexpectedgeneration/expectedpendingid/mode. Build exactRoomentityannotations, actualnextexport, compareall46oldentities, deriveonly2tables9indexes, sourcereview, realSQL+Roomupgrade/rollback/indexedqueries/nativecompilation scopedhonestly. Future storeproducer receivesonlyNEWownedfiles aftertheseacceptedprerequisites; no partial LocalDeckDrafts productionbinding. Root actualbulkUI gate20928 precedes sourcewrites toschema. FinishedAPK/native/Fold7/fullfeatureholds remain.
+
+Physical-shape disposition: distinct actualAstra campaign_engineering_review ACKed two-table/nine-index shape at5a9be74d76556198331a608348620be9b03c6b807590083cb203491c164fbfe7. Requiredruntimeclarifications beforeimplementation: withanyintents slot.latest nonnull=maxindexedsourceGeneration<=slot.generation; status-index PREPARED queryLIMIT2 rejects multiple/nonlatest; PREPARED/ABANDONED must have NO deck_operation undertheirID, not justNULLreceiptfields. BeforeBLOB validate descriptorSQLtypes/length/hashsyntax andcanonicalmetadatahash; afterboundedread verifyactualpayloadSHA/canonicaldecode. Missingcommitted-intent detection coverslatestindexedreceipt plusrequestedhistoricalreplay, not fullhistorycertification. No extraDDL needed. ExactRoomannotations/KSPexport/migration/framing/SQLadapter/runtime remain separatelyunaccepted.
