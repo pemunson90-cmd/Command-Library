@@ -1,0 +1,11 @@
+{
+  "component": "deck-named-versions-store",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-versions-store-01",
+  "branch": "agent/campaign-deck-versions-store-20261015",
+  "base_commit": "5f1d297398a14cec73c1e59d79a3f8c14ecc4946",
+  "owner": "/root/implement_deck_edit_store; native isolated complete backend",
+  "owned_paths": "Exactly3NEWbackendfiles+2NEWactualSQLitehosttestfiles+ownhandoff; all existing sharedstore/undo/framing/schema/core/DI readonly",
+  "status": "active",
+  "authority": "Live root canonical claim; explicit newfiles only transfer, root retains shared component authority; publicationauthblocked not lease release"
+}

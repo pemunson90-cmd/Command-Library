@@ -613,3 +613,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T08:53:16Z | codex | cp-20261015-named-version-schema14-183 | containing commit | ActualKSP additive14/reviewed9hosttests pass+nativecompileONLY; twoisolatedwriters continue, solechildframingbuild; publicationauthblockretained
 
 2026-10-15T09:01:02Z | codex | cp-20261015-version-prereqs-integrated-184 | containing commit | Schema14/framing74tests/rootinterop1SQLcase reviewed; UIrepair/testwave continues; completebackend exactbase next; authblock retained
+
+2026-10-15T09:03:20Z | codex | cp-20261015-version-backend-claimed-185 | containing commit | Complete5method SQLbackend isolated from accepted5f1d297; UIsolebuild/sourceACK; root composition/authority retained, authpublicationblock continues

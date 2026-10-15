@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-version-prereqs-integrated-184",
-  "verified_base_head": "48555a65e5525caf3b74b63ba1894b6ca5e328bb",
+  "checkpoint_id": "cp-20261015-version-backend-claimed-185",
+  "verified_base_head": "5f1d297398a14cec73c1e59d79a3f8c14ecc4946",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "accept-executable-version-prerequisites",
+  "first_action": "claim-complete-named-version-backend",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -148,7 +148,7 @@
     "named_version_schema14": "ActualKSP14SHA1c36c358...; immutable13,45oldentities except1additiveindex; migration exact8DDL; actualhost9tests3XMLpass+nativeKotlincompileONLY. Androidtreed70247990367eb0526bfb2a79a67288d02312322, independentAstra source/runtimeACK. See NAMED-VERSION-SCHEMA14-LOCAL-20261015.md",
     "named_version_framing_interop": "Pureproducer source/runtimeACK74tests8XML15new, e127bd3\u219248555a6; assembledroot1actualSQLiteglobalnamespacecasepass37s/source/runtimeACK tree571b6c4f987e28154451cce4570205f026bc90a9; backendstillnotimplemented"
   },
-  "last_completed": "Schema14/framing74tests/rootinterop1SQLcase reviewed; UIrepair/testwave continues; completebackend exactbase next; authblock retained",
-  "updated_utc": "2026-10-15T09:01:02Z",
+  "last_completed": "Complete5method SQLbackend isolated from accepted5f1d297; UIsolebuild/sourceACK; root composition/authority retained, authpublicationblock continues",
+  "updated_utc": "2026-10-15T09:03:20Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
