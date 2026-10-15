@@ -1,0 +1,13 @@
+{
+  "component": "mark-owned-app-tests",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-mark-owned-app-tests-01",
+  "owner": "/root/implement_inventory_projection native isolated writer",
+  "status": "active",
+  "base_commit": "65bffe6f9a471275c71e8c02ec35082e5eabae1e",
+  "branch": "agent/campaign-mark-owned-app-tests-20261015",
+  "worktree": "/workspace/command-library-mark-owned-app-tests-01",
+  "owned_paths": "EXACT2NEWpaths actualAppGraphUItest/handoff; all existing/shared forbidden",
+  "build_slot": "NOTGRANTED; ROOToneGradleslot",
+  "authority": "rootexplicitdivision/packetREADYACK/executablecontroller38pass; rootcanonicalclaimssoleauthority"
+}
