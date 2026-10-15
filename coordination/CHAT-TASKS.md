@@ -52,3 +52,5 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 | campaign-deck-version-framing | Complete bounded metadata/request/canonical scoped cursor helper | DONE scoped producer | e127bd3 integrated48555a6; independentACK74tests, rootinterop1casepass; actualbackendnext | [packet](tasks/cx-campaign-deck-version-framing-01.md) |
 
 | campaign-deck-versions-store | Complete real capture/list/load/preview/restore backend | DONE producer | Integrated975fe17 exact869b10e; source/runtimeACK108tests; actual root assembled gate pending | [packet](tasks/cx-campaign-deck-versions-store-01.md) |
+
+| campaign-collection-bulk | Mixed selection/Keep-Set/eligible finish/complete row preview/atomic apply+undo | TAKEN native isolated | Reviewed packet from57cb78e, root sharedwiring/integration retained; no buildslot | [packet](tasks/cx-campaign-collection-bulk-01.md) |

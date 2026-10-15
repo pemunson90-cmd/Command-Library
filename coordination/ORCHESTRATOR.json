@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T09:38:53Z",
-  "expires_utc": "2026-10-15T10:23:53Z",
-  "checkpoint_id": "cp-20261015-version-producers-integrated-186",
+  "heartbeat_utc": "2026-10-15T09:39:22Z",
+  "expires_utc": "2026-10-15T10:24:22Z",
+  "checkpoint_id": "cp-20261015-collection-bulk-claimed-187",
   "note": "Rootsharedschema/contracts/DI/nav/finalmerge; accepted5f1d297prereqs. IsolatedS11UI solebuild active/sourceACK; isolatedcompleteversionbackend newfilesclaimed, no buildslot. Publicationinvalidtoken remote f0373af/rootactive, allholds retained."
 }

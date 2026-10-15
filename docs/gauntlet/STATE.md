@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-version-producers-integrated-186. Updated UTC: 2026-10-15T09:38:53Z.
+Checkpoint: cp-20261015-collection-bulk-claimed-187. Updated UTC: 2026-10-15T09:39:22Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-integrate-version-producers-assemble-candidate
+claim-reviewed-collection-bulk
 
-Both versionproducers integrated/source-runtimeACK; frozen root653tests pass, lint/nativecompile37296 active and reviewed admissionHOLD repairnext. Bulkpacket reviewed, publicationauthblocked, rootleaseactive.
+Reviewed collectionbulk consumer claimedisolated; rootnamedversion653tests pass/lint37296active/admissionrepairnext. Sharedwiringrootonly, solebuildslot retained, publicationblocked.
 
 Read CURRENT, machine state and task card.

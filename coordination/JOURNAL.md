@@ -617,3 +617,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T09:03:20Z | codex | cp-20261015-version-backend-claimed-185 | containing commit | Complete5method SQLbackend isolated from accepted5f1d297; UIsolebuild/sourceACK; root composition/authority retained, authpublicationblock continues
 
 2026-10-15T09:38:53Z | codex | cp-20261015-version-producers-integrated-186 | containing commit | Both versionproducers integrated/source-runtimeACK; frozen root653tests pass, lint/nativecompile37296 active and reviewed admissionHOLD repairnext. Bulkpacket reviewed, publicationauthblocked, rootleaseactive.
+
+2026-10-15T09:39:22Z | codex | cp-20261015-collection-bulk-claimed-187 | containing commit | Reviewed collectionbulk consumer claimedisolated; rootnamedversion653tests pass/lint37296active/admissionrepairnext. Sharedwiringrootonly, solebuildslot retained, publicationblocked.

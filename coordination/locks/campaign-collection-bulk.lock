@@ -1,0 +1,11 @@
+{
+  "component": "collection-bulk-presentation",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-collection-bulk-01",
+  "owner": "/root/implement_inventory_projection native isolated writer",
+  "status": "active",
+  "base_commit": "57cb78e",
+  "branch": "agent/campaign-collection-bulk-20261015",
+  "owned_paths": "Exact packet collection controller/state/screen/dedicated helpers/dialog/resource/tests/handoff only; all shared root paths forbidden",
+  "authority": "Canonical localroot claim, published remote f0373af still rootactive; authpublicationblock not release"
+}

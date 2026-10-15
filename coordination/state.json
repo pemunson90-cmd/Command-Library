@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-version-producers-integrated-186",
+  "checkpoint_id": "cp-20261015-collection-bulk-claimed-187",
   "verified_base_head": "975fe177f6a5b6fcda8330c3456757024d55a5fd",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "integrate-version-producers-assemble-candidate",
+  "first_action": "claim-reviewed-collection-bulk",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -149,7 +149,7 @@
     "named_version_framing_interop": "Pureproducer source/runtimeACK74tests8XML15new, e127bd3\u219248555a6; assembledroot1actualSQLiteglobalnamespacecasepass37s/source/runtimeACK tree571b6c4f987e28154451cce4570205f026bc90a9; backendstillnotimplemented",
     "named_version_app_candidate": "975fe17 producers integrated; frozen root Androidtreeac225a538b7bd4032fdd5e038700acc9546b2d2f:653tests80XML0failure/error/skip (375storage39XML/271shell38XML/7app3XML). Sole active Gradle37296 lint/nativecompile pending; navigation admission HOLD not yet repaired. See NAMED-VERSION-APP-INTEGRATION-20261015.md."
   },
-  "last_completed": "Both versionproducers integrated/source-runtimeACK; frozen root653tests pass, lint/nativecompile37296 active and reviewed admissionHOLD repairnext. Bulkpacket reviewed, publicationauthblocked, rootleaseactive.",
-  "updated_utc": "2026-10-15T09:38:53Z",
+  "last_completed": "Reviewed collectionbulk consumer claimedisolated; rootnamedversion653tests pass/lint37296active/admissionrepairnext. Sharedwiringrootonly, solebuildslot retained, publicationblocked.",
+  "updated_utc": "2026-10-15T09:39:22Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
