@@ -1,0 +1,17 @@
+{
+  "component": "ai-history-sql",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-ai-history-sql-01",
+  "owner": "/root/implement_ai_history_sql",
+  "status": "active",
+  "base_commit": "a9e746b91374b36e99d4748b2ecb6a8c98558d50",
+  "contract_revision": "ai-history-v1-20261015/schema18-fb97ec30",
+  "branch": "agent/campaign-ai-history-sql-20261015",
+  "worktree": "/workspace/command-library-ai-history-sql-01",
+  "owned_paths": [
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/SqlLocalAiHistory.kt",
+    "android-app/data/storage/src/test/kotlin/com/architectpsg/commandlibrary/data/storage/ai/SqlLocalAiHistoryTest.kt",
+    "coordination/handoffs/cx-campaign-ai-history-sql-01.md"
+  ],
+  "build_slot": "NOT GRANTED; root only"
+}

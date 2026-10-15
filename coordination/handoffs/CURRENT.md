@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-prompt-overrides-host-247
+Checkpoint-ID: cp-20261015-ai-history-wave-248
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept_prompt_override_host
+Next step: 3. dispatch_ai_history_producers
 
-Updated UTC: 2026-10-15T21:17:02Z
+Updated UTC: 2026-10-15T21:28:25Z
 Status: in_progress; lease: active.
-Verified base: 4ee30f7fa534f475e726e89a29e695016f87e433.
+Verified base: a9e746b91374b36e99d4748b2ecb6a8c98558d50.
 
-H09 actual store/editor/Room17 journey SOURCE02/shared/runtime ACK4ee30f7:34tests6XML0f/e/s1m25/741pins. Claims released; next H08 history boundary review. No broad/native rerun.
+H08 source boundary ACK/KSP18PASS21s; isolated codec and SQL producers TAKEN exacta9e746b. Root actual UI/shared integration;3writers ceiling/one build slot. H09 accepted; no H08runtime yet.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

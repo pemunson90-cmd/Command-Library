@@ -739,3 +739,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T21:10:25Z | codex | cp-20261015-prompt-overrides-integration-246 | containing commit | Reviewed exact SQL return integrated e05fe68; root real binding prepared; editor frozen under independent review and isolated actual Room17/app proof taken. One assembled gate next; no broad/native repeat.
 
 2026-10-15T21:17:02Z | codex | cp-20261015-prompt-overrides-host-247 | containing commit | H09 actual store/editor/Room17 journey SOURCE02/shared/runtime ACK4ee30f7:34tests6XML0f/e/s1m25/741pins. Claims released; next H08 history boundary review. No broad/native rerun.
+
+2026-10-15T21:28:25Z | codex | cp-20261015-ai-history-wave-248 | containing commit | H08 source boundary ACK/KSP18PASS21s; isolated codec and SQL producers TAKEN exacta9e746b. Root actual UI/shared integration;3writers ceiling/one build slot. H09 accepted; no H08runtime yet.
