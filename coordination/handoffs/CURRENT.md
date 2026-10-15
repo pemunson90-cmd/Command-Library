@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-deck-library-boundary-163
+Checkpoint-ID: cp-20261015-deck-library-claim-164
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. publish-reviewed-schema10-then-dispatch-local-library
+Next step: 3. dispatch-isolated-local-deck-library-and-continue-root-presentation
 
-Updated UTC: 2026-10-15T05:13:37Z
+Updated UTC: 2026-10-15T05:13:55Z
 Status: in_progress; lease: active.
-Verified base: 2ae5f55bfbd441829ad1f7c0aa96362913d3a87d.
+Verified base: e74755258ba62e576988c1e48906f8cc23cc23cd.
 
-Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.
+Exact verified sharedbaseline e747552; bounded real local library repository claimed for native isolated worker. Root retains presentation/shared/integration; no native/APK acceptance.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

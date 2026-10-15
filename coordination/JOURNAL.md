@@ -569,3 +569,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T05:00:54Z | codex | cp-20261015-deck-contract-wave-162 | containing commit | Reviewed deck shared boundary and independent golden accepted; isolated codec/diff claims published, root retains persistence/schema integration. Shared compile and focused tests pass; no native or feature acceptance.
 
 2026-10-15T05:13:37Z | codex | cp-20261015-deck-library-boundary-163 | containing commit | Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.
+
+2026-10-15T05:13:55Z | codex | cp-20261015-deck-library-claim-164 | containing commit | Exact verified sharedbaseline e747552; bounded real local library repository claimed for native isolated worker. Root retains presentation/shared/integration; no native/APK acceptance.

@@ -33,3 +33,5 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 
 | campaign-deck-codec | Complete bounded CLDK1 snapshot codec | DONE scoped producer | Integrated2ae5f55; Astra reviewed | [packet](tasks/cx-campaign-deck-codec-01.md) |
 | campaign-deck-diff | Complete immutable document comparison | DONE scoped producer | Integrated125fb83; root reviewed | [packet](tasks/cx-campaign-deck-diff-01.md) |
+
+| campaign-deck-library | Real complete local create/load/list/duplicate repository | TAKEN | Root-managed isolated native worker | [packet](tasks/cx-campaign-deck-library-01.md) |

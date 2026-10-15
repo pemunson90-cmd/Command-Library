@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-deck-library-boundary-163",
-  "verified_base_head": "2ae5f55bfbd441829ad1f7c0aa96362913d3a87d",
+  "checkpoint_id": "cp-20261015-deck-library-claim-164",
+  "verified_base_head": "e74755258ba62e576988c1e48906f8cc23cc23cd",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "publish-reviewed-schema10-then-dispatch-local-library",
+  "first_action": "dispatch-isolated-local-deck-library-and-continue-root-presentation",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -141,7 +141,7 @@
     "deck_shared_boundary": "Shared compile/focused gate SUCCESS39s plus final decks regression SUCCESS12s; exact-source/golden ACK. SHARED-BOUNDARY-LOCAL-20261015.md; no codec/persistence/native acceptance.",
     "deck_library_boundary": "ActualKSP10 SHA57e4f6c8db5246ab23e26a9ddef868396c28859fb72936dfc4258d56672ebb8d38entities35oldunchanged;49tests7XML0fail/error/skip SUCCESS51s incl actualhostRoom fresh/9upgrade; testedgecompile10s. DECK-LIBRARY-BOUNDARY-LOCAL-20261015.md; no backend/device acceptance."
   },
-  "last_completed": "Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.",
-  "updated_utc": "2026-10-15T05:13:37Z",
+  "last_completed": "Exact verified sharedbaseline e747552; bounded real local library repository claimed for native isolated worker. Root retains presentation/shared/integration; no native/APK acceptance.",
+  "updated_utc": "2026-10-15T05:13:55Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

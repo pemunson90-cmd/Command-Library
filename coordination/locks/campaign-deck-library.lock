@@ -1,0 +1,11 @@
+{
+  "component": "deck-library-persistence",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-library-01",
+  "branch": "agent/campaign-deck-library-20261015",
+  "base_commit": "e74755258ba62e576988c1e48906f8cc23cc23cd",
+  "owner": "/root/implement_deck_library; root canonical claim authority",
+  "owned_paths": "Exact narrow production/test/resources/handoff allowlist in packet; excludes all shared paths and existing reducer/codec",
+  "status": "active",
+  "authority": "Only live root continuation claim; inherited copies historical"
+}
