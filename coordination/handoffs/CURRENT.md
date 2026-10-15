@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-deck-graph-integrated-180
+Checkpoint-ID: cp-20261015-version-ui-claimed-181
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-deck-graph-version-boundary
+Next step: 3. claim-isolated-version-presentation
 
-Updated UTC: 2026-10-15T08:38:34Z
+Updated UTC: 2026-10-15T08:41:25Z
 Status: in_progress; lease: active.
-Verified base: f588d0c8ddb1c109de0ed4a3cde164badd3028af.
+Verified base: b2ac8de263a7455e6989a097f172d81ea006c0c9.
 
-Reviewed complete package graph and wholedeck consumers398tests pass; completeversionport/framing compiled only; next ordered schema and isolatedS11 presentation
+Localb2ac8de reviewed398tests preserved; invalidGitHubtoken blocks publication only; isolatedS11 UI claimed against completecompiledport, root schema next
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

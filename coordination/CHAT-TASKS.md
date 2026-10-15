@@ -46,3 +46,5 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 | campaign-inventory-store | Complete consistent inventory/apply/grouped undo journal | DONE scoped backend | 8840c1b integrated461f7af; independentACK62tests, actual app integration verified; full acceptance open | [packet](tasks/cx-campaign-inventory-store-01.md) |
 
 | campaign-deck-graph | Complete bounded whole-manifest/package structural validator | DONE scoped producer | Integratedf588d0c; independentACK56tests; root actualstorage/Room398tests pass | [packet](tasks/cx-campaign-deck-graph-01.md) |
+
+| campaign-deck-versions-ui | Real S11 save/select/diff/preview/restore presentation | TAKEN native isolated | Completeport sourceACK/compiled; root realbackend/composition prerequisites, no fake binding | [packet](tasks/cx-campaign-deck-versions-ui-01.md) |

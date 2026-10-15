@@ -3,20 +3,21 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-deck-graph-integrated-180",
-  "verified_base_head": "f588d0c8ddb1c109de0ed4a3cde164badd3028af",
+  "checkpoint_id": "cp-20261015-version-ui-claimed-181",
+  "verified_base_head": "b2ac8de263a7455e6989a097f172d81ea006c0c9",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "accept-deck-graph-version-boundary",
+  "first_action": "claim-isolated-version-presentation",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
   "blockers": [
     "Full live-source completeness, indexed search/FullLean and M2\u2013M9 remain incomplete; ruling source/root/UI local integration is implemented but source/native/final acceptance pending.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence.",
-    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
+    "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues.",
+    "Publication temporarily blocked: configured GH_TOKEN invalid on b2ac8de push, gh authstatus confirms. Last published f0373af; local commits preserved, reconnect requested; implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
   "review_status": "Actual independent Astra source/evidence ACK: complete structural graph+coherent consumer+additiveversionport/requestframes; assembled398tests45XMLpass, native/device acceptance open",
@@ -145,7 +146,7 @@
     "collection_app_integration": "Final Android tree b6b9a485bc7ccbacfcd15d07585f9d9b624a9aa2; see docs/verification/collection/COLLECTION-INTEGRATION-LOCAL-20261015.md. R1 broad683 plus R3 corrected4 reruns passed, production identical; R2 test compile failure retained.",
     "deck_version_boundary": "Androidtree2df7418c0cdd09595de32ded6b7468461325b05f:398tests45XML0fail/error/skip; realSQLitegraph/duplicate/wholeundo +Roomintegration. Completeversionsport/framing declarations only, backend/schema/S11 stillopen. See NAMED-VERSION-BOUNDARY-20261015.md"
   },
-  "last_completed": "Reviewed complete package graph and wholedeck consumers398tests pass; completeversionport/framing compiled only; next ordered schema and isolatedS11 presentation",
-  "updated_utc": "2026-10-15T08:38:34Z",
+  "last_completed": "Localb2ac8de reviewed398tests preserved; invalidGitHubtoken blocks publication only; isolatedS11 UI claimed against completecompiledport, root schema next",
+  "updated_utc": "2026-10-15T08:41:25Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

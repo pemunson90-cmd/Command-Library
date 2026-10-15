@@ -1,0 +1,11 @@
+{
+  "component": "deck-versions-presentation",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-versions-ui-01",
+  "branch": "agent/campaign-deck-versions-ui-20261015",
+  "base_commit": "b2ac8de263a7455e6989a097f172d81ea006c0c9",
+  "owner": "/root/implement_inventory_projection; native root-managed isolated writer",
+  "owned_paths": "Exactly NEW DeckVersionsController/UiState/Screen/dedicatedstrings/tests/ownhandoff; all existing shared files read-only",
+  "status": "active",
+  "authority": "Live root canonical claim. Root retains existing shell/DI/schema/contracts; publication temporarily blocked by invalid GH_TOKEN, not ownership release."
+}
