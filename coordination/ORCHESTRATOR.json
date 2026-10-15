@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T05:42:55Z",
-  "expires_utc": "2026-10-15T06:27:55Z",
-  "checkpoint_id": "cp-20261015-local-deck-library-integrated-165",
+  "heartbeat_utc": "2026-10-15T05:49:50Z",
+  "expires_utc": "2026-10-15T06:34:50Z",
+  "checkpoint_id": "cp-20261015-owned-quantity-contract-166",
   "note": "D29root retained; pilot deck/link exactreturns integrated/sourceACK;91scopedhosttests0fail/error/skip+lint/nativeKotlincompile. Nextdurabledeck model/codec boundary review+parallel readyproducers. No build/liveworker now; root shared/finalmerge; GameService/nativefailed/finishedAPKholds."
 }

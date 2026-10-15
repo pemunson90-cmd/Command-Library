@@ -573,3 +573,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T05:13:55Z | codex | cp-20261015-deck-library-claim-164 | containing commit | Exact verified sharedbaseline e747552; bounded real local library repository claimed for native isolated worker. Root retains presentation/shared/integration; no native/APK acceptance.
 
 2026-10-15T05:42:55Z | codex | cp-20261015-local-deck-library-integrated-165 | containing commit | Real local deck library/DI/controller/read-only overview integrated,113scopedtests14XML0fail/error/skip+lint/nativeKotlincompile. Next reviewed quantitycontract/isolatedproducer while root advances editing; fullfeature/native/APKholds retained.
+
+2026-10-15T05:49:50Z | codex | cp-20261015-owned-quantity-contract-166 | containing commit | Reviewed exactquantityport/policy/finitebounds+7abstractcontractexamples compile30s; actualstdlib2.2.10/JUnit4.13.2 pinsreadback4s. No allocatorbehavior claim. Next isolatedproducer, root durableediting; allholds retained.

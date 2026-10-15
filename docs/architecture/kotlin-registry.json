@@ -1504,7 +1504,7 @@
         "verification": "q4/o2/USD3=6; fully-owned missing quote=0; unowned unknown; shared-lot conservation; no TIX FX; source terms",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "Ports only; source probe0e0ec99 confirms pure quantity allocator need not await collection CRUD, but needs reviewed per-entry pin input (selected printing is not pin), unknown finish/raw identity/language eligibility and incomplete-inventory semantics. Provider/statistic selection is additional full priced-plan prerequisite. ExactDecimalPolicy.multiply already exists; do not duplicate it as progress. Next root contract review then bounded allocator packet.",
+        "observed_implementation": "Reviewed OwnedQuantityContracts/purepricingmodule/root7abstractexecutableexamples compile; no actualenginebehavior yet. Ready isolated cx-campaign-owned-quantity-01 consumes thisacceptedsubset independently of collectionCRUD. Sourceprobe0e0ec99 and designowned-quantity-boundary define pin/unknown/IGNORE/conservation/determinism/finitework. Full provider/statistic selection, storedpins/pricedplan/FX/optimizer/UI stillopen. ExactDecimalPolicy.multiply alreadyexists; do notduplicate.",
         "ownership_group": "pricing",
         "resources": [
           "local-gradle-serial"

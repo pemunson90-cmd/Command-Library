@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-local-deck-library-integrated-165",
-  "verified_base_head": "0e0ec990fd0bd728074ab1a5f3512493f22af3d7",
+  "checkpoint_id": "cp-20261015-owned-quantity-contract-166",
+  "verified_base_head": "689a78c53c47d045990003e9aee415d3d3bc2196",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "freeze-owned-quantity-contract-dispatch-then-continue-deck-editing",
+  "first_action": "publish-quantity-contract-claim-dispatch-continue-deck-editing",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -140,9 +140,10 @@
     "parallel_pilot": "Containing checkpoint Android treee9e32bfbaa0955b0e84563d99a8974e13ed5caa5:91tests10XML0fail/error/skip (deck13/link35/Room12 r2, shell31 finalr4), shelllint/catalog+shell+app nativeKotlincompile. Not deviceexecution/fullv1. PARALLEL-PILOT-LOCAL-20261015.md.",
     "deck_shared_boundary": "Shared compile/focused gate SUCCESS39s plus final decks regression SUCCESS12s; exact-source/golden ACK. SHARED-BOUNDARY-LOCAL-20261015.md; no codec/persistence/native acceptance.",
     "deck_library_boundary": "ActualKSP10 SHA57e4f6c8db5246ab23e26a9ddef868396c28859fb72936dfc4258d56672ebb8d38entities35oldunchanged;49tests7XML0fail/error/skip SUCCESS51s incl actualhostRoom fresh/9upgrade; testedgecompile10s. DECK-LIBRARY-BOUNDARY-LOCAL-20261015.md; no backend/device acceptance.",
-    "local_deck_library": "Android tree6d29b98ca3673dfc16a2c9c756a97612bcc43e8c;113scopedtests14XML0fail/error/skip, r5SUCCESS3m/lint/shell+appnativeKotlincompile; actualhostRoom/AppGraph+separatesyntheticCompose360font2/resize. LOCAL-DECK-LIBRARY-INTEGRATION-20261015.md; no device/fullfeature/APKclaim."
+    "local_deck_library": "Android tree6d29b98ca3673dfc16a2c9c756a97612bcc43e8c;113scopedtests14XML0fail/error/skip, r5SUCCESS3m/lint/shell+appnativeKotlincompile; actualhostRoom/AppGraph+separatesyntheticCompose360font2/resize. LOCAL-DECK-LIBRARY-INTEGRATION-20261015.md; no device/fullfeature/APKclaim.",
+    "owned_quantity_contract": "ActualAstrahigh exactpublicsource/module/7abstractfixtureACK; compileSUCCESS30s3tasks and runtimepinsreadback4s. NO allocatorimplementation or behavior executed yet; dispatchaftersharedbaseline publication. owned-quantity-boundary.md."
   },
-  "last_completed": "Real local deck library/DI/controller/read-only overview integrated,113scopedtests14XML0fail/error/skip+lint/nativeKotlincompile. Next reviewed quantitycontract/isolatedproducer while root advances editing; fullfeature/native/APKholds retained.",
-  "updated_utc": "2026-10-15T05:42:55Z",
+  "last_completed": "Reviewed exactquantityport/policy/finitebounds+7abstractcontractexamples compile30s; actualstdlib2.2.10/JUnit4.13.2 pinsreadback4s. No allocatorbehavior claim. Next isolatedproducer, root durableediting; allholds retained.",
+  "updated_utc": "2026-10-15T05:49:50Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
