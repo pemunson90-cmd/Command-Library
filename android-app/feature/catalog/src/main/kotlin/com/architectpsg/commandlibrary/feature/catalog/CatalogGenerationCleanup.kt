@@ -31,7 +31,11 @@ internal class CatalogGenerationCleanup(private val database: Database, private 
             remaining--
             if (marked == 0L) return@bulkAttempt true
         }
-        for (table in listOf("catalog_name_fts", "printing_oracle_membership", "printing_face_asset", "printing", "card_face", "oracle_card")) {
+        // Older supported catalog fixtures/stores predate schema9. Ordinary search facts
+        // cascade, but FTS mirrors have no FK and must be reclaimed explicitly when present.
+        val hasSearchFts = database.query(bulkSql("SELECT name FROM sqlite_master WHERE type='table' AND name='catalog_search_text_fts'", 1), cancel).bulkValue().isNotEmpty()
+        val tables = listOf("catalog_name_fts") + (if (hasSearchFts) listOf("catalog_search_text_fts") else emptyList()) + listOf("printing_oracle_membership", "printing_face_asset", "printing", "card_face", "oracle_card")
+        for (table in tables) {
             while (remaining > 0) {
                 cancel.throwIfCancelled()
                 if (database.query(bulkSql("SELECT rowid FROM $table WHERE $eligible LIMIT 1", 1, "id" to id.value), cancel).bulkValue().isEmpty()) break

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-15T00:54:16Z",
-  "expires_utc": "2026-10-15T01:39:16Z",
-  "checkpoint_id": "cp-20261015-search-preparation-store-156",
-  "note": "Root sole writer/final merge. Internal bounded preparation transaction store design/exact-source durability ACK251catalogpass30s/nativecompile; PREPARING only/no READY/port/DI. Next bounded verification subphase/globalkeysets+counts design review. Frozen9c failed8legacy snapshots/no rerun; Fullv1 incomplete/GameService HOLD."
+  "heartbeat_utc": "2026-10-15T01:10:31Z",
+  "expires_utc": "2026-10-15T01:55:31Z",
+  "checkpoint_id": "cp-20261015-search-readiness-157",
+  "note": "Root sole writer/final merge. Complete internal readiness/lifecycle design+exact-source durability ACK269catalog/lint/native+appcompile1m14s +11actualRoom9root22s. No publicport/DI/query. Next reviewed complete preparation capability/purelocalfactory then typedcompiler. Frozen9c failed/no rerun; Fullv1 incomplete/GameService HOLD."
 }

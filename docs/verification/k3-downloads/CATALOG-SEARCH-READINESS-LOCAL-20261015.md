@@ -1,0 +1,29 @@
+# Durable catalog search readiness — local2026-10-15
+
+Internal preparation/verification implemented, independently reviewed and locally verified; no public query/preparation port, DI or UI claim. Parentbc2f363 on agent/cx-thread-recovery-20261013. Root sole writer/final merge authority.
+
+## Behavior
+
+CatalogSearchPreparationStore now provides real transactional status and bounded advancement for an explicitly installed ACTIVE/RETIRED English generation. Installed with no build returns absent status, not READY. Source phases remain separate from independently resumable verification. Final READY is a status-bearing fenced commit after source rederivation, original/derived counts and exact bidirectional normal-text/FTS rowid checks. It does not execute typed queries.
+
+Strict verification cursors encode an independent five-count vector and signed global rowid watermark. First-page SQL omits a rowid predicate; target nonpositive rowids fail visibly. A watermark may refer to a deleted unrelated row. Every source/fact/FTS walk uses global rowid keysets, not unindexed generation-filtered rowid sorting/scanning. CASE suppresses unrelated payload values. Inspect <=64 global rows, decode <=16 target records/16MiB raw per call, retain per-record1024rows/8MiB and per-batch4096rows/16MiB derived strings/conservative4096SQL-operation limits, counting FTS mirror work. Original mapper remains bounded but noncancellable; no physical runtime/performance acceptance.
+
+Recompute expected card/face/text and printing/legality facts from actual original payload/proof, bind actual original IDs/scalars/faces again and compare complete expected ordinary rows by PK. Validate positive rowids for every ordinary fact kind. Expected fanout totals must equal materialization counters and original metadata. Walk actual text/legality/face rows as well; exact count/identity checks exclude missing, changed or extra evidence. FTS mirrors are addressed by the same normal-text rowid; both directions compare every identity/scope/field/value. Actual EXPLAIN probes show source INTEGER PRIMARY KEY traversal, FTS virtual-table rowid constraint without temporary sort and indexed ordinary-text rowid join.
+
+Deterministic validation failure rolls back the failed advancement and separately fences terminal FAILED with a fixed bounded diagnostic, preserving source and committed prefix. SQL/persistence failures and precommit cancellation remain resumable. Creation, READY and FAILED commit acknowledgements use full exact checkpoint/status readback <=500ms under the same shared import owner. Intended proves committed, prior preserves failure/cancellation, otherwise Unknown without replay. No check/callback after acknowledged readiness commit. Terminal READY/FAILED advance does no derived writes.
+
+Shared CatalogGenerationCleanup explicitly reclaims search FTS when that schema table exists, under its unchanged source-generation eligibility and bounded mutation page/transaction limit. Active/retired sources are not newly eligible. Its existing FTS generation filtering does **not** establish a read-scan work bound; no such claim is made. Tiny-import staging cleanup is unchanged: this packet creates no STAGING facts; later staging integration must establish bounded reclamation before it writes staging FTS. No retained-source reset/rebuild/delete policy was introduced.
+
+## Review and actual verification
+
+Independent design ACK after correcting global traversal, durable fanout counters and deletion-safe signed watermark semantics. Exact-source durability review caught/fixed nonpositive ordinary fact rowids, mirror-budget omission and an unbounded proposed tiny-import cleanup branch (removed). No remaining functional source blocker in the reviewed scope. READY KDoc and stale plan entry corrected.
+
+Local full boundary: **SUCCESS1m14s**,132tasks24executed108up-to-date. Full catalog **27XML269tests0failure/error/skip**, catalog lint, native Kotlin test compilation and app Kotlin compilation. Retained XML `/tmp/catalog-search-readiness-xml`; log `/tmp/catalog-search-readiness-boundary.log`. Source after this check differs only by corrected KDoc; no functional change.
+
+18new methods (4strict codec+14SQLite readiness), plus updated15existing store cases and236prior catalog tests. Includes exact ready/source preservation, missing/changed/extra facts/corrupt counters, missing/changed/duplicate FTS, nonpositive original/fact/FTS rowids, deleted unrelated watermark/negative unrelated source row, actual file reopen, READY/FAILED lost acknowledgements, precommit cancellation, unknown READY acknowledgement, full mirror-derived budget, remaining raw allowance, indexed plans and bounded recovery preserving another active generation. One initial corruption test inserted three rows with the same intended extra PK and failed in its own setup; corrected to one extra row. Production validation was unchanged for that fixture correction.
+
+Shared-root regression SUCCESS22s/133tasks3executed130up-to-date: actualRoom9 RulingsSourceIntegrationTest and EnglishCatalogAccessIntegrationTest,2XML11tests0failure/error/skip. Retained /tmp/catalog-search-readiness-root-xml and /tmp/catalog-search-readiness-root.log. This verifies existing root/source regression, not a new index DI binding. No device execution, full genuine corpus, network publisher TLS, physical Fold7/TalkBack/performance or release evidence is implied.
+
+## Next
+
+Review and expose the complete independent preparation capability without cursor internals or acquisition initialization, then implement the typed local query compiler/executor and actual shell consumer. New-import staging integration, full source/FullLean/context/M2–M9 and final acceptance remain incomplete. Frozen9c1573b/native38657175303 failure is preserved; no rerun scheduled or finished APK delivered.

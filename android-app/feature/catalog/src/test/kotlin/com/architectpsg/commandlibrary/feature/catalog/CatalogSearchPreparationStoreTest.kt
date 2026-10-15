@@ -31,7 +31,7 @@ class CatalogSearchPreparationStoreTest {
             val printing = db.store().advance(generation, BULK_NO_CANCEL).bulkValue()
             assertEquals(SearchPreparationPhase.VERIFY, printing.phase)
             assertEquals(1L, printing.printings)
-            assertEquals(printing, db.store().advance(generation, BULK_NO_CANCEL).bulkValue())
+            assertEquals(SearchPreparationPhase.VERIFY_CARD, db.store().advance(generation, BULK_NO_CANCEL).bulkValue().phase)
             assertEquals("PREPARING", db.rows("SELECT status FROM catalog_search_build").single().bulkText("status"))
             assertEquals(0L, db.rows("SELECT count(*) AS n FROM pragma_foreign_key_check").single().bulkLong("n"))
         }
@@ -93,8 +93,8 @@ class CatalogSearchPreparationStoreTest {
             SearchProjectionSqlDatabase().use { db ->
                 val generation = db.install(listOf(bulkRecord("p", "o")))
                 db.exec(mutation)
-                assertTrue(db.store().advance(generation, BULK_NO_CANCEL) is Outcome.Failure)
-                assertEquals(0L, db.count("catalog_search_build"))
+                assertEquals(SearchPreparationStatus.FAILED, db.store().advance(generation, BULK_NO_CANCEL).bulkValue().status)
+                assertEquals(1L, db.count("catalog_search_build"))
                 assertEquals(0L, db.count("catalog_search_card_fact"))
             }
         }
@@ -160,7 +160,7 @@ class CatalogSearchPreparationStoreTest {
             SearchProjectionSqlDatabase().use { db ->
                 val generation = db.install(listOf(faceRecord))
                 db.exec(mutation)
-                assertTrue(mutation, db.store().advance(generation, BULK_NO_CANCEL) is Outcome.Failure)
+                assertEquals(mutation, SearchPreparationStatus.FAILED, db.store().advance(generation, BULK_NO_CANCEL).bulkValue().status)
                 assertEquals(0L, db.count("catalog_search_card_fact"))
             }
         }
@@ -169,7 +169,7 @@ class CatalogSearchPreparationStoreTest {
                 val generation = db.install(listOf(bulkRecord("p", "o")))
                 db.store().advance(generation, BULK_NO_CANCEL).bulkValue()
                 db.exec(mutation)
-                assertTrue(mutation, db.store().advance(generation, BULK_NO_CANCEL) is Outcome.Failure)
+                assertEquals(mutation, SearchPreparationStatus.FAILED, db.store().advance(generation, BULK_NO_CANCEL).bulkValue().status)
                 assertEquals(0L, db.count("catalog_search_printing_fact"))
                 assertEquals("PRINTING", db.rows("SELECT phase FROM catalog_search_build").single().bulkText("phase"))
             }
