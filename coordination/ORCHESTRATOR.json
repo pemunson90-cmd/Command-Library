@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T19:40:52Z",
-  "expires_utc": "2026-10-15T20:25:52Z",
-  "checkpoint_id": "cp-20261015-offline-prompts-host-accepted-239",
-  "note": "Root retains shared/integration/final authority. Offline prompt engine17 and actual consumer11 host checks SOURCE/RUNTIME ACK; claims released and originals preserved. Root solewriter/build slot free; next retained dependency selection, no native/fullAI/release claim."
+  "heartbeat_utc": "2026-10-15T19:50:44Z",
+  "expires_utc": "2026-10-15T20:35:44Z",
+  "checkpoint_id": "cp-20261015-android-vault-wave-240",
+  "note": "Root retains shared/integration/final authority. Offline prompts hostaccepted; READY02 native vault exact8 isolated writer claim, root module/factory composition authored but runtimeNOTRUN. One root buildslotfree; no nativeKeystore/fullH07/provider/release claim."
 }

@@ -84,4 +84,6 @@ public class ShellPorts(
     /** Complete provider-free prompt/render/reply/detail capability; no provider/runtime stubs. */
     public val offlineDeckPrompts: com.architectpsg.commandlibrary.core.model.OfflineDeckPrompts? = null,
     public val cardQueryParser: ((String) -> com.architectpsg.commandlibrary.core.model.CardQueryParseResult)? = null,
+    /** Real lazy Android vault; provider credential-use acceptance requires genuine native evidence. */
+    public val secretVault: com.architectpsg.commandlibrary.core.model.SecretVault? = null,
 )

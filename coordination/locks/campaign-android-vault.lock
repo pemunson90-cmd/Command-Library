@@ -1,0 +1,22 @@
+{
+  "component": "android-vault",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-android-vault-01",
+  "owner": "/root/implement_android_vault",
+  "status": "active",
+  "base_commit": "6601f557df26ae7d953a957a19636953157738a6",
+  "contract_revision": "vault-v1-20261015",
+  "branch": "agent/campaign-android-vault-20261015",
+  "worktree": "/workspace/command-library-android-vault-01",
+  "owned_paths": [
+    "android-app/data/vault/src/main/kotlin/com/architectpsg/commandlibrary/data/vault/AndroidSecretVault.kt",
+    "android-app/data/vault/src/main/kotlin/com/architectpsg/commandlibrary/data/vault/VaultEnvelope.kt",
+    "android-app/data/vault/src/main/kotlin/com/architectpsg/commandlibrary/data/vault/VaultKeyStore.kt",
+    "android-app/data/vault/src/main/kotlin/com/architectpsg/commandlibrary/data/vault/VaultRecordStore.kt",
+    "android-app/data/vault/src/test/kotlin/com/architectpsg/commandlibrary/data/vault/AndroidSecretVaultTest.kt",
+    "android-app/data/vault/src/test/kotlin/com/architectpsg/commandlibrary/data/vault/VaultEnvelopeTest.kt",
+    "android-app/data/vault/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/vault/AndroidSecretVaultInstrumentedTest.kt",
+    "coordination/handoffs/cx-campaign-android-vault-01.md"
+  ],
+  "build_slot": "NOTGRANTED; ROOTonly"
+}

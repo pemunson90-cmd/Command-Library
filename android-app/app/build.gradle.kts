@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":data:storage"))
     implementation(project(":data:network"))
+    implementation(project(":data:vault"))
     implementation(project(":feature:life"))
     implementation(project(":feature:links"))
     implementation(project(":feature:search"))
