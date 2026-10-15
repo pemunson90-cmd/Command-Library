@@ -695,3 +695,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T16:01:37Z | codex | cp-20261015-import-output-accepted-224 | containing commit | Bounded actual file import and document writer independently accepted at cbff7ac: focused 17 pass, prior 44/1failed lineage retained; next export controller contract proposal
 
 2026-10-15T16:13:38Z | codex | cp-20261015-export-controller-dispatch-225 | containing commit | Reviewed exact export-controller producer claimed in verified isolated worktree at accepted70989c0; root retains shared composition, one free local build slot
+
+2026-10-15T16:26:54Z | codex | cp-20261015-export-producer-gate-226 | containing commit | Reviewed export controller and actual all-board byte-loss AppGraph fixture integrated; all worker claims released; root focused producer compatibility gate next

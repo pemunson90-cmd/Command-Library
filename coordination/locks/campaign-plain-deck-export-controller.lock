@@ -3,11 +3,14 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-plain-deck-export-controller-01",
   "owner": "/root/implement_deck_edit_store native isolated writer",
-  "status": "active",
+  "status": "released",
   "base_commit": "70989c014814d80c5e3caa40813d54a5ccefd731",
   "branch": "agent/campaign-plain-deck-export-controller-20261015",
   "worktree": "/workspace/command-library-plain-deck-export-controller-01",
   "owned_paths": "EXACT4NEWpaths per canonical task; ALL existing/shared forbidden",
   "build_slot": "NOTGRANTED; ROOToneGradleslot free",
-  "authority": "independent inventory_journal_review READYACK packet54361f11 plus explicit loss-attribution clarification; rootcanonicalclaim sole authority"
+  "authority": "independent inventory_journal_review READYACK packet54361f11 plus explicit loss-attribution clarification; rootcanonicalclaim sole authority",
+  "return_commit": "9086017f511471f4db6276365e54f37f5e32057b",
+  "integrated_commit": "436be32",
+  "disposition": "exact4NEWpaths verified/clean original retained; independent SOURCE02ACK bytebound1..MAX +29authoredtests; source01prebuildHOLD preserved; runtimepending ROOTgate"
 }

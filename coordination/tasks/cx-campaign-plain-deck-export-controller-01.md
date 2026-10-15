@@ -1,3 +1,7 @@
+SOURCE-INTEGRATED / bounded claim RELEASED: exact9086017f511471f4db6276365e54f37f5e32057b→436be32, exact4NEWpaths/pins/clean original verified; independentSOURCE02ACK.29authoredtests/runtimeNOTRUN; zero-byteprebuildHOLD+repair snapshots preserved. Rootfocusedproducer+actualcompatibilitygate next.
+
+Historical dispatch below:
+
 # Retained loss-aware plain-list export controller — attempt01
 
 TAKEN native /root/implement_deck_edit_store after independent literal READYACK54361f11 plus explicit loss-attribution clarification; canonical root claim active, verified isolated worktree provisioned. Existing execution.transfer-ui/transfer-codecs, B08/I01; contributes application-owned all-board loss-aware text to PX05-046/PX06-045, does NOT complete common/vendor syntax or board-selection parity. Plan campaign-r1-20261015 unchanged. Exact accepted dispatch base 70989c014814d80c5e3caa40813d54a5ccefd731; Androidtree dc6b48199d1718cf00842191bba826996e888086. Source/runtime cbff7ac: focused17tests2XML0f/e/s1m47/651pins (2actualimport+15writer), independent distinct ACK scopes. Prior44/1failed and unchanged39shell+3priorapp passes retained separately; overlaps not additive. No known current compiler failure; native only compiled, fullscope/native/Fold7/finishedAPK holds. No repins.

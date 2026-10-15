@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-export-controller-dispatch-225. Updated UTC: 2026-10-15T16:13:38Z.
+Checkpoint: cp-20261015-export-producer-gate-226. Updated UTC: 2026-10-15T16:26:54Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-dispatch-reviewed-export-controller
+verify-export-producer-compatibility
 
-Reviewed exact export-controller producer claimed in verified isolated worktree at accepted70989c0; root retains shared composition, one free local build slot
+Reviewed export controller and actual all-board byte-loss AppGraph fixture integrated; all worker claims released; root focused producer compatibility gate next
 
 Read CURRENT, machine state and task card.

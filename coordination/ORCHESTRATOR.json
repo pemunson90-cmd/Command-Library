@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T16:13:38Z",
-  "expires_utc": "2026-10-15T16:58:38Z",
-  "checkpoint_id": "cp-20261015-export-controller-dispatch-225",
-  "note": "Acceptedimport/outputHOSTcbff7ac17focusedpasses/independentACKs/sourceequivalence retained; fulltransfer/native/Fold7/finishedAPKopen. Activecx-campaign-plain-deck-export-controller-01 isolated4NEWpaths at70989c0 READYACK54361f11; rootsharedcomposition1f97aff SOURCEACK2files/compilerpendingproducer. Artifact-onlyindependentexportoracle own/tmp no repowrites. Count3writersinclroot/4childrenmax/oneROOTGradleslotFREE; noworkerbuilds. Publicationinvalidtoken/rootsharedauthorityunchanged."
+  "heartbeat_utc": "2026-10-15T16:26:54Z",
+  "expires_utc": "2026-10-15T17:11:54Z",
+  "checkpoint_id": "cp-20261015-export-producer-gate-226",
+  "note": "Acceptedimport/outputHOSTcbff7ac17focusedpasses retained. Exportcontroller9086017\u2192436be32 exact4NEWpaths/SOURCE02ACK29authoredcases/claimreleased/cleanoriginal; rootcomposition1f97affSOURCEACK; actualAppGraph229byte81lossfixtureSOURCEACK. RootONLYproducer-compatibilitygate next/runtimeNOTRUN/noexportUI/native. Allworker/artifactassignmentscomplete/noGradle; rootmax3writersinclroot/4children/onebuildslot. Publicationinvalidtoken/rootsharedauthority/fullreleaseholds."
 }
