@@ -25,8 +25,9 @@ class ProviderGenerationControllerTest {
         var fail = false
         init { profiles.rows[row.profile.id.value] = row }
         val history = Proxy.newProxyInstance(LocalAiHistory::class.java.classLoader,
-            arrayOf(LocalAiHistory::class.java)) { _, method, _ ->
-            check(method.name == "getTurn") { "Unexpected history call: ${method.name}" }
+            arrayOf(LocalAiHistory::class.java)) { _, method, args ->
+            check(method.name.substringBefore('-') == "getTurn") { "Unexpected history call: ${method.name}" }
+            check(args?.first() == inputs.last().id.value) { "Reload must use original attempt ID" }
             turn?.let { Outcome.Success(it) } ?: Outcome.Unavailable(UnavailableReason.NOT_FOUND, "Synthetic missing")
         } as LocalAiHistory
         val access = AiHistoryAccess { Outcome.Success(history) }
