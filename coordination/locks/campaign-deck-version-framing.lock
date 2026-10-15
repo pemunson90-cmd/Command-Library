@@ -1,0 +1,11 @@
+{
+  "component": "deck-version-framing",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-version-framing-01",
+  "branch": "agent/campaign-deck-version-framing-20261015",
+  "base_commit": "b2ac8de",
+  "owner": "/root/implement_deck_edit_store; new isolated pure packet",
+  "owned_paths": "Exactly new DeckVersionFraming/test/ownhandoff; no sharedexistingfiles",
+  "status": "active",
+  "authority": "Local live root canonical claim, remote publication auth-blocked; active root lease retained"
+}

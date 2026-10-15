@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-version-ui-claimed-181",
-  "verified_base_head": "b2ac8de263a7455e6989a097f172d81ea006c0c9",
+  "checkpoint_id": "cp-20261015-version-framing-claimed-182",
+  "verified_base_head": "0188aa498581455134b3e93d6339690ea79a4be1",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "claim-isolated-version-presentation",
+  "first_action": "claim-isolated-version-framing",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -146,7 +146,7 @@
     "collection_app_integration": "Final Android tree b6b9a485bc7ccbacfcd15d07585f9d9b624a9aa2; see docs/verification/collection/COLLECTION-INTEGRATION-LOCAL-20261015.md. R1 broad683 plus R3 corrected4 reruns passed, production identical; R2 test compile failure retained.",
     "deck_version_boundary": "Androidtree2df7418c0cdd09595de32ded6b7468461325b05f:398tests45XML0fail/error/skip; realSQLitegraph/duplicate/wholeundo +Roomintegration. Completeversionsport/framing declarations only, backend/schema/S11 stillopen. See NAMED-VERSION-BOUNDARY-20261015.md"
   },
-  "last_completed": "Localb2ac8de reviewed398tests preserved; invalidGitHubtoken blocks publication only; isolatedS11 UI claimed against completecompiledport, root schema next",
-  "updated_utc": "2026-10-15T08:41:25Z",
+  "last_completed": "Three disjoint writers root schema, isolatedS11, isolated exactmetadata/cursor producer; onebuildslot, publicationauthblock retained",
+  "updated_utc": "2026-10-15T08:43:07Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

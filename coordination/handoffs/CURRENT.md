@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-version-ui-claimed-181
+Checkpoint-ID: cp-20261015-version-framing-claimed-182
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. claim-isolated-version-presentation
+Next step: 3. claim-isolated-version-framing
 
-Updated UTC: 2026-10-15T08:41:25Z
+Updated UTC: 2026-10-15T08:43:07Z
 Status: in_progress; lease: active.
-Verified base: b2ac8de263a7455e6989a097f172d81ea006c0c9.
+Verified base: 0188aa498581455134b3e93d6339690ea79a4be1.
 
-Localb2ac8de reviewed398tests preserved; invalidGitHubtoken blocks publication only; isolatedS11 UI claimed against completecompiledport, root schema next
+Three disjoint writers root schema, isolatedS11, isolated exactmetadata/cursor producer; onebuildslot, publicationauthblock retained
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
