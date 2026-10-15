@@ -77,7 +77,7 @@ internal fun PlainDeckImportSurface(controller: PlainDeckImportController, onCho
                 }
             }
             state.currentHead != null && state.acknowledgedId != null -> {
-                val head = state.currentHead
+                val head = checkNotNull(state.currentHead)
                 Surface(tonalElevation = 2.dp) {
                     Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(stringResource(R.string.plain_import_saved, head.name), modifier = Modifier.testTag("plain-import-saved"))
