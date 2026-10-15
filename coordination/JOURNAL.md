@@ -639,3 +639,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T11:23:18Z | codex | cp-20261015-plain-codec-ui-merge-196 | containing commit | Integrate complete plaincodec and accepted49test combined boundary; root continues actual draft actor/UI while isolatedSQLbackend implements.
 
 2026-10-15T11:53:10Z | codex | cp-20261015-durable-draft-backend-197 | containing commit | Accepted complete SQL drafts with final repaired 248-test ACK; isolated actor active; root UI/DI/Room integration preserved unverified.
+
+2026-10-15T12:03:43Z | codex | cp-20261015-draft-app-source-review-198 | containing commit | Root UI/DI frozen source-only ACK; isolated actor held for temporal/recovery repair before first runtime gate. Accepted backend unchanged.

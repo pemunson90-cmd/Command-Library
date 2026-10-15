@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-durable-draft-backend-197. Updated UTC: 2026-10-15T11:53:10Z.
+Checkpoint: cp-20261015-draft-app-source-review-198. Updated UTC: 2026-10-15T12:03:43Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-integrate-durable-drafts-continue-actor-ui
+review-root-ui-repair-actor-before-gate
 
-Accepted complete SQL drafts with final repaired 248-test ACK; isolated actor active; root UI/DI/Room integration preserved unverified.
+Root UI/DI frozen source-only ACK; isolated actor held for temporal/recovery repair before first runtime gate. Accepted backend unchanged.
 
 Read CURRENT, machine state and task card.

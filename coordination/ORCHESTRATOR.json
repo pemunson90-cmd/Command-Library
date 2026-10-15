@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T11:53:10Z",
-  "expires_utc": "2026-10-15T12:38:10Z",
-  "checkpoint_id": "cp-20261015-durable-draft-backend-197",
+  "heartbeat_utc": "2026-10-15T12:03:43Z",
+  "expires_utc": "2026-10-15T12:48:43Z",
+  "checkpoint_id": "cp-20261015-draft-app-source-review-198",
   "note": "Root retains shared/contracts/schema/DI/navigation/final merge. Complete SQL drafts integrated 5807a11 with final repaired 248-test source/runtime ACK; backend claim released. Isolated actor active, prebuild source HOLDs under repair; no runtime gate yet. Root UI/DI14 files frozen source-only ACK; combined Room/app gate pending actor. No running build, one serial slot free. Publication invalid-token blocker and all release holds remain."
 }

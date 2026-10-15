@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-durable-draft-backend-197
+Checkpoint-ID: cp-20261015-draft-app-source-review-198
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. integrate-durable-drafts-continue-actor-ui
+Next step: 3. review-root-ui-repair-actor-before-gate
 
-Updated UTC: 2026-10-15T11:53:10Z
+Updated UTC: 2026-10-15T12:03:43Z
 Status: in_progress; lease: active.
-Verified base: 5807a11ef4b6c840329b92b86aeaa2152ee8c82b.
+Verified base: 5a9f75577f65b3b2a2312fe203aafd2970feabd1.
 
-Accepted complete SQL drafts with final repaired 248-test ACK; isolated actor active; root UI/DI/Room integration preserved unverified.
+Root UI/DI frozen source-only ACK; isolated actor held for temporal/recovery repair before first runtime gate. Accepted backend unchanged.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
