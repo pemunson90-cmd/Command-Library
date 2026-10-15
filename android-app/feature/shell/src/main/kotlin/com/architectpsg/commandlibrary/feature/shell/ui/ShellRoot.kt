@@ -152,7 +152,8 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            Column(Modifier.fillMaxSize()) {
+            Column(Modifier.fillMaxSize().windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
                 controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
                 draft?.let { editor -> DraftRecoveryBanner(editor) {
                     val session = editor.state.value.session
