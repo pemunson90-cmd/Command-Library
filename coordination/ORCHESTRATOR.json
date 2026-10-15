@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T06:25:36Z",
-  "expires_utc": "2026-10-15T07:10:36Z",
-  "checkpoint_id": "cp-20261015-durable-editor-integration-170",
-  "note": "Rootexclusive shared/schema/DI/UI/integration/finalmerge; durableeditor/backendassembled186tests22XML0fail/error/skip+lint/nativeKotlincompile, actualRoomhostnotdevice. Noactiveworker/build; nextreviewedcompletecollectionboundary/storedinventory\u2192quantity; allholdsretained."
+  "heartbeat_utc": "2026-10-15T06:42:16Z",
+  "expires_utc": "2026-10-15T07:27:16Z",
+  "checkpoint_id": "cp-20261015-inventory-projection-boundary-171",
+  "note": "Rootretains shared/schema/codec/DI/UI/integration/finalmerge; editor186scopedtestspasspublishedcef0285. Reviewedcollectionprojectiondeclarations/examples compileONLY, noengineyet; nextisolatedpureworker+rootdurability. Noactivebuild/writer; allholdsretained."
 }

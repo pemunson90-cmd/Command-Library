@@ -6,7 +6,7 @@ Independent reviewer parsed all4fixedfixtures toEOF, verified exact lengths14/37
 
 Root implements ports, complete bounded primitiveCLDP1 codec and additive schema11 (38oldentities+2undoentities), migration registration and actualRoomfresh/9upgrade expectedversion/emptyundotable checks. No SQLeditservice, AppGrapheditbinding, editor/autosave/version/package/native/device acceptance yet. Completed local gates/evidence under /tmp/cl-durable-edits-01/evidence, detailed below; no active build.
 
-Next: publish sharedbaseline and dispatch bounded realbackend while root composes editor. Keep unknown-ack retries, conditionalrevision/receipt/durability gates and finishedAPKhold.
+Subsequent realbackend/editor work is completed in cef0285; see DURABLE-DECK-EDITOR-INTEGRATION-20261015.md for current accepted integration evidence. The remaining absence statements here describe only the historical shared-prerequisite snapshot. Keep unknown-ack retries, conditionalrevision/receipt/durability gates and finishedAPKhold.
 
 Actual verification complete: r1 SUCCESS1m15s22tests3XML0fail/error/skip. ActualKSP11 SHA9b87a40f2f8ed911dd81b026fdb91d7db35f5409ac3c3e93a7dbe22da8ec4d80; all38previousentityrecords exactunchanged/40total. ActualAstra source/schema ACK verified all6migration statements and100fixtureDDL statements againstexport; no reviewerbuild. Root strengthened crossdeckFK fixture with an existing otherdeck+revision so it specifically rejects referencing d's link.
 

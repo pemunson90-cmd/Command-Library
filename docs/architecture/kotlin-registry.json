@@ -1467,7 +1467,7 @@
         "verification": "real DB revision/atomic bulk/ineligible rows/nonnegative/unknown/no language transfer/restart",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "CollectionRepository/DTOs only",
+        "observed_implementation": "Reviewed InventoryProjection DTOs/limits/purecollectionmodule/8rootabstractexamples compile ONLY; actualengine/persistence absent. Ready cx-campaign-inventory-projection-01 consumes stablephysicalmerge/rowissue/revision/work contracts. CollectionRepository remains unbound; coherent complete snapshot/authoritativepreview/commit/undo/tombstones, catalogfinisheligibility andS12UI remain named collection successors. Actual source design+readiness probe recorded in inventory-projection-design/BOUNDARY report.",
         "ownership_group": "collection",
         "resources": [
           "local-gradle-serial"

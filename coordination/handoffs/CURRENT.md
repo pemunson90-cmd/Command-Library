@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-durable-editor-integration-170
+Checkpoint-ID: cp-20261015-inventory-projection-boundary-171
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. publish-real-durable-editor-and-advance-stored-inventory-boundary
+Next step: 3. publish-reviewed-inventory-projection-prerequisite
 
-Updated UTC: 2026-10-15T06:25:36Z
+Updated UTC: 2026-10-15T06:42:16Z
 Status: in_progress; lease: active.
-Verified base: a38a45c3bc1d636d8ada073583ec9f2133f1e6f2.
+Verified base: cef028589e0202b5275bcde3fe6c8353f72bde6f.
 
-RealSqlLocalDeckEdits/AppGraph/editor integrated;186tests22XML0fail/error/skip+lint/nativeKotlincompile, exactAndroidtree59455097; nextreviewcollectioncontracts/identity/snapshot/previewundo; holdsretained
+ReviewedpurecollectionDTOs/module/8abstractexamplescompileONLY, pinsunchanged; editor186testsevidenceretained; nextisolatedprojectionworker/rootinventorydurability, holdsretained
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
