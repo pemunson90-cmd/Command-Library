@@ -39,6 +39,7 @@ internal data class OfflinePromptState(
     val dirtyModes: Set<OfflineLabMode> = emptySet(),
     val editGenerations: Map<OfflineLabMode, Long> = emptyMap(),
     val frame: Long = 0,
+    val historyPrompt: HistoryPromptCapture? = null,
     val writingMode: OfflineLabMode? = null,
     val templateProblems: Map<OfflineLabMode, Problem> = emptyMap(),
 ) {
@@ -81,7 +82,7 @@ internal class OfflinePromptController(
     fun open(deck: DeckSnapshot, snapshot: SnapshotReference?) {
         val previous = mutable.value
         if (previous.deck != deck) invalidate(previous.copy(deck = deck, snapshot = snapshot, visible = true,
-            question = "", constraints = "", reply = "", includePrivateNotes = false, rejectedFields = emptySet()))
+            question = "", constraints = "", reply = "", includePrivateNotes = false, rejectedFields = emptySet(), historyPrompt = null))
         else invalidate(previous.copy(visible = true, snapshot = snapshot))
         if (!live()) return
         // Reload durable truth on reopen, retaining every dirty draft.
@@ -101,12 +102,12 @@ internal class OfflinePromptController(
 
     fun observe(deck: DeckSnapshot?) {
         val s = mutable.value
-        if (s.deck != null && deck != s.deck) invalidate(s.copy(visible = false, deck = null))
+        if (s.deck != null && deck != s.deck) invalidate(s.copy(visible = false, deck = null, historyPrompt = null))
     }
 
     fun setSnapshot(snapshot: SnapshotReference?) {
         if (!live()) return
-        invalidate(mutable.value.copy(snapshot = snapshot))
+        invalidate(mutable.value.copy(snapshot = snapshot, historyPrompt = null))
     }
     fun hide() { invalidate(mutable.value.copy(visible = false)) }
     fun useCurrentData(action: () -> Unit) { if (live()) action() }
@@ -117,7 +118,7 @@ internal class OfflinePromptController(
         return true
     }
     private fun edit(change: (OfflinePromptState) -> OfflinePromptState) {
-        if (live()) invalidate(change(mutable.value))
+        if (live()) invalidate(change(mutable.value).copy(historyPrompt = null))
     }
     fun setMode(mode: OfflineLabMode) = edit { it.copy(mode = mode) }
     fun setIntensity(intensity: RoastIntensity) = edit { it.copy(intensity = intensity) }
@@ -163,14 +164,14 @@ internal class OfflinePromptController(
         val next = if (field == OfflinePromptField.OVERRIDE)
             s.copy(rejectedOverrides = s.rejectedOverrides - s.mode, templateProblems = s.templateProblems - s.mode)
         else s.copy(rejectedFields = s.rejectedFields - field)
-        invalidate(when (field) {
+        invalidate((when (field) {
             OfflinePromptField.QUESTION -> next.copy(question = value)
             OfflinePromptField.CONSTRAINTS -> next.copy(constraints = value)
             OfflinePromptField.OVERRIDE -> next.copy(overrides = next.overrides + (next.mode to value),
                 dirtyModes = next.dirtyModes + next.mode,
                 editGenerations = next.editGenerations + (next.mode to generation(next.mode) + 1))
             OfflinePromptField.REPLY -> next.copy(reply = value)
-        })
+        }).copy(historyPrompt = if (field == OfflinePromptField.REPLY) s.historyPrompt else null))
     }
     private fun generation(mode: OfflineLabMode): Long = mutable.value.editGenerations[mode] ?: 0
 
@@ -180,7 +181,7 @@ internal class OfflinePromptController(
         fun overrideBody(state: OfflinePromptState): String? = state.overrides[state.mode] ?: state.baseline.row?.body
         if (overrideBody(previous) != overrideBody(next) || previous.templateReady != next.templateReady ||
             previous.versionMismatch != next.versionMismatch ||
-            (previous.mode in previous.rejectedOverrides) != (next.mode in next.rejectedOverrides)) invalidate(next)
+            (previous.mode in previous.rejectedOverrides) != (next.mode in next.rejectedOverrides)) invalidate(next.copy(historyPrompt = null))
         else mutable.value = next
     }
 
@@ -317,8 +318,19 @@ internal class OfflinePromptController(
                 a.deckRevision != deck.revision || a.templateId != s.mode.templateId ||
                 a.templateVersion != s.mode.shippedVersion || a.rendered.isEmpty() ||
                 result.oracleContextsIncluded < 0 || result.oracleContextsOmitted < 0) null
-            else mutable.value.copy(result = result)
+            else mutable.value.copy(result = result, historyPrompt = HistoryPromptCapture(s.mode, a,
+                HistoryPromptProvenance(ContentHash("SHA-256", java.security.MessageDigest.getInstance("SHA-256")
+                    .digest((request.overrideBody ?: result.template.body).toByteArray(Charsets.UTF_8))
+                    .joinToString("") { "%02x".format(it) }), result.overrideUsed, result.snapshot)))
         }
+    }
+    fun captureHistory(mode: OfflineLabMode, frame: Long): OfflineHistoryCapture? {
+        if (!matches(mode, frame)) return null
+        val s = mutable.value
+        val captured = s.historyPrompt ?: return null
+        if (s.busy || s.rejected.isNotEmpty() || captured.mode != s.mode || captured.artifact.deckId != s.deck?.id ||
+            captured.artifact.deckRevision != s.deck?.revision) return null
+        return OfflineHistoryCapture(captured, s.reply)
     }
     fun copyPrompt(copy: (String) -> Boolean) {
         if (!live()) return

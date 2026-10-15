@@ -83,6 +83,8 @@ public class ShellPorts(
     public val catalogSearchPreparation: com.architectpsg.commandlibrary.core.model.CatalogSearchPreparation? = null,
     /** Complete provider-free prompt/render/reply/detail capability; no provider/runtime stubs. */
     public val offlineDeckPrompts: com.architectpsg.commandlibrary.core.model.OfflineDeckPrompts? = null,
+    /** Real local history, exposed only after root process-epoch recovery succeeds. */
+    public val aiHistory: AiHistoryAccess? = null,
     /** Complete per-mode custom prompt persistence; absent does not simulate a successful save. */
     public val promptOverrides: com.architectpsg.commandlibrary.core.model.LocalPromptOverrides? = null,
     public val cardQueryParser: ((String) -> com.architectpsg.commandlibrary.core.model.CardQueryParseResult)? = null,

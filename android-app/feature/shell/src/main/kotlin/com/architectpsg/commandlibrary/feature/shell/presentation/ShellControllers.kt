@@ -72,6 +72,7 @@ internal class ShellControllers(
             cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
+    val aiHistory = ports.aiHistory?.let { AiHistoryController(scope, it, ioDispatcher) }
     val offlinePrompts = ports.offlineDeckPrompts?.let {
         OfflinePromptController(scope, ioDispatcher, it, ::currentPromptDeck, savedTemplates = ports.promptOverrides)
     }

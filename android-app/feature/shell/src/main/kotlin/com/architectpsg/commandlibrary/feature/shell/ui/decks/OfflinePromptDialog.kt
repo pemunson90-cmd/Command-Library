@@ -19,7 +19,8 @@ import com.architectpsg.commandlibrary.feature.shell.ui.WidthClass
 import com.architectpsg.commandlibrary.feature.shell.ui.problemText
 
 @Composable
-internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (String) -> Boolean, onUseCurrentData: () -> Unit) {
+internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (String) -> Boolean, onUseCurrentData: () -> Unit,
+    onSaveHistory: ((OfflineHistoryCapture) -> Unit)? = null, historySaveEnabled: Boolean = true) {
     val state by controller.state.collectAsState()
     val copy by rememberUpdatedState(onCopy)
     val refresh by rememberUpdatedState(onUseCurrentData)
@@ -132,6 +133,14 @@ internal fun OfflinePromptDialog(controller: OfflinePromptController, onCopy: (S
                             Text(stringResource(if (copied) R.string.offline_prompt_copied else R.string.offline_prompt_copy_failed),
                                 Modifier.testTag("offline-prompt-copy-feedback"))
                         } }
+                        if (onSaveHistory != null) {
+                            item { Text(stringResource(R.string.ai_history_prompt_required)) }
+                            item { OutlinedButton({ controller.captureHistory(editorMode, editorFrame)?.let(onSaveHistory) },
+                                enabled = historySaveEnabled && state.historyPrompt != null && !state.busy && state.rejected.isEmpty(),
+                                modifier = Modifier.heightIn(min = 48.dp).testTag("offline-prompt-save-history")) {
+                                Text(stringResource(R.string.ai_history_save))
+                            } }
+                        }
                         item { Text(stringResource(R.string.offline_prompt_review_scope)) }
                         item { PromptField(state.reply, R.string.offline_prompt_reply, "offline-prompt-reply",
                             OfflinePromptField.REPLY, state, controller) }

@@ -205,6 +205,24 @@ class OfflinePromptControllerTest {
         f.controller.render(); runCurrent(); assertTrue(completion is CancellationException)
         assertFalse(f.controller.state.value.busy); assertNull(f.controller.state.value.result)
     }
+    @Test fun historyCaptureKeepsExactRenderedPromptWhenPastedReplyClearsPreview() = runTest {
+        val f = PromptFixture(this)
+        f.controller.setText(OfflinePromptField.QUESTION, "Original prompt question")
+        f.controller.render(); runCurrent()
+        val before = f.controller.state.value
+        val artifact = checkNotNull(before.result).artifact
+        f.controller.setText(OfflinePromptField.REPLY, "Pasted reply 日本語")
+        val after = f.controller.state.value
+        assertNull(after.result)
+        assertNull(f.controller.captureHistory(before.mode, before.frame)) // Old composition callbacks cannot save.
+        val capture = checkNotNull(f.controller.captureHistory(after.mode, after.frame))
+        assertSame(artifact, capture.prompt.artifact)
+        assertEquals("Pasted reply 日本語", capture.reply)
+        assertEquals(64, capture.prompt.provenance.effectiveTemplateHash.hex.length)
+        f.controller.setText(OfflinePromptField.QUESTION, "New question needs a new preview")
+        val changed = f.controller.state.value
+        assertNull(f.controller.captureHistory(changed.mode, changed.frame))
+    }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)

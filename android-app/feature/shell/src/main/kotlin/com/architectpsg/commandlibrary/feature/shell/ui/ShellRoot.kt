@@ -59,6 +59,8 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExpor
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
 import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
 import com.architectpsg.commandlibrary.feature.shell.ui.settings.ProviderProfilesDialog
+import com.architectpsg.commandlibrary.feature.shell.ui.decks.AiHistoryDialog
+import com.architectpsg.commandlibrary.feature.shell.presentation.OfflinePromptField
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.OfflinePromptDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.BoardConstraintDialog
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DrawProbabilityDialog
@@ -119,7 +121,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
                 if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-                if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide() }
+                if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide() }
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
                 destination = target
             }
@@ -130,7 +132,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
                         if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-                        if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide() }
+                        if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide() }
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
                         destination = action.destination
                     }
@@ -143,7 +145,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         LaunchedEffect(visibleDestination, controllers) {
             if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
-            if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide() }
+            if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide() }
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
         }
         var rulesPickerUnavailable by rememberSaveable { mutableStateOf(false) }
@@ -255,6 +257,22 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
+                controllers.aiHistory?.let { history ->
+                    AiHistoryDialog(history) { turn ->
+                        val deck = controllers.currentPromptDeck()
+                        val prompt = controllers.offlinePrompts
+                        if (deck == null || prompt == null || deck.id != turn.prompt.deckId) false
+                        else {
+                            prompt.open(deck, controllers.currentPromptSnapshot())
+                            prompt.setMode(turn.mode)
+                            prompt.setIncludePrivateNotes(false)
+                            prompt.setText(OfflinePromptField.QUESTION, "")
+                            prompt.setText(OfflinePromptField.CONSTRAINTS, "")
+                            prompt.setText(OfflinePromptField.REPLY, turn.rawContent)
+                            true
+                        }
+                    }
+                }
                 controllers.offlinePrompts?.let { prompt ->
                     OfflinePromptDialog(prompt, onCopy = { text ->
                         try {
@@ -264,7 +282,16 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                                 true
                             }
                         } catch (_: Exception) { false }
-                    }, onUseCurrentData = { prompt.setSnapshot(controllers.currentPromptSnapshot()) })
+                    }, onUseCurrentData = { prompt.setSnapshot(controllers.currentPromptSnapshot()) },
+                        onSaveHistory = controllers.aiHistory?.let { history -> { capture ->
+                            val deck = controllers.currentPromptDeck()
+                            if (deck != null && deck.id == capture.prompt.artifact.deckId && deck.revision == capture.prompt.artifact.deckRevision &&
+                                !history.state.value.writing && !history.state.value.uncertainSave) {
+                                history.capture(capture, deck.name)
+                                prompt.hide()
+                            }
+                        } }, historySaveEnabled = controllers.aiHistory?.state?.collectAsState()?.value?.let { !it.writing && !it.uncertainSave } == true)
+
                 }
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
@@ -452,6 +479,7 @@ private fun DestinationContent(
                 onOfflinePrompt = controllers.offlinePrompts?.let { prompt -> { deck ->
                     if (controllers.currentPromptDeck() == deck) prompt.open(deck, controllers.currentPromptSnapshot())
                 } },
+                onAiHistory = controllers.aiHistory?.let { history -> { deck -> history.open(deck) } },
                 onBoardChecks = controllers.boardConstraints?.let { checker -> { deck ->
                     val current = library.state.value
                     if (current.selected == deck && !current.loadingDetail && current.editor == null && !current.pending && !current.mutationBusy && current.form == null) checker.open(deck)

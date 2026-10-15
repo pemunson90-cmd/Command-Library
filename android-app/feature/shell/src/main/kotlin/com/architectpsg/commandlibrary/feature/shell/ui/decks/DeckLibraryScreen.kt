@@ -39,7 +39,8 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
     onExportText: ((DeckSnapshot) -> Unit)? = null, exportTextEnabled: Boolean = true,
     onDrawProbabilities: ((DeckSnapshot) -> Unit)? = null,
     onBoardChecks: ((DeckSnapshot) -> Unit)? = null,
-    onOfflinePrompt: ((DeckSnapshot) -> Unit)? = null, offlinePromptEnabled: Boolean = true) {
+    onOfflinePrompt: ((DeckSnapshot) -> Unit)? = null, offlinePromptEnabled: Boolean = true,
+    onAiHistory: ((DeckSnapshot) -> Unit)? = null) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -112,6 +113,9 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                     if (onOfflinePrompt != null) OutlinedButton({ onOfflinePrompt(selected) },
                         enabled = offlinePromptEnabled && !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-offline-prompt")) { Text(stringResource(R.string.offline_prompt_title)) }
+                    if (onAiHistory != null) OutlinedButton({ onAiHistory(selected) },
+                        enabled = !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("deck-ai-history")) { Text(stringResource(R.string.ai_history_title)) }
                     if (onBoardChecks != null) OutlinedButton({ onBoardChecks(selected) },
                         enabled = !state.pending && !state.mutationBusy && state.form == null && state.editor == null && !state.loadingDetail,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-board-checks")) { Text(stringResource(R.string.board_checks_title)) }
