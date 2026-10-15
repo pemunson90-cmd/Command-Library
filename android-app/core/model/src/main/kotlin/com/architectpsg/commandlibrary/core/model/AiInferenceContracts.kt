@@ -23,6 +23,8 @@ public data class ProviderProfile(
     public val secretRef: SecretRef?,
     public val apiVersion: Knowledge<String>,
     public val extraHeaders: SnapshotList<HttpHeader>,
+    /** Explicit protocol prefix, never inferred from a display name or origin-only endpoint. */
+    public val baseUri: ResourceUri? = null,
 )
 public data class ModelDescriptor(
     public val id: String,

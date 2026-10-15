@@ -67,7 +67,11 @@ class AndroidSecretVaultTest {
         val keys = Keys()
         val vault = vault(keys, directory)
         val context: Context = RuntimeEnvironment.getApplication()
-        AndroidSecretVault(context) // Public production constructor must remain lazy on a host.
+        val nativeVault = AndroidSecretVault(context) // Public constructor and reference remain lazy.
+        val expected = VaultEnvelope.ref(scope)
+        assertEquals(expected, success(nativeVault.reference(scope)))
+        assertEquals(expected, success(vault.reference(scope)))
+        failed(vault.reference(scope.copy(purpose = "\u0000")), FailureCode.INVALID_INPUT)
         assertFalse(directory.exists())
         unavailable(vault.read(VaultEnvelope.ref(scope), cancel), UnavailableReason.NOT_FOUND)
         failed(vault.read(VaultEnvelope.ref(scope).copy(scope = scope.copy(purpose = "other")), cancel), FailureCode.SOURCE_MISMATCH)

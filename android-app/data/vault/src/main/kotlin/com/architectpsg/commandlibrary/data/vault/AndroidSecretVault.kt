@@ -43,6 +43,12 @@ public class AndroidSecretVault internal constructor(
         VaultRecordStore({ File(context.applicationContext.noBackupFilesDir, "command-library-vault-v1") }),
     )
 
+    public override fun reference(scope: SecretScope): Outcome<SecretRef> = try {
+        Outcome.Success(VaultEnvelope.ref(scope))
+    } catch (problem: Exception) {
+        classify(problem)
+    }
+
     public override suspend fun put(scope: SecretScope, value: String, cancel: CancelToken): Outcome<SecretRef> =
         operation(cancel) { checkpoint ->
             val ref = VaultEnvelope.ref(scope)

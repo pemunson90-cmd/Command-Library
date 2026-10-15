@@ -10,6 +10,7 @@ import androidx.room3.RoomDatabase
  */
 @Database(
     entities = [
+        ProviderProfileEntity::class,
         InventoryOperationEntity::class,
         InventoryGroupEntity::class,
         InventoryStateEntity::class,
@@ -66,5 +67,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 15
+    const val VERSION: Int = 16
 }

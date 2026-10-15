@@ -158,6 +158,9 @@ public interface Database {
 public data class SecretScope(public val providerProfileId: EntityId, public val origin: Origin, public val purpose: String)
 public data class SecretRef(public val id: EntityId, public val scope: SecretScope)
 public interface SecretVault {
+    /** Pure stable reference derivation: no key/file/provider access; not proof a key exists.
+     * Persist this scope reference before put so interrupted credential setup remains recoverable. */
+    public fun reference(scope: SecretScope): Outcome<SecretRef>
     public suspend fun put(scope: SecretScope, value: String, cancel: CancelToken): Outcome<SecretRef>
     public suspend fun read(ref: SecretRef, cancel: CancelToken): Outcome<String>
     public suspend fun remove(ref: SecretRef, cancel: CancelToken): Outcome<Unit>
