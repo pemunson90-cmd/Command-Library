@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-calculator-accepted-230",
-  "verified_base_head": "b9b394b6157c95e017b7a5eb21dd81597ec2d989",
+  "checkpoint_id": "cp-20261015-indexed-query-wave-231",
+  "verified_base_head": "c00f8ecfeecba5498fd9ebdbee6e1ef86296d622",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "calculator-accepted-query-next",
+  "first_action": "indexed-query-producers-claimed",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -159,7 +159,7 @@
     "plain_deck_output_boundary": "Writer616abf39\u21922029b71 exact3NEWpaths/sourceACK; acceptedcbff7ac actual15provider-PFD/fault/cancel/closure tests pass (samefocused17run, notadditional17).651pinsfrozen/independentinventorySOURCE-RUNTIMEACK. No exportconsumer/UI/remote-durability/native acceptance; report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.",
     "plain_deck_export_boundary": "Acceptedb545f411ec691e12d354f2a39eddcd401bc3c84b tree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460 actual30tests2XML0f/e/s1m18/655pins/log795d346306a89014bae52848e8ff6eb666e10d9a54de52bf655b9dfac322813c.29faithfulcontroller+1actualAppGraph229byte81loss7board8entry18copies/validator/Roomfixture, independentSOURCE02/runtimeACK. ActualVMfactory/nativeKotlincompiledONLY, noUI/picker/actualcontroller-writer/deviceexecution. SOURCE01zero-byteprebuildHOLDfixedbeforeonlyactualsuccessfulrun. PLAIN-DECK-EXPORT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Accepted exact draw calculator actual app11focusedpasses/source-runtimeACK; no broad repeat; claimreleased; next typed offline query execution dependency",
-  "updated_utc": "2026-10-15T17:09:44Z",
+  "last_completed": "Reviewed/compiled query-v1 ABI atc00f8ec; exact isolated compiler6NEW/reader5NEW claims atsamebase; root actual advanced-search/preparation consumer next; no query runtime yet",
+  "updated_utc": "2026-10-15T17:18:32Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

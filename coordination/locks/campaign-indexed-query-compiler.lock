@@ -1,0 +1,21 @@
+{
+  "component": "indexed-query-compiler",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-indexed-query-compiler-01",
+  "owner": "/root/implement_indexed_query_compiler",
+  "status": "active",
+  "base_commit": "c00f8ecfeecba5498fd9ebdbee6e1ef86296d622",
+  "contract_revision": "query-v1-20261015",
+  "branch": "agent/campaign-indexed-query-compiler-20261015",
+  "worktree": "/workspace/command-library-indexed-query-compiler-01",
+  "owned_paths": [
+    "android-app/feature/search/src/main/kotlin/com/architectpsg/commandlibrary/feature/search/LocalCatalogQueryCompiler.kt",
+    "android-app/feature/search/src/main/kotlin/com/architectpsg/commandlibrary/feature/search/CatalogQueryValidation.kt",
+    "android-app/feature/search/src/main/kotlin/com/architectpsg/commandlibrary/feature/search/CatalogQuerySql.kt",
+    "android-app/feature/search/src/test/kotlin/com/architectpsg/commandlibrary/feature/search/CatalogQueryCompilerTest.kt",
+    "android-app/feature/search/src/test/kotlin/com/architectpsg/commandlibrary/feature/search/CatalogQuerySqlOracleTest.kt",
+    "coordination/handoffs/cx-campaign-indexed-query-compiler-01.md"
+  ],
+  "build_slot": "NOTGRANTED; ROOToneGradleslot",
+  "authority": "independent architecture/API READY ACK; compiled additive core ABI; canonical master packet"
+}

@@ -1,0 +1,20 @@
+{
+  "component": "indexed-query-reader",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-indexed-query-reader-01",
+  "owner": "/root/implement_indexed_query_reader",
+  "status": "active",
+  "base_commit": "c00f8ecfeecba5498fd9ebdbee6e1ef86296d622",
+  "contract_revision": "query-v1-20261015",
+  "branch": "agent/campaign-indexed-query-reader-20261015",
+  "worktree": "/workspace/command-library-indexed-query-reader-01",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalPreparedCardQuery.kt",
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/CatalogQueryCursor.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalPreparedCardQueryTest.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/CatalogQueryCursorTest.kt",
+    "coordination/handoffs/cx-campaign-indexed-query-reader-01.md"
+  ],
+  "build_slot": "NOTGRANTED; ROOToneGradleslot",
+  "authority": "independent architecture/API READY ACK; compiled additive core ABI; canonical master packet"
+}
