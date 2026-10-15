@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-board-checks-host-accepted-235",
-  "verified_base_head": "d471e349f81d89ece0bc9683b0cc8e77704d88b8",
+  "checkpoint_id": "cp-20261015-offline-prompts-wave-236",
+  "verified_base_head": "6a910a134bf138dd472d477bc53ca2b02fba7b51",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "board-checks-host-accepted",
+  "first_action": "offline-prompts-claimed",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -160,7 +160,7 @@
     "indexed_query_host": "Source1c81bfa39featurechecks5XML0f/e/s; unchanged production5bef3ae actual app journey1test0f/e/s44s; independent SOURCE/RUNTIME ACK/681pins. Prior overall compile/SQL/fixture failures retained. INDEXED-QUERY-APP-INTEGRATION-20261015.md. No native/fullcorpus/fullA07-A08.",
     "board_size_checks_host": "Producer10at4e1adbe0f/e/s; originaloverallcompilefailure retained. Unchangedproducer plus3controller/1actualapp atd471e34 SUCCESS1m08/0f/e/s;689pins/independentSOURCE-RUNTIMEACK. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md; noofficial/fullB06/native."
   },
-  "last_completed": "Actual saved-deck custom size checks host accepted;10producer+4consumer source-equivalent scope; next retained offline AI export/pasteback boundary",
-  "updated_utc": "2026-10-15T18:07:22Z",
+  "last_completed": "Reviewed compiled offline prompt API; isolated Solhigh engine and Solmedium UI claims; root app DI/navigation/clipboard and actual workflow integration",
+  "updated_utc": "2026-10-15T18:15:17Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

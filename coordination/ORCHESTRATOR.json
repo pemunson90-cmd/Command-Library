@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T18:07:22Z",
-  "expires_utc": "2026-10-15T18:52:22Z",
-  "checkpoint_id": "cp-20261015-board-checks-host-accepted-235",
+  "heartbeat_utc": "2026-10-15T18:15:17Z",
+  "expires_utc": "2026-10-15T19:00:17Z",
+  "checkpoint_id": "cp-20261015-offline-prompts-wave-236",
   "note": "Acceptedexportproducerb54530passes/655pins/ACK; twoREADYreviewed exportUI/appconsumers nowTAKEN verifiedisolationSAMEbase00556e6/exact4NEW+2NEW. Root+2writers3max/4childrenmax/oneROOTGradleslotFREE. Rootexistingentry/picker/navnext; newUI/app/runtimeNOTRUN. Priorimport/output17acceptedseparately; publicationinvalidtoken/fullreleaseholds/rootsharedauthorityunchanged."
 }

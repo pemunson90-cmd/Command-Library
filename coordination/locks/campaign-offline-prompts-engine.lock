@@ -1,0 +1,25 @@
+{
+  "component": "offline-prompts-engine",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-offline-prompts-engine-01",
+  "owner": "/root/implement_offline_prompts_engine",
+  "status": "active",
+  "base_commit": "6a910a134bf138dd472d477bc53ca2b02fba7b51",
+  "contract_revision": "offline-prompts-v1-20261015",
+  "branch": "agent/campaign-offline-prompts-engine-20261015",
+  "worktree": "/workspace/command-library-offline-prompts-engine-01",
+  "owned_paths": [
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/LocalOfflineDeckPrompts.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/OfflinePromptText.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/OfflineDeckContext.kt",
+    "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/OfflineReplyReferences.kt",
+    "android-app/feature/ai/src/main/resources/prompts/v1/roast.txt",
+    "android-app/feature/ai/src/main/resources/prompts/v1/chat.txt",
+    "android-app/feature/ai/src/main/resources/prompts/v1/upgrade.txt",
+    "android-app/feature/ai/src/main/resources/prompts/v1/surprise.txt",
+    "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/LocalOfflineDeckPromptsTest.kt",
+    "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/OfflinePromptTextTest.kt",
+    "coordination/handoffs/cx-campaign-offline-prompts-engine-01.md"
+  ],
+  "build_slot": "NOTGRANTED; rootonly"
+}

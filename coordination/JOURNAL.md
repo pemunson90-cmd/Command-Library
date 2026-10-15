@@ -715,3 +715,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T17:58:32Z | codex | cp-20261015-board-constraints-wave-234 | containing commit | Reviewed bounded board-count workflow claimed in isolated source lane; root actual saved-deck consumer and module wiring; query host accepted
 
 2026-10-15T18:07:22Z | codex | cp-20261015-board-checks-host-accepted-235 | containing commit | Actual saved-deck custom size checks host accepted;10producer+4consumer source-equivalent scope; next retained offline AI export/pasteback boundary
+
+2026-10-15T18:15:17Z | codex | cp-20261015-offline-prompts-wave-236 | containing commit | Reviewed compiled offline prompt API; isolated Solhigh engine and Solmedium UI claims; root app DI/navigation/clipboard and actual workflow integration
