@@ -1,0 +1,13 @@
+{
+  "component": "durable-draft-dialog-host-ui-recovery-tests",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-draft-dialog-ui-tests-01",
+  "owner": "/root/implement_deck_edit_store native isolated TEST-ONLY writer",
+  "status": "active",
+  "base_commit": "558a02831576c24ecf722ee4d6d0956f9adf57e9",
+  "branch": "agent/campaign-draft-dialog-ui-tests-20261015",
+  "worktree": "/workspace/command-library-draft-dialog-ui-tests-01",
+  "owned_paths": "Exact2NEWtest/handoff paths in packet; existing source/helpers/tests readonly",
+  "build_slot": "NOT GRANTED; root single assembled risk gate will execute combined changes",
+  "authority": "Canonical root local claim, root retains production UI/DI/coordination/integration/final merge"
+}
