@@ -12,6 +12,7 @@ internal data class BoardConstraintState(
     val visible: Boolean = false,
     val deck: DeckSnapshot? = null,
     val limits: Map<BoardRole, BoardLimitInput> = BoardRole.entries.associateWith { BoardLimitInput() },
+    val rejected: Set<Pair<BoardRole, Boolean>> = emptySet(),
     val busy: Boolean = false,
     val invalid: Boolean = false,
     val result: BoardConstraintAssessment? = null,
@@ -43,15 +44,17 @@ internal class BoardConstraintController(
         val state = mutable.value
         if (!state.visible) return
         cancel()
-        if (value.length > 10) { mutable.value = state.copy(busy = false, invalid = true, result = null); return }
+        if (value.length > 10) { mutable.value = state.copy(rejected = state.rejected + (board to minimum), busy = false, invalid = true, result = null); return }
         val old = state.limits.getValue(board)
         val input = if (minimum) old.copy(minimum = value) else old.copy(maximum = value)
-        mutable.value = state.copy(limits = state.limits + (board to input), busy = false, invalid = false, result = null)
+        val rejected = state.rejected - (board to minimum)
+        mutable.value = state.copy(limits = state.limits + (board to input), rejected = rejected, busy = false, invalid = rejected.isNotEmpty(), result = null)
     }
     fun assess() {
         val state = mutable.value
         val deck = state.deck ?: return
         if (!state.visible || state.busy) return
+        if (state.rejected.isNotEmpty()) { mutable.value = state.copy(invalid = true, result = null); return }
         val constraints = ArrayList<BoardConstraint>()
         for (board in BoardRole.entries) {
             val row = state.limits.getValue(board)

@@ -32,6 +32,11 @@ class BoardConstraintControllerTest {
         }
         c.edit(BoardRole.MAIN, true, "2"); c.edit(BoardRole.MAIN, false, "1"); c.assess(); assertTrue(c.state.value.invalid)
         c.edit(BoardRole.MAIN, true, "0"); c.assess(); runCurrent(); assertFalse(c.state.value.invalid); assertTrue(checkNotNull(c.state.value.result).findings.single().satisfied)
+        c.edit(BoardRole.MAIN, true, "1"); c.edit(BoardRole.MAIN, true, "10000000000")
+        c.assess(); runCurrent(); assertTrue(c.state.value.invalid); assertNull(c.state.value.result)
+        c.edit(BoardRole.SIDEBOARD, false, "2"); c.assess(); runCurrent()
+        assertTrue(c.state.value.invalid); assertNull(c.state.value.result)
+        c.edit(BoardRole.MAIN, true, "1"); c.assess(); runCurrent(); assertFalse(c.state.value.invalid)
         valid = false; c.assess(); runCurrent(); assertTrue(c.state.value.invalid); assertNull(c.state.value.result)
     }
     @Test fun editsHideAndChangedSavedRevisionFenceQueuedResults() = runTest {
