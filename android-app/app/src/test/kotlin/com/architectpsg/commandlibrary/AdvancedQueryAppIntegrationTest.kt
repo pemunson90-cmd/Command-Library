@@ -28,7 +28,7 @@ class AdvancedQueryAppIntegrationTest {
     private val compose = createAndroidComposeRule<MainActivity>()
     private val token = object : CancelToken { override val isCancelled = false; override fun throwIfCancelled() = Unit }
     private lateinit var ports: ShellPorts
-    private lateinit var generation: GenerationId
+    private var generation: GenerationId by kotlin.properties.Delegates.notNull()
     private lateinit var deck: DeckSnapshot
     private lateinit var before: List<Any>
     private lateinit var originalAlpha: CardRecord
