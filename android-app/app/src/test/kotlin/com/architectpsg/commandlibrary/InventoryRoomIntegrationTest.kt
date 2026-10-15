@@ -72,6 +72,57 @@ class InventoryRoomIntegrationTest {
         }
         assertTrue(ok(ports.settings.read(token)).consents.isEmpty())
     }
+    /** Storage finish replacement is not catalog eligibility proof; the bulk consumer supplies that separately. */
+    @Test fun actualGraphMixedBulkPreservesZeroUnknownEvidenceAndUnselectedRowsAcrossReopenUndoAndReplay()=runBlocking<Unit>{
+        val context=InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+        val ports=ok((context as CommandLibraryApplication).graph.ports())
+        val inventory=checkNotNull(ports.localInventory);val project=checkNotNull(ports.inventoryProjection)
+        val original=ok(inventory.snapshot(token));val suffix=UUID.randomUUID().toString()
+        fun lot(index:Int)=OwnedLot(EntityId("bulk-$index-$suffix"),CardIdentity(
+            Knowledge.Unknown("Unresolved Oracle",SnapshotList.empty()),Knowledge.Absent("No printing"),
+            ProviderIdentity(ProviderId("foreign-bulk"),"raw","row-$index-$suffix"),Knowledge.Known("Synthetic bulk $index"),LanguageTag.ENGLISH),
+            Knowledge.Unknown("Unresolved finish",SnapshotList.empty()),CardCondition.UNKNOWN,"Shelf $index",index+2,
+            "Retained note $index",Revision(0),Knowledge.Unknown("Acquisition unknown",SnapshotList.empty()))
+        val lots=(0..2).map(::lot)
+        ok(inventory.apply(CollectionPatch(SnapshotList.copyOf(lots.map{CollectionEdit.Add(it)})),original.revision,EntityId("bulk-seed-$suffix"),token))
+        val before=ok(inventory.snapshot(token));val a=before.lots.single{it.id==lots[0].id};val b=before.lots.single{it.id==lots[1].id}
+        val untouched=before.lots.single{it.id==lots[2].id}
+        val patch=CollectionPatch(SnapshotList.of(CollectionEdit.Replace(a.copy(quantity=0,condition=CardCondition.NEAR_MINT,location="")),
+            CollectionEdit.Replace(b.copy(quantity=7,condition=CardCondition.LIGHT_PLAYED,location="Box",finish=Knowledge.Known(Finish.FOIL)))))
+        val preview=ok(project(before,patch,before.revision,token))
+        assertTrue(preview.issues.isEmpty());assertEquals(setOf(a.id,b.id),preview.changes.map{it.lotId}.toSet())
+        assertEquals(before,ok(inventory.snapshot(token))) // Preview alone has no write effect; cancellation is covered separately by consumer tests.
+        val operation=EntityId("bulk-edit-$suffix")
+        val commit=(ok(inventory.apply(patch,before.revision,operation,token)) as InventoryApplyResult.Committed).commit
+        assertEquals(preview,commit.projection)
+        val after=ok(inventory.snapshot(token));assertEquals(Revision(before.revision.value+1),after.revision)
+        assertEquals(a.copy(quantity=0,condition=CardCondition.NEAR_MINT,location="",revision=after.revision),after.lots.single{it.id==a.id})
+        assertEquals(b.copy(quantity=7,condition=CardCondition.LIGHT_PLAYED,location="Box",finish=Knowledge.Known(Finish.FOIL),revision=after.revision),after.lots.single{it.id==b.id})
+        assertEquals(untouched,after.lots.single{it.id==untouched.id})
+        ok(StorageDatabase.open(context,com.architectpsg.commandlibrary.di.AppGraph.DATABASE_FILE)).use{db->
+            val reopened=SqlLocalInventory(db,OwnedLotPayloadCodec(),LocalInventoryPatchCodec(),com.architectpsg.commandlibrary.di.SystemUtcClock,
+                ok(db.capabilities(token)).maxBoundParameters)
+            assertEquals(after,ok(reopened.snapshot(token)))
+            val undo=ok(reopened.undo(after.revision,EntityId("bulk-undo-$suffix"),token))
+            val restored=ok(reopened.snapshot(token));assertEquals(undo.projection.resultRevision,restored.revision)
+            assertEquals(before.lots.map{it.id}.toSet(),restored.lots.map{it.id}.toSet())
+            for(lot in before.lots){
+                val value=restored.lots.single{it.id==lot.id}
+                assertEquals(if(lot.id==a.id||lot.id==b.id)lot.copy(revision=restored.revision)else lot,value)
+            }
+            assertEquals(commit,(ok(reopened.apply(patch,before.revision,operation,token)) as InventoryApplyResult.Committed).commit)
+            assertEquals(restored,ok(reopened.snapshot(token))) // Historical ack never overwrites the undone head.
+        }
+        ok(StorageDatabase.open(context,com.architectpsg.commandlibrary.di.AppGraph.DATABASE_FILE)).use{db->
+            val reopened=SqlLocalInventory(db,OwnedLotPayloadCodec(),LocalInventoryPatchCodec(),com.architectpsg.commandlibrary.di.SystemUtcClock,
+                ok(db.capabilities(token)).maxBoundParameters)
+            val restored=ok(reopened.snapshot(token))
+            assertEquals(before.revision.value+2,restored.revision.value)
+            assertEquals(a.copy(revision=restored.revision),restored.lots.single{it.id==a.id})
+            assertEquals(b.copy(revision=restored.revision),restored.lots.single{it.id==b.id})
+            assertEquals(untouched,restored.lots.single{it.id==untouched.id})
+        }
+    }
     @Test fun cancelledCompositionClosesUnpublishedDatabaseAndRetryPublishesLiveRealPorts()=runBlocking<Unit>{
         val base=InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
         val root=folder.newFolder("isolated-composition")
