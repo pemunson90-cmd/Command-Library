@@ -10,6 +10,8 @@ Before edits verified pwd/repository top/worktree branch/HEAD/common Git directo
 
 Root explicitly refreshed this idle worktree with its own two-path dependency correction: original root commit `2542f7efd910e07b62418d13561064565234e881`, cherry-picked by root as `922962da5c6de31ab191f883bfd5be52df8afbd2`. It moves the unchanged existing deck finish sentinel out of inline UI text via DeckLibraryController.clearFinishRestriction. Only root-owned DeckLibraryController.kt/DeckEditorDialog.kt changed in that inherited commit. Worker did not modify these files. Root already owns the dependency; integrate ONLY worker implementation/handoff commit(s) after922962d, not this inherited dependency again. Final dependency manifest: `/tmp/cl-collection-presentation-01/evidence/attempt-04-dependency-sha256.txt`; DeckLibraryController SHA256 `d6bbb9a61645e3ea315267bb7065e66d250fff2b4245dfbc0d7f65a881eb736f`, DeckEditorDialog SHA256 `669072b32c881cd83f8a718f24fd7e5846f58acf8d9398a394390255c773c115`.
 
+Tested implementation/source commit is `27d880073e65a6dd5cb022c9abd53e36ec17e672`, directly after root-owned refreshed parent922962d. Its seven delegated source/test/resource files exactly match final attempt04; all source hashes revalidated after committing. A following handoff-only provenance pin changes no tested source bytes.
+
 ## Delivered behavior and integration seams
 
 All new types are internal to shell, with core ports only. Actual constructor:
