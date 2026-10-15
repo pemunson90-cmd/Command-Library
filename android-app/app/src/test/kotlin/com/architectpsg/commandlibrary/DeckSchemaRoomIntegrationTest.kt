@@ -37,8 +37,8 @@ class DeckSchemaRoomIntegrationTest {
                     }
                 }
                 ok(StorageDatabase.open(context, name)).use { db ->
-                    assertEquals(10, ok(db.capabilities(token)).schemaVersion)
-                    for (table in listOf("deck_head", "deck_revision", "deck_operation")) {
+                    assertEquals(11, ok(db.capabilities(token)).schemaVersion)
+                    for (table in listOf("deck_head", "deck_revision", "deck_operation", "deck_undo_link", "deck_undo_state")) {
                         val rows = ok(db.query(SqlRequest("SELECT count(*) AS n FROM $table", SnapshotList.empty(), 1), token))
                         assertEquals(SqlValue.Integer(0), rows.single().columns.single().value)
                     }

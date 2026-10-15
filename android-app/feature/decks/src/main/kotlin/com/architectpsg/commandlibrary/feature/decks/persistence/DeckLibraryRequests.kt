@@ -11,8 +11,8 @@ import kotlin.io.encoding.Base64
 /** Frozen CLDR1 framing. Never substitute a future default snapshot encoding for CLDK1. */
 internal object DeckLibraryRequests {
     fun create(payload: SnapshotBytes): String {
+        require(payload.size in 6..DeckPayloadLimits.MAX_ENCODED_BYTES)
         val bytes = payload.copyBytes()
-        require(bytes.size in 6..DeckPayloadLimits.MAX_ENCODED_BYTES)
         require(bytes.take(6) == listOf<Byte>(67, 76, 68, 75, 0, 1))
         return digest(0) { frame(bytes) }
     }
@@ -21,6 +21,21 @@ internal object DeckLibraryRequests {
         frame(utf8(id.source.value, 1024)); frame(utf8(id.raw, 1024))
         update(ByteBuffer.allocate(8).putLong(expected.value).array())
         frame(utf8(name, 1024))
+    }
+
+    fun apply(id: DeckId, expected: Revision, payload: SnapshotBytes): String {
+        require(payload.size in 6..DeckPayloadLimits.MAX_ENCODED_BYTES)
+        val bytes = payload.copyBytes()
+        require(bytes.take(6) == listOf<Byte>(67, 76, 68, 80, 0, 1))
+        return digest(2) {
+            frame(utf8(id.source.value, 1024)); frame(utf8(id.raw, 1024))
+            update(ByteBuffer.allocate(8).putLong(expected.value).array()); frame(bytes)
+        }
+    }
+
+    fun undo(id: DeckId, expected: Revision): String = digest(3) {
+        frame(utf8(id.source.value, 1024)); frame(utf8(id.raw, 1024))
+        update(ByteBuffer.allocate(8).putLong(expected.value).array())
     }
 
     fun utf8(value: String, maximum: Int): ByteArray {

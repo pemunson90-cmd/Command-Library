@@ -1,6 +1,6 @@
 # Independent proposed CLDP1 and edit request-v1 fixtures
 
-Manually framed with Python struct before any production patch encoder exists. Synthetic local values; proposed design r1 pending independent review. No output from production implementation used.
+Manually framed with Python struct before any production patch encoder exists. Synthetic local values; accepted design r1, independently parsed to EOF by actual Astra high. No output from production implementation used.
 
 Empty patch has zero edits and empty reason. Rename patch has one tag0 Rename("Renamed"), reason "User rename". APPLY request uses local-decks/golden-deck expected0 and the exact rename patch. UNDO uses same deck expected1, no patch field. All lengths big-endian unsigned32; revisions signed64; headers magic plus unsigned16version1. Request kind2/3 follow existing CLDR1 CREATE0/DUPLICATE1. Header CLDP is distinct from CLDK snapshot payload.
 

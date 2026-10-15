@@ -1,6 +1,6 @@
 # cx-campaign-owned-quantity-01 — attempt1, packet r1
 
-Status: TAKEN by root-managed isolated native worker. Reviewed shared baseline 171225427386914f11b0dae8ddd109dacbc07fe8. Integration owner codex-thread-recovery-20261013. Existing campaign pricing task scoped producer C02/C03/C04/B11 quantity foundation; not quote/provider/FX, collection persistence, stored pins or app feature acceptance.
+Status: DONE scoped producer; worker dee85cd integrated d1b743b, lock released after actual Astra source/evidence ACK.25tests2XML0failure/error/skip; root assembled check pending. Reviewed shared baseline 171225427386914f11b0dae8ddd109dacbc07fe8. Integration owner codex-thread-recovery-20261013. Existing campaign pricing task scoped producer C02/C03/C04/B11 quantity foundation; not quote/provider/FX, collection persistence, stored pins or app feature acceptance.
 
 Exact product/dependency base 171225427386914f11b0dae8ddd109dacbc07fe8 contains OwnedQuantityContracts, pure pricing module and root-owned executable contract fixture. Dispatch supplies exact40-character accepted shared baseline/claim descendant; record it in own handoff immediately. Worktree /workspace/command-library-owned-quantity-01, branch agent/campaign-owned-quantity-20261015. Verify pwd/top/branch/HEAD/commonGitDir/relevant Git directory/index env overrides; inherited worktree locks are historical, only root continuation claim is canonical.
 

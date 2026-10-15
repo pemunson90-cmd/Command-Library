@@ -577,3 +577,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T05:49:50Z | codex | cp-20261015-owned-quantity-contract-166 | containing commit | Reviewed exactquantityport/policy/finitebounds+7abstractcontractexamples compile30s; actualstdlib2.2.10/JUnit4.13.2 pinsreadback4s. No allocatorbehavior claim. Next isolatedproducer, root durableediting; allholds retained.
 
 2026-10-15T05:50:20Z | codex | cp-20261015-owned-quantity-claim-167 | containing commit | Publishedsharedquantitybaseline1712254; isolatedpricingproducerclaimed. Root retainsshared/deckediting/integration; onlycompileevidence sofar, no enginebehavior/native/APKclaim.
+
+2026-10-15T06:05:19Z | codex | cp-20261015-durable-edit-boundary-168 | containing commit | Integratedquantity25tests; reviewedCLDP/requestv1/schema11sharedboundary111tests14XML0fail/error/skip+Roomhost+nativeKotlincompile; nextisolateddurableeditbackend/rooteditor; holdsretained

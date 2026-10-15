@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-owned-quantity-claim-167
+Checkpoint-ID: cp-20261015-durable-edit-boundary-168
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. dispatch-owned-quantity-while-root-designs-durable-edits
+Next step: 3. publish-reviewed-edit-boundary-and-integrated-owned-quantity
 
-Updated UTC: 2026-10-15T05:50:20Z
+Updated UTC: 2026-10-15T06:05:19Z
 Status: in_progress; lease: active.
-Verified base: 171225427386914f11b0dae8ddd109dacbc07fe8.
+Verified base: d1b743b8b9bfae29ad0ba5e284d3c74591737375.
 
-Publishedsharedquantitybaseline1712254; isolatedpricingproducerclaimed. Root retainsshared/deckediting/integration; onlycompileevidence sofar, no enginebehavior/native/APKclaim.
+Integratedquantity25tests; reviewedCLDP/requestv1/schema11sharedboundary111tests14XML0fail/error/skip+Roomhost+nativeKotlincompile; nextisolateddurableeditbackend/rooteditor; holdsretained
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

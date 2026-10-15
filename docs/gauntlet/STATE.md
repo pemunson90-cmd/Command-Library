@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-owned-quantity-claim-167. Updated UTC: 2026-10-15T05:50:20Z.
+Checkpoint: cp-20261015-durable-edit-boundary-168. Updated UTC: 2026-10-15T06:05:19Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-dispatch-owned-quantity-while-root-designs-durable-edits
+publish-reviewed-edit-boundary-and-integrated-owned-quantity
 
-Publishedsharedquantitybaseline1712254; isolatedpricingproducerclaimed. Root retainsshared/deckediting/integration; onlycompileevidence sofar, no enginebehavior/native/APKclaim.
+Integratedquantity25tests; reviewedCLDP/requestv1/schema11sharedboundary111tests14XML0fail/error/skip+Roomhost+nativeKotlincompile; nextisolateddurableeditbackend/rooteditor; holdsretained
 
 Read CURRENT, machine state and task card.
