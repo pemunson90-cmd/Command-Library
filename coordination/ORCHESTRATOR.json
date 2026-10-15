@@ -7,5 +7,5 @@
   "heartbeat_utc": "2026-10-15T11:53:10Z",
   "expires_utc": "2026-10-15T12:38:10Z",
   "checkpoint_id": "cp-20261015-durable-draft-backend-197",
-  "note": "Root shared/contracts/schema/DI/nav/finalmerge. Plaincodec integrated287a552/26tests; root ownACKmerge+ports2241dcf/49combinedtests accepted. CompleteSQLdraftwriter activebased8991aa/no buildslot. Root actualdraftactor/UI next, no runningbuild. Publicationinvalidtoken/allholds."
+  "note": "Root retains shared/contracts/schema/DI/navigation/final merge. Complete SQL drafts integrated 5807a11 with final repaired 248-test source/runtime ACK; backend claim released. Isolated actor active, prebuild source HOLDs under repair; no runtime gate yet. Root UI/DI14 files frozen source-only ACK; combined Room/app gate pending actor. No running build, one serial slot free. Publication invalid-token blocker and all release holds remain."
 }
