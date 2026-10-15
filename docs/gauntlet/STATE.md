@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-mark-owned-consumers-214. Updated UTC: 2026-10-15T14:21:24Z.
+Checkpoint: cp-20261015-mark-owned-import-215. Updated UTC: 2026-10-15T14:36:47Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-mark-owned-consumer-wave
+rolling-import-producer
 
-Controller38 SOURCE/RUNTIMEACK; claim/dispatched isolated UI and actual-app test packets, root shared floor/composition in progress not runtimeaccepted
+Reviewed UI integrated/sourceACK; actualapp test repairs pending coherentgate; claim READY-reviewed isolated next importproducer under 3writerlimit
 
 Read CURRENT, machine state and task card.

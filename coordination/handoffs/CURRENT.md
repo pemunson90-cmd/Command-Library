@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-mark-owned-consumers-214
+Checkpoint-ID: cp-20261015-mark-owned-import-215
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. mark-owned-consumer-wave
+Next step: 3. rolling-import-producer
 
-Updated UTC: 2026-10-15T14:21:24Z
+Updated UTC: 2026-10-15T14:36:47Z
 Status: in_progress; lease: active.
-Verified base: 738d24b60ac691280316f7cc4df5ce442adfaa33.
+Verified base: 7ef2e1f7c2d1a016ec767bd7ad4439110907900e.
 
-Controller38 SOURCE/RUNTIMEACK; claim/dispatched isolated UI and actual-app test packets, root shared floor/composition in progress not runtimeaccepted
+Reviewed UI integrated/sourceACK; actualapp test repairs pending coherentgate; claim READY-reviewed isolated next importproducer under 3writerlimit
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

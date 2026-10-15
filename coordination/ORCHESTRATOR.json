@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T14:21:24Z",
-  "expires_utc": "2026-10-15T15:06:24Z",
-  "checkpoint_id": "cp-20261015-mark-owned-consumers-214",
-  "note": "Markowned controller38faithfulport tests SOURCE/RUNTIMEACK65bffe6. Two isolated UI/app-test packets claimed738d24b/dispatched; root sharedfloor/composition in progress, 3writersinclroot/4children/oneROOTbuildslot. No consumer acceptance yet. Existing59collection/draftHOST ACK retained. Publicationinvalidtoken/native/Fold7/finishedAPK holds."
+  "heartbeat_utc": "2026-10-15T14:36:47Z",
+  "expires_utc": "2026-10-15T15:21:47Z",
+  "checkpoint_id": "cp-20261015-mark-owned-import-215",
+  "note": "UIec45de5 integrated19f6742 SOURCEACK/claimreleased; bannerinset7ef2e1f SOURCEACK. Actualappsource02testonlyHOLDs beingfixed; assembledruntimepending. Plainimportproducer repairedpacketREADYACK4376e044 claimednewverifiedworktree/base65bffe6. Root+app-test+import3writers,4childrenmax/oneROOTbuildslot. Publicationinvalidtoken/native/Fold7/finishedAPKholds."
 }

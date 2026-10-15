@@ -673,3 +673,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T14:03:51Z | codex | cp-20261015-mark-owned-producer-gate-213 | containing commit | Reviewedproducer2f9a412 exact5NEWpaths integrated8f9eaa1 aftersource04ACK, originalclean/baseec913ad/pinsverified. Rootfocused38contractcases next; no markownedUI/AppGraphbindingyet. Existingcollection59ACK retained, oneROOTslot/leaseactive.
 
 2026-10-15T14:21:24Z | codex | cp-20261015-mark-owned-consumers-214 | containing commit | Controller38 SOURCE/RUNTIMEACK; claim/dispatched isolated UI and actual-app test packets, root shared floor/composition in progress not runtimeaccepted
+
+2026-10-15T14:36:47Z | codex | cp-20261015-mark-owned-import-215 | containing commit | Reviewed UI integrated/sourceACK; actualapp test repairs pending coherentgate; claim READY-reviewed isolated next importproducer under 3writerlimit

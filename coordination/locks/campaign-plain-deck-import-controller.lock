@@ -1,0 +1,13 @@
+{
+  "component": "plain-deck-import-controller",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-plain-deck-import-controller-01",
+  "owner": "/root/implement_deck_edit_store native isolated writer",
+  "status": "active",
+  "base_commit": "65bffe6f9a471275c71e8c02ec35082e5eabae1e",
+  "branch": "agent/campaign-plain-deck-import-controller-20261015",
+  "worktree": "/workspace/command-library-plain-deck-import-controller-01",
+  "owned_paths": "EXACT4NEWpaths newcontroller/state/test/ownhandoff, all existing/shared forbidden",
+  "build_slot": "NOTGRANTED; ROOToneGradleslot",
+  "authority": "rootexplicitdivision/independentpacketREADYACK4376e044; rootcanonicalclaimssoleauthority"
+}
