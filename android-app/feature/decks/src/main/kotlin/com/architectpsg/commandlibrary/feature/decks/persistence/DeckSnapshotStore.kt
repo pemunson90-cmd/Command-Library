@@ -132,7 +132,7 @@ internal class DeckSnapshotStore(private val db: Database, private val codec: De
     companion object {
         const val COLUMNS = "provider,deck_id,revision,name,created_seconds,created_nano,modified_seconds,modified_nano,entry_count,total_quantity"
         const val BINDINGS = ":provider,:id,:revision,:name,:created_seconds,:created_nano,:modified_seconds,:modified_nano,:entry_count,:total_quantity"
-        val RECEIPT_KINDS = setOf("CREATE", "DUPLICATE", "APPLY", "UNDO", "CAPTURE", "RESTORE")
+        val RECEIPT_KINDS = setOf("CREATE", "DUPLICATE", "APPLY", "UNDO", "CAPTURE", "RESTORE", "DRAFT_COMMIT")
         val CURRENT_METADATA = DeckLibraryRows.projection("h", "h_", false) + "," + DeckLibraryRows.projection("r", "r_", true)
     }
 }
