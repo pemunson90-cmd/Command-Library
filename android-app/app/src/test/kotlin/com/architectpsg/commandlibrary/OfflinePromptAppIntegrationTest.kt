@@ -90,7 +90,6 @@ class OfflinePromptAppIntegrationTest {
     private fun click(tag: String) { scroll("offline-prompt-list", tag); compose.onNodeWithTag(tag).assertIsEnabled().performClick() }
     private fun edit(tag: String, value: String) { scroll("offline-prompt-list", tag); compose.onNodeWithTag(tag).performTextReplacement(value) }
     private fun preview(): String {
-        await { exists("offline-prompt-preview") }
         scroll("offline-prompt-list", "offline-prompt-preview")
         val config = compose.onNodeWithTag("offline-prompt-preview").fetchSemanticsNode().config
         return if (config.contains(SemanticsProperties.EditableText)) config[SemanticsProperties.EditableText].text
@@ -101,7 +100,8 @@ class OfflinePromptAppIntegrationTest {
         val clipboard = compose.activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val text = checkNotNull(clipboard.primaryClip).getItemAt(0).coerceToText(compose.activity).toString()
         assertEquals(expected, text)
-        await { exists("offline-prompt-copy-feedback") }
+        scroll("offline-prompt-list", "offline-prompt-copy-feedback")
+        compose.onNodeWithTag("offline-prompt-copy-feedback").assertTextEquals(compose.activity.getString(com.architectpsg.commandlibrary.feature.shell.R.string.offline_prompt_copied))
         return text
     }
     @Test fun actualOfflineFourModeCopyPasteGroundingPrivateOptInRecreationAndNoWrites() {
@@ -130,19 +130,19 @@ class OfflinePromptAppIntegrationTest {
         click("offline-prompt-include-notes"); click("offline-prompt-render"); assertFalse(copy().contains(privateMarker))
         edit("offline-prompt-override", "{{deck}}")
         click("offline-prompt-render"); await { exists("offline-prompt-problem") }
-        scroll("offline-prompt-list","offline-prompt-copy"); compose.onNodeWithTag("offline-prompt-copy").assertIsNotEnabled()
+        compose.onNodeWithTag("offline-prompt-copy").assertDoesNotExist()
         click("offline-prompt-reset"); click("offline-prompt-render"); assertFalse(copy().contains(privateMarker))
         edit("offline-prompt-reply", reply); click("offline-prompt-review")
-        await { exists("offline-prompt-reference-0") }
+        scroll("offline-prompt-list","offline-prompt-reference-0")
         scroll("offline-prompt-list","offline-prompt-angle")
         compose.onNodeWithTag("offline-prompt-angle").assertTextContains("spicy tech", substring=true)
         scroll("offline-prompt-list","offline-prompt-reference-2")
-        compose.onNodeWithTag("offline-prompt-reference-2").assertIsNotEnabled()
+        compose.onNodeWithTag("offline-prompt-reference-2").assertHasNoClickAction()
         scroll("offline-prompt-list","offline-prompt-reference-3")
-        compose.onNodeWithTag("offline-prompt-reference-3").assertIsNotEnabled()
+        compose.onNodeWithTag("offline-prompt-reference-3").assertHasNoClickAction()
         compose.activityRule.scenario.recreate()
         click("offline-prompt-reference-0"); await { exists("offline-prompt-detail") }
-        compose.onNodeWithText("Alpha Fixture").assertIsDisplayed()
+        compose.onNode(hasText("Alpha Fixture") and hasAnyAncestor(hasTestTag("offline-prompt-detail"))).assertIsDisplayed()
         compose.onNodeWithTag("offline-prompt-detail-back").performClick()
         assertEquals(before,baseline())
     }
