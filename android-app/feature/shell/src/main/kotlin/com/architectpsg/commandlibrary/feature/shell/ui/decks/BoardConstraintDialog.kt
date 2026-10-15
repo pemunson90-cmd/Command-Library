@@ -55,13 +55,3 @@ internal fun BoardConstraintDialog(controller: BoardConstraintController) {
         confirmButton = { TextButton(controller::assess, enabled = !state.busy, modifier = Modifier.heightIn(min = 48.dp).testTag("board-checks-assess")) { Text(stringResource(R.string.board_checks_assess)) } },
         dismissButton = { TextButton(controller::hide, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.board_checks_close)) } })
 }
-
-private fun boardLabel(board: BoardRole): Int = when (board) {
-    BoardRole.MAIN -> R.string.board_checks_main
-    BoardRole.SIDEBOARD -> R.string.board_checks_sideboard
-    BoardRole.COMMANDER -> R.string.board_checks_commander
-    BoardRole.COMPANION -> R.string.board_checks_companion
-    BoardRole.MAYBEBOARD -> R.string.board_checks_maybeboard
-    BoardRole.PARTNER -> R.string.board_checks_partner
-    BoardRole.BACKGROUND -> R.string.board_checks_background
-}
