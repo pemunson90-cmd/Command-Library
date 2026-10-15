@@ -2120,8 +2120,8 @@
         ],
         "verification": "independent security review; native Keystore reinstall/corruption/origin/redaction; no secrets in logs or archive",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "Actual scoped AndroidSecretVault production AES256-GCM/AndroidKeyStore/noBackup AtomicFile source and lazy AppGraph binding integratede3f0691; independent Astra SOURCE02/sharedCI ACK. Exact8 original28e44b3/base6601 verified clean/live. Host harness correctedfe0c142 SDK34 matching existing Java17 host setup after SDK36 initialization failure; focused sourceACK. Combinedfe0c142/tree092599a5 host15tests3XML0f/e/s2m28/714pins +lint/nativecompile PASS and independent Solmedium runtimeACK; API36nativejob38799223425 executing; real nativeKeystore execution, providerkeyconsumer, reinstall/backup/fullH07/security/release acceptance open.",
+        "status": "in_progress",
+        "observed_implementation": "Actual scoped AndroidSecretVault production AES256-GCM/AndroidKeyStore/noBackup AtomicFile source and lazy AppGraph binding integratede3f0691; independent Astra SOURCE02/sharedCI ACK. Exact8 original28e44b3/base6601 verified clean/live. Host harness correctedfe0c142 SDK34 matching existing Java17 host setup after SDK36 initialization failure; focused sourceACK. Combinedfe0c142/tree092599a5 host15tests3XML0f/e/s2m28/714pins +lint/nativecompile PASS and independent Solmedium runtimeACK; Nativeattempts38799223425 ZIP and38801665400 missinglibpulse failedbeforetests; real API36 nativeKeystore run38802768872 exact29f7b3f4cases0f/e/s loggedXML independentlyACK; providerkeycoordinator/config host37casegate79f9a96 ACK. ActualnativeUI/min23/reinstall/backup/fullH07/security/release acceptance open.",
         "ownership_group": "vault",
         "resources": [
           "local-gradle-serial"
@@ -2159,7 +2159,7 @@
         "verification": "authentic codec/error/tool/partial stream/cancel8calls50rows5s; no unsafe retry; actual eligibility unavailable shown",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "in_progress",
-        "observed_implementation": "Reviewed complete local provider-profile boundary/pure vault reference/additive schema16 authored and boundarycompile/KSP/focusedhostPASS2dd7eab; actualexport all48oldentitiesunchanged. Isolated exact8 profile codec/policy/SQLproducer TAKEN baseline1824183; no providerrepository/app/generation/history acceptance yet. Actualprofile/keyworkflow next; no on-device runtime dependency or paidcalls.",
+        "observed_implementation": "Actual savedHTTPSconfiguration/manualmodel/APIversion/5dialects/keyactions prerequisite hostSOURCE02/shared/runtimeACK79f9a96:37tests7XML0f/e/s2m18/733pins inclrealRoom15to16preservation/CAS/reopen/tombstone andSettingsLOCAL/rev2ON_STOPkeyclear/recreate/delete/conservation. RealvaultAPI36 native4 separatelyACK29f7b3f/logXML, artifact403directXMLlimitation retained. Report PROVIDER-PROFILES-APP-INTEGRATION-20261015.md preserves SOURCEholds/exactreturns/releasedclaims. No cloud/localgeneration/modeldiscovery/tools/stream/history/fullH02/H07/nativeUI/releaseacceptance; source/terms/schema fixtures remain required. No ondevice runtime or paidcalls.",
         "ownership_group": "ai",
         "resources": [
           "local-gradle-serial"

@@ -731,3 +731,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T20:30:13Z | codex | cp-20261015-provider-profiles-wave-242 | containing commit | Vault host ACK; repaired native infrastructure job running. Reviewed compiled provider profile contracts and actual additive schema16 frozen; isolated economical bounded profile producer TAKEN
 
 2026-10-15T20:46:57Z | codex | cp-20261015-provider-profiles-integration-243 | containing commit | Genuine vault native4cases accepted; profile producer exact8 integrated/sourceACK; isolated presentation6 and actualRoomproof2 source reviews, root real app wiring/test authored, one combined gate next
+
+2026-10-15T20:56:13Z | codex | cp-20261015-provider-profiles-accepted-244 | containing commit | Provider configuration assembled37host tests inclactualRoommigration/Settingslifecycle SOURCE02/shared/runtimeACK; exact8/6/2claimsreleased, separateactualvaultnative4 accepted; nextdurablepromptoverride boundaryreview
