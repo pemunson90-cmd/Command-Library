@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="provider_profiles_manage">Provider profiles</string>
+    <string name="provider_profiles_scope">Save provider connections and credentials. For a custom server, include its API path in the HTTPS address.</string>
+    <string name="provider_profiles_new">New profile</string>
+    <string name="provider_profiles_reload">Reload saved profiles</string>
+    <string name="provider_profiles_item">%1$s (%2$s)</string>
+    <string name="provider_profiles_empty">No saved profiles.</string>
+    <string name="provider_profiles_more">Load next page</string>
+    <string name="provider_profiles_name">Profile name</string>
+    <string name="provider_profiles_base">HTTPS base URL, including API path</string>
+    <string name="provider_profiles_dialect">Protocol dialect</string>
+    <string name="provider_profiles_chat">OpenAI Chat</string>
+    <string name="provider_profiles_responses">OpenAI Responses</string>
+    <string name="provider_profiles_anthropic">Anthropic</string>
+    <string name="provider_profiles_gemini">Gemini</string>
+    <string name="provider_profiles_local">Local</string>
+    <string name="provider_profiles_model">Manual model ID</string>
+    <string name="provider_profiles_api">API version (optional)</string>
+    <string name="provider_profiles_save">Save configuration</string>
+    <string name="provider_profiles_reference">A credential link is saved. Replace or remove it if the key is unavailable.</string>
+    <string name="provider_profiles_no_reference">No credential link saved.</string>
+    <string name="provider_profiles_key_help">Key actions affect the saved profile. Remove the key before changing its server address or deleting the profile. Typed key text is cleared when submitted or when this window leaves the foreground.</string>
+    <string name="provider_profiles_key">Secret key</string>
+    <string name="provider_profiles_add_key">Add key</string>
+    <string name="provider_profiles_replace_key">Replace key</string>
+    <string name="provider_profiles_remove_key">Remove key</string>
+    <string name="provider_profiles_delete">Delete profile</string>
+    <string name="provider_profiles_reload_required">Reload this profile before another mutation. A failed or interrupted action may have taken effect. Key writes are never retried automatically.</string>
+    <string name="provider_profiles_saved">Saved.</string>
+    <string name="provider_profiles_settings_warning">Profile saved. Some settings could not be refreshed.</string>
+    <string name="provider_profiles_close">Close</string>
+    <string name="provider_profiles_delete_warning">Delete this saved profile? This cannot be undone.</string>
+    <string name="provider_profiles_remove_warning">Remove the key for this profile? If the action fails, reload before trying again.</string>
+    <string name="provider_profiles_confirm">Confirm</string>
+    <string name="provider_profiles_cancel">Cancel</string>
+    <string name="provider_profiles_invalid_field">Enter valid single-line text within the field limit. Correct this field before saving.</string>
+</resources>
