@@ -3,11 +3,13 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-campaign-deck-draft-store-01",
   "owner": "/root/implement_deck_edit_store native isolated writer",
-  "status": "active",
+  "status": "released",
   "branch": "agent/campaign-deck-draft-store-20261015",
   "worktree": "/workspace/command-library-deck-draft-store-01",
   "base_commit": "containing reviewed claim commit supplied/verified before edit",
   "owned_paths": "Exact7NEWmain/test/handoff paths in packet; ALLshared existing paths readonly",
   "authority": "Canonical root localclaim; publicationinvalidtoken notlease release",
-  "build_slot": "not granted, request coherent complete adapter gate"
+  "build_slot": "Released; final repaired gate 248 tests / 15 XML / zero failures, errors, skips; independent source/runtime ACK",
+  "producer_commit": "45de882bcd9104f7725691578be63b1134e66268",
+  "integration_commit": "5807a11ef4b6c840329b92b86aeaa2152ee8c82b"
 }

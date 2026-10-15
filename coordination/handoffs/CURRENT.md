@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-plain-codec-ui-merge-196
+Checkpoint-ID: cp-20261015-durable-draft-backend-197
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-plain-codec-continue-draft-actor
+Next step: 3. integrate-durable-drafts-continue-actor-ui
 
-Updated UTC: 2026-10-15T11:23:18Z
+Updated UTC: 2026-10-15T11:53:10Z
 Status: in_progress; lease: active.
-Verified base: 2241dcf7aed775c935deedd6d5cbc5b3bc61595b.
+Verified base: 5807a11ef4b6c840329b92b86aeaa2152ee8c82b.
 
-Integrate complete plaincodec and accepted49test combined boundary; root continues actual draft actor/UI while isolatedSQLbackend implements.
+Accepted complete SQL drafts with final repaired 248-test ACK; isolated actor active; root UI/DI/Room integration preserved unverified.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
