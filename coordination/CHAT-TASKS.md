@@ -35,3 +35,5 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 | campaign-deck-diff | Complete immutable document comparison | DONE scoped producer | Integrated125fb83; root reviewed | [packet](tasks/cx-campaign-deck-diff-01.md) |
 
 | campaign-deck-library | Real complete local create/load/list/duplicate repository | DONE scoped producer | Integrated0e0ec99; root AppGraph/UI boundary checked | [packet](tasks/cx-campaign-deck-library-01.md) |
+
+| campaign-owned-quantity | Complete bounded pure owned quantity allocator | TAKEN | Root-managed isolated native worker | [packet](tasks/cx-campaign-owned-quantity-01.md) |

@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-owned-quantity-contract-166",
-  "verified_base_head": "689a78c53c47d045990003e9aee415d3d3bc2196",
+  "checkpoint_id": "cp-20261015-owned-quantity-claim-167",
+  "verified_base_head": "171225427386914f11b0dae8ddd109dacbc07fe8",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "publish-quantity-contract-claim-dispatch-continue-deck-editing",
+  "first_action": "dispatch-owned-quantity-while-root-designs-durable-edits",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -143,7 +143,7 @@
     "local_deck_library": "Android tree6d29b98ca3673dfc16a2c9c756a97612bcc43e8c;113scopedtests14XML0fail/error/skip, r5SUCCESS3m/lint/shell+appnativeKotlincompile; actualhostRoom/AppGraph+separatesyntheticCompose360font2/resize. LOCAL-DECK-LIBRARY-INTEGRATION-20261015.md; no device/fullfeature/APKclaim.",
     "owned_quantity_contract": "ActualAstrahigh exactpublicsource/module/7abstractfixtureACK; compileSUCCESS30s3tasks and runtimepinsreadback4s. NO allocatorimplementation or behavior executed yet; dispatchaftersharedbaseline publication. owned-quantity-boundary.md."
   },
-  "last_completed": "Reviewed exactquantityport/policy/finitebounds+7abstractcontractexamples compile30s; actualstdlib2.2.10/JUnit4.13.2 pinsreadback4s. No allocatorbehavior claim. Next isolatedproducer, root durableediting; allholds retained.",
-  "updated_utc": "2026-10-15T05:49:50Z",
+  "last_completed": "Publishedsharedquantitybaseline1712254; isolatedpricingproducerclaimed. Root retainsshared/deckediting/integration; onlycompileevidence sofar, no enginebehavior/native/APKclaim.",
+  "updated_utc": "2026-10-15T05:50:20Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -1,0 +1,11 @@
+{
+  "component": "pricing-owned-quantity",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-owned-quantity-01",
+  "branch": "agent/campaign-owned-quantity-20261015",
+  "base_commit": "171225427386914f11b0dae8ddd109dacbc07fe8",
+  "owner": "/root/implement_owned_quantity; canonical claim controlled by root",
+  "owned_paths": "Exact3production/2test/ownhandoff allowlist in packet; rootabstractfixture/core/shared files read-only",
+  "status": "active",
+  "authority": "Live root continuation only; inherited copies historical"
+}
