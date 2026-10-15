@@ -207,9 +207,9 @@ public class OkHttpNetworkClient(
                                             emit(Outcome.Success(ByteChunk(0, 0, SnapshotBytes(byteArrayOf()), metadata, true)))
                                             return@coroutineScope
                                         }
-                                        throw RetryableFailure("HTTP $status", retryDelay, mandatory)
+                                        throw RetryableFailure("HTTP $status", retryDelay, mandatory, failureMetadata(status, retryAfter))
                                     }
-                                    throw TransportFailure("HTTP $status")
+                                    throw TransportFailure("HTTP $status", failureMetadata(status, retryAfter))
                                 }
                                 val metadata = responseMetadata(status, responseHeaders, uri, retryAfter)
                                 val rawLength = response.header("Content-Length")
@@ -249,14 +249,15 @@ public class OkHttpNetworkClient(
                         repeat(attempt - 1) { backoff = minOf(backoff * 2, policy.maximumDelay) }
                         retryDelay = if (policy.honorRetryAfter || (e as? RetryableFailure)?.mandatory == true) maxOf(backoff, (e as? RetryableFailure)?.wait ?: Duration.ZERO) else backoff
                         // Never violate Retry-After by clipping it to the policy ceiling.
-                        if (retryDelay > policy.maximumDelay || clock.monotonicNow() + retryDelay >= deadline) throw TransportFailure("Retry delay exceeds request budget")
+                        if (retryDelay > policy.maximumDelay || clock.monotonicNow() + retryDelay >= deadline) throw TransportFailure("Retry delay exceeds request budget", (e as? TransportFailure)?.httpFailure)
                     } finally { call.cancel() }
                     waitCancelable(checkNotNull(retryDelay), call, cancel)
                 }
             } catch (e: CancellationException) { throw e
             } catch (e: Exception) {
                 checkCancellation(cancel)
-                emit(Outcome.Failure(DomainFailure(if (e is InvalidRequest) FailureCode.INVALID_INPUT else FailureCode.TRANSPORT, (e as? TransportFailure)?.message ?: "Network transport failed", SnapshotList.empty())))
+                emit(Outcome.Failure(DomainFailure(if (e is InvalidRequest) FailureCode.INVALID_INPUT else FailureCode.TRANSPORT, (e as? TransportFailure)?.message ?: "Network transport failed", SnapshotList.empty(),
+                    (e as? TransportFailure)?.httpFailure)))
             } finally {
                 done.set(true)
                 call.cancel()
@@ -373,6 +374,10 @@ public class OkHttpNetworkClient(
             retryAfter?.let { Knowledge.Known(it) } ?: Knowledge.Absent("No Retry-After"),
             Knowledge.Unknown("Transport cannot determine charge", SnapshotList.empty()))
 
+    private fun failureMetadata(status: Int, retryAfter: Duration?): HttpFailureMetadata =
+        HttpFailureMetadata(status, retryAfter?.let { Knowledge.Known(it) } ?: Knowledge.Absent("No Retry-After"),
+            Knowledge.Unknown("Transport cannot determine charge", SnapshotList.empty()))
+
     private fun holdOrigin(uri: URI, duration: Duration) {
         val key = origin(uri)
         val until = clock.monotonicNow() + duration
@@ -449,9 +454,9 @@ public class OkHttpNetworkClient(
         fun cancel() { active.getAndSet(null)?.cancel() }
     }
     private class ExchangeState { var started: Boolean = false; var originalStatus: Int? = null }
-    private open class TransportFailure(message: String) : Exception(message)
+    private open class TransportFailure(message: String, val httpFailure: HttpFailureMetadata? = null) : Exception(message)
     private class InvalidRequest(message: String) : TransportFailure(message)
-    private class RetryableFailure(message: String, val wait: Duration?, val mandatory: Boolean) : TransportFailure(message)
+    private class RetryableFailure(message: String, val wait: Duration?, val mandatory: Boolean, httpFailure: HttpFailureMetadata) : TransportFailure(message, httpFailure)
     private companion object {
         fun validHeader(name: String, value: String): Boolean = name.matches(Regex("[!#$%&'*+.^_`|~0-9A-Za-z-]+")) && value.none { it == '\r' || it == '\n' || it.code < 32 && it != '\t' || it.code == 127 }
         fun origin(uri: URI): Origin = Origin(uri.scheme.lowercase(), uri.host.lowercase(), if (uri.port >= 0) uri.port else if (uri.scheme.equals("https", true)) 443 else 80)
