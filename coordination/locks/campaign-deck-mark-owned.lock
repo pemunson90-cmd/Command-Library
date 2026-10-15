@@ -3,11 +3,13 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-deck-mark-owned-01",
   "owner": "/root/implement_inventory_projection native isolated writer",
-  "status": "active",
+  "status": "released",
   "base_commit": "ec913ad0eb6c0e6e9a07872b9a9107d0ef3360ea",
   "branch": "agent/campaign-deck-mark-owned-20261015",
   "worktree": "/workspace/command-library-deck-mark-owned-01",
   "owned_paths": "EXACT5NEWpaths inpacket; existingcollection/shared forbidden",
   "build_slot": "NOT GRANTED; ROOT sole slot; source-only return then combinedgate",
-  "authority": "explicitroot subdivision +independentgate source/runtime and packetREADY ACK"
+  "authority": "explicitroot subdivision +independentgate source/runtime and packetREADY ACK",
+  "producer_commit": "2f9a412802feab17be54658576ab2578c95052c8",
+  "disposition": "exact5NEWpaths integrated afterindependentfreeze04SOURCEACK;38authorednot_run rootcontractgate next"
 }

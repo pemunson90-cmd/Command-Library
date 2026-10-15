@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-collection-owner-accepted-212",
-  "verified_base_head": "6b2dd7011d1ab79421e3b700fb194b3d37c9b448",
+  "checkpoint_id": "cp-20261015-mark-owned-producer-gate-213",
+  "verified_base_head": "8f9eaa125ee8a006266916b60210ae35f4ee924d",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "collection-owner-accepted",
+  "first_action": "mark-owned-producer-gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -153,7 +153,7 @@
     "collection_bulk_app_integration": "ExactAndroidtree43ab17db448c9fd991825ebaf4b3746635646d74;300tests43XML0failure/error/skip SUCCESS3m4s/app+shellnativeKotlincompileONLY, independent actualAstra exactsource/runtimeACK. Producer54overlap/lint0errors1inherited. COLLECTION-BULK-APP-INTEGRATION-20261015.md; no native/finishedAPK claim.",
     "deck_draft_pure": "Exact4700542\u219286cf3f5, independent source/runtimeACK140tests13XML0fail/error/skip SUCCESS2m39s;44new+96old, separatebase/bodypreflightrepairbeforefirstonlyrun. Completepurecodec/plannerONLY; noSQLstore/UI/native/fullprojectedCLDKcertificate. RAW-DRAFT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Existingcollection owner independentSOURCE/RUNTIMEACK6b2dd70 actual59pass/4XML plusprior4app/Roomseparate; failed65/9lineagepreserved. Markownedisolated03sourceHOLDrepair04/no build, rootsharedclaimsretained; next exactreviewedproducerthenactualUI integration.",
-  "updated_utc": "2026-10-15T14:01:28Z",
+  "last_completed": "Reviewedproducer2f9a412 exact5NEWpaths integrated8f9eaa1 aftersource04ACK, originalclean/baseec913ad/pinsverified. Rootfocused38contractcases next; no markownedUI/AppGraphbindingyet. Existingcollection59ACK retained, oneROOTslot/leaseactive.",
+  "updated_utc": "2026-10-15T14:03:51Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T14:01:28Z",
-  "expires_utc": "2026-10-15T14:46:28Z",
-  "checkpoint_id": "cp-20261015-collection-owner-accepted-212",
-  "note": "Durabledraft HOST SOURCE/RUNTIME ACKb653063:16focusedpass/prior1541failurelineageretained. Executableinventorygateec913ad2pass ACK. Rootexistingcollectionsource02backend+consumerACK/coherentruntimegate next; markownedisolated5newpathworker sourcereview only/no build, notintegrated. Rootexclusive sharedownership, oneGradleslot, publicationinvalidtoken andnative/Fold7/finishedAPKholds."
+  "heartbeat_utc": "2026-10-15T14:03:51Z",
+  "expires_utc": "2026-10-15T14:48:51Z",
+  "checkpoint_id": "cp-20261015-mark-owned-producer-gate-213",
+  "note": "Existingcollectionowner6b2dd70 independentSOURCE/RUNTIMEACK59pass, prior65/9fail+4app/Roompassseparate. Markownedproducer2f9a412 exact5NEWpaths/source04ACK integrated,38authoredNOTRUN rootfocusedcontractgate next; original01\u201303sourceHOLDsretained. Rootsharedownership, no otherbuild, publicationinvalidtoken/native/Fold7/finishedAPKholds."
 }
