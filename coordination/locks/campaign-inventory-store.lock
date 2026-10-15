@@ -9,5 +9,5 @@
   "authority": "Live root canonical claim only; inherited copies historical",
   "result_commit": "8840c1b00e6a90fa27e05ba0f8a337a07c7d57cf",
   "integration_commit": "461f7af",
-  "verification": "Independent actualAstra source/runtime ACK62tests4XMLpass; rootactualAppGraph/Room13/UIintegration pending"
+  "verification": "Independent actual Astra source/runtime ACK62tests4XML; root real AppGraph/Room13/UI assembled683tests plus4correctedUIreruns accepted at fe58e7d; native/device/full acceptance open"
 }

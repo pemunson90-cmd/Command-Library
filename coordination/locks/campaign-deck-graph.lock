@@ -1,0 +1,11 @@
+{
+  "component": "deck-structural-graph",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-graph-01",
+  "branch": "agent/campaign-deck-graph-20261015",
+  "owner": "/root/implement_deck_edit_store; new isolated attempt",
+  "owned_paths": "Exactly new DeckSnapshotValidator.kt + matching test + ownhandoff; all other paths read-only",
+  "status": "active",
+  "base_commit": "fe58e7dae8144e9ad62fdcf9170e3769301f2c07",
+  "authority": "Live root canonical claim; no shared persistence/reducer/core transfer"
+}
