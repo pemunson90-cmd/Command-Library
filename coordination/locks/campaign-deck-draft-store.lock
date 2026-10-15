@@ -1,0 +1,13 @@
+{
+  "component": "complete-durable-deck-draft-repository",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "agent_task": "cx-campaign-deck-draft-store-01",
+  "owner": "/root/implement_deck_edit_store native isolated writer",
+  "status": "active",
+  "branch": "agent/campaign-deck-draft-store-20261015",
+  "worktree": "/workspace/command-library-deck-draft-store-01",
+  "base_commit": "containing reviewed claim commit supplied/verified before edit",
+  "owned_paths": "Exact7NEWmain/test/handoff paths in packet; ALLshared existing paths readonly",
+  "authority": "Canonical root localclaim; publicationinvalidtoken notlease release",
+  "build_slot": "not granted, request coherent complete adapter gate"
+}
