@@ -31,8 +31,9 @@ internal class CatalogQuerySql(private val cancel: CancelToken) {
             "pm.oracle_provider=c.provider AND pm.oracle_id=c.oracle_id AND pm.oracle_language=c.language))"
 
     /** TRUE wins; absent TRUE, any UNKNOWN wins; otherwise FALSE. Empty domain is UNKNOWN. */
-    private fun reduce(expression: String, domain: String): String =
-        "(SELECT CASE MAX(CASE ($expression) WHEN 1 THEN 2 WHEN 0 THEN 0 ELSE 1 END) " +
+    // Keep the aggregate local even when the expression uses only outer card-wide fields.
+    private fun reduce(expression: String, domain: String, localIdentity: String): String =
+        "(SELECT CASE MAX(CASE (CASE WHEN $localIdentity IS NOT NULL THEN ($expression) ELSE NULL END) WHEN 1 THEN 2 WHEN 0 THEN 0 ELSE 1 END) " +
             "WHEN 2 THEN 1 WHEN 0 THEN 0 ELSE NULL END FROM $domain)"
 
     fun compile(query: QueryAst, policy: FaceMatchPolicy): String {
@@ -41,7 +42,7 @@ internal class CatalogQuerySql(private val cancel: CancelToken) {
         val present = faceExpression(query, policy, "p")
         val absent = faceExpression(query, policy, null)
         return "(CASE WHEN EXISTS (SELECT 1 FROM ${printingDomain("pe")}) THEN " +
-            "${reduce(present, printingDomain("p"))} ELSE $absent END)"
+            "${reduce(present, printingDomain("p"), "pr.printing_id")} ELSE $absent END)"
     }
 
     private fun hasPrinting(query: QueryAst): Boolean = when (query) {
@@ -56,7 +57,7 @@ internal class CatalogQuerySql(private val cancel: CancelToken) {
         if (policy == FaceMatchPolicy.SAME_FACE) {
             val perFace = expression(query, policy, "f", printing)
             val canonical = expression(query, FaceMatchPolicy.CANONICAL, null, printing)
-            "(CASE WHEN c.face_count>0 THEN ${reduce(perFace, "catalog_search_face_fact f WHERE ${sameCard("f")}")} ELSE $canonical END)"
+            "(CASE WHEN c.face_count>0 THEN ${reduce(perFace, "catalog_search_face_fact f WHERE ${sameCard("f")}", "f.face_index")} ELSE $canonical END)"
         } else expression(query, policy, null, printing)
 
     private fun expression(query: QueryAst, policy: FaceMatchPolicy, face: String?, printing: String?): String {
@@ -126,7 +127,7 @@ internal class CatalogQuerySql(private val cancel: CancelToken) {
         FaceMatchPolicy.CANONICAL -> leaf("c")
         FaceMatchPolicy.SAME_FACE -> leaf(requireNotNull(face))
         FaceMatchPolicy.ANY_FACE -> "(CASE WHEN c.face_count>0 THEN " +
-            "${reduce(leaf("fl"), "catalog_search_face_fact fl WHERE ${sameCard("fl")}")} ELSE ${leaf("c")} END)"
+            "${reduce(leaf("fl"), "catalog_search_face_fact fl WHERE ${sameCard("fl")}", "fl.face_index")} ELSE ${leaf("c")} END)"
     }
 
     private fun literal(column: String, parameter: String, exact: Boolean): String =
