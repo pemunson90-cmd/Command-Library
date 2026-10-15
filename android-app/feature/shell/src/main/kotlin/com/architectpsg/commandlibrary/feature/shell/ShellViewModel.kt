@@ -8,16 +8,19 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.architectpsg.commandlibrary.feature.shell.document.ContentResolverDocumentSource
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentSource
+import com.architectpsg.commandlibrary.feature.shell.document.PlainDeckDocumentWriter
 import com.architectpsg.commandlibrary.feature.shell.presentation.ShellControllers
 import kotlinx.coroutines.Dispatchers
 
 /** Survives configuration changes; clearing it cancels a running import through viewModelScope. */
-internal class ShellViewModel(ports: ShellPorts, documents: DocumentSource) : ViewModel() {
-    val controllers: ShellControllers = ShellControllers(viewModelScope, ports, documents, Dispatchers.IO)
+internal class ShellViewModel(ports: ShellPorts, documents: DocumentSource,
+    documentWriter: PlainDeckDocumentWriter? = null) : ViewModel() {
+    val controllers: ShellControllers = ShellControllers(viewModelScope, ports, documents, Dispatchers.IO, documentWriter)
 
     companion object {
         fun factory(ports: ShellPorts, resolver: ContentResolver): ViewModelProvider.Factory = viewModelFactory {
-            initializer { ShellViewModel(ports, ContentResolverDocumentSource(resolver)) }
+            initializer { ShellViewModel(ports, ContentResolverDocumentSource(resolver),
+                PlainDeckDocumentWriter(resolver, Dispatchers.IO)) }
         }
     }
 }

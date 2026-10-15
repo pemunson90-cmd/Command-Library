@@ -4,6 +4,7 @@ import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
 import com.architectpsg.commandlibrary.feature.shell.ShellPorts
 import com.architectpsg.commandlibrary.feature.shell.document.DocumentSource
 import com.architectpsg.commandlibrary.feature.shell.document.PlainDeckInputSource
+import com.architectpsg.commandlibrary.feature.shell.document.PlainDeckDocumentWriter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -22,6 +23,7 @@ internal class ShellControllers(
     ports: ShellPorts,
     documents: DocumentSource,
     ioDispatcher: CoroutineDispatcher,
+    documentWriter: PlainDeckDocumentWriter? = null,
 ) {
     val importLimits: CatalogImportLimits = ports.importLimits
     val status = CatalogStatusController(scope, ports.catalogStatus, ioDispatcher)
@@ -101,6 +103,11 @@ internal class ShellControllers(
                 deckLibrary?.refresh()
                 collection?.refreshDecks()
             }) else null
+    val plainDeckExport: PlainDeckExportController? = if (documentWriter != null && ports.plainDeckLists != null &&
+        ports.localDecks != null && ports.deckSnapshotValidation != null)
+        PlainDeckExportController(scope = scope, library = ports.localDecks, codec = ports.plainDeckLists,
+            validate = ports.deckSnapshotValidation, write = documentWriter::write, dispatcher = ioDispatcher,
+            pickerOwnerNonce = java.util.UUID.randomUUID().toString()) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
