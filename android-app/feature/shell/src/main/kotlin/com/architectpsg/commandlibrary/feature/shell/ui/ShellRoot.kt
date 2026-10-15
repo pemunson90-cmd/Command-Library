@@ -162,7 +162,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             val library = controllers.deckLibrary?.state?.value ?: return false
             val editor = controllers.deckDraftEditor
             return !library.pending && !library.mutationBusy && library.form == null &&
-                editor?.state?.value?.session == null && editor?.hasMutationBarrier != true
+                editor?.state?.value?.visible != true && editor?.hasMutationBarrier != true
         }
         // One outstanding request avoids aliasing identical OpenDocument intents. Its frame ticket
         // survives activity recreation; a late result never replaces a different form or request.
@@ -185,7 +185,6 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             val current = importer?.state?.value
             if (importer != null && current != null && pendingPlainPick == null && libraryAllowsPlainPick() &&
                 !current.submitting && !current.uncertain && !current.awaitingFresh) {
-                if (current.parsing) importer.cancelParse()
                 pendingPlainPick = current.formTicket
                 try {
                     plainPicker.launch(arrayOf("text/plain"))
@@ -235,7 +234,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                         },
                         onCloseVersions = { versionsOpen = false },
                         onImportPlain = importPlainEntry,
-                        importPlainEnabled = pendingPlainPick == null && draftState?.session == null && draft?.hasMutationBarrier != true,
+                        importPlainEnabled = pendingPlainPick == null && draftState?.visible != true && draft?.hasMutationBarrier != true,
                         modifier = contentModifier,
                     )
                 }
