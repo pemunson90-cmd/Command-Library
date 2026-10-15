@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-plain-import-assembled-221
+Checkpoint-ID: cp-20261015-output-producer-dispatch-222
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. freeze-assembled-import
+Next step: 3. claim-independent-output-producer
 
-Updated UTC: 2026-10-15T15:37:18Z
+Updated UTC: 2026-10-15T15:42:57Z
 Status: in_progress; lease: active.
-Verified base: 4eb284381687cfd2292e388531152c1e0f0358e7.
+Verified base: 3d202db78b37d00886f9fa5fd04dcf0dfdcce64c.
 
-Reviewed exact UI and app returns integrated; both claims released; root-only assembled host gate attempt1 next, no runtime acceptance yet
+Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -1,0 +1,13 @@
+{
+  "component": "plain-deck-export-output",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-plain-deck-export-output-01",
+  "owner": "/root/implement_deck_edit_store native isolated writer",
+  "status": "active",
+  "base_commit": "3d202db78b37d00886f9fa5fd04dcf0dfdcce64c",
+  "branch": "agent/campaign-plain-deck-export-output-20261015",
+  "worktree": "/workspace/command-library-plain-deck-export-output-01",
+  "owned_paths": "EXACT3NEWpaths per canonical task; ALL existing/shared forbidden",
+  "build_slot": "NOTGRANTED; ROOToneGradleslot occupied importattempt2",
+  "authority": "independent campaign_engineering_review READYACK packet02974503; root canonical claim sole authority"
+}

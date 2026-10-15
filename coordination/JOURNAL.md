@@ -687,3 +687,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T15:33:36Z | codex | cp-20261015-plain-import-ui-source-220 | containing commit | Exact plain import UI return integrated source-only, claim released; app hidden-dirty regression in progress, assembled gate pending
 
 2026-10-15T15:37:18Z | codex | cp-20261015-plain-import-assembled-221 | containing commit | Reviewed exact UI and app returns integrated; both claims released; root-only assembled host gate attempt1 next, no runtime acceptance yet
+
+2026-10-15T15:42:57Z | codex | cp-20261015-output-producer-dispatch-222 | containing commit | Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance

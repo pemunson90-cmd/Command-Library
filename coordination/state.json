@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-plain-import-assembled-221",
-  "verified_base_head": "4eb284381687cfd2292e388531152c1e0f0358e7",
+  "checkpoint_id": "cp-20261015-output-producer-dispatch-222",
+  "verified_base_head": "3d202db78b37d00886f9fa5fd04dcf0dfdcce64c",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "freeze-assembled-import",
+  "first_action": "claim-independent-output-producer",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -156,7 +156,7 @@
     "deck_mark_owned_app_local": "Accepted4ed0c9cfabbf77def1694ec9966532d19bfa89e7 treeb7601dafe3dcf901f0dfd07dc4733178dbff0250,7tests2XML0fail/error/skip2m15/639pinsfrozen, bothinstrumentationKotlincompiledONLY. IndependentSOURCE/RUNTIMEACK. Priorattempt2115/2failed unchangedpassingcollection/controller/app evidence retainedseparately; no allgreen115claim. DECK-MARK-OWNED-APP-INTEGRATION-20261015.md; no native/fullC01/finishedAPK.",
     "plain_deck_import_boundary": "Exactc69aae7c3dbcbb0a797ef2f1fc81ae417c65df25 tree3be6c44a1c5cc2eff317cb1be38a3384f7048ac5,35tests3XML0f/e/s51s/645pins/independentSOURCE-RUNTIMEACK.29scriptedcontroller+5realresource+1actualAppGraphcodec-validator-Roomcontractfixture. NativeKotlincompiledONLY; actualfileimportUI notimplemented/run. PLAIN-DECK-IMPORT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Reviewed exact UI and app returns integrated; both claims released; root-only assembled host gate attempt1 next, no runtime acceptance yet",
-  "updated_utc": "2026-10-15T15:37:18Z",
+  "last_completed": "Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance",
+  "updated_utc": "2026-10-15T15:42:57Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
