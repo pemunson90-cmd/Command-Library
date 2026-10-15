@@ -167,7 +167,7 @@ class PlainDeckImportUiTest {
         f.failRead = false; click("plain-import-retry")
         assertEquals(listOf(exact, exact), f.creates); assertEquals(ids, f.ids); assertEquals(1, f.clocks)
         assertEquals(1, f.groups); assertEquals(listOf(exact.initial), f.notices)
-        rule.onNodeWithTag("plain-import-saved").assertTextContains("Retained deck")
+        rule.onNodeWithTag("plain-import-saved").assertTextEquals(text(R.string.plain_import_saved, "Retained deck"))
     }
 
     @Test fun replacementAndDiscardWarningsFenceExactFrameAndStopReadingOnlyCancelsRead() {

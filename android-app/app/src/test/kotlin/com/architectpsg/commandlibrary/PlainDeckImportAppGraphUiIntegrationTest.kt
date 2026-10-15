@@ -177,14 +177,10 @@ class PlainDeckImportAppGraphUiIntegrationTest {
     private fun assertRows(rows: List<String>) {
         rows.forEachIndexed { index, raw ->
             val tag = "plain-import-row-${index + 1}"
-            dialogScroll(tag)
-            try {
-                rule.onNodeWithTag(tag).assertTextEquals(if (raw.isEmpty()) rule.activity.getString(ShellR.string.plain_import_blank_line) else raw).assertIsDisplayed()
-            } catch (failure: AssertionError) {
-                println("PLAIN_IMPORT_ROW_DIAGNOSTIC $tag")
-                println(rule.onRoot(useUnmergedTree = true).printToString())
-                throw failure
-            }
+            // Raw text has nested scroll ancestors; target the outer list by its physical-row key.
+            rule.onNodeWithTag("plain-import-list").performScrollToKey((index + 1).toLong())
+            rule.waitForIdle()
+            rule.onNodeWithTag(tag).assertTextEquals(if (raw.isEmpty()) rule.activity.getString(ShellR.string.plain_import_blank_line) else raw).assertIsDisplayed()
         }
         rule.onAllNodesWithTag("plain-import-row-${rows.size + 1}").assertCountEquals(0)
     }
