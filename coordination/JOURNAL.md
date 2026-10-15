@@ -647,3 +647,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T12:26:31Z | codex | cp-20261015-draft-actor-ack-admission-hold-200 | containing commit | Frozen actor attempt02 continues; independent late source HOLD requires retaining exact rejected/Prepare requests until full ACK admission. Root16file source ACK, no concurrent build.
 
 2026-10-15T12:31:00Z | codex | cp-20261015-draft-actor-repaired-gate-201 | containing commit | Attempt03 repaired actor source ACK, focused gate active; original8failed assertions retained. Root16file app wiring source ACK/frozen, combined gate pending producer.
+
+2026-10-15T12:37:37Z | codex | cp-20261015-draft-overdue-read-repair-202 | containing commit | Attempt03 actual84tests/2failures diagnosed; worker owns coherent overdue-deadline and initial-load exit repair, slot retained idle. Root16source ACK frozen, combined gate pending.

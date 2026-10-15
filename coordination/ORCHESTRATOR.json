@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T12:31:00Z",
-  "expires_utc": "2026-10-15T13:16:00Z",
-  "checkpoint_id": "cp-20261015-draft-actor-repaired-gate-201",
-  "note": "Actor attempt03 source ACK and focused4class gate ACTIVE session90191; prior attempt01 test compile fail/noXML and attempt02 actual81/4XML/8failures remain historical. Queued promotion + exact malformed ACK authority repaired, assertions retained. Root16file UI/DI source ACK frozen, combined actual app UI/Room gate pending accepted producer. Sole Gradle slot worker; root no build. SQL backend5807a11 final248test ACK; publication invalidtoken/release holds."
+  "heartbeat_utc": "2026-10-15T12:37:37Z",
+  "expires_utc": "2026-10-15T13:22:37Z",
+  "checkpoint_id": "cp-20261015-draft-overdue-read-repair-202",
+  "note": "Actor attempt03 completed FAILED:84tests/4XML/2failures/0errors/skips; independent diagnosis preserves overdue deadline through pinned own-later writes. Prior8 now2, malformed ACK regressions pass. Worker retains slot IDLE for coherent deadline+LOADING/typed-exit repair/source review. Root16file UI/DI source ACK frozen, no root build. Backend5807a11 final248 ACK, publication invalidtoken/all release holds."
 }
