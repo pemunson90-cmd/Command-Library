@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-search-readiness-157",
-  "verified_base_head": "bc2f363563bcee0e9b4af6037789e489c3626cad",
+  "checkpoint_id": "cp-20261015-preparation-capability-158",
+  "verified_base_head": "a6ba6f8964787f123216ad298d424e8cc47fb6bf",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "review-complete-preparation-port-and-local-factory",
+  "first_action": "design-typed-query-semantics-and-bounded-local-execution",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Internal readiness/lifecycle design+exact-source durability ACK269catalog/lint/native+appcompile1m14s +11actualRoom9root22s. No public port/DI/query. Next complete preparation capability design; frozen9c failed/no rerun.",
+  "review_status": "Complete public preparation contract/adapter/purelocalfactory design+exact-source ACK102tests/17XMLpass50s inclrealRoom9READY/noacquisition/nativecompile. Internalenginea6ba6f8269catalog/lint accepted. Next typed execution semantic/boundedaccess design; frozen9cfailed/no rerun.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -133,9 +133,10 @@
     "numeric_encoding_ownership": "Exact-source/public ownership ACK; sourceKey/queryKey bodies moved unchanged to core:common.DecimalComparisonKeys with compatible search facade/allowed search\u2192common edge.8XML123tests0failure/error/skip SUCCESS22s; no schema/DI/executor/native change. EXACT-SEARCH-NUMERIC-LOCAL-20261015.md.",
     "catalog_search_projector": "Internal purev1 source/semantic design+exact-source ACK; fullcatalog24XML236tests0failure/error/skip SUCCESS26s/nativecompile5s.13new synthetic cases+actualschema9six-tableFK/PREPARINGprobe, explicit budgets/unknown/identity. No SQL/preparation/executor/DI claim. CATALOG-SEARCH-PROJECTOR-LOCAL-20261015.md.",
     "catalog_search_preparation_store": "Independent design/exact-source durability ACK; actualschema9/FK/FTS25XML251tests0failure/error/skip + native Kotlin testcompile SUCCESS30s.15new rollback/reopen/budget/sourcebinding/ACK/cancel probes; internal PREPARING only, no READY/public port/executor. CATALOG-SEARCH-PREPARATION-STORE-LOCAL-20261015.md.",
-    "catalog_search_readiness": "Independent design/exact-source durability ACK;27XML269catalogtests0failure/error/skip +lint/native/appcompile SUCCESS1m14s; actualRoom9root2XML11tests SUCCESS22s all0. Signedglobalwatermark/source-derivedcounts/exactFTS/READY+FAILEDack/cancel/reopen/budgets; internalonly/noport/DI/query. CATALOG-SEARCH-READINESS-LOCAL-20261015.md."
+    "catalog_search_readiness": "Independent design/exact-source durability ACK;27XML269catalogtests0failure/error/skip +lint/native/appcompile SUCCESS1m14s; actualRoom9root2XML11tests SUCCESS22s all0. Signedglobalwatermark/source-derivedcounts/exactFTS/READY+FAILEDack/cancel/reopen/budgets; internalonly/noport/DI/query. CATALOG-SEARCH-READINESS-LOCAL-20261015.md.",
+    "search_preparation_capability": "Design/exactpublic-source ACK;85model+5adapter+12actualRoom9root=102tests/17XML0failure/error/skip SUCCESS50s/nativeappKotlincompile. PublicfactoryactualRoom9READY+freshfactory/noacqproof. No query/ShellPorts/DI/deviceclaim. SEARCH-PREPARATION-CAPABILITY-LOCAL-20261015.md."
   },
-  "last_completed": "Internal bounded preparation/readiness/lifecycle independently reviewed; fullcatalog269tests/lint/native+appcompile pass1m14s, actualRoom9root11pass22s. Exact source rederivation/counts/globalwatermarks/FTSmirror/READY+FAILEDACK verified locally. No public port/DI/query. Continue complete preparation capability then typedcompiler; frozen native failure preserved/no rerun/fullv1 incomplete.",
-  "updated_utc": "2026-10-15T01:10:31Z",
+  "last_completed": "Complete public local preparation capability independently reviewed;85model+5adapter+12actualRoom9root=102tests/17XMLpass50s/nativeappcompile. RealRoom9READY+freshfactory/noacquisition proof. No query/ShellPorts/DI/device claim. Continue typedexecution semantics/boundedaccess design; fullv1incomplete/frozennativefailurepreserved.",
+  "updated_utc": "2026-10-15T01:19:25Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

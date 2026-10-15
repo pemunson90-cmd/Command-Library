@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-search-readiness-157. Updated UTC: 2026-10-15T01:10:31Z.
+Checkpoint: cp-20261015-preparation-capability-158. Updated UTC: 2026-10-15T01:19:25Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-review-complete-preparation-port-and-local-factory
+design-typed-query-semantics-and-bounded-local-execution
 
-Internal bounded preparation/readiness/lifecycle independently reviewed; fullcatalog269tests/lint/native+appcompile pass1m14s, actualRoom9root11pass22s. Exact source rederivation/counts/globalwatermarks/FTSmirror/READY+FAILEDACK verified locally. No public port/DI/query. Continue complete preparation capability then typedcompiler; frozen native failure preserved/no rerun/fullv1 incomplete.
+Complete public local preparation capability independently reviewed;85model+5adapter+12actualRoom9root=102tests/17XMLpass50s/nativeappcompile. RealRoom9READY+freshfactory/noacquisition proof. No query/ShellPorts/DI/device claim. Continue typedexecution semantics/boundedaccess design; fullv1incomplete/frozennativefailurepreserved.
 
 Read CURRENT, machine state and task card.

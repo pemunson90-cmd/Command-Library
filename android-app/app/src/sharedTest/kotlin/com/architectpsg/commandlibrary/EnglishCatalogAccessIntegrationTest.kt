@@ -10,9 +10,11 @@ import com.architectpsg.commandlibrary.data.storage.StorageDatabase
 import com.architectpsg.commandlibrary.di.AppEnglishCatalogAccess
 import com.architectpsg.commandlibrary.feature.settings.DataStoreSettingsRepository
 import com.architectpsg.commandlibrary.feature.catalog.api.AndroidCatalogServices
+import com.architectpsg.commandlibrary.feature.catalog.LocalCatalog
 import java.io.File
 import java.util.UUID
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -58,6 +60,36 @@ abstract class EnglishCatalogAccessCases {
         assertSame(ports, ok(app.graph.ports()))
         // Opening offline ports does not open acquisition, plan a job or grant download consent.
         assertSame(ports.englishCatalog, ok(app.graph.ports()).englishCatalog)
+    }
+
+    @Test fun pureLocalSearchPreparationUsesActualRoom9WithoutOpeningAcquisition() = runBlocking<Unit> {
+        fixture { f ->
+            val clock = object : Clock {
+                override fun utcNow() = UtcTimestamp(3)
+                override fun monotonicNow() = kotlin.time.Duration.ZERO
+            }
+            var next = 0
+            val ids = object : IdSource { override fun nextId() = "index-probe-${++next}" }
+            val raw = """[{"object":"card","id":"printing","oracle_id":"oracle","lang":"en","name":"Synthetic","set":"tst","collector_number":"1","keywords":["Flying"],"oracle_text":"Draw a card.","layout":"normal"}]""".toByteArray(Charsets.UTF_8)
+            val source = CatalogImportSource(ResourceUri("content://selected/index-probe"), "Synthetic", ProviderId("scryfall"), LanguageTag.ENGLISH,
+                Knowledge.Unknown("Date not supplied", SnapshotList.empty()), Knowledge.Absent("Source not supplied"), Knowledge.Absent("Hash not supplied"),
+                Knowledge.Known(raw.size.toLong()), Knowledge.Absent("Notice not supplied"))
+            val installed = ok(LocalCatalog(f.db, clock, ids).`import`(source, flowOf(ByteChunk(0, 0, SnapshotBytes(raw), null, true)), {}, token))
+            val generation = installed.generation.id
+            val preparation = AndroidCatalogServices.localSearchPreparation(f.db, clock)
+            assertEquals(CatalogSearchPreparationReadiness.NOT_PREPARED, ok(preparation.status(generation, token)).readiness)
+            var state = ok(preparation.advance(generation, token))
+            var steps = 1
+            while (state.readiness == CatalogSearchPreparationReadiness.PREPARING && steps++ < 32)
+                state = ok(preparation.advance(generation, token))
+            assertEquals(CatalogSearchPreparationReadiness.READY, state.readiness)
+            assertEquals(1L, state.processed.cards); assertEquals(1L, state.processed.printings)
+            assertEquals(state, ok(AndroidCatalogServices.localSearchPreparation(f.db, clock).status(generation, token)))
+            assertFalse(File(f.context.filesDir, "acquisition-artifacts").exists())
+            assertTrue(ok(f.settings.read(token)).consents.isEmpty())
+            val jobs = ok(f.db.query(SqlRequest("SELECT count(*) AS n FROM acquisition_job", SnapshotList.empty(), 1), token)).single()
+            assertEquals(SqlValue.Integer(0), jobs.columns.single().value)
+        }
     }
 
     @Test fun offlineRulingsAndMixedFamilyOpensShareOneLazyOwnerAndRecoveryBoundary() = runBlocking<Unit> {

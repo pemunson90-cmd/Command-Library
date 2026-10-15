@@ -57,6 +57,10 @@ public class AndroidCatalogServices private constructor(
         /** Pure local capability: no transport creation, receipt rehydration or job recovery. */
         public fun localRulings(database: Database): CatalogRulings = LocalCatalogRulings(database)
 
+        /** Pure local bounded preparation. Caller owns database/clock; no transport/job recovery. */
+        public fun localSearchPreparation(database: Database, clock: Clock): CatalogSearchPreparation =
+            LocalCatalogSearchPreparation(database, clock)
+
         /** The builder must wire the supplied authorizer to every physical acquisition enqueue.
          * Only the root-owned AppGraph expression can establish that concrete transport behavior.
          */

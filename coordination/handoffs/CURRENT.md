@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-search-readiness-157
+Checkpoint-ID: cp-20261015-preparation-capability-158
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. review-complete-preparation-port-and-local-factory
+Next step: 3. design-typed-query-semantics-and-bounded-local-execution
 
-Updated UTC: 2026-10-15T01:10:31Z
+Updated UTC: 2026-10-15T01:19:25Z
 Status: in_progress; lease: active.
-Verified base: bc2f363563bcee0e9b4af6037789e489c3626cad.
+Verified base: a6ba6f8964787f123216ad298d424e8cc47fb6bf.
 
-Internal bounded preparation/readiness/lifecycle independently reviewed; fullcatalog269tests/lint/native+appcompile pass1m14s, actualRoom9root11pass22s. Exact source rederivation/counts/globalwatermarks/FTSmirror/READY+FAILEDACK verified locally. No public port/DI/query. Continue complete preparation capability then typedcompiler; frozen native failure preserved/no rerun/fullv1 incomplete.
+Complete public local preparation capability independently reviewed;85model+5adapter+12actualRoom9root=102tests/17XMLpass50s/nativeappcompile. RealRoom9READY+freshfactory/noacquisition proof. No query/ShellPorts/DI/device claim. Continue typedexecution semantics/boundedaccess design; fullv1incomplete/frozennativefailurepreserved.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
