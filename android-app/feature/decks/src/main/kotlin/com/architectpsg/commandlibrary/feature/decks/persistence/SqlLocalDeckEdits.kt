@@ -1,7 +1,6 @@
 package com.architectpsg.commandlibrary.feature.decks.persistence
 
 import com.architectpsg.commandlibrary.core.model.*
-import com.architectpsg.commandlibrary.feature.decks.DeckPatchReducer
 import kotlin.coroutines.cancellation.CancellationException
 
 /** Atomic primitive patches and restart-safe grouped undo over immutable local deck history. */
@@ -13,6 +12,7 @@ public class SqlLocalDeckEdits(
 ) : LocalDeckEdits {
     private val store = DeckSnapshotStore(db, codec)
     private val undoRows = DeckUndoRows(store)
+    private val primitive = DeckPrimitiveEdits(store)
 
     public override suspend fun apply(id: DeckId, patch: DeckPatch, expected: Revision, operationId: EntityId, cancel: CancelToken): Outcome<DeckSnapshot> = store.operation(cancel) { tx ->
         id(id); identifier(operationId.value)
@@ -20,24 +20,7 @@ public class SqlLocalDeckEdits(
         val fingerprint = checked(FailureCode.INVALID_INPUT) { DeckLibraryRequests.apply(id, expected, patchBytes) }
         replay(tx, operationId, fingerprint, "APPLY", cancel)?.let { return@operation reconciled(it, id, expected, patch.edits.isNotEmpty()) }
         writableEpoch(epoch(tx, cancel))
-        val source = current(tx, id, cancel)
-        if (source.revision != expected) reject(FailureCode.STALE_REVISION, "Deck changed")
-        validate(source, FailureCode.CORRUPT_DATA, cancel)
-        if (source.packageInstances.isNotEmpty()) throw DeckLibraryProblem(Outcome.Unavailable(
-            UnavailableReason.UNSUPPORTED, "Package mutations require a contribution-safe edit policy"))
-        val state = undoRows.state(tx, source, cancel)
-        if (patch.edits.isEmpty()) {
-            receipt(tx, source, operationId, fingerprint, "APPLY", cancel)
-            return@operation source
-        }
-        nextRevision(source)
-        val candidate = value(DeckPatchReducer.propose(source, patch, expected, now()))
-        validate(candidate, FailureCode.INVALID_INPUT, cancel)
-        val payload = encode(candidate)
-        insertRevision(tx, candidate, payload, cancel)
-        updateHead(tx, candidate, expected, cancel)
-        undoRows.append(tx, id, candidate.revision.value, expected.value, state.pointer, cancel)
-        undoRows.advance(tx, id, expected, candidate.revision, state, candidate.revision.value, cancel)
+        val candidate = primitive.apply(tx, id, patch, expected, cancel, ::now)
         receipt(tx, candidate, operationId, fingerprint, "APPLY", cancel)
         candidate
     }

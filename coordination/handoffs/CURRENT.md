@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-named-version-app-integrated-188
+Checkpoint-ID: cp-20261015-deck-primitive-shared-189
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-local-named-version-workflow
+Next step: 3. accept-shared-primitive-transaction-helper
 
-Updated UTC: 2026-10-15T09:45:34Z
+Updated UTC: 2026-10-15T10:00:22Z
 Status: in_progress; lease: active.
-Verified base: 1d15b3196c0e0f01a3b7aed128dfc3419c7b5fc5.
+Verified base: 7543a4cd4c590fc31010e042eb07597f075cb96b.
 
-Actual namedversionAppGraph/S11localworkflow exactsource/runtimeACK653baseline+27focused; admissionHOLD repaired, nativecompiledONLY. Isolatedcollectionbulkactive, draftboundaryreadonly, publicationblocked, continuouswork.
+Narrow actualAPPLY engine extraction source/runtimeACK29SQLtests; collectionbulkmissingselectionHOLDownedrepair/no build; fifthprepare draftdesign proposed, publicationblocked/rootactive.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
