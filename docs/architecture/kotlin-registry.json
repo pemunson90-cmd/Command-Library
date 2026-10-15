@@ -1604,8 +1604,8 @@
         ],
         "verification": "small exact reference distributions; every action conserves instances; seeded tests/fresh ordinary RNG; restart/group undo",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "Scenario/action DTOs only; probability pure work independent of persistence",
+        "status": "calculator_host_integrated_playtest_acceptance_open",
+        "observed_implementation": "Actual retained draw calculator HOSTintegrated b9b394b/Androidtree68bad0611d4df093cfe9cd2555d619cb38d7d1a9:11tests4XML0f/e/s1m34,666pinsfrozen,6exactmath+3controller+1actualAppGraph/Room calculator+1overlapping exportregression. Exact counts/explicit bounds/rounding, MAINonlyinitialpopulation/invalidcorrection/configrecreate/read-onlyconservation. Report DRAW-PROBABILITY-APP-INTEGRATION-20261015.md. Sixpoint mathreview/rootconsumerSOURCEACK; nativecompiledONLY. Openinghand/mulligan/manualzones/scenariopersistence/replay/undo/fullB04/native/Fold7 acceptance remainopen.",
         "ownership_group": "decks",
         "resources": [
           "local-gradle-serial"

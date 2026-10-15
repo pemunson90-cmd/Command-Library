@@ -703,3 +703,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T16:37:17Z | codex | cp-20261015-export-consumer-wave-228 | containing commit | Two disjoint READY-reviewed export UI and actual-app consumers claimed at accepted00556e6; root retains shared picker/navigation, maxthreewriters includingroot
 
 2026-10-15T16:58:13Z | codex | cp-20261015-export-accepted-probability-229 | containing commit | Accepted actual export host workflow9pass and overlapping postguard2pass/source-runtimeACK; Git push restored; exact probability producer READY reviewed and claimed; root calculator consumer next
+
+2026-10-15T17:09:44Z | codex | cp-20261015-calculator-accepted-230 | containing commit | Accepted exact draw calculator actual app11focusedpasses/source-runtimeACK; no broad repeat; claimreleased; next typed offline query execution dependency
