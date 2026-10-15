@@ -751,3 +751,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T23:08:16Z | codex | cp-20261015-root-chat-transfer-252 | containing commit | Pat requested fresh chat; explicit root lease release. Read ROOT-CHAT-TRANSFER-20261015.md; HTTP4b821d4 andCC81001de preserved unintegrated/untested, rootauth6d0fe4c sourceACK. Review returns then continue actual provider history/UI, coherent gate.
 
 2026-10-15T23:11:19Z | codex | cp-20261015-root-replacement-253 | containing commit | Authorized replacement claimed explicitly released root at a1b1403; fetched frozen HTTP4b821d4 and CC81001de. Independent review pending; runtime NOT_RUN; existing holds unchanged.
+
+2026-10-15T23:21:04Z | codex | cp-20261015-provider-source-integration-254 | containing commit | Exact reviewed HTTP/CC/coordinator/root consent UI/app proof integrated through ddff703b. Source HOLD corrections retained. Single local assembled gate pending; worker claims released and originals preserved; all release holds remain.

@@ -1,10 +1,11 @@
 {
   "owner": "/root/implement_provider_app_proof",
-  "status": "active",
+  "status": "released",
   "base_commit": "8190a8ea",
   "owned_paths": [
     "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/ProviderGenerationAppIntegrationTest.kt",
     "coordination/handoffs/cx-campaign-provider-app-proof-01.md"
   ],
-  "build_slot": "ROOT ONLY"
+  "build_slot": "ROOT ONLY",
+  "note": "Exact frozen source independently Astra ACKed and copied unchanged into root; original uncommitted worker drafts preserved; runtime gate pending."
 }

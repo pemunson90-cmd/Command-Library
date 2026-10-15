@@ -2,12 +2,13 @@
   "component": "provider-generation",
   "orchestrator": "codex-root-replacement-20261015",
   "owner": "/root/implement_provider_generation",
-  "status": "active",
+  "status": "released",
   "base_commit": "1dc7a49c",
   "owned_paths": [
     "android-app/feature/ai/src/main/kotlin/com/architectpsg/commandlibrary/feature/ai/DurableProviderGeneration.kt",
     "android-app/feature/ai/src/test/kotlin/com/architectpsg/commandlibrary/feature/ai/DurableProviderGenerationTest.kt",
     "coordination/handoffs/cx-campaign-provider-generation-01.md"
   ],
-  "build_slot": "ROOT ONLY"
+  "build_slot": "ROOT ONLY",
+  "note": "Exact frozen source independently Astra ACKed and copied unchanged into root; original uncommitted worker drafts preserved; runtime gate pending."
 }

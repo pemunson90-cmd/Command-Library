@@ -4,8 +4,8 @@
   "session_id": "codex-root-replacement-20261015",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T23:11:19Z",
-  "expires_utc": "2026-10-15T23:56:19Z",
-  "checkpoint_id": "cp-20261015-root-replacement-253",
-  "note": "Pat explicitly authorized replacement; prior root voluntarily released at a1b1403. Replacement claims root; frozen HTTP/CC returns require independent source review before integration."
+  "heartbeat_utc": "2026-10-15T23:21:04Z",
+  "expires_utc": "2026-10-16T00:06:04Z",
+  "checkpoint_id": "cp-20261015-provider-source-integration-254",
+  "note": "Authorized replacement root active. Source-reviewed customHTTPS text integration ddff703b; single local assembled gate session24391 pending. No worker builds; retain all source/device/release holds."
 }

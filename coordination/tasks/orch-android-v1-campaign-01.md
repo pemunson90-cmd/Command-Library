@@ -1,6 +1,6 @@
 # orch-android-v1-campaign-01 — retained Android v1 execution
 
-Status: in_progress. Surviving root `codex-thread-recovery-20261013`; no ownership takeover. D29 authorizes dependency-ready execution across existing K3/M2–M9 scope. The prior K3 card remains the detailed data/download acceptance work, not a blanket prerequisite delaying independent modules.
+Status: in_progress. Root `codex-root-replacement-20261015` claimed the explicitly released lease at Pat’s authorized replacement handoff; prior root stopped. D29 authorizes dependency-ready execution across existing K3/M2–M9 scope. The prior K3 card remains the detailed data/download acceptance work, not a blanket prerequisite delaying independent modules.
 
 ## Authority and map
 
@@ -30,8 +30,6 @@ Approved future intake: Pat's PR23/issue24 read at exactdrafthead52335a0a6799ae8
 Same campaign-r1/64requirements/213parity194retained19skips/35tasks, no silent deferrals. D28/user cadence: minimal coherent risk-boundary checks; comprehensive final v1/native/physical/Fold7/accessibility/performance/signing/finishedAPK gates retained. Live Scryfall fullsource completeness remains policy-blocked; authentic variants/GameService and other explicit holds remain. Do not touch MarkdownDesk/monitoring/repins/new paid infrastructure. Continue ready work after checkpoints; do not stop for routine approval.
 
 
-## Explicit root chat transfer — current
+## Replacement root — current execution
 
-Pat requested a zero-context replacement chat. See coordination/handoffs/ROOT-CHAT-TRANSFER-20261015.md for exact retained return commits, pending reviews and next steps. Old root deliberately releases lease at this checkpoint and stops implementation. Native child list empty; buildslotFREE. HTTP4b821d4 andCC81001de preserved independently, NOT integrated/tested; rootauth6d0fe4c sourceACK/testsNOT_RUN. New root may claim released lease, review returns, continue provider actualhistory/UI thencoherentgate. D30futureintake/priorities/holds unchanged.
-
-Replacement readback: codex-root-replacement-20261015 resolved remote a1b140358d203b52fc772f4c16599fea8c0189a0, confirmed explicit voluntary release and fetched both frozen producer branches. This environment retains toolchain but historical worker worktrees and /tmp runners are absent; preserve all available refs and reconstruct isolated read-only review worktrees. Next independent source reviews, then exact integration and provider coordinator/UI. No new product verification run.
+Pat authorized this replacement. Resolved remote handoff a1b140358d203b52fc772f4c16599fea8c0189a0; voluntary root release verified, lease claimed1dc7a49c by codex-root-replacement-20261015. Frozen HTTP4b821d4 andCC81001de independently SOURCEACK then parent/path/blob/cleanverified and integratedunchanged1a0dbcc8/81331eb0. Original temporary manifests absent; exactGitanchored manifests recreated; historical available refs/worktrees/drafts preserved. Root consent/UI SOURCE01HOLD8190a8ea corrected/frozenSOURCEACK1e9c97a1. New coordinatorNEW3 SOURCE01ACK→12fd07a8; appproofNEW2 SOURCE02ACK→ddff703b; sourceonly erroneous recreation-dismissal fixtureHOLD retained. Newclaimsreleased, no workers/builds; one root assembledgate started atddff703b session24391, runner /tmp/cl-provider-text-01/assembled-gate.sh/evidence/assembled-attempt1. Runtimepending; do not startduplicate or claimcompile/runtimepass. Next inspect gate, diagnose actual failures, preserve attemptlineage, independent runtimeevidencereadback beforeboundedacceptance. Detailedsource/limits docs/verification/ai/PROVIDER-TEXT-APP-INTEGRATION-20261015.md. Continue provider retainedpriority; D30futureintake unchanged. No mainmerge/release/finishedAPK.
