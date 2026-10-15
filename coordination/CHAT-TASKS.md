@@ -5,7 +5,7 @@ Current assignment board,2026-10-15. Base your checkout on the latest published 
 | ID | Task | Status | Owner | Task card |
 |---|---|---|---|---|
 | campaign-deck-edits | Pure deck edit/entry-diff producer | DONE (scoped producer) | 71096d9 → root3623bcf/5925081;13focusedpass/sourceACK | [packet](tasks/cx-campaign-deck-edits-01.md) |
-| campaign-links | Supplied/template CardLinks producer | DONE (scoped producer) | 45b3822 → rootdf1d323/86f692a;35focusedpass; final root integration pending | [packet](tasks/cx-campaign-links-01.md) |
+| campaign-links | Supplied/template CardLinks producer | DONE (scoped producer) | 45b3822 → rootdf1d323/86f692a;35focusedpass; real printing/link UI integrated/sourceACK | [packet](tasks/cx-campaign-links-01.md) |
 | life-profiles | Real SQLite player profile persistence and model codec port | DONE | This recovery chat: codex-thread-recovery-20261013 | [details](tasks/cx-m2-life-profiles-01.md) |
 | scryfall-integrate | Bring the completed reviewed metadata decoder and13 tests onto the recovery baseline; verify locally | DONE | codex-scryfall-integration-20261014 / ad3f9aa | [details](tasks/cx-k3-scryfall-integration-01.md) |
 | life-history-audit | Map retained history/undo/result/alert requirements to current contracts and missing service checks | DONE | claude-code-life-history-audit-20261014 / component/life-history-audit-20261014 | [details](tasks/cx-m2-life-history-audit-01.md) |
@@ -36,8 +36,11 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 
 | campaign-deck-library | Real complete local create/load/list/duplicate repository | DONE scoped producer | Integrated0e0ec99; root AppGraph/UI boundary checked | [packet](tasks/cx-campaign-deck-library-01.md) |
 
-| campaign-owned-quantity | Complete bounded pure owned quantity allocator | DONE scoped producer | Integrated d1b743b; source/evidence ACK, root assembled gate next | [packet](tasks/cx-campaign-owned-quantity-01.md) |
+| campaign-owned-quantity | Complete bounded pure owned quantity allocator | DONE scoped producer | Integrated d1b743b; source/evidence ACK; root quantity25/combined81tests pass | [packet](tasks/cx-campaign-owned-quantity-01.md) |
 
-| campaign-deck-edit-store | Real primitive deck apply and grouped persistent undo | DONE scoped producer | Integrated a38a45c; source/evidence ACK, root editor/AppGraph gate running | [packet](tasks/cx-campaign-deck-edits-store-01.md) |
+| campaign-deck-edit-store | Real primitive deck apply and grouped persistent undo | DONE scoped producer | Integrated a38a45c; source/evidence ACK; editor/AppGraph186tests passed | [packet](tasks/cx-campaign-deck-edits-store-01.md) |
 
-| campaign-inventory-projection | Complete pure collection patch projection and conservative physical merge | TAKEN | Root-managed isolated native worker; reviewed baselineb536edb | [packet](tasks/cx-campaign-inventory-projection-01.md) |
+| campaign-inventory-projection | Complete pure collection patch projection and conservative physical merge | DONE scoped producer | Integrated62faa9d/6e6a2fd; sourceACK29focused/81assembledpass | [packet](tasks/cx-campaign-inventory-projection-01.md) |
+
+| campaign-collection-presentation | Real collection mutations/undo/stored deck quantity UI | TAKEN | Isolatedb5fd7c1 controller/screen/dedicatedresources; root composition retained | [packet](tasks/cx-campaign-collection-presentation-01.md) |
+| campaign-inventory-store | Complete consistent inventory/apply/grouped undo journal | TAKEN | Reviewed schema12/contract; isolated bounded backend; root integration retained | [packet](tasks/cx-campaign-inventory-store-01.md) |

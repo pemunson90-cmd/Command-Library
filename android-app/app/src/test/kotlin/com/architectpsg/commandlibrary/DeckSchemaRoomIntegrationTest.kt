@@ -22,27 +22,27 @@ class DeckSchemaRoomIntegrationTest {
         override fun throwIfCancelled() = Unit
     }
     private fun <T> ok(value: Outcome<T>): T = (value as Outcome.Success).value
-    @Test fun actualRoomFreshAndSchema9UpgradeOpenEmptyDeckTablesPreservingOldBytes() = runBlocking<Unit> {
+    @Test fun actualRoomFreshAndSchema9And11UpgradesPreserveOldBytesAndOpenInventory() = runBlocking<Unit> {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        for (upgrade in listOf(false, true)) {
+        for (baseVersion in listOf<Int?>(null, 9, 11)) {
             val name = "deck-schema-${UUID.randomUUID()}.db"
             try {
-                if (upgrade) {
+                if (baseVersion != null) {
                     val file = context.getDatabasePath(name); file.parentFile!!.mkdirs()
                     BundledSQLiteDriver().open(file.path).use { c ->
-                        val fixture = File(checkNotNull(System.getProperty("commandlibrary.schema9.fixture"))).readText()
+                        val fixture = File(checkNotNull(System.getProperty("commandlibrary.schema${baseVersion}.fixture"))).readText()
                         fixture.split(";\n").map(String::trim).filter(String::isNotEmpty).forEach { q -> c.prepare(q).use { it.step() } }
-                        c.prepare("PRAGMA user_version=9").use { it.step() }
+                        c.prepare("PRAGMA user_version=$baseVersion").use { it.step() }
                         c.prepare("INSERT INTO life_profile VALUES('profile',0,'É','é',X'0001FF',7,9)").use { it.step() }
                     }
                 }
                 ok(StorageDatabase.open(context, name)).use { db ->
-                    assertEquals(11, ok(db.capabilities(token)).schemaVersion)
-                    for (table in listOf("deck_head", "deck_revision", "deck_operation", "deck_undo_link", "deck_undo_state")) {
+                    assertEquals(12, ok(db.capabilities(token)).schemaVersion)
+                    for (table in listOf("deck_head", "deck_revision", "deck_operation", "deck_undo_link", "deck_undo_state", "inventory_state", "inventory_lot", "inventory_operation", "inventory_group", "inventory_change")) {
                         val rows = ok(db.query(SqlRequest("SELECT count(*) AS n FROM $table", SnapshotList.empty(), 1), token))
                         assertEquals(SqlValue.Integer(0), rows.single().columns.single().value)
                     }
-                    if (upgrade) {
+                    if (baseVersion != null) {
                         val rows = ok(db.query(SqlRequest("SELECT hex(payload) AS payload FROM life_profile WHERE profile_id='profile'", SnapshotList.empty(), 1), token))
                         assertEquals(SqlValue.Text("0001FF"), rows.single().columns.single().value)
                     }

@@ -1467,7 +1467,7 @@
         "verification": "real DB revision/atomic bulk/ineligible rows/nonnegative/unknown/no language transfer/restart",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "pure_producer_integrated_storage_ui_open",
-        "observed_implementation": "Complete bounded InventoryPatchReducer integrated62faa9d/6e6a2fd with independent source/evidence ACK and29focusedtests. CLOL1 structural codec reviewed27scopedtests. No actual inventory repository/tables/UI; five-table journal semantics independently repaired/ACK; exact contract/schema next. Full C01/B10/S12 acceptance open.",
+        "observed_implementation": "Complete bounded InventoryPatchReducer integrated62faa9d/6e6a2fd with independent source/evidence ACK and29focusedtests. CLOL1 structural codec reviewed27scopedtests; complete LocalInventory/CLIP/CLIR contract sourceACK63scopedtests. Schema12 five tables reviewed304hosttests; exact backend and presentation packets TAKEN, no actual repository/UI integration yet. Full C01/B10/S12 acceptance open.",
         "ownership_group": "collection",
         "resources": [
           "local-gradle-serial"

@@ -77,6 +77,7 @@ dependencies {
 
     // Integration tests consume the pure JVM repository; production registry/DAG is unchanged.
     testImplementation(project(":feature:decks"))
+    testImplementation(project(":feature:collection"))
     testImplementation(project(":feature:life"))
     androidTestImplementation(project(":feature:life"))
     testImplementation(libs.junit)

@@ -591,3 +591,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T07:05:33Z | codex | cp-20261015-inventory-producer-codec-173 | containing commit | Pure inventory producer integrated/source ACK; assembled81tests8XML pass, complete CLOL codec ACK; five-table journal semantics independently repaired/ACK; root next exact contract/schema. No active writer/build; holds retained.
 
 2026-10-15T07:12:11Z | codex | cp-20261015-inventory-contract-ui-claim-174 | containing commit | Complete inventory/CLIP/CLIR sourceACK63tests pass; isolated collection presentation claimed, root retains dirty schema12 migration work; no active build. Holds retained.
+
+2026-10-15T07:19:41Z | codex | cp-20261015-inventory-schema-backend-claim-175 | containing commit | Schema12 exactsourceACK304hosttests pass;5consumerexamples compileonly; collection presentation active isolated, complete backend claimed awaiting verifiedprovision. Rootshared/integration retained; no activebuild; holds retained.

@@ -92,9 +92,12 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 }
 
-// Reuse the independently exported schema9 fixture for actual Room upgrade checks.
+// Reuse independently exported old schema fixtures for actual Room upgrade checks.
 tasks.withType<Test>().configureEach {
     val oldDeckSchema = storageProject.file("src/test/resources/search-projection-schema9.sql")
     inputs.file(oldDeckSchema)
     systemProperty("commandlibrary.schema9.fixture", oldDeckSchema.absolutePath)
+    val inventoryBase = storageProject.file("src/test/resources/deck-edits-schema11.sql")
+    inputs.file(inventoryBase)
+    systemProperty("commandlibrary.schema11.fixture", inventoryBase.absolutePath)
 }
