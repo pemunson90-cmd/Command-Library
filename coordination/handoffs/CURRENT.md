@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-core-numeric-ownership-154
+Checkpoint-ID: cp-20261015-catalog-search-projector-155
 
 Next task: orch-kotlin-k3-offline-data-01
-Next step: 3. design-versioned-catalog-projection-mapper
+Next step: 3. design-bounded-durable-projection-preparation
 
-Updated UTC: 2026-10-15T00:24:19Z
+Updated UTC: 2026-10-15T00:39:05Z
 Status: in_progress; lease: active.
-Verified base: 0b911dd71a948d6f1fa85b6524ec0b2b1c3227bc.
+Verified base: eb448240e4c42ed9847449b1517b92d6042ddf88.
 
-Reviewed numeric encoding moved unchanged to core:common/compatible search facade;123tests pass22s. Schema9/legacy correction published0b911dd212storage+11rootpass. Continue versioned mapper then bounded preparation; frozen native failure preserved/no rerun/fullv1 incomplete.
+Reviewed purev1 catalog projector full236tests pass26s/nativecompile5s; no SQL/readiness/executor. Core keys/schema9 foundations published. Continue bounded durable preparation design with row binding/atomic progress/ack/coverage; frozen native failure preserved/no rerun/fullv1 incomplete.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-kotlin-k3-offline-data-01",
-  "heartbeat_utc": "2026-10-15T00:24:19Z",
-  "expires_utc": "2026-10-15T01:09:19Z",
-  "checkpoint_id": "cp-20261015-core-numeric-ownership-154",
-  "note": "Root sole writer/final merge. Numeric encoding moved unchanged to core:common with compatible search facade; exact-source ownership ACK123pass22s. Schema9 foundation+native snapshot correction reviewed212storage/11rootpass. Frozen9c/run38657175303 failed8legacyDDL assertions, no rerun. Next versioned catalog mapper design/review then bounded preparation. Fullv1 incomplete/GameService HOLD/no finished APK."
+  "heartbeat_utc": "2026-10-15T00:39:05Z",
+  "expires_utc": "2026-10-15T01:24:05Z",
+  "checkpoint_id": "cp-20261015-catalog-search-projector-155",
+  "note": "Root sole writer/final merge. Pure catalog projector v1 source/semantic ACK236catalogpass26s/nativecompile5s; no SQL/readiness/executor. Core keys eb44824 shared/123pass; schema9 0b911dd reviewed212storage+11rootpass. Frozen9c/run38657175303 failed8legacyDDL assertions, no rerun. Next bounded durable preparation design/review. Fullv1 incomplete/GameService HOLD/no finished APK."
 }

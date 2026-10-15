@@ -133,3 +133,6 @@ Pure `core:common.DecimalComparisonKeys` owns the exact encoding, shared by cata
 ## Derived search storage foundation (schema9)
 
 Storage schema9 adds seven versioned derived build/card/face/printing/legality/text/FTS entities (35total), preserving every28schema8 entity definition. Actual FK/version/nullable evidence semantics and empty migration are reviewed; no backfill or readiness on open, no indexed AST executor/DI capability. FTS mirrors require explicit future owner cleanup/completeness checks. Evidence `docs/verification/k3-downloads/SEARCH-PROJECTION-SCHEMA9-LOCAL-20261015.md`; preparation/compiler design `docs/superpowers/plans/2026-10-15-indexed-query-projection-design.md`. Catalog may use core-owned numeric encoding, never depend back on search.
+
+
+`feature:catalog` now has an internal pure version1 CatalogSearchProjector: fixed table enum/immutable RowData/SqlValue facts for schema9, complete bounded source conversion only. No SQL/progress/readiness/executor capability. Actual per-printing legalities/game_changer and face data preserve unknown evidence and source-qualified IDs; no first-printing canonical consensus or invented reversible Oracle. Future owner must bind returned IDs to original stored rows. Reviewed source/semantic evidence: `docs/verification/k3-downloads/CATALOG-SEARCH-PROJECTOR-LOCAL-20261015.md`.
