@@ -587,3 +587,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T06:42:16Z | codex | cp-20261015-inventory-projection-boundary-171 | containing commit | ReviewedpurecollectionDTOs/module/8abstractexamplescompileONLY, pinsunchanged; editor186testsevidenceretained; nextisolatedprojectionworker/rootinventorydurability, holdsretained
 
 2026-10-15T06:42:50Z | codex | cp-20261015-inventory-projection-claim-172 | containing commit | Claimreviewedpurecollectionprojectionworkerfromb536edb, rootretainsdurableinventorycontracts/codec/schema/DI/UI; nofakebehaviorclaim, allholdsretained
+
+2026-10-15T07:05:33Z | codex | cp-20261015-inventory-producer-codec-173 | containing commit | Pure inventory producer integrated/source ACK; assembled81tests8XML pass, complete CLOL codec ACK; five-table journal semantics independently repaired/ACK; root next exact contract/schema. No active writer/build; holds retained.

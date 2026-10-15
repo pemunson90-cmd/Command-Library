@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-inventory-projection-claim-172. Updated UTC: 2026-10-15T06:42:50Z.
+Checkpoint: cp-20261015-inventory-producer-codec-173. Updated UTC: 2026-10-15T07:05:33Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-dispatch-isolated-inventory-projector-and-root-durability
+integrate-inventory-producer-codec
 
-Claimreviewedpurecollectionprojectionworkerfromb536edb, rootretainsdurableinventorycontracts/codec/schema/DI/UI; nofakebehaviorclaim, allholdsretained
+Pure inventory producer integrated/source ACK; assembled81tests8XML pass, complete CLOL codec ACK; five-table journal semantics independently repaired/ACK; root next exact contract/schema. No active writer/build; holds retained.
 
 Read CURRENT, machine state and task card.

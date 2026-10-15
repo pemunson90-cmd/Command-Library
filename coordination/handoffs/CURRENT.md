@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-inventory-projection-claim-172
+Checkpoint-ID: cp-20261015-inventory-producer-codec-173
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. dispatch-isolated-inventory-projector-and-root-durability
+Next step: 3. integrate-inventory-producer-codec
 
-Updated UTC: 2026-10-15T06:42:50Z
+Updated UTC: 2026-10-15T07:05:33Z
 Status: in_progress; lease: active.
-Verified base: b536edba89d38e81373bc5868abca3725eb58ba2.
+Verified base: 6e6a2fd5cb2f53c9ad7ec2bc21ae893de0cc73c0.
 
-Claimreviewedpurecollectionprojectionworkerfromb536edb, rootretainsdurableinventorycontracts/codec/schema/DI/UI; nofakebehaviorclaim, allholdsretained
+Pure inventory producer integrated/source ACK; assembled81tests8XML pass, complete CLOL codec ACK; five-table journal semantics independently repaired/ACK; root next exact contract/schema. No active writer/build; holds retained.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

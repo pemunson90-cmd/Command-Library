@@ -12,8 +12,8 @@ private val deckIdWire = wire<DeckId>({ v(providerWire, it.source); v(idTextWire
 private val oracleWire = wire<OracleId>({ v(providerWire, it.source); v(idTextWire, it.raw) }, { OracleId(v(providerWire), v(idTextWire)) })
 private val cardWire = wire<CardId>({ v(providerWire, it.source); v(idTextWire, it.raw) }, { CardId(v(providerWire), v(idTextWire)) })
 internal val formatWire = wire<FormatId>({ v(providerWire, it.source); v(idTextWire, it.raw) }, { FormatId(v(providerWire), v(idTextWire)) })
-private val revisionWire = wire<Revision>({ long(it.value) }, { Revision(long()) })
-private val timestampWire = wire<UtcTimestamp>({ long(it.epochSeconds); int(it.nanoAdjustment) }, { UtcTimestamp(long(), int()) })
+internal val revisionWire = wire<Revision>({ long(it.value) }, { Revision(long()) })
+internal val timestampWire = wire<UtcTimestamp>({ long(it.epochSeconds); int(it.nanoAdjustment) }, { UtcTimestamp(long(), int()) })
 private val uriWire = wire<ResourceUri>({ v(textWire, it.value) }, { ResourceUri(v(textWire)) })
 private val evidenceWire = wire<Evidence>({
     v(textWire, it.description); v(nullable(uriWire), it.source); v(nullable(timestampWire), it.recordedAt)
@@ -37,7 +37,7 @@ internal fun <T> knowledge(codec: DeckWire<T>): DeckWire<Knowledge<T>> = wire({ 
 private val providerIdentityWire = wire<ProviderIdentity>({
     v(providerWire, it.provider); v(textWire, it.kind); v(idTextWire, it.rawId)
 }, { ProviderIdentity(v(providerWire), v(textWire), v(idTextWire)) })
-private val identityWire = wire<CardIdentity>({
+internal val identityWire = wire<CardIdentity>({
     v(knowledge(oracleWire), it.oracleId); v(knowledge(cardWire), it.printingId)
     v(nullable(providerIdentityWire), it.raw); v(knowledge(textWire), it.originalName); v(languageWire, it.language)
 }, { CardIdentity(v(knowledge(oracleWire)), v(knowledge(cardWire)), v(nullable(providerIdentityWire)), v(knowledge(textWire)), v(languageWire)) })
