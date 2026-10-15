@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-mark-owned-import-215",
-  "verified_base_head": "7ef2e1f7c2d1a016ec767bd7ad4439110907900e",
+  "checkpoint_id": "cp-20261015-mark-owned-assembled-gate-216",
+  "verified_base_head": "ebaaffcf59adb35e597be4a4c65f80075fd22647",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "rolling-import-producer",
+  "first_action": "mark-owned-assembled-gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -154,7 +154,7 @@
     "deck_draft_pure": "Exact4700542\u219286cf3f5, independent source/runtimeACK140tests13XML0fail/error/skip SUCCESS2m39s;44new+96old, separatebase/bodypreflightrepairbeforefirstonlyrun. Completepurecodec/plannerONLY; noSQLstore/UI/native/fullprojectedCLDKcertificate. RAW-DRAFT-BOUNDARY-20261015.md.",
     "mark_owned_controller": "Exact65bffe6f9a471275c71e8c02ec35082e5eabae1e focused38tests2XML0failures/errors/skips1m14, all37sourcepins unchanged, independentinventoryreviewSOURCE/RUNTIMEACK. Log53f3d2c09980f663ee7766c770ef22979faca958f6ffba2a4f96e3f82aa829f9; /tmp/cl-deck-mark-owned-01/evidence/runtime-attempt1. Faithfulports ONLY, no UI/AppGraph/SQL/native acceptance. Earlier01\u201303sourceHOLDs/prelaunchharness0test error retained."
   },
-  "last_completed": "Reviewed UI integrated/sourceACK; actualapp test repairs pending coherentgate; claim READY-reviewed isolated next importproducer under 3writerlimit",
-  "updated_utc": "2026-10-15T14:36:47Z",
+  "last_completed": "Exact reviewed UI and app-test scopedreturns integrated; ROOT reserves sole frozen assembledlocalgate, actualruntimepending; isolatedplainimportproducer continues",
+  "updated_utc": "2026-10-15T14:39:11Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

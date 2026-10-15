@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T14:36:47Z",
-  "expires_utc": "2026-10-15T15:21:47Z",
-  "checkpoint_id": "cp-20261015-mark-owned-import-215",
-  "note": "UIec45de5 integrated19f6742 SOURCEACK/claimreleased; bannerinset7ef2e1f SOURCEACK. Actualappsource02testonlyHOLDs beingfixed; assembledruntimepending. Plainimportproducer repairedpacketREADYACK4376e044 claimednewverifiedworktree/base65bffe6. Root+app-test+import3writers,4childrenmax/oneROOTbuildslot. Publicationinvalidtoken/native/Fold7/finishedAPKholds."
+  "heartbeat_utc": "2026-10-15T14:39:11Z",
+  "expires_utc": "2026-10-15T15:24:11Z",
+  "checkpoint_id": "cp-20261015-mark-owned-assembled-gate-216",
+  "note": "Bothmarkownedconsumer scopedreturns integrated19f6742/ebaaffc allsourceACK/cleanoriginals/claimsreleased; rootoneassembledlocalgate next/runtimeNOTRUN atcheckpoint. Newplainimportproducer isolatedbase65bffe6 active/no builds. Root+producer2writers/4childrenmax/oneROOTslot. No productsourceeditsduringfrozengate. Publicationinvalidtoken/native/Fold7/finishedAPKholds."
 }

@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261015-mark-owned-import-215. Next: orch-android-v1-campaign-01 step3; in_progress.
+Checkpoint-ID: cp-20261015-mark-owned-assembled-gate-216. Next: orch-android-v1-campaign-01 step3; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
