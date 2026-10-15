@@ -205,7 +205,7 @@ internal class OfflinePromptController(
     }
 
     private fun validRow(mode: OfflineLabMode, row: StoredPromptOverride?): Boolean = row == null ||
-        (row.mode == mode && row.shippedVersion > 0 && (row.body == null || fits(row.body, 32 * 1024)))
+        (row.mode == mode && row.shippedVersion > 0 && (row.body?.let { fits(it, 32 * 1024) } != false))
 
     private fun validReceipt(mode: OfflineLabMode, expected: Revision?, row: StoredPromptOverride?, body: String?): Boolean {
         if (!validRow(mode, row)) return false
