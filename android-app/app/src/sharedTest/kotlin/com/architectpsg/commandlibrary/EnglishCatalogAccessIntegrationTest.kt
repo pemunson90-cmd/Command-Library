@@ -62,7 +62,7 @@ abstract class EnglishCatalogAccessCases {
         assertSame(ports.englishCatalog, ok(app.graph.ports()).englishCatalog)
     }
 
-    @Test fun pureLocalSearchPreparationUsesActualRoom9WithoutOpeningAcquisition() = runBlocking<Unit> {
+    @Test fun pureLocalSearchPreparationUsesCurrentRoomWithoutOpeningAcquisition() = runBlocking<Unit> {
         fixture { f ->
             val clock = object : Clock {
                 override fun utcNow() = UtcTimestamp(3)

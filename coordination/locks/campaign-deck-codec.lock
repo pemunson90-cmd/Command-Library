@@ -6,6 +6,9 @@
   "base_commit": "f3cee12b6de1d1c26edecdbe38791206265e8ab3",
   "owner": "/root/implement_deck_codec; root controls canonical claim",
   "owned_paths": "Exact explicit source/test/handoff allowlist in task card; all shared paths root-only",
-  "status": "active",
-  "authority": "Canonical live root continuation only; dispatch uses containing reviewed descendant commit"
+  "status": "released",
+  "authority": "Canonical live root continuation only; dispatch uses containing reviewed descendant commit",
+  "completion_commit": "b77dafabd25adaa20336d288b8ea1dec44fbca1f",
+  "integration_commit": "2ae5f55",
+  "evidence": "Astra exactsource ACK final hashes/18worker tests; assembled49tests7XML includes18codec0fail/error/skip"
 }

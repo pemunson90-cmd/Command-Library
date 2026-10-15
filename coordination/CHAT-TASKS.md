@@ -31,5 +31,5 @@ Native campaign workers are root-managed: root publishes their exact disjoint cl
 
 No automatic takeover from lease expiry. If two branches claim the same task, stop overlapping writes and ask root to reconcile. Completed Scryfall boundary-test task0db3298 and integration ad3f9aa are DONE; history audit a47d1cc is DONE and consumed; variant-source audit remains OPEN.
 
-| campaign-deck-codec | Complete bounded CLDK1 snapshot codec | TAKEN | Root-managed isolated native worker | [packet](tasks/cx-campaign-deck-codec-01.md) |
-| campaign-deck-diff | Complete immutable document comparison | TAKEN | Root-managed isolated native worker | [packet](tasks/cx-campaign-deck-diff-01.md) |
+| campaign-deck-codec | Complete bounded CLDK1 snapshot codec | DONE scoped producer | Integrated2ae5f55; Astra reviewed | [packet](tasks/cx-campaign-deck-codec-01.md) |
+| campaign-deck-diff | Complete immutable document comparison | DONE scoped producer | Integrated125fb83; root reviewed | [packet](tasks/cx-campaign-deck-diff-01.md) |

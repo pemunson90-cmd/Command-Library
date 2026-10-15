@@ -77,6 +77,7 @@ dependencies {
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.junit)
+    testImplementation(libs.sqlite.bundled)
     testImplementation(libs.robolectric)
     testImplementation(libs.coroutines.test)
 
@@ -88,4 +89,11 @@ dependencies {
     androidTestImplementation(libs.coroutines.test)
 
     debugImplementation(libs.compose.ui.test.manifest)
+}
+
+// Reuse the independently exported schema9 fixture for actual Room upgrade checks.
+tasks.withType<Test>().configureEach {
+    val oldDeckSchema = storageProject.file("src/test/resources/search-projection-schema9.sql")
+    inputs.file(oldDeckSchema)
+    systemProperty("commandlibrary.schema9.fixture", oldDeckSchema.absolutePath)
 }

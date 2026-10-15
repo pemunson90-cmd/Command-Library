@@ -1,6 +1,6 @@
 # cx-campaign-deck-diff-01 — attempt1, packet r1
 
-Status: TAKEN by root-managed native worker; exact published dispatch baseline required. Owner assigned native Sol; root integrates. B05/B02/B09 comparison producer, exact inherited parity joins in campaign deck-persistence/deck-edits tasks; no actual restore/package mutation or UI acceptance.
+Status: DONE scoped comparison producer; no restore/persistence acceptance. Owner assigned native Sol; root integrates. B05/B02/B09 comparison producer, exact inherited parity joins in campaign deck-persistence/deck-edits tasks; no actual restore/package mutation or UI acceptance.
 
 Base f3cee12b6de1d1c26edecdbe38791206265e8ab3 plus exact dispatch-provided reviewed domain/codec r1 descendant. Branch agent/campaign-deck-diff-20261015, worktree /workspace/command-library-deck-diff-01. Verify own pwd/top/branch/HEAD/commonGitDir/Git index overrides; canonical claim only on root continuation. No implicit isolation assumption.
 
@@ -20,4 +20,4 @@ Complete autonomous implementation/check/fix/self-review and commit owned files+
 
 ## Latest continuation delta
 
-Packet prepared, implementation not_run; await exact published reviewed shared baseline/root claim.
+Worker3651c7c (exact parentf9fc8d4) integrated125fb83 after root full source/test review. Three allowlisted files only;27focusedtests0fail/error/skip (8new comparison cases), SUCCESS58s, evidence /tmp/cl-deck-diff-01/evidence. Own handoff contains command/scope; lock released and preserved clean worker worktree. Combined codec boundary check follows codec return; no restore/package mutation/UI/native acceptance.

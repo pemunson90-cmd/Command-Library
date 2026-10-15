@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-deck-contract-wave-162
+Checkpoint-ID: cp-20261015-deck-library-boundary-163
 
 Next task: orch-android-v1-campaign-01
-Next step: 2. dispatch-reviewed-deck-codec-diff-wave
+Next step: 3. publish-reviewed-schema10-then-dispatch-local-library
 
-Updated UTC: 2026-10-15T05:00:54Z
+Updated UTC: 2026-10-15T05:13:37Z
 Status: in_progress; lease: active.
-Verified base: f3cee12b6de1d1c26edecdbe38791206265e8ab3.
+Verified base: 2ae5f55bfbd441829ad1f7c0aa96362913d3a87d.
 
-Reviewed deck shared boundary and independent golden accepted; isolated codec/diff claims published, root retains persistence/schema integration. Shared compile and focused tests pass; no native or feature acceptance.
+Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

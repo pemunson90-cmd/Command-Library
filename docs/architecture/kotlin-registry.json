@@ -1294,7 +1294,7 @@
         "verification": "independent durability review; actual migration old/new preservation and failure atomicity",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "No deck/inventory user tables or codecs; shared single root writer",
+        "observed_implementation": "Deck domain/CLDK1 exact-source ACK and integrated codec2ae5f55; schema10 adds3deck tables with35oldentities unchanged, actualhostRoom fresh/9upgrade checked. LocalDeckLibrary completeport reviewed; repository notyet implemented, inventory planned. No complete persistence acceptance.",
         "ownership_group": "storage",
         "resources": [
           "local-gradle-serial"
@@ -1328,7 +1328,7 @@
         "verification": "focused identity/order/quantity/atomic rejection/stale revision/diff fixtures",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "producer_integrated_requirement_acceptance_open",
-        "observed_implementation": "DTOs/ports only; RestoreVersion/ApplyPackage require later resolved context; pilot real producer integrated/source-reviewed; see PARALLEL-PILOT-LOCAL-20261015.md; downstream complete acceptance open",
+        "observed_implementation": "Pure DeckPatchReducer and DeckEntryDiff integrated/reviewed; f9fc8d4 adds primer/category registry/reorder with19deck tests. Full document diff125fb83 integrated/reviewed with27deck tests; RestoreVersion/ApplyPackage and complete downstream acceptance remain open.",
         "ownership_group": "decks",
         "resources": [
           "local-gradle-serial"

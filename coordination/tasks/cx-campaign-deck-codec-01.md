@@ -1,6 +1,6 @@
 # cx-campaign-deck-codec-01 — attempt1, packet r1
 
-Status: TAKEN by root-managed native worker; exact published dispatch baseline required. Root integration owner codex-thread-recovery-20261013; actual writer assigned at dispatch. Campaign user-storage-contracts producer, partial B01/B02/B05/B09/I01/I02 and their inherited parity joins. Not persistence/transfer/feature acceptance.
+Status: DONE scoped codec producer, not persistence/native acceptance. Root integration owner codex-thread-recovery-20261013; actual writer assigned at dispatch. Campaign user-storage-contracts producer, partial B01/B02/B05/B09/I01/I02 and their inherited parity joins. Not persistence/transfer/feature acceptance.
 
 Product base f3cee12b6de1d1c26edecdbe38791206265e8ab3; required dependency is its root-reviewed descendant implementing deck domain/codec design r1, actual model/reducer tests and fixed golden. Dispatch provides exact40-character shared baseline. Branch agent/campaign-deck-codec-20261015; worktree /workspace/command-library-deck-codec-01. Verify pwd/top/branch/HEAD/common Git dir and Git directory/index env overrides before edit; report mismatch rather than switching/resetting. Root canonical lock is only authority; inherited lock copies are historical.
 
@@ -22,4 +22,4 @@ Autonomous implement/diagnose/repair/focused check/self-review, then commit exac
 
 ## Latest continuation delta
 
-Packet ready; implementation not_run. Await reviewed published exact shared baseline and root assignment.
+Workerb77dafab (parentf9fc8d4) integrated2ae5f55 after final exactsource Astra ACK; seven allowlisted files only. Worker final18tests0fail/error/skip SUCCESS8s after retained r2testsyntax compilefailure; production unchanged r1SUCCESS2m28s includesAndroidtestcompile. Reported finalXML/log/sourcehashes in own handoff. Assembled root boundary49tests7XML0fail/error/skip includes all18codec; schema10fresh/upgrade hostRoom separate from device. Lockreleased, worktreecleanpreserved. Next actual library repository producer consumes reviewed schema10; no vendor interchange/persistence/feature acceptance claimed by codec alone.

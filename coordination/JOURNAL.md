@@ -567,3 +567,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T04:47:40Z | codex | cp-20261015-parallel-pilot-integrated-161 | containing commit | D29 reviewed35task fullscope map executed: isolated deck/link returns exactsourceACK integrated; root actual printing selector/supplied-link UI generation+resize+route fenced.91scopedtests10XML0fail/error/skip, lint/nativeKotlincompile; no device/fullv1 acceptance. Next durabledeck sharedcontract review and next safe parallel producers. Root authority/holds retained.
 
 2026-10-15T05:00:54Z | codex | cp-20261015-deck-contract-wave-162 | containing commit | Reviewed deck shared boundary and independent golden accepted; isolated codec/diff claims published, root retains persistence/schema integration. Shared compile and focused tests pass; no native or feature acceptance.
+
+2026-10-15T05:13:37Z | codex | cp-20261015-deck-library-boundary-163 | containing commit | Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.

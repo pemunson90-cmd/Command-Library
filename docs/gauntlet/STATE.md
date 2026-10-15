@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-deck-contract-wave-162. Updated UTC: 2026-10-15T05:00:54Z.
+Checkpoint: cp-20261015-deck-library-boundary-163. Updated UTC: 2026-10-15T05:13:37Z.
 
-Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step2.
-dispatch-reviewed-deck-codec-diff-wave
+Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
+publish-reviewed-schema10-then-dispatch-local-library
 
-Reviewed deck shared boundary and independent golden accepted; isolated codec/diff claims published, root retains persistence/schema integration. Shared compile and focused tests pass; no native or feature acceptance.
+Codec/diff integrated, reviewed local library port and actual additive schema10 verified;49tests7XML0fail/error/skip incl hostRoom fresh/upgrade, backend packet ready. All holds retained.
 
 Read CURRENT, machine state and task card.

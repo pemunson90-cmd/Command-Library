@@ -10,6 +10,9 @@ import androidx.room3.RoomDatabase
  */
 @Database(
     entities = [
+        DeckHeadEntity::class,
+        DeckRevisionEntity::class,
+        DeckOperationEntity::class,
         CatalogGenerationEntity::class,
         CatalogActiveEntity::class,
         OracleCardEntity::class,
@@ -53,5 +56,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 9
+    const val VERSION: Int = 10
 }

@@ -6,6 +6,9 @@
   "base_commit": "f3cee12b6de1d1c26edecdbe38791206265e8ab3",
   "owner": "/root/implement_deck_diff; root controls canonical claim",
   "owned_paths": "Exact explicit source/test/handoff allowlist in task card; all shared paths root-only",
-  "status": "active",
-  "authority": "Canonical live root continuation only; dispatch uses containing reviewed descendant commit"
+  "status": "released",
+  "authority": "Canonical live root continuation only; dispatch uses containing reviewed descendant commit",
+  "completion_commit": "3651c7c9143aea82cabdbbabb262f4c67a2ca0a2",
+  "integration_commit": "125fb83",
+  "evidence": "Root source/test review ACK; worker27focusedtests0fail/error/skip. Combined codec candidate not yet checked."
 }
