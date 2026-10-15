@@ -3,13 +3,13 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-campaign-deck-edits-01",
   "branch": "agent/campaign-deck-edits-20261015",
-  "base_commit": "43f258295cfb946983d1f35cab80fedf4f105978",
-  "owner": "Root-reserved native worker deck-edits; task packet r1; root publishes claims/results",
+  "base_commit": "25ed9e41d9b21fd29e9512af0ed5f61cffdfc3e6",
+  "owner": "/root/implement_deck_edits; recovery root controls canonical claim",
   "owned_paths": [
     "android-app/feature/decks/src/main/**",
     "android-app/feature/decks/src/test/**",
     "coordination/handoffs/cx-campaign-deck-edits-01.md"
   ],
-  "status": "reserved",
+  "status": "active",
   "authority": "Live root continuation branch only; inherited worktree lock copies are not independent authority"
 }

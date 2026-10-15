@@ -1,6 +1,6 @@
 # cx-campaign-links-01 — attempt1, packet r1
 
-Status: ready after engineering review and root shared-baseline compile. Owner: assigned Sol implementer; root integrates. F01/AC-F01; PX06-061 cross-feature join. Complete existing supplied/template API producer, not full F01 source/settings/UI acceptance.
+Status: TAKEN; engineering ACK and root shared-baseline configuration compile passed. Owner: assigned Sol implementer; root integrates. F01/AC-F01; PX06-061 cross-feature join. Complete existing supplied/template API producer, not full F01 source/settings/UI acceptance.
 
 Product base `43f258295cfb946983d1f35cab80fedf4f105978`; dispatch gives exact descendant with root config/accepted r1 packet. Branch `agent/campaign-links-20261015`, worktree `/workspace/command-library-links-01`. Independently verify pwd/top/branch/HEAD/common Git dir and relevant Git directory/index env names without credential dumping. No baseline assumptions from isolation label.
 
@@ -24,4 +24,4 @@ Return committed code and allowed handoff with exact base/head/diff, real checks
 
 ## Latest continuation delta
 
-Packet prepared; implementation not_run. Await root-published reviewed shared baseline and explicit assignment.
+Root assigned exact packet r1; code not_run at claim publication. Dispatch uses this claim commit as exact baseline. Root provisions and verifies isolated worktree before child starts.
