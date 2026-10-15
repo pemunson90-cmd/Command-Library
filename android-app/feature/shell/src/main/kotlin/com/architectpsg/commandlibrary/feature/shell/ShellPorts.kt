@@ -53,4 +53,6 @@ public class ShellPorts(
     public val localDecks: com.architectpsg.commandlibrary.core.model.LocalDeckLibrary? = null,
     /** Real platform clock used for explicitly confirmed local deck creation. */
     public val utcClock: com.architectpsg.commandlibrary.core.model.Clock? = null,
+    /** Complete persistent primitive edits and grouped undo; bound only with the real adapter. */
+    public val localDeckEdits: com.architectpsg.commandlibrary.core.model.LocalDeckEdits? = null,
 )

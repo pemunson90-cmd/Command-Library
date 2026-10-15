@@ -9,6 +9,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 internal data class DeckLibraryForm(val source: DeckSnapshot?, val name: String = "")
+internal enum class DeckEditorMode { DETAILS, ENTRY, ADD, REMOVE }
+internal data class DeckEditorForm(
+    val base: DeckSnapshot, val mode: DeckEditorMode, val entry: DeckEntry? = null,
+    val card: CardRecord? = null, val name: String = base.name, val description: String = base.description,
+    val primer: String = base.primer, val quantity: String = entry?.quantity?.toString() ?: "1",
+    val board: BoardRole = entry?.board ?: BoardRole.MAIN,
+    val finish: Knowledge<Finish> = entry?.finish ?: Knowledge.Absent("No finish restriction"),
+    val notes: String = entry?.notes ?: "", val labels: SnapshotList<EntryLabel> = entry?.labels ?: SnapshotList.empty(),
+)
 internal data class DeckLibraryUiState(
     val items: SnapshotList<DeckSummary> = SnapshotList.empty(),
     val nextCursor: String? = null, val epoch: Revision? = null,
@@ -16,17 +25,19 @@ internal data class DeckLibraryUiState(
     val selected: DeckSnapshot? = null, val selectedId: DeckId? = null,
     val loadingDetail: Boolean = false, val detailProblem: Problem? = null,
     val form: DeckLibraryForm? = null, val invalidName: Boolean = false,
+    val editor: DeckEditorForm? = null, val invalidEdit: Boolean = false,
     val mutationBusy: Boolean = false, val pending: Boolean = false,
     val mutationProblem: Problem? = null, val savedId: DeckId? = null,
 )
 private sealed interface DeckLibraryRequest {
     val operation: EntityId
-    val name: String
     data class Create(val snapshot: DeckSnapshot, override val operation: EntityId) : DeckLibraryRequest {
-        override val name get() = snapshot.name
+        val name get() = snapshot.name
     }
-    data class Duplicate(val source: DeckId, val revision: Revision, override val name: String,
+    data class Duplicate(val source: DeckId, val revision: Revision, val name: String,
         override val operation: EntityId) : DeckLibraryRequest
+    data class Patch(val base: DeckSnapshot, val patch: DeckPatch, override val operation: EntityId) : DeckLibraryRequest
+    data class Undo(val base: DeckSnapshot, override val operation: EntityId) : DeckLibraryRequest
 }
 
 /** ViewModel-owned state. Layout/navigation never create requests or cancel a mutation. */
@@ -36,6 +47,8 @@ internal class DeckLibraryController(
     private val dispatcher: CoroutineDispatcher,
     private val nextId: () -> String = { UUID.randomUUID().toString() },
     private val now: () -> UtcTimestamp,
+    private val edits: LocalDeckEdits? = null,
+    private val cardCurrent: (CardRecord) -> Boolean = { false },
 ) {
     private val mutable = MutableStateFlow(DeckLibraryUiState())
     val state: StateFlow<DeckLibraryUiState> = mutable.asStateFlow()
@@ -48,6 +61,77 @@ internal class DeckLibraryController(
     private var userSelectionGeneration = 0L
     private var requestSelectionGeneration = 0L
     private val seenCursors = mutableSetOf<String>()
+
+    val supportsEditing: Boolean get() = edits != null
+    private fun editable(): DeckSnapshot? = mutable.value.selected?.takeIf {
+        edits != null && request == null && !mutable.value.mutationBusy && it.packageInstances.isEmpty()
+    }
+    fun editDetails() { editable()?.let { base -> mutable.update { it.copy(editor = DeckEditorForm(base, DeckEditorMode.DETAILS), invalidEdit = false, mutationProblem = null) } } }
+    fun editEntry(entryId: EntityId, remove: Boolean = false) { editable()?.let { base ->
+        base.entries.firstOrNull { it.id == entryId }?.let { entry -> mutable.update { it.copy(
+            editor = DeckEditorForm(base, if (remove) DeckEditorMode.REMOVE else DeckEditorMode.ENTRY, entry), invalidEdit = false, mutationProblem = null) } }
+    } }
+    fun addEntry() { editable()?.let { base -> mutable.update { it.copy(editor = DeckEditorForm(base, DeckEditorMode.ADD), invalidEdit = false, mutationProblem = null) } } }
+    fun editorChange(change: (DeckEditorForm) -> DeckEditorForm) {
+        if (request == null && !mutable.value.mutationBusy) mutable.update { state -> state.copy(editor = state.editor?.let(change), invalidEdit = false) }
+    }
+    fun closePendingEditor() { if (mutable.value.pending && !mutable.value.mutationBusy) mutable.update { it.copy(editor = null) } }
+    fun discardEditor() { if (request == null && !mutable.value.mutationBusy) mutable.update { it.copy(editor = null, invalidEdit = false) } }
+    fun moveEntry(entryId: EntityId, direction: Int) {
+        if (direction != -1 && direction != 1) return
+        val base = editable() ?: return
+        val ids = base.entries.map { it.id }.toMutableList(); val index = ids.indexOf(entryId); val target = index + direction
+        if (index < 0 || target !in ids.indices) return
+        val moved = ids.removeAt(index); ids.add(target, moved)
+        freezeEdit { DeckLibraryRequest.Patch(base, DeckPatch(SnapshotList.of(DeckEdit.ReorderEntries(SnapshotList.copyOf(ids))), "Reorder entries"), EntityId(nextId())) }
+    }
+    fun undo() {
+        val base = editable() ?: return
+        if (base.revision.value == Long.MAX_VALUE) { mutable.update { it.copy(mutationProblem = Problem.INVALID_INPUT) }; return }
+        freezeEdit { DeckLibraryRequest.Undo(base, EntityId(nextId())) }
+    }
+    fun confirmEditor() {
+        if (request != null || mutable.value.mutationBusy || edits == null) return
+        val form = mutable.value.editor ?: return
+        val selected = mutable.value.selected
+        if (selected?.id != form.base.id || selected.revision != form.base.revision) {
+            mutable.update { it.copy(mutationProblem = Problem.STALE_REVISION) }; return
+        }
+        val quantity = form.quantity.toIntOrNull()
+        fun bounded(text: String, maximum: Int) = text.length <= maximum &&
+            !text.indices.any { i -> (text[i].isHighSurrogate() && (i + 1 == text.length || !text[i + 1].isLowSurrogate())) ||
+                (text[i].isLowSurrogate() && (i == 0 || !text[i - 1].isHighSurrogate())) } && text.toByteArray(Charsets.UTF_8).size <= maximum
+        if (form.base.revision.value == Long.MAX_VALUE || form.name.isBlank() || !bounded(form.name, LocalDeckLibraryLimits.MAX_NAME_BYTES) ||
+            !bounded(form.description, DeckPayloadLimits.MAX_TEXT_BYTES) || !bounded(form.primer, DeckPayloadLimits.MAX_TEXT_BYTES) ||
+            !bounded(form.notes, DeckPayloadLimits.MAX_TEXT_BYTES) || (form.mode in setOf(DeckEditorMode.ENTRY, DeckEditorMode.ADD) && (quantity == null || quantity <= 0)) ||
+            (form.mode == DeckEditorMode.ADD && (form.card == null || !cardCurrent(form.card) || form.base.entries.size >= DeckPayloadLimits.MAX_ENTRIES))) {
+            mutable.update { it.copy(invalidEdit = true) }; return
+        }
+        freezeEdit {
+            val changes: SnapshotList<DeckEdit> = when (form.mode) {
+                DeckEditorMode.DETAILS -> SnapshotList.of(DeckEdit.Rename(form.name), DeckEdit.Description(form.description), DeckEdit.Primer(form.primer))
+                DeckEditorMode.REMOVE -> SnapshotList.of(DeckEdit.Remove(checkNotNull(form.entry).id))
+                DeckEditorMode.ENTRY -> SnapshotList.of(DeckEdit.Replace(checkNotNull(form.entry).copy(quantity = checkNotNull(quantity), board = form.board,
+                    finish = form.finish, notes = form.notes, labels = form.labels)))
+                DeckEditorMode.ADD -> {
+                    val card = checkNotNull(form.card)
+                    val entryId = EntityId(nextId())
+                    require(form.base.entries.none { it.id == entryId })
+                    val identity = CardIdentity(Knowledge.Known(card.oracleId), Knowledge.Absent("No printing selected"), null,
+                        Knowledge.Known(card.name), card.language)
+                    SnapshotList.of(DeckEdit.Add(DeckEntry(entryId, identity, checkNotNull(quantity), form.board, form.finish,
+                        form.notes, form.labels, SnapshotList.empty())))
+                }
+            }
+            DeckLibraryRequest.Patch(form.base, DeckPatch(changes, "Edit deck"), EntityId(nextId()))
+        }
+    }
+    private fun freezeEdit(make: () -> DeckLibraryRequest) {
+        if (request != null || mutable.value.mutationBusy) return
+        try { request = make() } catch (_: Exception) { mutable.update { it.copy(mutationProblem = Problem.INTERNAL) }; return }
+        requestSelectionGeneration = userSelectionGeneration
+        attempt()
+    }
 
     fun refresh() = page(null)
     fun nextPage() {
@@ -122,11 +206,11 @@ internal class DeckLibraryController(
     }
     fun create() {
         if (request == null && !mutable.value.mutationBusy)
-            mutable.update { it.copy(form = DeckLibraryForm(null), invalidName = false, mutationProblem = null, savedId = null) }
+            mutable.update { it.copy(form = DeckLibraryForm(null), editor = null, invalidName = false, mutationProblem = null, savedId = null) }
     }
     fun duplicate() {
         if (request == null && !mutable.value.mutationBusy) mutable.value.selected?.let { source ->
-            mutable.update { it.copy(form = DeckLibraryForm(source, source.name), invalidName = false,
+            mutable.update { it.copy(form = DeckLibraryForm(source, source.name), editor = null, invalidName = false,
                 mutationProblem = null, savedId = null) }
         }
     }
@@ -161,7 +245,7 @@ internal class DeckLibraryController(
     fun abandonConfirmed() {
         if (mutable.value.mutationBusy || request == null) return
         request = null; uncertainCommit = false
-        mutable.update { it.copy(pending = false, form = null, mutationProblem = null) }
+        mutable.update { it.copy(pending = false, form = null, editor = null, mutationProblem = null) }
         val selection = mutable.value.selectedId
         invalidateReads(); selection?.let(::loadSelection); refresh()
     }
@@ -179,6 +263,8 @@ internal class DeckLibraryController(
                 val result = callPort(dispatcher) { cancel -> when (frozen) {
                     is DeckLibraryRequest.Create -> repository.create(frozen.snapshot, frozen.operation, cancel)
                     is DeckLibraryRequest.Duplicate -> repository.duplicate(frozen.source, frozen.revision, frozen.name, frozen.operation, cancel)
+                    is DeckLibraryRequest.Patch -> checkNotNull(edits).apply(frozen.base.id, frozen.patch, frozen.base.revision, frozen.operation, cancel)
+                    is DeckLibraryRequest.Undo -> checkNotNull(edits).undo(frozen.base.id, frozen.base.revision, frozen.operation, cancel)
                 } }
                 currentCoroutineContext().ensureActive()
                 val keepSelection = userSelectionGeneration == requestSelectionGeneration
@@ -192,10 +278,14 @@ internal class DeckLibraryController(
                     }
                     is PortResult.Ok -> {
                         val saved = result.value
-                        val valid = saved.id.source == LocalDeckLibraryLimits.SOURCE && saved.revision == Revision(0) &&
-                            saved.name == frozen.name && when (frozen) {
+                        val valid = saved.id.source == LocalDeckLibraryLimits.SOURCE && saved.name.isNotBlank() &&
+                            saved.entries.size <= DeckPayloadLimits.MAX_ENTRIES && when (frozen) {
                                 is DeckLibraryRequest.Create -> saved == frozen.snapshot
-                                is DeckLibraryRequest.Duplicate -> saved.id != frozen.source
+                                is DeckLibraryRequest.Duplicate -> saved.id != frozen.source && saved.revision == Revision(0) && saved.name == frozen.name
+                                is DeckLibraryRequest.Patch -> saved.id == frozen.base.id && saved.createdAt == frozen.base.createdAt &&
+                                    saved.revision.value == frozen.base.revision.value + 1 && saved.packageInstances.isEmpty()
+                                is DeckLibraryRequest.Undo -> saved.id == frozen.base.id && saved.createdAt == frozen.base.createdAt &&
+                                    saved.revision.value == frozen.base.revision.value + 1 && saved.packageInstances.isEmpty()
                             }
                         if (!valid) {
                             uncertainCommit = true
@@ -203,7 +293,7 @@ internal class DeckLibraryController(
                         }
                         else {
                             request = null; uncertainCommit = false
-                            mutable.update { it.copy(pending = false, form = null, mutationProblem = null, savedId = saved.id) }
+                            mutable.update { it.copy(pending = false, form = null, editor = null, mutationProblem = null, savedId = saved.id) }
                             // Reconciliation may return an old immutable result; read the actual current head.
                             if (keepSelection) readAfter = saved.id
                         }

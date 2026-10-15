@@ -257,7 +257,7 @@ private fun DestinationContent(
         ShellDestination.RULES -> controllers.rules?.let { rules ->
             RulesScreen(rules, widthClass, rulesPickerUnavailable, onPickRules, modifier)
         }
-        ShellDestination.DECKS -> controllers.deckLibrary?.let { DeckLibraryScreen(it, widthClass, modifier) }
+        ShellDestination.DECKS -> controllers.deckLibrary?.let { DeckLibraryScreen(it, widthClass, modifier, controllers.deckEditorSearch) }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
         ShellDestination.SETTINGS -> {
             val settingsState by controllers.settings.state.collectAsState()

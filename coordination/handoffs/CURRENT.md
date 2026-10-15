@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-deck-edit-store-claim-169
+Checkpoint-ID: cp-20261015-durable-editor-integration-170
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. dispatch-reviewed-durable-edit-backend-and-root-editor
+Next step: 3. publish-real-durable-editor-and-advance-stored-inventory-boundary
 
-Updated UTC: 2026-10-15T06:06:04Z
+Updated UTC: 2026-10-15T06:25:36Z
 Status: in_progress; lease: active.
-Verified base: 66302c414eb6ff769d2a80dab81dcaaf1a6f4359.
+Verified base: a38a45c3bc1d636d8ada073583ec9f2133f1e6f2.
 
-ClaimboundedSqlLocalDeckEdits/sharedstoreextractionisolatedworkerfrom66302c4; root retainscontracts/schema/DI/UI/editor;111scopedboundarytestspass, holdspreserved
+RealSqlLocalDeckEdits/AppGraph/editor integrated;186tests22XML0fail/error/skip+lint/nativeKotlincompile, exactAndroidtree59455097; nextreviewcollectioncontracts/identity/snapshot/previewundo; holdsretained
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

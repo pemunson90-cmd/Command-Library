@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-deck-edit-store-claim-169. Updated UTC: 2026-10-15T06:06:04Z.
+Checkpoint: cp-20261015-durable-editor-integration-170. Updated UTC: 2026-10-15T06:25:36Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-dispatch-reviewed-durable-edit-backend-and-root-editor
+publish-real-durable-editor-and-advance-stored-inventory-boundary
 
-ClaimboundedSqlLocalDeckEdits/sharedstoreextractionisolatedworkerfrom66302c4; root retainscontracts/schema/DI/UI/editor;111scopedboundarytestspass, holdspreserved
+RealSqlLocalDeckEdits/AppGraph/editor integrated;186tests22XML0fail/error/skip+lint/nativeKotlincompile, exactAndroidtree59455097; nextreviewcollectioncontracts/identity/snapshot/previewundo; holdsretained
 
 Read CURRENT, machine state and task card.

@@ -32,9 +32,9 @@ internal object DeckLibraryTags {
     const val NEXT = "deck-library-next"
 }
 
-/** Actual library capability only. This overview grants no editor/version/package mutation. */
+/** Real library plus optional complete primitive edit capability; no version/package mutation. */
 @Composable
-internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier) {
+internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: WidthClass, modifier: Modifier = Modifier, editorSearch: SearchController? = null) {
     val state by controller.state.collectAsState()
     val selected = state.selected
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -87,6 +87,11 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                     Text(countText(selected.entries.size, selected.entries.sumOf { it.quantity.toLong() }))
                     OutlinedButton(controller::duplicate, enabled = !state.pending && !state.mutationBusy && selected.packageInstances.isEmpty(),
                         modifier = Modifier.heightIn(min = 48.dp).testTag(DeckLibraryTags.DUPLICATE)) { Text(stringResource(R.string.decks_duplicate)) }
+                    if (controller.supportsEditing && selected.packageInstances.isEmpty()) ActionRow {
+                        OutlinedButton(controller::editDetails, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-edit-details")) { Text(stringResource(R.string.deck_edit_details)) }
+                        if (editorSearch != null) OutlinedButton({ editorSearch.reset(); controller.addEntry() }, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-add-entry")) { Text(stringResource(R.string.deck_add_card)) }
+                        OutlinedButton(controller::undo, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-undo")) { Text(stringResource(R.string.deck_undo)) }
+                    }
                     if (selected.packageInstances.isNotEmpty()) Text(stringResource(R.string.decks_package_copy_unavailable))
                 }
                 item {
@@ -104,6 +109,15 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                         val preview = label.take(512).let { if (it.lastOrNull()?.isHighSurrogate() == true) it.dropLast(1) else it }
                         Text(if (preview.length < label.length) "$preview…" else preview, maxLines = 3, overflow = TextOverflow.Ellipsis)
                         Text(stringResource(R.string.decks_entry_quantity, entry.quantity, stringResource(boardLabel(entry.board))))
+                        if (controller.supportsEditing && selected.packageInstances.isEmpty()) {
+                            val index = selected.entries.indexOfFirst { it.id == entry.id }
+                            ActionRow {
+                                OutlinedButton({ controller.editEntry(entry.id) }, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-edit-${entry.id.value}")) { Text(stringResource(R.string.deck_edit_entry)) }
+                                OutlinedButton({ controller.editEntry(entry.id, true) }, enabled = !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_remove_entry)) }
+                                OutlinedButton({ controller.moveEntry(entry.id, -1) }, enabled = index > 0 && !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_move_earlier)) }
+                                OutlinedButton({ controller.moveEntry(entry.id, 1) }, enabled = index + 1 < selected.entries.size && !state.pending && !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.deck_move_later)) }
+                            }
+                        }
                         if (entry.labels.isNotEmpty()) CategoryReader(stringResource(R.string.decks_categories), entry.labels,
                             "entry:${selected.id.raw}:${selected.revision.value}:${entry.id.value}", "deck-entry-categories-${entry.id.value}")
                         if (entry.notes.isNotEmpty()) {
@@ -149,6 +163,7 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
             dismissButton = { TextButton(controller::dismissForm, enabled = !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.decks_close)) } },
         )
     }
+    state.editor?.let { form -> DeckEditorDialog(controller, form, state, editorSearch) }
     if (abandon) AlertDialog(onDismissRequest = { abandon = false }, title = { Text(stringResource(R.string.decks_stop_checking)) },
         text = { Text(stringResource(R.string.decks_abandon_warning)) },
         confirmButton = { TextButton({ abandon = false; controller.abandonConfirmed() }, enabled = !state.mutationBusy, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.decks_stop_checking)) } },
@@ -197,7 +212,7 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
         }
     }
 }
-private fun boardLabel(board: BoardRole): Int = when (board) {
+internal fun boardLabel(board: BoardRole): Int = when (board) {
     BoardRole.MAIN -> R.string.decks_board_main
     BoardRole.SIDEBOARD -> R.string.decks_board_side
     BoardRole.MAYBEBOARD -> R.string.decks_board_maybe

@@ -82,4 +82,46 @@ class DeckSchemaRoomIntegrationTest {
         assertTrue(ok(ports.settings.read(token)).consents.isEmpty())
     }
 
+    @Test fun actualAppGraphGroupedEditsUndoHistoricalReceiptsAndIndependentRoomReaderAgree() = runBlocking<Unit> {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+        val graph = (context as CommandLibraryApplication).graph
+        val ports = ok(graph.ports())
+        val library = checkNotNull(ports.localDecks)
+        val edits = checkNotNull(ports.localDeckEdits)
+        assertSame(edits, ok(graph.ports()).localDeckEdits)
+        val suffix = UUID.randomUUID().toString()
+        val category = EntryLabel(EntityId("category-$suffix"), "Unused or used category")
+        val first = DeckEntry(EntityId("first-$suffix"), CardIdentity(Knowledge.Absent("foreign Oracle"), Knowledge.Absent("foreign printing"),
+            ProviderIdentity(ProviderId("foreign"),"raw","retained-$suffix"), Knowledge.Known("Foreign card"), LanguageTag("ja")),
+            2,BoardRole.SIDEBOARD,Knowledge.Unknown("finish unresolved",SnapshotList.empty()),"old notes",SnapshotList.of(category),SnapshotList.empty())
+        val second = first.copy(id=EntityId("second-$suffix"),quantity=3,labels=SnapshotList.empty())
+        val initial = DeckSnapshot(DeckId(LocalDeckLibraryLimits.SOURCE,"room-edit-$suffix"),"Original",Knowledge.Absent("none"),"description",
+            Knowledge.Absent("none"),SnapshotList.empty(),UtcTimestamp(1),UtcTimestamp(1),Revision(0),SnapshotList.of(first,second),Knowledge.Absent("none"),null,
+            SnapshotList.empty(),SnapshotList.empty(),primer="# Original primer",categoryOrder=SnapshotList.of(category))
+        val createOp = EntityId("create-edit-$suffix")
+        assertEquals(initial,ok(library.create(initial,createOp,token)))
+        val patch = DeckPatch(SnapshotList.of(DeckEdit.Replace(first.copy(quantity=7,board=BoardRole.MAIN,finish=Knowledge.Known(Finish.FOIL),notes="new notes")),
+            DeckEdit.Remove(second.id),DeckEdit.Rename("Edited"),DeckEdit.Primer("# Changed primer")),"One grouped edit")
+        val applyOp=EntityId("apply-$suffix")
+        val applied=ok(edits.apply(initial.id,patch,Revision(0),applyOp,token))
+        assertEquals(Revision(1),applied.revision);assertEquals(1,applied.entries.size);assertEquals(7,applied.entries.single().quantity)
+        assertEquals(first.identity,applied.entries.single().identity);assertEquals("Edited",applied.name)
+        val undoOp=EntityId("undo-$suffix")
+        val restored=ok(edits.undo(initial.id,Revision(1),undoOp,token))
+        assertEquals(initial.copy(revision=Revision(2),modifiedAt=restored.modifiedAt),restored)
+        assertEquals(initial,ok(library.create(initial,createOp,token)))
+        assertEquals(applied,ok(edits.apply(initial.id,patch,Revision(0),applyOp,token)))
+        assertEquals(restored,ok(edits.undo(initial.id,Revision(1),undoOp,token)))
+        assertEquals(restored,ok(library.load(initial.id,token)))
+        assertEquals(FailureCode.INVALID_INPUT,(edits.apply(initial.id,patch,Revision(0),createOp,token) as Outcome.Failure).error.code)
+        ok(StorageDatabase.open(context,com.architectpsg.commandlibrary.di.AppGraph.DATABASE_FILE)).use { db ->
+            val reader=com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalDeckLibrary(db,
+                com.architectpsg.commandlibrary.data.storage.decks.codec.DeckPayloadCodec(),
+                object:Clock {override fun utcNow()=error("Reader must not consume clock");override fun monotonicNow()=kotlin.time.Duration.ZERO},
+                object:IdSource {override fun nextId():String=error("Reader must not generate IDs")})
+            assertEquals(restored,ok(reader.load(initial.id,token)))
+        }
+        assertTrue(ok(ports.settings.read(token)).consents.isEmpty())
+    }
+
 }

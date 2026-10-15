@@ -6,6 +6,9 @@
   "base_commit": "66302c414eb6ff769d2a80dab81dcaaf1a6f4359",
   "owner": "/root/implement_deck_edit_store; canonical claim controlled by root",
   "owned_paths": "Explicit4featurepersistence/2storagetest/ownhandoff allowlist in packet; sharedrequests/core/schema/UI read-only",
-  "status": "active",
-  "authority": "Live root continuation only; inherited copies historical"
+  "status": "released",
+  "authority": "Live root continuation only; inherited copies historical",
+  "result_commit": "62f606fd6d75524d4987280e10d127dfe5469cc5",
+  "integration_commit": "a38a45c",
+  "verification": "ActualAstrahigh frozen source/evidenceACK83tests7XML0fail/error/skip; rootexactcommithashreadbackdone, assembledgatepending."
 }

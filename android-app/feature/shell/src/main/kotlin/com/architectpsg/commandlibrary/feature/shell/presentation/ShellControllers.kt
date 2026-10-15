@@ -38,8 +38,13 @@ internal class ShellControllers(
         RulesController(scope, ports.rulesImport, ports.rulesLookup, documents, ioDispatcher, keywordLookup = ports.keywordRulesLookup)
     } else null
 
+    val deckEditorSearch = if (ports.localDecks != null && ports.localDeckEdits != null)
+        SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh) else null
     val deckLibrary = if (ports.localDecks != null && ports.utcClock != null)
-        DeckLibraryController(scope, ports.localDecks, ioDispatcher, now = ports.utcClock::utcNow) else null
+        DeckLibraryController(scope, ports.localDecks, ioDispatcher, now = ports.utcClock::utcNow, edits = ports.localDeckEdits,
+            cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
+                currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
+            } == true }) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
@@ -58,6 +63,7 @@ internal class ShellControllers(
                 .collect { generation ->
                     search.onActiveGeneration(generation)
                     profiles?.commanderSearch?.onActiveGeneration(generation)
+                    deckEditorSearch?.onActiveGeneration(generation)
                     printings?.onActiveGeneration(generation)
                 }
         }
@@ -71,3 +77,10 @@ internal class ShellControllers(
         deckLibrary?.refresh()
     }
 }
+
+/** Current status is read synchronously, independently of the asynchronous search collector. */
+internal fun currentDeckCard(card: com.architectpsg.commandlibrary.core.model.CardRecord, search: SearchUiState,
+    currentGeneration: com.architectpsg.commandlibrary.core.model.GenerationId?): Boolean =
+    !search.stale && search.activeGenerationKnown && card.provenance.generation != null &&
+        search.generation == card.provenance.generation && search.activeGeneration == card.provenance.generation &&
+        currentGeneration == card.provenance.generation && card in search.results
