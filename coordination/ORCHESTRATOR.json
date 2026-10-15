@@ -7,5 +7,5 @@
   "heartbeat_utc": "2026-10-15T19:32:30Z",
   "expires_utc": "2026-10-15T20:17:30Z",
   "checkpoint_id": "cp-20261015-offline-ui-repair-238",
-  "note": "Acceptedexportproducerb54530passes/655pins/ACK; twoREADYreviewed exportUI/appconsumers nowTAKEN verifiedisolationSAMEbase00556e6/exact4NEW+2NEW. Root+2writers3max/4childrenmax/oneROOTGradleslotFREE. Rootexistingentry/picker/navnext; newUI/app/runtimeNOTRUN. Priorimport/output17acceptedseparately; publicationinvalidtoken/fullreleaseholds/rootsharedauthorityunchanged."
+  "note": "Root retains shared/integration/final merge authority. Engine19cd939 SOURCE02 integrated and17host tests pass; frozen UI per-mode rejection repair scoped to isolated Solmedium child, narrow SOURCE02 review then controller/actualapp gate. No active build; no native/fullAI/release acceptance."
 }
