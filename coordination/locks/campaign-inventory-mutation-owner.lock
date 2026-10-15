@@ -1,0 +1,11 @@
+{
+  "component": "shared-retained-inventory-mutation-owner",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "owner": "root only",
+  "task": "cx-campaign-inventory-mutation-owner-01",
+  "status": "active",
+  "base_commit": "b6530631f0637cbd2c42996eb8ed1ef33cf7798b",
+  "owned_paths": "root internalgate +existingcollection/shared composition; seepacket",
+  "authority": "r2/r3 independent contractACK; no worker overlaps",
+  "build_slot": "root sole slot free after draftattempt3 exited"
+}
