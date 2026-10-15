@@ -1904,7 +1904,7 @@
         "verification": "authentic E04 fixtures; multiline/BOM/quotes/collector numbers/oversize/cancel/unknown-version; source terms before URL retrieval",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "application_text_codec_integrated_acceptance_open",
-        "observed_implementation": "Complete application-owned PlainTextDeckListCodec producer aa00e03 integrated287a552, independent actualsource/runtimeACK26tests2XML. Strict bounded UTF8 streaming parse/unresolved physical rows; deterministic all7board/loss-aware renderer. Root combinedscope separate. Vendor authenticfixtures/coverage/CSV/native interchange/TransferService/importUI remain open.",
+        "observed_implementation": "Complete application-owned PlainTextDeckListCodec producer aa00e03 integrated287a552, independent actualsource/runtimeACK26tests2XML. Strict bounded UTF8 streaming parse/unresolved physical rows; deterministic all7board/loss-aware renderer. Root combinedscope separate. Vendor authenticfixtures/coverage/CSV/native interchange/TransferService/importUI remain open. Retainedplainimportproducerd55f927\u2192daa9c65 plusrealcodec-validatorports/boundedinput1175ae5 andrealAppGraphRoomcontractfixture SOURCE/RUNTIMEACKc69aae7:35tests3XML0f/e/s51s/645pinsfrozen;29faithfulcontroller+5resource+1actualcompatibility. PLAIN-DECK-IMPORT-BOUNDARY-20261015.md; no actualimportUI acceptance yet.",
         "ownership_group": "transfer",
         "resources": [
           "local-gradle-serial"
@@ -1940,7 +1940,7 @@
         "verification": "all represented identities/boards/quantity retained; unresolved editable; cancel none/commit all; authentic round trips",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "planned",
-        "observed_implementation": "No deck/collection transfer UI",
+        "observed_implementation": "Actualselected-file\u2192newunresolveddeck consumers nowassigned: cx-campaign-plain-deck-import-ui-01 exact4NEWpaths and cx-campaign-plain-deck-import-app-tests-01 exact2NEWpaths, independentpacketREADYACK/exactacceptedbasec69aae7. Rootsharedpicker/deckentry/DI/navigationauthority; no UI/source/runtimeacceptanceyet. OtherCSV/vendor/export/collection/backup-restore/nativeinterchange acceptance remainsopen.",
         "ownership_group": "transfer",
         "resources": [
           "local-gradle-serial"
