@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-export-consumer-wave-228",
-  "verified_base_head": "00556e6c9d9d315e8f88c24f14f5c4f902c3a106",
+  "checkpoint_id": "cp-20261015-export-accepted-probability-229",
+  "verified_base_head": "3d876aa3ea65ecbb20f9b7cf8aa64c810d1c772b",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "dispatch-reviewed-export-consumers",
+  "first_action": "export-accepted-probability-claimed",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -159,7 +159,7 @@
     "plain_deck_output_boundary": "Writer616abf39\u21922029b71 exact3NEWpaths/sourceACK; acceptedcbff7ac actual15provider-PFD/fault/cancel/closure tests pass (samefocused17run, notadditional17).651pinsfrozen/independentinventorySOURCE-RUNTIMEACK. No exportconsumer/UI/remote-durability/native acceptance; report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.",
     "plain_deck_export_boundary": "Acceptedb545f411ec691e12d354f2a39eddcd401bc3c84b tree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460 actual30tests2XML0f/e/s1m18/655pins/log795d346306a89014bae52848e8ff6eb666e10d9a54de52bf655b9dfac322813c.29faithfulcontroller+1actualAppGraph229byte81loss7board8entry18copies/validator/Roomfixture, independentSOURCE02/runtimeACK. ActualVMfactory/nativeKotlincompiledONLY, noUI/picker/actualcontroller-writer/deviceexecution. SOURCE01zero-byteprebuildHOLDfixedbeforeonlyactualsuccessfulrun. PLAIN-DECK-EXPORT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Two disjoint READY-reviewed export UI and actual-app consumers claimed at accepted00556e6; root retains shared picker/navigation, maxthreewriters includingroot",
-  "updated_utc": "2026-10-15T16:37:17Z",
+  "last_completed": "Accepted actual export host workflow9pass and overlapping postguard2pass/source-runtimeACK; Git push restored; exact probability producer READY reviewed and claimed; root calculator consumer next",
+  "updated_utc": "2026-10-15T16:58:13Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

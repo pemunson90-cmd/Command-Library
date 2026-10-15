@@ -3,11 +3,12 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-plain-deck-export-ui-01",
   "owner": "/root/implement_deck_edit_store native isolated writer",
-  "status": "active",
+  "status": "released",
   "base_commit": "00556e6c9d9d315e8f88c24f14f5c4f902c3a106",
   "branch": "agent/campaign-plain-deck-export-ui-20261015",
   "worktree": "/workspace/command-library-plain-deck-export-ui-01",
   "owned_paths": "EXACT4NEWpaths per canonical task; ALL existing/shared forbidden",
   "build_slot": "NOTGRANTED; ROOToneGradleslot",
-  "authority": "independent campaign_engineering_review literalREADYACK; rootcanonicalclaim sole authority"
+  "authority": "independent campaign_engineering_review literalREADYACK; rootcanonicalclaim sole authority",
+  "completion": "Exact scoped return integrated; actual assembled host gate9pass and postguard2pass, original branch/worktree clean retained. See PLAIN-DECK-EXPORT-APP-INTEGRATION-20261015.md."
 }

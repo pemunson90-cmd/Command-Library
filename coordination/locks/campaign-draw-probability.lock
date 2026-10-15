@@ -1,0 +1,13 @@
+{
+  "component": "draw-probability",
+  "orchestrator": "codex-thread-recovery-20261013",
+  "task": "cx-campaign-draw-probability-01",
+  "owner": "/root/implement_draw_probability",
+  "status": "active",
+  "base_commit": "4b6a8a618c365462c379158ff3ddf2b3672ea87a",
+  "branch": "agent/campaign-draw-probability-20261015",
+  "worktree": "/workspace/command-library-draw-probability-01",
+  "owned_paths": "EXACT3NEWpaths canonical task; all existing/shared forbidden",
+  "build_slot": "NOTGRANTED; ROOTonly",
+  "authority": "independent technicalREADY plus corrected parity attribution"
+}

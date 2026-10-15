@@ -1,6 +1,6 @@
 # Plain deck export presentation — attempt01
 
-TAKEN /root/implement_deck_edit_store after independent literal READYACK; verified isolated worktree provisioned, root canonical claim active.
+DONE /root/implement_deck_edit_store after independent literal READYACK; verified isolated worktree provisioned, root canonical claim active.
 
 Exact accepted base 00556e6c9d9d315e8f88c24f14f5c4f902c3a106, Androidtree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460. Plancampaign-r1-20261015, B08/I01/partialPX05-046/PX06-045. Actual30tests2XML0f/e/s1m18/655pins independentACK:29faithfulcontroller+1realAppGraph229byte81loss7boardRoomfixture. SourceABI b545f41; controller7d9c560f/statee649f328/actualfixture1fbd0da8. Existing15realwriter tests acceptedseparately, no additivecount. Toolchain/deps/schema unchanged, no knowncompilerfailure. Report docs/verification/transfer/PLAIN-DECK-EXPORT-BOUNDARY-20261015.md. No exportUI/picker/actualcontroller-writer/native/Fold7/finishedAPK acceptance yet.
 
@@ -33,3 +33,7 @@ ExplicitEndwarning captures formTicket/previewreference/attempts/lastWrite/probl
 Author3–5coherenthostUIcases realcontroller+narrowfaithfulports/ownedTestScope: source/alllossrows/exactnames/revision+explicitchoosepreviewreference; invalidprep/emptydeck/phasewidgets; stalechoose/hide/newframe+actualEndwarningfences; pendinghide→resume revokedcallback; NotStarted/possiblemodification/written recovery andCANCELLINGownership+globalResume withoutnewwrites. Retainexacttext/visibility/businesscallcounts, no assertionweakening/timeoutsinflation. No globalMainmonkeypatch, no controllerstate fabrication, no fakeproductionimplementations. Actualprovider/app acceptance belongsparallelrootassembledgate. SelfinspectAPIs/resources/whitespace, freezeall4pins, no build.
 
 EngineeringREADYnotes: sum quantities asLong; build entry-IDindex ONCEperpreview, not linearscanperlossrow. These preserve declaredboundedperformance and are not new publicinterfaces.
+
+## Latest continuation delta
+
+Exact reviewed return integrated; bounded host gate9passes plus overlapping postguard2passes; no native acceptance. Canonical claim released, clean original retained. Root report PLAIN-DECK-EXPORT-APP-INTEGRATION-20261015.md records source/pins/runtime and limits.
