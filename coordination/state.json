@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-output-producer-dispatch-222",
-  "verified_base_head": "3d202db78b37d00886f9fa5fd04dcf0dfdcce64c",
+  "checkpoint_id": "cp-20261015-import-output-gate-223",
+  "verified_base_head": "cbff7ac059b70084884a25d50cd797373df37bf0",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "claim-independent-output-producer",
+  "first_action": "verify-import-output-boundary",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -156,7 +156,7 @@
     "deck_mark_owned_app_local": "Accepted4ed0c9cfabbf77def1694ec9966532d19bfa89e7 treeb7601dafe3dcf901f0dfd07dc4733178dbff0250,7tests2XML0fail/error/skip2m15/639pinsfrozen, bothinstrumentationKotlincompiledONLY. IndependentSOURCE/RUNTIMEACK. Priorattempt2115/2failed unchangedpassingcollection/controller/app evidence retainedseparately; no allgreen115claim. DECK-MARK-OWNED-APP-INTEGRATION-20261015.md; no native/fullC01/finishedAPK.",
     "plain_deck_import_boundary": "Exactc69aae7c3dbcbb0a797ef2f1fc81ae417c65df25 tree3be6c44a1c5cc2eff317cb1be38a3384f7048ac5,35tests3XML0f/e/s51s/645pins/independentSOURCE-RUNTIMEACK.29scriptedcontroller+5realresource+1actualAppGraphcodec-validator-Roomcontractfixture. NativeKotlincompiledONLY; actualfileimportUI notimplemented/run. PLAIN-DECK-IMPORT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance",
-  "updated_utc": "2026-10-15T15:42:57Z",
+  "last_completed": "Import gate4 44 tests with one final heading visibility failure retained; focused reviewed 15-writer plus two-import gate running, all worker claims released",
+  "updated_utc": "2026-10-15T15:55:27Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

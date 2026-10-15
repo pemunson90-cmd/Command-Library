@@ -689,3 +689,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T15:37:18Z | codex | cp-20261015-plain-import-assembled-221 | containing commit | Reviewed exact UI and app returns integrated; both claims released; root-only assembled host gate attempt1 next, no runtime acceptance yet
 
 2026-10-15T15:42:57Z | codex | cp-20261015-output-producer-dispatch-222 | containing commit | Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance
+
+2026-10-15T15:55:27Z | codex | cp-20261015-import-output-gate-223 | containing commit | Import gate4 44 tests with one final heading visibility failure retained; focused reviewed 15-writer plus two-import gate running, all worker claims released

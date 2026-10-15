@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-output-producer-dispatch-222
+Checkpoint-ID: cp-20261015-import-output-gate-223
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. claim-independent-output-producer
+Next step: 3. verify-import-output-boundary
 
-Updated UTC: 2026-10-15T15:42:57Z
+Updated UTC: 2026-10-15T15:55:27Z
 Status: in_progress; lease: active.
-Verified base: 3d202db78b37d00886f9fa5fd04dcf0dfdcce64c.
+Verified base: cbff7ac059b70084884a25d50cd797373df37bf0.
 
-Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance
+Import gate4 44 tests with one final heading visibility failure retained; focused reviewed 15-writer plus two-import gate running, all worker claims released
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

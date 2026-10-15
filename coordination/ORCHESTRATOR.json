@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T15:42:57Z",
-  "expires_utc": "2026-10-15T16:27:57Z",
-  "checkpoint_id": "cp-20261015-output-producer-dispatch-222",
+  "heartbeat_utc": "2026-10-15T15:55:27Z",
+  "expires_utc": "2026-10-15T16:40:27Z",
+  "checkpoint_id": "cp-20261015-import-output-gate-223",
   "note": "Both plainimport consumer returns exactpath verified/sourceACK/integrated81db865+4eb2843/claimsreleased/clean originals retained. Rootshared6c27c80SOURCEACK. Root-only assembledhostgate attempt1 next, Androidsourcefreeze, no runtimeacceptance yet. Acceptedproducer35/markowned7 evidence retained. Publicationinvalidtoken/native/Fold7/finishedAPKholds."
 }
