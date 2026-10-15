@@ -121,6 +121,85 @@ class CollectionControllerTest {
     private fun TestScope.loaded(f:Fixture)=controller(f).also{it.ensureLoaded();advanceUntilIdle()}
     private fun TestScope.preview(c:CollectionController,id:EntityId=unresolved.id,remove:Boolean=false){c.beginEdit(id,remove);c.previewEdit();advanceUntilIdle()}
 
+    @Test fun externalCommitFloorPreservesRawAndRefusesOldReadsRebaseAndNewOperationIds()=runTest {
+        val f=Fixture();val c=loaded(f)
+        c.beginEdit(unresolved.id);c.notes("Keep this exact raw input");c.previewEdit();advanceUntilIdle()
+        assertNotNull(c.state.value.preview)
+        val notice=f.stored.copy(revision=Revision(9),capturedAt=UtcTimestamp(9))
+        c.onInventoryChanged(notice);advanceUntilIdle()
+        assertEquals(Revision(3),c.state.value.inventory!!.revision)
+        assertNull(c.state.value.preview);assertEquals("Keep this exact raw input",c.state.value.form!!.notes)
+        c.useRefreshedInventory();c.previewEdit();c.confirmPreview();c.undo();advanceUntilIdle()
+        assertEquals(0,f.ids);assertTrue(f.calls.isEmpty());assertTrue(f.undos.isEmpty())
+        assertEquals(Problem.STALE_REVISION,c.state.value.formProblem)
+        f.snapshotResponse=Outcome.Success(notice.copy(capturedAt=UtcTimestamp(8)))
+        c.refresh();advanceUntilIdle();assertEquals(Revision(3),c.state.value.inventory!!.revision)
+        f.snapshotResponse=Outcome.Success(notice.copy(revision=Revision(10),capturedAt=UtcTimestamp(10)))
+        c.refresh();advanceUntilIdle();c.useRefreshedInventory()
+        assertEquals(Revision(10),c.state.value.form!!.base.revision)
+        assertEquals("Keep this exact raw input",c.state.value.form!!.notes)
+    }
+
+    @Test fun externalNoticeDuringCatalogLookupSettlesLoadingWithoutStaleFormOrId()=runTest {
+        val f=Fixture();val c=loaded(f);val blocked=CompletableDeferred<Unit>();f.catalogGate=blocked
+        c.beginAdd(f.currentPrinting);runCurrent();assertTrue(c.state.value.checkingCatalog)
+        f.stored=f.stored.copy(revision=Revision(9),capturedAt=UtcTimestamp(9))
+        c.onInventoryChanged(f.stored);advanceUntilIdle()
+        assertFalse(c.state.value.checkingCatalog);assertNull(c.state.value.form);assertEquals(0,f.ids)
+        blocked.complete(Unit);advanceUntilIdle();assertNull(c.state.value.form)
+        f.catalogGate=null;c.beginAdd(f.currentPrinting);advanceUntilIdle()
+        assertNotNull(c.state.value.form);assertEquals(Revision(9),c.state.value.form!!.base.revision)
+        assertEquals(1,f.ids)
+    }
+
+    @Test fun externalNoticeDuringAllocationRefusesOldPublicationAndDuplicateNoticeDoesNotReread()=runTest {
+        val f=Fixture();val c=loaded(f);c.selectDeck(deck().id);advanceUntilIdle()
+        val notice=f.stored.copy(revision=Revision(9),capturedAt=UtcTimestamp(9))
+        f.onAllocate={ c.onInventoryChanged(notice) }
+        c.calculateAllocation();advanceUntilIdle()
+        assertNull(c.state.value.allocation);assertEquals(Revision(3),c.state.value.inventory!!.revision)
+        val reads=f.snapshotCalls;c.onInventoryChanged(notice);advanceUntilIdle();assertEquals(reads,f.snapshotCalls)
+        f.onAllocate=null;f.snapshotResponse=Outcome.Success(notice)
+        c.calculateAllocation();advanceUntilIdle()
+        assertEquals(Revision(9),c.state.value.inventory!!.revision)
+        assertEquals(Revision(9),c.state.value.allocation!!.inventoryRevision)
+    }
+
+    @Test fun externalFloorCannotReleaseKnownCommitUntilNewEnoughReadAndRetryRemainsReadonly()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();preview(c)
+        f.snapshotResponse=Outcome.Unknown("Read unavailable",SnapshotList.empty())
+        c.confirmPreview();advanceUntilIdle();val frozen=f.calls.single();val ids=f.ids
+        c.onInventoryChanged(f.stored.copy(revision=Revision(9),capturedAt=UtcTimestamp(9)));advanceUntilIdle()
+        f.snapshotResponse=Outcome.Success(f.stored);c.retry();advanceUntilIdle()
+        assertTrue(gate.busy.value);assertTrue(c.state.value.awaitingFresh)
+        assertEquals(listOf(frozen),f.calls);assertEquals(ids,f.ids)
+        f.snapshotResponse=Outcome.Success(f.stored.copy(revision=Revision(10),capturedAt=UtcTimestamp(10)))
+        c.retry();advanceUntilIdle();assertFalse(gate.busy.value)
+        assertEquals(Revision(10),c.state.value.inventory!!.revision);assertEquals(listOf(frozen),f.calls)
+    }
+
+    @Test fun externalNoticeDoesNotCancelSubmittedBulkAndUnknownRetainsExactReplay()=runTest {
+        val f=Fixture();val gate=InventoryMutationGate();val c=controller(f,gate=gate)
+        c.ensureLoaded();advanceUntilIdle();c.beginBulkSelection();advanceUntilIdle()
+        c.toggleBulkLot(unresolved.id);c.beginBulkEdit()
+        c.bulkDraft(CollectionBulkDraft(notes=BulkValue.Set("Retained submitted notes")))
+        c.previewBulkEdit();advanceUntilIdle()
+        val blocked=CompletableDeferred<Unit>();f.mutationGate=blocked
+        f.response=Outcome.Unknown("Lost acknowledgement",SnapshotList.empty())
+        c.confirmBulkPreview();runCurrent();val frozen=f.calls.single();val ids=f.ids
+        c.onInventoryChanged(f.stored.copy(revision=Revision(9),capturedAt=UtcTimestamp(9)));runCurrent()
+        assertTrue(c.state.value.mutationBusy);assertTrue(gate.busy.value)
+        blocked.complete(Unit);advanceUntilIdle()
+        assertTrue(c.state.value.uncertain);assertTrue(gate.busy.value)
+        f.mutationGate=null;f.response=null;c.retry();advanceUntilIdle()
+        assertEquals(listOf(frozen,frozen),f.calls);assertEquals(ids,f.ids)
+        assertTrue(c.state.value.awaitingFresh);assertTrue(gate.busy.value)
+        f.snapshotResponse=Outcome.Success(f.stored.copy(revision=Revision(10),capturedAt=UtcTimestamp(10)))
+        c.retry();advanceUntilIdle();assertFalse(gate.busy.value)
+        assertEquals(listOf(frozen,frozen),f.calls)
+    }
+
     @Test fun loadExplicitPreviewSavePreservesUnknownMetadataAndZeroQuantity()=runTest {
         val f=Fixture();val c=loaded(f);c.beginEdit(unresolved.id);c.quantity("0");c.notes("changed notes");c.location("new shelf");c.condition(CardCondition.DAMAGED)
         assertTrue(f.calls.isEmpty());c.previewEdit();advanceUntilIdle();assertTrue(f.calls.isEmpty());assertNotNull(c.state.value.preview)

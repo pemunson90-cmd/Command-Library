@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T14:03:51Z",
-  "expires_utc": "2026-10-15T14:48:51Z",
-  "checkpoint_id": "cp-20261015-mark-owned-producer-gate-213",
-  "note": "Existingcollectionowner6b2dd70 independentSOURCE/RUNTIMEACK59pass, prior65/9fail+4app/Roompassseparate. Markownedproducer2f9a412 exact5NEWpaths/source04ACK integrated,38authoredNOTRUN rootfocusedcontractgate next; original01\u201303sourceHOLDsretained. Rootsharedownership, no otherbuild, publicationinvalidtoken/native/Fold7/finishedAPKholds."
+  "heartbeat_utc": "2026-10-15T14:21:24Z",
+  "expires_utc": "2026-10-15T15:06:24Z",
+  "checkpoint_id": "cp-20261015-mark-owned-consumers-214",
+  "note": "Markowned controller38faithfulport tests SOURCE/RUNTIMEACK65bffe6. Two isolated UI/app-test packets claimed738d24b/dispatched; root sharedfloor/composition in progress, 3writersinclroot/4children/oneROOTbuildslot. No consumer acceptance yet. Existing59collection/draftHOST ACK retained. Publicationinvalidtoken/native/Fold7/finishedAPK holds."
 }

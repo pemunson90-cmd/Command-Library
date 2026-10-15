@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-mark-owned-producer-gate-213",
-  "verified_base_head": "8f9eaa125ee8a006266916b60210ae35f4ee924d",
+  "checkpoint_id": "cp-20261015-mark-owned-consumers-214",
+  "verified_base_head": "738d24b60ac691280316f7cc4df5ce442adfaa33",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "mark-owned-producer-gate",
+  "first_action": "mark-owned-consumer-wave",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -153,7 +153,7 @@
     "collection_bulk_app_integration": "ExactAndroidtree43ab17db448c9fd991825ebaf4b3746635646d74;300tests43XML0failure/error/skip SUCCESS3m4s/app+shellnativeKotlincompileONLY, independent actualAstra exactsource/runtimeACK. Producer54overlap/lint0errors1inherited. COLLECTION-BULK-APP-INTEGRATION-20261015.md; no native/finishedAPK claim.",
     "deck_draft_pure": "Exact4700542\u219286cf3f5, independent source/runtimeACK140tests13XML0fail/error/skip SUCCESS2m39s;44new+96old, separatebase/bodypreflightrepairbeforefirstonlyrun. Completepurecodec/plannerONLY; noSQLstore/UI/native/fullprojectedCLDKcertificate. RAW-DRAFT-BOUNDARY-20261015.md."
   },
-  "last_completed": "Reviewedproducer2f9a412 exact5NEWpaths integrated8f9eaa1 aftersource04ACK, originalclean/baseec913ad/pinsverified. Rootfocused38contractcases next; no markownedUI/AppGraphbindingyet. Existingcollection59ACK retained, oneROOTslot/leaseactive.",
-  "updated_utc": "2026-10-15T14:03:51Z",
+  "last_completed": "Controller38 SOURCE/RUNTIMEACK; claim/dispatched isolated UI and actual-app test packets, root shared floor/composition in progress not runtimeaccepted",
+  "updated_utc": "2026-10-15T14:21:24Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

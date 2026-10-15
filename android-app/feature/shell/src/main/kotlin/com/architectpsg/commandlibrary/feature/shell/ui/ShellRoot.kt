@@ -49,6 +49,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionScreen
+import com.architectpsg.commandlibrary.feature.shell.ui.collection.DeckMarkOwnedSurface
 import com.architectpsg.commandlibrary.core.model.DeckId
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckVersionsScreen
 import com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckLibraryScreen
@@ -248,6 +249,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 }
             }
         }
+        controllers.deckMarkOwned?.let { DeckMarkOwnedSurface(it, controllers.inventoryMutationGate.busy) }
         draft?.let { DraftExitDialog(it) }
     }
 }
@@ -314,7 +316,8 @@ private fun DestinationContent(
                 onOpenVersions = if (versions != null) onOpenVersions else null)
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
-            Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) }) }
+            Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
+                onMarkOwned = controllers.deckMarkOwned?.let { markOwned -> { id, policy -> markOwned.open(id, policy) } }) }
         }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
         ShellDestination.SETTINGS -> {

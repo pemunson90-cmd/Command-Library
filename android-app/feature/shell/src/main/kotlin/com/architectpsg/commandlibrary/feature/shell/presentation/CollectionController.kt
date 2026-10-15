@@ -52,11 +52,39 @@ internal class CollectionController(
     private var mutationLease: InventoryMutationGate.Lease? = null
     private data class Readback(val minimum: Revision, val committed: InventoryCommit?)
     private var readback: Readback? = null
+    private var observedInventoryRevision = Revision(0)
+    private var observedInventoryTime: UtcTimestamp? = null
+
+    private fun admits(value: InventorySnapshot): Boolean =
+        value.revision.value >= maxOf(observedInventoryRevision.value,
+            mutable.value.inventory?.revision?.value ?: 0L, readback?.minimum?.value ?: 0L) &&
+            listOfNotNull(observedInventoryTime, mutable.value.inventory?.capturedAt,
+                readback?.committed?.modifiedAt).all { ordered(value.capturedAt, it) }
+
+    private fun observeInventory(value: InventorySnapshot) {
+        if (value.revision.value > observedInventoryRevision.value) observedInventoryRevision = value.revision
+        if (observedInventoryTime?.let { ordered(it, value.capturedAt) } != true) observedInventoryTime = value.capturedAt
+    }
+
+    /** Trusted complete committed readback is a floor, never a replacement for our own read. */
+    fun onInventoryChanged(value: InventorySnapshot) {
+        if (!validSnapshot(value)) return
+        val newerRevision = value.revision.value > observedInventoryRevision.value
+        val newerTime = observedInventoryTime?.let { !ordered(it, value.capturedAt) } ?: true
+        if (!newerRevision && !newerTime) return
+        observeInventory(value)
+        ++formGeneration; formJob?.cancel(); preview = null
+        invalidateBulkPreview(cancelJob = false)
+        mutable.update { it.copy(preview = null, previewing = false, checkingCatalog = false,
+            formProblem = if (it.form != null) Problem.STALE_REVISION else it.formProblem,
+            bulkProblem = if (it.bulkForm != null) Problem.STALE_REVISION else it.bulkProblem) }
+        refresh()
+    }
     val inventoryWriterBusy: StateFlow<Boolean> get() = inventoryMutationGate.busy
     val hasMutationBarrier: Boolean get() = mutationLease != null || request != null || readback != null || mutable.value.mutationBusy
 
     private fun acquireMutation(): InventoryMutationGate.Lease? {
-        if (mutationLease != null || request != null || readback != null) return null
+        if (mutationLease != null || request != null || readback != null || mutable.value.inventory?.let { !admits(it) } != false) return null
         return inventoryMutationGate.tryAcquire()?.also { mutationLease = it }
     }
     private fun releaseUnsubmitted(lease: InventoryMutationGate.Lease) {
@@ -104,11 +132,9 @@ internal class CollectionController(
                     is PortResult.Ok -> {
                         val snapshot = result.value.first
                         if (!validSnapshot(snapshot)) mutable.update { it.copy(loadProblem = Problem.CORRUPT_DATA) }
-                        else if (snapshot.revision.value < maxOf(mutable.value.inventory?.revision?.value ?: 0L,
-                            capturedReadback?.minimum?.value ?: 0L) ||
-                            mutable.value.inventory?.capturedAt?.let { !ordered(snapshot.capturedAt,it) } == true ||
-                            capturedReadback?.committed?.modifiedAt?.let { !ordered(snapshot.capturedAt,it) } == true) mutable.update { it.copy(loadProblem = Problem.STALE_REVISION) }
+                        else if (!admits(snapshot)) mutable.update { it.copy(loadProblem = Problem.STALE_REVISION) }
                         else {
+                            observeInventory(snapshot)
                             indexedInventory = snapshot; inventoryPositions = result.value.second
                             if (preview?.form?.base?.revision != snapshot.revision) { preview = null; mutable.update { it.copy(preview = null) } }
                             if (mutable.value.bulkForm?.base?.revision?.let { it != snapshot.revision } == true) invalidateBulkPreview()
@@ -156,11 +182,14 @@ internal class CollectionController(
                             if (!validSnapshot(loaded.value)) { mutable.update { it.copy(formProblem = Problem.CORRUPT_DATA) }; return@launch }
                             val latest = mutable.value.inventory
                             val snapshot = if (latest != null && latest.revision.value > loaded.value.revision.value) latest else loaded.value
+                            if (!admits(snapshot)) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return@launch }
+                            observeInventory(snapshot)
                             mutable.update { it.copy(inventory = snapshot) }
                             snapshot
                         }
                     }
                 }
+                if (!admits(base)) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return@launch }
                 val result = callPort(dispatcher) { catalog.printing(record.id, it) }
                 currentCoroutineContext().ensureActive()
                 if (generation != formGeneration) return@launch
@@ -169,7 +198,8 @@ internal class CollectionController(
                     is PortResult.Ok -> {
                         val current = result.value
                         val finishes = (current.finishes as? Knowledge.Known)?.value
-                        if (!samePrinting(record, current)) mutable.update { it.copy(formProblem = Problem.STALE_GENERATION) }
+                        if (!admits(base)) mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }
+                        else if (!samePrinting(record, current)) mutable.update { it.copy(formProblem = Problem.STALE_GENERATION) }
                         else if (finishes.isNullOrEmpty()) mutable.update { it.copy(formProblem = Problem.UNSUPPORTED) }
                         else if (finishes.size > Finish.entries.size) mutable.update { it.copy(formProblem = Problem.CORRUPT_DATA) }
                         else try {
@@ -211,6 +241,7 @@ internal class CollectionController(
         if (request != null || mutable.value.mutationBusy) return
         val form = mutable.value.form ?: return
         val snapshot = mutable.value.inventory ?: return
+        if (!admits(snapshot)) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return }
         val original = form.original?.let { old -> snapshot.lots.firstOrNull { it.id == old.id } }
         if (form.original != null && original == null) { mutable.update { it.copy(formProblem = Problem.NOT_FOUND) }; return }
         ++formGeneration; formJob?.cancel(); preview = null
@@ -219,12 +250,12 @@ internal class CollectionController(
     fun cancelPreview() {
         if (request != null || mutable.value.mutationBusy) return
         ++formGeneration; formJob?.cancel(); preview = null
-        mutable.update { it.copy(preview = null, previewing = false, issues = SnapshotList.empty()) }
+        mutable.update { it.copy(preview = null, previewing = false, checkingCatalog = false, issues = SnapshotList.empty()) }
     }
     fun previewEdit() {
         if (request != null || mutable.value.mutationBusy || mutable.value.previewing) return
         val form = mutable.value.form ?: return
-        if (mutable.value.inventory?.revision != form.base.revision) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return }
+        if (!admits(form.base) || mutable.value.inventory?.revision != form.base.revision) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return }
         val quantity = form.quantity.takeIf { it.length <= 10 }?.toIntOrNull()
         if (form.mode != CollectionFormMode.REMOVE && (quantity == null || quantity < 0 || (form.mode == CollectionFormMode.ADD && form.finish == null))) {
             mutable.update { it.copy(invalidForm = true) }; return
@@ -258,7 +289,7 @@ internal class CollectionController(
                     is PortResult.Failed -> mutable.update { it.copy(formProblem = result.problem) }
                     is PortResult.Ok -> {
                         val candidate = result.value
-                        if (mutable.value.inventory?.revision != form.base.revision) {
+                        if (!admits(form.base) || mutable.value.inventory?.revision != form.base.revision) {
                             mutable.update { it.copy(formProblem = Problem.STALE_REVISION, preview = null) }; return@launch
                         }
                         if (candidate.projection.sourceRevision != form.base.revision || candidate.projection.issues.size > InventoryProjectionLimits.MAX_ISSUES) mutable.update { it.copy(formProblem = Problem.CORRUPT_DATA) }
@@ -272,7 +303,7 @@ internal class CollectionController(
         if (request != null || mutable.value.mutationBusy) return
         val frozen = preview ?: return
         if (frozen.projection.issues.isNotEmpty()) return
-        if (mutable.value.inventory?.revision != frozen.form.base.revision) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return }
+        if (!admits(frozen.form.base) || mutable.value.inventory?.revision != frozen.form.base.revision) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return }
         val lease = acquireMutation() ?: return
         val generation = formGeneration
         val confirmSelectionGeneration = selectionGeneration
@@ -281,6 +312,7 @@ internal class CollectionController(
             try {
                 if (frozen.form.mode == CollectionFormMode.ADD) {
                     val record = checkNotNull(frozen.form.printing)
+                    if (!admits(frozen.form.base)) { mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return@launch }
                     val result = callPort(dispatcher) { catalog.printing(record.id, it) }
                     currentCoroutineContext().ensureActive()
                     if (generation != formGeneration || mutationLease !== lease || !lease.owns) return@launch
@@ -295,7 +327,7 @@ internal class CollectionController(
                         }
                     }
                 }
-                if (mutationLease !== lease || !lease.owns || mutable.value.inventory?.revision != frozen.form.base.revision || preview !== frozen) {
+                if (mutationLease !== lease || !lease.owns || !admits(frozen.form.base) || mutable.value.inventory?.revision != frozen.form.base.revision || preview !== frozen) {
                     mutable.update { it.copy(formProblem = Problem.STALE_REVISION) }; return@launch
                 }
                 try { request = Request.Apply(frozen, nextEntityId()) }
@@ -535,7 +567,7 @@ internal class CollectionController(
         if (!bulkEditable()) return
         val form = mutable.value.bulkForm ?: return
         val base = mutable.value.inventory ?: return
-        if (indexedInventory !== base) { mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return }
+        if (!admits(base) || indexedInventory !== base) { mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return }
         invalidateBulkPreview(); bulkPositions = inventoryPositions
         mutable.update { it.copy(bulkForm = form.copy(base = base, originals = SnapshotList.copyOf(form.ids.map { id -> bulkPositions[id]?.let { base.lots[it] } })), bulkSelectionBase = base, bulkProblem = null, issues = SnapshotList.empty(), mutationProblem = null) }
     }
@@ -580,7 +612,7 @@ internal class CollectionController(
         if (!bulkEditable() || mutable.value.bulkPreviewing) return
         val form = mutable.value.bulkForm ?: return
         if (!form.draft.changes || form.ids.isEmpty()) { mutable.update { it.copy(bulkProblem = Problem.INVALID_INPUT) }; return }
-        if (mutable.value.inventory?.revision != form.base.revision) { mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return }
+        if (!admits(form.base) || mutable.value.inventory?.revision != form.base.revision) { mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return }
         invalidateBulkPreview(); val ticket = bulkGeneration
         val active = if (form.draft.finish is BulkValue.Set) activeBulkGeneration() else null
         bulkProofGeneration = active
@@ -590,7 +622,7 @@ internal class CollectionController(
                 val candidate = bulkCandidate(form,active)
                 currentCoroutineContext().ensureActive()
                 if (ticket != bulkGeneration || mutable.value.bulkForm != form) return@launch
-                if (mutable.value.inventory?.revision != form.base.revision) mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }
+                if (!admits(form.base) || mutable.value.inventory?.revision != form.base.revision) mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }
                 else if (form.draft.finish is BulkValue.Set && activeBulkGeneration() != active) mutable.update { it.copy(bulkProblem = Problem.STALE_GENERATION) }
                 else mutable.update { it.copy(bulkPreview = candidate) }
             } finally { if (ticket == bulkGeneration) mutable.update { it.copy(bulkPreviewing = false) } }
@@ -599,7 +631,7 @@ internal class CollectionController(
     fun confirmBulkPreview() {
         if (!bulkEditable() || mutable.value.bulkPreviewing) return
         val frozen = mutable.value.bulkPreview?.takeIf { !it.blocked } ?: return
-        if (mutable.value.inventory?.revision != frozen.form.base.revision || mutable.value.bulkForm != frozen.form) { mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return }
+        if (!admits(frozen.form.base) || mutable.value.inventory?.revision != frozen.form.base.revision || mutable.value.bulkForm != frozen.form) { mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return }
         val ticket = bulkGeneration
         val finishChange = frozen.form.draft.finish is BulkValue.Set
         if (finishChange && (frozen.generation == null || activeBulkGeneration() != frozen.generation)) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_GENERATION) }; return }
@@ -611,7 +643,7 @@ internal class CollectionController(
                 currentCoroutineContext().ensureActive()
                 if (ticket != bulkGeneration || mutable.value.bulkForm != frozen.form || mutationLease !== lease || !lease.owns) return@launch
                 if (checked.blocked) { mutable.update { it.copy(bulkPreview = checked) }; return@launch }
-                if (mutable.value.inventory?.revision != frozen.form.base.revision) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return@launch }
+                if (!admits(frozen.form.base) || mutable.value.inventory?.revision != frozen.form.base.revision) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_REVISION) }; return@launch }
                 if (finishChange && activeBulkGeneration() != frozen.generation) { invalidateBulkPreview(); mutable.update { it.copy(bulkProblem = Problem.STALE_GENERATION) }; return@launch }
                 try { request = Request.Bulk(frozen,nextEntityId()) }
                 catch (e: CancellationException) { throw e } catch (_: Exception) { mutable.update { it.copy(mutationProblem = Problem.INTERNAL) }; return@launch }
@@ -687,7 +719,7 @@ internal class CollectionController(
                 if (generation != allocationGeneration || readTicket != readGeneration) return@launch
                 if (snapshot is PortResult.Failed) { mutable.update { it.copy(allocationProblem = snapshot.problem) }; return@launch }
                 val fresh = (snapshot as PortResult.Ok).value
-                if (!validSnapshot(fresh) || fresh.revision.value < (mutable.value.inventory?.revision?.value ?: 0L)) {
+                if (!validSnapshot(fresh) || !admits(fresh)) {
                     mutable.update { it.copy(allocationProblem = Problem.STALE_REVISION) }; return@launch
                 }
                 val loaded = callPort(dispatcher) { decks.load(id, it) }
@@ -699,6 +731,7 @@ internal class CollectionController(
                 if (deck.revision.value < (observedDeckRevision?.value ?: 0L)) {
                     mutable.update { it.copy(allocationProblem = Problem.STALE_REVISION) }; return@launch
                 }
+                if (!admits(fresh)) { mutable.update { it.copy(allocationProblem = Problem.STALE_REVISION) }; return@launch }
                 allocationDeckRevision = deck.revision
                 if (deck.revision.value > (observedDeckRevision?.value ?: -1L)) observedDeckRevision = deck.revision
                 val result = callPort(dispatcher) { allocator.allocate(deck, fresh, policy, it) }
@@ -709,7 +742,7 @@ internal class CollectionController(
                     is PortResult.Ok -> {
                         val plan = result.value
                         val visible = mutable.value
-                        if (visible.selectedDeckId != id || deck.revision.value < (observedDeckRevision?.value ?: 0L) || fresh.revision.value < (visible.inventory?.revision?.value ?: 0L) ||
+                        if (visible.selectedDeckId != id || deck.revision.value < (observedDeckRevision?.value ?: 0L) || !admits(fresh) ||
                             (visible.selectedDeck?.id == id && visible.selectedDeck.revision.value > deck.revision.value)) {
                             mutable.update { it.copy(allocationProblem = Problem.STALE_REVISION) }
                             return@launch
@@ -718,6 +751,7 @@ internal class CollectionController(
                             mutable.update { it.copy(allocationProblem = Problem.CORRUPT_DATA) }
                         } else {
                             if (preview?.form?.base?.revision != fresh.revision) { preview = null; mutable.update { it.copy(preview = null) } }
+                            observeInventory(fresh)
                             mutable.update { it.copy(inventory = fresh, selectedDeck = deck, allocation = plan) }
                         }
                     }

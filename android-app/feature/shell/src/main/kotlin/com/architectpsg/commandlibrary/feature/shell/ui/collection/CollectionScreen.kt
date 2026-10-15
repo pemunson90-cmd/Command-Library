@@ -33,7 +33,8 @@ internal object CollectionTags {
 
 /** Lazy rows, retained controller state, and no writes or generated identifiers from composition. */
 @Composable
-internal fun CollectionScreen(controller: CollectionController, widthClass: WidthClass, onBrowseCards: (() -> Unit)? = null) {
+internal fun CollectionScreen(controller: CollectionController, widthClass: WidthClass, onBrowseCards: (() -> Unit)? = null,
+    onMarkOwned: ((DeckId, OwnedQuantityPolicy) -> Unit)? = null) {
     val state by controller.state.collectAsState()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     var abandon by rememberSaveable { mutableStateOf(false) }
@@ -41,15 +42,15 @@ internal fun CollectionScreen(controller: CollectionController, widthClass: Widt
     Column(Modifier.fillMaxSize().padding(horizontal = widthClass.gutter), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SectionHeading(stringResource(R.string.collection_title), style = MaterialTheme.typography.headlineMedium)
         if (widthClass == WidthClass.COMPACT) PrimaryTabRow(tab) {
-            Tab(tab == 0, { tab = 0 }, text = { Text(stringResource(R.string.collection_inventory_tab)) }, modifier = Modifier.heightIn(min = 48.dp))
+            Tab(tab == 0, { tab = 0 }, text = { Text(stringResource(R.string.collection_inventory_tab)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("collection-inventory-tab"))
             Tab(tab == 1, { tab = 1 }, text = { Text(stringResource(R.string.collection_deck_tab)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("collection-deck-tab"))
         }
         if (widthClass == WidthClass.COMPACT) {
             if (tab == 0) InventoryPane(controller, state, Modifier.weight(1f), { abandon = true }, onBrowseCards)
-            else AllocationPane(controller, state, Modifier.weight(1f), true, { abandon = true })
+            else AllocationPane(controller, state, Modifier.weight(1f), true, { abandon = true }, onMarkOwned)
         } else Row(Modifier.weight(1f).fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             InventoryPane(controller, state, Modifier.weight(1f), { abandon = true }, onBrowseCards)
-            AllocationPane(controller, state, Modifier.weight(1f), false, { abandon = true })
+            AllocationPane(controller, state, Modifier.weight(1f), false, { abandon = true }, onMarkOwned)
         }
     }
     state.bulkForm?.let { CollectionBulkEditDialog(controller, it, state) }
@@ -137,7 +138,8 @@ private fun InventoryPane(controller: CollectionController, state: CollectionUiS
 }
 
 @Composable
-private fun AllocationPane(controller: CollectionController, state: CollectionUiState, modifier: Modifier, status: Boolean, abandon: () -> Unit) {
+private fun AllocationPane(controller: CollectionController, state: CollectionUiState, modifier: Modifier, status: Boolean, abandon: () -> Unit, onMarkOwned: ((DeckId, OwnedQuantityPolicy) -> Unit)?) {
+    val inventoryBusy by controller.inventoryWriterBusy.collectAsState()
     val plan = state.allocation
     LazyColumn(modifier.fillMaxHeight().testTag(CollectionTags.ALLOCATION), verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
         item {
@@ -172,6 +174,17 @@ private fun AllocationPane(controller: CollectionController, state: CollectionUi
             }
             OutlinedButton(controller::calculateAllocation, enabled = state.selectedDeckId != null && !state.pending && !state.mutationBusy && !state.allocating,
                 modifier = Modifier.touch().testTag("collection-calculate")) { Text(stringResource(R.string.collection_calculate)) }
+            if (onMarkOwned != null) {
+                val selected = state.selectedDeckId
+                val policy = OwnedQuantityPolicy(state.boards, ownership = state.ownership)
+                OutlinedButton({
+                    val latest = controller.state.value
+                    if (selected != null && latest.selectedDeckId == selected && latest.boards == policy.includeBoards &&
+                        latest.ownership == policy.ownership && !latest.pending && !latest.mutationBusy &&
+                        !controller.inventoryWriterBusy.value) onMarkOwned(selected, policy)
+                }, enabled = selected != null && state.boards.isNotEmpty() && !state.pending && !state.mutationBusy && !inventoryBusy,
+                    modifier = Modifier.touch().testTag("collection-mark-owned")) { Text(stringResource(R.string.mark_owned_open)) }
+            }
             if (state.allocating) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text(stringResource(R.string.collection_calculating)) }
             state.allocationProblem?.let { CollectionProblem(it) }
             if (state.selectedDeckId != null && plan == null && !state.allocating) Text(stringResource(R.string.collection_plan_stale))

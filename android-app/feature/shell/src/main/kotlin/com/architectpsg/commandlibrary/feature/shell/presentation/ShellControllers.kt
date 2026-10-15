@@ -55,6 +55,7 @@ internal class ShellControllers(
             draftEditor = deckDraftEditor,
             onCommitted = { id, revision ->
                 collection?.onDeckChanged(id, revision)
+                deckMarkOwned?.onDeckChanged(id, revision)
                 if (deckVersions?.state?.value?.deckId == id) deckVersions.refreshHead()
             },
             cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
@@ -67,6 +68,14 @@ internal class ShellControllers(
             ports.inventoryProjection, ioDispatcher, { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
             currentCatalogGeneration = { status.state.value.status?.activeGeneration()?.id },
             inventoryMutationGate = inventoryMutationGate) else null
+    val deckMarkOwned: DeckMarkOwnedController? = if (ports.localInventory != null && ports.localDecks != null &&
+        ports.ownedQuantity != null && ports.catalogPrintings != null && ports.inventoryProjection != null)
+        DeckMarkOwnedController(scope, ports.localInventory, ports.localDecks, ports.ownedQuantity,
+            ports.catalogPrintings, ports.inventoryProjection, ioDispatcher,
+            { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
+            currentCatalogGeneration = { status.state.value.status?.activeGeneration()?.id },
+            mutationGate = inventoryMutationGate,
+            onCommitted = { fresh -> collection?.onInventoryChanged(fresh) }) else null
     val deckVersions: DeckVersionsController? = if (ports.localDeckVersions != null && ports.localDecks != null)
         DeckVersionsController(scope, ports.localDeckVersions, ports.localDecks, ioDispatcher,
             { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
@@ -74,6 +83,7 @@ internal class ShellControllers(
             onCommitted = { id, revision ->
                 deckDraftEditor?.onDeckHeadChanged(id, revision)
                 collection?.onDeckChanged(id, revision)
+                deckMarkOwned?.onDeckChanged(id, revision)
                 deckLibrary?.let { library ->
                     if (library.state.value.selectedId == id) library.select(id)
                     library.refresh()
@@ -91,7 +101,14 @@ internal class ShellControllers(
     init {
         if (deckLibrary != null && collection != null) scope.launch {
             deckLibrary.state.mapNotNull { it.selected?.let { deck -> deck.id to deck.revision } }
-                .distinctUntilChanged().collect { (id, revision) -> collection.onDeckChanged(id, revision) }
+                .distinctUntilChanged().collect { (id, revision) ->
+                    collection.onDeckChanged(id, revision)
+                    deckMarkOwned?.onDeckChanged(id, revision)
+                }
+        }
+        if (collection != null && deckMarkOwned != null) scope.launch {
+            collection.state.map { maxOf(it.inventory?.revision?.value ?: 0L, it.savedRevision?.value ?: 0L) }
+                .distinctUntilChanged().collect { deckMarkOwned.onInventoryChanged(com.architectpsg.commandlibrary.core.model.Revision(it)) }
         }
         scope.launch {
             status.state
@@ -105,6 +122,7 @@ internal class ShellControllers(
                     deckDraftEditor?.onActiveGeneration(generation)
                     printings?.onActiveGeneration(generation)
                     collection?.onActiveGeneration(generation)
+                    deckMarkOwned?.onActiveGeneration(generation)
                 }
         }
         scope.launch {
