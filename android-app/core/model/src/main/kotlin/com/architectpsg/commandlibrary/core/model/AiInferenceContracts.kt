@@ -170,29 +170,35 @@ public data class ValidatedReply(
     public val complete: Boolean,
 )
 public enum class TurnStatus { PENDING, STREAMING, COMPLETE, INTERRUPTED, FAILED }
+/** Durable raw history; grounding is derived on explicit review, never persisted as advice authority. */
 public data class Turn(
     public val id: EntityId,
     public val conversationId: EntityId,
+    public val revision: Revision,
+    public val ordinal: Long,
+    public val source: HistoryTurnSource,
     public val prompt: PromptArtifact,
-    public val mode: LabMode,
-    public val deckRevision: Revision,
+    public val provenance: HistoryPromptProvenance,
+    public val mode: OfflineLabMode,
     public val providerProfileId: EntityId?,
-    public val modelId: String,
+    public val modelId: String?,
+    public val retryOf: EntityId?,
+    public val ownerEpoch: EntityId?,
     public val status: TurnStatus,
     public val rawContent: String,
-    public val validated: Knowledge<ValidatedReply>,
     public val usage: Knowledge<Usage>,
     public val startedAt: UtcTimestamp,
     public val finishedAt: Knowledge<UtcTimestamp>,
 )
+/** Bounded header. Turns are paged independently instead of loading an unbounded conversation. */
 public data class Conversation(
     public val id: EntityId,
     public val deckId: DeckId,
-    public val mode: LabMode,
+    public val mode: OfflineLabMode,
     public val title: String,
+    public val revision: Revision,
     public val createdAt: UtcTimestamp,
     public val modifiedAt: UtcTimestamp,
-    public val turns: SnapshotList<Turn>,
 )
 public interface DeckLab {
     public fun prompt(context: DeckContext, mode: LabMode, template: PromptTemplate): Outcome<PromptArtifact>
