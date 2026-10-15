@@ -1467,7 +1467,7 @@
         "verification": "real DB revision/atomic bulk/ineligible rows/nonnegative/unknown/no language transfer/restart",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "inventory_ui_integrated_acceptance_open",
-        "observed_implementation": "Complete projector/codecs/schema13/SqlLocalInventory integrated; real AppGraph/collection UI/current-printing workflow, deck acknowledgement invalidation and actual host Room verified. Independent source/evidence ACK, assembled683tests plus4correctedUIreruns, lint0errors/1inheritedwarning; native test compilation only. See COLLECTION-INTEGRATION-LOCAL-20261015.md. Full C01/B10/S12 finish editing/mixed bulk/CSV/drafts/native/Fold7 acceptance remains open.",
+        "observed_implementation": "Complete projector/codecs/schema13/SqlLocalInventory/actual AppGraph and existing collection workflow integrated. Mixed bulk Keep/Set/range/eligibility/fullrowpreview/atomicapply-undo integratedc23c033/abad49a plus rootgenerationwiring andactualMainActivity/AppGraph/Room journey; independent exactsource/runtimeACK300assembledtests43XML, producer54overlap+lint0errors1inherited. See COLLECTION-BULK-APP-INTEGRATION-20261015.md. ActualRoom storageprobe7543a4c preserveszero/unknown/unselected/undo/replay/reopen. Full C01/B10/S12 CSV and remainingacceptance/native/Fold7/performance remain open.",
         "ownership_group": "collection",
         "resources": [
           "local-gradle-serial"

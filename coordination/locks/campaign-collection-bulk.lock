@@ -3,9 +3,15 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-campaign-collection-bulk-01",
   "owner": "/root/implement_inventory_projection native isolated writer",
-  "status": "active",
+  "status": "released",
   "base_commit": "57cb78e",
   "branch": "agent/campaign-collection-bulk-20261015",
   "owned_paths": "Exact packet collection controller/state/screen/dedicated helpers/dialog/resource/tests/handoff only; all shared root paths forbidden",
-  "authority": "Canonical localroot claim, published remote f0373af still rootactive; authpublicationblock not release"
+  "authority": "Canonical localroot claim, published remote f0373af still rootactive; authpublicationblock not release",
+  "completion_commit": "5cfb2d0d9e28310bded58cff172db7f9bb4d9ba5",
+  "integrated_commits": [
+    "c23c033",
+    "abad49a"
+  ],
+  "verification": "Independent source/runtime/lintACK54tests5XML; rootassembled20928 pending, no nativeclaim"
 }

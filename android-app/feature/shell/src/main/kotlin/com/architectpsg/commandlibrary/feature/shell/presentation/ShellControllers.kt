@@ -52,7 +52,8 @@ internal class ShellControllers(
     val collection = if (ports.localInventory != null && ports.localDecks != null && ports.ownedQuantity != null &&
         ports.catalogPrintings != null && ports.inventoryProjection != null)
         CollectionController(scope, ports.localInventory, ports.localDecks, ports.ownedQuantity, ports.catalogPrintings,
-            ports.inventoryProjection, ioDispatcher, { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) }) else null
+            ports.inventoryProjection, ioDispatcher, { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
+            currentCatalogGeneration = { status.state.value.status?.activeGeneration()?.id }) else null
     val deckVersions: DeckVersionsController? = if (ports.localDeckVersions != null && ports.localDecks != null)
         DeckVersionsController(scope, ports.localDeckVersions, ports.localDecks, ioDispatcher,
             { com.architectpsg.commandlibrary.core.model.EntityId(java.util.UUID.randomUUID().toString()) },
@@ -87,6 +88,7 @@ internal class ShellControllers(
                     profiles?.commanderSearch?.onActiveGeneration(generation)
                     deckEditorSearch?.onActiveGeneration(generation)
                     printings?.onActiveGeneration(generation)
+                    collection?.onActiveGeneration(generation)
                 }
         }
         scope.launch {

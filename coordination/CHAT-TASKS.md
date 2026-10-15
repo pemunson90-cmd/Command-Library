@@ -53,6 +53,6 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 
 | campaign-deck-versions-store | Complete real capture/list/load/preview/restore backend | DONE producer | Integrated975fe17 exact869b10e; source/runtimeACK108tests; actual root assembled gate pending | [packet](tasks/cx-campaign-deck-versions-store-01.md) |
 
-| campaign-collection-bulk | Mixed selection/Keep-Set/eligible finish/complete row preview/atomic apply+undo | TAKEN native isolated | Reviewed packet from57cb78e, root sharedwiring/integration retained; no buildslot | [packet](tasks/cx-campaign-collection-bulk-01.md) |
+| campaign-collection-bulk | Mixed selection/Keep-Set/eligible finish/complete row preview/atomic apply+undo | DONE producer | Integratedc23c033/abad49a source-runtime-lintACK54tests; root actualassembly20928 pending | [packet](tasks/cx-campaign-collection-bulk-01.md) |
 
 | campaign-deck-draft-pure | Complete lossless rawcodec + canonical scope planner | TAKEN native isolated | Reviewed architecture/corecompile/wiregoldens;5NEWpaths only, no buildslot | [packet](tasks/cx-campaign-deck-draft-pure-01.md) |

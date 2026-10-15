@@ -625,3 +625,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T10:00:22Z | codex | cp-20261015-deck-primitive-shared-189 | containing commit | Narrow actualAPPLY engine extraction source/runtimeACK29SQLtests; collectionbulkmissingselectionHOLDownedrepair/no build; fifthprepare draftdesign proposed, publicationblocked/rootactive.
 
 2026-10-15T10:19:35Z | codex | cp-20261015-draft-boundary-pure-claimed-190 | containing commit | Draftarchitecture/publicsource/wireoracles/packetACK, coredeclcompile7sONLY; isolatedpureproducerclaimed5NEWpaths. Collectionbulk54tests5XMLpass/lintonlyactive,3writersincludingroot/oneGradleslot; publicationblocked.
+
+2026-10-15T10:37:01Z | codex | cp-20261015-collection-bulk-app-integrated-191 | containing commit | ActualMainActivity/AppGraph/Room bulkworkflow exactsource/runtimeACK300tests43XML; producer54overlap/lintACK. PuredraftsourceACK/solebuild74740active, rootphysicalschema-framingnext; publicationblocked/no nativeAPKclaim.
