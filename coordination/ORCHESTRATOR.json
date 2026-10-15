@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "released",
-  "session_id": "codex-thread-recovery-20261013",
+  "status": "active",
+  "session_id": "codex-root-replacement-20261015",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T23:08:16Z",
-  "expires_utc": "2026-10-15T23:08:16Z",
-  "checkpoint_id": "cp-20261015-root-chat-transfer-252",
-  "note": "Explicit voluntary transfer requested by Pat; old root stops implementation. Replacement may claim released lease. Read coordination/handoffs/ROOT-CHAT-TRANSFER-20261015.md; no active native children/build. Frozen HTTP/CC commits unintegrated/untested; auth sourceACK only. Preserve priorities, D30 and all acceptance holds."
+  "heartbeat_utc": "2026-10-15T23:11:19Z",
+  "expires_utc": "2026-10-15T23:56:19Z",
+  "checkpoint_id": "cp-20261015-root-replacement-253",
+  "note": "Pat explicitly authorized replacement; prior root voluntarily released at a1b1403. Replacement claims root; frozen HTTP/CC returns require independent source review before integration."
 }

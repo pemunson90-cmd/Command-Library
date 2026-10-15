@@ -3,14 +3,16 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-root-chat-transfer-252",
-  "verified_base_head": "6d0fe4c2512b027626373fe0bcbc497ef029efac",
+  "checkpoint_id": "cp-20261015-root-replacement-253",
+  "verified_base_head": "a1b140358d203b52fc772f4c16599fea8c0189a0",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "resume_provider_from_explicit_chat_transfer",
-  "active_tasks": [],
+  "first_action": "review_frozen_provider_returns_then_integrate",
+  "active_tasks": [
+    "orch-android-v1-campaign-01"
+  ],
   "blockers": [
     "Full live-source completeness, indexed search/FullLean and M2\u2013M9 remain incomplete; ruling source/root/UI local integration is implemented but source/native/final acceptance pending.",
     "Physical Fold7/TalkBack/performance and canonical signed-package checks require actual final evidence.",
@@ -163,7 +165,7 @@
     "campaign_prompt_overrides": "SOURCE02/shared/runtimeACK exact4ee30f7fa534f475e726e89a29e695016f87e433/treef2ea2b2b3199440297dae71e0412067c173c0e62:34hosttests6XML0f/e/s1m25/741pins;10SQL11newcontroller10oldcontroller3actualapp. Room16to17 oldDDL/opaqueuserbytes preservation, fourmodeexplicitSave/preview/independentRoom/recreation/reset/otherstateconservation and prioroffline/Room15to17regression. PROMPT-OVERRIDES-APP-INTEGRATION-20261015.md preserves SOURCE01HOLD, attempt1db67c8ecompilefailure0XML and equivalentlyfixed4ee30f7. Exact3/5/2returns verified/originalclean/claimsreleased. No native/provider/H08/fullAI/releaseclaim.",
     "campaign_ai_history": "SOURCE01core/shared/UI/proof +SOURCE02codec/SQL andindependentSolruntimeACK exact31bfe7884db56b0f4b704e25a525ff7a08d6d2cf/tree553634f69f635c39a476c92aea8f534d952f8f23:43hosttests9XML0f/e/s2m04/758pins;6codec8SQL25controller4actualapp. ActualRoom17to18/50oldentities+physicalbytes preservation, exactprompt/reply/provenance explicitcapture/independentRoom/recreation/perdeckopen/delete/privateprojectionclearing; prioroffline/override/Room15to18regressions. AI-HISTORY-APP-INTEGRATION-20261015.md preserves sourceHOLDs/exact5/3/2returns/cleanoriginals/releasedclaims; attempt18c0c03b compilefailure19s0XML andtinystringResourcefix31bfe78. No provider/socket/native/backup/fullH08/releaseacceptance."
   },
-  "last_completed": "Pat requested fresh chat; explicit root lease release. Read ROOT-CHAT-TRANSFER-20261015.md; HTTP4b821d4 andCC81001de preserved unintegrated/untested, rootauth6d0fe4c sourceACK. Review returns then continue actual provider history/UI, coherent gate.",
-  "updated_utc": "2026-10-15T23:08:16Z",
+  "last_completed": "Authorized replacement claimed explicitly released root at a1b1403; fetched frozen HTTP4b821d4 and CC81001de. Independent review pending; runtime NOT_RUN; existing holds unchanged.",
+  "updated_utc": "2026-10-15T23:11:19Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-root-chat-transfer-252
+Checkpoint-ID: cp-20261015-root-replacement-253
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. resume_provider_from_explicit_chat_transfer
+Next step: 3. review_frozen_provider_returns_then_integrate
 
-Updated UTC: 2026-10-15T23:08:16Z
-Status: in_progress; lease: released.
-Verified base: 6d0fe4c2512b027626373fe0bcbc497ef029efac.
+Updated UTC: 2026-10-15T23:11:19Z
+Status: in_progress; lease: active.
+Verified base: a1b140358d203b52fc772f4c16599fea8c0189a0.
 
-Pat requested fresh chat; explicit root lease release. Read ROOT-CHAT-TRANSFER-20261015.md; HTTP4b821d4 andCC81001de preserved unintegrated/untested, rootauth6d0fe4c sourceACK. Review returns then continue actual provider history/UI, coherent gate.
+Authorized replacement claimed explicitly released root at a1b1403; fetched frozen HTTP4b821d4 and CC81001de. Independent review pending; runtime NOT_RUN; existing holds unchanged.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

@@ -33,3 +33,5 @@ Same campaign-r1/64requirements/213parity194retained19skips/35tasks, no silent d
 ## Explicit root chat transfer — current
 
 Pat requested a zero-context replacement chat. See coordination/handoffs/ROOT-CHAT-TRANSFER-20261015.md for exact retained return commits, pending reviews and next steps. Old root deliberately releases lease at this checkpoint and stops implementation. Native child list empty; buildslotFREE. HTTP4b821d4 andCC81001de preserved independently, NOT integrated/tested; rootauth6d0fe4c sourceACK/testsNOT_RUN. New root may claim released lease, review returns, continue provider actualhistory/UI thencoherentgate. D30futureintake/priorities/holds unchanged.
+
+Replacement readback: codex-root-replacement-20261015 resolved remote a1b140358d203b52fc772f4c16599fea8c0189a0, confirmed explicit voluntary release and fetched both frozen producer branches. This environment retains toolchain but historical worker worktrees and /tmp runners are absent; preserve all available refs and reconstruct isolated read-only review worktrees. Next independent source reviews, then exact integration and provider coordinator/UI. No new product verification run.

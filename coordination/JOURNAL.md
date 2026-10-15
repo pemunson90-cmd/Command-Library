@@ -749,3 +749,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T21:57:58Z | codex | cp-20261015-provider-text-wave-251 | containing commit | Provider text source boundary ACK/core and existing Gson compilePASS24s1ca7770; isolated HTTP and pureCC producers TAKENsamebase. Root actualauth/UI/history coordinator;3writers/onebuildslot. D30futuredeckrequirements preserved, no provider/runtimecertification.
 
 2026-10-15T23:08:16Z | codex | cp-20261015-root-chat-transfer-252 | containing commit | Pat requested fresh chat; explicit root lease release. Read ROOT-CHAT-TRANSFER-20261015.md; HTTP4b821d4 andCC81001de preserved unintegrated/untested, rootauth6d0fe4c sourceACK. Review returns then continue actual provider history/UI, coherent gate.
+
+2026-10-15T23:11:19Z | codex | cp-20261015-root-replacement-253 | containing commit | Authorized replacement claimed explicitly released root at a1b1403; fetched frozen HTTP4b821d4 and CC81001de. Independent review pending; runtime NOT_RUN; existing holds unchanged.
