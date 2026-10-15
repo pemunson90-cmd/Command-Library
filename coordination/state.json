@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-offline-ui-repair-238",
-  "verified_base_head": "0cdcf23cf8daf3e207c9b8a07932af71ad3177ec",
+  "checkpoint_id": "cp-20261015-offline-prompts-host-accepted-239",
+  "verified_base_head": "87e0c816dbfeb4b6542cec56556f53cf7b87e3f0",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "offline-ui-source-repair",
+  "first_action": "offline-prompts-host-accepted",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "Offline prompt engine SOURCE02 integrated19cd939/17hostpass; root shared composition SOURCE ACK. UI SOURCE01 per-mode rejection HOLD in isolated boundedrepair; SOURCE02 disposition and actualcontroller/app gate pending. No native/fullAI/fullrelease claim.",
+  "review_status": "Provider-free prompt/copy/pasteback bounded host SOURCE02/shared/runtime ACK. Claimsreleased/clean originals preserved; next retained dependency selection. Native/fullAI/provider/vault/history/Apply/persistedoverride/fullrelease holds retained.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -158,9 +158,10 @@
     "plain_deck_output_boundary": "Writer616abf39\u21922029b71 exact3NEWpaths/sourceACK; acceptedcbff7ac actual15provider-PFD/fault/cancel/closure tests pass (samefocused17run, notadditional17).651pinsfrozen/independentinventorySOURCE-RUNTIMEACK. No exportconsumer/UI/remote-durability/native acceptance; report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.",
     "plain_deck_export_boundary": "Acceptedb545f411ec691e12d354f2a39eddcd401bc3c84b tree1d9e7a1ccbbf2b8ae790aebbcdc71dc7f8147460 actual30tests2XML0f/e/s1m18/655pins/log795d346306a89014bae52848e8ff6eb666e10d9a54de52bf655b9dfac322813c.29faithfulcontroller+1actualAppGraph229byte81loss7board8entry18copies/validator/Roomfixture, independentSOURCE02/runtimeACK. ActualVMfactory/nativeKotlincompiledONLY, noUI/picker/actualcontroller-writer/deviceexecution. SOURCE01zero-byteprebuildHOLDfixedbeforeonlyactualsuccessfulrun. PLAIN-DECK-EXPORT-BOUNDARY-20261015.md.",
     "indexed_query_host": "Source1c81bfa39featurechecks5XML0f/e/s; unchanged production5bef3ae actual app journey1test0f/e/s44s; independent SOURCE/RUNTIME ACK/681pins. Prior overall compile/SQL/fixture failures retained. INDEXED-QUERY-APP-INTEGRATION-20261015.md. No native/fullcorpus/fullA07-A08.",
-    "board_size_checks_host": "Producer10at4e1adbe0f/e/s; originaloverallcompilefailure retained. Unchangedproducer plus3controller/1actualapp atd471e34 SUCCESS1m08/0f/e/s;689pins/independentSOURCE-RUNTIMEACK. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md; noofficial/fullB06/native."
+    "board_size_checks_host": "Producer10at4e1adbe0f/e/s; originaloverallcompilefailure retained. Unchangedproducer plus3controller/1actualapp atd471e34 SUCCESS1m08/0f/e/s;689pins/independentSOURCE-RUNTIMEACK. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md; noofficial/fullB06/native.",
+    "offline_prompt_host": "Engine19cd93917tests2XML0f/e/s24s/702pins; unchangedengine source87e0c81 consumer10controller+1actualAppGraph/Room/clipboard2XML0f/e/s2m23/706pins. Independent SOURCE02/shared/runtime ACK; OFFLINE-PROMPT-APP-INTEGRATION-20261015.md preserves sourceHOLDs/interruptedno-verdictattempt. No native/fullAI."
   },
-  "last_completed": "Engine17hostpass; root sharedAIwiring SOURCE ACK; freeze UI SOURCE01 and transfer only demonstrated per-mode rejection repair to isolated Solmedium lane; narrow rereview then consumer gate",
-  "updated_utc": "2026-10-15T19:32:30Z",
+  "last_completed": "Provider-free four-mode prompt/copy/paste/card-detail workflow host SOURCE/RUNTIME ACK;17engine plus11consumer separate scopes; claimsreleased; continue next retained dependency",
+  "updated_utc": "2026-10-15T19:40:52Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

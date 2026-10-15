@@ -2083,8 +2083,8 @@
         ],
         "verification": "mode/roast intensity/template errors/provenance/unresolved vs invented refs; no silent apply; real deck path waits deck-persistence",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "DTOs only; LabMode mismatches explicit retained modes and must be reviewed, not silently renamed",
+        "status": "offline_prompt_host_integrated_acceptance_open",
+        "observed_implementation": "Reviewed additive OfflineDeckPrompts/four explicit OfflineLabMode API and actual saved-deck provider-free prompt/copy/paste/reference-detail workflow integrated. Engine19cd93917host tests; source-equivalent engine consumer87e0c81 tencontroller+oneactualAppGraph/Room/clipboard journey pass, independent SOURCE02/runtime ACK. OFFLINE-PROMPT-APP-INTEGRATION-20261015.md preserves source HOLDs/interruptedattempt/scoped evidence. Private opt-in/session overrides/unknownconstraint checks explicit; fullH01/H04/H05/H09, persistent overrides, providers/vault/history/Apply and native/physical acceptance open. Legacy LabMode aggregate remains unused, never silently aliased.",
         "ownership_group": "ai",
         "resources": [
           "local-gradle-serial"

@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-offline-prompts-ui-01",
   "owner": "/root/repair_offline_prompts_ui",
-  "status": "active",
+  "status": "released",
   "base_commit": "6a910a134bf138dd472d477bc53ca2b02fba7b51",
   "contract_revision": "offline-prompts-v1-20261015",
   "branch": "agent/campaign-offline-prompts-ui-20261015",
@@ -17,5 +17,8 @@
   ],
   "build_slot": "NOTGRANTED; rootonly",
   "previous_owner": "/root/implement_offline_prompts_ui",
-  "resume": "Original exact frozen SOURCE01 retained; no live original child in current runtime. Scoped SOURCE02 repair controller/test/handoff only, same base/worktree/contract; no build grant."
+  "resume": "Original exact frozen SOURCE01 retained; no live original child in current runtime. Scoped SOURCE02 repair controller/test/handoff only, same base/worktree/contract; no build grant.",
+  "return_commit": "31f252fae17619a9a21a060421f8e3285bc24557",
+  "integration_commit": "87e0c816dbfeb4b6542cec56556f53cf7b87e3f0",
+  "disposition": "SOURCE02 ACK/exact5return verified/integrated;10controller+1actual app hostpass/runtimeACK. Originalclean worktree and SOURCE01 retained."
 }

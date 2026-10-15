@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-offline-ui-repair-238. Updated UTC: 2026-10-15T19:32:30Z.
+Checkpoint: cp-20261015-offline-prompts-host-accepted-239. Updated UTC: 2026-10-15T19:40:52Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-offline-ui-source-repair
+offline-prompts-host-accepted
 
-Engine17hostpass; root sharedAIwiring SOURCE ACK; freeze UI SOURCE01 and transfer only demonstrated per-mode rejection repair to isolated Solmedium lane; narrow rereview then consumer gate
+Provider-free four-mode prompt/copy/paste/card-detail workflow host SOURCE/RUNTIME ACK;17engine plus11consumer separate scopes; claimsreleased; continue next retained dependency
 
 Read CURRENT, machine state and task card.

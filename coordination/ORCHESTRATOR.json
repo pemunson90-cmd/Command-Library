@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T19:32:30Z",
-  "expires_utc": "2026-10-15T20:17:30Z",
-  "checkpoint_id": "cp-20261015-offline-ui-repair-238",
-  "note": "Root retains shared/integration/final merge authority. Engine19cd939 SOURCE02 integrated and17host tests pass; frozen UI per-mode rejection repair scoped to isolated Solmedium child, narrow SOURCE02 review then controller/actualapp gate. No active build; no native/fullAI/release acceptance."
+  "heartbeat_utc": "2026-10-15T19:40:52Z",
+  "expires_utc": "2026-10-15T20:25:52Z",
+  "checkpoint_id": "cp-20261015-offline-prompts-host-accepted-239",
+  "note": "Root retains shared/integration/final authority. Offline prompt engine17 and actual consumer11 host checks SOURCE/RUNTIME ACK; claims released and originals preserved. Root solewriter/build slot free; next retained dependency selection, no native/fullAI/release claim."
 }
