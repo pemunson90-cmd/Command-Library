@@ -4,8 +4,8 @@
   "session_id": "codex-root-replacement-20261015",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T23:21:04Z",
-  "expires_utc": "2026-10-16T00:06:04Z",
-  "checkpoint_id": "cp-20261015-provider-source-integration-254",
-  "note": "Authorized replacement root active. Source-reviewed customHTTPS text integration ddff703b; single local assembled gate session24391 pending. No worker builds; retain all source/device/release holds."
+  "heartbeat_utc": "2026-10-15T23:27:34Z",
+  "expires_utc": "2026-10-16T00:12:34Z",
+  "checkpoint_id": "cp-20261015-provider-text-host-255",
+  "note": "Authorized replacement root active; customHTTPS text bounded source/runtimeACK6519bff1. BuildslotFREE. Next nativeAnthropic narrow sourcefacts lookup; no productworkers. All source/device/release holds retained."
 }

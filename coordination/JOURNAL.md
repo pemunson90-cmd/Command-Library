@@ -753,3 +753,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T23:11:19Z | codex | cp-20261015-root-replacement-253 | containing commit | Authorized replacement claimed explicitly released root at a1b1403; fetched frozen HTTP4b821d4 and CC81001de. Independent review pending; runtime NOT_RUN; existing holds unchanged.
 
 2026-10-15T23:21:04Z | codex | cp-20261015-provider-source-integration-254 | containing commit | Exact reviewed HTTP/CC/coordinator/root consent UI/app proof integrated through ddff703b. Source HOLD corrections retained. Single local assembled gate pending; worker claims released and originals preserved; all release holds remain.
+
+2026-10-15T23:27:34Z | codex | cp-20261015-provider-text-host-255 | containing commit | CustomHTTPS provider text bounded source/runtime ACK6519bff1:79scoped cases11XML0f/e/s,69unchangedreused+10fresh/774pins. All failure lineage retained; originals preserved/buildslotfree. Continue narrow nativeAnthropic sourcefacts, all final gates open.

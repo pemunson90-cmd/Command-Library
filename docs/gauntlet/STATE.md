@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-provider-source-integration-254. Updated UTC: 2026-10-15T23:21:04Z.
+Checkpoint: cp-20261015-provider-text-host-255. Updated UTC: 2026-10-15T23:27:34Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-inspect_single_provider_assembled_gate
+consume_native_anthropic_source_facts_then_bound_next_provider_packet
 
-Exact reviewed HTTP/CC/coordinator/root consent UI/app proof integrated through ddff703b. Source HOLD corrections retained. Single local assembled gate pending; worker claims released and originals preserved; all release holds remain.
+CustomHTTPS provider text bounded source/runtime ACK6519bff1:79scoped cases11XML0f/e/s,69unchangedreused+10fresh/774pins. All failure lineage retained; originals preserved/buildslotfree. Continue narrow nativeAnthropic sourcefacts, all final gates open.
 
 Read CURRENT, machine state and task card.
