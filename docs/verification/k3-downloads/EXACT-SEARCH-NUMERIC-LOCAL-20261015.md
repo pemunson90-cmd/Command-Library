@@ -1,5 +1,7 @@
 # Exact numeric threshold comparisons
 
+Current ownership: encoding implementation lives in core:common.DecimalComparisonKeys; the compatible search facade and SearchTruth remain in feature:search. No catalog→search dependency is introduced.
+
 The pure search module now provides SearchNumericComparison and SearchTruth as reviewed in the linked plan. No SQLite REAL conversion occurs. Source keys bound output to76characters, preserve sign/exponent/significand order against every admitted query threshold and distinguish additional nonzero digits after digit64. Keys intentionally cannot establish source equality or arbitrary numeric sorting. Zero/trailing zeros canonicalize; symbolic/absent stats remain UNKNOWN, including under NOT. Oversized source strings fail explicitly, and unsupported direct BigDecimal thresholds are validated before expansion even when source is absent.
 
 Independent rulings_contract_review design ACK and exact-source/public-helper ACK: no blocking findings. Actual reviewer inspected99tests/3XML and log; no reviewer edits/builds. The only dependency is existing pinned sqlite.bundled.jvm added as search testImplementation; no production edge/schema/DI/reader/UI change.
@@ -9,3 +11,6 @@ Actual local `:feature:search:test` SUCCESS13s;6tasks4executed2up-to-date. Three
 Log `/tmp/search-exact-numeric-comparisons.log`; XML retained `/tmp/search-exact-numeric-xml`. No full suite/native rerun for this isolated pure unit under D-28. Earlier1233test combined boundary/frozen9c1573b do not include these new APIs or the preceding rules draft correction. Native run38657175303 continues unchanged, last observed JVM in_progress; no hosted result inferred.
 
 Next: separately review derived projection schema/readiness and bounded resumable legacy-generation backfill, followed by typed SQL execution and real shell integration. Resolve face/printing quantifier scope and currently untyped legality/gamechanger consistency before SQL; contextual owned/deck/price require real sources. No complete CardSearch aggregate or completed-app claim.
+
+
+Ownership follow-up after schema9: moved sourceKey/queryKey bodies unchanged from0b911dd to core:common.DecimalComparisonKeys; retained existing search API as a thin facade and kept boolean/evaluation semantics in search. New search→core:common implementation edge follows allowed ownership; catalog already depends on common. Independent exact-source/public ownership ACK verified both method bodies identical and API compatible. Actual `:core:common:test :feature:search:test` SUCCESS22s/10tasks8executed2up-to-date;8XML123tests0failure/error/skip (24common+99search). Log `/tmp/core-numeric-encoding-move.log`; XML `/tmp/core-numeric-encoding-move-xml`. No schema/executor/DI/source permission changes and no repeat whole/native claim. Next reviewed versioned catalog mapper and bounded preparation.

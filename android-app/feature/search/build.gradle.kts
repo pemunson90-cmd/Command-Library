@@ -5,6 +5,7 @@ plugins {
 kotlin { jvmToolchain(17); explicitApi() }
 dependencies {
     api(project(":core:model"))
+    implementation(project(":core:common"))
     testImplementation(libs.junit)
     testImplementation(libs.sqlite.bundled.jvm)
 }

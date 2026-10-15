@@ -549,3 +549,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T00:05:54Z | codex | cp-20261015-exact-search-numeric-152 | containing commit | Reviewed pure numeric/Kleene foundation99searchtests passed13s/actualSQLite exact comparisons; no executor/schema/DI claim. Frozen9c1573b ONE38657175303 JVM ongoing. Continue projection/backfill design before schema9, fullv1 incomplete.
 
 2026-10-15T00:20:54Z | codex | cp-20261015-search-schema9-native-triage-153 | containing commit | Reviewed empty schema9/all28oldunchanged +native baseline snapshot correction;212storage/lint/nativecompile/appcompile1m29s+11realroot20s pass. Frozen38657175303 failed8legacyDDL assertions/no rerun. Continue core numeric ownership then bounded projection preparation; fullv1 incomplete.
+
+2026-10-15T00:24:19Z | codex | cp-20261015-core-numeric-ownership-154 | containing commit | Reviewed numeric encoding moved unchanged to core:common/compatible search facade;123tests pass22s. Schema9/legacy correction published0b911dd212storage+11rootpass. Continue versioned mapper then bounded preparation; frozen native failure preserved/no rerun/fullv1 incomplete.
