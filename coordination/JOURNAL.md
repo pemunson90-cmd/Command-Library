@@ -629,3 +629,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T10:37:01Z | codex | cp-20261015-collection-bulk-app-integrated-191 | containing commit | ActualMainActivity/AppGraph/Room bulkworkflow exactsource/runtimeACK300tests43XML; producer54overlap/lintACK. PuredraftsourceACK/solebuild74740active, rootphysicalschema-framingnext; publicationblocked/no nativeAPKclaim.
 
 2026-10-15T10:41:20Z | codex | cp-20261015-draft-pure-integrated-192 | containing commit | Exactpureproducer86cf3f5 source/runtimeACK140tests13XML/claimreleased. Bulkappacceptedabb7f28/300tests. Rootphysical2table9indexshapeACK, actualRoomsource/export/migration/framingnext; no buildactive/publicationblocked.
+
+2026-10-15T10:54:50Z | codex | cp-20261015-draft-schema15-193 | containing commit | Accept exact additive schema15 and migration; independent17tests/4XML source-runtimeACK. Root framing/namespace next, no draft adapter/UI yet.
