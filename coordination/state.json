@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261014-rules-draft-native-freeze-151",
-  "verified_base_head": "a35ce66fb16750c31378851a3887731d2d10ef4d",
+  "checkpoint_id": "cp-20261015-exact-search-numeric-152",
+  "verified_base_head": "0ad3911eb4d654449a7ba339b3cade7f13c067c9",
   "stage": "K3 complete offline data and downloads; full Android v1 remains incomplete",
   "status": "in_progress",
   "next_task": "orch-kotlin-k3-offline-data-01",
   "next_step": 3,
-  "first_action": "design-indexed-query-execution-and-monitor-frozen-native",
+  "first_action": "review-search-projection-and-backfill-design",
   "active_tasks": [
     "orch-kotlin-k3-offline-data-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Recovery checkout on separate branch; original agent/cx-native-20261013 and inaccessible old-thread unpublished work preserved.",
-  "review_status": "Changed source/public/security boundaries previously ACK;1233whole/allAPKs passed. Frozen9c1573b ONE native38657175303 in progress. Subsequent internal rules draft24focused/nativecompile passed; next indexed query execution design.",
+  "review_status": "Numeric helper design/exact-source ACK and99searchpass13s; prior1233whole/allAPKs excludes this and rules draft. Frozen9c1573b/ONE38657175303 JVM in_progress. Next derived projection/backfill design review before schema9.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -127,9 +127,10 @@
     "publication_restored": "Environment revision80/restart: normal git push91ce357\u21928908e46 succeeded, remote readback exact. No credentials logged; prior auth-failure evidence retained.",
     "search_rules_boundary": "Source8908e46 fresh0022 whole SUCCESS9m10s/592tasks114executed478up-to-date;129XML1233tests0failure/error/skip, check/lint/debug/alltestAPKs,8ZIP16KiBpass. SEARCH-RULES-INTEGRATION-LOCAL-20261014.md. No native/live-feed/release claim.",
     "search_rules_native_r4": "Frozen9c1573b201fcbd5c5086645eef1b0a9ad09989b9 published/readback exact; compiled inputs equal8908e46, only uncompiled note. ONE Android38657175303 JVM116169581526 in_progress, continuity38657175353 separately queued. No device/pass claim. SEARCH-RULES-NATIVE-R4-20261014.md.",
-    "rules_draft_supersession": "Internal rules draft lifecycle:24tests/2XML0failure/error/skip SUCCESS35s/native Kotlin compile. RULES-DRAFT-SUPERSESSION-LOCAL-20261014.md. Later than1233whole/frozen9c1573b; no repeat full/native."
+    "rules_draft_supersession": "Internal rules draft lifecycle:24tests/2XML0failure/error/skip SUCCESS35s/native Kotlin compile. RULES-DRAFT-SUPERSESSION-LOCAL-20261014.md. Later than1233whole/frozen9c1573b; no repeat full/native.",
+    "exact_search_numeric": "Design/exact-source public-helper ACK; :feature:search:test SUCCESS13s/3XML99tests0failure/error/skip, 4executed2up-to-date. Actual SQLite BINARY all6ops vs BigDecimal/600random+190boundary pairs; pure numeric/Kleene foundation only. EXACT-SEARCH-NUMERIC-LOCAL-20261015.md."
   },
-  "last_completed": "Rules draft24focused/nativecompile passed35s. Published frozen9c1573b ONE Android38657175303 in_progress; source8908e46 whole1233pass retained. Continue indexed query design locally; no native/fullv1/finished APK claim.",
-  "updated_utc": "2026-10-14T23:59:05Z",
+  "last_completed": "Reviewed pure numeric/Kleene foundation99searchtests passed13s/actualSQLite exact comparisons; no executor/schema/DI claim. Frozen9c1573b ONE38657175303 JVM ongoing. Continue projection/backfill design before schema9, fullv1 incomplete.",
+  "updated_utc": "2026-10-15T00:05:54Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

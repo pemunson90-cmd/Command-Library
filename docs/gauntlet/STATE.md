@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261014-rules-draft-native-freeze-151. Updated UTC: 2026-10-14T23:59:05Z.
+Checkpoint: cp-20261015-exact-search-numeric-152. Updated UTC: 2026-10-15T00:05:54Z.
 
 Stage: K3 complete offline data and downloads; full Android v1 remains incomplete. Status: in_progress. Next: orch-kotlin-k3-offline-data-01 step3.
-design-indexed-query-execution-and-monitor-frozen-native
+review-search-projection-and-backfill-design
 
-Rules draft24focused/nativecompile passed35s. Published frozen9c1573b ONE Android38657175303 in_progress; source8908e46 whole1233pass retained. Continue indexed query design locally; no native/fullv1/finished APK claim.
+Reviewed pure numeric/Kleene foundation99searchtests passed13s/actualSQLite exact comparisons; no executor/schema/DI claim. Frozen9c1573b ONE38657175303 JVM ongoing. Continue projection/backfill design before schema9, fullv1 incomplete.
 
 Read CURRENT, machine state and task card.
