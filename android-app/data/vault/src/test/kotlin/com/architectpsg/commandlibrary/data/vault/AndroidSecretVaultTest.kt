@@ -25,7 +25,7 @@ import org.robolectric.annotation.Config
 
 /** Genuine JCE + real task-local files, deliberately not evidence of AndroidKeyStore behavior. */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [36])
+@Config(sdk = [34])
 class AndroidSecretVaultTest {
     @get:Rule val temporary = TemporaryFolder(File(System.getProperty("java.io.tmpdir"), "cl-android-vault-worker-01").apply { mkdirs() })
     private val scope = SecretScope(EntityId("synthetic-vault-host"), Origin("https", "example.test", 443), "key")

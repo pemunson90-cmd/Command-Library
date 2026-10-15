@@ -3,7 +3,7 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "task": "cx-campaign-android-vault-01",
   "owner": "/root/implement_android_vault",
-  "status": "active",
+  "status": "released",
   "base_commit": "6601f557df26ae7d953a957a19636953157738a6",
   "contract_revision": "vault-v1-20261015",
   "branch": "agent/campaign-android-vault-20261015",
@@ -18,5 +18,7 @@
     "android-app/data/vault/src/androidTest/kotlin/com/architectpsg/commandlibrary/data/vault/AndroidSecretVaultInstrumentedTest.kt",
     "coordination/handoffs/cx-campaign-android-vault-01.md"
   ],
-  "build_slot": "NOTGRANTED; ROOTonly"
+  "build_slot": "ROOT combined host/lint/native compilation/actual offline app regression RUNNING; no worker builds",
+  "return_commit": "28e44b33840e5c72a6823aed3acca74a7ad91fbb",
+  "integrated_commit": "e3f0691"
 }
