@@ -446,7 +446,7 @@ private fun DestinationContent(
                 onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
                 onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled,
                 onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) },
-                offlinePromptEnabled = promptDraftState?.session == null,
+                offlinePromptEnabled = promptDraftState?.visible != true && controllers.deckDraftEditor?.hasMutationBarrier != true,
                 onOfflinePrompt = controllers.offlinePrompts?.let { prompt -> { deck ->
                     if (controllers.currentPromptDeck() == deck) prompt.open(deck, controllers.currentPromptSnapshot())
                 } },

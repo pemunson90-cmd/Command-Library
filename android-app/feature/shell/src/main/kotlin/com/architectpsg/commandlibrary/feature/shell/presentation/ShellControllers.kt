@@ -76,7 +76,8 @@ internal class ShellControllers(
     fun currentPromptDeck(): com.architectpsg.commandlibrary.core.model.DeckSnapshot? {
         val state = deckLibrary?.state?.value ?: return null
         return state.selected.takeIf { !state.loadingDetail && !state.pending && !state.mutationBusy &&
-            state.editor == null && state.form == null && deckDraftEditor?.state?.value?.session == null }
+            state.editor == null && state.form == null && deckDraftEditor?.state?.value?.visible != true &&
+            deckDraftEditor?.hasMutationBarrier != true }
     }
     fun currentPromptSnapshot(): com.architectpsg.commandlibrary.core.model.SnapshotReference? {
         val generation = status.state.value.status?.activeGeneration() ?: return null

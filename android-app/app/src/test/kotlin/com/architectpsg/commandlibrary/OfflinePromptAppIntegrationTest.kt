@@ -82,6 +82,11 @@ class OfflinePromptAppIntegrationTest {
     private fun scroll(list: String, tag: String) = await {
         if (!exists(list)) false else try { compose.onNodeWithTag(list).performScrollToNode(hasTestTag(tag)); true } catch (_: AssertionError) { false }
     }
+    private fun navigate(tag: String) {
+        await { exists(tag) || exists("shell-nav-more") }
+        if (!exists(tag)) compose.onNodeWithTag("shell-nav-more").performClick()
+        compose.onNodeWithTag(tag).performClick()
+    }
     private fun click(tag: String) { scroll("offline-prompt-list", tag); compose.onNodeWithTag(tag).assertIsEnabled().performClick() }
     private fun edit(tag: String, value: String) { scroll("offline-prompt-list", tag); compose.onNodeWithTag(tag).performTextReplacement(value) }
     private fun preview(): String {
@@ -101,11 +106,18 @@ class OfflinePromptAppIntegrationTest {
     }
     @Test fun actualOfflineFourModeCopyPasteGroundingPrivateOptInRecreationAndNoWrites() {
         val before = baseline()
-        await { exists("shell-nav-decks") || exists("shell-nav-more") }
-        if (!exists("shell-nav-decks")) compose.onNodeWithTag("shell-nav-more").performClick()
-        compose.onNodeWithTag("shell-nav-decks").performClick()
+        // Observe the shell's real status readback, not only the independently prepared database.
+        navigate("shell-nav-catalog")
+        await { compose.onAllNodesWithText(checkNotNull(snapshot.generation).value).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText(checkNotNull(snapshot.generation).value).performScrollTo().assertIsDisplayed()
+        navigate("shell-nav-decks")
         val row = "deck-open-${deck.id.raw}"
         scroll("deck-library-list",row); compose.onNodeWithTag(row).performClick()
+        // A clean editor close retains its session but must release prompt admission.
+        scroll("deck-library-overview","deck-edit-details"); compose.onNodeWithTag("deck-edit-details").performClick()
+        await { exists("deck-editor-name") }
+        compose.onNodeWithText(compose.activity.getString(com.architectpsg.commandlibrary.feature.shell.R.string.deck_draft_close)).performClick()
+        await { !exists("deck-editor-name") }
         scroll("deck-library-overview","deck-offline-prompt"); compose.onNodeWithTag("deck-offline-prompt").assertIsEnabled().performClick()
         edit("offline-prompt-constraints", "Budget is unknown; do not treat it as free.")
         for (mode in OfflineLabMode.entries) {
