@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T10:54:50Z",
-  "expires_utc": "2026-10-15T11:39:50Z",
-  "checkpoint_id": "cp-20261015-draft-schema15-193",
-  "note": "Root retains shared/schema/contracts/build/DI/navigation/coordination/final merge. Schema15 accepted ce13ecf/17tests exactsource-runtimeACK; draft framing+namespace prerequisite next. No build active. Publication invalidtoken lastremote f0373af; all holds retained."
+  "heartbeat_utc": "2026-10-15T11:00:24Z",
+  "expires_utc": "2026-10-15T11:45:24Z",
+  "checkpoint_id": "cp-20261015-reservation-plain-codec-194",
+  "note": "Root shared/schema/contracts/build/DI/nav/finalmerge. Native plaincodecwriter isolatedbasea6731fe exact4NEWpaths active/no buildslot. Root draftframing next. Namespace191testsACK; schema15accepted17tests. Publicationinvalidtoken/allholds retained."
 }

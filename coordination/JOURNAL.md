@@ -631,3 +631,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T10:41:20Z | codex | cp-20261015-draft-pure-integrated-192 | containing commit | Exactpureproducer86cf3f5 source/runtimeACK140tests13XML/claimreleased. Bulkappacceptedabb7f28/300tests. Rootphysical2table9indexshapeACK, actualRoomsource/export/migration/framingnext; no buildactive/publicationblocked.
 
 2026-10-15T10:54:50Z | codex | cp-20261015-draft-schema15-193 | containing commit | Accept exact additive schema15 and migration; independent17tests/4XML source-runtimeACK. Root framing/namespace next, no draft adapter/UI yet.
+
+2026-10-15T11:00:24Z | codex | cp-20261015-reservation-plain-codec-194 | containing commit | Accept191test namespace gate/public plain contracts; dispatch isolated complete textcodec writer, root continues shared draft framing.
