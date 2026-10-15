@@ -17,6 +17,8 @@ Root owns public contracts/schema/order/config/build/dependencies/app/DI/navigat
 
 ## Latest continuation delta
 
+Current gate: assembled attempt1 exact6622ba9 failed shell productioncompile in40s with nullable savedhead access, ZEROtests/XML; alltrackedAndroidpinsunchanged. Evidence /tmp/cl-plain-deck-import-app-integration-01/evidence/attempt1 logSHA8649bc37ff2de2056a2b4270dc913f702883d2039499be69002fd2dd9b4bacd9. Minimal guardedcheckNotNull fix8234a42 underindependentreview; coherentattempt2next, noUIruntimeacceptance. No activeworkerwriterclaim.
+
 Root active; max3writers INCLUDINGroot/4activechildren allroles/oneROOTGradleslot, no usage event. Reviewed scope map remains64requirements/213parity194retained19skips/35tasks; do not restart planning. No build currently active.
 
 Mark-owned controller SOURCE/RUNTIMEACK at65bffe6f9a471275c71e8c02ec35082e5eabae1e: actual38faithful-port tests2XML0fail/error/skip1m14, all37sourcepins frozen. Producer2f9a412 integrated8f9eaa1; originalclean retained/claimreleased. Evidence /tmp/cl-deck-mark-owned-01/evidence/runtime-attempt1/{source.json,summary.json,gradle.log}; prior source-only HOLD01–03 and prelaunch Python harness parse failure0tests retained separately. No actual UI/AppGraph/SQL acceptance from controller tests.
