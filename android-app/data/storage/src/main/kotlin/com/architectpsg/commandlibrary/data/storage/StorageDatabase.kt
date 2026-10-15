@@ -18,6 +18,7 @@ import com.architectpsg.commandlibrary.data.storage.schema.Migration5To6
 import com.architectpsg.commandlibrary.data.storage.schema.Migration6To7
 import com.architectpsg.commandlibrary.data.storage.schema.Migration7To8
 import com.architectpsg.commandlibrary.data.storage.schema.Migration13To14
+import com.architectpsg.commandlibrary.data.storage.schema.Migration14To15
 import com.architectpsg.commandlibrary.data.storage.schema.Migration12To13
 import com.architectpsg.commandlibrary.data.storage.schema.Migration11To12
 import com.architectpsg.commandlibrary.data.storage.schema.Migration10To11
@@ -161,7 +162,7 @@ public class StorageDatabase private constructor(private val room: StorageSchema
             var database: StorageSchemaDatabase? = null
             try {
                 database = Room.databaseBuilder(context.applicationContext, StorageSchemaDatabase::class.java, fileName)
-                .addMigrations(Migration1To2, Migration2To3, Migration3To4, Migration4To5, Migration5To6, Migration6To7, Migration7To8, Migration8To9, Migration9To10, Migration10To11, Migration11To12, Migration12To13, Migration13To14)
+                .addMigrations(Migration1To2, Migration2To3, Migration3To4, Migration4To5, Migration5To6, Migration6To7, Migration7To8, Migration8To9, Migration9To10, Migration10To11, Migration11To12, Migration12To13, Migration13To14, Migration14To15)
                     .setDriver(driver)
                     .setQueryCoroutineContext(Dispatchers.IO)
                     .build()

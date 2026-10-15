@@ -22,9 +22,9 @@ class DeckSchemaRoomIntegrationTest {
         override fun throwIfCancelled() = Unit
     }
     private fun <T> ok(value: Outcome<T>): T = (value as Outcome.Success).value
-    @Test fun actualRoomFreshAndSchema9And11And12And13UpgradesPreserveOldBytesAndOpenNamedVersions() = runBlocking<Unit> {
+    @Test fun actualRoomFreshAndSchema9And11And12And13And14UpgradesPreserveOldBytesAndOpenDraftTables() = runBlocking<Unit> {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        for (baseVersion in listOf<Int?>(null, 9, 11, 12, 13)) {
+        for (baseVersion in listOf<Int?>(null, 9, 11, 12, 13, 14)) {
             val name = "deck-schema-${UUID.randomUUID()}.db"
             try {
                 if (baseVersion != null) {
@@ -37,8 +37,8 @@ class DeckSchemaRoomIntegrationTest {
                     }
                 }
                 ok(StorageDatabase.open(context, name)).use { db ->
-                    assertEquals(14, ok(db.capabilities(token)).schemaVersion)
-                    for (table in listOf("deck_head", "deck_revision", "deck_operation", "deck_named_version", "deck_undo_link", "deck_undo_state", "inventory_state", "inventory_lot", "inventory_operation", "inventory_group", "inventory_change")) {
+                    assertEquals(15, ok(db.capabilities(token)).schemaVersion)
+                    for (table in listOf("deck_head", "deck_revision", "deck_operation", "deck_named_version", "deck_draft_state", "deck_draft_intent", "deck_undo_link", "deck_undo_state", "inventory_state", "inventory_lot", "inventory_operation", "inventory_group", "inventory_change")) {
                         val rows = ok(db.query(SqlRequest("SELECT count(*) AS n FROM $table", SnapshotList.empty(), 1), token))
                         assertEquals(SqlValue.Integer(0), rows.single().columns.single().value)
                     }
