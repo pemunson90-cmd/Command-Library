@@ -4,6 +4,7 @@ on:
     branches: ['agent/cx-native-*']
     # Scope native checks to their declared component dependencies.
     paths:
+      - '.github/workflows/android-native-focused.yml'
       - 'android-app/data/network/**'
       - 'android-app/data/vault/**'
       - 'android-app/data/storage/**'
@@ -22,7 +23,7 @@ on:
       - 'android-app/gradle/**'
       - 'android-app/gradle.properties'
       - 'android-app/gradlew*'
-    # Workflow-only edits receive static review; dispatch manually when execution steps/gates change.
+    # Native-branch workflow changes also verify the modified provisioning/execution path.
   workflow_dispatch:
     inputs:
       scope:
@@ -75,7 +76,12 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
           SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          "$SDKM" --install emulator platform-tools 'system-images;android-36;default;x86_64' > /dev/null
+          # Reuse a working runner emulator; do not force an unrelated SDK-manager upgrade.
+          if [[ ! -x "$ANDROID_HOME/emulator/emulator" ]] || ! "$ANDROID_HOME/emulator/emulator" -version; then
+            "$SDKM" --install emulator > /dev/null
+            "$ANDROID_HOME/emulator/emulator" -version
+          fi
+          "$SDKM" --install platform-tools 'system-images;android-36;default;x86_64' > /dev/null
           export ANDROID_AVD_HOME="$RUNNER_TEMP/command-library-focused-avd"
           mkdir -p "$ANDROID_AVD_HOME"
           echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
