@@ -27,7 +27,7 @@ Keep this file a replaceable current status. Refresh actual branch/task/lock evi
 
 ## Current root integration snapshot
 
-Root codex-thread-recovery-20261013 retains exclusive life/app/shell/shared/contracts/schema/DI/navigation/integration/final merge authority on agent/cx-thread-recovery-20261013. Current state/task/locks are authoritative. No active native component writer or Gradle job after bounded file-import/output acceptance; next export-controller architecture proposal is read-only, not a claim.
+Root codex-thread-recovery-20261013 retains exclusive life/app/shell/shared/contracts/schema/DI/navigation/integration/final merge authority on agent/cx-thread-recovery-20261013. Current state/task/locks are authoritative. Active native writer /root/implement_deck_edit_store owns ONLY cx-campaign-plain-deck-export-controller-01 exact4NEWpaths in verified /workspace/command-library-plain-deck-export-controller-01 base70989c0; canonical campaign-plain-deck-export-controller.lock is sole authority. No active Gradle job; no workerbuilds. Root retains all shared/composition files.
 
 Accepted bounded HOST file import and selected-document writer atcbff7ac: focused17tests2XML0f/e/s1m47, all651pins frozen, two actual provider/registry/AppGraph/Room import journeys and15 writer cases independently reviewed in distinct scopes. Earlier44/1failed retains unchanged39shell+3priorapp passing evidence separately; overlapping app runs are not additive. Full details/failure lineage: docs/verification/transfer/PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md. UI/app/output original branches/worktrees clean retained, all bounded claims released. No export UI/consumer/fullB08-I01/native acceptance.
 

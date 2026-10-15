@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-import-output-accepted-224",
-  "verified_base_head": "25d4d4849477f2bdb4c51238501a52ef2d21143f",
+  "checkpoint_id": "cp-20261015-export-controller-dispatch-225",
+  "verified_base_head": "70989c014814d80c5e3caa40813d54a5ccefd731",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "prepare-export-controller-packet",
+  "first_action": "dispatch-reviewed-export-controller",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -158,7 +158,7 @@
     "plain_deck_import_app_host": "Acceptedcbff7ac059b70084884a25d50cd797373df37bf0 tree dc6b48199d1718cf00842191bba826996e888086; focused17tests2XML0f/e/s1m47/651pinsfrozen/log1208922e106c45714ec116845ada15015caeafa853e301009721f670a0aae7b2.2actualprovider-registry-AppGraph-Room importjourneys plus15writer tests, separateindependentSOURCE-RUNTIMEACKscopes. BothinstrumentationKotlincompiledONLY. Earlier44/1failed unchanged39shell+3priorapp passes separate; overlapnotadditive. PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md. No fullB08/I01/native/Fold7/finishedAPK.",
     "plain_deck_output_boundary": "Writer616abf39\u21922029b71 exact3NEWpaths/sourceACK; acceptedcbff7ac actual15provider-PFD/fault/cancel/closure tests pass (samefocused17run, notadditional17).651pinsfrozen/independentinventorySOURCE-RUNTIMEACK. No exportconsumer/UI/remote-durability/native acceptance; report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md."
   },
-  "last_completed": "Bounded actual file import and document writer independently accepted at cbff7ac: focused 17 pass, prior 44/1failed lineage retained; next export controller contract proposal",
-  "updated_utc": "2026-10-15T16:01:37Z",
+  "last_completed": "Reviewed exact export-controller producer claimed in verified isolated worktree at accepted70989c0; root retains shared composition, one free local build slot",
+  "updated_utc": "2026-10-15T16:13:38Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
