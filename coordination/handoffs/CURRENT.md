@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-reservation-plain-codec-194
+Checkpoint-ID: cp-20261015-draft-framing-two-writers-195
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. dispatch-plain-codec-continue-draft-framing
+Next step: 3. dispatch-draft-store-continue-app-ui
 
-Updated UTC: 2026-10-15T11:00:24Z
+Updated UTC: 2026-10-15T11:09:28Z
 Status: in_progress; lease: active.
-Verified base: a6731fee4cb264ca3a013674b7a195ebb7b1ffac.
+Verified base: d8991aae3cc225c15dd061c07c8955ebb5df23db.
 
-Accept191test namespace gate/public plain contracts; dispatch isolated complete textcodec writer, root continues shared draft framing.
+Accept117test draft framing; two isolated disjoint completeproducer writers active, root continues actual draft UI/integration criticalpath.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
