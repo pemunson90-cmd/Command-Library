@@ -1,0 +1,33 @@
+# Named-version boundary and package graph prerequisite — 2026-10-15
+
+The existing campaign deck-persistence/deck-ui rows retain B05/B07/B09/S11 and linked parity obligations. This successor does not restart scope or claim a version feature from declarations. Baseline f0373af; accepted collection integration fe58e7d remains unchanged.
+
+## Independent engineering review
+
+Actual Astra high campaign_engineering_review proposed the five-method boundary. A separate actual Astra high inventory_journal_review independently reviewed source/design, initially HOLDing full storage but ACKing only the bounded pure structural prerequisite. Root addressed every finding: restore clock checks latest named capture; indexed reverse latest receipt association detects a missing checkpoint; immutable revision0 creation-time anchor; exact USER/CAPTURE vs RECOVERY/RESTORE source/target/result/request binding; current-to-historical preview semantics. Refreshed design SHA6924c883c38aba200f2d7c1f8eb89f06a49f9a135119de282228f3b64f95f162 ACKed, plus directly-restorable RECOVERY without recursive target-chain walks. The design's later disposition records these rulings; no user permission barrier identified within approved scope.
+
+Actual Astra deck_codec_review independently derived six proposed framing preimages using Python, not production request code. Root and architecture reviewer verified all lengths/hashes/canonical cursor consumption. Durable examples: named-version-proposed-v1-oracles.json. They are design oracles, not executed production tests or storage implementation evidence. Existing request tags0..3/goldens unchanged.
+
+Exact additive complete LocalDeckVersionsContracts.kt SHA b8abaf1ca5d75a93063aca63582b5c885b9be42291a116fc4db136a5d5ee7e1c independently sourceACKed by inventory_journal_review. No backend binding, no placeholder aggregate DeckRepository.
+
+## Structural prerequisite source review
+
+Isolated worker task cx-campaign-deck-graph-01 owns exactly new DeckSnapshotValidator/test/handoff; root owns all shared consumers/contracts. Preflight bounds visited collections/text before existing bounded non-cancellable reducer validation, then checks complete original package references, perinstance pair uniqueness and crossinstance Long conservation. Complete codec remains mandatory representability authority; no duplicate serializer. Empty instances and unknown/source-qualified evidence remain intact.
+
+Independent actual Astra deck_codec_review sourceACK validator707077f82447d5e555583ac08a0937582b9b78bb549f225e996068ebcee89459. Initial testSHA81e9a00d45100e8764b3b89f94081d44e19c5004edc66f3a90f45f23a7891cad; postgate cancellation-oracle strengthening awaits final evidence. No reviewer builds/tests.
+
+Root structural consumer source independently ACKed: storeb4addaf99c493b2bb15c3cf72dc62bc5745cf3a8c9b679fbec3230f8fc49f2ea; librarya6f8f6ca6dee618a392db13d4b71f5f3e4589c82e62c5bda73762a55cd992858; edits321022d6a842626ca478c94b920df1b654a275e144846fc63a01798260b5c28a. Complete original graph validated, duplicate regenerates instance IDs/remaps every contribution target, primitive APPLY remains explicitly restricted even for empty patches, whole undo restores complete graph with existing time policy. Existing blanket package-UNSUPPORTED tests are superseded for whole-manifest operations with stronger preservation/conservation/replay/collision oracles; primitive rejection assertions remain. Manually seeded complete history is labeled an undo oracle, not package-edit implementation evidence.
+
+## Executed runtime boundary
+
+Worker focused pure run attempt1 SUCCESS1m8s56tests6XML zero failures/errors/skips (22new +34existing). Worker strengthened only the long-surrogate cancellation oracle: threshold14 could be met after the scan even with broken modulo polling; threshold50 requires actual repeated midscan polls. Production unchanged. Attempt2 SUCCESS27s56tests6XML zero failures/errors/skips; production unchanged, final testSHA599eab5bda2dc45bebad572dbc66c18a198ce0321b6ae5b7b0b505ab3a13daa0. Independent actual Astra source/runtimeACK. Three-file worker77fc82d integratedf588d0c, original clean worktree/branch retained, claim released. All worker evidence in /tmp/cl-deck-graph-01/evidence and coordination/handoffs/cx-campaign-deck-graph-01.md. Neither attempt failed; the rerun strengthened the test oracle, not production.
+
+Native/Room version migration/backend/S11 composition, durable drafts/autosave, package editing, fullv1/Fold7/release and finished-APK hold remain open. No schema/version backend implemented in this boundary yet; no main merge/release.
+
+Root assembled gate SUCCESS3m30s, **398tests/45XML zero failures/errors/skips**: decks59/7XML, storage336/37XML, app3/1XML. Command `:feature:decks:test :data:storage:testDebugUnitTest :app:testDebugUnitTest --tests '*DeckSchemaRoomIntegrationTest' --offline --console=plain --max-workers=2`, existing local pinned JDK17/SDK/Gradle/dependencies, own temp under /tmp/cl-deck-version-boundary-01/tmp. All three test tasks actually executed. Complete additive version contract compiled. Actual SQLite package create/load/duplicate/remap/replay/collision/conservation/whole-undo tests passed; actual host Room deck/migration integration retained. No compiler/runtime failures or retry in rootgate. Source frozen at Androidtree2df7418c0cdd09595de32ded6b7468461325b05f, root-index-tree c3796951bf4da094b87607b6c975a00164d62415.
+
+Also executed3new CLDR4/5 request cases matching independently derived62/78byte fixedpreimage hashes, exact identity/label/target/revision fencing, strict UTF8/byte bounds. SourceACK actual Astra: requestsfb88366a29ff957aa0e7699f5a033235535f4785b7eb342ca500443a6523718c; tests0009d4acc3420c9e1cba34dd7cc171acf1efc40b2547626f8f1e5b441d967241. Removing two additive methods reproduces prior request file byte-for-byte, old0..3goldens retained. Evidence /tmp/cl-deck-version-boundary-01/evidence/root-r1.log, root-r1-counts.json, root-r1-xml/, root-r1-tested-tree.txt; worker and root reruns are not unique test-count additions.
+
+Next shared work: ordered additive named-version migration + executable metadata/cursor primitives, then complete real backend and actual S11 presentation in disjoint packets. Declared five-method port/framing is not a working version feature. Native/device/process-kill/release evidence remains unrun.
+
+Independent actual Astra inventory_journal_review runtimeACKed archived398tests/45XML and exact finalAndroidtree, confirmed all3tasks executed/SUCCESS3m30s and unchanged reviewed source hashes. No reviewer builds/edits. Schema14/backend/S11/native not accepted by this ACK.

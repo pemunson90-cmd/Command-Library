@@ -202,15 +202,68 @@ class SqlLocalDeckLibraryTest {
         }
     }
 
-    @Test fun packagesAreExplicitlyRejectedWithoutStripping() = runBlocking {
+    // The old blanket UNSUPPORTED policy is superseded only for complete whole-manifest
+    // operations. Primitive package APPLY remains covered separately and is still rejected.
+    @Test fun packageCreateDuplicateAndReplayPreserveCompleteGraphWithFreshLocalIds() = runBlocking {
+        val file = file()
+        HostDeckDatabase(file).use { db ->
+            val library = library(db); val base = rich()
+            val first = base.entries[0].id; val second = base.entries[1].id
+            val packageEntry = EntityId("shared-package-entry")
+            val linked = PackageInstance(EntityId("linked"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED,
+                SnapshotList.of(PackageContribution(packageEntry, first, 2), PackageContribution(packageEntry, second, 3),
+                    PackageContribution(EntityId("other-package-entry"), first, 4)))
+            val copied = linked.copy(id = EntityId("copied"), policy = PackageLinkPolicy.COPY,
+                contributions = SnapshotList.of(PackageContribution(packageEntry, first, 5)))
+            val empty = linked.copy(id = EntityId("empty"), contributions = SnapshotList.empty())
+            val packaged = base.copy(packageInstances = SnapshotList.of(linked, copied, empty))
+            assertEquals(packaged, ok(library.create(packaged, operation(), cancel)))
+            assertEquals(packaged, ok(library.load(packaged.id, cancel)))
+            val copy = ok(library.duplicate(packaged.id, Revision(0), "Package copy", operation("dup"), cancel))
+            val remap = packaged.entries.zip(copy.entries).associate { it.first.id to it.second.id }
+            assertTrue(copy.packageInstances.none { after -> packaged.packageInstances.any { it.id == after.id } })
+            assertEquals(copy.packageInstances.size, copy.packageInstances.map { it.id }.toSet().size)
+            for ((before, after) in packaged.packageInstances.zip(copy.packageInstances)) {
+                assertEquals(before.copy(id = after.id, contributions = SnapshotList.copyOf(before.contributions.map {
+                    it.copy(deckEntryId = remap.getValue(it.deckEntryId))
+                })), after)
+            }
+            assertEquals(packaged.copy(id = copy.id, name = copy.name, createdAt = copy.createdAt, modifiedAt = copy.modifiedAt,
+                entries = copy.entries, packageInstances = copy.packageInstances), copy)
+            val noGeneration = library(db, object : IdSource { override fun nextId(): String = error("replay generated") },
+                object : Clock { override fun utcNow(): UtcTimestamp = error("replay clock"); override fun monotonicNow() = Duration.ZERO })
+            assertEquals(copy, ok(noGeneration.duplicate(packaged.id, Revision(0), "Package copy", operation("dup"), cancel)))
+            assertEquals(2L, db.count("deck_operation"))
+            assertEquals(packaged, ok(library.load(packaged.id, cancel)))
+        }
+        HostDeckDatabase(file, false).use { db -> assertEquals(2, ok(library(db).list(PageRequest(100), cancel)).items.size) }
+    }
+
+    @Test fun malformedCrossInstanceConservationIsInvalidInputAndCorruptWhenStored() = runBlocking {
         HostDeckDatabase(file()).use { db ->
-            val library = library(db); val base = deck()
-            val packaged = base.copy(packageInstances = SnapshotList.of(PackageInstance(EntityId("instance"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED, SnapshotList.empty())))
-            assertEquals(UnavailableReason.UNSUPPORTED, (library.create(packaged, operation(), cancel) as Outcome.Unavailable).reason)
+            val library = library(db); val original = rich().let { it.copy(entries = SnapshotList.of(it.entries.first().copy(quantity = 5))) }
+            val contribution = PackageContribution(EntityId("package-entry"), original.entries.single().id, 3)
+            val instance = PackageInstance(EntityId("one"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED, SnapshotList.of(contribution))
+            val invalid = original.copy(packageInstances = SnapshotList.of(instance, instance.copy(id = EntityId("two"))))
+            failure(library.create(invalid, operation(), cancel), FailureCode.INVALID_INPUT)
             assertEmpty(db)
-            ok(library.create(base, operation(), cancel)); replacePayload(db, packaged)
-            assertEquals(UnavailableReason.UNSUPPORTED, (library.duplicate(base.id, Revision(0), "Copy", operation("dup"), cancel) as Outcome.Unavailable).reason)
-            assertEquals(packaged, ok(library.load(base.id, cancel))); assertEquals(1L, db.count("deck_operation"))
+            ok(library.create(original, operation(), cancel)); replacePayload(db, invalid)
+            failure(library.load(original.id, cancel), FailureCode.CORRUPT_DATA)
+            failure(library.duplicate(original.id, Revision(0), "Copy", operation("dup"), cancel), FailureCode.CORRUPT_DATA)
+            assertEquals(1L, db.count("deck_operation"))
+        }
+    }
+
+    @Test fun generatedPackageInstanceCollisionRollsBackBeforeWriting() = runBlocking {
+        for (collision in listOf("source-instance", "duplicate-generated")) HostDeckDatabase(file()).use { db ->
+            val source = deck().copy(packageInstances = SnapshotList.of(
+                PackageInstance(EntityId("source-instance"), EntityId("package"), EntityId("version"), PackageLinkPolicy.COPY, SnapshotList.empty()),
+                PackageInstance(EntityId("second-instance"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED, SnapshotList.empty())))
+            ok(library(db).create(source, operation(), cancel))
+            val generated = listOf("new-deck", if (collision == "source-instance") collision else "new-instance", "new-instance").iterator()
+            val duplicate = library(db, object : IdSource { override fun nextId() = generated.next() })
+            failure(duplicate.duplicate(source.id, Revision(0), "Copy", operation("dup"), cancel), FailureCode.INTERNAL)
+            assertEquals(1L, db.count("deck_head")); assertEquals(1L, db.count("deck_revision")); assertEquals(1L, db.count("deck_operation"))
         }
     }
 

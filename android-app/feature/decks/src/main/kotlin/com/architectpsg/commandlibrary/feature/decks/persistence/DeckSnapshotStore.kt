@@ -1,7 +1,7 @@
 package com.architectpsg.commandlibrary.feature.decks.persistence
 
 import com.architectpsg.commandlibrary.core.model.*
-import com.architectpsg.commandlibrary.feature.decks.DeckPatchReducer
+import com.architectpsg.commandlibrary.feature.decks.DeckSnapshotValidator
 import com.architectpsg.commandlibrary.feature.decks.persistence.DeckLibraryRows.column
 import com.architectpsg.commandlibrary.feature.decks.persistence.DeckLibraryRows.long
 import com.architectpsg.commandlibrary.feature.decks.persistence.DeckLibraryRows.utf8
@@ -59,9 +59,8 @@ internal class DeckSnapshotStore(private val db: Database, private val codec: De
             else -> reject(FailureCode.CORRUPT_DATA, "Invalid stored deck encoding")
         }
         corrupt(DeckLibraryRows.summary(decoded) == meta.summary)
-        // Validate the common graph without granting package mutation authority or stripping
-        // lineage from the returned value. The reducer explicitly declines package operations.
-        validate(decoded.copy(packageInstances = SnapshotList.empty()), FailureCode.CORRUPT_DATA)
+        // Complete graph validation preserves lineage; primitive mutation authority is separate.
+        validate(decoded, FailureCode.CORRUPT_DATA, cancel)
         return decoded
     }
 
@@ -103,9 +102,9 @@ internal class DeckSnapshotStore(private val db: Database, private val codec: De
         return row.long("epoch").also { corrupt(it > 0) }
     }
     fun writableEpoch(epoch: Long) { if (epoch == Long.MAX_VALUE) reject(FailureCode.PERSISTENCE, "Deck operation sequence is exhausted") }
-    fun validate(snapshot: DeckSnapshot, code: FailureCode) {
+    fun validate(snapshot: DeckSnapshot, code: FailureCode, cancel: CancelToken) {
         identifier(snapshot.name, code); id(snapshot.id, code)
-        val result = DeckPatchReducer.propose(snapshot, DeckPatch(SnapshotList.empty(), ""), snapshot.revision, snapshot.modifiedAt)
+        val result = DeckSnapshotValidator.validate(snapshot, cancel)
         when (result) {
             is Outcome.Success -> Unit
             is Outcome.Unavailable -> throw DeckLibraryProblem(result)

@@ -243,15 +243,46 @@ class SqlLocalDeckEditsTest {
         }
     }
 
-    @Test fun packageBearingCurrentAndUndoTargetAreUnsupportedWithoutLineageStripping() = runBlocking {
+    @Test fun wholeUndoRestoresCompletePackageTargetWithoutMixingGraphs() = runBlocking {
         for (target in listOf(false,true)) HostDeckEditDatabase(file()).use { db ->
             val a=create(db); val b=rename(db,a,"B")
             val packageInstance=PackageInstance(EntityId("instance"),EntityId("package"),EntityId("version"),PackageLinkPolicy.LINKED,SnapshotList.empty())
-            replaceRevision(db,(if(target) a else b).copy(packageInstances=SnapshotList.of(packageInstance)),if(target) 0 else 1)
+            val before = if(target) a.copy(packageInstances=SnapshotList.of(packageInstance)) else a
+            val current = if(target) b else b.copy(packageInstances=SnapshotList.of(packageInstance))
+            replaceRevision(db,before,0); replaceRevision(db,current,1)
             val state=db.state()
-            unavailable(edits(db).undo(a.id,b.revision,op("package-u"),cancel),UnavailableReason.UNSUPPORTED)
-            if(!target) unavailable(edits(db).apply(a.id,patch(),b.revision,op("package-a"),cancel),UnavailableReason.UNSUPPORTED)
-            assertEquals(state,db.state())
+            if(!target) {
+                unavailable(edits(db).apply(a.id,patch(),b.revision,op("package-a"),cancel),UnavailableReason.UNSUPPORTED)
+                assertEquals(state,db.state())
+            }
+            // Supersedes only the former whole-undo UNSUPPORTED expectation: a complete
+            // historical graph can now be restored, while primitive APPLY still cannot edit it.
+            val restored = ok(edits(db).undo(a.id,b.revision,op("package-u"),cancel))
+            content(before,restored)
+            assertEquals(before.packageInstances,restored.packageInstances)
+        }
+    }
+
+    @Test fun wholeUndoPreservesPackageGraphButPrimitiveEvenEmptyApplyRemainsUnsupported() = runBlocking {
+        HostDeckEditDatabase(file()).use { db ->
+            val a = create(db); val b = rename(db, a, "B")
+            val instance = PackageInstance(EntityId("instance"), EntityId("package"), EntityId("version"), PackageLinkPolicy.LINKED,
+                SnapshotList.of(PackageContribution(EntityId("package-entry"), a.entries.single().id, 2)))
+            // Seed a consistent complete historical graph, retaining the actual persisted
+            // revision/link/state machinery. This is an undo oracle, not package-edit acceptance.
+            val before = a.copy(packageInstances = SnapshotList.of(instance))
+            val current = b.copy(packageInstances = before.packageInstances)
+            replaceRevision(db, before, 0); replaceRevision(db, current, 1)
+            val frozen = db.state()
+            unavailable(edits(db).apply(a.id, patch(), b.revision, op("empty-package"), cancel), UnavailableReason.UNSUPPORTED)
+            assertEquals(frozen, db.state())
+            val restored = ok(edits(db).undo(a.id, b.revision, op("package-undo"), cancel))
+            content(before, restored); assertEquals(Revision(2), restored.revision)
+            assertEquals(before.packageInstances, restored.packageInstances)
+            assertEquals(restored, ok(library(db).load(a.id, cancel)))
+            val noClock = edits(db, time { error("replay clock") })
+            assertEquals(restored, ok(noClock.undo(a.id, b.revision, op("package-undo"), cancel)))
+            assertEquals(1L, db.count("deck_undo_link"))
         }
     }
 

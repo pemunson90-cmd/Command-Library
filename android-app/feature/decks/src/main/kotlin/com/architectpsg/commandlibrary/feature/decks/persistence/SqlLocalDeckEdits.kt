@@ -22,7 +22,9 @@ public class SqlLocalDeckEdits(
         writableEpoch(epoch(tx, cancel))
         val source = current(tx, id, cancel)
         if (source.revision != expected) reject(FailureCode.STALE_REVISION, "Deck changed")
-        validate(source, FailureCode.CORRUPT_DATA)
+        validate(source, FailureCode.CORRUPT_DATA, cancel)
+        if (source.packageInstances.isNotEmpty()) throw DeckLibraryProblem(Outcome.Unavailable(
+            UnavailableReason.UNSUPPORTED, "Package mutations require a contribution-safe edit policy"))
         val state = undoRows.state(tx, source, cancel)
         if (patch.edits.isEmpty()) {
             receipt(tx, source, operationId, fingerprint, "APPLY", cancel)
@@ -30,7 +32,7 @@ public class SqlLocalDeckEdits(
         }
         nextRevision(source)
         val candidate = value(DeckPatchReducer.propose(source, patch, expected, now()))
-        validate(candidate, FailureCode.INVALID_INPUT)
+        validate(candidate, FailureCode.INVALID_INPUT, cancel)
         val payload = encode(candidate)
         insertRevision(tx, candidate, payload, cancel)
         updateHead(tx, candidate, expected, cancel)
@@ -47,20 +49,21 @@ public class SqlLocalDeckEdits(
         writableEpoch(epoch(tx, cancel))
         val source = current(tx, id, cancel)
         if (source.revision != expected) reject(FailureCode.STALE_REVISION, "Deck changed")
-        validate(source, FailureCode.CORRUPT_DATA)
+        validate(source, FailureCode.CORRUPT_DATA, cancel)
         val state = undoRows.state(tx, source, cancel)
         val selected = undoRows.validatePointer(tx, source, state.pointer, source.revision.value, cancel)
             ?: throw DeckLibraryProblem(Outcome.Unavailable(UnavailableReason.NOT_FOUND, "No deck edit to undo"))
         val target = historical(tx, id, selected.before, cancel)
-        validate(target, FailureCode.CORRUPT_DATA)
+        validate(target, FailureCode.CORRUPT_DATA, cancel)
         // Validate the pointer that will become visible before publishing it; bounded, no chain walk.
         undoRows.validatePointer(tx, target, selected.previous, selected.before, cancel)
         val revision = nextRevision(source)
         val modifiedAt = now()
-        // Reuse reducer time policy without fabricating an edit or changing its revision semantics.
-        value(DeckPatchReducer.propose(source, DeckPatch(SnapshotList.empty(), ""), expected, modifiedAt))
+        // Whole-snapshot undo preserves the entire package graph; primitive APPLY stays separate.
+        if (modifiedAt.precedes(source.modifiedAt) || modifiedAt.precedes(source.createdAt))
+            reject(FailureCode.INVALID_INPUT, "Modification time precedes the deck timestamps")
         val candidate = target.copy(id = source.id, createdAt = source.createdAt, revision = revision, modifiedAt = modifiedAt)
-        validate(candidate, FailureCode.CORRUPT_DATA)
+        validate(candidate, FailureCode.CORRUPT_DATA, cancel)
         val payload = encode(candidate)
         insertRevision(tx, candidate, payload, cancel)
         updateHead(tx, candidate, expected, cancel)
@@ -81,6 +84,9 @@ public class SqlLocalDeckEdits(
         if (source.revision.value == Long.MAX_VALUE) reject(FailureCode.PERSISTENCE, "Deck revision is exhausted")
         return Revision(source.revision.value + 1)
     }
+    private fun UtcTimestamp.precedes(other: UtcTimestamp): Boolean =
+        epochSeconds < other.epochSeconds || (epochSeconds == other.epochSeconds && nanoAdjustment < other.nanoAdjustment)
+
     private fun now(): UtcTimestamp = try { clock.utcNow() }
     catch (e: CancellationException) { throw e }
     catch (e: Exception) { reject(FailureCode.INTERNAL, "Deck clock failed") }

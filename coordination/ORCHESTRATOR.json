@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T08:20:33Z",
-  "expires_utc": "2026-10-15T09:05:33Z",
-  "checkpoint_id": "cp-20261015-deck-graph-claimed-179",
-  "note": "Root retains shared/schema/contracts/DI/navigation/integration/finalmerge. Collection app accepted683tests plus4 correctedUIreruns, nativecompileonly. Both childclaims released; no active writer/build. Next named deck versions design/review before shared change; allholds retained."
+  "heartbeat_utc": "2026-10-15T08:38:34Z",
+  "expires_utc": "2026-10-15T09:23:34Z",
+  "checkpoint_id": "cp-20261015-deck-graph-integrated-180",
+  "note": "Root retains shared/schema/contracts/DI/nav/finalmerge. Collection683+4reruns accepted; deckgraph/coherentconsumer398tests accepted. Childgraphclaim released/no activewriter/build. Next version schema and isolatedS11 presentation; allholds retained."
 }

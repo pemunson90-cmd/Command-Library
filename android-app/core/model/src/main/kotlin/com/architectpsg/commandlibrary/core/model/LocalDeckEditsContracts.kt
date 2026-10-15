@@ -4,7 +4,8 @@ package com.architectpsg.commandlibrary.core.model
  * Atomic local primitive patches and persistent grouped undo, independent of named versions.
  * Each nonempty accepted patch is one group and one new revision. Empty patches only record
  * an operation receipt. Undo appends a new revision and consumes the latest logical group.
- * Package-bearing content and version/package edits remain explicitly unsupported.
+ * Primitive APPLY of package-bearing content and version/package edits remains explicitly unsupported.
+ * Whole-snapshot undo preserves a complete structurally valid package graph.
  * Reconcile the same operation ID and exact input before mutable-state/CAS/clock checks.
  * Replays return the historical result; conflicting operation reuse is INVALID_INPUT.
  * Cancellation propagates and cannot establish rollback after a durable commit.

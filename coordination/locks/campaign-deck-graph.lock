@@ -5,7 +5,10 @@
   "branch": "agent/campaign-deck-graph-20261015",
   "owner": "/root/implement_deck_edit_store; new isolated attempt",
   "owned_paths": "Exactly new DeckSnapshotValidator.kt + matching test + ownhandoff; all other paths read-only",
-  "status": "active",
+  "status": "released",
   "base_commit": "fe58e7dae8144e9ad62fdcf9170e3769301f2c07",
-  "authority": "Live root canonical claim; no shared persistence/reducer/core transfer"
+  "authority": "Live root canonical claim; no shared persistence/reducer/core transfer",
+  "result_commit": "77fc82d311a7bcd08ac8f21c60d9c37c486e6cc6",
+  "integration_commit": "f588d0c",
+  "verification": "Independent actual Astra source/runtimeACK56tests6XML, production707077/test599eab; root actualstoragegate running"
 }

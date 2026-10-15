@@ -603,3 +603,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T08:16:01Z | codex | cp-20261015-collection-app-integrated-178 | containing commit | Reviewed real collection AppGraph/UI/Room13 integration:683tests plus4 corrected UI reruns; next named deck versions boundary review; native/full acceptance open
 
 2026-10-15T08:20:33Z | codex | cp-20261015-deck-graph-claimed-179 | containing commit | Published collection accepted; independently reviewed pure structural graph packet claimed; namedversion storage review continues, shared consumers root-only
+
+2026-10-15T08:38:34Z | codex | cp-20261015-deck-graph-integrated-180 | containing commit | Reviewed complete package graph and wholedeck consumers398tests pass; completeversionport/framing compiled only; next ordered schema and isolatedS11 presentation

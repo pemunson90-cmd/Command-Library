@@ -29,6 +29,7 @@ public interface LocalDeckLibrary {
     public suspend fun load(id: DeckId, cancel: CancelToken): Outcome<DeckSnapshot>
     /** BINARY identity order, metadata only; new successful operations invalidate old cursors. */
     public suspend fun list(page: PageRequest, cancel: CancelToken): Outcome<Page<DeckSummary>>
-    /** Fresh local deck/entry IDs, remapped overrides, injected current time and revision zero. */
+    /** Fresh local deck/entry/package-instance IDs, remapped overrides and contribution targets,
+     * injected current time and revision zero; package/version identities remain unchanged. */
     public suspend fun duplicate(id: DeckId, expected: Revision, name: String, operationId: EntityId, cancel: CancelToken): Outcome<DeckSnapshot>
 }

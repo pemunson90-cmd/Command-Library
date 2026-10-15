@@ -38,6 +38,18 @@ internal object DeckLibraryRequests {
         update(ByteBuffer.allocate(8).putLong(expected.value).array())
     }
 
+    fun capture(id: DeckId, expected: Revision, label: String): String = digest(4) {
+        frame(utf8(id.source.value, 1024)); frame(utf8(id.raw, 1024))
+        update(ByteBuffer.allocate(8).putLong(expected.value).array())
+        frame(utf8(label, 1024))
+    }
+
+    fun restore(id: DeckId, expected: Revision, targetVersionId: EntityId, recoveryLabel: String): String = digest(5) {
+        frame(utf8(id.source.value, 1024)); frame(utf8(id.raw, 1024))
+        update(ByteBuffer.allocate(8).putLong(expected.value).array())
+        frame(utf8(targetVersionId.value, 1024)); frame(utf8(recoveryLabel, 1024))
+    }
+
     fun utf8(value: String, maximum: Int): ByteArray {
         require(value.isNotBlank() && value.length <= maximum)
         val buffer = Charsets.UTF_8.newEncoder().onMalformedInput(CodingErrorAction.REPORT)

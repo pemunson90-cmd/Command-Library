@@ -18,7 +18,7 @@ public class SqlLocalDeckLibrary(
         id(initial.id); identifier(operationId.value)
         if (initial.id.source != LocalDeckLibraryLimits.SOURCE || initial.revision.value != 0L)
             reject(FailureCode.INVALID_INPUT, "Create requires a local revision zero deck")
-        validate(initial, FailureCode.INVALID_INPUT)
+        validate(initial, FailureCode.INVALID_INPUT, cancel)
         val payload = encode(initial)
         val fingerprint = checked(FailureCode.INVALID_INPUT) { DeckLibraryRequests.create(payload) }
         replay(tx, operationId, fingerprint, "CREATE", cancel)?.let {
@@ -47,8 +47,8 @@ public class SqlLocalDeckLibrary(
         writableEpoch(epoch(tx, cancel))
         val source = current(tx, id, cancel)
         if (source.revision != expected) reject(FailureCode.STALE_REVISION, "Source deck changed")
-        // Validate source before consuming generated values. Packages remain explicitly unsupported.
-        validate(source, FailureCode.CORRUPT_DATA)
+        // Validate complete source before consuming generated values.
+        validate(source, FailureCode.CORRUPT_DATA, cancel)
         val generatedDeck = DeckId(LocalDeckLibraryLimits.SOURCE, generated())
         if (generatedDeck == id || exists(tx, generatedDeck, cancel)) reject(FailureCode.INTERNAL, "Generated deck identity collision")
         val oldEntries = source.entries.map { it.id.value }.toSet()
@@ -58,15 +58,26 @@ public class SqlLocalDeckLibrary(
             if (raw in oldEntries || !newEntries.add(raw)) reject(FailureCode.INTERNAL, "Generated entry identity collision")
             entry.id to EntityId(raw)
         }
+        val oldInstances = source.packageInstances.map { it.id.value }.toSet()
+        val newInstances = mutableSetOf<String>()
+        val packages = SnapshotList.copyOf(source.packageInstances.map { instance ->
+            cancel.throwIfCancelled()
+            val raw = generated()
+            if (raw in oldInstances || !newInstances.add(raw)) reject(FailureCode.INTERNAL, "Generated package instance identity collision")
+            instance.copy(id = EntityId(raw), contributions = SnapshotList.copyOf(instance.contributions.map { contribution ->
+                cancel.throwIfCancelled()
+                contribution.copy(deckEntryId = remap.getValue(contribution.deckEntryId))
+            }))
+        })
         val now = try { clock.utcNow() } catch (e: CancellationException) { throw e } catch (e: Exception) {
             reject(FailureCode.INTERNAL, "Deck clock failed")
         }
-        val candidate = source.copy(id = generatedDeck, name = name, revision = Revision(0), createdAt = now, modifiedAt = now,
+        val candidate = source.copy(id = generatedDeck, name = name, revision = Revision(0), createdAt = now, modifiedAt = now, packageInstances = packages,
             entries = SnapshotList.copyOf(source.entries.map { entry -> entry.copy(id = remap.getValue(entry.id),
                 roleOverrides = SnapshotList.copyOf(entry.roleOverrides.map { override ->
                     override.copy(entryId = override.entryId?.let { remap.getValue(it) })
                 })) }))
-        validate(candidate, FailureCode.INTERNAL)
+        validate(candidate, FailureCode.INTERNAL, cancel)
         persist(tx, candidate, encode(candidate), operationId, fingerprint, "DUPLICATE", cancel)
         candidate
     }
