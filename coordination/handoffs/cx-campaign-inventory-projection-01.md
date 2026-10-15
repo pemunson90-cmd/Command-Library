@@ -12,6 +12,8 @@ Accounting covers source-level element, scalar/byte/field traversal, candidate c
 
 ## Exact verification and lineage
 
+Tested source/test implementation commit `2a489f70c7e9f2e60039ae1077e3efd9da990365` descends directly from exact dispatch base `258e3e36cb81c251871a390ff824ae1a9381b2e1`. Final source hashes were revalidated after this commit; its five source/test files exactly match attempt03. A subsequent handoff-only pin records this exact source commit without changing tested source bytes; final delivery branch/head is returned to root.
+
 Root granted the sole Gradle slot before attempt01 and again for attempt03 after its storage gate. Source was frozen throughout each build. The slot was released after attempt02 and after final attempt03. All attempts used:
 
 `JAVA_HOME=/workspace/.command-library-env/jdk-17.0.16+8 ANDROID_HOME=/workspace/.command-library-env/android-sdk GRADLE_USER_HOME=/workspace/.command-library-env/gradle TMPDIR=/tmp/cl-inventory-projection-worker-01/tmp JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Djava.io.tmpdir=/tmp/cl-inventory-projection-worker-01/tmp" bash android-app/gradlew -p android-app --offline --console=plain --max-workers=2 :feature:collection:test`
