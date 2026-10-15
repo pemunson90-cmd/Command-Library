@@ -651,3 +651,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T12:37:37Z | codex | cp-20261015-draft-overdue-read-repair-202 | containing commit | Attempt03 actual84tests/2failures diagnosed; worker owns coherent overdue-deadline and initial-load exit repair, slot retained idle. Root16source ACK frozen, combined gate pending.
 
 2026-10-15T12:44:44Z | codex | cp-20261015-draft-read-deadline-gate-203 | containing commit | Attempt04 both source reviews ACK, focused gate active; exact failed-source snapshots retained. Root16file app source ACK frozen, actual assembled gate next.
+
+2026-10-15T12:50:14Z | codex | cp-20261015-draft-app-candidate-204 | containing commit | Accepted actor integrated with root16file reviewed app wiring; worker claims released, root reserves sole build slot for actual assembled UI/Room gate.

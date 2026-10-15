@@ -3,12 +3,14 @@
   "orchestrator": "codex-thread-recovery-20261013",
   "agent_task": "cx-campaign-draft-editor-actor-01",
   "owner": "/root/implement_inventory_projection native isolated writer",
-  "status": "active",
+  "status": "released",
   "branch": "agent/campaign-draft-editor-actor-20261015",
   "worktree": "/workspace/command-library-draft-editor-actor-01",
   "base_commit": "Containing reviewed, compiled boundary/claim commit supplied and verified before edits",
   "owned_paths": "Exact4NEW concreteactor/twofocusedtests/handoff paths; existing UI/state/ports/DI/navigation readonly",
   "authority": "Canonical root local claim; root exclusively owns shared UI/DI/integration/final merge",
-  "build_slot": "ACTIVE attempt04 session40655 same4classes, offline no-daemon max2workers; root no Gradle, source frozen",
-  "source_review": "Attempt04 independent actual Astra inventory and campaign source ACK: e053d207/85f2a5dc/fa267b3c,71authoredactorcases, runtime pending"
+  "build_slot": "Worker RELEASED after independently ACKed94tests/4XML/0failures-errors-skips. Root now reserves sole slot for assembled app/UI/Room gate.",
+  "source_review": "Attempt04 independent actual Astra inventory and campaign source ACK: e053d207/85f2a5dc/fa267b3c,71authoredactorcases, runtime pending",
+  "producer_commit": "d2df02b70771ca0aa9ff0f5822ee2c2ee3c757ac",
+  "integration_commit": "f7427f8d2c7c9d6dd3638afb9b4c97c607c954d8"
 }

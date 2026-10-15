@@ -4,8 +4,8 @@
   "session_id": "codex-thread-recovery-20261013",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-15T12:44:44Z",
-  "expires_utc": "2026-10-15T13:29:44Z",
-  "checkpoint_id": "cp-20261015-draft-read-deadline-gate-203",
-  "note": "Actor attempt04 both targeted and complementary source ACK, same4class focused gate ACTIVE40655,71actor+23legacy planned not runtime. Prior attempt03 actual84/2failures heldsource preserved. Root16file app source ACK/frozen, root no Gradle; combined actual app UI/Room gate next after accepted producer. Backend5807a11 final248 ACK; publication invalidtoken/release holds."
+  "heartbeat_utc": "2026-10-15T12:50:14Z",
+  "expires_utc": "2026-10-15T13:35:14Z",
+  "checkpoint_id": "cp-20261015-draft-app-candidate-204",
+  "note": "Actor d2df02b integratedf7427f8 exact4paths/clean retained original/final94tests4XML independent source-runtime ACK, claim released. Root app/UI/Room candidatea4fddd9 sourceACK but runtime unverified; root reserves sole Gradle slot for coherent assembled gate. Accepted SQL backend5807a11 final248 ACK. Publication invalidtoken/all native/Fold7/canonical/finishedAPK holds remain."
 }
