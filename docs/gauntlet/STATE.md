@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-collection-owner-focused-repair-211. Updated UTC: 2026-10-15T13:55:13Z.
+Checkpoint: cp-20261015-collection-owner-accepted-212. Updated UTC: 2026-10-15T14:01:28Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-collection-owner-focused-repair
+collection-owner-accepted
 
-Actual65test/9fail gate preserved; source03 boundedfixture/finishsetup/knownreceiptstatus corrections independentACK withlegacyassertions/inventoryguardsretained. Root59Collection focusedretry+blockedKotlincompile next, app4passedseparate; markownedisolated03source repair ongoing.
+Existingcollection owner independentSOURCE/RUNTIMEACK6b2dd70 actual59pass/4XML plusprior4app/Roomseparate; failed65/9lineagepreserved. Markownedisolated03sourceHOLDrepair04/no build, rootsharedclaimsretained; next exactreviewedproducerthenactualUI integration.
 
 Read CURRENT, machine state and task card.

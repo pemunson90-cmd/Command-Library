@@ -667,3 +667,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T13:44:59Z | codex | cp-20261015-collection-owner-gate-210 | containing commit | Root8path collection owner/fullACK/readback source02 independentbackend+consumerACK after3admission/1UXholds; coherentlocalintegrationgate next. Isolatedmarkowned26authoredtests source01selfrepair pending02review/notintegrated. Rootsolebuildslot/leaseactive.
 
 2026-10-15T13:55:13Z | codex | cp-20261015-collection-owner-focused-repair-211 | containing commit | Actual65test/9fail gate preserved; source03 boundedfixture/finishsetup/knownreceiptstatus corrections independentACK withlegacyassertions/inventoryguardsretained. Root59Collection focusedretry+blockedKotlincompile next, app4passedseparate; markownedisolated03source repair ongoing.
+
+2026-10-15T14:01:28Z | codex | cp-20261015-collection-owner-accepted-212 | containing commit | Existingcollection owner independentSOURCE/RUNTIMEACK6b2dd70 actual59pass/4XML plusprior4app/Roomseparate; failed65/9lineagepreserved. Markownedisolated03sourceHOLDrepair04/no build, rootsharedclaimsretained; next exactreviewedproducerthenactualUI integration.
