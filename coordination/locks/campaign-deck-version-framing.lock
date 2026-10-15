@@ -6,6 +6,9 @@
   "base_commit": "b2ac8de",
   "owner": "/root/implement_deck_edit_store; new isolated pure packet",
   "owned_paths": "Exactly new DeckVersionFraming/test/ownhandoff; no sharedexistingfiles",
-  "status": "active",
-  "authority": "Local live root canonical claim, remote publication auth-blocked; active root lease retained"
+  "status": "released",
+  "authority": "Local live root canonical claim, remote publication auth-blocked; active root lease retained",
+  "result_commit": "e127bd31ff771e9ff9d943727a99c16761f6fb7e",
+  "integration_commit": "48555a6",
+  "verification": "Independent actualAstra source/runtimeACK74tests8XML15new; sourcec3f21bab/testa5c7c7bb unchanged; rootinteropgatepending"
 }

@@ -22,4 +22,4 @@ Evidence: /tmp/cl-deck-schema14-01/evidence/{ksp-r1.log,migration-r1.log,migrati
 
 ## Remaining work
 
-Pure metadata/cursor helper is independently sourceACKed in another isolated task, runtime pending there. Complete LocalDeckVersions backend, shared receipt-kind interoperability, actual AppGraph/S11 composition remain required; no placeholder binding. Native instrumentation/device/process-kill/Fold7/performance/canonical release remain unrun/open; finished-APK hold remains. Publication currently blocked by invalid configured GitHub token; local commits preserved and reconnect requested. No main merge/release.
+Pure metadata/cursor helper subsequently passed source/runtimeACK74tests and root namespace oracle; see NAMED-VERSION-BOUNDARY-20261015.md. Complete LocalDeckVersions backend, shared receipt-kind interoperability, actual AppGraph/S11 composition remain required; no placeholder binding. Native instrumentation/device/process-kill/Fold7/performance/canonical release remain unrun/open; finished-APK hold remains. Publication currently blocked by invalid configured GitHub token; local commits preserved and reconnect requested. No main merge/release.

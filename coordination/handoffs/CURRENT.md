@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-named-version-schema14-183
+Checkpoint-ID: cp-20261015-version-prereqs-integrated-184
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. accept-reviewed-named-version-schema14
+Next step: 3. accept-executable-version-prerequisites
 
-Updated UTC: 2026-10-15T08:53:16Z
+Updated UTC: 2026-10-15T09:01:02Z
 Status: in_progress; lease: active.
-Verified base: 3afad036e3a13c8f655780c06518133667317009.
+Verified base: 48555a65e5525caf3b74b63ba1894b6ca5e328bb.
 
-ActualKSP additive14/reviewed9hosttests pass+nativecompileONLY; twoisolatedwriters continue, solechildframingbuild; publicationauthblockretained
+Schema14/framing74tests/rootinterop1SQLcase reviewed; UIrepair/testwave continues; completebackend exactbase next; authblock retained
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

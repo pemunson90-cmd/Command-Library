@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261015-named-version-schema14-183",
-  "verified_base_head": "3afad036e3a13c8f655780c06518133667317009",
+  "checkpoint_id": "cp-20261015-version-prereqs-integrated-184",
+  "verified_base_head": "48555a65e5525caf3b74b63ba1894b6ca5e328bb",
   "stage": "Retained Android v1 dependency-aware campaign; K3/M2\u2013M9 acceptance open",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "accept-reviewed-named-version-schema14",
+  "first_action": "accept-executable-version-prerequisites",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -20,7 +20,7 @@
     "Publication temporarily blocked: configured GH_TOKEN invalid on b2ac8de push, gh authstatus confirms. Last published f0373af; local commits preserved, reconnect requested; implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "Independent actualAstra schema14/source/runtimeACK9hosttests; root398graph/versionport accepted. Isolatedframing sourceACK/runtimeinprogress, S11UI sourceunderway. No versionbackend/native/release acceptance.",
+  "review_status": "Schema14 source/runtimeACK9hosttests; framing/source/runtimeACK74tests; rootinterop1SQLcaseACK. S11UIcrossformdraftHOLDrepairunderreview/solebuildgranted; complete realbackendnext.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -145,9 +145,10 @@
     "owned_quantity_contract": "ActualAstrahigh exactpublicsource/module/7abstractfixtureACK; compileSUCCESS30s3tasks and runtimepinsreadback4s. NO allocatorimplementation or behavior executed yet; dispatchaftersharedbaseline publication. owned-quantity-boundary.md.",
     "collection_app_integration": "Final Android tree b6b9a485bc7ccbacfcd15d07585f9d9b624a9aa2; see docs/verification/collection/COLLECTION-INTEGRATION-LOCAL-20261015.md. R1 broad683 plus R3 corrected4 reruns passed, production identical; R2 test compile failure retained.",
     "deck_version_boundary": "Androidtree2df7418c0cdd09595de32ded6b7468461325b05f:398tests45XML0fail/error/skip; realSQLitegraph/duplicate/wholeundo +Roomintegration. Completeversionsport/framing declarations only, backend/schema/S11 stillopen. See NAMED-VERSION-BOUNDARY-20261015.md",
-    "named_version_schema14": "ActualKSP14SHA1c36c358...; immutable13,45oldentities except1additiveindex; migration exact8DDL; actualhost9tests3XMLpass+nativeKotlincompileONLY. Androidtreed70247990367eb0526bfb2a79a67288d02312322, independentAstra source/runtimeACK. See NAMED-VERSION-SCHEMA14-LOCAL-20261015.md"
+    "named_version_schema14": "ActualKSP14SHA1c36c358...; immutable13,45oldentities except1additiveindex; migration exact8DDL; actualhost9tests3XMLpass+nativeKotlincompileONLY. Androidtreed70247990367eb0526bfb2a79a67288d02312322, independentAstra source/runtimeACK. See NAMED-VERSION-SCHEMA14-LOCAL-20261015.md",
+    "named_version_framing_interop": "Pureproducer source/runtimeACK74tests8XML15new, e127bd3\u219248555a6; assembledroot1actualSQLiteglobalnamespacecasepass37s/source/runtimeACK tree571b6c4f987e28154451cce4570205f026bc90a9; backendstillnotimplemented"
   },
-  "last_completed": "ActualKSP additive14/reviewed9hosttests pass+nativecompileONLY; twoisolatedwriters continue, solechildframingbuild; publicationauthblockretained",
-  "updated_utc": "2026-10-15T08:53:16Z",
+  "last_completed": "Schema14/framing74tests/rootinterop1SQLcase reviewed; UIrepair/testwave continues; completebackend exactbase next; authblock retained",
+  "updated_utc": "2026-10-15T09:01:02Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }

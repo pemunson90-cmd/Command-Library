@@ -402,6 +402,26 @@ class SqlLocalDeckEditsTest {
         }
     }
 
+    @Test fun namedVersionReceiptKindsShareOperationNamespaceWithoutInvokingClockOrIds() = runBlocking {
+        for (kind in listOf("CAPTURE", "RESTORE")) HostDeckEditDatabase(file()).use { db ->
+            val initial = create(db); val current = rename(db, initial, "B")
+            val revision = if (kind == "CAPTURE") 0 else 1
+            // An existing foreign-capability receipt is enough to reject operation reuse.
+            // This synthetic receipt is not named-version backend integrity evidence.
+            db.sql("INSERT INTO deck_operation(operation_id,request_version,request_sha256,kind,provider,deck_id,result_revision) " +
+                "VALUES('version-operation',1,'${"0".repeat(64)}','$kind','local-decks','deck',$revision)")
+            val before = db.state()
+            val noClock = time { error("conflicting operation clock") }
+            val oldLibrary = SqlLocalDeckLibrary(db, codec, noClock, object : IdSource { override fun nextId(): String = error("conflicting operation ID") })
+            val oldEdits = edits(db, noClock)
+            failure(oldLibrary.create(initial, op("version-operation"), cancel), FailureCode.INVALID_INPUT)
+            failure(oldLibrary.duplicate(initial.id, Revision(0), "Copy", op("version-operation"), cancel), FailureCode.INVALID_INPUT)
+            failure(oldEdits.apply(initial.id, patch(DeckEdit.Rename("C")), Revision(0), op("version-operation"), cancel), FailureCode.INVALID_INPUT)
+            failure(oldEdits.undo(initial.id, current.revision, op("version-operation"), cancel), FailureCode.INVALID_INPUT)
+            assertEquals(before, db.state())
+        }
+    }
+
     private fun encoded(snapshot: DeckSnapshot): Pair<String,String> {
         val bytes=ok(codec.encodeSnapshot(snapshot)).copyBytes()
         return bytes.joinToString("") { "%02x".format(it.toInt() and 255) } to MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it.toInt() and 255) }

@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261015-named-version-schema14-183. Updated UTC: 2026-10-15T08:53:16Z.
+Checkpoint: cp-20261015-version-prereqs-integrated-184. Updated UTC: 2026-10-15T09:01:02Z.
 
 Stage: Retained Android v1 dependency-aware campaign; K3/M2–M9 acceptance open. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-accept-reviewed-named-version-schema14
+accept-executable-version-prerequisites
 
-ActualKSP additive14/reviewed9hosttests pass+nativecompileONLY; twoisolatedwriters continue, solechildframingbuild; publicationauthblockretained
+Schema14/framing74tests/rootinterop1SQLcase reviewed; UIrepair/testwave continues; completebackend exactbase next; authblock retained
 
 Read CURRENT, machine state and task card.

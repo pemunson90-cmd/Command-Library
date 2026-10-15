@@ -49,4 +49,4 @@ No automatic takeover from lease expiry. If two branches claim the same task, st
 
 | campaign-deck-versions-ui | Real S11 save/select/diff/preview/restore presentation | TAKEN native isolated | Completeport sourceACK/compiled; root realbackend/composition prerequisites, no fake binding | [packet](tasks/cx-campaign-deck-versions-ui-01.md) |
 
-| campaign-deck-version-framing | Complete bounded metadata/request/canonical scoped cursor helper | TAKEN native isolated | Reviewed exactbinarycontract; root SQL integrity/schema retained | [packet](tasks/cx-campaign-deck-version-framing-01.md) |
+| campaign-deck-version-framing | Complete bounded metadata/request/canonical scoped cursor helper | DONE scoped producer | e127bd3 integrated48555a6; independentACK74tests, rootinterop1casepass; actualbackendnext | [packet](tasks/cx-campaign-deck-version-framing-01.md) |
