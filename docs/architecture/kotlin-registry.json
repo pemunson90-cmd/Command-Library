@@ -1904,7 +1904,7 @@
         "verification": "authentic E04 fixtures; multiline/BOM/quotes/collector numbers/oversize/cancel/unknown-version; source terms before URL retrieval",
         "integration_owner": "codex-thread-recovery-20261013",
         "status": "application_text_codec_integrated_acceptance_open",
-        "observed_implementation": "Complete application-owned PlainTextDeckListCodec producer aa00e03 integrated287a552, independent actualsource/runtimeACK26tests2XML. Strict bounded UTF8 streaming parse/unresolved physical rows; deterministic all7board/loss-aware renderer. Root combinedscope separate. Vendor authenticfixtures/coverage/CSV/native interchange/TransferService/importUI remain open. Retainedplainimportproducerd55f927\u2192daa9c65 plusrealcodec-validatorports/boundedinput1175ae5 andrealAppGraphRoomcontractfixture SOURCE/RUNTIMEACKc69aae7:35tests3XML0f/e/s51s/645pinsfrozen;29faithfulcontroller+5resource+1actualcompatibility. PLAIN-DECK-IMPORT-BOUNDARY-20261015.md; no actualimportUI acceptance yet.",
+        "observed_implementation": "Application-owned PlainTextDeckListCodec aa00e03\u2192287a552 SOURCE/RUNTIMEACK26puretests. Retained importer/boundedinput/actualcodec-validator-Room boundary c69aae7 SOURCE/RUNTIMEACK35tests3XML. Actualfileimport HOST nowacceptedcbff7ac; see transfer-ui and PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md. Application-ownedformat ONLY; authenticvendorfixtures/CSV/stablenativeinterchange/aggregateTransferService remainopen. No fullB08/I01/native acceptance.",
         "ownership_group": "transfer",
         "resources": [
           "local-gradle-serial"
@@ -1939,8 +1939,8 @@
         ],
         "verification": "all represented identities/boards/quantity retained; unresolved editable; cancel none/commit all; authentic round trips",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "Actualselected-file\u2192newunresolveddeck consumers nowassigned: cx-campaign-plain-deck-import-ui-01 exact4NEWpaths and cx-campaign-plain-deck-import-app-tests-01 exact2NEWpaths, independentpacketREADYACK/exactacceptedbasec69aae7. Rootsharedpicker/deckentry/DI/navigationauthority; no UI/source/runtimeacceptanceyet. OtherCSV/vendor/export/collection/backup-restore/nativeinterchange acceptance remainsopen.",
+        "status": "text_import_host_integrated_acceptance_open",
+        "observed_implementation": "Boundedselected-file\u2192physicalrowreview\u2192newunresolveddeck actualHOST acceptedcbff7ac/tree dc6b48199d1718cf00842191bba826996e888086. Finalfocused17tests2XML0f/e/s1m47 =2actualMainActivity/provider/registry/AppGraph/Room journeys +15newunboundselected-documentwriter tests, bothnativeKotlincompiledONLY/651pinsfrozen/independentSOURCE-RUNTIMEACKscopes. Exactrowtext/visibility, duplicates/boards/quantities/und identity, invalidnosubset, hidden-draftrefusal/discard/cleanadmission, picker cancellation/recreation, onecreate/conservation/independentRoom/list/detail verified. Earlier44/1failed retained;39shell+3otherapp passes unchanged/independentlysourceequivalent; overlappingappcaseNOTadditive. Report PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md. ImportUI/app/outputclaimsreleased/cleanoriginalsretained. Outputwriter is completeinternalcapability, no exportcontroller/UI binding yet. Paste/mapping/resolution/vendorCSV/export/collectiontransfer/backup/nativeinterchange/fullB08-I01/native/Fold7/release remainopen.",
         "ownership_group": "transfer",
         "resources": [
           "local-gradle-serial"

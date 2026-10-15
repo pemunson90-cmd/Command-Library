@@ -691,3 +691,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T15:42:57Z | codex | cp-20261015-output-producer-dispatch-222 | containing commit | Reviewed isolated output producer claimed while root assembled import attempt2 runs; no output binding or runtime acceptance
 
 2026-10-15T15:55:27Z | codex | cp-20261015-import-output-gate-223 | containing commit | Import gate4 44 tests with one final heading visibility failure retained; focused reviewed 15-writer plus two-import gate running, all worker claims released
+
+2026-10-15T16:01:37Z | codex | cp-20261015-import-output-accepted-224 | containing commit | Bounded actual file import and document writer independently accepted at cbff7ac: focused 17 pass, prior 44/1failed lineage retained; next export controller contract proposal

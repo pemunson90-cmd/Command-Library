@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261015-import-output-gate-223
+Checkpoint-ID: cp-20261015-import-output-accepted-224
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. verify-import-output-boundary
+Next step: 3. prepare-export-controller-packet
 
-Updated UTC: 2026-10-15T15:55:27Z
+Updated UTC: 2026-10-15T16:01:37Z
 Status: in_progress; lease: active.
-Verified base: cbff7ac059b70084884a25d50cd797373df37bf0.
+Verified base: 25d4d4849477f2bdb4c51238501a52ef2d21143f.
 
-Import gate4 44 tests with one final heading visibility failure retained; focused reviewed 15-writer plus two-import gate running, all worker claims released
+Bounded actual file import and document writer independently accepted at cbff7ac: focused 17 pass, prior 44/1failed lineage retained; next export controller contract proposal
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

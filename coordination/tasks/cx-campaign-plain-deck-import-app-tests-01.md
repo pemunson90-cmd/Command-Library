@@ -1,3 +1,7 @@
+BOUNDED HOST ACCEPTED:actual2provider-registry-AppGraph-Room importjourneys passed atcbff7ac, finalfocused17/0failed; campaignSOURCE/RUNTIMEACK. Earlierfailedruns retained; claim RELEASED, no fullI01/native. See docs/verification/transfer/PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.
+
+Historical dispatch/source return below:
+
 SOURCE-INTEGRATED / bounded claim RELEASED: exact048fe014df205a4a863b51d7cb4069c32ba902d2→4eb2843, exact2NEWpaths/pins/clean original verified. Independent SOURCE03ACK dcba5fbe including hidden-dirty refusal/recovery and clean admission. Two authored tests/runtime NOTRUN; source01/02 prebuild lineage retained. Root combined gate next.
 
 # Real SAF → new unresolved deck app journeys — attempt01

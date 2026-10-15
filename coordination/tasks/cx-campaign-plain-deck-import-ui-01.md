@@ -1,3 +1,7 @@
+BOUNDED HOST ACCEPTED:5UI cases passed in historical44/1failed gate, unchanged source retained plus finalactual2app journeys passed in focused17. Claim RELEASED; no fullB08/I01/native acceptance. See docs/verification/transfer/PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.
+
+Historical dispatch/source return below:
+
 # Application-owned text-file import presentation — attempt01
 
 Status SOURCE-INTEGRATED / bounded claim RELEASED. Exactreturn f8f8ff6ee39a70d33a22641fb4122f4d71f43931 integrated81db865, exact4NEWpaths/clean original/pins verified; independent inventory_journal_review SOURCEACK. Five host cases authored, runtime/compiler NOTRUN; root combined acceptance pending. Original dispatch: /root/implement_deck_edit_store after independent packet READYACK; no workerbuild permission. Existing execution.transfer-codecs/transfer-ui/deck-ui B08/I01/B01 scope, plan campaign-r1-20261015. Exact accepted base c69aae7c3dbcbb0a797ef2f1fc81ae417c65df25, Androidtree3be6c44a1c5cc2eff317cb1be38a3384f7048ac5: independent SOURCE/RUNTIMEACK35tests3XML0f/e/s51s (29retained-controller,5boundedinput,1realAppGraphcodec-validator-Room contract),645pinsfrozen/nativeKotlincompiledONLY. Complete producer d55f927→daa9c65, real ports/input1175ae5; no actual import UI yet. No toolchain/dependency/schema/contract repin.

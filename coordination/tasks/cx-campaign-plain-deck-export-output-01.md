@@ -1,3 +1,7 @@
+BOUNDED PRODUCER HOST ACCEPTED:15writer cases passed atcbff7ac in focused17; inventorySOURCE/RUNTIMEACK/all651pins frozen. Claim RELEASED. No exportconsumer/UI/native/remote durability acceptance. See docs/verification/transfer/PLAIN-DECK-IMPORT-APP-INTEGRATION-20261015.md.
+
+Historical dispatch/source return below:
+
 SOURCE-INTEGRATED / bounded claim RELEASED: exact616abf39d42ec0762843253f220828a8a32bccf8→2029b71, exact3NEWpaths/pins/clean original verified, independent inventory_journal_review SOURCEACK.15hostcases authored/runtimeNOTRUN; rootproducer gate pending. No outputconsumerbinding/acceptance.
 
 # Selected-document plain-list writer — proposed attempt01
