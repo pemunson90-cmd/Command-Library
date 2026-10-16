@@ -194,8 +194,8 @@ class PromptOverridesAppIntegrationTest {
         assertEquals(saved + (resetMode to reset), independentRows())
         assertEquals(before, baseline())
         BundledSQLiteDriver().open(file.path).use { connection ->
-            assertEquals(listOf(listOf(SqlValue.Integer(18))), connection.rows("PRAGMA user_version"))
-            assertEquals(listOf(listOf(SqlValue.Text(schema(18).getString("identityHash")))), connection.rows(IDENTITY))
+            assertEquals(listOf(listOf(SqlValue.Integer(19))), connection.rows("PRAGMA user_version"))
+            assertEquals(listOf(listOf(SqlValue.Text(schema(19).getString("identityHash")))), connection.rows(IDENTITY))
             val afterObjects = connection.rows(OBJECTS)
             assertEquals(oldObjects, afterObjects.filter { it[1] !in ADDED_OBJECT_NAMES })
             assertEquals(ADDED_OBJECT_NAMES, afterObjects.filter { it !in oldObjects }.map { it[1] }.toSet())
@@ -227,7 +227,7 @@ class PromptOverridesAppIntegrationTest {
         }
     }
     private companion object {
-        val ADDED_OBJECT_NAMES = setOf(SqlValue.Text("prompt_override"), SqlValue.Text("ai_conversation"), SqlValue.Text("index_ai_conversation_change_sequence"), SqlValue.Text("index_ai_conversation_deck"), SqlValue.Text("ai_turn"), SqlValue.Text("index_ai_turn_conversation_ordinal"), SqlValue.Text("index_ai_turn_recovery"))
+        val ADDED_OBJECT_NAMES = setOf(SqlValue.Text("personal_tag_pool"), SqlValue.Text("prompt_override"), SqlValue.Text("ai_conversation"), SqlValue.Text("index_ai_conversation_change_sequence"), SqlValue.Text("index_ai_conversation_deck"), SqlValue.Text("ai_turn"), SqlValue.Text("index_ai_turn_conversation_ordinal"), SqlValue.Text("index_ai_turn_recovery"))
         const val OBJECTS = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' AND name<>'room_master_table' ORDER BY type,name"
         const val IDENTITY = "SELECT identity_hash FROM room_master_table WHERE id=42"
         val LEGACY = listOf("SELECT * FROM life_profile ORDER BY profile_id", "SELECT * FROM provider_profile ORDER BY profile_id")

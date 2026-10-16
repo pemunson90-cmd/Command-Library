@@ -247,8 +247,8 @@ class AiHistoryAppIntegrationTest {
         dismissHistory()
         assertEquals(before, baseline())
         BundledSQLiteDriver().open(file.path).use { connection ->
-            assertEquals(listOf(listOf(SqlValue.Integer(18))), connection.rows("PRAGMA user_version"))
-            assertEquals(listOf(listOf(SqlValue.Text(schema(18).getString("identityHash")))), connection.rows(IDENTITY))
+            assertEquals(listOf(listOf(SqlValue.Integer(19))), connection.rows("PRAGMA user_version"))
+            assertEquals(listOf(listOf(SqlValue.Text(schema(19).getString("identityHash")))), connection.rows(IDENTITY))
             val afterObjects = connection.rows(OBJECTS)
             assertEquals(oldObjects, afterObjects.filter { it[1] !in ADDED })
             assertEquals(ADDED, afterObjects.filter { it !in oldObjects }.map { it[1] }.toSet())
@@ -289,7 +289,7 @@ class AiHistoryAppIntegrationTest {
         const val OBJECTS = "SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT LIKE 'sqlite_%' AND name<>'room_master_table' ORDER BY type,name"
         const val IDENTITY = "SELECT identity_hash FROM room_master_table WHERE id=42"
         val LEGACY = listOf("SELECT * FROM life_profile ORDER BY profile_id", "SELECT * FROM provider_profile ORDER BY profile_id", "SELECT * FROM prompt_override ORDER BY mode")
-        val ADDED = setOf("ai_conversation", "ai_turn", "index_ai_conversation_change_sequence", "index_ai_conversation_deck",
+        val ADDED = setOf("personal_tag_pool", "ai_conversation", "ai_turn", "index_ai_conversation_change_sequence", "index_ai_conversation_deck",
             "index_ai_turn_conversation_ordinal", "index_ai_turn_recovery").map { SqlValue.Text(it) }.toSet()
     }
 }
