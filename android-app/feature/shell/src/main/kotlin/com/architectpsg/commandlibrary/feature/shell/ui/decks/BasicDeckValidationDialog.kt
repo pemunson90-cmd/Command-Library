@@ -55,11 +55,12 @@ internal fun BasicDeckValidationDialog(controller: BasicDeckValidationController
                         val matching = deck.entries.firstOrNull { (it.identity.oracleId as? Knowledge.Known)?.value == source.oracleId }
                         val name = (matching?.identity?.originalName as? Knowledge.Known)?.value ?: source.oracleId.raw
                         val status = (source.status as? Knowledge.Known)?.value ?: LegalityStatus.UNKNOWN
-                        Text(stringResource(R.string.basic_validation_source_row, name, stringResource(when (status) {
+                        val sourceStatus = when (status) {
                             LegalityStatus.LEGAL -> R.string.basic_validation_source_legal
                             LegalityStatus.NOT_LEGAL -> R.string.basic_validation_source_not_legal
                             else -> validationStatusText(status)
-                        }))))
+                        }
+                        Text(stringResource(R.string.basic_validation_source_row, name, stringResource(sourceStatus)))
                     } }
                 }
                 item { TextButton({ action(controller::close) }, modifier = Modifier.heightIn(min = 48.dp).testTag("basic-validation-close")) {
