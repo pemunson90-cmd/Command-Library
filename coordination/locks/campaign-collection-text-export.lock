@@ -1,7 +1,7 @@
 {
   "owner": "/root/review_provider_runtime",
   "orchestrator": "codex-root-replacement-20261015",
-  "status": "active",
+  "status": "released",
   "base_commit": "80e223441730f9b96f3abdab55ce6ea107a91a89",
   "worktree": "/workspace/command-library-collection-text-export-01",
   "branch": "agent/campaign-collection-text-export-20261016",
@@ -10,5 +10,6 @@
     "android-app/feature/collection/src/test/kotlin/com/architectpsg/commandlibrary/feature/collection/PlainCollectionTextExporterTest.kt",
     "coordination/handoffs/cx-campaign-collection-text-export-01.md"
   ],
-  "build_slot": "ROOT ONLY"
+  "build_slot": "ROOT ONLY",
+  "result": "Bounded SOURCE/shared/runtime accepted2432ae54; report docs/verification/collection/PLAIN-TEXT-EXPORT-APP-INTEGRATION-20261016.md. Original drafts/worktrees preserved."
 }

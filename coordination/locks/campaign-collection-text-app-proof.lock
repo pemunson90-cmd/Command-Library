@@ -1,7 +1,7 @@
 {
   "owner": "/root/implement_provider_app_proof",
   "orchestrator": "codex-root-replacement-20261015",
-  "status": "active",
+  "status": "released",
   "base_commit": "9abf6b6f6878ece427b80d3c6585152a2d618e3f",
   "worktree": "/workspace/command-library-collection-text-app-proof-01",
   "branch": "agent/campaign-collection-text-app-proof-20261016",
@@ -9,5 +9,6 @@
     "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/CollectionTextExportAppIntegrationTest.kt",
     "coordination/handoffs/cx-campaign-collection-text-app-proof-01.md"
   ],
-  "build_slot": "ROOT ONLY"
+  "build_slot": "ROOT ONLY",
+  "result": "Bounded SOURCE/shared/runtime accepted2432ae54; report docs/verification/collection/PLAIN-TEXT-EXPORT-APP-INTEGRATION-20261016.md. Original drafts/worktrees preserved."
 }

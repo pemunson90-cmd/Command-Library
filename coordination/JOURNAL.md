@@ -781,3 +781,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-16T01:44:34Z | codex | cp-20261016-basic-legality-host-267 | containing commit | Basic legality bounded host accepted63cases; continue Pat-approved plain-text collection file export, richer formats later
 
 2026-10-16T01:58:45Z | codex | cp-20261016-collection-text-file-proof-268 | containing commit | Approved plain-text collection UI and safety checks pass22cases; actual file-provider proof active, continue implementation
+
+2026-10-16T02:08:31Z | codex | cp-20261016-collection-text-host-269 | containing commit | Approved plain-text collection file export accepted25cases; continue mandatory ordinary artwork and essential consent/setup
