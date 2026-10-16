@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261016-manual-tags-host-261
+Checkpoint-ID: cp-20261016-core-statistics-life-262
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. finish_core_tag_controls_and_analysis_while_ordinary_life_ui_returns
+Next step: 3. integrate_reviewed_core_facts_and_ordinary_app_proof_then_scoped_gates
 
-Updated UTC: 2026-10-16T00:26:04Z
+Updated UTC: 2026-10-16T00:51:07Z
 Status: in_progress; lease: active.
-Verified base: 12c380276f713f9333562923f75e4790b2a7f322.
+Verified base: fa458588a8c3bf947f28e9847ec4b9d56fe1307f.
 
-Required manual-tag pool/bulk host layer independently accepted147cases; preserve failed fixture lineage; continue deck tag controls/analysis and active ordinary life UI without variants.
+Manual tag controls accepted4fresh host cases; required statistics engine and real ordinary life app proof active, source corrections preserved, no optional integrations or repeated approval.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.
