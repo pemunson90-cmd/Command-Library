@@ -1,0 +1,15 @@
+{
+  "owner": "/root/review_provider_runtime",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "63d213e9",
+  "worktree": "/workspace/command-library-deck-facts-01",
+  "branch": "agent/campaign-deck-facts-20261016",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalCatalogDeckFacts.kt",
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/CatalogDeckFactsFields.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalCatalogDeckFactsTest.kt",
+    "coordination/handoffs/cx-campaign-deck-facts-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
