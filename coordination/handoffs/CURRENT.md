@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261016-responses-integration-258
+Checkpoint-ID: cp-20261016-d31-core-priority-259
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. review_responses_returns_then_assembled_host_gate
+Next step: 3. implement_first_release_manual_tags_then_analysis_and_ordinary_life
 
-Updated UTC: 2026-10-16T00:01:00Z
+Updated UTC: 2026-10-16T00:08:02Z
 Status: in_progress; lease: active.
-Verified base: 338940990670054b07baa97782ae926418d08f47.
+Verified base: 7d076eca968b392f321d5ec0b6ae3c1fd2295ef6.
 
-Responses source boundary independently ACK; root client/UI draft source pending; isolated codec and actual app proof active, runtime NOT_RUN, original drafts preserved.
+D31 approval incorporated and independently reviewed release trace reconciled; nearcomplete Responses source/runtime accepted; immediately resume core manualtag implementation, future roadmap preserved.
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

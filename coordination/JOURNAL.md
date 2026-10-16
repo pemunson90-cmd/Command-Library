@@ -761,3 +761,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-15T23:46:19Z | codex | cp-20261015-anthropic-text-host-257 | containing commit | NativeAnthropic bounded source/shared/runtime ACKd96da539:102scopedcases14XML0f/e/s,23networkreused+79fresh/781pins. Original heldSOURCE01cf1e16d preserved/claimsreleased/buildslotfree. Continue narrowResponses sourcefacts; all final holds remain.
 
 2026-10-16T00:01:00Z | codex | cp-20261016-responses-integration-258 | containing commit | Responses source boundary independently ACK; root client/UI draft source pending; isolated codec and actual app proof active, runtime NOT_RUN, original drafts preserved.
+
+2026-10-16T00:08:02Z | codex | cp-20261016-d31-core-priority-259 | containing commit | D31 approval incorporated and independently reviewed release trace reconciled; nearcomplete Responses source/runtime accepted; immediately resume core manualtag implementation, future roadmap preserved.
