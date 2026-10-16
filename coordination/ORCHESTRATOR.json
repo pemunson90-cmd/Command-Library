@@ -4,8 +4,8 @@
   "session_id": "codex-root-replacement-20261015",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-16T01:44:34Z",
-  "expires_utc": "2026-10-16T02:29:34Z",
-  "checkpoint_id": "cp-20261016-basic-legality-host-267",
-  "note": "Root active; ordinary life/statistics/basic legality bounded host accepted8a1479b4. Legality claims released. Pat plain-text v1 export approval recorded; encoder frozen SOURCE review, retained controller draft unwired, next real collection file export. ROOT build slot free, all final release gates retained."
+  "heartbeat_utc": "2026-10-16T01:58:45Z",
+  "expires_utc": "2026-10-16T02:43:45Z",
+  "checkpoint_id": "cp-20261016-collection-text-file-proof-268",
+  "note": "Root active. Accepted life/statistics/basic legality. Plain-text collection SOURCE02ACK and22case controller gatePASS; actualfileappNEW2 active9abf6b6f. Root+1writer, ROOTbuildslotfree. Continue through realfilegate; all final release holds retained."
 }
