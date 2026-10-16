@@ -19,7 +19,8 @@ import com.architectpsg.commandlibrary.feature.shell.ui.problemText
 internal fun ManualTagsDialog(controller: ManualTagsController) {
     val state by controller.state.collectAsState()
     val deck = state.deck ?: return
-    val action: (() -> Unit) -> Unit = { controller.rendered(state, it) }
+    val renderedState = state
+    val action: (() -> Unit) -> Unit = { controller.rendered(renderedState, it) }
     Dialog(onDismissRequest = { action(controller::close) }) {
         Surface(shape = MaterialTheme.shapes.large) {
             Column(Modifier.fillMaxWidth().heightIn(max = 720.dp).padding(16.dp)
