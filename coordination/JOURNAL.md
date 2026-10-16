@@ -763,3 +763,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-16T00:01:00Z | codex | cp-20261016-responses-integration-258 | containing commit | Responses source boundary independently ACK; root client/UI draft source pending; isolated codec and actual app proof active, runtime NOT_RUN, original drafts preserved.
 
 2026-10-16T00:08:02Z | codex | cp-20261016-d31-core-priority-259 | containing commit | D31 approval incorporated and independently reviewed release trace reconciled; nearcomplete Responses source/runtime accepted; immediately resume core manualtag implementation, future roadmap preserved.
+
+2026-10-16T00:16:09Z | codex | cp-20261016-manual-tags-active-260 | containing commit | Required manual tag implementation active: source-reviewed compiled additive schema19 boundary, isolated SQL/planner producers, actual root UI composition source pending; no tests yet.

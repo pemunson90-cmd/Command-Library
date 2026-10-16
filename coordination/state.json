@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261016-d31-core-priority-259",
-  "verified_base_head": "7d076eca968b392f321d5ec0b6ae3c1fd2295ef6",
+  "checkpoint_id": "cp-20261016-manual-tags-active-260",
+  "verified_base_head": "f9e798ec4f73af19c1bb93dcb42e0274ff85b267",
   "stage": "D31 agreed first usable signed Fold7 release; complete future roadmap retained",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "implement_first_release_manual_tags_then_analysis_and_ordinary_life",
+  "first_action": "review_integrate_manual_tag_producers_and_actual_app_gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "D31 approval incorporated6286c9d3; release trace/dependencies feddc28b independentlyACK,64req213parity35tasks preserved. Responses boundedhost6b49f172 source/runtimeACK130cases17XML0f/e/s107fresh23reused. Next core manualtags/analysis/ordinarylife. All safety/device/signing/first-release acceptance open.",
+  "review_status": "D31 reconciled/ACK; Responses boundedhostACK130. Manualtag boundarySOURCE03ACK/sharedcompilePASS7s/schema19additive52oldunchanged; SQLNEW5/plannerNEW3 isolatedactive, rootUI f9e798ec sourcepending/runtimeNOT_RUN. Next producer/app integration gate; ordinarylife ready withoutvariants. Safety/Fold7/signing gates open.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -167,7 +167,7 @@
     "campaign_provider_text": "SOURCE/shared/scopedruntimeACK exact6519bff16b558356d5f1b3c62194c9b516525dcd/tree3cd772d067e712b4f898ae5e4ead9d3157dadea3. Localattempt4SUCCESS21s,79cases11XML0f/e/s:69unchangedAI/network/storage reusedfromattempt3+10freshshell/app,774pins. ActualRoom/MainActivity/AppGraph/coordinator/clientcodec syntheticwire PENDINGbeforePOST/STREAMING/COMPLETE/recreationnoreplay. No native/authenticprovider/fullH02-H08/Fold7/releaseacceptance. PROVIDER-TEXT-APP-INTEGRATION-20261015.md preserves allsource/3failedattempts/repairedtestproxy/exactreturns/drafts.",
     "campaign_anthropic_text": "Exactd96da539d082733c916a6d149a6a4ebdb86d0cc2/tree93b341e027b1b789c330f067ed476ee65ff334c7 SOURCE/shared/scopedruntimeACK. FirstnativegateSUCCESS21s,102cases14XML0f/e/s,781pinsunchanged;23networkreused+79fresh. ActualnativeAppGraph/MainActivity/Room/clientcodec syntheticwire limit77/version/consent/PENDINGbeforewire/nonemptystartprefix/message_stop/COMPLETE/usage12-4-read3/recreationnoreplay; CC/offlinehistoryregressionpassed. ANTHROPIC-TEXT-APP-INTEGRATION-20261015.md preserves exactreturns/sourceHOLDtoSOURCE02/heldsourcecf1e16d/limits. No authenticprovider/terms/billing/native/fullH08componentfidelity/releaseclaim."
   },
-  "last_completed": "D31 approval incorporated and independently reviewed release trace reconciled; nearcomplete Responses source/runtime accepted; immediately resume core manualtag implementation, future roadmap preserved.",
-  "updated_utc": "2026-10-16T00:08:02Z",
+  "last_completed": "Required manual tag implementation active: source-reviewed compiled additive schema19 boundary, isolated SQL/planner producers, actual root UI composition source pending; no tests yet.",
+  "updated_utc": "2026-10-16T00:16:09Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
