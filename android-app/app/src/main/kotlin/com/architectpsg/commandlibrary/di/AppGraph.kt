@@ -99,6 +99,7 @@ internal class AppGraph(
                         secretVault = vault, providerProfiles = providerProfiles, providerProfileOrigin = ProviderProfilePolicy::canonicalOrigin,
                         aiHistory = aiHistory, providerGeneration = AppProviderGenerationAccess(providerProfiles, aiHistory, vault),
                         promptOverrides = SqlLocalPromptOverrides(opened.value, SystemUtcClock),
+                        deckStatistics = com.architectpsg.commandlibrary.feature.decks.LocalDeckStatisticsEngine(AndroidCatalogServices.localDeckFacts(opened.value), catalog),
                         personalTags = com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalPersonalTags(opened.value, SystemUtcClock),
                         ordinaryGames = com.architectpsg.commandlibrary.feature.life.persistence.SqlPersistedGameService(
                             opened.value, LifePayloadCodec(), RandomUuidIdSource, SystemGameRandom,
