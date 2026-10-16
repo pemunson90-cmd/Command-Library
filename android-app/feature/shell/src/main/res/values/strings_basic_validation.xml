@@ -1,0 +1,19 @@
+<resources>
+    <string name="basic_validation_title">Basic deck checks</string>
+    <string name="basic_validation_choose">Choose a format to assess. This does not change your saved deck.</string>
+    <string name="basic_validation_commander">Commander</string>
+    <string name="basic_validation_assess">Check deck</string>
+    <string name="basic_validation_scope">Basic construction checks and installed source card eligibility. Exceptions that cannot be assessed are marked for review. This is not tournament approval.</string>
+    <string name="basic_validation_capture">%1$s · revision %2$d · catalog %3$s</string>
+    <string name="basic_validation_rules">Rules: %1$s</string>
+    <string name="basic_validation_legal">Passed the supported check</string>
+    <string name="basic_validation_not_legal">Issue found</string>
+    <string name="basic_validation_banned">Source reports banned</string>
+    <string name="basic_validation_restricted">Source reports restricted — review required</string>
+    <string name="basic_validation_unknown">Not enough information</string>
+    <string name="basic_validation_review">Review required</string>
+    <string name="basic_validation_source">Installed source card eligibility</string>
+    <string name="basic_validation_source_row">%1$s: %2$s</string>
+    <string name="basic_validation_reference">Rule %1$s</string>
+    <string name="basic_validation_close">Close</string>
+</resources>
