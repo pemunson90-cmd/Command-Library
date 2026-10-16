@@ -12,5 +12,5 @@
     <string name="collection_text_export_written">Collection text written. Your storage provider controls when the file reaches permanent or remote storage.</string>
     <string name="collection_text_export_writing">Writing collection text…</string>
     <string name="collection_text_export_end">End this export</string>
-    <string name="collection_text_export_blocked">Finish or cancel the current collection edit before exporting.</string>
+    <string name="collection_text_export_blocked">Finish or reconcile pending inventory changes before exporting.</string>
 </resources>
