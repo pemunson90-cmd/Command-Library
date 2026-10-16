@@ -100,6 +100,9 @@ internal class AppGraph(
                         aiHistory = aiHistory, providerGeneration = AppProviderGenerationAccess(providerProfiles, aiHistory, vault),
                         promptOverrides = SqlLocalPromptOverrides(opened.value, SystemUtcClock),
                         personalTags = com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalPersonalTags(opened.value, SystemUtcClock),
+                        ordinaryGames = com.architectpsg.commandlibrary.feature.life.persistence.SqlPersistedGameService(
+                            opened.value, LifePayloadCodec(), RandomUuidIdSource, SystemGameRandom,
+                            AndroidLifeClock, ProcessLifeIdentity.id, ProviderId("local-games")),
                         manualTagPlanning = object : com.architectpsg.commandlibrary.feature.shell.ManualTagPlanning {
                             override fun assign(deck: DeckSnapshot, pool: PersonalTagPool, entryIds: SnapshotList<EntityId>, tagIds: SnapshotList<EntityId>): Outcome<DeckPatch> =
                                 com.architectpsg.commandlibrary.feature.decks.ManualDeckTagPlanner.assign(deck, pool, entryIds, tagIds)
