@@ -164,3 +164,8 @@ internal class CollectionTextExportController(
         destinations.clear(); mutable.value = CollectionTextExportState()
     }
 }
+
+/** Export saved state only after pending collection edits and uncertainty are reconciled. */
+internal fun CollectionUiState.canExportCollectionText(): Boolean = inventory?.complete == true && !loading &&
+    !mutationBusy && !pending && !awaitingFresh && !uncertain && form == null && bulkForm == null &&
+    !previewing && !bulkPreviewing && !bulkSelectionPreparing

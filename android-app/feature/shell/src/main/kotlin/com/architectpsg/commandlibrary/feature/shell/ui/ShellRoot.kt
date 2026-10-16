@@ -132,6 +132,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             if (exit.action is DeferredDeckAction.Navigate || exit.action is DeferredDeckAction.OpenVersions) {
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
+                        if (action.destination != ShellDestination.COLLECTION) controllers.collectionTextExport?.hide()
                         if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
                         if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
@@ -145,6 +146,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             }
         }
         LaunchedEffect(visibleDestination, controllers) {
+            if (visibleDestination != ShellDestination.COLLECTION) controllers.collectionTextExport?.hide()
             if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
             if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
@@ -219,6 +221,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 if (importer.state.value.inputName != null) importer.resume() else choosePlainFile()
             }
         } }
+        var pendingCollectionTextExport by rememberSaveable { mutableStateOf<String?>(null) }
         var pendingPlainExport by rememberSaveable { mutableStateOf<String?>(null) }
         // Consume every saved ticket, including cancellation and revoked hidden frames. The
         // controller alone decides whether the frozen preview still authorizes this result.
@@ -229,7 +232,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         val choosePlainExport: (PlainDeckExportPreview) -> Unit = { expected ->
             val exporter = controllers.plainDeckExport
-            if (pendingPlainExport == null && exporter != null) {
+            if (pendingPlainExport == null && pendingCollectionTextExport == null && exporter != null) {
                 val ticket = exporter.requestDestination(expected)
                 if (ticket != null) {
                     pendingPlainExport = ticket
@@ -241,6 +244,26 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                     } catch (_: SecurityException) {
                         pendingPlainExport = null
                         exporter.pickerFailed(ticket, Problem.PERMISSION)
+                    }
+                }
+            }
+        }
+        val collectionTextPicker = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
+            val ticket = pendingCollectionTextExport
+            pendingCollectionTextExport = null
+            if (ticket != null) controllers.collectionTextExport?.pickerResult(ticket, uri?.let { DocumentRef(it.toString()) })
+        }
+        val chooseCollectionText: (CollectionTextExportPreview) -> Unit = { preview ->
+            val exporter = controllers.collectionTextExport
+            if (exporter != null && pendingCollectionTextExport == null && pendingPlainExport == null) {
+                val ticket = exporter.requestDestination(preview)
+                if (ticket != null) {
+                    pendingCollectionTextExport = ticket
+                    try { collectionTextPicker.launch(preview.artifact.fileName) }
+                    catch (_: ActivityNotFoundException) {
+                        pendingCollectionTextExport = null; exporter.pickerFailed(ticket, Problem.UNSUPPORTED)
+                    } catch (_: SecurityException) {
+                        pendingCollectionTextExport = null; exporter.pickerFailed(ticket, Problem.PERMISSION_DENIED)
                     }
                 }
             }
@@ -301,6 +324,10 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 controllers.providerGeneration?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ProviderGenerationDialog(it) }
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 controllers.deckStatistics?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckStatisticsDialog(it) }
+                controllers.collectionTextExport?.let { exporter ->
+                    com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionTextExportSurface(exporter,
+                        chooseCollectionText, pendingCollectionTextExport != null || pendingPlainExport != null)
+                }
                 controllers.basicDeckValidation?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.BasicDeckValidationDialog(it) }
                 controllers.manualTags?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ManualTagsDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
@@ -511,7 +538,10 @@ private fun DestinationContent(
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
-                onMarkOwned = controllers.deckMarkOwned?.let { markOwned -> { id, policy -> markOwned.open(id, policy) } }) }
+                onMarkOwned = controllers.deckMarkOwned?.let { markOwned -> { id, policy -> markOwned.open(id, policy) } },
+                onExportText = controllers.collectionTextExport?.let { exporter -> {
+                    if (it.state.value.canExportCollectionText()) exporter.open()
+                } }) }
         }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
         ShellDestination.SETTINGS -> {

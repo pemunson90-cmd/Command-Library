@@ -34,13 +34,21 @@ internal object CollectionTags {
 /** Lazy rows, retained controller state, and no writes or generated identifiers from composition. */
 @Composable
 internal fun CollectionScreen(controller: CollectionController, widthClass: WidthClass, onBrowseCards: (() -> Unit)? = null,
-    onMarkOwned: ((DeckId, OwnedQuantityPolicy) -> Unit)? = null) {
+    onMarkOwned: ((DeckId, OwnedQuantityPolicy) -> Unit)? = null, onExportText: (() -> Unit)? = null) {
     val state by controller.state.collectAsState()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     var abandon by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(controller) { controller.ensureLoaded() }
     Column(Modifier.fillMaxSize().padding(horizontal = widthClass.gutter), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SectionHeading(stringResource(R.string.collection_title), style = MaterialTheme.typography.headlineMedium)
+        if (onExportText != null) {
+            OutlinedButton(onExportText, enabled = state.canExportCollectionText(),
+                modifier = Modifier.heightIn(min = 48.dp).testTag("collection-text-export-open")) {
+                Text(stringResource(R.string.collection_text_export_title))
+            }
+            if (!state.canExportCollectionText() && state.inventory != null)
+                Text(stringResource(R.string.collection_text_export_blocked))
+        }
         if (widthClass == WidthClass.COMPACT) PrimaryTabRow(tab) {
             Tab(tab == 0, { tab = 0 }, text = { Text(stringResource(R.string.collection_inventory_tab)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("collection-inventory-tab"))
             Tab(tab == 1, { tab = 1 }, text = { Text(stringResource(R.string.collection_deck_tab)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("collection-deck-tab"))
