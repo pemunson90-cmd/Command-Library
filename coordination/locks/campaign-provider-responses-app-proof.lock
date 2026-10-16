@@ -1,0 +1,13 @@
+{
+  "owner": "/root/implement_provider_app_proof",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "e6d7fa5b",
+  "branch": "agent/campaign-provider-responses-app-proof-20261016",
+  "worktree": "/workspace/command-library-provider-responses-app-proof-01",
+  "owned_paths": [
+    "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/ResponsesProviderGenerationAppIntegrationTest.kt",
+    "coordination/handoffs/cx-campaign-provider-responses-app-proof-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
