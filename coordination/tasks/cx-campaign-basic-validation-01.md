@@ -29,3 +29,13 @@ Aggregation: definite construction violations or known source BANNED/NOT_LEGAL y
 ## Next
 
 Independent Astra boundary/policy review; root corrects any blocking ambiguities. Then disjoint exact-base producer packets: local source consensus reader + realSQLite tests; pure/basic service engine + focused tests. Root actual UI, DI and real app proof follow. One assembled dependency risk gate, not per-edit broad suites. All code/tests currently NOT_RUN for this slice. Device/signing/final release gates remain unchanged.
+
+## Latest continuation delta
+
+Boundary/policy/controller independently SOURCE ACK a7277d92; dialog source-date/affected names HOLD corrected2ba752a7 and SOURCE02 ACK. Root boundary/shell compile exactde34c844 PASS2s, no tests. Source reader NEW4 Solmedium and assessment NEW5 Solhigh active isolated exact2ba752a7/canonical packets/locks. Root optional capability/nav compositionceb2cc35 and3 controller oraclesd2d8f05d implemented, runtime NOT_RUN; real AppGraph port remains null/no unfinished controls exposed.
+
+Provenance.version returned by facts/source reader must equal captured installed generation source version, not READY projection version. Reader validates exact discovered direct/member domain; a corruption deleting BOTH relationship paths cannot be excluded without a whole-catalog scan, which this bounded read does not perform. Record this integrity limit, no full-corpus proof. Count/bytes preflight applies before legacy per-printing validation, no unbounded materialization.
+
+Engine intentionally does not invent a text inference/exception whitelist: missing commander text may leave identity exception coverage UNKNOWN, known nonempty unassessed choice-dependent identity REVIEW_REQUIRED (message does not assert a choice exists). Type eligibility can pass independently. Root must judge UX/essential first-release adequacy from actual app results, no full-format or clean legal claim.
+
+Next frozen producer returns -> exact source review/integration -> real DI/factory, then actual MainActivity/AppGraph/Room proof. Suggested synthetic2card source:99 basic Forest MAIN plus1 legendary mono-green commander (sourcelegal both); explicit Commander choice/check100, conservative unsupported coverage visible, source-reported status/date clear. Second journey sourcebanned entry/countviolation yields definite issue alongside review/unknown; missing catalog actiondisabledcaption. Read-only baseline across all saved deck/receipt/undo/version/draft/inventory/settings/profile/game bytes, recreate/close/reopen; no adapter substitutions. Proof assignment waits writer capacity; root+2 writers max3. One assembled source/reducer/service/controller/app gate, final gates unchanged.
