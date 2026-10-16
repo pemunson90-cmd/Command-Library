@@ -10,6 +10,7 @@ import androidx.room3.RoomDatabase
  */
 @Database(
     entities = [
+        PersonalTagPoolEntity::class,
         AiConversationEntity::class,
         AiTurnEntity::class,
         PromptOverrideEntity::class,
@@ -70,5 +71,5 @@ internal abstract class StorageSchemaDatabase : RoomDatabase()
 
 internal object StorageSchema {
     /** Must equal the @Database version above and the highest exported schemas/**/N.json. */
-    const val VERSION: Int = 18
+    const val VERSION: Int = 19
 }
