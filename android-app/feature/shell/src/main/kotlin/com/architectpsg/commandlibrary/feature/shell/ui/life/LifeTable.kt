@@ -37,6 +37,11 @@ internal fun LifeTable(
     onUndo: () -> Unit,
     onOpenLog: () -> Unit,
     modifier: Modifier = Modifier,
+    interactionEnabled: Boolean = true,
+    adjustmentStep: Int = 1,
+    includeAllCommanderSlots: Boolean = false,
+    headerContent: @Composable () -> Unit = {},
+    logEnabled: Boolean = true,
 ) {
     BoxWithConstraints(modifier.fillMaxSize()) {
         val width = WidthClass.of(maxWidth)
@@ -57,14 +62,15 @@ internal fun LifeTable(
                             GameStatus.PAUSED -> R.string.life_status_paused
                             GameStatus.COMPLETED -> R.string.life_status_completed
                         }), stringResource(R.string.life_turn, snapshot.turnNumber.toString()))
-                        OutlinedButton(onClick = onUndo, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.life_undo)) }
-                        OutlinedButton(onClick = onOpenLog, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.life_log)) }
+                        OutlinedButton(onClick = onUndo, enabled = interactionEnabled, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.life_undo)) }
+                        OutlinedButton(onClick = onOpenLog, enabled = logEnabled, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.life_log)) }
                         if (snapshot.clock.mode != SeatClockMode.NONE) {
-                            OutlinedButton(onClick = { onAction(GameAction.ClockPause(!snapshot.clock.paused)) }, modifier = Modifier.heightIn(min = 48.dp)) {
+                            OutlinedButton(onClick = { onAction(GameAction.ClockPause(!snapshot.clock.paused)) }, enabled = interactionEnabled, modifier = Modifier.heightIn(min = 48.dp)) {
                                 Text(stringResource(if (snapshot.clock.paused) R.string.life_clock_resume else R.string.life_clock_pause))
                             }
                         }
                     }
+                    headerContent()
                 }
             }
             if (seats.isEmpty()) item { Text(stringResource(R.string.life_no_seats), style = MaterialTheme.typography.bodyLarge) }
@@ -77,7 +83,14 @@ internal fun LifeTable(
                             snapshot.clock.seats.firstOrNull { it.seatId == seat.id }?.let {
                                 Text(stringResource(R.string.life_clock, it.remaining.toString()), style = MaterialTheme.typography.bodyMedium)
                             }
-                            val counters = snapshot.counters.filter { it.seatId == seat.id && !it.hidden }.sortedBy { if (it.definitionId == lifeDefinitionId && it.commanderSlotId == null) 0 else 1 }
+                            val recorded = snapshot.counters.filter { it.seatId == seat.id }
+                            val missing = if (includeAllCommanderSlots) snapshot.settings.counterDefinitions.filter { it.role == CounterRole.COMMANDER_DAMAGE }.flatMap { definition ->
+                                val siblings = recorded.filter { it.definitionId == definition.id }
+                                val hidden = siblings.isNotEmpty() && siblings.all { it.hidden }
+                                seats.flatMap { it.commanders }.filter { slot -> recorded.none { it.definitionId == definition.id && it.commanderSlotId == slot.id } }
+                                    .map { CounterState(definition.id, seat.id, it.id, definition.initial, hidden) }
+                            } else emptyList()
+                            val counters = (recorded + missing).filter { !it.hidden }.sortedBy { if (it.definitionId == lifeDefinitionId && it.commanderSlotId == null) 0 else 1 }
                             counters.forEach { counter ->
                                 val definition = snapshot.settings.counterDefinitions.firstOrNull { it.id == counter.definitionId }
                                 val sourceSlotId = counter.commanderSlotId
@@ -95,23 +108,27 @@ internal fun LifeTable(
                                     Text(label, style = MaterialTheme.typography.bodyMedium)
                                     Text(counter.value.toString(), style = MaterialTheme.typography.headlineMedium.copy(fontSize = if (counter.definitionId == lifeDefinitionId) 48.sp else 28.sp, lineHeight = if (counter.definitionId == lifeDefinitionId) 56.sp else 36.sp, fontFeatureSettings = "tnum"))
                                     ActionRow {
-                                        val decrease = stringResource(R.string.life_decrease, label, seat.playerName)
-                                        val increase = stringResource(R.string.life_increase, label, seat.playerName)
+                                        val decrease = if (adjustmentStep == 1) stringResource(R.string.life_decrease, label, seat.playerName)
+                                            else stringResource(R.string.ordinary_life_decrease_step, label, seat.playerName, adjustmentStep)
+                                        val increase = if (adjustmentStep == 1) stringResource(R.string.life_increase, label, seat.playerName)
+                                            else stringResource(R.string.ordinary_life_increase_step, label, seat.playerName, adjustmentStep)
                                         OutlinedButton(
-                                            onClick = { onAction(GameAction.AdjustCounter(seat.id, counter.definitionId, counter.commanderSlotId, -1)) },
-                                            enabled = snapshot.status != GameStatus.COMPLETED && (minimum == null || counter.value > minimum),
+                                            onClick = { onAction(GameAction.AdjustCounter(seat.id, counter.definitionId, counter.commanderSlotId, -adjustmentStep)) },
+                                            enabled = interactionEnabled && adjustmentStep > 0 && snapshot.status != GameStatus.COMPLETED &&
+                                                counter.value.toLong() - adjustmentStep >= (minimum ?: Int.MIN_VALUE).toLong(),
                                             modifier = Modifier.heightIn(min = 48.dp).semantics { contentDescription = decrease },
                                         ) { Text(stringResource(R.string.life_minus)) }
                                         Button(
-                                            onClick = { onAction(GameAction.AdjustCounter(seat.id, counter.definitionId, counter.commanderSlotId, 1)) },
-                                            enabled = snapshot.status != GameStatus.COMPLETED && (maximum == null || counter.value < maximum),
+                                            onClick = { onAction(GameAction.AdjustCounter(seat.id, counter.definitionId, counter.commanderSlotId, adjustmentStep)) },
+                                            enabled = interactionEnabled && adjustmentStep > 0 && snapshot.status != GameStatus.COMPLETED &&
+                                                counter.value.toLong() + adjustmentStep <= (maximum ?: Int.MAX_VALUE).toLong(),
                                             modifier = Modifier.heightIn(min = 48.dp).semantics { contentDescription = increase },
                                         ) { Text(stringResource(R.string.life_plus)) }
                                     }
                                 }
                             }
                             if (snapshot.activeSeatId != seat.id && snapshot.status != GameStatus.COMPLETED) {
-                                OutlinedButton(onClick = { onAction(GameAction.SwitchTurn(seat.id)) }, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.life_switch, seat.playerName)) }
+                                OutlinedButton(onClick = { onAction(GameAction.SwitchTurn(seat.id)) }, enabled = interactionEnabled, modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.life_switch, seat.playerName)) }
                             }
                         }
                     }
