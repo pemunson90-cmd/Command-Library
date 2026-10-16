@@ -63,6 +63,9 @@ public class AndroidCatalogServices private constructor(
         /** Pure installed Oracle reader; no acquisition, transport or projection mutation. */
         public fun localOracles(database: Database): CatalogOracleLookup = LocalCatalogIdentities(database)
 
+        /** Qualified source-reported extras over actual validated local identities; no wire work. */
+        public fun localDeckFacts(database: Database): CatalogDeckFactsLookup = LocalCatalogDeckFacts(database)
+
         /** Pure local bounded preparation. Caller owns database/clock; no transport/job recovery. */
         public fun localCardQuery(database: Database, compiler: CatalogQueryCompiler): LocalCardQuery =
             LocalPreparedCardQuery(database, compiler)
