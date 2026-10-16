@@ -1,0 +1,19 @@
+# Deck statistics actual app proof — source return
+
+## Latest continuation delta
+
+SOURCE01 frozen NEW2 only on `agent/campaign-deck-statistics-app-proof-20261016`, exact base `d89e25abca05dc18b255949f1dfddf515b134d1f`, worktree `/workspace/command-library-deck-statistics-app-proof-01`. Test `android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/DeckStatisticsAppIntegrationTest.kt` SHA-256 `ab01a23cc9f58aa0e983a9db947a418e964de050ddf01fc61f3a7929454335aa`. No commits/push/product/shared/old-test writes. Ordinary-life proof and all original worktrees/drafts remain untouched.
+
+Two authored SDK34 Robolectric cases use actual MainActivity/cached AppGraph/Room/import/facts/engine/dialog without replacing adapters. Outer RuleChain explicitly imports only for the named positive case before activity creation, so shell status starts at the real imported generation. Both cases seed a real saved deck with private notes, unrelated role overrides and explicit manual Ramp/Draw labels. The baseline deckStatistics port is intentionally null until root binds the reviewed real engine: test setup requires non-null and does not inject a substitute or alter product exposure.
+
+No-catalog case requires the real Statistics control disabled with visible Install-English-data-in-Catalog caption, no silent enabled action/dialog and no state writes. Positive case selects a clearly synthetic three-card JSON corpus through actual CatalogImport: MAIN Land4/MV0/empty cost/reportedG, MAIN Sorcery2/MV2/{1}{G}/one source token reference, SIDEBOARD Creature1/MV3/{1}{G/U}{G/P}. No prepared QueryAst projection, source download or name guessing is used.
+
+Direct actual statistics-port assertions require MAIN6 and nonland mean2/denominator2; both boards7, curve0:4/2:2/3:1, known average1/denominator7 and nonland DECIMAL1287/3/denominator3; type countsLand4/Sorcery2/Creature1; literal braced symbols {1}:3/{G}:2/{G/U}:1/{G/P}:1; reported-landG4 without hybrid expansion or color-identity inference; exact source token printing/component/name/type once; zero unknown counters and manual tag coverage Ramp6/Draw3. AND tags select Sorcery2; ANY selects7 once. Empty explicit entry restriction returns0 with Unknown average/denominator0.
+
+Actual dialog assertions show policy/unknown counts/known denominators, hybrid and Phyrexian alternatives, reported-production conditionality, overlapping-tag and token direction/quantity caveats. Board/tag ALL→ANY/explicit entry-mode controls exercise6→7→2→7→0→4→0→1 counts. Activity recreation retains selected SIDEBOARD/captured result1; closing and reopening reads the default MAIN6 result, with no mutations.
+
+Before/after checks include exact deck/library/version summaries, inventory/settings/catalog status/personal pool/provider profiles. Independent Room reads verify the deck plus bounded full rows including deck heads/revisions/operation receipts/undo links+state/named versions/drafts, catalog generations/active pointers/source receipts/Oracle+printing+face payloads and printing memberships. This is authored domain/row conservation, not an executed physical acceptance claim.
+
+Verification: source inspection and whitespace checks only; builds/compiler/tests/runtime/network **NOT_RUN**, as assigned. Actual engine source/binding is separately pending at this baseline. No fake analysis result, authentic-corpus/source completeness, token creation amount, guaranteed mana, price/recommendation/full B03/native/Fold7/signing/release claim. No new test framework or product selectors required.
+
+Next: independent exact NEW2 source review; root byte-checked integration with the actual reviewed engine binding; one coherent facts/math/controller/actual-app risk gate. Preserve all deterministic math, source qualification, filter overlap/empty selection, disabled admission, recreation and no-write assertions. Root owns sole build slot/shared integration/commit. Worker source frozen pending review.
