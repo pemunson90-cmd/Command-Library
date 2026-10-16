@@ -263,7 +263,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                     catch (_: ActivityNotFoundException) {
                         pendingCollectionTextExport = null; exporter.pickerFailed(ticket, Problem.UNSUPPORTED)
                     } catch (_: SecurityException) {
-                        pendingCollectionTextExport = null; exporter.pickerFailed(ticket, Problem.PERMISSION_DENIED)
+                        pendingCollectionTextExport = null; exporter.pickerFailed(ticket, Problem.PERMISSION)
                     }
                 }
             }
@@ -536,11 +536,11 @@ private fun DestinationContent(
         ShellDestination.LIFE -> controllers.ordinaryLife?.let { life ->
             com.architectpsg.commandlibrary.feature.shell.ui.life.OrdinaryLifeScreen(life, widthClass, modifier)
         }
-        ShellDestination.COLLECTION -> controllers.collection?.let {
-            Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
+        ShellDestination.COLLECTION -> controllers.collection?.let { collection ->
+            Box(modifier) { CollectionScreen(collection, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
                 onMarkOwned = controllers.deckMarkOwned?.let { markOwned -> { id, policy -> markOwned.open(id, policy) } },
                 onExportText = controllers.collectionTextExport?.let { exporter -> {
-                    if (it.state.value.canExportCollectionText()) exporter.open()
+                    if (collection.state.value.canExportCollectionText()) exporter.open()
                 } }) }
         }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
