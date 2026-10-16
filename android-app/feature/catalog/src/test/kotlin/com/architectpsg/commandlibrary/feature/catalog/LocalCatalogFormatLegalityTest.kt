@@ -82,7 +82,7 @@ class LocalCatalogFormatLegalityTest {
             db.beforeQuery = { request ->
                 if (request.statement.contains("ORDER BY pr.printing_id LIMIT :limit")) {
                     pages++
-                    assertEquals(128, request.maxRows)
+                    assertEquals(100, request.maxRows)
                 }
             }
             assertEquals(Knowledge.Known(LegalityStatus.LEGAL), read(db, g).bulkValue().status)

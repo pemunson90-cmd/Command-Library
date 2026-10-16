@@ -189,6 +189,6 @@ internal class LocalCatalogFormatLegality(private val database: Database) : Cata
     private companion object {
         val SOURCE = ProviderId("scryfall")
         const val MAX_PRINTINGS = 10_000
-        const val PAGE = 128
+        const val PAGE = PageRequest.MAX_LIMIT
     }
 }
