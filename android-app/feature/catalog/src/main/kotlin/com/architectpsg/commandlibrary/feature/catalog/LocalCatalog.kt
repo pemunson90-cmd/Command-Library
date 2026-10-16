@@ -270,7 +270,18 @@ private suspend fun DbTransaction.read(request: SqlRequest, cancel: CancelToken)
 private fun RowData.provenance(): Provenance {
     val provider = ProviderId(text("provider"))
     val date = SourceMetadataCodec.sourceDate(optionalText("notice_payload"))
-    return Provenance(provider, optionalText("source_uri")?.let(::ResourceUri), Knowledge.Unknown("Source version not supplied", SnapshotList.empty()), date,
+    val unspecified: Knowledge<String> = Knowledge.Unknown("Source version not supplied", SnapshotList.empty())
+    val version = optionalText("source_payload")?.let { payload ->
+        val stored = BulkSourceEnvelope.decode(payload)
+        require(stored.source.provider == provider && stored.source.contentUri.value == text("content_uri") &&
+            stored.proof.rawHash == ContentHash("SHA-256", text("content_sha256")) &&
+            stored.proof.rawBytes == long("observed_bytes") &&
+            stored.source.inputKind.name == text("input_kind") &&
+            stored.source.verifiedArtifact?.jobId?.value == optionalText("artifact_job_id"))
+        stored.source.verifiedArtifact?.provenance?.sourceVersion ?: unspecified
+    } ?: unspecified
+    require(version.knownOrNull() == optionalText("source_version"))
+    return Provenance(provider, optionalText("source_uri")?.let(::ResourceUri), version, date,
         UtcTimestamp(long("observed_at_epoch_seconds"), long("observed_at_nano").toInt()), Knowledge.Unknown("Effective date not supplied", SnapshotList.empty()),
         GenerationId(text("generation_id")), ContentHash("SHA-256", text("content_sha256")), SourceMetadataCodec.notice(optionalText("notice_payload")))
 }
