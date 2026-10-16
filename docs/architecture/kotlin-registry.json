@@ -1737,8 +1737,8 @@
         ],
         "verification": "known good/bad/unknown per actual format; basic/text exceptions/pairs/companion/limited pools; no false legal",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "custom_board_checks_host_integrated_acceptance_open",
-        "observed_implementation": "Actual saved-deck user-defined board-size checks integrated:bounded helper10tests at4e1adbe; unchanged helper plus retained controller3/actualapp1 atd471e34 pass. SOURCE ACK; original shell helper-name collision and source-only inputrejection HOLD preserved. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md. Official/versioned registry/cardlegality/remaining predicates and persisted custom definitions/native/fullB06 remain open.",
+        "status": "basic_commander_host_integrated_acceptance_open",
+        "observed_implementation": "Actual saved-deck user-defined board-size checks integrated:bounded helper10tests at4e1adbe; unchanged helper plus retained controller3/actualapp1 atd471e34 pass. SOURCE ACK; original shell helper-name collision and source-only inputrejection HOLD preserved. BOARD-SIZE-CHECKS-APP-INTEGRATION-20261015.md. Official/versioned registry/cardlegality/remaining predicates and persisted custom definitions/native/fullB06 remain open. D31 explicit basic Commander checks bounded host accepted8a1479b4/treed9f09ccd:63cases9XML0f/e/s23s838pins,26reused37fresh, independent SOURCE/shared/runtime ACK. Actual source consensus/qualified basic checks/unknown-versus-review/definite count-source issues/explicitformat/recreation/no datawrites. BASIC-LEGALITY-APP-INTEGRATION-20261016.md preserves source holds/failure/diagnostic/page100/versionfix evidence. Full generic formats/exceptions/native/release open.",
         "ownership_group": "validation",
         "resources": [
           "local-gradle-serial"

@@ -1,14 +1,14 @@
 # CURRENT
 
-Checkpoint-ID: cp-20261016-basic-legality-proof-266
+Checkpoint-ID: cp-20261016-basic-legality-host-267
 
 Next task: orch-android-v1-campaign-01
-Next step: 3. review_frozen_legality_reader_then_integrate_engine_and_real_app_proof
+Next step: 3. integrate_reviewed_plain_collection_text_and_real_explicit_file_export
 
-Updated UTC: 2026-10-16T01:25:49Z
+Updated UTC: 2026-10-16T01:44:34Z
 Status: in_progress; lease: active.
-Verified base: f118c86903c21daec6af74f7b9fbdb0d329f6eb8.
+Verified base: 8a1479b443c4ca332e864fb1f7725aff5222972c.
 
-Basic legality reader frozen under review; actual app proof assigned as writer slot freed; implementation continues
+Basic legality bounded host accepted63cases; continue Pat-approved plain-text collection file export, richer formats later
 
 Read task card and latest gate report for commands/evidence. Regular-chat packets: coordination/chat-handoffs/README.md. No unrun application/device check is a pass.

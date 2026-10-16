@@ -777,3 +777,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-16T01:17:12Z | codex | cp-20261016-basic-legality-producers-265 | containing commit | First-release basic legality contract and UI implemented/source reviewed; bounded compile passed; isolated real source and engine producers active
 
 2026-10-16T01:25:49Z | codex | cp-20261016-basic-legality-proof-266 | containing commit | Basic legality reader frozen under review; actual app proof assigned as writer slot freed; implementation continues
+
+2026-10-16T01:44:34Z | codex | cp-20261016-basic-legality-host-267 | containing commit | Basic legality bounded host accepted63cases; continue Pat-approved plain-text collection file export, richer formats later

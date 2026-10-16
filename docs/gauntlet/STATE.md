@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261016-basic-legality-proof-266. Updated UTC: 2026-10-16T01:25:49Z.
+Checkpoint: cp-20261016-basic-legality-host-267. Updated UTC: 2026-10-16T01:44:34Z.
 
 Stage: D31 agreed first usable signed Fold7 release; complete future roadmap retained. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-review_frozen_legality_reader_then_integrate_engine_and_real_app_proof
+integrate_reviewed_plain_collection_text_and_real_explicit_file_export
 
-Basic legality reader frozen under review; actual app proof assigned as writer slot freed; implementation continues
+Basic legality bounded host accepted63cases; continue Pat-approved plain-text collection file export, richer formats later
 
 Read CURRENT, machine state and task card.
