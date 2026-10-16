@@ -1,0 +1,15 @@
+{
+  "owner": "/root/review_provider_runtime",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "2ba752a7001fb9d8d6470b96c7543156aecfdcc4",
+  "worktree": "/workspace/command-library-basic-legality-reader-01",
+  "branch": "agent/campaign-basic-legality-reader-20261016",
+  "owned_paths": [
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalCatalogFormatLegality.kt",
+    "android-app/feature/catalog/src/main/kotlin/com/architectpsg/commandlibrary/feature/catalog/CatalogLegalityEvidence.kt",
+    "android-app/feature/catalog/src/test/kotlin/com/architectpsg/commandlibrary/feature/catalog/LocalCatalogFormatLegalityTest.kt",
+    "coordination/handoffs/cx-campaign-basic-legality-reader-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}

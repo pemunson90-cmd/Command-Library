@@ -1,0 +1,16 @@
+{
+  "owner": "/root/implement_responses_codec",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "2ba752a7001fb9d8d6470b96c7543156aecfdcc4",
+  "worktree": "/workspace/command-library-basic-validation-engine-01",
+  "branch": "agent/campaign-basic-validation-engine-20261016",
+  "owned_paths": [
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/LocalBasicDeckValidationEngine.kt",
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/BasicCommanderChecks.kt",
+    "android-app/feature/decks/src/test/kotlin/com/architectpsg/commandlibrary/feature/decks/LocalBasicDeckValidationEngineTest.kt",
+    "android-app/feature/decks/src/test/kotlin/com/architectpsg/commandlibrary/feature/decks/BasicCommanderChecksTest.kt",
+    "coordination/handoffs/cx-campaign-basic-validation-engine-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
