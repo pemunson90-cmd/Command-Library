@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261016-manual-tags-active-260",
-  "verified_base_head": "f9e798ec4f73af19c1bb93dcb42e0274ff85b267",
+  "checkpoint_id": "cp-20261016-manual-tags-host-261",
+  "verified_base_head": "12c380276f713f9333562923f75e4790b2a7f322",
   "stage": "D31 agreed first usable signed Fold7 release; complete future roadmap retained",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "review_integrate_manual_tag_producers_and_actual_app_gate",
+  "first_action": "finish_core_tag_controls_and_analysis_while_ordinary_life_ui_returns",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -19,7 +19,7 @@
     "Full live ruling feed validation needs supported Scryfall host access; current enforced environment policy denies it. Local implementation continues."
   ],
   "worktree_mode": "Root continuation preserved; D29 pilot gets one verified Git worktree per bounded component writer. Root serializes Git metadata/build slot; historical worktrees untouched.",
-  "review_status": "D31 reconciled/ACK; Responses boundedhostACK130. Manualtag boundarySOURCE03ACK/sharedcompilePASS7s/schema19additive52oldunchanged; SQLNEW5/plannerNEW3 isolatedactive, rootUI f9e798ec sourcepending/runtimeNOT_RUN. Next producer/app integration gate; ordinarylife ready withoutvariants. Safety/Fold7/signing gates open.",
+  "review_status": "D31 mapped/ACK; manualtags layer12c38027 SOURCE/runtimeACK147cases12XML0f/e/s143reused4fresh803pins, failures retained. Allmanualclaimsreleased; ordinarylife isolatedUIactive24dfc881. Next requiredcoretagcontrols/defaultsoverrides/analysis; no optionalproviders. FullB02/native/Fold7/signing/release open.",
   "verification": {
     "continuity": "Main continuity run 38276257988 passed at accepted product base 21bf53f30ca0ddb9c482d5f605a35f82dff7fcc4. Closeout pointer consistency is rechecked by the acceptance branch continuity workflow before merge.",
     "app_build": "Final tested head 2e08e6964b0a1d9ba6dd0017a0c1b55c3ebb597c passed JVM/build in hosted run 38275330760; debug APK retained in artifact 11758743497 with SHA-256 0bab305748c0720df91fc44d4953c1386997eef9fe32b5f9061e7dcc5a1ce659 and 16 KiB ZIP alignment check passing.",
@@ -165,9 +165,10 @@
     "campaign_prompt_overrides": "SOURCE02/shared/runtimeACK exact4ee30f7fa534f475e726e89a29e695016f87e433/treef2ea2b2b3199440297dae71e0412067c173c0e62:34hosttests6XML0f/e/s1m25/741pins;10SQL11newcontroller10oldcontroller3actualapp. Room16to17 oldDDL/opaqueuserbytes preservation, fourmodeexplicitSave/preview/independentRoom/recreation/reset/otherstateconservation and prioroffline/Room15to17regression. PROMPT-OVERRIDES-APP-INTEGRATION-20261015.md preserves SOURCE01HOLD, attempt1db67c8ecompilefailure0XML and equivalentlyfixed4ee30f7. Exact3/5/2returns verified/originalclean/claimsreleased. No native/provider/H08/fullAI/releaseclaim.",
     "campaign_ai_history": "SOURCE01core/shared/UI/proof +SOURCE02codec/SQL andindependentSolruntimeACK exact31bfe7884db56b0f4b704e25a525ff7a08d6d2cf/tree553634f69f635c39a476c92aea8f534d952f8f23:43hosttests9XML0f/e/s2m04/758pins;6codec8SQL25controller4actualapp. ActualRoom17to18/50oldentities+physicalbytes preservation, exactprompt/reply/provenance explicitcapture/independentRoom/recreation/perdeckopen/delete/privateprojectionclearing; prioroffline/override/Room15to18regressions. AI-HISTORY-APP-INTEGRATION-20261015.md preserves sourceHOLDs/exact5/3/2returns/cleanoriginals/releasedclaims; attempt18c0c03b compilefailure19s0XML andtinystringResourcefix31bfe78. No provider/socket/native/backup/fullH08/releaseacceptance.",
     "campaign_provider_text": "SOURCE/shared/scopedruntimeACK exact6519bff16b558356d5f1b3c62194c9b516525dcd/tree3cd772d067e712b4f898ae5e4ead9d3157dadea3. Localattempt4SUCCESS21s,79cases11XML0f/e/s:69unchangedAI/network/storage reusedfromattempt3+10freshshell/app,774pins. ActualRoom/MainActivity/AppGraph/coordinator/clientcodec syntheticwire PENDINGbeforePOST/STREAMING/COMPLETE/recreationnoreplay. No native/authenticprovider/fullH02-H08/Fold7/releaseacceptance. PROVIDER-TEXT-APP-INTEGRATION-20261015.md preserves allsource/3failedattempts/repairedtestproxy/exactreturns/drafts.",
-    "campaign_anthropic_text": "Exactd96da539d082733c916a6d149a6a4ebdb86d0cc2/tree93b341e027b1b789c330f067ed476ee65ff334c7 SOURCE/shared/scopedruntimeACK. FirstnativegateSUCCESS21s,102cases14XML0f/e/s,781pinsunchanged;23networkreused+79fresh. ActualnativeAppGraph/MainActivity/Room/clientcodec syntheticwire limit77/version/consent/PENDINGbeforewire/nonemptystartprefix/message_stop/COMPLETE/usage12-4-read3/recreationnoreplay; CC/offlinehistoryregressionpassed. ANTHROPIC-TEXT-APP-INTEGRATION-20261015.md preserves exactreturns/sourceHOLDtoSOURCE02/heldsourcecf1e16d/limits. No authenticprovider/terms/billing/native/fullH08componentfidelity/releaseclaim."
+    "campaign_anthropic_text": "Exactd96da539d082733c916a6d149a6a4ebdb86d0cc2/tree93b341e027b1b789c330f067ed476ee65ff334c7 SOURCE/shared/scopedruntimeACK. FirstnativegateSUCCESS21s,102cases14XML0f/e/s,781pinsunchanged;23networkreused+79fresh. ActualnativeAppGraph/MainActivity/Room/clientcodec syntheticwire limit77/version/consent/PENDINGbeforewire/nonemptystartprefix/message_stop/COMPLETE/usage12-4-read3/recreationnoreplay; CC/offlinehistoryregressionpassed. ANTHROPIC-TEXT-APP-INTEGRATION-20261015.md preserves exactreturns/sourceHOLDtoSOURCE02/heldsourcecf1e16d/limits. No authenticprovider/terms/billing/native/fullH08componentfidelity/releaseclaim.",
+    "manual_tags_host": "Exact12c38027/treeeee00622c SOURCE/runtimeACK147cases12XML0f/e/s14s803pins;143reused4fresh. Actualpool/bulk/undo/namecapture/recreation/reuse; failedca0514ce3oldtargetassertions retained. See MANUAL-TAGS-APP-INTEGRATION-20261016.md; no fullB02/device/release."
   },
-  "last_completed": "Required manual tag implementation active: source-reviewed compiled additive schema19 boundary, isolated SQL/planner producers, actual root UI composition source pending; no tests yet.",
-  "updated_utc": "2026-10-16T00:16:09Z",
+  "last_completed": "Required manual-tag pool/bulk host layer independently accepted147cases; preserve failed fixture lineage; continue deck tag controls/analysis and active ordinary life UI without variants.",
+  "updated_utc": "2026-10-16T00:26:04Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
