@@ -87,9 +87,9 @@ internal fun ManualTagsDialog(controller: ManualTagsController) {
                         TextButton({ action { controller.editCategory(label.id) } }, enabled = !state.busy && state.categoryId == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-edit-${label.id.value}")) { Text(stringResource(R.string.manual_tags_deck_rename)) }
                         TextButton({ action { controller.moveCategory(label.id, -1) } }, enabled = !state.busy && state.categoryId == null,
-                            modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_up)) }
+                            modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-up-${label.id.value}")) { Text(stringResource(R.string.manual_tags_up)) }
                         TextButton({ action { controller.moveCategory(label.id, 1) } }, enabled = !state.busy && state.categoryId == null,
-                            modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_down)) }
+                            modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-down-${label.id.value}")) { Text(stringResource(R.string.manual_tags_down)) }
                     }
                     TextButton({ action { controller.removeCategory(label.id) } }, enabled = !state.busy && state.categoryId == null,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-remove-${label.id.value}")) { Text(stringResource(R.string.manual_tags_deck_remove)) }
