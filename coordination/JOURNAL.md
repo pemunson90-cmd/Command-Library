@@ -773,3 +773,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-16T01:04:06Z | codex | cp-20261016-ordinary-life-host-263 | containing commit | Ordinary life independently host accepted28fresh; statistics facts integrated and engine bounded source correction pending; D31 core-first continues
 
 2026-10-16T01:09:54Z | codex | cp-20261016-deck-statistics-host-264 | containing commit | Statistics bounded host accepted50cases; first-release ordinary life and analysis integrated; continue basic legality
+
+2026-10-16T01:17:12Z | codex | cp-20261016-basic-legality-producers-265 | containing commit | First-release basic legality contract and UI implemented/source reviewed; bounded compile passed; isolated real source and engine producers active

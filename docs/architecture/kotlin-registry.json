@@ -1656,8 +1656,8 @@
         ],
         "verification": "known multi-face/hybrid/X/conditional production fixtures; textual chart summary",
         "integration_owner": "codex-thread-recovery-20261013",
-        "status": "planned",
-        "observed_implementation": "DeckAnalysis input lacks card records/results omit required dimensions; review additions first; actual UI waits deck-persistence",
+        "status": "baseline_statistics_host_integrated_acceptance_open",
+        "observed_implementation": "D31 baseline tag-aware statistics bounded host accepteda1b42611/tree3e0f6a20:50cases6XML0f/e/s12s823pins,48unchangednonapp+2freshactualapp, independent SOURCE/shared/runtime ACK. Real installed source facts, weighted MV/types/exact cost alternatives/qualified land production/token references/manual tag AND-OR/board-entry filters and no-write actual AppGraph/MainActivity/Room journey. See DECK-STATISTICS-APP-INTEGRATION-20261016.md. Held source/fixture failure lineage retained, all producer locks released. FullB03/advanced analysis/recommendations/native/Fold7/release acceptance remains open.",
         "ownership_group": "decks",
         "resources": [
           "local-gradle-serial"
