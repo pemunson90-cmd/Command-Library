@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deck_statistics_title">Deck statistics</string>
+    <string name="deck_statistics_capture">%1$s · deck revision %2$d · catalog %3$s</string>
+    <string name="deck_statistics_policy">Counts use the selected boards, entries and manual tags. Mana values come from the source once per copy. Known-value averages show their own denominators; missing facts remain unknown.</string>
+    <string name="deck_statistics_tag_filter">Filter by manual tags (no selection includes all tags)</string>
+    <string name="deck_statistics_all_tags">Match all selected tags</string>
+    <string name="deck_statistics_any_tag">Match any selected tag</string>
+    <string name="deck_statistics_selected_entries">Restrict to selected entries</string>
+    <string name="deck_statistics_compute">Calculate</string>
+    <string name="deck_statistics_totals">%1$d copies in %2$d entries; %3$d unresolved copies</string>
+    <string name="deck_statistics_unknowns">Unknown copies: mana value %1$d · types %2$d · single cost %3$d</string>
+    <string name="deck_statistics_average">Average known mana value: %1$s (%2$d copies)</string>
+    <string name="deck_statistics_nonland_average">Average known nonland mana value: %1$s (%2$d copies)</string>
+    <string name="deck_statistics_curve">Mana curve</string>
+    <string name="deck_statistics_pair">%1$s: %2$d</string>
+    <string name="deck_statistics_types">Printed card types (overlap allowed)</string>
+    <string name="deck_statistics_symbols">Printed cost symbols (hybrid, Phyrexian and variable symbols stay separate)</string>
+    <string name="deck_statistics_production">Lands with source-reported production</string>
+    <string name="deck_statistics_production_caveat">These are reported possibilities, not guaranteed usable mana. Restrictions, activation costs and simultaneous output are not inferred. %1$d known-land copies lack reported production; unresolved types may hide more sources.</string>
+    <string name="deck_statistics_roles">Manual tag coverage</string>
+    <string name="deck_statistics_overlap">Cards may have multiple tags. Overlapping tag totals do not add to physical deck size.</string>
+    <string name="deck_statistics_coverage">%1$s: %2$d entries, %3$d copies</string>
+    <string name="deck_statistics_tokens">Source-reported token references</string>
+    <string name="deck_statistics_token_caveat">References do not establish creation direction or quantity. %1$d copies have unknown related-part data.</string>
+    <string name="deck_statistics_unknown">Unknown</string>
+</resources>

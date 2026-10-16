@@ -75,6 +75,11 @@ internal class ShellControllers(
     val manualTags = if (ports.personalTags != null && ports.manualTagPlanning != null && deckLibrary != null)
         ManualTagsController(scope, ports.personalTags, ports.manualTagPlanning, ioDispatcher,
             deckLibrary::canEditManualTags, deckLibrary::applyManualTags) else null
+    val deckStatistics = ports.deckStatistics?.let { statistics ->
+        DeckStatisticsController(scope, statistics, ioDispatcher) { deck, snapshot ->
+            currentPromptDeck() == deck && currentPromptSnapshot() == snapshot
+        }
+    }
     val aiHistory = ports.aiHistory?.let { AiHistoryController(scope, it, ioDispatcher) }
     val providerGeneration = if (ports.providerGeneration != null && ports.providerProfiles != null && ports.aiHistory != null)
         ProviderGenerationController(scope, ports.providerProfiles, ports.providerGeneration, ports.aiHistory, ioDispatcher) else null

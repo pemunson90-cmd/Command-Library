@@ -299,6 +299,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 }
                 controllers.providerGeneration?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ProviderGenerationDialog(it) }
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
+                controllers.deckStatistics?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckStatisticsDialog(it) }
                 controllers.manualTags?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ManualTagsDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
@@ -480,6 +481,9 @@ private fun DestinationContent(
                 onOpenVersions = if (versions != null) onOpenVersions else null,
                 onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
                 onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled,
+                onStatistics = controllers.deckStatistics?.let { statistics -> { deck ->
+                    controllers.currentPromptSnapshot()?.let { statistics.open(deck, it) }
+                } },
                 onManualTags = controllers.manualTags?.let { tags -> { deck -> tags.open(deck) } },
                 onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) },
                 offlinePromptEnabled = promptDraftState?.visible != true && controllers.deckDraftEditor?.hasMutationBarrier != true,

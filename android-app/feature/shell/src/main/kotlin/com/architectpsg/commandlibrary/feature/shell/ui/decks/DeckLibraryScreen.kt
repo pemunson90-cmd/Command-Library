@@ -39,6 +39,7 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
     onExportText: ((DeckSnapshot) -> Unit)? = null, exportTextEnabled: Boolean = true,
     onDrawProbabilities: ((DeckSnapshot) -> Unit)? = null,
     onManualTags: ((DeckSnapshot) -> Unit)? = null,
+    onStatistics: ((DeckSnapshot) -> Unit)? = null,
     onBoardChecks: ((DeckSnapshot) -> Unit)? = null,
     onOfflinePrompt: ((DeckSnapshot) -> Unit)? = null, offlinePromptEnabled: Boolean = true,
     onAiHistory: ((DeckSnapshot) -> Unit)? = null) {
@@ -111,6 +112,9 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                             enabled = !state.pending && !state.mutationBusy && state.editor == null && state.form == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("deck-open-versions")) { Text(stringResource(R.string.decks_open_versions)) }
                     }
+                    if (onStatistics != null) OutlinedButton({ onStatistics(selected) },
+                        enabled = controller.canEditManualTags(selected),
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-open")) { Text(stringResource(R.string.deck_statistics_title)) }
                     if (onManualTags != null) OutlinedButton({ onManualTags(selected) },
                         enabled = controller.canEditManualTags(selected),
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-manual-tags")) { Text(stringResource(R.string.manual_tags_title)) }
