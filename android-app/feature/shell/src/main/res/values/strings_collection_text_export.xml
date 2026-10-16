@@ -1,0 +1,16 @@
+<resources>
+    <string name="collection_text_export_title">Export collection as text</string>
+    <string name="collection_text_export_scope">Export the complete saved collection as a readable text file. This is not a full app backup. Unsaved edits are excluded.</string>
+    <string name="collection_text_export_notes">Include private notes</string>
+    <string name="collection_text_export_locations">Include storage locations</string>
+    <string name="collection_text_export_prepare">Review export</string>
+    <string name="collection_text_export_capture">Saved revision %1$d · %2$d lots · %3$d cards · %4$d bytes</string>
+    <string name="collection_text_export_sample">First %1$d lots shown below. The file includes every lot in this captured collection.</string>
+    <string name="collection_text_export_row">%1$d × %2$s</string>
+    <string name="collection_text_export_unknown_name">Unknown card name</string>
+    <string name="collection_text_export_save">Save text file</string>
+    <string name="collection_text_export_written">Collection text written. Your storage provider controls when the file reaches permanent or remote storage.</string>
+    <string name="collection_text_export_writing">Writing collection text…</string>
+    <string name="collection_text_export_end">End this export</string>
+    <string name="collection_text_export_blocked">Finish or cancel the current collection edit before exporting.</string>
+</resources>

@@ -74,6 +74,7 @@ public class ShellPorts(
         com.architectpsg.commandlibrary.core.model.DeckPatch, com.architectpsg.commandlibrary.core.model.Revision,
         com.architectpsg.commandlibrary.core.model.UtcTimestamp) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.DeckSnapshot>)? = null,
     /** Complete application-owned plain list projection; does not assert vendor or backup compatibility. */
+    public val collectionTextRendering: CollectionTextRendering? = null,
     public val plainDeckLists: com.architectpsg.commandlibrary.core.model.PlainDeckListCodec? = null,
     /** Existing whole-deck graph validator. Storage remains responsible for CLDK wire admission. */
     public val deckSnapshotValidation: ((com.architectpsg.commandlibrary.core.model.DeckSnapshot,

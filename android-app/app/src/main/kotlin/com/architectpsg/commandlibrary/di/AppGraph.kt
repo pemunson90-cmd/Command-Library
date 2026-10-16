@@ -117,6 +117,8 @@ internal class AppGraph(
                         offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
                         catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),
                         cardQueryParser = LocalCardQueryParser()::parse,
+                        collectionTextRendering = com.architectpsg.commandlibrary.feature.shell.CollectionTextRendering(
+                            com.architectpsg.commandlibrary.feature.collection.PlainCollectionTextExporter::render),
                         plainDeckLists = PlainTextDeckListCodec(), deckSnapshotValidation = DeckSnapshotValidator::validate,
                         deckPatchProjection = DeckPatchReducer::propose, localInventory = inventory, ownedQuantity = LocalOwnedQuantityAllocator(), inventoryProjection = InventoryPatchReducer::propose)
                     ready = ports

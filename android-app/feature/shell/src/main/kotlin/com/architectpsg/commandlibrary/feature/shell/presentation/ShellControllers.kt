@@ -165,6 +165,9 @@ internal class ShellControllers(
         PlainDeckExportController(scope = scope, library = ports.localDecks, codec = ports.plainDeckLists,
             validate = ports.deckSnapshotValidation, write = documentWriter::write, dispatcher = ioDispatcher,
             pickerOwnerNonce = java.util.UUID.randomUUID().toString()) else null
+    val collectionTextExport = if (documentWriter != null && ports.localInventory != null && ports.collectionTextRendering != null)
+        CollectionTextExportController(scope, ports.localInventory, ports.collectionTextRendering::render,
+            documentWriter::write, ioDispatcher, java.util.UUID.randomUUID().toString()) else null
     val profiles = ports.playerProfiles?.let { ProfilesController(scope, it, ioDispatcher,
         commanderSearch = SearchController(scope, ports.catalogLookup, ioDispatcher, onStaleCursor = status::refresh)) }
     val printings = ports.catalogPrintings?.let { PrintingSelectionController(scope, it, ioDispatcher, ports.cardLinks) { card ->
