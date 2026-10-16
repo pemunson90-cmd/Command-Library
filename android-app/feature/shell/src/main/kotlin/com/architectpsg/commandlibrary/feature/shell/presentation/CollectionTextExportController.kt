@@ -87,6 +87,10 @@ internal class CollectionTextExportController(
             artifact.losses.size > 64 || artifact.losses.any { it.length > 4096 } ||
             artifact.fileName != "command-library-collection-r${source.revision.value}.txt" ||
             artifact.mediaType != "text/plain;charset=utf-8") return invalid()
+        val digest = java.security.MessageDigest.getInstance("SHA-256").digest(artifact.bytes.copyBytes())
+            .joinToString("") { "%02x".format(java.util.Locale.ROOT, it.toInt() and 0xff) }
+        cancel.throwIfCancelled()
+        if (artifact.checksum != ContentHash("SHA-256", digest)) return invalid()
         return Outcome.Success(CollectionTextExportPreview(source, artifact, notes, locations))
     }
     private fun invalid(): Outcome.Failure = Outcome.Failure(DomainFailure(FailureCode.CORRUPT_DATA,

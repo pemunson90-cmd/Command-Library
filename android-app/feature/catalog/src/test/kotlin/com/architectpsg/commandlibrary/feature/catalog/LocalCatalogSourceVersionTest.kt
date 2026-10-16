@@ -25,7 +25,7 @@ class LocalCatalogSourceVersionTest {
                 .`import`(source, bulkChunks("caller bytes must not be consumed"), {}, BULK_NO_CANCEL).bulkValue()
             val before = db.rows("SELECT * FROM catalog_generation")
             val status = catalog(db).status(BULK_NO_CANCEL).bulkValue()
-            val actual = status.generations.single().provenance.version
+            val actual = status.activeGenerations.single().provenance.version
             val printing = LocalCatalogIdentities(db).printing(CardId(ProviderId("scryfall"), "a"), BULK_NO_CANCEL).bulkValue()
             val oracle = LocalCatalogIdentities(db).oracle(OracleId(ProviderId("scryfall"), "o"), BULK_NO_CANCEL).bulkValue()
             assertEquals(version, actual); assertEquals(printing.provenance.version, actual); assertEquals(oracle.provenance.version, actual)
@@ -37,7 +37,7 @@ class LocalCatalogSourceVersionTest {
             db.install(listOf(bulkRecord("a", "o")))
             val status = catalog(db).status(BULK_NO_CANCEL).bulkValue()
             val printing = LocalCatalogIdentities(db).printing(CardId(ProviderId("scryfall"), "a"), BULK_NO_CANCEL).bulkValue()
-            assertEquals(printing.provenance.version, status.generations.single().provenance.version)
+            assertEquals(printing.provenance.version, status.activeGenerations.single().provenance.version)
         }
     }
     @Test fun changedVersionColumnCannotMasqueradeAsTheRetainedSourceProof() = runBlocking {
