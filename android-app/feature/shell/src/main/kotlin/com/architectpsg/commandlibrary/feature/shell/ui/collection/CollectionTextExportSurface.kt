@@ -1,6 +1,8 @@
 package com.architectpsg.commandlibrary.feature.shell.ui.collection
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,7 +19,7 @@ import com.architectpsg.commandlibrary.feature.shell.ui.problemText
 
 @Composable
 internal fun CollectionTextExportSurface(controller: CollectionTextExportController,
-    chooseDestination: (CollectionTextExportPreview) -> Unit, pickerInFlight: Boolean) {
+    chooseDestination: (CollectionTextExportPreview) -> Unit, pickerInFlight: Boolean, preparationAllowed: Boolean = true) {
     val state by controller.state.collectAsState()
     if (!state.visible) return
     val frame = state
@@ -32,20 +34,23 @@ internal fun CollectionTextExportSurface(controller: CollectionTextExportControl
                 }
                 val preview = state.preview
                 if (preview == null) item {
-                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        Checkbox(state.includeNotes, { act { controller.notes(it) } }, enabled = !state.preparing,
-                            modifier = Modifier.heightIn(min = 48.dp).testTag("collection-text-export-notes"))
+                    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(state.includeNotes,
+                        enabled = !state.preparing, role = Role.Checkbox, onValueChange = { act { controller.notes(it) } })
+                        .testTag("collection-text-export-notes"), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        Checkbox(state.includeNotes, null, enabled = !state.preparing)
                         Text(stringResource(R.string.collection_text_export_notes))
                     }
-                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        Checkbox(state.includeLocations, { act { controller.locations(it) } }, enabled = !state.preparing,
-                            modifier = Modifier.heightIn(min = 48.dp).testTag("collection-text-export-locations"))
+                    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(state.includeLocations,
+                        enabled = !state.preparing, role = Role.Checkbox, onValueChange = { act { controller.locations(it) } })
+                        .testTag("collection-text-export-locations"), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        Checkbox(state.includeLocations, null, enabled = !state.preparing)
                         Text(stringResource(R.string.collection_text_export_locations))
                     }
-                    Button({ act(controller::prepare) }, enabled = !state.preparing && !pickerInFlight,
+                    Button({ act(controller::prepare) }, enabled = !state.preparing && !pickerInFlight && preparationAllowed,
                         modifier = Modifier.heightIn(min = 48.dp).testTag("collection-text-export-prepare")) {
                         Text(stringResource(R.string.collection_text_export_prepare))
                     }
+                    if (!preparationAllowed) Text(stringResource(R.string.collection_text_export_blocked))
                     if (state.preparing) {
                         LinearProgressIndicator(Modifier.fillMaxWidth())
                         TextButton({ act(controller::cancelPreparation) }, modifier = Modifier.heightIn(min = 48.dp)) {
@@ -68,7 +73,7 @@ internal fun CollectionTextExportSurface(controller: CollectionTextExportControl
                     } }
                     item {
                         Button({ act { chooseDestination(preview) } },
-                            enabled = state.writePhase == PlainDeckExportWritePhase.IDLE && state.pendingPicker == null && !pickerInFlight,
+                            enabled = state.writePhase == PlainDeckExportWritePhase.IDLE && state.pendingPicker == null && !pickerInFlight && preparationAllowed,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("collection-text-export-save")) {
                             Text(stringResource(R.string.collection_text_export_save))
                         }

@@ -32,6 +32,7 @@ internal class CollectionTextExportController(
     private val write: suspend (DocumentRef, SnapshotBytes, CancelToken) -> PlainDeckWriteResult,
     private val dispatcher: CoroutineDispatcher,
     private val pickerOwnerNonce: String,
+    private val inventoryReady: () -> Boolean = { true },
 ) {
     init { require(pickerOwnerNonce.isNotBlank() && pickerOwnerNonce.length <= 256) }
     private val mutable = MutableStateFlow(CollectionTextExportState())
@@ -49,7 +50,7 @@ internal class CollectionTextExportController(
     fun notes(value: Boolean) { if (editable()) mutable.value = state.value.copy(includeNotes = value) }
     fun locations(value: Boolean) { if (editable()) mutable.value = state.value.copy(includeLocations = value) }
     fun prepare() {
-        if (!editable()) return
+        if (!editable() || !inventoryReady()) return
         val s = state.value
         val ticket = Any(); preparation = ticket
         mutable.value = s.copy(preparing = true, problem = null)
@@ -68,6 +69,7 @@ internal class CollectionTextExportController(
         }
     }
     private suspend fun prepared(notes: Boolean, locations: Boolean, cancel: CancelToken): Outcome<CollectionTextExportPreview> {
+        if (!inventoryReady()) return blocked()
         val source = when (val r = inventory.snapshot(cancel)) {
             is Outcome.Success -> r.value
             is Outcome.Failure -> return r
@@ -75,6 +77,7 @@ internal class CollectionTextExportController(
             is Outcome.Unknown -> return r
         }
         cancel.throwIfCancelled()
+        if (!inventoryReady()) return blocked()
         if (!source.complete || source.revision.value < 0) return invalid()
         val artifact = when (val r = render(source, notes, locations, cancel)) {
             is Outcome.Success -> r.value
@@ -91,13 +94,16 @@ internal class CollectionTextExportController(
             .joinToString("") { "%02x".format(java.util.Locale.ROOT, it.toInt() and 0xff) }
         cancel.throwIfCancelled()
         if (artifact.checksum != ContentHash("SHA-256", digest)) return invalid()
+        if (!inventoryReady()) return blocked()
         return Outcome.Success(CollectionTextExportPreview(source, artifact, notes, locations))
     }
+    private fun blocked(): Outcome.Failure = Outcome.Failure(DomainFailure(FailureCode.STALE_REVISION,
+        "Reconcile pending inventory changes before exporting", SnapshotList.empty()))
     private fun invalid(): Outcome.Failure = Outcome.Failure(DomainFailure(FailureCode.CORRUPT_DATA,
         "Invalid collection text export", SnapshotList.empty()))
     fun requestDestination(expected: CollectionTextExportPreview): String? {
         val s = state.value
-        if (!s.visible || s.preview !== expected || s.preparing || s.pendingPicker != null || owner != null) return null
+        if (!s.visible || s.preview !== expected || s.preparing || s.pendingPicker != null || owner != null || !inventoryReady()) return null
         if (destinations.size >= PlainDeckExportLimits.MAX_DESTINATION_ATTEMPTS || pickerSerial == Long.MAX_VALUE) {
             mutable.value = s.copy(problem = Problem.INVALID_INPUT); return null
         }
@@ -111,6 +117,7 @@ internal class CollectionTextExportController(
         mutable.value = s.copy(pendingPicker = null, pickerAuthorized = false)
         if (!s.pickerAuthorized || !s.visible || destination == null) return
         val preview = s.preview ?: return
+        if (!inventoryReady()) { mutable.value = mutable.value.copy(problem = Problem.STALE_REVISION); return }
         if (destination.uri.length > PlainDeckExportLimits.MAX_URI_CODE_UNITS ||
             destinations.size >= PlainDeckExportLimits.MAX_DESTINATION_ATTEMPTS || !destinations.add(destination.uri)) {
             mutable.value = mutable.value.copy(problem = Problem.INVALID_INPUT); return
@@ -166,6 +173,6 @@ internal class CollectionTextExportController(
 }
 
 /** Export saved state only after pending collection edits and uncertainty are reconciled. */
-internal fun CollectionUiState.canExportCollectionText(): Boolean = inventory?.complete == true && !loading &&
+internal fun CollectionUiState.canExportCollectionText(inventoryWriterBusy: Boolean = false): Boolean = !inventoryWriterBusy && inventory?.complete == true && !loading &&
     !mutationBusy && !pending && !awaitingFresh && !uncertain && form == null && bulkForm == null &&
     !previewing && !bulkPreviewing && !bulkSelectionPreparing

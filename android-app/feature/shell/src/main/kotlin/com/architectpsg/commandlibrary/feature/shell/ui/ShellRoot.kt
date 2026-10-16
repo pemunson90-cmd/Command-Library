@@ -123,6 +123,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 draft.requestExit(DeferredDeckAction.Navigate(target))
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
+                if (target != ShellDestination.COLLECTION) controllers.collectionTextExport?.hide()
                 if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
                 if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
@@ -327,8 +328,9 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 controllers.deckStatistics?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckStatisticsDialog(it) }
                 controllers.collectionTextExport?.let { exporter ->
+                    val inventoryWriterBusy by controllers.inventoryMutationGate.busy.collectAsState()
                     com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionTextExportSurface(exporter,
-                        chooseCollectionText, pendingCollectionTextExport != null || pendingPlainExport != null)
+                        chooseCollectionText, pendingCollectionTextExport != null || pendingPlainExport != null, !inventoryWriterBusy)
                 }
                 controllers.basicDeckValidation?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.BasicDeckValidationDialog(it) }
                 controllers.manualTags?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ManualTagsDialog(it) }
@@ -539,10 +541,12 @@ private fun DestinationContent(
             com.architectpsg.commandlibrary.feature.shell.ui.life.OrdinaryLifeScreen(life, widthClass, modifier)
         }
         ShellDestination.COLLECTION -> controllers.collection?.let { collection ->
+            val inventoryWriterBusy by controllers.inventoryMutationGate.busy.collectAsState()
             Box(modifier) { CollectionScreen(collection, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
                 onMarkOwned = controllers.deckMarkOwned?.let { markOwned -> { id, policy -> markOwned.open(id, policy) } },
+                inventoryWriterBusy = inventoryWriterBusy,
                 onExportText = controllers.collectionTextExport?.let { exporter -> {
-                    if (collection.state.value.canExportCollectionText()) exporter.open()
+                    if (collection.state.value.canExportCollectionText(controllers.inventoryMutationGate.busy.value)) exporter.open()
                 } }) }
         }
         ShellDestination.PROFILES -> controllers.profiles?.let { ProfilesScreen(it, widthClass, modifier) }
