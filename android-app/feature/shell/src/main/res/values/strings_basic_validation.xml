@@ -13,6 +13,8 @@
     <string name="basic_validation_unknown">Not enough information</string>
     <string name="basic_validation_review">Review required</string>
     <string name="basic_validation_source">Installed source card eligibility</string>
+    <string name="basic_validation_source_legal">Source reports legal</string>
+    <string name="basic_validation_source_not_legal">Source reports not legal</string>
     <string name="basic_validation_source_row">%1$s: %2$s</string>
     <string name="basic_validation_reference">Rule %1$s</string>
     <string name="basic_validation_close">Close</string>
