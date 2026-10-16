@@ -17,3 +17,5 @@ Root actualcomposition/UI draft: realpool+pureplanner ShellPorts/AppGraph, retai
 RootcompositionSOURCE01f9e798ec reviewHOLD: delegatedCompose state insideactionclosure readlatest instead ofcapturedframe. SOURCE02captures immutable renderedState duringcomposition beforecallbacks; controlleridentityfence nowmeaningful. More source reviewpending, no runtimeclaim.
 
 RootcompositionSOURCE02 exact38debd5c independentlyAstraACK. Three syntheticcontrolleroracles nowauthored for lostACKreloadwithoutreplay, staleconflictdirtyinputpreservation/explicitdiscard, and disposedframecallback/closeconfirmation; NOT_RUN pendingassembledgate. ActualappNEW2 claimed698e5104 isolatedexact38debd5c, Solmedium; root+SQLwriter+appproof3max, plannerfrozenawaitingreview.
+
+CurrentRoom integrationfixtures onlyexpectedcurrentversion18→19 inAiHistory/ProviderProfiles/PromptOverrides actualApp tests; all olddata/payload/revision assertions unchanged. Dialogscrollcontainertag manual-tags-list addedforactualproof. No testsrunyet.

@@ -146,7 +146,7 @@ class PromptOverridesAppIntegrationTest {
     private fun independentRows(): Map<OfflineLabMode, StoredPromptOverride?> = runBlocking {
         val app = ApplicationProvider.getApplicationContext<CommandLibraryApplication>()
         ok(StorageDatabase.open(app, AppGraph.DATABASE_FILE)).use { db ->
-            assertEquals(18, ok(db.capabilities(token)).schemaVersion)
+            assertEquals(19, ok(db.capabilities(token)).schemaVersion)
             val reader = SqlLocalPromptOverrides(db, checkNotNull(ports.utcClock))
             OfflineLabMode.entries.associateWith { ok(reader.load(it, token)) }
         }

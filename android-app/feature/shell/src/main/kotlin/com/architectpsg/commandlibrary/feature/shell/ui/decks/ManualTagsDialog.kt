@@ -24,7 +24,7 @@ internal fun ManualTagsDialog(controller: ManualTagsController) {
     Dialog(onDismissRequest = { action(controller::close) }) {
         Surface(shape = MaterialTheme.shapes.large) {
             Column(Modifier.fillMaxWidth().heightIn(max = 720.dp).padding(16.dp)
-                .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                .verticalScroll(rememberScrollState()).testTag("manual-tags-list"), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.manual_tags_title), style = MaterialTheme.typography.titleLarge)
                 Text(stringResource(R.string.manual_tags_scope))
                 if (state.busy) LinearProgressIndicator(Modifier.fillMaxWidth())

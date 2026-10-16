@@ -167,7 +167,7 @@ class AiHistoryAppIntegrationTest {
     private fun <T> independent(read: suspend (LocalAiHistory) -> T): T = runBlocking {
         val app = ApplicationProvider.getApplicationContext<CommandLibraryApplication>()
         ok(StorageDatabase.open(app, AppGraph.DATABASE_FILE)).use { db ->
-            assertEquals(18, ok(db.capabilities(token)).schemaVersion)
+            assertEquals(19, ok(db.capabilities(token)).schemaVersion)
             // Independent reads must not recover with a fabricated/new process epoch.
             read(SqlLocalAiHistory(db, AiHistoryPayloadCodec(), checkNotNull(ports.utcClock)))
         }
