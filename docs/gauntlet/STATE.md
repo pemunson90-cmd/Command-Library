@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261016-ordinary-life-host-263. Updated UTC: 2026-10-16T01:04:06Z.
+Checkpoint: cp-20261016-deck-statistics-host-264. Updated UTC: 2026-10-16T01:09:54Z.
 
 Stage: D31 agreed first usable signed Fold7 release; complete future roadmap retained. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-correct_reviewed_statistics_polling_then_real_engine_gate
+implement_basic_legality_read_capability_and_review_supported_rules
 
-Ordinary life independently host accepted28fresh; statistics facts integrated and engine bounded source correction pending; D31 core-first continues
+Statistics bounded host accepted50cases; first-release ordinary life and analysis integrated; continue basic legality
 
 Read CURRENT, machine state and task card.
