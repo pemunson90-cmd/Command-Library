@@ -476,11 +476,15 @@ private fun DestinationContent(
         }
         ShellDestination.DECKS -> controllers.deckLibrary?.let { library ->
             val versions = controllers.deckVersions
+            val statisticsAvailable = statusState.status?.activeGeneration()?.let { generation ->
+                generation.provenance.provider.value == "scryfall" && com.architectpsg.commandlibrary.core.model.LanguageTag.ENGLISH in generation.languages
+            } == true
             if (versionsOpen && versions != null) Box(modifier) { DeckVersionsScreen(versions, widthClass, onCloseVersions, controllers.deckDraftEditor) }
             else DeckLibraryScreen(library, widthClass, modifier, controllers.deckEditorSearch,
                 onOpenVersions = if (versions != null) onOpenVersions else null,
                 onImportText = onImportPlain, importTextEnabled = importPlainEnabled,
                 onExportText = onExportPlain, exportTextEnabled = exportPlainEnabled,
+                statisticsAvailable = statisticsAvailable,
                 onStatistics = controllers.deckStatistics?.let { statistics -> { deck ->
                     controllers.currentPromptSnapshot()?.let { statistics.open(deck, it) }
                 } },

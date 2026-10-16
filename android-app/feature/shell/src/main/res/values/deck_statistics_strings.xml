@@ -24,4 +24,5 @@
     <string name="deck_statistics_tokens">Source-reported token references</string>
     <string name="deck_statistics_token_caveat">References do not establish creation direction or quantity. %1$d copies have unknown related-part data.</string>
     <string name="deck_statistics_unknown">Unknown</string>
+    <string name="deck_statistics_install_catalog">Install English card data in Catalog before calculating statistics.</string>
 </resources>
