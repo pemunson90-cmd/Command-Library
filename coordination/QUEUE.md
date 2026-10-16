@@ -1,6 +1,6 @@
 # Execution queue
 
-Checkpoint-ID: cp-20261016-core-statistics-life-262. Next: orch-android-v1-campaign-01 step3; in_progress.
+Checkpoint-ID: cp-20261016-ordinary-life-host-263. Next: orch-android-v1-campaign-01 step3; in_progress.
 
 This file lists runnable or conditionally runnable work. Completed and superseded task history remains in task cards, gate reports, journal/events and git history rather than occupying the live queue.
 
