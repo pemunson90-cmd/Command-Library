@@ -1,5 +1,7 @@
 # Version 1 Kotlin execution specification
 
+D-31 (2026-10-15) controls release sequencing: this complete specification remains the roadmap; only the explicitly approved first-release portions gate the first signed usable Fold7 package. See DECISIONS D-31 and existing execution/coverage release dispositions. Data integrity, source/consent, safe enabled functionality and actual signing/device acceptance remain mandatory.
+
 Status: active execution reference after accepted K0 and authorized K1 (D-20, 2026-10-11). K1 readiness and subsequent Kotlin Android sections may proceed through their current reviewed task cards; each section still requires its stated evidence and review before acceptance. This document does not authorize sync, version-2 Windows work, or public release.
 
 ## Controlling scope

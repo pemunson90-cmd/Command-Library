@@ -1,5 +1,7 @@
 # SPEC: Command Library
 
+D-31 (2026-10-15) controls release sequencing: this complete specification remains the roadmap; only the explicitly approved first-release portions gate the first signed usable Fold7 package. See DECISIONS D-31 and existing execution/coverage release dispositions. Data integrity, source/consent, safe enabled functionality and actual signing/device acceptance remain mandatory.
+
 Gate 2 product-requirement baseline. D-20 supersedes all Android-v1 Flutter/shared-code/Windows implementation clauses: version 1 is Kotlin Android; Flutter is a separate Windows version-2 application; sync follows a later explicit authorization after Windows runs. V1_KOTLIN_EXECUTION_SPEC.md controls active execution scope. Requirements remain; old technology/path instructions are historical, with active Kotlin replacements in the reviewed K1 map/contracts. All six Gate 1 rulings applied; D-14 is English default with explicit approval for other-language downloads. This document describes required behavior and future acceptance, not implemented features or measurements.
 
 ## Authority and completeness

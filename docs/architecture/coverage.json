@@ -3,6 +3,7 @@
   "requirements": [
     {
       "requirement_id": "A01",
+      "release_scope": "mixed",
       "primary_component": "catalog",
       "screens": "S02,S03,S18",
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
@@ -16,6 +17,7 @@
     },
     {
       "requirement_id": "A02",
+      "release_scope": "first_release",
       "primary_component": "catalog",
       "screens": "S01,S08,S18",
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
@@ -30,6 +32,7 @@
     },
     {
       "requirement_id": "A03",
+      "release_scope": "mixed",
       "primary_component": "catalog",
       "screens": "S01,S18",
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
@@ -43,6 +46,7 @@
     },
     {
       "requirement_id": "A04",
+      "release_scope": "mixed",
       "primary_component": "rules",
       "screens": "S03,S04,S18",
       "architecture": "docs/architecture/rules/ARCHITECT.md",
@@ -56,6 +60,7 @@
     },
     {
       "requirement_id": "A05",
+      "release_scope": "mixed",
       "primary_component": "catalog",
       "screens": "S03,S18",
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
@@ -69,6 +74,7 @@
     },
     {
       "requirement_id": "A06",
+      "release_scope": "first_release",
       "primary_component": "catalog",
       "screens": "S18,S19",
       "architecture": "docs/architecture/catalog/ARCHITECT.md",
@@ -82,6 +88,7 @@
     },
     {
       "requirement_id": "A07",
+      "release_scope": "mixed",
       "primary_component": "search",
       "screens": "S02,S04",
       "architecture": "docs/architecture/search/ARCHITECT.md",
@@ -96,6 +103,7 @@
     },
     {
       "requirement_id": "A08",
+      "release_scope": "first_release",
       "primary_component": "search",
       "screens": "S02,S04",
       "architecture": "docs/architecture/search/ARCHITECT.md",
@@ -110,6 +118,7 @@
     },
     {
       "requirement_id": "B01",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "screens": "S05,S06,S07",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -126,6 +135,7 @@
     },
     {
       "requirement_id": "B02",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "screens": "S05,S06,S07",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -142,6 +152,7 @@
     },
     {
       "requirement_id": "B03",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "screens": "S09",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -155,6 +166,7 @@
     },
     {
       "requirement_id": "B04",
+      "release_scope": "retained_later",
       "primary_component": "decks",
       "screens": "S09,S10",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -168,6 +180,7 @@
     },
     {
       "requirement_id": "B05",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "screens": "S06,S11",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -184,6 +197,7 @@
     },
     {
       "requirement_id": "B06",
+      "release_scope": "mixed",
       "primary_component": "validation",
       "screens": "S06,S09",
       "architecture": "docs/architecture/validation/ARCHITECT.md",
@@ -197,6 +211,7 @@
     },
     {
       "requirement_id": "B07",
+      "release_scope": "mixed",
       "primary_component": "decks",
       "screens": "S05-S11",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -211,6 +226,7 @@
     },
     {
       "requirement_id": "B08",
+      "release_scope": "mixed",
       "primary_component": "transfer",
       "screens": "S08,S17",
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
@@ -225,6 +241,7 @@
     },
     {
       "requirement_id": "C01",
+      "release_scope": "first_release",
       "primary_component": "collection",
       "screens": "S02,S08,S12",
       "architecture": "docs/architecture/collection/ARCHITECT.md",
@@ -239,6 +256,7 @@
     },
     {
       "requirement_id": "C02",
+      "release_scope": "mixed",
       "primary_component": "pricing",
       "screens": "S02,S03,S06,S12,S13,S16",
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
@@ -252,6 +270,7 @@
     },
     {
       "requirement_id": "C03",
+      "release_scope": "retained_later",
       "primary_component": "pricing",
       "screens": "S14,S18",
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
@@ -265,6 +284,7 @@
     },
     {
       "requirement_id": "C04",
+      "release_scope": "mixed",
       "primary_component": "pricing",
       "screens": "S06,S12,S14",
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
@@ -278,6 +298,7 @@
     },
     {
       "requirement_id": "D01",
+      "release_scope": "retained_later",
       "primary_component": "recommendations",
       "screens": "S13,S14",
       "architecture": "docs/architecture/recommendations/ARCHITECT.md",
@@ -291,6 +312,7 @@
     },
     {
       "requirement_id": "D02",
+      "release_scope": "retained_later",
       "primary_component": "recommendations",
       "screens": "S13,S14",
       "architecture": "docs/architecture/recommendations/ARCHITECT.md",
@@ -304,6 +326,7 @@
     },
     {
       "requirement_id": "E01",
+      "release_scope": "retained_later",
       "primary_component": "brackets",
       "screens": "S03,S15,S18",
       "architecture": "docs/architecture/brackets/ARCHITECT.md",
@@ -317,6 +340,7 @@
     },
     {
       "requirement_id": "E02",
+      "release_scope": "retained_later",
       "primary_component": "brackets",
       "screens": "S13,S15",
       "architecture": "docs/architecture/brackets/ARCHITECT.md",
@@ -330,6 +354,7 @@
     },
     {
       "requirement_id": "F01",
+      "release_scope": "mixed",
       "primary_component": "links",
       "screens": "S03,S18",
       "architecture": "docs/architecture/links/ARCHITECT.md",
@@ -344,6 +369,7 @@
     },
     {
       "requirement_id": "G01",
+      "release_scope": "mixed",
       "primary_component": "life",
       "screens": "S20,S21",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -357,6 +383,7 @@
     },
     {
       "requirement_id": "G02",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S20,S21",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -370,6 +397,7 @@
     },
     {
       "requirement_id": "G03",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S21",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -383,6 +411,7 @@
     },
     {
       "requirement_id": "G04",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S21,S22",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -396,6 +425,7 @@
     },
     {
       "requirement_id": "G05",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S21,S22",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -409,6 +439,7 @@
     },
     {
       "requirement_id": "G06",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S22",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -422,6 +453,7 @@
     },
     {
       "requirement_id": "G07",
+      "release_scope": "mixed",
       "primary_component": "life",
       "screens": "S21,S22",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -435,6 +467,7 @@
     },
     {
       "requirement_id": "G08",
+      "release_scope": "mixed",
       "primary_component": "life",
       "screens": "S20,S21",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -449,6 +482,7 @@
     },
     {
       "requirement_id": "G09",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S21,S23",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -462,6 +496,7 @@
     },
     {
       "requirement_id": "G10",
+      "release_scope": "first_release",
       "primary_component": "life",
       "screens": "S21",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -475,6 +510,7 @@
     },
     {
       "requirement_id": "G11",
+      "release_scope": "mixed",
       "primary_component": "life",
       "screens": "S20-S23",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -488,6 +524,7 @@
     },
     {
       "requirement_id": "H01",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "screens": "S16",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -501,6 +538,7 @@
     },
     {
       "requirement_id": "H02",
+      "release_scope": "retained_later",
       "primary_component": "ai",
       "screens": "S16,S24",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -514,6 +552,7 @@
     },
     {
       "requirement_id": "H03",
+      "release_scope": "retained_later",
       "primary_component": "inference",
       "screens": "S16,S25",
       "architecture": "docs/architecture/inference/ARCHITECT.md",
@@ -527,6 +566,7 @@
     },
     {
       "requirement_id": "H04",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "screens": "S16",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -540,6 +580,7 @@
     },
     {
       "requirement_id": "H05",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "screens": "S16,S14",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -553,6 +594,7 @@
     },
     {
       "requirement_id": "H06",
+      "release_scope": "retained_later",
       "primary_component": "ai",
       "screens": "S16,S24",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -566,6 +608,7 @@
     },
     {
       "requirement_id": "H07",
+      "release_scope": "mixed",
       "primary_component": "vault",
       "screens": "S24",
       "architecture": "docs/architecture/vault/ARCHITECT.md",
@@ -579,6 +622,7 @@
     },
     {
       "requirement_id": "H08",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "screens": "S16",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -593,6 +637,7 @@
     },
     {
       "requirement_id": "H09",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "screens": "S24",
       "architecture": "docs/architecture/ai/ARCHITECT.md",
@@ -607,6 +652,7 @@
     },
     {
       "requirement_id": "I01",
+      "release_scope": "mixed",
       "primary_component": "transfer",
       "screens": "S08,S17",
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
@@ -622,6 +668,7 @@
     },
     {
       "requirement_id": "I02",
+      "release_scope": "mixed",
       "primary_component": "transfer",
       "screens": "S17",
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
@@ -636,6 +683,7 @@
     },
     {
       "requirement_id": "J01",
+      "release_scope": "mixed",
       "primary_component": "shell",
       "screens": "S01-S25",
       "architecture": "docs/architecture/shell/ARCHITECT.md",
@@ -649,6 +697,7 @@
     },
     {
       "requirement_id": "J02",
+      "release_scope": "mixed",
       "primary_component": "shell",
       "screens": "S02-S25",
       "architecture": "docs/architecture/shell/ARCHITECT.md",
@@ -662,6 +711,7 @@
     },
     {
       "requirement_id": "J03",
+      "release_scope": "first_release",
       "primary_component": "shell",
       "screens": "S01-S25",
       "architecture": "docs/architecture/shell/ARCHITECT.md",
@@ -676,6 +726,7 @@
     },
     {
       "requirement_id": "J04",
+      "release_scope": "mixed",
       "primary_component": "shell",
       "screens": "S01-S25",
       "architecture": "docs/architecture/shell/ARCHITECT.md",
@@ -689,6 +740,7 @@
     },
     {
       "requirement_id": "K01",
+      "release_scope": "mixed",
       "primary_component": "settings",
       "screens": "S01,S18,S24",
       "architecture": "docs/architecture/settings/ARCHITECT.md",
@@ -702,6 +754,7 @@
     },
     {
       "requirement_id": "K02",
+      "release_scope": "first_release",
       "primary_component": "settings",
       "screens": "S19",
       "architecture": "docs/architecture/settings/ARCHITECT.md",
@@ -715,6 +768,7 @@
     },
     {
       "requirement_id": "N01",
+      "release_scope": "first_release",
       "primary_component": "shell",
       "screens": "all",
       "architecture": "docs/architecture/shell/ARCHITECT.md",
@@ -728,6 +782,7 @@
     },
     {
       "requirement_id": "N02",
+      "release_scope": "first_release",
       "primary_component": "network",
       "screens": "S18",
       "architecture": "docs/architecture/network/ARCHITECT.md",
@@ -741,6 +796,7 @@
     },
     {
       "requirement_id": "N03",
+      "release_scope": "first_release",
       "primary_component": "shell",
       "screens": "all",
       "architecture": "docs/architecture/shell/ARCHITECT.md",
@@ -754,6 +810,7 @@
     },
     {
       "requirement_id": "B09",
+      "release_scope": "retained_later",
       "primary_component": "decks",
       "screens": "S05,S06,S07,S08",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -767,6 +824,7 @@
     },
     {
       "requirement_id": "B10",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "screens": "S06,S07,S12",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -784,6 +842,7 @@
     },
     {
       "requirement_id": "B11",
+      "release_scope": "retained_later",
       "primary_component": "pricing",
       "screens": "S06,S14",
       "architecture": "docs/architecture/pricing/ARCHITECT.md",
@@ -797,6 +856,7 @@
     },
     {
       "requirement_id": "B12",
+      "release_scope": "retained_later",
       "primary_component": "decks",
       "screens": "S10",
       "architecture": "docs/architecture/decks/ARCHITECT.md",
@@ -810,6 +870,7 @@
     },
     {
       "requirement_id": "B13",
+      "release_scope": "retained_later",
       "primary_component": "transfer",
       "screens": "S08,S17",
       "architecture": "docs/architecture/transfer/ARCHITECT.md",
@@ -823,6 +884,7 @@
     },
     {
       "requirement_id": "G12",
+      "release_scope": "retained_later",
       "primary_component": "life",
       "screens": "S20,S21,S22",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -836,6 +898,7 @@
     },
     {
       "requirement_id": "G13",
+      "release_scope": "retained_later",
       "primary_component": "life",
       "screens": "S20,S21,S22",
       "architecture": "docs/architecture/life/ARCHITECT.md",
@@ -849,6 +912,7 @@
     },
     {
       "requirement_id": "G14",
+      "release_scope": "retained_later",
       "primary_component": "transfer",
       "screens": "S17,S20,S23",
       "architecture": "docs/architecture/transfer/ARCHITECT.md",

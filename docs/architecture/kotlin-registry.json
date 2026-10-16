@@ -733,384 +733,448 @@
   "requirements": [
     {
       "id": "A01",
+      "release_scope": "mixed",
       "primary_component": "catalog",
       "module": ":feature:catalog",
       "acceptance": "AC-A01"
     },
     {
       "id": "A02",
+      "release_scope": "first_release",
       "primary_component": "catalog",
       "module": ":feature:catalog",
       "acceptance": "AC-A02"
     },
     {
       "id": "A03",
+      "release_scope": "mixed",
       "primary_component": "catalog",
       "module": ":feature:catalog",
       "acceptance": "AC-A03"
     },
     {
       "id": "A04",
+      "release_scope": "mixed",
       "primary_component": "rules",
       "module": ":feature:rules",
       "acceptance": "AC-A04"
     },
     {
       "id": "A05",
+      "release_scope": "mixed",
       "primary_component": "catalog",
       "module": ":feature:catalog",
       "acceptance": "AC-A05"
     },
     {
       "id": "A06",
+      "release_scope": "first_release",
       "primary_component": "catalog",
       "module": ":feature:catalog",
       "acceptance": "AC-A06"
     },
     {
       "id": "A07",
+      "release_scope": "mixed",
       "primary_component": "search",
       "module": ":feature:search",
       "acceptance": "AC-A07"
     },
     {
       "id": "A08",
+      "release_scope": "first_release",
       "primary_component": "search",
       "module": ":feature:search",
       "acceptance": "AC-A08"
     },
     {
       "id": "B01",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B01"
     },
     {
       "id": "B02",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B02"
     },
     {
       "id": "B03",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B03"
     },
     {
       "id": "B04",
+      "release_scope": "retained_later",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B04"
     },
     {
       "id": "B05",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B05"
     },
     {
       "id": "B06",
+      "release_scope": "mixed",
       "primary_component": "validation",
       "module": ":feature:validation",
       "acceptance": "AC-B06"
     },
     {
       "id": "B07",
+      "release_scope": "mixed",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B07"
     },
     {
       "id": "B08",
+      "release_scope": "mixed",
       "primary_component": "transfer",
       "module": ":feature:transfer",
       "acceptance": "AC-B08"
     },
     {
       "id": "C01",
+      "release_scope": "first_release",
       "primary_component": "collection",
       "module": ":feature:collection",
       "acceptance": "AC-C01"
     },
     {
       "id": "C02",
+      "release_scope": "mixed",
       "primary_component": "pricing",
       "module": ":feature:pricing",
       "acceptance": "AC-C02"
     },
     {
       "id": "C03",
+      "release_scope": "retained_later",
       "primary_component": "pricing",
       "module": ":feature:pricing",
       "acceptance": "AC-C03"
     },
     {
       "id": "C04",
+      "release_scope": "mixed",
       "primary_component": "pricing",
       "module": ":feature:pricing",
       "acceptance": "AC-C04"
     },
     {
       "id": "D01",
+      "release_scope": "retained_later",
       "primary_component": "recommendations",
       "module": ":feature:recommendations",
       "acceptance": "AC-D01"
     },
     {
       "id": "D02",
+      "release_scope": "retained_later",
       "primary_component": "recommendations",
       "module": ":feature:recommendations",
       "acceptance": "AC-D02"
     },
     {
       "id": "E01",
+      "release_scope": "retained_later",
       "primary_component": "brackets",
       "module": ":feature:brackets",
       "acceptance": "AC-E01"
     },
     {
       "id": "E02",
+      "release_scope": "retained_later",
       "primary_component": "brackets",
       "module": ":feature:brackets",
       "acceptance": "AC-E02"
     },
     {
       "id": "F01",
+      "release_scope": "mixed",
       "primary_component": "links",
       "module": ":feature:links",
       "acceptance": "AC-F01"
     },
     {
       "id": "G01",
+      "release_scope": "mixed",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G01"
     },
     {
       "id": "G02",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G02"
     },
     {
       "id": "G03",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G03"
     },
     {
       "id": "G04",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G04"
     },
     {
       "id": "G05",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G05"
     },
     {
       "id": "G06",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G06"
     },
     {
       "id": "G07",
+      "release_scope": "mixed",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G07"
     },
     {
       "id": "G08",
+      "release_scope": "mixed",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G08"
     },
     {
       "id": "G09",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G09"
     },
     {
       "id": "G10",
+      "release_scope": "first_release",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G10"
     },
     {
       "id": "G11",
+      "release_scope": "mixed",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G11"
     },
     {
       "id": "H01",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H01"
     },
     {
       "id": "H02",
+      "release_scope": "retained_later",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H02"
     },
     {
       "id": "H03",
+      "release_scope": "retained_later",
       "primary_component": "inference",
       "module": ":feature:inference",
       "acceptance": "AC-H03"
     },
     {
       "id": "H04",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H04"
     },
     {
       "id": "H05",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H05"
     },
     {
       "id": "H06",
+      "release_scope": "retained_later",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H06"
     },
     {
       "id": "H07",
+      "release_scope": "mixed",
       "primary_component": "vault",
       "module": ":data:vault",
       "acceptance": "AC-H07"
     },
     {
       "id": "H08",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H08"
     },
     {
       "id": "H09",
+      "release_scope": "mixed",
       "primary_component": "ai",
       "module": ":feature:ai",
       "acceptance": "AC-H09"
     },
     {
       "id": "I01",
+      "release_scope": "mixed",
       "primary_component": "transfer",
       "module": ":feature:transfer",
       "acceptance": "AC-I01"
     },
     {
       "id": "I02",
+      "release_scope": "mixed",
       "primary_component": "transfer",
       "module": ":feature:transfer",
       "acceptance": "AC-I02"
     },
     {
       "id": "J01",
+      "release_scope": "mixed",
       "primary_component": "shell",
       "module": ":feature:shell",
       "acceptance": "AC-J01"
     },
     {
       "id": "J02",
+      "release_scope": "mixed",
       "primary_component": "shell",
       "module": ":feature:shell",
       "acceptance": "AC-J02"
     },
     {
       "id": "J03",
+      "release_scope": "first_release",
       "primary_component": "shell",
       "module": ":feature:shell",
       "acceptance": "AC-J03"
     },
     {
       "id": "J04",
+      "release_scope": "mixed",
       "primary_component": "shell",
       "module": ":feature:shell",
       "acceptance": "AC-J04"
     },
     {
       "id": "K01",
+      "release_scope": "mixed",
       "primary_component": "settings",
       "module": ":feature:settings",
       "acceptance": "AC-K01"
     },
     {
       "id": "K02",
+      "release_scope": "first_release",
       "primary_component": "settings",
       "module": ":feature:settings",
       "acceptance": "AC-K02"
     },
     {
       "id": "N01",
+      "release_scope": "first_release",
       "primary_component": "shell",
       "module": ":feature:shell",
       "acceptance": "AC-N01"
     },
     {
       "id": "N02",
+      "release_scope": "first_release",
       "primary_component": "network",
       "module": ":data:network",
       "acceptance": "AC-N02"
     },
     {
       "id": "N03",
+      "release_scope": "first_release",
       "primary_component": "shell",
       "module": ":feature:shell",
       "acceptance": "AC-N03"
     },
     {
       "id": "B09",
+      "release_scope": "retained_later",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B09"
     },
     {
       "id": "B10",
+      "release_scope": "first_release",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B10"
     },
     {
       "id": "B11",
+      "release_scope": "retained_later",
       "primary_component": "pricing",
       "module": ":feature:pricing",
       "acceptance": "AC-B11"
     },
     {
       "id": "B12",
+      "release_scope": "retained_later",
       "primary_component": "decks",
       "module": ":feature:decks",
       "acceptance": "AC-B12"
     },
     {
       "id": "B13",
+      "release_scope": "retained_later",
       "primary_component": "transfer",
       "module": ":feature:transfer",
       "acceptance": "AC-B13"
     },
     {
       "id": "G12",
+      "release_scope": "retained_later",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G12"
     },
     {
       "id": "G13",
+      "release_scope": "retained_later",
       "primary_component": "life",
       "module": ":feature:life",
       "acceptance": "AC-G13"
     },
     {
       "id": "G14",
+      "release_scope": "retained_later",
       "primary_component": "transfer",
       "module": ":feature:transfer",
       "acceptance": "AC-G14"
@@ -1158,12 +1222,15 @@
   },
   "execution": {
     "revision": "campaign-r1-20261015",
+    "release_decision": "D-31 / issue25#issuecomment-6204760074 / PR26 cebf0755",
+    "release_scope_semantics": "Release labels do not change acceptance status or erase later obligations. Mixed first-release slices are defined by DECISIONS D-31 and campaign plan; optional future slices never gate first release. Existing build/adapt/skip reasons and identities remain unchanged. Ordinary life has no specialty-manager requirement. Final data integrity, source consent, signing, physical Fold7 acceptance remain mandatory.",
     "baseline": "43f258295cfb946983d1f35cab80fedf4f105978",
     "plan": "docs/superpowers/plans/2026-10-15-dependency-aware-campaign.md",
     "review": "ACK gpt-6-astra high; docs/verification/full-v1-audit/CAMPAIGN-REVIEW-20261015.md",
     "tasks": [
       {
         "id": "data-finish",
+        "release_scope": "mixed",
         "component": "catalog",
         "requirements": [
           "A01",
@@ -1199,6 +1266,7 @@
       },
       {
         "id": "rules-finish",
+        "release_scope": "mixed",
         "component": "rules",
         "requirements": [
           "A04"
@@ -1231,6 +1299,7 @@
       },
       {
         "id": "query-execution",
+        "release_scope": "mixed",
         "component": "search",
         "requirements": [
           "A07",
@@ -1266,6 +1335,7 @@
       },
       {
         "id": "user-storage-contracts",
+        "release_scope": "mixed",
         "component": "storage",
         "requirements": [
           "B01",
@@ -1304,6 +1374,7 @@
       },
       {
         "id": "deck-edits",
+        "release_scope": "first_release",
         "component": "decks",
         "requirements": [
           "B01",
@@ -1338,6 +1409,7 @@
       },
       {
         "id": "deck-persistence",
+        "release_scope": "first_release",
         "component": "decks",
         "requirements": [
           "B01",
@@ -1375,6 +1447,7 @@
       },
       {
         "id": "deck-ui",
+        "release_scope": "first_release",
         "component": "shell",
         "requirements": [
           "B01",
@@ -1421,6 +1494,7 @@
       },
       {
         "id": "packages",
+        "release_scope": "retained_later",
         "component": "decks",
         "requirements": [
           "B09"
@@ -1452,6 +1526,7 @@
       },
       {
         "id": "collection",
+        "release_scope": "first_release",
         "component": "collection",
         "requirements": [
           "C01",
@@ -1487,6 +1562,7 @@
       },
       {
         "id": "pricing",
+        "release_scope": "mixed",
         "component": "pricing",
         "requirements": [
           "C02",
@@ -1524,6 +1600,7 @@
       },
       {
         "id": "optimizer",
+        "release_scope": "retained_later",
         "component": "pricing",
         "requirements": [
           "B11"
@@ -1558,6 +1635,7 @@
       },
       {
         "id": "analysis",
+        "release_scope": "first_release",
         "component": "decks",
         "requirements": [
           "B03"
@@ -1600,6 +1678,7 @@
       },
       {
         "id": "playtest",
+        "release_scope": "retained_later",
         "component": "decks",
         "requirements": [
           "B04",
@@ -1636,6 +1715,7 @@
       },
       {
         "id": "validation",
+        "release_scope": "mixed",
         "component": "validation",
         "requirements": [
           "B06"
@@ -1672,6 +1752,7 @@
       },
       {
         "id": "brackets",
+        "release_scope": "retained_later",
         "component": "brackets",
         "requirements": [
           "E01",
@@ -1709,6 +1790,7 @@
       },
       {
         "id": "recommendations",
+        "release_scope": "retained_later",
         "component": "recommendations",
         "requirements": [
           "D01",
@@ -1757,6 +1839,7 @@
       },
       {
         "id": "links",
+        "release_scope": "mixed",
         "component": "links",
         "requirements": [
           "F01"
@@ -1791,6 +1874,7 @@
       },
       {
         "id": "life-source-variants",
+        "release_scope": "retained_later",
         "component": "life",
         "requirements": [
           "G12"
@@ -1822,6 +1906,7 @@
       },
       {
         "id": "life-service-ui",
+        "release_scope": "mixed",
         "component": "life",
         "requirements": [
           "G01",
@@ -1837,9 +1922,8 @@
           "G11",
           "G13"
         ],
-        "prerequisites": [
-          "life-source-variants"
-        ],
+        "prerequisites": [],
+        "retained_later_prerequisites": ["life-source-variants"],
         "outcome": "Complete retained game service platform/DI/setup/live tools/history/results, clocks/alerts and linked statistics.",
         "consumes": [
           "SqlPersistedGameService",
@@ -1864,17 +1948,13 @@
         "resources": [
           "local-gradle-serial"
         ],
-        "acceptance_prerequisites": [
-          "deck-persistence",
-          "pricing",
-          "images",
-          "adaptive-input",
-          "profile-game-transfer"
-        ],
+        "acceptance_prerequisites": ["deck-persistence", "images"],
+        "retained_later_acceptance_prerequisites": ["deck-persistence", "pricing", "images", "adaptive-input", "profile-game-transfer"],
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
         "id": "profile-game-transfer",
+        "release_scope": "retained_later",
         "component": "transfer",
         "requirements": [
           "G14"
@@ -1909,6 +1989,7 @@
       },
       {
         "id": "transfer-codecs",
+        "release_scope": "mixed",
         "component": "transfer",
         "requirements": [
           "B08",
@@ -1941,6 +2022,7 @@
       },
       {
         "id": "transfer-ui",
+        "release_scope": "mixed",
         "component": "transfer",
         "requirements": [
           "B08",
@@ -1977,6 +2059,7 @@
       },
       {
         "id": "backup-restore",
+        "release_scope": "retained_later",
         "component": "transfer",
         "requirements": [
           "I01",
@@ -2015,6 +2098,7 @@
       },
       {
         "id": "qr-sharing",
+        "release_scope": "retained_later",
         "component": "transfer",
         "requirements": [
           "B13"
@@ -2049,17 +2133,14 @@
       },
       {
         "id": "query-context",
+        "release_scope": "mixed",
         "component": "search",
         "requirements": [
           "A07",
           "A08"
         ],
-        "prerequisites": [
-          "query-execution",
-          "deck-persistence",
-          "collection",
-          "pricing"
-        ],
+        "prerequisites": ["query-execution", "deck-persistence", "collection"],
+        "retained_later_prerequisites": ["query-execution", "deck-persistence", "collection", "pricing"],
         "outcome": "Owned/in-deck/price context filters against real exact revision/source/unit snapshots.",
         "consumes": [
           "typed local executor",
@@ -2086,6 +2167,7 @@
       },
       {
         "id": "ai-prompts-grounding",
+        "release_scope": "mixed",
         "component": "ai",
         "requirements": [
           "H01",
@@ -2116,17 +2198,13 @@
         "resources": [
           "local-gradle-serial"
         ],
-        "acceptance_prerequisites": [
-          "deck-ui",
-          "query-context",
-          "validation",
-          "pricing",
-          "recommendations"
-        ],
+        "acceptance_prerequisites": ["deck-ui"],
+        "retained_later_acceptance_prerequisites": ["deck-ui", "query-context", "validation", "pricing", "recommendations"],
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
         "id": "vault",
+        "release_scope": "mixed",
         "component": "vault",
         "requirements": [
           "H07"
@@ -2158,6 +2236,7 @@
       },
       {
         "id": "ai-providers",
+        "release_scope": "retained_later",
         "component": "ai",
         "requirements": [
           "H02",
@@ -2200,6 +2279,7 @@
       },
       {
         "id": "ai-history",
+        "release_scope": "mixed",
         "component": "ai",
         "requirements": [
           "H08",
@@ -2229,14 +2309,13 @@
         "resources": [
           "local-gradle-serial"
         ],
-        "acceptance_prerequisites": [
-          "deck-ui",
-          "ai-providers"
-        ],
+        "acceptance_prerequisites": ["deck-ui"],
+        "retained_later_acceptance_prerequisites": ["deck-ui", "ai-providers"],
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
         "id": "images",
+        "release_scope": "mixed",
         "component": "catalog",
         "requirements": [
           "A05",
@@ -2273,6 +2352,7 @@
       },
       {
         "id": "settings-onboarding",
+        "release_scope": "mixed",
         "component": "settings",
         "requirements": [
           "K01",
@@ -2315,6 +2395,7 @@
       },
       {
         "id": "adaptive-input",
+        "release_scope": "mixed",
         "component": "shell",
         "requirements": [
           "J01",
@@ -2342,16 +2423,13 @@
         "resources": [
           "local-gradle-serial"
         ],
-        "acceptance_prerequisites": [
-          "deck-ui",
-          "life-service-ui",
-          "ai-providers",
-          "transfer-ui"
-        ],
+        "acceptance_prerequisites": ["deck-ui", "life-service-ui", "transfer-ui"],
+        "retained_later_acceptance_prerequisites": ["deck-ui", "life-service-ui", "ai-providers", "transfer-ui"],
         "parity_join": "execution.parity rows whose tasks include this id"
       },
       {
         "id": "release-acceptance",
+        "release_scope": "mixed",
         "component": "shell",
         "requirements": [
           "J03",
@@ -2360,33 +2438,8 @@
           "N02",
           "N03"
         ],
-        "prerequisites": [
-          "data-finish",
-          "rules-finish",
-          "query-context",
-          "deck-ui",
-          "packages",
-          "collection",
-          "pricing",
-          "optimizer",
-          "analysis",
-          "playtest",
-          "validation",
-          "brackets",
-          "recommendations",
-          "links",
-          "life-service-ui",
-          "profile-game-transfer",
-          "transfer-ui",
-          "backup-restore",
-          "qr-sharing",
-          "ai-providers",
-          "ai-history",
-          "images",
-          "settings-onboarding",
-          "adaptive-input",
-          "links-ui"
-        ],
+        "prerequisites": ["data-finish", "rules-finish", "query-context", "deck-ui", "collection", "pricing", "analysis", "validation", "links", "life-service-ui", "transfer-ui", "images", "settings-onboarding", "adaptive-input", "links-ui"],
+        "retained_later_prerequisites": ["data-finish", "rules-finish", "query-context", "deck-ui", "packages", "collection", "pricing", "optimizer", "analysis", "playtest", "validation", "brackets", "recommendations", "links", "life-service-ui", "profile-game-transfer", "transfer-ui", "backup-restore", "qr-sharing", "ai-providers", "ai-history", "images", "settings-onboarding", "adaptive-input", "links-ui"],
         "outcome": "Assembled complete retained user journeys, modern native remediation, physical Fold7/TalkBack/performance, canonical signed install/update.",
         "consumes": [
           "all actual feature capabilities",
@@ -2413,6 +2466,7 @@
       },
       {
         "id": "engine-v1.1",
+        "release_scope": "retained_later",
         "component": "inference",
         "requirements": [
           "H03"
@@ -2441,6 +2495,7 @@
       },
       {
         "id": "links-ui",
+        "release_scope": "mixed",
         "component": "shell",
         "requirements": [
           "F01"
@@ -2476,219 +2531,219 @@
       }
     ],
     "parity": [
-      {"id": "PX05-001","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-002","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-003","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-004","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-005","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-006","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-007","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-008","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-009","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-010","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-011","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-012","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-013","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-014","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-015","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-016","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-017","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-018","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-019","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-020","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-021","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-022","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-023","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-024","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-025","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-026","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-027","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-028","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-029","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-030","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-031","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-032","disposition": "adapt","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-033","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-034","disposition": "adapt","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-035","disposition": "build","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-036","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-037","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-038","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-039","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-040","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-041","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-042","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-043","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-044","disposition": "skip","requirements": ["B08","I01"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-045","disposition": "adapt","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-046","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-047","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-048","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-049","disposition": "adapt","requirements": ["E01","E02","B07"],"tasks": ["deck-persistence","deck-ui","brackets"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-050","disposition": "adapt","requirements": ["B09"],"tasks": ["packages"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-051","disposition": "build","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-052","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","collection","transfer-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-053","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-054","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-055","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-056","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-057","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-058","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-059","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-060","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-061","disposition": "build","requirements": ["A07","A08","B07"],"tasks": ["query-execution","deck-persistence","deck-ui","query-context"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-062","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","query-execution"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-063","disposition": "build","requirements": ["A04","B07"],"tasks": ["rules-finish","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-064","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","adaptive-input"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-065","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-066","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX05-067","disposition": "build","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-001","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-002","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-003","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-004","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-005","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-006","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-007","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-008","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-009","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-010","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-011","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-012","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-013","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-014","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-015","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-016","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-017","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-018","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-019","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-020","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-021","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-022","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-023","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-024","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-025","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-026","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-027","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-028","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-029","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-030","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-031","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-032","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-033","disposition": "build","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-034","disposition": "adapt","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-035","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-036","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-037","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-038","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-039","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-040","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-041","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-042","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-043","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-044","disposition": "adapt","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-045","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-046","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-047","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-048","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-049","disposition": "build","requirements": ["B10","C01"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","collection"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-050","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-051","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-052","disposition": "adapt","requirements": ["B11"],"tasks": ["optimizer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-053","disposition": "adapt","requirements": ["E01","E02","B07"],"tasks": ["deck-persistence","deck-ui","brackets"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-054","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-055","disposition": "adapt","requirements": ["B12"],"tasks": ["playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-056","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-057","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-058","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-059","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-060","disposition": "adapt","requirements": ["B13"],"tasks": ["qr-sharing"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-061","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","links","transfer-ui","pricing","links-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-062","disposition": "adapt","requirements": ["D02","B07"],"tasks": ["deck-persistence","deck-ui","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-063","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX06-064","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-001","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-002","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-003","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-004","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-005","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-006","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-007","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-008","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-009","disposition": "build","requirements": ["G03","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-010","disposition": "build","requirements": ["G03","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-011","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-012","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-013","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-014","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-015","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-016","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-017","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-018","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-019","disposition": "adapt","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-020","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-021","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-022","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-023","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-024","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-025","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-026","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-027","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-028","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-029","disposition": "build","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-030","disposition": "adapt","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-031","disposition": "build","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-032","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-033","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-034","disposition": "adapt","requirements": ["G09","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-035","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-036","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-037","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-038","disposition": "adapt","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-039","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-040","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-041","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-042","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-043","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-044","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-045","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-046","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-047","disposition": "adapt","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-048","disposition": "adapt","requirements": ["G14"],"tasks": ["profile-game-transfer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-049","disposition": "skip","requirements": ["G01","G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-050","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-051","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-052","disposition": "adapt","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-053","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-054","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-055","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-056","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-057","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-058","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-059","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-060","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-061","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-062","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-063","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-064","disposition": "adapt","requirements": ["G14"],"tasks": ["profile-game-transfer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-065","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-066","disposition": "adapt","requirements": ["G09","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-067","disposition": "adapt","requirements": ["G13"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-068","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-069","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-070","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-071","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-072","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-073","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-074","disposition": "skip","requirements": ["G08","G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-075","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-076","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-077","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui","query-context","pricing","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-078","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-079","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-080","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-081","disposition": "build","requirements": ["I02","G11"],"tasks": ["user-storage-contracts","life-service-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
-      {"id": "PX07-082","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"}
+      {"id": "PX05-001","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-002","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-003","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-004","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-005","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-006","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-007","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-008","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-009","release_scope": "first_release","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-010","release_scope": "mixed","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-011","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-012","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-013","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-014","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-015","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-016","release_scope": "first_release","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-017","release_scope": "first_release","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-018","release_scope": "first_release","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-019","release_scope": "first_release","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-020","release_scope": "first_release","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-021","release_scope": "first_release","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-022","release_scope": "retained_later","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-023","release_scope": "retained_later","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-024","release_scope": "retained_later","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-025","release_scope": "retained_later","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-026","release_scope": "first_release","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-027","release_scope": "mixed","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-028","release_scope": "first_release","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-029","release_scope": "first_release","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-030","release_scope": "first_release","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-031","release_scope": "first_release","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-032","release_scope": "first_release","disposition": "adapt","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-033","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-034","release_scope": "first_release","disposition": "adapt","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-035","release_scope": "first_release","disposition": "build","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-036","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-037","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-038","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-039","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-040","release_scope": "mixed","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-041","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-042","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-043","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-044","release_scope": "existing_skip","disposition": "skip","requirements": ["B08","I01"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-045","release_scope": "first_release","disposition": "adapt","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-046","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-047","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-048","release_scope": "mixed","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-049","release_scope": "retained_later","disposition": "adapt","requirements": ["E01","E02","B07"],"tasks": ["deck-persistence","deck-ui","brackets"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-050","release_scope": "retained_later","disposition": "adapt","requirements": ["B09"],"tasks": ["packages"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-051","release_scope": "mixed","disposition": "build","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-052","release_scope": "first_release","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","collection","transfer-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-053","release_scope": "retained_later","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-054","release_scope": "mixed","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-055","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-056","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-057","release_scope": "mixed","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-058","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-059","release_scope": "retained_later","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-060","release_scope": "first_release","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-061","release_scope": "first_release","disposition": "build","requirements": ["A07","A08","B07"],"tasks": ["query-execution","deck-persistence","deck-ui","query-context"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-062","release_scope": "mixed","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","query-execution"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-063","release_scope": "first_release","disposition": "build","requirements": ["A04","B07"],"tasks": ["rules-finish","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-064","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","adaptive-input"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-065","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-066","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX05-067","release_scope": "retained_later","disposition": "build","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-001","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-002","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-003","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-004","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-005","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-006","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-007","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-008","release_scope": "first_release","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-009","release_scope": "first_release","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-010","release_scope": "mixed","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-011","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-012","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-013","release_scope": "first_release","disposition": "build","requirements": ["B01","B06","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-014","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-015","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-016","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-017","release_scope": "first_release","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-018","release_scope": "first_release","disposition": "adapt","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-019","release_scope": "first_release","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-020","release_scope": "first_release","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-021","release_scope": "first_release","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-022","release_scope": "retained_later","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-023","release_scope": "retained_later","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-024","release_scope": "retained_later","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-025","release_scope": "retained_later","disposition": "build","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-026","release_scope": "first_release","disposition": "build","requirements": ["B03","B07"],"tasks": ["deck-persistence","deck-ui","analysis"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-027","release_scope": "mixed","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-028","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-029","release_scope": "first_release","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-030","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-031","release_scope": "first_release","disposition": "build","requirements": ["B06","B07"],"tasks": ["deck-persistence","deck-ui","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-032","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-033","release_scope": "first_release","disposition": "build","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-034","release_scope": "first_release","disposition": "adapt","requirements": ["B05","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-035","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-036","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-037","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-038","release_scope": "first_release","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-039","release_scope": "first_release","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-040","release_scope": "mixed","disposition": "build","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-041","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-042","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-043","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-044","release_scope": "first_release","disposition": "adapt","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-045","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-046","release_scope": "first_release","disposition": "build","requirements": ["B08","I01"],"tasks": ["transfer-codecs","transfer-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-047","release_scope": "mixed","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-048","release_scope": "first_release","disposition": "adapt","requirements": ["B02","B07"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-049","release_scope": "first_release","disposition": "build","requirements": ["B10","C01"],"tasks": ["user-storage-contracts","deck-edits","deck-persistence","deck-ui","collection"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-050","release_scope": "mixed","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-051","release_scope": "retained_later","disposition": "adapt","requirements": ["C01","C02","C03","C04","D01","B07"],"tasks": ["user-storage-contracts","deck-persistence","deck-ui","collection","pricing","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-052","release_scope": "retained_later","disposition": "adapt","requirements": ["B11"],"tasks": ["optimizer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-053","release_scope": "retained_later","disposition": "adapt","requirements": ["E01","E02","B07"],"tasks": ["deck-persistence","deck-ui","brackets"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-054","release_scope": "first_release","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-055","release_scope": "retained_later","disposition": "adapt","requirements": ["B12"],"tasks": ["playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-056","release_scope": "retained_later","disposition": "adapt","requirements": ["B04","B07"],"tasks": ["deck-persistence","deck-ui","playtest"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-057","release_scope": "first_release","disposition": "build","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-058","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-059","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-060","release_scope": "retained_later","disposition": "adapt","requirements": ["B13"],"tasks": ["qr-sharing"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-061","release_scope": "mixed","disposition": "adapt","requirements": ["B07"],"tasks": ["deck-persistence","deck-ui","links","transfer-ui","pricing","links-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-062","release_scope": "retained_later","disposition": "adapt","requirements": ["D02","B07"],"tasks": ["deck-persistence","deck-ui","recommendations"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-063","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX06-064","release_scope": "existing_skip","disposition": "skip","requirements": ["B07"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-001","release_scope": "first_release","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-002","release_scope": "first_release","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-003","release_scope": "mixed","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-004","release_scope": "first_release","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-005","release_scope": "first_release","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-006","release_scope": "first_release","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-007","release_scope": "first_release","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-008","release_scope": "first_release","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-009","release_scope": "first_release","disposition": "build","requirements": ["G03","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-010","release_scope": "first_release","disposition": "build","requirements": ["G03","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-011","release_scope": "first_release","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-012","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-013","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-014","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-015","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-016","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-017","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-018","release_scope": "first_release","disposition": "build","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-019","release_scope": "first_release","disposition": "adapt","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-020","release_scope": "first_release","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-021","release_scope": "first_release","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-022","release_scope": "first_release","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-023","release_scope": "first_release","disposition": "build","requirements": ["G05","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-024","release_scope": "first_release","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-025","release_scope": "first_release","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-026","release_scope": "first_release","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-027","release_scope": "first_release","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-028","release_scope": "first_release","disposition": "build","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-029","release_scope": "first_release","disposition": "build","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-030","release_scope": "mixed","disposition": "adapt","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-031","release_scope": "first_release","disposition": "build","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-032","release_scope": "first_release","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-033","release_scope": "mixed","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-034","release_scope": "first_release","disposition": "adapt","requirements": ["G09","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-035","release_scope": "first_release","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-036","release_scope": "first_release","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-037","release_scope": "first_release","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-038","release_scope": "first_release","disposition": "adapt","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-039","release_scope": "first_release","disposition": "build","requirements": ["G10","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-040","release_scope": "first_release","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-041","release_scope": "first_release","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-042","release_scope": "first_release","disposition": "build","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-043","release_scope": "mixed","disposition": "build","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-044","release_scope": "first_release","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-045","release_scope": "first_release","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-046","release_scope": "first_release","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-047","release_scope": "first_release","disposition": "adapt","requirements": ["G07","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-048","release_scope": "retained_later","disposition": "adapt","requirements": ["G14"],"tasks": ["profile-game-transfer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-049","release_scope": "existing_skip","disposition": "skip","requirements": ["G01","G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-050","release_scope": "first_release","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-051","release_scope": "mixed","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-052","release_scope": "first_release","disposition": "adapt","requirements": ["G04","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-053","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-054","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-055","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-056","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-057","release_scope": "first_release","disposition": "adapt","requirements": ["G02","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-058","release_scope": "first_release","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-059","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-060","release_scope": "retained_later","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-061","release_scope": "retained_later","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-062","release_scope": "retained_later","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-063","release_scope": "retained_later","disposition": "adapt","requirements": ["G12"],"tasks": ["life-source-variants"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-064","release_scope": "retained_later","disposition": "adapt","requirements": ["G14"],"tasks": ["profile-game-transfer"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-065","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-066","release_scope": "first_release","disposition": "adapt","requirements": ["G09","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-067","release_scope": "retained_later","disposition": "adapt","requirements": ["G13"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-068","release_scope": "mixed","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-069","release_scope": "first_release","disposition": "adapt","requirements": ["G01","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-070","release_scope": "mixed","disposition": "adapt","requirements": ["G08","G11"],"tasks": ["life-service-ui","images"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-071","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-072","release_scope": "first_release","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-073","release_scope": "first_release","disposition": "adapt","requirements": ["G06","G11"],"tasks": ["life-service-ui"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-074","release_scope": "existing_skip","disposition": "skip","requirements": ["G08","G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-075","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-076","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-077","release_scope": "mixed","disposition": "adapt","requirements": ["G11"],"tasks": ["life-service-ui","query-context","pricing","validation"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-078","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-079","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-080","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-081","release_scope": "retained_later","disposition": "build","requirements": ["I02","G11"],"tasks": ["user-storage-contracts","life-service-ui","backup-restore"],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"},
+      {"id": "PX07-082","release_scope": "existing_skip","disposition": "skip","requirements": ["G11"],"tasks": [],"acceptance_source": "docs/gauntlet/PARITY_ACCEPTANCE.md"}
     ],
     "constraints": {
       "max_writers_including_root": 3,
