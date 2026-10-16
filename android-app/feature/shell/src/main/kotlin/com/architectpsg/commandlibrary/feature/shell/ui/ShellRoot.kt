@@ -55,6 +55,8 @@ import com.architectpsg.commandlibrary.feature.shell.ui.collection.CollectionScr
 import com.architectpsg.commandlibrary.feature.shell.ui.collection.DeckMarkOwnedSurface
 import com.architectpsg.commandlibrary.core.model.DeckId
 import com.architectpsg.commandlibrary.core.model.DeckSnapshot
+import com.architectpsg.commandlibrary.feature.shell.presentation.CollectionTextExportPreview
+import com.architectpsg.commandlibrary.feature.shell.presentation.canExportCollectionText
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportPreview
 import com.architectpsg.commandlibrary.feature.shell.presentation.PlainDeckExportWritePhase
 import com.architectpsg.commandlibrary.feature.shell.presentation.Problem
