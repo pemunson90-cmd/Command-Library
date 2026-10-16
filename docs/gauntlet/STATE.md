@@ -1,10 +1,10 @@
 # STATE
 
-Checkpoint: cp-20261016-basic-legality-producers-265. Updated UTC: 2026-10-16T01:17:12Z.
+Checkpoint: cp-20261016-basic-legality-proof-266. Updated UTC: 2026-10-16T01:25:49Z.
 
 Stage: D31 agreed first usable signed Fold7 release; complete future roadmap retained. Status: in_progress. Next: orch-android-v1-campaign-01 step3.
-consume_reviewed_basic_legality_producers_then_bind_real_assessment_ui
+review_frozen_legality_reader_then_integrate_engine_and_real_app_proof
 
-First-release basic legality contract and UI implemented/source reviewed; bounded compile passed; isolated real source and engine producers active
+Basic legality reader frozen under review; actual app proof assigned as writer slot freed; implementation continues
 
 Read CURRENT, machine state and task card.
