@@ -1,0 +1,13 @@
+{
+  "owner": "/root/implement_provider_app_proof",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "864e3801907f45ac76e4625be08c4337ea9dd2a4",
+  "worktree": "/workspace/command-library-collection-text-controller-proof-01",
+  "branch": "agent/campaign-collection-text-controller-proof-20261016",
+  "owned_paths": [
+    "android-app/feature/shell/src/test/kotlin/com/architectpsg/commandlibrary/feature/shell/presentation/CollectionTextExportControllerTest.kt",
+    "coordination/handoffs/cx-campaign-collection-text-controller-proof-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
