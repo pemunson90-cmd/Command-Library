@@ -1,0 +1,16 @@
+{
+  "owner": "/root/implement_provider_generation",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "7c5095a4",
+  "worktree": "/workspace/command-library-manual-tags-sql-01",
+  "branch": "agent/campaign-manual-tags-sql-20261016",
+  "owned_paths": [
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/persistence/SqlLocalPersonalTags.kt",
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/persistence/PersonalTagPoolWire.kt",
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/PersonalTagPolicy.kt",
+    "android-app/data/storage/src/test/kotlin/com/architectpsg/commandlibrary/data/storage/decks/SqlLocalPersonalTagsTest.kt",
+    "coordination/handoffs/cx-campaign-manual-tags-sql-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
