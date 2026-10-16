@@ -603,4 +603,10 @@
     <string name="manual_tags_discard_warning">Discard unsaved tag input? Saved pool changes remain saved.</string>
     <string name="manual_tags_keep">Keep editing</string>
     <string name="manual_tags_discard">Discard input and close</string>
+    <string name="manual_tags_deck_scope">Deck tag names and order are local to this deck. Removing a deck tag removes its memberships; card quantities and the reusable pool stay unchanged. Each change can be undone.</string>
+    <string name="manual_tags_deck_rename">Rename in this deck</string>
+    <string name="manual_tags_deck_remove">Remove deck tag and memberships</string>
+    <string name="manual_tags_deck_name">Name in this deck</string>
+    <string name="manual_tags_deck_save">Save deck tag name</string>
+    <string name="manual_tags_deck_cancel">Cancel deck name edit</string>
 </resources>

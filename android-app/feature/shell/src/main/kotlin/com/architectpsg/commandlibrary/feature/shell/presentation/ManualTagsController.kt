@@ -17,6 +17,8 @@ internal data class ManualTagsState(
     val query: String = "",
     val name: String = "",
     val editingId: EntityId? = null,
+    val categoryId: EntityId? = null,
+    val categoryName: String = "",
     val busy: Boolean = false,
     val conflict: Boolean = false,
     val uncertain: Boolean = false,
@@ -24,6 +26,7 @@ internal data class ManualTagsState(
     val closeRequested: Boolean = false,
 ) {
     val dirty: Boolean get() = pool != null && draft != pool.tags
+    val categories: List<EntryLabel> get() = deck?.let { it.categoryOrder ?: it.entries.flatMap { e -> e.labels }.distinctBy { e -> e.id } } ?: emptyList()
     val visibleTags: List<PersonalTag> get() {
         val key = searchKey(query)
         return draft.filter { !it.retired && searchKey(it.name).contains(key) }
@@ -132,7 +135,7 @@ internal class ManualTagsController(
     }
     fun assign(remove: Boolean) {
         val s = mutable.value; val deck = s.deck ?: return; val pool = s.pool ?: return
-        if (s.busy || s.dirty || s.conflict || s.uncertain || s.name.isNotEmpty() || !current(deck)) {
+        if (s.busy || s.dirty || s.conflict || s.uncertain || s.name.isNotEmpty() || s.categoryId != null || !current(deck)) {
             mutable.update { it.copy(problem = Problem.STALE_REVISION) }; return
         }
         val entries = SnapshotList.copyOf(deck.entries.filter { it.id in s.selectedEntries }.map { it.id })
@@ -144,10 +147,50 @@ internal class ManualTagsController(
             else -> mutable.update { it.copy(problem = Problem.INVALID_INPUT) }
         }
     }
+    fun editCategory(id: EntityId) {
+        val s = mutable.value
+        if (s.busy) return
+        val label = s.categories.find { it.id == id } ?: return
+        mutable.update { it.copy(categoryId = id, categoryName = label.name, problem = null) }
+    }
+    fun categoryName(value: String) {
+        if (!mutable.value.busy) mutable.update { it.copy(categoryName = value, problem = null) }
+    }
+    fun cancelCategory() { if (!mutable.value.busy) mutable.update { it.copy(categoryId = null, categoryName = "") } }
+    fun saveCategory() {
+        val s = mutable.value; val id = s.categoryId ?: return
+        if (s.categoryName.isBlank()) { mutable.update { it.copy(problem = Problem.INVALID_INPUT) }; return }
+        applyCategories(s.categories.map { if (it.id == id) it.copy(name = s.categoryName) else it }, true)
+    }
+    fun moveCategory(id: EntityId, direction: Int) {
+        val s = mutable.value
+        if (direction !in listOf(-1, 1) || s.categoryId != null) return
+        val categories = s.categories.toMutableList(); val from = categories.indexOfFirst { it.id == id }; val to = from + direction
+        if (from < 0 || to !in categories.indices) return
+        categories.add(to, categories.removeAt(from)); applyCategories(categories, false)
+    }
+    /** Explicit label removal changes memberships, never physical card entries or the pool. */
+    fun removeCategory(id: EntityId) {
+        val s = mutable.value
+        if (s.categoryId != null || s.categories.none { it.id == id }) return
+        applyCategories(s.categories.filter { it.id != id }, false)
+    }
+    private fun applyCategories(categories: List<EntryLabel>, rename: Boolean) {
+        val s = mutable.value; val deck = s.deck ?: return
+        if (s.busy || s.dirty || s.name.isNotEmpty() || s.conflict || s.uncertain ||
+            (!rename && s.categoryId != null) || !current(deck)) {
+            mutable.update { it.copy(problem = Problem.STALE_REVISION) }; return
+        }
+        when (val result = planning.categories(deck, SnapshotList.copyOf(categories))) {
+            is Outcome.Success -> if (apply(deck, result.value)) { ++ticket; mutable.value = ManualTagsState() }
+                else mutable.update { it.copy(problem = Problem.STALE_REVISION) }
+            else -> mutable.update { it.copy(problem = Problem.INVALID_INPUT) }
+        }
+    }
     fun close() {
         val s = mutable.value
         if (s.busy) return
-        if (s.dirty || s.name.isNotEmpty() || s.uncertain) mutable.update { it.copy(closeRequested = true) }
+        if (s.dirty || s.name.isNotEmpty() || s.categoryId != null || s.uncertain) mutable.update { it.copy(closeRequested = true) }
         else discardAndClose()
     }
     fun keepEditing() { mutable.update { it.copy(closeRequested = false) } }

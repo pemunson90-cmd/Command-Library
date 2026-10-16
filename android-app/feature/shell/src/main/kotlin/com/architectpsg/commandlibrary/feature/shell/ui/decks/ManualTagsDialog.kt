@@ -78,6 +78,29 @@ internal fun ManualTagsDialog(controller: ManualTagsController) {
                         modifier = Modifier.heightIn(min = 48.dp).testTag("manual-tag-entry-${entry.id.value}"))
                     if (entry.labels.isNotEmpty()) Text(entry.labels.joinToString(" · ") { it.name })
                 }
+                Text(stringResource(R.string.manual_tags_deck_scope))
+                state.categories.forEach { label ->
+                    Text(label.name)
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        TextButton({ action { controller.editCategory(label.id) } }, enabled = !state.busy,
+                            modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-edit-${label.id.value}")) { Text(stringResource(R.string.manual_tags_deck_rename)) }
+                        TextButton({ action { controller.moveCategory(label.id, -1) } }, enabled = !state.busy && state.categoryId == null,
+                            modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_up)) }
+                        TextButton({ action { controller.moveCategory(label.id, 1) } }, enabled = !state.busy && state.categoryId == null,
+                            modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_down)) }
+                    }
+                    TextButton({ action { controller.removeCategory(label.id) } }, enabled = !state.busy && state.categoryId == null,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-remove-${label.id.value}")) { Text(stringResource(R.string.manual_tags_deck_remove)) }
+                }
+                if (state.categoryId != null) {
+                    OutlinedTextField(state.categoryName, { value -> action { controller.categoryName(value) } },
+                        label = { Text(stringResource(R.string.manual_tags_deck_name)) }, enabled = !state.busy,
+                        modifier = Modifier.fillMaxWidth().testTag("manual-category-name"), singleLine = true)
+                    Button({ action(controller::saveCategory) }, enabled = !state.busy && !state.dirty && state.name.isEmpty() && !state.conflict && !state.uncertain,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-save")) { Text(stringResource(R.string.manual_tags_deck_save)) }
+                    TextButton({ action(controller::cancelCategory) }, enabled = !state.busy,
+                        modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_deck_cancel)) }
+                }
                 // Deck-local or retired labels remain removable even when absent from the active pool.
                 val localLabels = deck.categoryOrder ?: deck.entries.flatMap { it.labels }.distinctBy { it.id }
                 localLabels.filter { label -> state.visibleTags.none { it.id == label.id } }.forEach { label ->
@@ -86,7 +109,7 @@ internal fun ManualTagsDialog(controller: ManualTagsController) {
                         modifier = Modifier.heightIn(min = 48.dp))
                 }
                 val ready = state.pool != null && !state.busy && !state.dirty && state.name.isEmpty() && !state.conflict && !state.uncertain &&
-                    state.selectedEntries.isNotEmpty() && state.selectedTags.isNotEmpty()
+                    state.selectedEntries.isNotEmpty() && state.selectedTags.isNotEmpty() && state.categoryId == null
                 Text(stringResource(R.string.manual_tags_apply_help))
                 Button({ action { controller.assign(false) } }, enabled = ready,
                     modifier = Modifier.heightIn(min = 48.dp).testTag("manual-tags-assign")) { Text(stringResource(R.string.manual_tags_assign)) }
