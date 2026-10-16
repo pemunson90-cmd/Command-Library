@@ -86,6 +86,21 @@ class ProviderGenerationControllerTest {
         other.send(other.state.value.frame); runCurrent(); assertEquals(1, f.sends)
         assertFalse(other.state.value.optionsReady)
     }
+    @Test fun responsesLimitRemainsOptionalAndKnownApiVersionPreventsSend() = runTest {
+        val f = Fixture()
+        val row = f.row.copy(profile = f.row.profile.copy(dialect = ProviderDialect.OPENAI_RESPONSES,
+            apiVersion = Knowledge.Unknown("Not supplied", SnapshotList.empty())))
+        f.profiles.rows[row.profile.id.value] = row
+        val c = with(f) { controller() }; c.open(prompt); runCurrent(); c.select(row)
+        assertEquals("", c.state.value.maxTokensText)
+        c.consent(true, c.state.value.frame); c.send(c.state.value.frame); runCurrent()
+        assertEquals(1, f.sends); assertNull(f.requests.single().maxTokens)
+        val versioned = row.copy(profile = row.profile.copy(apiVersion = Knowledge.Known("2023-06-01")))
+        f.profiles.rows[versioned.profile.id.value] = versioned
+        val other = with(f) { controller() }; other.open(prompt); runCurrent(); other.select(versioned)
+        other.consent(true, other.state.value.frame); other.send(other.state.value.frame); runCurrent()
+        assertFalse(other.state.value.optionsReady); assertEquals(1, f.sends)
+    }
     @Test fun noSendOnOpenSelectionOrMissingConsentAndExactCapturedInput() = runTest {
         val f = Fixture(); val c = with(f) { controller() }
         c.open(prompt); runCurrent(); c.select(f.row)

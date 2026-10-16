@@ -48,6 +48,10 @@ internal fun ProviderGenerationDialog(controller: ProviderGenerationController) 
                         com.architectpsg.commandlibrary.core.model.ProviderDialect.ANTHROPIC)
                         R.string.provider_generation_max_tokens_required else R.string.provider_generation_max_tokens)) },
                     modifier = Modifier.fillMaxWidth().testTag("provider-generation-max-tokens"))
+                if (state.selected?.profile?.dialect == com.architectpsg.commandlibrary.core.model.ProviderDialect.OPENAI_RESPONSES) {
+                    Text(stringResource(R.string.provider_generation_responses_help))
+                    Text(stringResource(R.string.provider_generation_responses_storage), Modifier.testTag("provider-generation-responses-storage"))
+                }
                 if (state.cursor != null) TextButton({ controller.loadProfiles(true) }, enabled = !state.busy && !state.sending) {
                     Text(stringResource(R.string.provider_generation_more))
                 }

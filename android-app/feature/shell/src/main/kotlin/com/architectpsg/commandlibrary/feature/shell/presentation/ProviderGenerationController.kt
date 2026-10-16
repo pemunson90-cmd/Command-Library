@@ -19,6 +19,7 @@ internal data class ProviderGenerationState(
     val optionsReady: Boolean get() = !maxTokensRejected && (maxTokensText.isEmpty() || maxTokens != null) &&
         selected?.profile?.let { profile -> when (profile.dialect) {
             ProviderDialect.OPENAI_CHAT -> true
+            ProviderDialect.OPENAI_RESPONSES -> profile.apiVersion !is Knowledge.Known
             ProviderDialect.ANTHROPIC -> maxTokens != null && profile.apiVersion is Knowledge.Known
             else -> false
         } } == true

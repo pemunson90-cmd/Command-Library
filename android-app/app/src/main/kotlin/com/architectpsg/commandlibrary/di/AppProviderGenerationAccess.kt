@@ -24,6 +24,7 @@ internal class AppProviderGenerationAccess(private val profiles: LocalProviderPr
         // Pure admission precedes even a durable PENDING row; it performs no credential or wire work.
         val admission = when (profile.profile.dialect) {
             ProviderDialect.OPENAI_CHAT -> com.architectpsg.commandlibrary.feature.ai.ChatCompletionsWireCodec().encode(profile.profile, request, cancel)
+            ProviderDialect.OPENAI_RESPONSES -> com.architectpsg.commandlibrary.feature.ai.ResponsesWireCodec().encode(profile.profile, request, cancel)
             ProviderDialect.ANTHROPIC -> com.architectpsg.commandlibrary.feature.ai.AnthropicMessagesWireCodec().encode(profile.profile, request, cancel)
             else -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Provider text dialect is not implemented")
         }
@@ -43,6 +44,7 @@ internal class AppProviderGenerationAccess(private val profiles: LocalProviderPr
         try {
             val client: ProviderTextClient = when (profile.profile.dialect) {
                 ProviderDialect.OPENAI_CHAT -> HttpsChatCompletionsClient(network, vault)
+                ProviderDialect.OPENAI_RESPONSES -> com.architectpsg.commandlibrary.feature.ai.HttpsResponsesClient(network, vault)
                 ProviderDialect.ANTHROPIC -> com.architectpsg.commandlibrary.feature.ai.HttpsAnthropicMessagesClient(network, vault)
                 else -> return Outcome.Unavailable(UnavailableReason.UNSUPPORTED, "Provider text dialect is not implemented")
             }

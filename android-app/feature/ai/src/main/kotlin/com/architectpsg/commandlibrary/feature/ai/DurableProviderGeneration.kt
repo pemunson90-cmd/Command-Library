@@ -237,6 +237,8 @@ public class DurableProviderGeneration(private val client: ProviderTextClient) {
             if (normalized !is Outcome.Success || normalized.value != profile) return false
             when (profile.dialect) {
                 ProviderDialect.OPENAI_CHAT -> if (profile.apiVersion is Knowledge.Known) return false
+                ProviderDialect.OPENAI_RESPONSES -> if (profile.apiVersion is Knowledge.Known || request.seed != null ||
+                    request.stopSequences.isNotEmpty() || request.temperature?.let { it > java.math.BigDecimal("2") } == true) return false
                 ProviderDialect.ANTHROPIC -> if (!nativeVersion(profile.apiVersion) || request.maxTokens == null ||
                     request.temperature != null || request.topP != null || request.seed != null) return false
                 else -> return false

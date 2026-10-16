@@ -556,7 +556,7 @@
     <string name="printings_add_collection">Add this printing to collection</string>
     <string name="decks_open_versions">Versions and restore</string>
     <string name="provider_generation_open">Send prompt to provider</string>
-    <string name="provider_generation_scope">Custom HTTPS Chat Completions text compatibility. Review the exact captured prompt below. Opening this screen sends nothing.</string>
+    <string name="provider_generation_scope">Review the captured prompt before sending to your saved HTTPS provider. Opening this screen sends nothing.</string>
     <string name="provider_generation_destination">Destination: %1$s\nModel: %2$s\nSaved profile revision: %3$d</string>
     <string name="provider_generation_more">More saved profiles</string>
     <string name="provider_generation_no_profiles">No saved profiles loaded. Configure a provider in Settings first.</string>
@@ -575,4 +575,6 @@
     <string name="provider_generation_version">Saved API version: %1$s</string>
     <string name="provider_generation_version_missing">Not supplied</string>
     <string name="provider_generation_max_tokens_required">Output token limit (required)</string>
+    <string name="provider_generation_responses_help">For Responses, the output limit includes reasoning tokens. Leave the saved API version unset for this protocol.</string>
+    <string name="provider_generation_responses_storage">The request asks the Responses endpoint not to store the response. Provider retention policies still apply.</string>
 </resources>
