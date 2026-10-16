@@ -72,6 +72,9 @@ internal class ShellControllers(
             cardCurrent = { card -> deckEditorSearch?.state?.value?.let {
                 currentDeckCard(card, it, status.state.value.status?.activeGeneration()?.id)
             } == true }) else null
+    val manualTags = if (ports.personalTags != null && ports.manualTagPlanning != null && deckLibrary != null)
+        ManualTagsController(scope, ports.personalTags, ports.manualTagPlanning, ioDispatcher,
+            deckLibrary::canEditManualTags, deckLibrary::applyManualTags) else null
     val aiHistory = ports.aiHistory?.let { AiHistoryController(scope, it, ioDispatcher) }
     val providerGeneration = if (ports.providerGeneration != null && ports.providerProfiles != null && ports.aiHistory != null)
         ProviderGenerationController(scope, ports.providerProfiles, ports.providerGeneration, ports.aiHistory, ioDispatcher) else null

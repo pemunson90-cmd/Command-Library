@@ -193,6 +193,20 @@ internal class DeckLibraryController(
             DeckLibraryRequest.Patch(form.base, DeckPatch(changes, "Edit deck"), EntityId(nextId()))
         }
     }
+    /** External explicit bulk action cannot cross a retained editor or uncertain mutation. */
+    fun canEditManualTags(base: DeckSnapshot): Boolean {
+        val s = mutable.value
+        return edits != null && s.selected == base && !s.loadingDetail && !s.mutationBusy && !s.pending &&
+            s.editor == null && s.form == null && request == null &&
+            draftEditor?.state?.value?.session == null && draftEditor?.hasMutationBarrier != true
+    }
+    fun applyManualTags(base: DeckSnapshot, patch: DeckPatch): Boolean {
+        if (!canEditManualTags(base)) return false
+        if (patch.edits.isEmpty()) return true
+        freezeEdit { DeckLibraryRequest.Patch(base, patch, EntityId(nextId())) }
+        return request != null
+    }
+
     private fun freezeEdit(make: () -> DeckLibraryRequest) {
         if (request != null || mutable.value.mutationBusy) return
         try { request = make() } catch (_: Exception) { mutable.update { it.copy(mutationProblem = Problem.INTERNAL) }; return }

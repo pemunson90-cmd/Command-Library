@@ -95,4 +95,8 @@ public class ShellPorts(
     public val providerProfiles: com.architectpsg.commandlibrary.core.model.LocalProviderProfiles? = null,
     /** Same reviewed URI admission used by persistence; no shell-to-provider-module dependency. */
     public val providerProfileOrigin: ((com.architectpsg.commandlibrary.core.model.ResourceUri) -> com.architectpsg.commandlibrary.core.model.Outcome<com.architectpsg.commandlibrary.core.model.Origin>)? = null,
+    /** Real reusable vocabulary; absent until actual persistence is bound. */
+    public val personalTags: com.architectpsg.commandlibrary.core.model.LocalPersonalTags? = null,
+    public val manualTagPlanning: ManualTagPlanning? = null,
+
 )

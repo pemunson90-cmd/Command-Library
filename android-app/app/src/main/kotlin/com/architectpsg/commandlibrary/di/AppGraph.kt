@@ -7,6 +7,7 @@ import com.architectpsg.commandlibrary.feature.ai.SqlLocalProviderProfiles
 import com.architectpsg.commandlibrary.feature.ai.ProviderProfilePolicy
 import com.architectpsg.commandlibrary.core.common.ConsentCoordinator
 import com.architectpsg.commandlibrary.core.model.CatalogImportLimits
+import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.core.model.Outcome
 import com.architectpsg.commandlibrary.data.storage.collection.codec.OwnedLotPayloadCodec
 import com.architectpsg.commandlibrary.data.storage.collection.codec.LocalInventoryPatchCodec
@@ -98,6 +99,15 @@ internal class AppGraph(
                         secretVault = vault, providerProfiles = providerProfiles, providerProfileOrigin = ProviderProfilePolicy::canonicalOrigin,
                         aiHistory = aiHistory, providerGeneration = AppProviderGenerationAccess(providerProfiles, aiHistory, vault),
                         promptOverrides = SqlLocalPromptOverrides(opened.value, SystemUtcClock),
+                        personalTags = com.architectpsg.commandlibrary.feature.decks.persistence.SqlLocalPersonalTags(opened.value, SystemUtcClock),
+                        manualTagPlanning = object : com.architectpsg.commandlibrary.feature.shell.ManualTagPlanning {
+                            override fun assign(deck: DeckSnapshot, pool: PersonalTagPool, entryIds: SnapshotList<EntityId>, tagIds: SnapshotList<EntityId>): Outcome<DeckPatch> =
+                                com.architectpsg.commandlibrary.feature.decks.ManualDeckTagPlanner.assign(deck, pool, entryIds, tagIds)
+                            override fun remove(deck: DeckSnapshot, entryIds: SnapshotList<EntityId>, tagIds: SnapshotList<EntityId>): Outcome<DeckPatch> =
+                                com.architectpsg.commandlibrary.feature.decks.ManualDeckTagPlanner.remove(deck, entryIds, tagIds)
+                            override fun categories(deck: DeckSnapshot, categories: SnapshotList<EntryLabel>): Outcome<DeckPatch> =
+                                com.architectpsg.commandlibrary.feature.decks.ManualDeckTagPlanner.categories(deck, categories)
+                        },
                         offlineDeckPrompts = com.architectpsg.commandlibrary.feature.ai.LocalOfflineDeckPrompts(cardQuery, SystemUtcClock, DeckSnapshotValidator::validate),
                         catalogSearchPreparation = AndroidCatalogServices.localSearchPreparation(opened.value, SystemUtcClock),
                         cardQueryParser = LocalCardQueryParser()::parse,
