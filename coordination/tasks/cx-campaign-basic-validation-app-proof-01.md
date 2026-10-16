@@ -1,0 +1,14 @@
+# Actual basic legality app proof — TAKEN NEW2
+
+Exact base de0c5ce21682ce5258de97fa02e7626836d2fe28, isolated /workspace/command-library-basic-validation-app-proof-01, branch agent/campaign-basic-validation-app-proof-20261016. Read AGENTS/CONTINUE and ROOT canonical parent cx-campaign-basic-validation-01.md/contracts/source policy. Owner implement_provider_app_proof Solmedium. Own only:
+
+- android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/BasicDeckValidationAppIntegrationTest.kt
+- coordination/handoffs/cx-campaign-basic-validation-app-proof-01.md
+
+No builds/compiler/tests/network/children/commits/push/shared/product/existing test edits. Root+engine+you max3 writers,4 active children, sole ROOT build slot; reader frozen under review not writer. Keep original worktrees/drafts. Root real factory/engine/DI binding follows independently ACKed producer returns; current AppGraph port null intentionally, require actual port and fail until root binds, never substitute adapters.
+
+Actual MainActivity/AppGraph/Room/import/source-reader/engine/controller/dialog. Reuse prior statistics proof helpers read-only. Clearly synthetic tiny actual import plus actual READY preparation through actual supported preparation port (import may not prepare search); no table edits to fake-ready. Real persisted deck100:99 basicForestMAIN+1 legendarygreenCreatureCOMMANDER, source commander legal for both. Known nonempty commander text/unsupported exception/name-equivalence coverage can remain REVIEW_REQUIRED; no global clean legal assertion. UI must not auto-assess/auto-select unknown deck format. Explicit Commander then Check: counted100 passes, actual source legal wording and source-date/unknown freshness, meaningful percheck/source distinctions/affectednames/refs, recreation/close/reopen resets selection per contract. Separate definite issue scenario source-banned extra card/count101 or sideboard=>NOT_LEGAL with exact findings, keeping unknown/review visible. Fresh no-catalog case disabled action/installcaption. Minimum meaningful cases up to3, no padding.
+
+Before/after assessment exact actual inventory/settings/profiles/providerprofiles/pool/games and full deck/undo/version/receipt/draft/source rows baseline; independent Room reopen. Fixture actual import/preparation only before conserved interval; assessment cannot prepare/write. No network/native/OS-process-death/fakes. Direct engine check may supplement, not replace actualUI. Tags basic-validation-open/list/commander/assess/status/check-ID/close; deck-library-overview; installcaption existing deck_statistics_install_catalog. Ask ROOT for minimal selector only if necessary. Schema19 unchanged.
+
+Return full frozenNEW2 SHA256 manifest/handoff/exact authoredoracles/limitations/NOT_RUN. Independent source review then byteintegration and ROOT assembled gate; no fullB06/device/releaseclaim.
