@@ -66,6 +66,9 @@ public class AndroidCatalogServices private constructor(
         /** Qualified source-reported extras over actual validated local identities; no wire work. */
         public fun localDeckFacts(database: Database): CatalogDeckFactsLookup = LocalCatalogDeckFacts(database)
 
+        /** Source-reported format consensus over validated local READY evidence; no wire or writes. */
+        public fun localFormatLegalities(database: Database): CatalogFormatLegalityLookup = LocalCatalogFormatLegality(database)
+
         /** Pure local bounded preparation. Caller owns database/clock; no transport/job recovery. */
         public fun localCardQuery(database: Database, compiler: CatalogQueryCompiler): LocalCardQuery =
             LocalPreparedCardQuery(database, compiler)
