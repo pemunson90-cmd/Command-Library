@@ -32,7 +32,7 @@ internal fun DeckStatisticsDialog(controller: DeckStatisticsController) {
                 }
                 BoardRole.entries.forEach { board -> item {
                     FilterChip(selected = board in state.boards, onClick = { action { controller.board(board) } },
-                        label = { Text(board.name) }, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-board-${board.name}"))
+                        label = { Text(stringResource(boardLabel(board))) }, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-board-${board.name}"))
                 } }
                 item {
                     Text(stringResource(R.string.deck_statistics_tag_filter))
