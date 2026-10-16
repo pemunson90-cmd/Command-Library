@@ -2,6 +2,20 @@ package com.architectpsg.commandlibrary.core.model
 
 import java.math.BigDecimal
 
+/** Explicit local analysis budgets; reject over-limit input before unbounded aggregation. */
+public object DeckStatisticsLimits {
+    public const val MAX_ENTRIES: Int = 10_000
+    public const val MAX_RAW_RECORD_BYTES: Int = 8 * 1024 * 1024
+    public const val MAX_AGGREGATE_FACT_BYTES: Int = 32 * 1024 * 1024
+    public const val MAX_COST_BYTES: Int = 16 * 1024
+    public const val MAX_FACES: Int = 16
+    public const val MAX_RELATED_PARTS: Int = 128
+    public const val MAX_TYPE_TOKENS: Int = 64
+    public const val MAX_TYPE_BYTES: Int = 256
+    public const val MAX_MANA_PRECISION: Int = 64
+    public const val MAX_MANA_SCALE: Int = 32
+}
+
 /** Supplied relationship, not a claim about creation direction, number of tokens or trigger. */
 public data class ReportedCardPart(
     public val printingId: CardId,
