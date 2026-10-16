@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.architectpsg.commandlibrary.core.model.Knowledge
@@ -33,7 +34,7 @@ import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.presentation.SettingsNotice
 import com.architectpsg.commandlibrary.feature.shell.presentation.SettingsUiState
 
-/** Persisted theme, real provider configuration entry, and read-only source notices. */
+/** Persisted theme, actionable setup/local-data guidance and real optional provider/source controls. */
 @Composable
 internal fun SettingsScreen(
     state: SettingsUiState,
@@ -44,6 +45,8 @@ internal fun SettingsScreen(
     onDismissMessage: () -> Unit,
     modifier: Modifier = Modifier,
     onProviders: (() -> Unit)? = null,
+    onCatalog: (() -> Unit)? = null,
+    onRules: (() -> Unit)? = null,
 ) {
     Box(modifier.fillMaxSize().verticalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
         Column(
@@ -54,6 +57,20 @@ internal fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             SectionHeading(stringResource(R.string.settings_title), style = MaterialTheme.typography.headlineMedium)
+            SectionHeading(stringResource(R.string.settings_setup_title), modifier = Modifier.padding(top = 8.dp))
+            Text(stringResource(R.string.settings_setup_body))
+            onCatalog?.let { open -> OutlinedButton(open,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("settings-open-catalog")) {
+                Text(stringResource(R.string.settings_setup_catalog))
+            } }
+            onRules?.let { open -> OutlinedButton(open,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("settings-open-rules")) {
+                Text(stringResource(R.string.settings_setup_rules))
+            } }
+            SectionHeading(stringResource(R.string.settings_storage_title), modifier = Modifier.padding(top = 8.dp))
+            Text(stringResource(R.string.settings_storage_body))
+            Text(stringResource(R.string.settings_export_help))
+            Text(stringResource(R.string.settings_network_help))
             onProviders?.let { open ->
                 OutlinedButton(onClick = open, modifier = Modifier.heightIn(min = 48.dp)) {
                     Text(stringResource(R.string.provider_profiles_manage))

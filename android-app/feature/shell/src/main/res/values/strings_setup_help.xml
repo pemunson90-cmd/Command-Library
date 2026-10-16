@@ -1,0 +1,10 @@
+<resources>
+    <string name="settings_setup_title">Set up card data and rules</string>
+    <string name="settings_setup_body">Open Catalog to import English card data or approve an available download. Import an English rules TXT file in Rules to read and search it offline.</string>
+    <string name="settings_setup_catalog">Open Catalog</string>
+    <string name="settings_setup_rules">Open Rules</string>
+    <string name="settings_storage_title">Your saved data</string>
+    <string name="settings_storage_body">Decks, collection records and games are saved locally. Uninstalling the app or clearing its storage deletes this data. Android backup and full app-state restore are not available in this release.</string>
+    <string name="settings_export_help">Export saved decks and your collection before removing the app. Text exports do not preserve every setting, version or game history, and are not a complete app backup.</string>
+    <string name="settings_network_help">Downloads need explicit approval for the displayed source. Optional AI providers require separate setup and consent; provider-free prompt editing and copying can be used locally.</string>
+</resources>

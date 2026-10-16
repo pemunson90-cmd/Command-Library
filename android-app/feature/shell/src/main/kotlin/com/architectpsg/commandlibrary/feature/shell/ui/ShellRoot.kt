@@ -560,6 +560,8 @@ private fun DestinationContent(
                 onRetry = controllers.settings::load,
                 onDismissMessage = controllers.settings::dismissMessage,
                 onProviders = controllers.providerProfiles?.let { it::open },
+                onCatalog = { onNavigate(ShellDestination.CATALOG) },
+                onRules = controllers.rules?.let { { onNavigate(ShellDestination.RULES) } },
                 modifier = modifier,
             )
         }

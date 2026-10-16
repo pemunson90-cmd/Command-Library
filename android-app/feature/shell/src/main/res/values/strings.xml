@@ -189,7 +189,7 @@
     <string name="settings_save_failed">The theme could not be saved.</string>
     <string name="settings_changed_elsewhere">Settings were changed elsewhere. The latest saved settings are shown and your choice was not saved. Choose again if you still want it.</string>
     <string name="settings_about_title">About this version</string>
-    <string name="settings_about_body">Card data comes only from files you import. Card images are not shown or downloaded in this version.</string>
+    <string name="settings_about_body">English card data can be imported locally or downloaded after your approval in Catalog. Installed card and rules data can be used offline.</string>
     <string name="settings_notices_title">Source notices</string>
     <string name="settings_notice_license">License</string>
     <string name="rules_title">Rules</string>
