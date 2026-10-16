@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 internal enum class ShellDestination(@param:StringRes val label: Int, @param:DrawableRes val icon: Int, val tag: String) {
     CARDS(R.string.shell_nav_cards, R.drawable.shell_ic_cards, "shell-nav-cards"),
     DECKS(R.string.decks_title, R.drawable.shell_ic_decks, "shell-nav-decks"),
+    LIFE(R.string.ordinary_life_title, R.drawable.shell_ic_profiles, "shell-nav-life"),
     COLLECTION(R.string.collection_title, R.drawable.shell_ic_cards, "shell-nav-collection"),
     CATALOG(R.string.shell_nav_catalog, R.drawable.shell_ic_catalog, "shell-nav-catalog"),
     RULES(R.string.rules_title, R.drawable.shell_ic_catalog, "shell-nav-rules"),

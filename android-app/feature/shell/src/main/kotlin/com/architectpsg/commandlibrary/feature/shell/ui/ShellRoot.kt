@@ -105,6 +105,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         val destinations = ShellDestination.entries.filter {
             when (it) {
                 ShellDestination.DECKS -> controllers.deckLibrary != null
+                ShellDestination.LIFE -> controllers.ordinaryLife != null
                 ShellDestination.COLLECTION -> controllers.collection != null
                 ShellDestination.RULES -> controllers.rules != null
                 ShellDestination.PROFILES -> controllers.profiles != null
@@ -347,7 +348,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                             val largeText = LocalDensity.current.fontScale >= 1.5f
                             val overflow = controllers.deckLibrary != null && (destinations.size > 5 || (largeText && destinations.size > 3))
                             val primary = if (!overflow) destinations else
-                                listOf(ShellDestination.CARDS, ShellDestination.DECKS, ShellDestination.COLLECTION, ShellDestination.RULES, ShellDestination.PROFILES)
+                                listOf(ShellDestination.CARDS, ShellDestination.DECKS, ShellDestination.LIFE, ShellDestination.COLLECTION, ShellDestination.RULES, ShellDestination.PROFILES)
                                     .filter { it in destinations }.take(if (largeText) 2 else 4)
                             val secondary = destinations.filter { it !in primary }
                             var menuOpen by remember { mutableStateOf(false) }
@@ -499,6 +500,9 @@ private fun DestinationContent(
                     val current = library.state.value
                     if (current.selected == deck && !current.loadingDetail && current.editor == null && !current.pending && !current.mutationBusy && current.form == null) checker.open(deck)
                 } })
+        }
+        ShellDestination.LIFE -> controllers.ordinaryLife?.let { life ->
+            com.architectpsg.commandlibrary.feature.shell.ui.life.OrdinaryLifeScreen(life, widthClass, modifier)
         }
         ShellDestination.COLLECTION -> controllers.collection?.let {
             Box(modifier) { CollectionScreen(it, widthClass, onBrowseCards = { onNavigate(ShellDestination.CARDS) },
