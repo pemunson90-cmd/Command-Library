@@ -7,3 +7,5 @@ Next pure planner emits Categories before Replace, exact selected-entry membersh
 Required following manual-default/suppression/provenance and override workflow remains named first-release work; vocabulary alone does not completeB02/D30. Baseline/tag-awareanalysis follows stable actual snapshots, auto/inference optional later. Source/runtimeNOT_RUN at draft. Minimal coherent migration/persistence/planner/actual-app gate, not peredit broad suite; independent source/durability review and finaldevice/release gates retained.
 
 SOURCE013ac6908c reviewHOLD: EntityId nonblankalone allowed pool IDs unusable by CLDK/CLDP. SOURCE02 explicitly requires distinct exact strictUnicode/UTF8 IDs <=DeckPayloadLimits.MAX_ID_BYTES/no normalization or reassignment. No schema changes or runtime; focused review before producer assignment.
+
+SOURCE01additionalreviewHOLD: selectedRoom3 Migration.migrate is suspend, rootdraft signature omittedsuspend. SOURCE03 corrects override to suspend like existing17 migrations. No executionclaim; compile/KSP boundarygate after focusedACK.
