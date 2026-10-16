@@ -37,8 +37,8 @@ internal fun DeckStatisticsDialog(controller: DeckStatisticsController) {
                 item {
                     Text(stringResource(R.string.deck_statistics_tag_filter))
                     Row {
-                        FilterChip(state.allTags, { action { controller.allTags(true) } }, label = { Text(stringResource(R.string.deck_statistics_all_tags)) }, modifier = Modifier.heightIn(min = 48.dp))
-                        FilterChip(!state.allTags, { action { controller.allTags(false) } }, label = { Text(stringResource(R.string.deck_statistics_any_tag)) }, modifier = Modifier.heightIn(min = 48.dp))
+                        FilterChip(state.allTags, { action { controller.allTags(true) } }, label = { Text(stringResource(R.string.deck_statistics_all_tags)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-all-tags"))
+                        FilterChip(!state.allTags, { action { controller.allTags(false) } }, label = { Text(stringResource(R.string.deck_statistics_any_tag)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-any-tag"))
                     }
                 }
                 val labels = deck.categoryOrder ?: SnapshotList.copyOf(deck.entries.flatMap { it.labels }.distinctBy { it.id })
@@ -48,7 +48,7 @@ internal fun DeckStatisticsDialog(controller: DeckStatisticsController) {
                 } }
                 item {
                     FilterChip(state.restrictEntries, { action { controller.restrictEntries(!state.restrictEntries) } },
-                        label = { Text(stringResource(R.string.deck_statistics_selected_entries)) }, modifier = Modifier.heightIn(min = 48.dp))
+                        label = { Text(stringResource(R.string.deck_statistics_selected_entries)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-selected-mode"))
                 }
                 if (state.restrictEntries) deck.entries.forEach { entry -> item {
                     FilterChip(entry.id in state.entries, { action { controller.entry(entry.id) } },
