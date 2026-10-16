@@ -783,3 +783,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-16T01:58:45Z | codex | cp-20261016-collection-text-file-proof-268 | containing commit | Approved plain-text collection UI and safety checks pass22cases; actual file-provider proof active, continue implementation
 
 2026-10-16T02:08:31Z | codex | cp-20261016-collection-text-host-269 | containing commit | Approved plain-text collection file export accepted25cases; continue mandatory ordinary artwork and essential consent/setup
+
+2026-10-16T02:16:24Z | codex | cp-20261016-artwork-boundary-270 | containing commit | Reviewed ordinary artwork source and transient capability; assign exact binary-access producer and continue root UI

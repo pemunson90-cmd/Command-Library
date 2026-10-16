@@ -4,8 +4,8 @@
   "session_id": "codex-root-replacement-20261015",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-16T02:08:31Z",
-  "expires_utc": "2026-10-16T02:53:31Z",
-  "checkpoint_id": "cp-20261016-collection-text-host-269",
+  "heartbeat_utc": "2026-10-16T02:16:24Z",
+  "expires_utc": "2026-10-16T03:01:24Z",
+  "checkpoint_id": "cp-20261016-artwork-boundary-270",
   "note": "Root active. Collection plaintext host accepted2432ae54, allclaims released; next mandatory ordinary artwork/consent consumer, sourceprofile review. ROOTbuildslotfree; no APK/main/publicrelease; all final gates retained."
 }

@@ -1,0 +1,16 @@
+{
+  "owner": "/root/implement_responses_codec",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "08275484",
+  "worktree": "/workspace/command-library-ordinary-artwork-access-01",
+  "branch": "agent/campaign-ordinary-artwork-access-20261016",
+  "owned_paths": [
+    "android-app/app/src/main/kotlin/com/architectpsg/commandlibrary/di/AppCardArtworkAccess.kt",
+    "android-app/app/src/main/kotlin/com/architectpsg/commandlibrary/di/OrdinaryArtworkProfile.kt",
+    "android-app/app/src/main/kotlin/com/architectpsg/commandlibrary/di/LocalArtworkDecoder.kt",
+    "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/di/AppCardArtworkAccessTest.kt",
+    "coordination/handoffs/cx-campaign-ordinary-artwork-access-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
