@@ -28,3 +28,9 @@ Baseline evidence: accepted actual pure projector29tests, allocator25, CLOL+prio
 
 
 Root integration:942e2ad/f378484 plus actual composition accepted; see docs/verification/collection/COLLECTION-INTEGRATION-LOCAL-20261015.md. Claim released, no further writer authority.
+
+## Latest continuation delta
+
+Retained accepted collection UI/persistence/owned-missing host evidence remains unchanged. D31 targeted read-only follow-up2026-10-16 found collection snapshot->reviewed CSV->user-selected file still missing; existing generic TransferService/CSV declarations and compatibility probe are not implementation. Root actual basic legality integration has current priority; next ready collection slice is ordinary export, not full private-state migration or new full TransferService. No new code/tests for export yet.
+
+Reuse real LocalInventory.snapshot() complete/captured revision, one bounded pure RFC4180/UTF8 CSV encoder preserving separate lots/exact quantities/qualified IDs and unknowns; explicit privacy/loss preview (notes/location opt-in), no catalog/name guessing. Bound artifact within existing8MiB writer or explicitly review generalization; no truncation/export of partial snapshot. Review CSV spreadsheet cell safety and exact disclosed transformations, no silent loss claim. Retained controller freezes snapshot/bytes/preview before explicit destination and exactly one write, stale picker/cancel/possibly-modified semantics follow actual PlainDeckExportController/PlainDeckDocumentWriter; no fake atomicity/remote durability. Root owns SAF CreateDocument and shared composition. Codec/controller source review, focused tests and actual MainActivity/AppGraph/Room/file-provider proof at one coherent risk gate. No schema change needed. CSV import and full collection/general transport remain named successors under original scope; no phantom completion.

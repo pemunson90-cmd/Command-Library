@@ -64,3 +64,5 @@ Root implemented optional shell capability/controller/dialog/deck action composi
 Root authored3 focused controller oracles for absent saved format/no automatic assessment, explicit selection without deck mutation/reset on reopen, generation changing during suspended read, bad receipt/stale frame/close fencing. Runtime NOT_RUN; included in later assembled validation boundary gate, no per-edit broad tests.
 
 Registry ordinary life status corrected from obsolete planned to ordinary_table_host_integrated_acceptance_open, reflecting accepted report without fullG07/timing/linked setup/device claim. Basic nav/controller test batch source ACK atba2888f3, no runtime claim. Root source reader/status/designated-slot clarifications preserved in parent task.
+
+Targeted independent read-only collection export inspection identified snapshot->reviewedCSV->SAF file missing; existing CRUD/ownedmissing retained. Exact next-ready slice/durability/privacy/writer reuse recorded in existing cx-campaign-collection-presentation-01.md; not a new task system/implementation claim. Continue current legality integration first, then ordinary collection export under D31.
