@@ -1,5 +1,6 @@
 package com.architectpsg.commandlibrary
 
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.test.core.app.ApplicationProvider
@@ -141,6 +142,27 @@ class ManualTagsAppIntegrationTest {
         }
     }
 
+    private fun categoryChange(before: DeckSnapshot, categories: List<EntryLabel>, entries: List<DeckEntry>,
+        unchangedPool: PersonalTagPool, unchangedOther: DeckSnapshot): DeckSnapshot {
+        await { !exists("manual-tags-name") && deck(before.id).revision.value == before.revision.value + 1 }
+        val saved = deck(before.id)
+        assertEquals(before.copy(revision = saved.revision, modifiedAt = saved.modifiedAt,
+            categoryOrder = SnapshotList.copyOf(categories), entries = SnapshotList.copyOf(entries)), saved)
+        assertEquals(unchangedPool, pool())
+        independent(unchangedPool, saved, unchangedOther)
+        return saved
+    }
+    private fun undoCategory(before: DeckSnapshot, changed: DeckSnapshot, unchangedPool: PersonalTagPool,
+        unchangedOther: DeckSnapshot): DeckSnapshot {
+        overviewClick("deck-undo")
+        await { deck(before.id).revision.value == changed.revision.value + 1 }
+        val undone = deck(before.id)
+        assertEquals(before.copy(revision = undone.revision, modifiedAt = undone.modifiedAt), undone)
+        assertEquals(unchangedPool, pool())
+        independent(unchangedPool, undone, unchangedOther)
+        return undone
+    }
+
     @Test fun actualReusablePoolBulkAssignmentUndoRenameRetirementAndSecondDeckReusePersistWithoutQuantityChanges() {
         selectDeck(first.id)
         openTags()
@@ -208,5 +230,55 @@ class ManualTagsAppIntegrationTest {
         assertEquals("ArtifactEngine", secondSaved.entries.single().labels.single().name)
         assertEquals(restored, pool())
         independent(restored, reassigned, secondSaved)
+
+        // Deck-local category edits are distinct from vocabulary writes and physical card edits.
+        selectDeck(first.id)
+        var localBase = reassigned
+        openTags()
+        dialogClick("manual-category-edit-${engine.id.value}")
+        edit("manual-category-name", "Deck-only Artifact Engine Ω")
+        compose.onNodeWithTag("manual-category-edit-${removalId.value}").assertIsNotEnabled()
+        assertEquals("Deck-only Artifact Engine Ω", compose.onNodeWithTag("manual-category-name").fetchSemanticsNode()
+            .config[SemanticsProperties.EditableText].text)
+        assertEquals(localBase, deck(first.id))
+        textClick(ShellR.string.manual_tags_deck_cancel)
+        await { !exists("manual-category-name") }
+        compose.onNodeWithTag("manual-category-edit-${removalId.value}").assertIsEnabled()
+        dialogClick("manual-category-edit-${engine.id.value}")
+        edit("manual-category-name", "Deck-only Artifact Engine Ω")
+        dialogClick("manual-category-save")
+        val localName = "Deck-only Artifact Engine Ω"
+        val renamedCategories = checkNotNull(localBase.categoryOrder).map { if (it.id == engine.id) it.copy(name = localName) else it }
+        val renamedEntries = localBase.entries.map { entry -> entry.copy(labels = SnapshotList.copyOf(entry.labels.map {
+            if (it.id == engine.id) it.copy(name = localName) else it
+        })) }
+        val localRenamed = categoryChange(localBase, renamedCategories, renamedEntries, restored, secondSaved)
+        assertEquals("ArtifactEngine", pool().tags.single { it.id == engine.id }.name)
+        assertEquals("ArtifactEngine", deck(second.id).entries.single().labels.single().name)
+        localBase = undoCategory(localBase, localRenamed, restored, secondSaved)
+
+        // Up and Down each commit one group; neither changes membership order or physical entries.
+        openTags()
+        val originalOrder = checkNotNull(localBase.categoryOrder).toList()
+        val engineIndex = originalOrder.indexOfFirst { it.id == engine.id }
+        assertTrue(engineIndex > 0 && engineIndex < originalOrder.lastIndex)
+        val movedUp = originalOrder.toMutableList().apply { add(engineIndex - 1, removeAt(engineIndex)) }
+        dialogClick("manual-category-up-${engine.id.value}")
+        val up = categoryChange(localBase, movedUp, localBase.entries, restored, secondSaved)
+        localBase = undoCategory(localBase, up, restored, secondSaved)
+        openTags()
+        val movedDown = originalOrder.toMutableList().apply { add(engineIndex + 1, removeAt(engineIndex)) }
+        dialogClick("manual-category-down-${engine.id.value}")
+        val down = categoryChange(localBase, movedDown, localBase.entries, restored, secondSaved)
+        localBase = undoCategory(localBase, down, restored, secondSaved)
+
+        openTags()
+        dialogClick("manual-category-remove-${engine.id.value}")
+        val removedCategories = checkNotNull(localBase.categoryOrder).filter { it.id != engine.id }
+        val removedEntries = localBase.entries.map { entry -> entry.copy(labels = SnapshotList.copyOf(entry.labels.filter { it.id != engine.id })) }
+        val removed = categoryChange(localBase, removedCategories, removedEntries, restored, secondSaved)
+        assertEquals(6, removed.entries.sumOf { it.quantity })
+        val finalRestored = undoCategory(localBase, removed, restored, secondSaved)
+        assertEquals(reassigned.copy(revision = finalRestored.revision, modifiedAt = finalRestored.modifiedAt), finalRestored)
     }
 }

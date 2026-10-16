@@ -1,0 +1,17 @@
+# Deck-local manual category actual app proof — source return
+
+## Latest continuation delta
+
+SOURCE01 frozen M1+NEW1 only on `agent/campaign-manual-tags-local-proof-20261016`, exact base `e58899bcf9df00b19457623ea381a1635b2b7220`, worktree `/workspace/command-library-manual-tags-local-proof-01`. Existing `android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/ManualTagsAppIntegrationTest.kt` SHA-256 `d705cca2eb37f16265e1cb91c02b51eff85f27d18d8eae6dfd32bed5f338a535`. No commits/push/product/shared writes. All original worktrees/drafts remain untouched.
+
+Tracked test diff is72 insertions/zero deletions: one semantics import, two actual-result assertion/Undo helpers, and an appended extension to the existing single real MainActivity/AppGraph/Room/pool/planner/edit journey. Every original assertion, synthetic two-deck setup, reusable pool creation, bulk assignment/conservation/Undo, pool rename/retire/restore, captured-name independence, retained-dialog recreation/no-write checks and second-deck reuse remains unchanged.
+
+After the original journey, actual deck-local controls edit the first deck's captured ArtifactSynergy label to Deck-only Artifact Engine Ω. Pending name input leaves another Rename disabled until explicit Cancel, retaining input and leaving persisted deck untouched. Fresh Rename/Save commits one revision; full expected-deck equality allows only category/entry label-name changes plus revision/time, with exact physical entries/identity/boards/quantities/notes/overrides/order/other metadata conserved. Pool remains exactly revision4 with ArtifactEngine and the second deck retains its captured name. Independent actual Room reads compare all snapshots. One actual UI Undo restores the entire prior snapshot at the successor revision.
+
+Separate actual Up and Down operations each change only categoryOrder, leaving entry order/membership order/cards/copies and pool untouched. Each receives a single real UI Undo and independent exact readback. Explicit category Remove changes only the selected category definition and its memberships; physical copies stay6, other labels/entries stay exact, pool/other deck stay exact. One Undo restores the entire previous snapshot. Final first-deck content equals the original reassigned snapshot except expected successor revision/time.
+
+Root confirmed adding testTags `manual-category-up-ID` and `manual-category-down-ID` to the existing buttons after this baseline, without behavior changes; the extension uses those tags. Existing category edit/name/save/remove controls and explicit Cancel require no other product seam. Root SOURCE02 pending-name guard is independently ACKed per direct assignment; task-card pending-review wording predates that update.
+
+Verification: source inspection and `git diff --check` only, no whitespace errors. Builds/compiler/tests/runtime/network **NOT_RUN**, by assignment. Original proof's accepted host execution belongs to the unchanged prior source, not this expanded candidate. No global defaults/inheritance/suppression/auto-role behavior or release prerequisite is invented; future contract/fidelity remains retained. No native/Fold7/full B02/release claim.
+
+Next: independent exact M1+NEW1 diff review, root byte-checked integration including its two selector tags, and one coherent batched analysis/category risk gate using the sole ROOT build slot. Preserve all original assertions and the new one-revision/one-Undo/conservation/pool-separation checks. Worker source frozen pending review.
