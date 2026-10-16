@@ -80,6 +80,11 @@ internal class ShellControllers(
             currentPromptDeck() == deck && currentPromptSnapshot() == snapshot
         }
     }
+    val basicDeckValidation = ports.basicDeckValidation?.let { validation ->
+        BasicDeckValidationController(scope, validation, ioDispatcher) { deck, snapshot ->
+            currentPromptDeck() == deck && currentPromptSnapshot() == snapshot
+        }
+    }
     val ordinaryLife = ports.ordinaryGames?.let { OrdinaryLifeController(scope, it, ioDispatcher) }
     val aiHistory = ports.aiHistory?.let { AiHistoryController(scope, it, ioDispatcher) }
     val providerGeneration = if (ports.providerGeneration != null && ports.providerProfiles != null && ports.aiHistory != null)

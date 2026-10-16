@@ -40,6 +40,7 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
     onDrawProbabilities: ((DeckSnapshot) -> Unit)? = null,
     onManualTags: ((DeckSnapshot) -> Unit)? = null,
     onStatistics: ((DeckSnapshot) -> Unit)? = null, statisticsAvailable: Boolean = true,
+    onBasicValidation: ((DeckSnapshot) -> Unit)? = null, basicValidationAvailable: Boolean = true,
     onBoardChecks: ((DeckSnapshot) -> Unit)? = null,
     onOfflinePrompt: ((DeckSnapshot) -> Unit)? = null, offlinePromptEnabled: Boolean = true,
     onAiHistory: ((DeckSnapshot) -> Unit)? = null) {
@@ -116,6 +117,10 @@ internal fun DeckLibraryScreen(controller: DeckLibraryController, widthClass: Wi
                         enabled = statisticsAvailable && controller.canEditManualTags(selected),
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-statistics-open")) { Text(stringResource(R.string.deck_statistics_title)) }
                     if (onStatistics != null && !statisticsAvailable) Text(stringResource(R.string.deck_statistics_install_catalog))
+                    if (onBasicValidation != null) OutlinedButton({ onBasicValidation(selected) },
+                        enabled = basicValidationAvailable && controller.canEditManualTags(selected),
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("basic-validation-open")) { Text(stringResource(R.string.basic_validation_title)) }
+                    if (onBasicValidation != null && !basicValidationAvailable) Text(stringResource(R.string.deck_statistics_install_catalog))
                     if (onManualTags != null) OutlinedButton({ onManualTags(selected) },
                         enabled = controller.canEditManualTags(selected),
                         modifier = Modifier.heightIn(min = 48.dp).testTag("deck-manual-tags")) { Text(stringResource(R.string.manual_tags_title)) }

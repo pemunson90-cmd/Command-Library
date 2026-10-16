@@ -301,6 +301,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 controllers.providerGeneration?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ProviderGenerationDialog(it) }
                 controllers.boardConstraints?.let { BoardConstraintDialog(it) }
                 controllers.deckStatistics?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.DeckStatisticsDialog(it) }
+                controllers.basicDeckValidation?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.BasicDeckValidationDialog(it) }
                 controllers.manualTags?.let { com.architectpsg.commandlibrary.feature.shell.ui.decks.ManualTagsDialog(it) }
                 DrawProbabilityDialog(controllers.drawProbability)
                 controllers.plainDeckImport?.let { PlainDeckImportSurface(it, choosePlainFile, pendingPlainPick != null) }
@@ -488,6 +489,10 @@ private fun DestinationContent(
                 statisticsAvailable = statisticsAvailable,
                 onStatistics = controllers.deckStatistics?.let { statistics -> { deck ->
                     controllers.currentPromptSnapshot()?.let { statistics.open(deck, it) }
+                } },
+                basicValidationAvailable = statisticsAvailable,
+                onBasicValidation = controllers.basicDeckValidation?.let { validation -> { deck ->
+                    controllers.currentPromptSnapshot()?.let { validation.open(deck, it) }
                 } },
                 onManualTags = controllers.manualTags?.let { tags -> { deck -> tags.open(deck) } },
                 onDrawProbabilities = { deck -> controllers.drawProbability.open(deck.entries.filter { it.board == com.architectpsg.commandlibrary.core.model.BoardRole.MAIN }.sumOf { it.quantity.toLong() }) },

@@ -100,6 +100,7 @@ public class ShellPorts(
     public val manualTagPlanning: ManualTagPlanning? = null,
     /** Ordinary persisted games; specialty-manager installation is not implied. */
     public val ordinaryGames: com.architectpsg.commandlibrary.core.model.PersistedGameService? = null,
+    public val basicDeckValidation: com.architectpsg.commandlibrary.core.model.LocalBasicDeckValidation? = null,
     public val deckStatistics: com.architectpsg.commandlibrary.core.model.LocalDeckStatistics? = null,
 
 )
