@@ -13,6 +13,8 @@ import com.architectpsg.commandlibrary.core.model.*
 import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.presentation.BasicDeckValidationController
 import com.architectpsg.commandlibrary.feature.shell.ui.problemText
+import com.architectpsg.commandlibrary.feature.shell.ui.knowledgeText
+import com.architectpsg.commandlibrary.feature.shell.ui.formatTimestamp
 
 @Composable
 internal fun BasicDeckValidationDialog(controller: BasicDeckValidationController) {
@@ -47,6 +49,11 @@ internal fun BasicDeckValidationDialog(controller: BasicDeckValidationController
                     }
                     result.checks.forEach { check -> item {
                         Text(check.message)
+                        if (check.entryIds.isNotEmpty()) Text(stringResource(R.string.basic_validation_entries,
+                            check.entryIds.joinToString(", ") { id ->
+                                val entry = deck.entries.firstOrNull { it.id == id }
+                                (entry?.identity?.originalName as? Knowledge.Known)?.value ?: id.value
+                            }))
                         Text(stringResource(validationStatusText(check.status)), Modifier.testTag("basic-validation-check-${check.id}"))
                         check.ruleReferences.forEach { Text(stringResource(R.string.basic_validation_reference, it)) }
                     } }
@@ -61,6 +68,8 @@ internal fun BasicDeckValidationDialog(controller: BasicDeckValidationController
                             else -> validationStatusText(status)
                         }
                         Text(stringResource(R.string.basic_validation_source_row, name, stringResource(sourceStatus)))
+                        Text(stringResource(R.string.basic_validation_source_date,
+                            knowledgeText(source.provenance.sourceDate) { formatTimestamp(it) }))
                     } }
                 }
                 item { TextButton({ action(controller::close) }, modifier = Modifier.heightIn(min = 48.dp).testTag("basic-validation-close")) {

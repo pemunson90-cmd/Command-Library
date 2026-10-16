@@ -18,4 +18,6 @@
     <string name="basic_validation_source_row">%1$s: %2$s</string>
     <string name="basic_validation_reference">Rule %1$s</string>
     <string name="basic_validation_close">Close</string>
+    <string name="basic_validation_source_date">Source date: %1$s. Installed data may not reflect later changes.</string>
+    <string name="basic_validation_entries">Cards: %1$s</string>
 </resources>
