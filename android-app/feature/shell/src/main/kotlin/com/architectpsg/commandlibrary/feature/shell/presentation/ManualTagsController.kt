@@ -59,10 +59,11 @@ internal class ManualTagsController(
     fun query(value: String) { mutable.update { it.copy(query = value) } }
     fun name(value: String) { if (!mutable.value.busy) mutable.update { it.copy(name = value, problem = null) } }
     fun edit(id: EntityId) {
-        if (mutable.value.busy) return
+        if (mutable.value.busy || mutable.value.editingId != null || mutable.value.name.isNotEmpty()) return
         val tag = mutable.value.draft.find { it.id == id } ?: return
         mutable.update { it.copy(editingId = id, name = tag.name, problem = null) }
     }
+    fun cancelName() { if (!mutable.value.busy) mutable.update { it.copy(name = "", editingId = null) } }
     fun putName() {
         val s = mutable.value
         if (s.busy || s.pool == null || s.conflict || s.uncertain) return
@@ -149,7 +150,7 @@ internal class ManualTagsController(
     }
     fun editCategory(id: EntityId) {
         val s = mutable.value
-        if (s.busy) return
+        if (s.busy || s.categoryId != null) return
         val label = s.categories.find { it.id == id } ?: return
         mutable.update { it.copy(categoryId = id, categoryName = label.name, problem = null) }
     }

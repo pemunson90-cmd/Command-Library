@@ -609,4 +609,5 @@
     <string name="manual_tags_deck_name">Name in this deck</string>
     <string name="manual_tags_deck_save">Save deck tag name</string>
     <string name="manual_tags_deck_cancel">Cancel deck name edit</string>
+    <string name="manual_tags_cancel_pool_name">Discard pool name input</string>
 </resources>

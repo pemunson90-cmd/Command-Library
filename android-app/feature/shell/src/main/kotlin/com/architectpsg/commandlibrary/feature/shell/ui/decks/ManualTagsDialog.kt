@@ -38,12 +38,14 @@ internal fun ManualTagsDialog(controller: ManualTagsController) {
                     modifier = Modifier.heightIn(min = 48.dp).testTag("manual-tags-put")) {
                     Text(stringResource(if (state.editingId == null) R.string.manual_tags_create else R.string.manual_tags_rename))
                 }
+                if (state.name.isNotEmpty() || state.editingId != null) TextButton({ action(controller::cancelName) }, enabled = !state.busy,
+                    modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_cancel_pool_name)) }
                 state.visibleTags.forEach { tag ->
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         FilterChip(selected = tag.id in state.selectedTags, onClick = { action { controller.tag(tag.id) } },
                             enabled = !state.busy, label = { Text(tag.name) },
                             modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("manual-tag-${tag.id.value}"))
-                        TextButton({ action { controller.edit(tag.id) } }, enabled = !state.busy,
+                        TextButton({ action { controller.edit(tag.id) } }, enabled = !state.busy && state.editingId == null && state.name.isEmpty(),
                             modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_edit)) }
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -82,7 +84,7 @@ internal fun ManualTagsDialog(controller: ManualTagsController) {
                 state.categories.forEach { label ->
                     Text(label.name)
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        TextButton({ action { controller.editCategory(label.id) } }, enabled = !state.busy,
+                        TextButton({ action { controller.editCategory(label.id) } }, enabled = !state.busy && state.categoryId == null,
                             modifier = Modifier.heightIn(min = 48.dp).testTag("manual-category-edit-${label.id.value}")) { Text(stringResource(R.string.manual_tags_deck_rename)) }
                         TextButton({ action { controller.moveCategory(label.id, -1) } }, enabled = !state.busy && state.categoryId == null,
                             modifier = Modifier.heightIn(min = 48.dp)) { Text(stringResource(R.string.manual_tags_up)) }
