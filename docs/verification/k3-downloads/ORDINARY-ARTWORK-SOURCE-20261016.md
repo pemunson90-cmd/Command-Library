@@ -1,0 +1,16 @@
+# Ordinary selected-printing artwork — source boundary
+
+2026-10-16 ROOT primary-source readback through Exa webpage extraction. This adds current source facts; it does not replace historical R02 gaps or claim direct image-byte/header measurements. The earlier `/docs/api/imagery` URL returned not found; the documented URL is `/docs/api/images`.
+
+Primary pages actually read:
+
+- https://scryfall.com/docs/api/images — image links are supplied in `image_uris`; full-card `normal` is 488×680 JPEG and `grid` 488×680 WebP. Full-card alternatives include small/thumb and large/display. Cropped variants are distinct. Image status can be missing, placeholder, lowres or highres_scan.
+- https://scryfall.com/docs/api/cards — parent `image_uris` is nullable; double-sided cards carry per-face image URIs. Printing IDs, face identities and artists must come from the source, never guessed from an Oracle ID.
+- https://scryfall.com/docs/api — free data/image use for additional Magic software, research and community content subject to stated conditions; no implied endorsement, paywall, simple republishing or claim of another game. Images must retain copyright/artist, proportions and colors; no crop, covering, distortion or added watermarks. Art crops require nearby artist/copyright or a full-card image. API requests require accurate User-Agent and Accept headers.
+- https://scryfall.com/blog/upcoming-api-changes-to-scryfall-image-uris-and-download-uris-224 — dated 2022-09-28; explicitly names `cards.scryfall.io` among new hosts. Use actual API/bulk supplied image URIs; do not construct file links. Old-host redirects were temporary. The article permits hotlinking and says API rate limits do not apply to the new file hosts.
+
+Existing PERSONAL-SOURCE-REVIEW authorizes private personal download/cache functionality. No new public corpus, bundled art pack, redistribution or upstream endorsement is claimed. The first ordinary consumer conservatively admits only exact source-supplied full-card variants on canonical HTTPS `cards.scryfall.io`, port443, without credentials/fragment, and rejects every redirect dispatch. Host membership is a reviewed application restriction, not a claim that every upstream image uses that host.
+
+Implementation boundary to review: exact selected printing/generation/face/variant; explicit exact IMAGES consent before any wire enqueue; actual shared ConsentCoordinator and settings checks including Wi-Fi; compressed-byte and decoded-pixel bounds; local-only decoder; full-card Fit with readable Magic/Wizards/Scryfall attribution. Initial display uses bounded transient memory only and no disk cache, respecting imageBytes=0. Selection/navigation/generation/revocation/cancellation must invalidate stale output. No user decks, inventory, games or other durable data are modified.
+
+Not verified here: live image payloads/content-type/cache headers, representative twenty-image measurements, authentic publisher TLS, Android native codec/device rendering, offline cache persistence, Fold7/accessibility/performance or release acceptance. Environment raw-host policy failures remain recorded; connector text is not binary-download evidence. Independent source/security review and actual implementation/runtime gates remain required.
