@@ -18,7 +18,8 @@ public object PersonalTagLimits {
 
 /**
  * Complete ordered personal vocabulary. Names are exact nonblank strict Unicode/UTF8 <=256bytes;
- * IDs satisfy the existing EntityId contract and are permanently reserved. At most4096 identities,
+ * IDs are distinct, exact nonblank strict Unicode/UTF8 <=DeckPayloadLimits.MAX_ID_BYTES,
+ * with no ID normalization/reassignment, and are permanently reserved. At most4096 identities,
  * including retired entries, are stored. Active names are unique by NFKC + trim + Locale.ROOT
  * lowercase; search uses the same key's substring relation (blank query lists active tags).
  * Names may contain ordinary internal spaces, never control characters; no silent truncation.
