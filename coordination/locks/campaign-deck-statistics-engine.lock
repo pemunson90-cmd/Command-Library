@@ -1,0 +1,18 @@
+{
+  "owner": "/root/implement_responses_codec",
+  "orchestrator": "codex-root-replacement-20261015",
+  "status": "active",
+  "base_commit": "63d213e9",
+  "worktree": "/workspace/command-library-deck-statistics-engine-01",
+  "branch": "agent/campaign-deck-statistics-engine-20261016",
+  "owned_paths": [
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/LocalDeckStatisticsEngine.kt",
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/DeckStatisticsReducer.kt",
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/DeckStatisticsSymbols.kt",
+    "android-app/feature/decks/src/main/kotlin/com/architectpsg/commandlibrary/feature/decks/DeckStatisticsBounds.kt",
+    "android-app/feature/decks/src/test/kotlin/com/architectpsg/commandlibrary/feature/decks/DeckStatisticsReducerTest.kt",
+    "android-app/feature/decks/src/test/kotlin/com/architectpsg/commandlibrary/feature/decks/LocalDeckStatisticsEngineTest.kt",
+    "coordination/handoffs/cx-campaign-deck-statistics-engine-01.md"
+  ],
+  "build_slot": "ROOT ONLY"
+}
