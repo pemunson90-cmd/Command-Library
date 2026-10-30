@@ -1,10 +1,10 @@
 {
-  "owner": "/root/implement_responses_codec",
-  "orchestrator": "codex-root-replacement-20261015",
+  "owner": "/root/artwork_access",
+  "orchestrator": "marlow-d31-20261030",
   "status": "active",
-  "base_commit": "08275484",
-  "worktree": "/workspace/command-library-ordinary-artwork-access-01",
-  "branch": "agent/campaign-ordinary-artwork-access-20261016",
+  "base_commit": "7f822e6c746cf7411f1f7030b1d08a734b1694aa",
+  "worktree": "/workspace/scratch/893bce609ce4/artwork-access",
+  "branch": "agent/campaign-ordinary-artwork-access-20261030",
   "owned_paths": [
     "android-app/app/src/main/kotlin/com/architectpsg/commandlibrary/di/AppCardArtworkAccess.kt",
     "android-app/app/src/main/kotlin/com/architectpsg/commandlibrary/di/OrdinaryArtworkProfile.kt",
@@ -12,5 +12,6 @@
     "android-app/app/src/test/kotlin/com/architectpsg/commandlibrary/di/AppCardArtworkAccessTest.kt",
     "coordination/handoffs/cx-campaign-ordinary-artwork-access-01.md"
   ],
-  "build_slot": "ROOT ONLY"
+  "build_slot": "ROOT ONLY",
+  "takeover_reason": "Fetched remote unchanged since October16; named prior worktree unavailable, branch absent remotely and no implementation in all fetched history. Pat explicitly requests resumed execution. Prior lock retained in git."
 }

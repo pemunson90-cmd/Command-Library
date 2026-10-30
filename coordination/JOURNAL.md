@@ -785,3 +785,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-16T02:08:31Z | codex | cp-20261016-collection-text-host-269 | containing commit | Approved plain-text collection file export accepted25cases; continue mandatory ordinary artwork and essential consent/setup
 
 2026-10-16T02:16:24Z | codex | cp-20261016-artwork-boundary-270 | containing commit | Reviewed ordinary artwork source and transient capability; assign exact binary-access producer and continue root UI
+
+2026-10-30T19:37:39Z | codex | cp-20261030-artwork-resume-271 | containing commit | Resume authorized D31 execution from fetched 7f822e6c; preserve audit worktree, transfer stopped root and absent binary producer with exact scoped claim; root owns consumer and build slot.

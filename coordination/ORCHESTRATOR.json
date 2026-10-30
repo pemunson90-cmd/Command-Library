@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "active",
-  "session_id": "codex-root-replacement-20261015",
+  "session_id": "marlow-d31-20261030",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-16T02:16:24Z",
-  "expires_utc": "2026-10-16T03:01:24Z",
-  "checkpoint_id": "cp-20261016-artwork-boundary-270",
-  "note": "Root active. Collection plaintext host accepted2432ae54, allclaims released; next mandatory ordinary artwork/consent consumer, sourceprofile review. ROOTbuildslotfree; no APK/main/publicrelease; all final gates retained."
+  "heartbeat_utc": "2026-10-30T19:37:39Z",
+  "expires_utc": "2026-10-30T20:22:39Z",
+  "checkpoint_id": "cp-20261030-artwork-resume-271",
+  "note": "Authorized execution resume; old root and artwork worktree absent, no newer remote product head or artwork branch. Preserve all historical work. ROOT build slot."
 }
