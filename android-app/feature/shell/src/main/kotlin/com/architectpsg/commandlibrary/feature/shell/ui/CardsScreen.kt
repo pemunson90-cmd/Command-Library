@@ -79,6 +79,7 @@ internal fun CardsScreen(
     onLookupKeyword: ((String) -> Unit)? = null,
     onAddPrinting: ((com.architectpsg.commandlibrary.core.model.PrintingRecord) -> Unit)? = null,
     advanced: AdvancedQueryController? = null,
+    artwork: com.architectpsg.commandlibrary.feature.shell.presentation.CardArtworkController? = null,
 ) {
     var advancedOpen by rememberSaveable { mutableStateOf(false) }
     val generation = statusState.status?.activeGeneration()
@@ -90,7 +91,7 @@ internal fun CardsScreen(
         val advancedState by advanced.state.collectAsState()
         AdvancedQueryScreen(advanced, widthClass, { advanced.hide(); advancedOpen = false },
             { advanced.open(snapshot, version); advanced.refreshPreparation() }, onOpenCatalog, modifier,
-            rulings, printings.takeIf { advancedState.snapshot?.generation == generation?.id }, onLookupKeyword, onAddPrinting)
+            rulings, printings.takeIf { advancedState.snapshot?.generation == generation?.id }, onLookupKeyword, onAddPrinting, artwork)
         return
     }
     val state by controller.state.collectAsState()
@@ -105,7 +106,7 @@ internal fun CardsScreen(
             VerticalDivider()
             Box(Modifier.weight(0.55f).fillMaxHeight().testTag(ShellTags.DETAIL_PANE)) {
                 if (selected != null) {
-                    CardDetail(selected, onBack = null, widthClass = widthClass, rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword, onAddPrinting = onAddPrinting)
+                    CardDetail(selected, artwork = artwork, onBack = null, widthClass = widthClass, rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword, onAddPrinting = onAddPrinting)
                 } else {
                     Text(
                         text = stringResource(R.string.detail_select_prompt),
@@ -119,7 +120,7 @@ internal fun CardsScreen(
     } else {
         BackHandler(enabled = selected != null) { controller.clearSelection() }
         if (selected != null) {
-            CardDetail(selected, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE), rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword, onAddPrinting = onAddPrinting)
+            CardDetail(selected, artwork = artwork, onBack = controller::clearSelection, widthClass = widthClass, modifier = modifier.testTag(ShellTags.DETAIL_PANE), rulings = rulings, printings = printings, onOpenCatalog = onManageRulings, onLookupKeyword = onLookupKeyword, onAddPrinting = onAddPrinting)
         } else {
             Box(modifier.fillMaxSize().testTag(ShellTags.RESULTS_PANE)) {
                 SearchPane(controller, state, catalogMissing, widthClass, showSelection = false, onOpenCatalog, listState, openAdvanced)

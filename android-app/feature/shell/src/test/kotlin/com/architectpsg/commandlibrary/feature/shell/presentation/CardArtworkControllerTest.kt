@@ -51,31 +51,59 @@ class CardArtworkControllerTest {
     private fun TestScope.controller(a: Access, s: Settings) =
         CardArtworkController(backgroundScope, a, s, StandardTestDispatcher(testScheduler))
 
+    private fun CardArtworkController.confirm() {
+        val s = state.value
+        s.approval?.let { approveAndLoad(s.approvalTicket, it) }
+    }
+    @Test fun staleDialogCannotConfirmAReopenedReview() = runTest {
+        val a = Access(); val s = Settings(); val c = controller(a, s)
+        c.select(printing, generation); runCurrent(); c.review(offer)
+        val old = c.state.value.approvalTicket
+        c.dismissApproval(old); c.review(offer)
+        c.approveAndLoad(old, offer); runCurrent()
+        assertEquals(0, s.approvals); assertEquals(0, a.loads)
+        c.dismissApproval(old); assertEquals(offer, c.state.value.approval)
+        c.confirm(); runCurrent(); assertEquals(1, a.loads)
+    }
+    @Test fun synchronousAuthorityLossRejectsConfirmationBeforeCollectorsRun() = runTest {
+        val a = Access(); val s = Settings(); var current = true
+        val c = CardArtworkController(backgroundScope, a, s, StandardTestDispatcher(testScheduler)) { _, _ -> current }
+        c.select(printing, generation); runCurrent(); c.review(offer)
+        current = false; c.confirm(); runCurrent()
+        assertEquals(0, s.approvals); assertEquals(0, a.loads)
+    }
+    @Test fun authorityLossBeforeQueuedApprovalStartsNeverPersistsConsent() = runTest {
+        val a = Access(); val s = Settings(); var current = true
+        val c = CardArtworkController(backgroundScope, a, s, StandardTestDispatcher(testScheduler)) { _, _ -> current }
+        c.select(printing, generation); runCurrent(); c.review(offer); c.confirm()
+        current = false; runCurrent()
+        assertEquals(0, s.approvals); assertEquals(0, a.loads)
+    }
     @Test fun selectionAndReviewAreLocalOnlyUntilExplicitConfirmation() = runTest {
         val a = Access(); val s = Settings(); val c = controller(a, s)
         c.select(printing, generation); runCurrent()
         assertEquals(listOf(offer), c.state.value.offers); assertEquals(0, a.loads); assertEquals(0, s.approvals)
         c.review(offer); runCurrent(); assertEquals(offer, c.state.value.approval)
-        c.dismissApproval(); runCurrent(); assertNull(c.state.value.approval); assertEquals(0, a.loads)
-        c.review(offer); c.approveAndLoad(); runCurrent()
+        c.dismissApproval(c.state.value.approvalTicket); runCurrent(); assertNull(c.state.value.approval); assertEquals(0, a.loads)
+        c.review(offer); c.confirm(); runCurrent()
         assertEquals(1, s.approvals); assertEquals(1, a.loads); assertNotNull(c.state.value.image)
         c.select(printing, generation); runCurrent(); assertEquals(1, a.loads)
     }
     @Test fun failedApprovalNeverCallsBinaryAccess() = runTest {
         val a = Access(); val s = Settings().apply { fail = true }; val c = controller(a, s)
-        c.select(printing, generation); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
+        c.select(printing, generation); runCurrent(); c.review(offer); c.confirm(); runCurrent()
         assertEquals(0, a.loads); assertNull(c.state.value.image); assertEquals(Problem.CONSENT_REQUIRED, c.state.value.problem)
     }
     @Test fun staleOrTamperedOffersCannotEnterApproval() = runTest {
         val a = Access(); val s = Settings(); val c = controller(a, s)
         c.select(printing, generation); runCurrent(); c.review(offer.copy(variant = "grid"))
-        c.approveAndLoad(); runCurrent(); assertEquals(0, s.approvals)
+        c.confirm(); runCurrent(); assertEquals(0, s.approvals)
         c.select(CardId(source, "other"), generation); runCurrent()
         assertTrue(c.state.value.offers.isEmpty()); assertNull(c.state.value.image)
     }
     @Test fun closeWhileApprovingPreventsALateTransferAndDoesNotReplay() = runTest {
         val a = Access(); val s = Settings().apply { gate = CompletableDeferred() }; val c = controller(a, s)
-        c.select(printing, generation); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
+        c.select(printing, generation); runCurrent(); c.review(offer); c.confirm(); runCurrent()
         c.close(); s.gate!!.complete(Unit); runCurrent()
         assertEquals(0, a.loads); assertNull(c.state.value.image); assertTrue(c.state.value.offers.isEmpty())
     }
@@ -84,13 +112,13 @@ class CardArtworkControllerTest {
         c.select(printing, generation); runCurrent(); c.close(); a.prepareGate!!.complete(Unit); runCurrent()
         assertTrue(c.state.value.offers.isEmpty())
         a.prepareGate = null; a.gate = CompletableDeferred()
-        c.select(printing, generation); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
+        c.select(printing, generation); runCurrent(); c.review(offer); c.confirm(); runCurrent()
         c.close(); a.gate!!.complete(Unit); runCurrent(); assertNull(c.state.value.image)
     }
     @Test fun revocationAndUnknownPermissionClearVisiblePixelsWithoutRetrying() = runTest {
         for (unknown in listOf(false, true)) {
             val a = Access(); val s = Settings(); val c = controller(a, s)
-            c.select(printing, generation); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
+            c.select(printing, generation); runCurrent(); c.review(offer); c.confirm(); runCurrent()
             assertNotNull(c.state.value.image)
             a.allowed = false; a.permissionFailure = unknown
             advanceTimeBy(300); runCurrent()
@@ -99,13 +127,13 @@ class CardArtworkControllerTest {
     }
     @Test fun changedGenerationClearsPixelsAndRejectsPreviousOffer() = runTest {
         val a = Access(); val s = Settings(); val c = controller(a, s)
-        c.select(printing, generation); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
-        c.select(printing, GenerationId("new-generation")); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
+        c.select(printing, generation); runCurrent(); c.review(offer); c.confirm(); runCurrent()
+        c.select(printing, GenerationId("new-generation")); runCurrent(); c.review(offer); c.confirm(); runCurrent()
         assertNull(c.state.value.image); assertEquals(1, a.loads)
     }
     @Test fun adapterCannotPublishPixelsForAnotherOffer() = runTest {
         val a = Access().apply { loadOffer = offer.copy(faceIndex = 1) }; val s = Settings(); val c = controller(a, s)
-        c.select(printing, generation); runCurrent(); c.review(offer); c.approveAndLoad(); runCurrent()
+        c.select(printing, generation); runCurrent(); c.review(offer); c.confirm(); runCurrent()
         assertNull(c.state.value.image); assertEquals(Problem.SOURCE_MISMATCH, c.state.value.problem)
     }
 }

@@ -19,7 +19,7 @@ import com.architectpsg.commandlibrary.feature.shell.presentation.*
 internal fun AdvancedQueryScreen(controller: AdvancedQueryController, widthClass: WidthClass, onBack: () -> Unit,
     onUseCurrent: () -> Unit, onOpenCatalog: () -> Unit, modifier: Modifier = Modifier,
     rulings: RulingsController? = null, printings: PrintingSelectionController? = null,
-    onLookupKeyword: ((String) -> Unit)? = null, onAddPrinting: ((PrintingRecord) -> Unit)? = null) {
+    onLookupKeyword: ((String) -> Unit)? = null, onAddPrinting: ((PrintingRecord) -> Unit)? = null, artwork: CardArtworkController? = null) {
     val state by controller.state.collectAsState()
     val split = widthClass == WidthClass.EXPANDED && LocalDensity.current.fontScale < 1.5f
     BackHandler { if (state.selected != null) controller.clearSelection() else onBack() }
@@ -95,7 +95,7 @@ internal fun AdvancedQueryScreen(controller: AdvancedQueryController, widthClass
     }
     val detail: @Composable (Modifier) -> Unit = { detailModifier ->
         state.selected?.let { card -> CardDetail(card, controller::clearSelection, widthClass, detailModifier,
-            rulings, printings, onOpenCatalog, onLookupKeyword, onAddPrinting) }
+            rulings, printings, onOpenCatalog, onLookupKeyword, onAddPrinting, artwork) }
             ?: Text(stringResource(R.string.detail_select_prompt), modifier = detailModifier.padding(16.dp))
     }
     if (split) Row(modifier.fillMaxSize()) {

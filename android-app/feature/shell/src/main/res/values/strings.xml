@@ -610,4 +610,15 @@
     <string name="manual_tags_deck_save">Save deck tag name</string>
     <string name="manual_tags_deck_cancel">Cancel deck name edit</string>
     <string name="manual_tags_cancel_pool_name">Discard pool name input</string>
+    <string name="artwork_load">View selected printing artwork</string>
+    <string name="artwork_load_face">View face %1$d artwork</string>
+    <string name="artwork_loading">Preparing or loading artwork…</string>
+    <string name="artwork_failed">Artwork could not be displayed</string>
+    <string name="artwork_memory_only">Artwork stays in temporary memory, with no disk cache. Leaving this view or closing the app clears it. Wi-Fi-only download preferences apply.</string>
+    <string name="artwork_approval_title">Download this full-card image?</string>
+    <string name="artwork_approval_body">Allow this exact Scryfall image for the selected printing. Download size is unknown; the app accepts at most 3 MiB. No background retry.</string>
+    <string name="artwork_approve">Approve and download</string>
+    <string name="artwork_cancel">Cancel</string>
+    <string name="artwork_attribution">Scryfall · Magic: The Gathering © Wizards of the Coast · Artist: %1$s</string>
+    <string name="artwork_description">Full-card artwork for %1$s</string>
 </resources>

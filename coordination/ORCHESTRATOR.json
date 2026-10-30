@@ -4,8 +4,8 @@
   "session_id": "marlow-d31-20261030",
   "model_family": "Codex",
   "task_id": "orch-android-v1-campaign-01",
-  "heartbeat_utc": "2026-10-30T19:37:39Z",
-  "expires_utc": "2026-10-30T20:22:39Z",
-  "checkpoint_id": "cp-20261030-artwork-resume-271",
+  "heartbeat_utc": "2026-10-30T19:48:10Z",
+  "expires_utc": "2026-10-30T20:33:10Z",
+  "checkpoint_id": "cp-20261030-artwork-candidate-272",
   "note": "Authorized execution resume; old root and artwork worktree absent, no newer remote product head or artwork branch. Preserve all historical work. ROOT build slot."
 }

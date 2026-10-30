@@ -25,7 +25,13 @@ jobs:
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install 'platforms;android-37.0' 'build-tools;36.0.0' > /dev/null
       - name: Focused artwork and existing shell regression
         working-directory: android-app
-        run: bash gradlew --no-daemon --console=plain :feature:shell:testDebugUnitTest :app:testDebugUnitTest --tests '*CardArtwork*' --tests '*PrintingSelectionControllerTest*' --tests '*SettingsControllerTest*' --tests '*AppCardArtworkAccessTest*'
+        run: |
+          set -euo pipefail
+          bash gradlew --no-daemon --console=plain :feature:shell:testDebugUnitTest --tests '*CardArtwork*' --tests '*PrintingSelectionControllerTest*' --tests '*SettingsControllerTest*'
+          bash gradlew --no-daemon --console=plain :app:testDebugUnitTest --tests '*CardArtwork*'
+      - name: Compile actual app and instrumentation consumers
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain :app:compileDebugAndroidTestKotlin :feature:shell:compileDebugAndroidTestKotlin :app:lintDebug :feature:shell:lintDebug
       - name: Retain exact host test reports
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9

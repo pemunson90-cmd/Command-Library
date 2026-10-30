@@ -88,12 +88,14 @@ internal class AppGraph(
                     val providerProfiles = SqlLocalProviderProfiles(opened.value, SystemUtcClock, vault)
                     val aiHistory = AppAiHistoryAccess(opened.value)
                     val downloads = AppEnglishCatalogAccess(appContext, opened.value, settings, consentCoordinator)
+                    val printings = AndroidCatalogServices.localPrintings(opened.value)
+                    val artwork = AppCardArtworkAccess(appContext, printings, settings, consentCoordinator, SystemUtcClock)
                     val cardQuery = AndroidCatalogServices.localCardQuery(opened.value, LocalCatalogQueryCompiler())
                     val ports = ShellPorts(catalog, catalog, catalog, settings, limits,
                         rulesImport = rules, rulesLookup = rules, playerProfiles = profiles,
                         englishCatalog = downloads, rulingsDownloads = downloads,
                         rulings = AndroidCatalogServices.localRulings(opened.value), catalogTextLookup = catalog, keywordRulesLookup = rules,
-                        catalogPrintings = AndroidCatalogServices.localPrintings(opened.value), cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
+                        catalogPrintings = printings, cardArtwork = artwork, cardLinks = LocalCardLinks(), localDecks = decks, utcClock = SystemUtcClock, localDeckEdits = deckEdits,
                         localDeckVersions = deckVersions, localDeckDrafts = deckDrafts, deckDraftPlanner = draftPlanner,
                         localCardQuery = cardQuery,
                         secretVault = vault, providerProfiles = providerProfiles, providerProfileOrigin = ProviderProfilePolicy::canonicalOrigin,

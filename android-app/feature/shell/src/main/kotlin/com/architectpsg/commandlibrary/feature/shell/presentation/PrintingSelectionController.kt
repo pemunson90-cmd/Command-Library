@@ -90,6 +90,11 @@ internal class PrintingSelectionController(
         accept(selected)
     }
 
+    /** Synchronous authority for artwork callbacks; does not wait for downstream flow collectors. */
+    internal fun isArtworkSelectionCurrent(id: CardId, generation: GenerationId): Boolean =
+        visible && currentGeneration() && !state.value.loading && state.value.problem == null &&
+            state.value.selected?.id == id && state.value.selected?.provenance?.generation == generation
+
     fun openLink(expectedTicket: Long, target: String, open: (ResourceUri) -> Unit) {
         val s = state.value
         val selected = s.selected ?: return

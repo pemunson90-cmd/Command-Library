@@ -27,4 +27,4 @@ Keep this file a replaceable current status. Refresh actual branch/task/lock evi
 
 ## Current root integration snapshot
 
-2026-10-30 root marlow-d31-20261030 resumed from fetched 7f822e6c. Prior root/worktree unavailable, no newer published product head; canonical task delta records takeover. Ordinary-artwork-access TAKEN /root/artwork_access in isolated worktree under exact existing NEW5 lock; root owns shell consumer/shared integration. Max3 writers/4children, one ROOT Gradle slot. Read-only privacy review permitted; no other assignments. Historical completed reports/branches retained. D31 release gates remain open.
+2026-10-30 root marlow-d31-20261030 resumed from fetched7f822e6c; published claim0df0423d. Ordinary artwork producer12527457 frozen/SOURCE ACCEPT/integrated candidate d35c9030; claim RELEASED, not FINISHED pending actual host gate. Root owns consumer/AppGraph/shared integration; one focused hosted build slot, no other writers. Read-only privacy review complete; no live external claims. Existing canonical roadmap/evidence preserved. Final source/data/native/Fold7/signing gates open.

@@ -176,6 +176,9 @@ internal class ShellControllers(
         (if (advanced?.visible == true) advanced.selected else search.state.value.selected) == card &&
             status.state.value.status?.activeGeneration()?.id == card.provenance.generation
     } }
+    val artwork = ports.cardArtwork?.let { CardArtworkController(scope, it, ports.settings, ioDispatcher) { id, generation ->
+        printings?.isArtworkSelectionCurrent(id, generation) == true
+    } }
     val rulings = ports.rulings?.let { RulingsController(scope, it, ioDispatcher) }
     val downloads = ports.englishCatalog?.let { DownloadsController(scope, it, ports.settings, ports.catalogStatus, ioDispatcher,
         { status.refresh(); rulings?.refresh() }, ports.rulingsDownloads, ports.rulings) }
@@ -212,6 +215,13 @@ internal class ShellControllers(
             if (advanced == null) search.state.map { it.selected }.distinctUntilChanged().collect { printings?.selectCard(it) }
             else combine(search.state, advanced.state) { literal, typed -> if (typed.visible) typed.selected else literal.selected }
                 .distinctUntilChanged().collect { printings?.selectCard(it) }
+        }
+        if (printings != null && artwork != null) scope.launch {
+            printings.state.map { state ->
+                state.selected?.takeIf { !state.loading && state.problem == null }?.let {
+                    it.id to it.provenance.generation
+                }
+            }.distinctUntilChanged().collect { selection -> artwork.select(selection?.first, selection?.second) }
         }
         status.refresh()
         settings.load()

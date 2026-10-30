@@ -102,6 +102,8 @@ public class ShellPorts(
     /** Ordinary persisted games; specialty-manager installation is not implied. */
     public val ordinaryGames: com.architectpsg.commandlibrary.core.model.PersistedGameService? = null,
     public val basicDeckValidation: com.architectpsg.commandlibrary.core.model.LocalBasicDeckValidation? = null,
+    /** Reviewed exact-consent transient artwork; preparing and rendering never initialize wire IO. */
+    public val cardArtwork: CardArtworkAccess? = null,
     public val deckStatistics: com.architectpsg.commandlibrary.core.model.LocalDeckStatistics? = null,
 
 )

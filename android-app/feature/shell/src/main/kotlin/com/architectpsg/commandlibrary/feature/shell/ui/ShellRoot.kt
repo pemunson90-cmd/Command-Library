@@ -124,7 +124,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
             } else {
                 // Fence any in-flight browser callback in the accepted navigation event.
                 if (target != ShellDestination.COLLECTION) controllers.collectionTextExport?.hide()
-                if (target != ShellDestination.CARDS) controllers.advancedQuery?.hide()
+                if (target != ShellDestination.CARDS) { controllers.artwork?.close(); controllers.advancedQuery?.hide() }
                 if (target != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
                 controllers.printings?.setVisible(target == ShellDestination.CARDS)
                 destination = target
@@ -136,7 +136,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
                 when (val action = draft?.takeReadyExit(exit.ticket)) {
                     is DeferredDeckAction.Navigate -> {
                         if (action.destination != ShellDestination.COLLECTION) controllers.collectionTextExport?.hide()
-                        if (action.destination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
+                        if (action.destination != ShellDestination.CARDS) { controllers.artwork?.close(); controllers.advancedQuery?.hide() }
                         if (action.destination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
                         controllers.printings?.setVisible(action.destination == ShellDestination.CARDS)
                         destination = action.destination
@@ -150,7 +150,7 @@ internal fun ShellRoot(controllers: ShellControllers, modifier: Modifier = Modif
         }
         LaunchedEffect(visibleDestination, controllers) {
             if (visibleDestination != ShellDestination.COLLECTION) controllers.collectionTextExport?.hide()
-            if (visibleDestination != ShellDestination.CARDS) controllers.advancedQuery?.hide()
+            if (visibleDestination != ShellDestination.CARDS) { controllers.artwork?.close(); controllers.advancedQuery?.hide() }
             if (visibleDestination != ShellDestination.DECKS) { controllers.boardConstraints?.hide(); controllers.offlinePrompts?.hide(); controllers.aiHistory?.hide(); controllers.providerGeneration?.hide() }
             controllers.printings?.setVisible(visibleDestination == ShellDestination.CARDS)
         }
@@ -477,6 +477,7 @@ private fun DestinationContent(
             rulings = controllers.rulings,
             advanced = controllers.advancedQuery,
             printings = controllers.printings,
+            artwork = controllers.artwork,
             onAddPrinting = controllers.collection?.let { collection -> { printing ->
                 collection.beginAdd(printing); onNavigate(ShellDestination.COLLECTION)
             } },

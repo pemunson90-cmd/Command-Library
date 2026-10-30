@@ -1,7 +1,7 @@
 {
   "owner": "/root/artwork_access",
   "orchestrator": "marlow-d31-20261030",
-  "status": "active",
+  "status": "released",
   "base_commit": "7f822e6c746cf7411f1f7030b1d08a734b1694aa",
   "worktree": "/workspace/scratch/893bce609ce4/artwork-access",
   "branch": "agent/campaign-ordinary-artwork-access-20261030",
@@ -13,5 +13,8 @@
     "coordination/handoffs/cx-campaign-ordinary-artwork-access-01.md"
   ],
   "build_slot": "ROOT ONLY",
-  "takeover_reason": "Fetched remote unchanged since October16; named prior worktree unavailable, branch absent remotely and no implementation in all fetched history. Pat explicitly requests resumed execution. Prior lock retained in git."
+  "takeover_reason": "Fetched remote unchanged since October16; named prior worktree unavailable, branch absent remotely and no implementation in all fetched history. Pat explicitly requests resumed execution. Prior lock retained in git.",
+  "source_commit": "125274574fbc59e1dec5f72e9c9560f7b62a24e5",
+  "integration_commit": "d35c9030",
+  "result": "Frozen NEW5 independently SOURCE ACCEPT; root integrated candidate. Runtime/compilation pending, producer not FINISHED. No worker writing."
 }

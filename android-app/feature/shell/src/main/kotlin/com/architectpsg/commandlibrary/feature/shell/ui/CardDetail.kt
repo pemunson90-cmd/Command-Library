@@ -29,10 +29,10 @@ import com.architectpsg.commandlibrary.feature.shell.R
 import com.architectpsg.commandlibrary.feature.shell.presentation.RulingsController
 import com.architectpsg.commandlibrary.feature.shell.presentation.PrintingSelectionController
 
-/** Oracle text and game fields only; no card art is requested. Absent stats are omitted, unknown ones say so. */
+/** Local details; artwork requires explicit selected-printing approval. */
 @Composable
 internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: WidthClass, modifier: Modifier = Modifier,
-    rulings: RulingsController? = null, printings: PrintingSelectionController? = null, onOpenCatalog: (() -> Unit)? = null, onLookupKeyword: ((String) -> Unit)? = null, onAddPrinting: ((com.architectpsg.commandlibrary.core.model.PrintingRecord) -> Unit)? = null) {
+    rulings: RulingsController? = null, printings: PrintingSelectionController? = null, onOpenCatalog: (() -> Unit)? = null, onLookupKeyword: ((String) -> Unit)? = null, onAddPrinting: ((com.architectpsg.commandlibrary.core.model.PrintingRecord) -> Unit)? = null, artwork: com.architectpsg.commandlibrary.feature.shell.presentation.CardArtworkController? = null) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -60,7 +60,7 @@ internal fun CardDetail(card: CardRecord, onBack: (() -> Unit)?, widthClass: Wid
                 StatFields(card.stats)
             }
             if (printings != null) CardPrintings(card, printings, onAddPrinting)
-            CardArtworkFrame()
+            if (artwork != null && printings != null) CardArtwork(card, artwork, printings) else CardArtworkFrame()
             if(rulings != null) CardRulings(card.oracleId, rulings, onOpenCatalog)
             FeaturePanel {
                 SectionHeading(stringResource(R.string.detail_metadata_title))
