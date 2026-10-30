@@ -13,7 +13,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [36])
+@Config(sdk = [34])
 class CardArtworkControllerTest {
     private val source = ProviderId("scryfall")
     private val printing = CardId(source, "synthetic-printing")

@@ -27,8 +27,28 @@ jobs:
         working-directory: android-app
         run: |
           set -euo pipefail
-          bash gradlew --no-daemon --console=plain :feature:shell:testDebugUnitTest --tests '*CardArtwork*' --tests '*PrintingSelectionControllerTest*' --tests '*SettingsControllerTest*'
+          bash gradlew --no-daemon --console=plain :feature:shell:testDebugUnitTest --tests '*CardArtwork*' --tests '*PrintingSelectionControllerTest*' --tests '*SettingsControllerTest*' --tests '*ConsentReviewControllerTest*'
           bash gradlew --no-daemon --console=plain :app:testDebugUnitTest --tests '*CardArtwork*'
+      - name: Require executed scoped XML with no failures or skips
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import pathlib, xml.etree.ElementTree as E
+          reports = list(pathlib.Path('android-app/feature/shell/build/test-results').glob('**/TEST-*.xml')) + list(pathlib.Path('android-app/app/build/test-results').glob('**/TEST-*.xml'))
+          expected = {'CardArtworkControllerTest', 'ConsentReviewControllerTest', 'PrintingSelectionControllerTest', 'SettingsControllerTest', 'AppCardArtworkAccessTest', 'CardArtworkAppIntegrationTest'}
+          seen = set(); total = 0
+          for path in reports:
+              r = E.parse(path).getroot()
+              name = r.get('name', '').split('.')[-1]
+              if name not in expected: continue
+              count = int(r.get('tests', 0)); assert count > 0, path
+              assert all(int(r.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped')), path
+              assert all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in r.iter('testcase')), path
+              print(name, count, 'tests; 0 failures/errors/skips')
+              seen.add(name); total += count
+          assert seen == expected, ('Missing suites', expected - seen)
+          print('Total scoped XML cases', total)
+          PYCODE
       - name: Compile actual app and instrumentation consumers
         working-directory: android-app
         run: bash gradlew --no-daemon --console=plain :app:compileDebugAndroidTestKotlin :feature:shell:compileDebugAndroidTestKotlin :app:lintDebug :feature:shell:lintDebug

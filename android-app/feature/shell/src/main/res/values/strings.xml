@@ -621,4 +621,17 @@
     <string name="artwork_cancel">Cancel</string>
     <string name="artwork_attribution">Scryfall · Magic: The Gathering © Wizards of the Coast · Artist: %1$s</string>
     <string name="artwork_description">Full-card artwork for %1$s</string>
+    <string name="consent_review_title">Download approvals</string>
+    <string name="consent_review_body">Review the exact source and file you approved. Revoking approval stops future requests and clears transient artwork. Existing downloaded data is retained.</string>
+    <string name="consent_review_refresh">Refresh approvals</string>
+    <string name="consent_review_empty">No download approvals are recorded.</string>
+    <string name="consent_active">Approved</string>
+    <string name="consent_revoked">Revoked</string>
+    <string name="consent_review_revoke">Review revocation</string>
+    <string name="consent_revoke_title">Revoke this approval?</string>
+    <string name="consent_revoke_body">This stops future requests authorized by this approval. Existing downloaded data stays on this device. Your decks, collection and games are kept.</string>
+    <string name="consent_revoke_confirm">Revoke approval</string>
+    <string name="consent_previous">Previous</string>
+    <string name="consent_next">Next</string>
+    <string name="consent_page">Page %1$d of %2$d</string>
 </resources>

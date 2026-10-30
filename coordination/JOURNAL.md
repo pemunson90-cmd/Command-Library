@@ -789,3 +789,5 @@ Reviewed architecture/continuity accepted; transport/staging findings resolved. 
 2026-10-30T19:37:39Z | codex | cp-20261030-artwork-resume-271 | containing commit | Resume authorized D31 execution from fetched 7f822e6c; preserve audit worktree, transfer stopped root and absent binary producer with exact scoped claim; root owns consumer and build slot.
 
 2026-10-30T19:48:10Z | codex | cp-20261030-artwork-candidate-272 | containing commit | Source-reviewed artwork producer and corrected selected-printing consumer integrated as candidate; actual hosted scoped gate pending, producer lock released, release acceptance open.
+
+2026-10-30T19:54:37Z | codex | cp-20261030-artwork-consent-host-273 | containing commit | Actual first artwork host failure is SDK36/Java17 fixture, 16 prior printing/settings cases passed. Repaired host sandbox without assertion changes; source-reviewed consent review/revocation candidate ready; deletion and release gates remain open.

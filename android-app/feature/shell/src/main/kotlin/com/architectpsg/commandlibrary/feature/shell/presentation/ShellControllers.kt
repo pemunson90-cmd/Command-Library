@@ -41,6 +41,7 @@ internal class ShellControllers(
         ioDispatcher = ioDispatcher,
         onFinished = status::refresh,
     )
+    val consentReview = ConsentReviewController(scope, ports.settings, ioDispatcher)
     val settings = SettingsController(scope, ports.settings, ioDispatcher)
     val providerProfiles = if (ports.providerProfiles != null && ports.secretVault != null && ports.providerProfileOrigin != null)
         ProviderProfilesController(scope, ProviderProfileActions(ports.providerProfiles, ports.secretVault, ports.settings),

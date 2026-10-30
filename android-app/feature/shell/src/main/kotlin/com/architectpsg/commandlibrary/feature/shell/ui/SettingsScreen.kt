@@ -47,6 +47,7 @@ internal fun SettingsScreen(
     onProviders: (() -> Unit)? = null,
     onCatalog: (() -> Unit)? = null,
     onRules: (() -> Unit)? = null,
+    consentReview: com.architectpsg.commandlibrary.feature.shell.presentation.ConsentReviewController? = null,
 ) {
     Box(modifier.fillMaxSize().verticalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
         Column(
@@ -117,6 +118,7 @@ internal fun SettingsScreen(
                     }
                 }
             }
+            consentReview?.let { ConsentReviewPanel(it) }
             SectionHeading(stringResource(R.string.settings_about_title), modifier = Modifier.padding(top = 16.dp))
             Text(stringResource(R.string.settings_about_body), style = MaterialTheme.typography.bodyLarge)
             val notices = (snapshot?.sourceNotices.orEmpty() + listOfNotNull(catalogNotice)).distinct()

@@ -3,13 +3,13 @@
   "project": "Command Library",
   "repository": "pemunson90-cmd/Command-Library",
   "integration_branch": "main",
-  "checkpoint_id": "cp-20261030-artwork-candidate-272",
-  "verified_base_head": "314ca0b6d3af5d92d5d57b66544c0f641c932e87",
+  "checkpoint_id": "cp-20261030-artwork-consent-host-273",
+  "verified_base_head": "0792f0e67d9987a80beabfa7c3707747f1b3f548",
   "stage": "D31 agreed first usable signed Fold7 release; complete future roadmap retained",
   "status": "in_progress",
   "next_task": "orch-android-v1-campaign-01",
   "next_step": 3,
-  "first_action": "verify_artwork_host_candidate_then_consent_controls",
+  "first_action": "verify_corrected_artwork_consent_host_gate",
   "active_tasks": [
     "orch-android-v1-campaign-01"
   ],
@@ -170,9 +170,10 @@
     "ordinary_life_host": "Exact186aa4e4f288ad3dd3a8ee8f5dfafbd7685f8cda/tree766193f34fc45e99dbede3e3085b91956d2c70e3:28 fresh cases4XML0f/e/s24s815pins; independent SOURCE/shared/runtime ACK. Report docs/verification/life/ORDINARY-LIFE-APP-INTEGRATION-20261016.md. No OS-process-death/native/Fold7/timing/fullG07/release claim.",
     "deck_statistics_host": "Exacta1b42611d3666e9ee194a276166d39de4a79fc9f/tree3e0f6a205f811b7c8ca7498e86f54d7a66403651:50cases6XML0f/e/s12s823pins,48unchangednonappreused+2freshapp; independent SOURCE/shared/runtime ACK. Report docs/verification/decks/DECK-STATISTICS-APP-INTEGRATION-20261016.md; failed attempt1 preserved. No fullB03/legality/native/device/release claim.",
     "basic_legality_host": "Exact8a1479b443c4ca332e864fb1f7725aff5222972c/treed9f09ccdce1245d8f742f5914bb49398c55aac62:63cases9XML0f/e/s23s838pins,26unchangedengine reused+37fresh. Independent SOURCE/shared/runtime ACK. Report BASIC-LEGALITY-APP-INTEGRATION-20261016.md preserves56case/6failure attempt1 and separate diagnostic. No complete format registry/authenticcleanlegal/device/release claim.",
-    "collection_text_export_host": "Exact2432ae54bb0deb20b4408cfbd3a02d662a432061/treecb4e88364ab97b5b8f232af9e1f59cde4e66cea2:25cases5XML0f/e/s21s847pins,10unchangedcodec reused+15fresh. Independent SOURCE/shared/runtime ACK. Report docs/verification/collection/PLAIN-TEXT-EXPORT-APP-INTEGRATION-20261016.md;12lots66copies/defaultprivateoff+optin/actualSAF-PFD/providerfaults/nodatawrites. No CSV/migration/native/device/releaseclaim."
+    "collection_text_export_host": "Exact2432ae54bb0deb20b4408cfbd3a02d662a432061/treecb4e88364ab97b5b8f232af9e1f59cde4e66cea2:25cases5XML0f/e/s21s847pins,10unchangedcodec reused+15fresh. Independent SOURCE/shared/runtime ACK. Report docs/verification/collection/PLAIN-TEXT-EXPORT-APP-INTEGRATION-20261016.md;12lots66copies/defaultprivateoff+optin/actualSAF-PFD/providerfaults/nodatawrites. No CSV/migration/native/device/releaseclaim.",
+    "ordinary_artwork_candidate": "SOURCE ACCEPT producer12527457 unchanged+corrected consumer; hosted41118350830 failed pre-method SDK36/Java17 sandbox. Actual XML printing10/settings6 pass, artworkclass1failure, producer/AppGraph NOT_RUN. FixtureSDK34 repair and consent controls0792f0e6 pending corrected focused host gate. No native/Fold7/release acceptance."
   },
-  "last_completed": "Source-reviewed artwork producer and corrected selected-printing consumer integrated as candidate; actual hosted scoped gate pending, producer lock released, release acceptance open.",
-  "updated_utc": "2026-10-30T19:48:10Z",
+  "last_completed": "Actual first artwork host failure is SDK36/Java17 fixture, 16 prior printing/settings cases passed. Repaired host sandbox without assertion changes; source-reviewed consent review/revocation candidate ready; deletion and release gates remain open.",
+  "updated_utc": "2026-10-30T19:54:37Z",
   "working_branch": "agent/cx-thread-recovery-20261013"
 }
