@@ -1,0 +1,38 @@
+name: Ordinary artwork focused host verification
+on:
+  push:
+    branches: ['agent/artwork-host-20261030']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: artwork-host-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  host:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure existing JDK and Android SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_17_X64/bin" >> "$GITHUB_PATH"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install 'platforms;android-37.0' 'build-tools;36.0.0' > /dev/null
+      - name: Focused artwork and existing shell regression
+        working-directory: android-app
+        run: bash gradlew --no-daemon --console=plain :feature:shell:testDebugUnitTest :app:testDebugUnitTest --tests '*CardArtwork*' --tests '*PrintingSelectionControllerTest*' --tests '*SettingsControllerTest*' --tests '*AppCardArtworkAccessTest*'
+      - name: Retain exact host test reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: artwork-host-${{ github.sha }}
+          path: |
+            android-app/feature/shell/build/test-results/**
+            android-app/app/build/test-results/**
+          if-no-files-found: ignore
+          retention-days: 14
