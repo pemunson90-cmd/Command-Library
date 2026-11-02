@@ -1,5 +1,12 @@
 # Command Library agent entrypoint
 
+## Non-negotiable feature continuity (owner directive)
+
+**If Pat did not explicitly authorize removing a working capability, it stays.** Existing working features, gameplay rules, card effects, interfaces, workflows, integrations, content, data, settings, accessibility, and tools survive fixes, refactors, rewrites, ports, engine replacements and architecture changes. Do not silently delete, stub, disable, simplify, postpone or leave them behind because a new implementation is cleaner or the task named only one feature. Lack of an explicit preservation list is **not** permission to drop anything.
+
+**Before coding**, identify the actual most recent owner-accepted/installed usable baseline and the current authoritative development/integration branch; verify commit ancestry and inspect existing successful implementations, including playable prototypes, simulators and branches that the new work replaces. Neither `main` nor the newest-looking version number alone establishes the full feature set. For replacements or substantial refactors, account for each relevant existing capability and preserve behavior or explicitly approved improvements; check meaningful parity/regressions against the old working path. Recheck on the final integration head. If preservation and the requested change conflict, retain the old working functionality and seek Pat's explicit ruling on that **specific** loss; continue independent non-destructive work. Do not substitute extra paperwork or indiscriminate test campaigns for actual continuity checks. Apply updated guidance at the next safe work boundary without disrupting active writers.
+
+
 ## Main integration routing
 
 This main checkout contains the accepted frozen foundation. Active development, state, lease and component assignments live on `agent/cx-thread-recovery-20261013`. Fetch that branch and read its entrypoint and live coordination before any write or assignment. This main routing snapshot and historical locks are not a takeover invitation; root retains exclusive active development and final merge authority. Newer recovery product work is not yet integrated, and Android v1 is incomplete.
