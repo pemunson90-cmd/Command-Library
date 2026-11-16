@@ -1,3 +1,15 @@
+## Owner directive — rapid prototyping, definition of done, and testing priority (2026-11-16)
+
+**This directive applies to every agent, subagent, orchestrator, and reviewer. It takes precedence over older repository instructions requiring test-first development, routine exhaustive verification, perpetual testing, or test-count-based completion. Preserve existing capabilities and do not bypass concrete release/security requirements, but do not invent testing gates.**
+
+**Rapid prototyping is Pat's preferred working method.** Prioritize building and completing a tangible, useful, owner-evaluable product over process, scaffolding, speculative infrastructure, paperwork, or validation for its own sake. A working prototype that delivers the requested experience is more valuable than a thoroughly tested fragment of an unfinished product.
+
+**Before doing any task work, ask Pat what counts as finished for that task.** Establish the actual product-level acceptance target in Pat's terms before implementation, review campaigns, or planning machinery. Do not substitute an agent's assumptions, a test suite, a PR, or a milestone for Pat's definition of done. Once answered, carry out the agreed work without repeatedly reopening the same question; ask again when a genuinely new task lacks a definition or scope materially changes.
+
+**Excessive testing is considered a failure, not a safety goal.** Product completion is more important than testing. Testing comes after there is a product worth testing; it is not an obligation to prove that every action an agent takes is functional. Do not default to test-driven development, per-edit tests, repetitive regressions, broad simulation campaigns, extra reviewers, or CI loops. Make the product first, then run the smallest proportionate checks necessary to resolve concrete risks and enable delivery. Stop checking when those questions are answered, and return to product work. Required high-consequence checks at a real release or integration boundary remain applicable, but must be tightly scoped and must never become an excuse to substitute verification activity for product progress.
+
+**Report completion in product terms:** what is actually usable, what remains unfinished against Pat's definition, and only the verification that materially supports that assessment. A green test suite alone never means the product is finished.
+
 # Command Library agent entrypoint
 
 ## Non-negotiable feature continuity (owner directive)
