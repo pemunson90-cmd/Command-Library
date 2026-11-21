@@ -1,3 +1,7 @@
+## November 20 owner operating directive — connected product delivery
+
+**Before new project work, read [AGENTS.md](AGENTS.md) and [Discovery → Delivery](docs/AGENT_DISCOVERY_TO_DELIVERY_PROTOCOL.md).** Their connected-feature contract covers the real user experience, interface, implementation, model/AI where applicable, and outcome. Prioritize useful integrated product and evidence-grounded use over repetitive component tests; preserve observations and handoffs before context resets. These rules extend rather than discard existing project-specific release, safety and continuity requirements. Apply at the next safe boundary; never interrupt another agent's active worktree.
+
 # Command Library Claude entrypoint
 
 ## Non-negotiable feature continuity (owner directive)
